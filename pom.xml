@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.deabes</groupId>
+    <artifactId>detabes-component</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+
+    <!--springboot版本管理   这个版本是因为微服务 后期可能还会降级  -->
+    <!--
+        由于Spring Boot 2.3.0版本太新，
+        使用<spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>，
+        会报错Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.。
+     -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!--  <version>2.3.1.RELEASE</version>-->
+        <version>2.2.5.RELEASE</version>
+    </parent>
+
+
+    <organization>
+        <name>detabes</name>
+        <url>http://databstech.com</url>
+    </organization>
+
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <id>tanning</id>
+            <name>tanning</name>
+            <email>1445763190@qq.com</email>
+            <organization>com.detabes</organization>
+            <roles>
+                <role>author</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!--  子模块 -->
+    <modules>
+        <!-- 工具模块 -->
+        <module>component-utils</module>
+        <!-- aop模块 -->
+        <module>component-aops</module>
+        <!-- bean模块 -->
+        <module>component-beans</module>
+        <!-- web模块 -->
+        <module>component-webs</module>
+        <!-- 接口模块 -->
+        <module>component-apis</module>
+        <!-- 文档模块 -->
+        <module>component-docs</module>
+        <!-- 数据模块 -->
+        <module>component-caches</module>
+        <!-- starter  -->
+        <module>component-starters</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <detabes.last.version>1.0.0</detabes.last.version>
+        <knife4j.version>3.0.2</knife4j.version>
+        <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+        <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
+        <springfox.version>3.0.0</springfox.version>
+        <swagger-models.version>1.6.2</swagger-models.version>
+        <swagger.version>2.9.2</swagger.version>
+        <lombok.version>1.18.16</lombok.version>
+        <mysql.version>8.0.20</mysql.version>
+        <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
+        <fastjson.version>1.2.72</fastjson.version>
+        <jackson.version>2.11.1</jackson.version>
+        <joda-time.version>2.10.6</joda-time.version>
+        <guava.version>28.2-jre</guava.version>
+        <hutool.version>5.3.6</hutool.version>
+        <validation.version>2.0.1.Final</validation.version>
+        <gson.version>2.8.6</gson.version>
+        <aspect.version>1.9.5</aspect.version>
+        <java-jwt.version>3.10.0</java-jwt.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <soul.version>2.2.1</soul.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <okhttp.version>3.7.0</okhttp.version>
+        <skipTests>false</skipTests>
+    </properties>
+
+    <!-- 子项目强行依赖   -->
+    <dependencies>
+        <!--   get set sl4j 依赖  -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <!--  配置文件相关  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-models -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>${swagger-models.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-bean-validators</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+        <!--    参数校验    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+        </dependency>
+        <!-- 单元测试 -->
+
+
+    </dependencies>
+
+
+    <!--
+        只是声明依赖，并不实现引入
+
+        管理jar包的版本，让子项目中引用一个依赖而不用显示的列出版本号。
+        Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，
+        然后它就会使用在这个dependencyManagement元素中指定的版本号
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!--springcloud版本管理依赖-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <!-- 依赖的类型 -->
+                <type>pom</type>
+                <!-- 使用import来将 项目（dependencies） 做为依赖模块导入自己项目 -->
+                <scope>import</scope>
+            </dependency>
+
+            <!--springcloud alibaba版本管理依赖-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 数据库依赖 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- alibaba json -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!-- jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- 时间类 - 线程安全 -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+
+            <!-- guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- json -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+
+
+            <!-- apache beanutils -->
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+
+            <!-- apache 常用工具 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- swagger -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!--   jwt     -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
+            <!-- 切面 -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspect.version}</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+    <!--Maven远程仓库设置 非必要，可以删除-->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <build>
+        <plugins>
+            <!-- 将源码一并打包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <!--意思是在什么阶段打包源文件-->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- javadoc 接口文档 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <tags>
+                        <tag>
+                            <name>description</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <name>ClassName</name>
+                            <placement>a</placement>
+                        </tag>
+                        <tag>
+                            <name>date</name>
+                            <placement>a</placement>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <!-- 编译的时候指定JDK和编码 ,-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source> <!-- 源代码使用的JDK版本 -->
+                    <target>${java.version}</target> <!-- 需要生成的目标class文件的编译版本 -->
+                    <encoding>${project.build.sourceEncoding}</encoding> <!-- 字符集编码 -->
+                    <showWarnings>true</showWarnings><!--设置为true以显示编译警告-->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
