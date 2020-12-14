@@ -62,7 +62,7 @@
         - [ ] detabes-start-util
     - [ ] detabes-boot-start
         - [ ] detabes-boot-start-web
-        - [ ] detabes-boot-srart-jwt
+        - [ ] detabes-boot-srart-web-jwt
     - [ ] detabes-cloud-start
         - [ ] detabes-cloud-start-web
         - [ ] detabes-cloud-start-spring-gateway
