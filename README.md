@@ -1,6 +1,6 @@
 # detabes 后端组件
 * [ ] 工具模块
-    - [ ] String工具
+    - [x] String工具
     - [ ] 环境工具类 
     - [ ] time工具
     - [ ] Map工具
