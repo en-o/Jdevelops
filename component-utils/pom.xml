@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>utils-string</module>
+        <module>utils-http</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
