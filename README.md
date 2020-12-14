@@ -40,10 +40,12 @@
     - [ ] 自定义的注解
  
 * [ ] doc模块
-    - [ ] swagger-core
-    - [ ] 单机版swagger
-    - [ ] cloude版swagger
-    - [ ] gateway版swagger
+    - [ ] doc-core
+        - [ ] swagger-core
+    - [ ] doc-swagger
+        - [ ] 单机版swagger
+        - [ ] cloude版swagger
+        - [ ] gateway版swagger
  
 * [ ] cache模块
     - [ ] sql日志
