@@ -46,10 +46,10 @@
     <modules>
         <!-- 工具模块 -->
         <module>component-utils</module>
-        <!-- aop模块 -->
-        <module>component-aops</module>
         <!-- bean模块 -->
         <module>component-beans</module>
+        <!-- aop模块 -->
+        <module>component-aops</module>
         <!-- web模块 -->
         <module>component-webs</module>
         <!-- 接口模块 -->
@@ -60,6 +60,7 @@
         <module>component-caches</module>
         <!-- starter  -->
         <module>component-starters</module>
+
     </modules>
 
     <properties>
