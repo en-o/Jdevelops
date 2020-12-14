@@ -46,6 +46,7 @@
     - [ ] gateway版swagger
  
 * [ ] cache模块
+    - [ ] sql日志
     - [ ] jpa
         - [ ] jpaCore
         - [ ] jpaServer
