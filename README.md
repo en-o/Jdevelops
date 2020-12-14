@@ -1,11 +1,13 @@
 # detabes 后端组件
 * [ ] 工具模块
     - [ ] String工具
+    - [ ] 环境工具类 
     - [ ] time工具
     - [ ] Map工具
     - [ ] Bean工具
     - [ ] encryption工具
     - [ ] jwt工具
+    - [ ] http工具
     
 * [ ] aop模块
     - [ ] 接口调用日志[apilog]
