@@ -144,21 +144,6 @@ public class JwtUtil {
     }
 
 
-//    /**
-//     * 从 request 获取token
-//     * @param request request
-//     * @return token
-//     */
-//    public static String getToken(HttpServletRequest request) {
-//        final String tokenName = "token";
-//        String token = request.getHeader(tokenName);
-//        if (StringUtils.isNotBlank(token)) {
-//            return token;
-//        }
-//        token = request.getParameter(tokenName);
-//        return token;
-//    }
-
     /**
      * 获取token
      * @param request 请求头
