@@ -1,6 +1,7 @@
 package com.detabes.time.core;
 
-import com.detabes.time.constant.TimeFormat;
+
+import com.detabes.constant.time.TimeFormat;
 
 /**
  * @author tn

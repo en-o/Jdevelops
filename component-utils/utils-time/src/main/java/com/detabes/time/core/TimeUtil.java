@@ -1,6 +1,6 @@
 package com.detabes.time.core;
 
-import com.detabes.time.constant.TimeFormat;
+import com.detabes.constant.time.TimeFormat;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;

@@ -1,4 +1,4 @@
-package com.detabes.time.constant;
+package com.detabes.constant.time;
 
 
 import java.lang.reflect.Field;
