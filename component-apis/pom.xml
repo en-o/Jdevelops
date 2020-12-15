@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>apis-result</module>
+        <module>apis-exception</module>
     </modules>
 
 
