@@ -14,6 +14,7 @@
     <modules>
         <module>apis-result</module>
         <module>apis-exception</module>
+        <module>apis-annotation</module>
     </modules>
 
 
