@@ -96,7 +96,7 @@ public class IpUtil {
      * @return java.lang.String
      */
 
-    public static String getmacaddress(String ip){
+    public static String getMacAddress(String ip){
         String str;
         String macAddress = "";
         try {
