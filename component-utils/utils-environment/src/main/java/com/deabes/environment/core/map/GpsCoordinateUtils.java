@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * 地图坐标转换
+ *
  * @author lxw
  */
 public class GpsCoordinateUtils {
@@ -138,8 +139,8 @@ public class GpsCoordinateUtils {
 	/**
 	 * 判断坐标是否在国内
 	 *
-	 * @param latitude latitude
-	 * @param longitude longitude
+	 * @param latitude  纬度
+	 * @param longitude 经度
 	 * @param precision 是否精确判断范围
 	 * @return true 在国外，false 在国内
 	 */
@@ -215,7 +216,7 @@ public class GpsCoordinateUtils {
 
 	/**
 	 * //region 中国行政边界的WGS84坐标数据
-	 * 	//Mainland
+	 * //Mainland
 	 */
 	private static final Point[] MAINLAND = new Point[]{
 			new Point(27.32083, 88.91693),
