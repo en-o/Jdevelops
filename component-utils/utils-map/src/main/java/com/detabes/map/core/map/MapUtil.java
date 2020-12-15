@@ -234,12 +234,7 @@ public class MapUtil  {
     public static String mapOrderStr(Map<String, Object> map) {
         ArrayList<Map.Entry<String, Object>> list = new ArrayList<>(map.entrySet());
 
-        Collections.sort(list, new Comparator<Map.Entry<String, Object>>() {
-            @Override
-            public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
-                return o1.getKey().compareTo(o2.getKey());
-            }
-        });
+        Collections.sort(list, Comparator.comparing(Map.Entry::getKey));
 
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Object> mapping : list) {
