@@ -111,7 +111,7 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler(BindException.class)
-    public ResultVO<?> BindException(BindException e) {
+    public ResultVO<?> bindException(BindException e) {
         log.error("Valid 数据格式校验异常->", e);
         StringBuilder resqStr = new StringBuilder();
         e.getFieldErrors().forEach(it -> {

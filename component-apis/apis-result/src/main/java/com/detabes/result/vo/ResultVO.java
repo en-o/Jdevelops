@@ -29,7 +29,7 @@ public class ResultVO<T> implements Serializable {
 
     /** 返回结果状态码 */
     @ApiModelProperty(value = "返回结果状态码")
-    private int code = ResultCodeEnum.Success.getCode();
+    private Integer code = ResultCodeEnum.Success.getCode();
 
     /** 返回消息 */
     @ApiModelProperty(value = "返回消息")

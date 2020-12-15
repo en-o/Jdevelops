@@ -2,6 +2,7 @@ package com.detabes.result.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.ToString;
 
 /**
  * 分页排序
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @date 2018年5月11日
  */
 @ApiModel("分页实体类")
+@ToString
 public class PageVO {
     @ApiModelProperty("页码，默认第一页")
     private Integer pageIndex = 1;
