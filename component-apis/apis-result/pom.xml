@@ -3,17 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>detabes-component</artifactId>
+        <artifactId>component-apis</artifactId>
         <groupId>com.deabes</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>component-apis</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>apis-result</module>
-    </modules>
+    <artifactId>apis-result</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.deabes</groupId>
+            <artifactId>beans-enum</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
