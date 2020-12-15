@@ -18,7 +18,7 @@
     
 * [ ] bean模块
     - [ ] enum
-        - [ ] api相关枚举
+        - [x] api相关枚举
         - [ ] util相关枚举
     - [ ] entity
         - [ ] 实体公共基类
@@ -27,12 +27,12 @@
 * [ ] web模块    
     - [ ] websocket
     - [ ] webservice
-    - [ ] jwt
+    - [x] jwt
     
 * [ ] api模块
-    - [ ] 接口结果集
-    - [ ] 全局异常
-    - [ ] 自定义的注解
+    - [x] 接口结果集
+    - [x] 全局异常
+    - [x] 自定义的注解
  
 * [ ] doc模块
     - [ ] doc-core
