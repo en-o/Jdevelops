@@ -146,7 +146,7 @@ public interface TimeFormat {
      * @return 所有时间格式
      * @throws IllegalAccessException 非法
      */
-    static List<String> getAllFormart() throws IllegalAccessException {
+    static List<String> getAllFormat() throws IllegalAccessException {
         List<String> list = new ArrayList<>();
         Field[] fields = TimeFormat.class.getFields();
         for (Field f: fields) {
