@@ -3,10 +3,9 @@
     - [x] String工具
     - [x] 环境工具类 
     - [x] spring工具类 
-    - [ ] time工具
-    - [ ] Map工具
+    - [x] time工具
+    - [x] Map/Bean工具
     - [ ] List工具
-    - [ ] Bean工具
     - [ ] encryption工具
     - [ ] jwt工具
     - [x] http工具
