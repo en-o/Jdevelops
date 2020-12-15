@@ -9,6 +9,7 @@
         <module>utils-http</module>
         <module>utils-environment</module>
         <module>utils-spring</module>
+        <module>utils-time</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
