@@ -1,4 +1,4 @@
-package com.deabes.environment.entity;
+package com.detabes.environment.entity;
 
 import lombok.Data;
 

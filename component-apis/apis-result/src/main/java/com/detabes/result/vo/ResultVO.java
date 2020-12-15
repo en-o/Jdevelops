@@ -1,4 +1,4 @@
-package com.deabes.result.vo;
+package com.detabes.result.vo;
 
 import com.detabes.enums.result.ResultCodeEnum;
 import io.swagger.annotations.ApiModel;

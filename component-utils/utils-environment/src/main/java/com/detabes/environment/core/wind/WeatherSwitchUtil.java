@@ -1,4 +1,4 @@
-package com.deabes.environment.core.wind;
+package com.detabes.environment.core.wind;
 
 import java.util.HashMap;
 import java.util.Map;

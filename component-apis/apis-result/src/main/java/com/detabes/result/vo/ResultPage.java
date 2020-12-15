@@ -1,4 +1,4 @@
-package com.deabes.result.vo;
+package com.detabes.result.vo;
 
 
 import io.swagger.annotations.ApiModel;

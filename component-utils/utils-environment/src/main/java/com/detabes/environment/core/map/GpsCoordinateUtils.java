@@ -1,4 +1,4 @@
-package com.deabes.environment.core.map;
+package com.detabes.environment.core.map;
 
 import java.util.ArrayList;
 import java.util.List;

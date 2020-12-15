@@ -17,7 +17,7 @@
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
-        <groupId>com.deabes</groupId>
+        <groupId>com.detabes</groupId>
         <version>1.0.0</version>
     </parent>
 

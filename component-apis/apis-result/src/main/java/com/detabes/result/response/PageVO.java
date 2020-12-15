@@ -1,4 +1,4 @@
-package com.deabes.result.response;
+package com.detabes.result.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

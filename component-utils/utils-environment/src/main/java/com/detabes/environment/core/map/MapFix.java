@@ -1,7 +1,7 @@
-package com.deabes.environment.core.map;
+package com.detabes.environment.core.map;
 
 
-import com.deabes.environment.entity.MapPoint;
+import com.detabes.environment.entity.MapPoint;
 
 import java.math.BigDecimal;
 
