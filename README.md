@@ -5,13 +5,13 @@
     - [x] spring工具类 
     - [x] time工具
     - [x] Map/Bean工具
-    - [ ] List工具
-    - [ ] encryption工具
+    - [x] List工具
+    - [x] encryption工具
     - [ ] jwt工具
     - [x] http工具
     
 * [ ] aop模块
-    - [ ] 接口调用日志[apilog]
+    - [ ] 接口调用日志[apilog] 
     - [ ] 接口验签[apiSignature]
     - [ ] 接口版本[apiVersion]
     - [ ] 接口幂等[apiIdempotent]  

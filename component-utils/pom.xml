@@ -12,6 +12,7 @@
         <module>utils-time</module>
         <module>utils-map</module>
         <module>utils-list</module>
+        <module>utils-encryption</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
