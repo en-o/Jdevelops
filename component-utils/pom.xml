@@ -11,6 +11,7 @@
         <module>utils-spring</module>
         <module>utils-time</module>
         <module>utils-map</module>
+        <module>utils-list</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
