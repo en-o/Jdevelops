@@ -8,6 +8,7 @@
         <module>utils-string</module>
         <module>utils-http</module>
         <module>utils-environment</module>
+        <module>utils-spring</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
