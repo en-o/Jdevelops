@@ -16,24 +16,24 @@ public class WeatherSwitchUtil {
 
     /**
      * 根据角度算风向
-     * @param wINDAvg2mi 角度
+     * @param windAvg2Mi 角度
      * @return String
      */
-    public static String getWindDirection(double wINDAvg2mi){
+    public static String getWindDirection(double windAvg2Mi){
         String windDirection;
-        if(wINDAvg2mi == 0 || wINDAvg2mi == 360 ){
+        if( 0 == windAvg2Mi  || 360 == windAvg2Mi  ){
             windDirection = "北";
-        } else if(wINDAvg2mi == 90){
+        } else if(windAvg2Mi == 90){
             windDirection = "东";
-        } else if(wINDAvg2mi == 180){
+        } else if(windAvg2Mi == 180){
             windDirection = "南";
-        } else if(wINDAvg2mi == 270){
+        } else if(windAvg2Mi == 270){
             windDirection = "西";
-        } else if(wINDAvg2mi > 0 && wINDAvg2mi < 90){
+        } else if(windAvg2Mi > 0 && windAvg2Mi < 90){
             windDirection = "东北";
-        } else if(wINDAvg2mi > 90 && wINDAvg2mi < 180){
+        } else if(windAvg2Mi > 90 && windAvg2Mi < 180){
             windDirection = "东南";
-        } else if(wINDAvg2mi > 180 && wINDAvg2mi < 270){
+        } else if(windAvg2Mi > 180 && windAvg2Mi < 270){
             windDirection = "西南";
         } else {
             windDirection = "西北";
@@ -92,7 +92,7 @@ public class WeatherSwitchUtil {
     }
 
     private static Map<String, String> getWindInfo(){
-        Map<String, String> windPowerMap = new HashMap<>();
+        Map<String, String> windPowerMap = new HashMap<>(16);
         windPowerMap.put("无风", "0.0-0.2");
         windPowerMap.put("软风", "0.3-1.5");
         windPowerMap.put("轻风", "1.6-3.3");

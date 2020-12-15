@@ -115,7 +115,7 @@ public class ListGather {
      * @return {Map}
      */
     private static Map<String, Object> object2Map(Object obj) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         if (obj == null) {
             return map;
         }

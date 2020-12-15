@@ -20,7 +20,7 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calWGS84toGCJ02(double latitude, double longitude) {
+	public static double[] calwgs84Togcj02(double latitude, double longitude) {
 		Point dev = calDev(latitude, longitude);
 		double retLat = latitude + dev.getLatitude();
 		double retLon = longitude + dev.getLongitude();
@@ -34,11 +34,11 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calWGS84toBD09(double latitude, double longitude) {
+	public static double[] calwgs84Tobd09(double latitude, double longitude) {
 		Point dev = calDev(latitude, longitude);
 		double retLat = latitude + dev.getLatitude();
 		double retLon = longitude + dev.getLongitude();
-		return calGCJ02toBD09(retLat, retLon);
+		return calgcj02Tobd09(retLat, retLon);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calGCJ02toWGS84(double latitude, double longitude) {
+	public static double[] calgcj02Towgs84(double latitude, double longitude) {
 		Point dev = calDev(latitude, longitude);
 		double retLat = latitude - dev.getLatitude();
 		double retLon = longitude - dev.getLongitude();
@@ -65,9 +65,9 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calBD09toWGS84(double latitude, double longitude) {
-		double[] gcj = calBD09toGCJ02(latitude, longitude);
-		return calGCJ02toWGS84(gcj[0], gcj[1]);
+	public static double[] calbd09ToWgs84(double latitude, double longitude) {
+		double[] gcj = calbd09Togcj02(latitude, longitude);
+		return calgcj02Towgs84(gcj[0], gcj[1]);
 	}
 
 	private static Point calDev(double latitude, double longitude) {
@@ -108,7 +108,7 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calGCJ02toBD09(double latitude, double longitude) {
+	public static double[] calgcj02Tobd09(double latitude, double longitude) {
 		double x = longitude;
 		double y = latitude;
 		double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * PI);
@@ -125,7 +125,7 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return [纬度, 经度]
 	 */
-	public static double[] calBD09toGCJ02(double latitude, double longitude) {
+	public static double[] calbd09Togcj02(double latitude, double longitude) {
 		double x = longitude - 0.0065;
 		double y = latitude - 0.006;
 		double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * PI);
@@ -147,7 +147,7 @@ public class GpsCoordinateUtils {
 		if (precision) {
 			return CHINA_POLYGON.stream().noneMatch(point -> pointInPolygon(point, latitude, longitude));
 		} else {
-			if (longitude < 72.004 || longitude > 137.8347) {
+			if (72.004 > longitude || longitude > 137.8347) {
 				return true;
 			}
 			return latitude < 0.8293 || latitude > 55.8271;
@@ -213,8 +213,10 @@ public class GpsCoordinateUtils {
 		}
 	}
 
-	//region 中国行政边界的WGS84坐标数据
-	//Mainland
+	/**
+	 * //region 中国行政边界的WGS84坐标数据
+	 * 	//Mainland
+	 */
 	private static final Point[] MAINLAND = new Point[]{
 			new Point(27.32083, 88.91693),
 			new Point(27.54243, 88.76464),
@@ -746,7 +748,9 @@ public class GpsCoordinateUtils {
 			new Point(27.32083, 88.91693)
 	};
 
-	//Taiwan
+	/**
+	 * Taiwan
+	 */
 	private static final Point[] TAIWAN = new Point[]{
 			new Point(25.13474, 121.4441),
 			new Point(25.28361, 121.5632),
@@ -763,7 +767,9 @@ public class GpsCoordinateUtils {
 			new Point(25.13474, 121.4441)
 	};
 
-	//Hainan
+	/**
+	 * Hainan
+	 */
 	private static final Point[] HAINAN = new Point[]{
 			new Point(19.52888, 110.855),
 			new Point(19.16761, 110.4832),
@@ -784,14 +790,15 @@ public class GpsCoordinateUtils {
 			new Point(19.52888, 110.855)
 	};
 
-	//Chongming
+	/**
+	 * Chongming
+	 */
 	private static final Point[] CHONGMING = new Point[]{
 			new Point(31.80054, 121.2039),
 			new Point(31.49972, 121.8736),
 			new Point(31.53111, 121.5464),
 			new Point(31.80054, 121.2039)
 	};
-	//endregion
 
 	/**
 	 * 中国行政边界的WGS84坐标数据，

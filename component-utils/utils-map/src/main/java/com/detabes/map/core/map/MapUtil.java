@@ -28,7 +28,7 @@ public class MapUtil  {
      * @return {Map}
      */
     public static Map<String, Object> object2Map(Object obj) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         if (obj == null) {
             return map;
         }
@@ -127,9 +127,9 @@ public class MapUtil  {
     public static Map<String, Object> getRepetitionListElementNum(List<String> list, Integer type){
         List<String>  ztypesplitTemp = list;
         //判断重复次数最多的一个
-        Map<String, Object> beanToMap = new HashMap<>();
+        Map<String, Object> beanToMap = new HashMap<>(list.size());
         try {
-            Map<String, Object> chongfu = new HashMap<>();
+            Map<String, Object> chongfu = new HashMap<>(list.size());
             for (String string : list) {
                 if(null==string) {
                     continue;
@@ -201,7 +201,7 @@ public class MapUtil  {
         if (obj == null) {
             return null;
         }
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(16);
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();

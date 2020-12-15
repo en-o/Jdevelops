@@ -8,6 +8,9 @@ package com.detabes.list.number;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * @author t
+ */
 public class NumberUtil {
 
 

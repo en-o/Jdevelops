@@ -124,7 +124,7 @@ public class IpUtil {
      * @param domainName 域名
      * @return {@link String}
      */
-    public static String IpConvert(String domainName) {
+    public static String ipConvert(String domainName) {
         String ip ;
         try {
             ip = InetAddress.getByName(domainName).getHostAddress();

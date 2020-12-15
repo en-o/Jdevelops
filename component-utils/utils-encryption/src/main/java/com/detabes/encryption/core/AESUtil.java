@@ -59,7 +59,7 @@ public class AESUtil {
 			if (secretKey == null) {
 				return null;
 			}
-			if (secretKey.length() != 16) {
+			if (16 != secretKey.length()) {
 				return null;
 			}
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

@@ -330,9 +330,9 @@ public class TimeUtil {
 	 * @param dateString dateString
 	 * @return String
 	 */
-	public static String yyyyMMdd2yyyyMMDd(String dateString){
-		org.joda.time.format.DateTimeFormatter yyyyMMdd= DateTimeFormat.forPattern("yyyyMMdd");
-		DateTime dateTime = DateTime.parse(dateString, yyyyMMdd);
+	public static String yyyyMmdd2YyyyMmDd(String dateString){
+			org.joda.time.format.DateTimeFormatter yyyyMmDd= DateTimeFormat.forPattern("yyyyMMdd");
+		DateTime dateTime = DateTime.parse(dateString, yyyyMmDd);
 		return dateTime.toString("yyyy-MM-dd");
 
 	}

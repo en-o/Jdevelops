@@ -37,7 +37,7 @@ public class ListBook {
      */
     public static List<Map<String,Object>> mergeListMap(List<Map<String, Object>> listMap, String eqKey, String addingkey, String ratioKey){
         try {
-            Map<String, Map<String, Object>> result = new HashMap<>();
+            Map<String, Map<String, Object>> result = new HashMap<>(listMap.size());
             List<Map<String, Object>>  allList = new ArrayList<>();
             for(Map<String, Object> map : listMap){
                 String id = map.get(eqKey).toString();
