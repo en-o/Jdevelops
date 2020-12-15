@@ -13,6 +13,7 @@
         <module>utils-map</module>
         <module>utils-list</module>
         <module>utils-encryption</module>
+        <module>utils-jwt</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>

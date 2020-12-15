@@ -7,7 +7,7 @@
     - [x] Map/Bean工具
     - [x] List工具
     - [x] encryption工具
-    - [ ] jwt工具
+    - [x] jwt工具
     - [x] http工具
     
 * [ ] aop模块
