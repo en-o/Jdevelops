@@ -13,6 +13,6 @@ import org.springframework.context.annotation.Import;
  */
 @ConditionalOnWebApplication
 @Import({ ContextUtil.class})
-@ComponentScan("com.databstech.utils.jwt.**")
+@ComponentScan("com.detabes.jwt.**")
 public class EnableAutoScanConfiguration {
 }
