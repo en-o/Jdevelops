@@ -11,15 +11,15 @@
     - [x] http工具
     
 * [ ] aop模块
-    - [ ] 接口调用日志[apilog] 
-    - [ ] 接口验签[apiSignature]
+    - [x] 接口调用日志[apilog] 
+    - [x] 接口验签[apiSignature]
     - [ ] 接口版本[apiVersion]
     - [ ] 接口幂等[apiIdempotent]  
     
 * [ ] bean模块
     - [ ] enum
         - [x] api相关枚举
-        - [ ] util相关枚举
+        - [x] util相关枚举
     - [ ] entity
         - [ ] 实体公共基类
         - [ ] 实体序列化
