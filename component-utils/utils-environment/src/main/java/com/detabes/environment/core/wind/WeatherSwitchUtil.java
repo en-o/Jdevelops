@@ -8,7 +8,7 @@ import static java.util.Map.*;
 /**
  * @author tn
  * @ClassName WeatherSwitchUtil
- * @description 天气公共工具类
+ * @description 风向公共工具类
  * @date 2020-09-18 10:40
  */
 public class WeatherSwitchUtil {

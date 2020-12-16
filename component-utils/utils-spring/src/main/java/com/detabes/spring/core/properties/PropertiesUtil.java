@@ -5,12 +5,13 @@ import java.util.Properties;
 
 /**
  * 读取配置文件的信息
+ *
  * @author xzq create time 2017/04/27
  */
 public class PropertiesUtil {
 	/**
-	 * 
-	 * 读取配置文件的信息 
+	 * 读取配置文件的信息
+	 *
 	 * @param fileName---配置文件名
 	 * @param term----key值
 	 * @return String

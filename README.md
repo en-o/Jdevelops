@@ -1,12 +1,12 @@
 # detabes 后端组件
 * [ ] 工具模块
     - [x] String工具
-    - [x] 环境工具类 
+    - [x] environment(环境工具类) 
     - [x] spring工具类 
     - [x] time工具
     - [x] Map/Bean工具
     - [x] List工具
-    - [x] encryption工具
+    - [x] encryption(加解密工具)
     - [x] jwt工具
     - [x] http工具
     
