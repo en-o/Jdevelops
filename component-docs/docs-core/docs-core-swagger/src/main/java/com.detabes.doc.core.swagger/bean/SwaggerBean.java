@@ -64,7 +64,6 @@ public class SwaggerBean {
      * swagger Docket  :
      *     SWAGGER_2 (默认)
      *     SWAGGER_12
-     *     SPRING_WEB
      */
     private String docket = "SWAGGER_2";
 
@@ -82,8 +81,6 @@ public class SwaggerBean {
 
     public DocumentationType getDocket() {
         switch (docket){
-            case "SPRING_WEB":
-                return DocumentationType.SPRING_WEB;
             case "SWAGGER_12":
                 return DocumentationType.SWAGGER_12;
             default:

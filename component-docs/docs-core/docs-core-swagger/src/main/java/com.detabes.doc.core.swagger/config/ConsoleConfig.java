@@ -47,7 +47,7 @@ public class ConsoleConfig implements ApplicationRunner {
             }
             String groupStr = "";
             String groupName = swaggerBean.getGroupName();
-            if(null!=groupName&&groupName.length()>0&&!groupName.equals("")){
+            if(null != groupName && groupName.length() > 0){
                 groupStr = "?group="+swaggerBean.getGroupName();
             }
             log.info("\n----------------------------------------------------------\n\t" +
