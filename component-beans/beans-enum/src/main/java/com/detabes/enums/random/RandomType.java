@@ -1,4 +1,4 @@
-package com.detabes.string.enums;
+package com.detabes.enums.random;
 /**
  * @author tn
  * @date  2020/5/24 17:52

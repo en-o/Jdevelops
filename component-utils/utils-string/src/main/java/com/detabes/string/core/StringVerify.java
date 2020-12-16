@@ -1,8 +1,8 @@
 package com.detabes.string.core;
 
-import com.detabes.string.enums.NumEnum;
-import com.detabes.string.enums.SqlStrFilterEnum;
-import com.detabes.string.enums.StringEnum;
+import com.detabes.enums.number.NumEnum;
+import com.detabes.enums.sql.SqlStrFilterEnum;
+import com.detabes.enums.string.StringEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

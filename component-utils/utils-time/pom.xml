@@ -16,12 +16,5 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.detabes</groupId>
-            <artifactId>beans-constant</artifactId>
-            <version>${detabes.last.version}</version>
-        </dependency>
     </dependencies>
-
-
 </project>

@@ -1,7 +1,8 @@
 package com.detabes.string.core;
 
 
-import com.detabes.string.enums.RandomType;
+
+import com.detabes.enums.random.RandomType;
 
 import java.util.Random;
 

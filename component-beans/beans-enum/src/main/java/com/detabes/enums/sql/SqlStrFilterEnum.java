@@ -1,4 +1,4 @@
-package com.detabes.string.enums;
+package com.detabes.enums.sql;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.detabes.string.enums;
+package com.detabes.enums.string;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum  StringEnum {
+public enum StringEnum {
 
     /** null串 */
     NULL_STRING("null","null串"),
