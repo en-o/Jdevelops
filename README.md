@@ -23,9 +23,12 @@
     - [ ] entity
         - [ ] 实体公共基类
         - [ ] 实体序列化
+    - [x] constant
             
 * [ ] web模块    
-    - [ ] websocket
+    - [x] websocket
+        - [x] websocket-core
+        - [x] websocket-client
     - [ ] webservice
     - [x] jwt
     
