@@ -7,6 +7,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.jwt.bean.JwtBean;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
@@ -77,15 +78,13 @@ public class JwtUtil {
 
 
     /**
-     * token  验证
+     * token  验证token是否过期
      * @param token token
-     * @return 真假
+     * @return true:没过期
      */
     public static boolean verity(String token){
-
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
-
         try {
+            JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
             Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
@@ -102,17 +101,15 @@ public class JwtUtil {
      * @return  Map
      */
     public static Map<String,Object> verityForMap(String token){
-
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
-
         try {
+            JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
             Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
             Map<String, Claim> claims = jwt.getClaims();
             return getClaims(claims);
         }catch (Exception e){
-            return null;
+            throw new IllegalArgumentException(ResultCodeEnum.TokenError.getMessage(),e);
         }
 
     }
@@ -158,6 +155,12 @@ public class JwtUtil {
 
     }
 
+    /**
+     *  解析 jwt的 Map<String, Claim>  为 Map<String,Object>
+     *     eg： 只要是为了解析 Claim
+     * @param claims jwt.getClaims();
+     * @return
+     */
     public static Map<String,Object> getClaims( Map<String, Claim> claims){
         Iterator<String> iterator = claims.keySet().iterator();
         Map<String,Object> resMap = new HashMap<>(16);
