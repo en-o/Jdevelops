@@ -36,10 +36,10 @@
  
 * [ ] doc模块
     - [ ] doc-core
-        - [ ] swagger-core
+        - [x] swagger-core
     - [ ] doc-swagger
-        - [ ] 单机版swagger
-        - [ ] cloude版swagger
+        - [x] 单机版swagger
+        - [x] cloude版swagger
         - [ ] gateway版swagger
  
 * [ ] cache模块
@@ -56,6 +56,7 @@
     - [ ] MongoDB
     
 * [ ] starter
+    - [x] starters-utils
     - [ ] detabes-start
         - [ ] detabes-start-util
     - [ ] detabes-boot-start
