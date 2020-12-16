@@ -1,5 +1,6 @@
 package com.detabes.http.core;
 
+import com.detabes.enums.number.NumEnum;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +104,7 @@ public class IpUtil {
             Process p = Runtime.getRuntime().exec("nbtstat -A " + ip);
             InputStreamReader ir = new InputStreamReader(p.getInputStream());
             LineNumberReader input = new LineNumberReader(ir);
-            for (int i = 1; i < 100; i++) {
+            for (int i = 1; i < NumEnum.HUNDRED.getNum(); i++) {
                 str = input.readLine();
                 if (str != null) {
                     if (1 < str.indexOf("MAC Address")) {

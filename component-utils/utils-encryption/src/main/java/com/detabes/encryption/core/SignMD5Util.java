@@ -1,6 +1,7 @@
 package com.detabes.encryption.core;
 
 import com.detabes.encryption.util.RemarkUtil;
+import com.detabes.enums.number.NumEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,7 +50,7 @@ public class SignMD5Util {
         // 16进制数字
         StringBuilder md5code = new StringBuilder(new BigInteger(1, secretBytes).toString(16));
         // 如果生成数字未满32位，需要前面补0
-        for (int i = 0; i < 32 - md5code.length(); i++) {
+        for (int i = 0; i < NumEnum.THIRTY_TWO.getNum() - md5code.length(); i++) {
             md5code.insert(0, "0");
         }
 

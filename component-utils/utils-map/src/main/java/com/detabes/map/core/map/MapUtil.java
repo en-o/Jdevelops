@@ -1,6 +1,8 @@
 package com.detabes.map.core.map;
 
 
+import com.detabes.enums.number.NumEnum;
+import com.detabes.enums.string.StringEnum;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
@@ -105,7 +107,7 @@ public class MapUtil  {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey("empty") ){
+            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getStr()) ){
                 params = (Map<String, Object>) obj;
             }
         } catch (Exception e) {
@@ -148,7 +150,7 @@ public class MapUtil  {
             Object dataMap = new Object();
             if(1 == type) {
                 dataMap= sortByValueAscending(chongfu);
-            }else if(2 == type) {
+            }else if(NumEnum.TWO.getNum().equals(type)) {
                 dataMap= sortByValueDescending(chongfu);
             }
 

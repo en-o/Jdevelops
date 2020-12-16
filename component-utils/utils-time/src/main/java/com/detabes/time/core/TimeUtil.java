@@ -1,6 +1,7 @@
 package com.detabes.time.core;
 
 import com.detabes.constant.time.TimeFormat;
+import com.detabes.enums.number.NumEnum;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -133,14 +134,14 @@ public class TimeUtil {
 		// 计算差多少小时
 		long hour = diff % nd / nh;
 		str += (hour < 10 ? ("0" + hour) : hour) + "小时";
-		if (2 == type) {
+		if (NumEnum.TWO.getNum() == type) {
 			return str;
 		}
 
 		// 计算差多少分钟
 		long min = diff % nd % nh / nm;
 		str += (min < 10 ? ("0" + min) : min) + "分";
-		if (3 == type) {
+		if (NumEnum.THREE.getNum() == type) {
 			return str;
 		}
 
@@ -170,13 +171,13 @@ public class TimeUtil {
 		}
 		// 计算差多少小时
 		long hour = diff / nh;
-		if (type == 2) {
+		if (type == NumEnum.TWO.getNum()) {
 			return hour;
 		}
 
 		// 计算差多少分钟
 		long min = diff / nm;
-		if (type == 3) {
+		if (type == NumEnum.THREE.getNum()) {
 			return min;
 		}
 		//计算差多少秒
@@ -309,7 +310,7 @@ public class TimeUtil {
 	 */
 	public static Boolean checkTimeBefore(String aTime, String bTime) throws ParseException {
 
-		if (aTime.length() != bTime.length() || aTime.length() != 5) {
+		if (aTime.length() != bTime.length() || aTime.length() != NumEnum.FIVE.getNum()) {
 			throw new NullPointerException("时间格式不正确");
 		} else {
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm");

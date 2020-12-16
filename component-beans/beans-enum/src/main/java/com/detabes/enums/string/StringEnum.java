@@ -17,7 +17,9 @@ public enum StringEnum {
     /** null串 */
     NULL_STRING("null","null串"),
     /** 空串 */
-    EMPTY_STRING(" ","空串");
+    LENGTH_ZERO(" ","空串"),
+    /** empty串 */
+    EMPTY_STRING("empty","empty");
 
 
     private String str;

@@ -1,6 +1,7 @@
 package com.detabes.encryption.core;
 
 
+import com.detabes.enums.number.NumEnum;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -61,7 +62,7 @@ public class AESUtil {
 			if (secretKey == null) {
 				return null;
 			}
-			if (16 != secretKey.length()) {
+			if (NumEnum.SIX_TEN.getNum() != secretKey.length()) {
 				return null;
 			}
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

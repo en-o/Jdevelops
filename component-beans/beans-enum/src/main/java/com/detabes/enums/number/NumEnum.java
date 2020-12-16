@@ -34,7 +34,15 @@ public enum NumEnum {
     /** 9 */
     NINE(9,"9"),
     /** 10 */
-    TEN(10,"10");
+    TEN(10,"10"),
+    /** 16 */
+    SIX_TEN(16,"16"),
+    /** 32 */
+    THIRTY_TWO(32,"32"),
+    /** 100 */
+    HUNDRED(100,"100"),
+
+    ;
     private Integer num;
     private String remark;
 }

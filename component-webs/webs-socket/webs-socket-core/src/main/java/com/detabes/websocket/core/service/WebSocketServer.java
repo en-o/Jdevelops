@@ -25,14 +25,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServerEndpoint(value = "/socket/{name}")
 public class WebSocketServer {
 
-    //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
+    /** 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。 */
     private static AtomicInteger online = new AtomicInteger();
 
-    //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象。
-    //不允许多端登陆
-//    private static Map<String, Session> sessionPools = new HashMap<>();
+    /** concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象。*/
+    /**
+     * 不允许多端登陆
+     * private static Map<String, Session> sessionPools = new HashMap<>();
+     */
 
-    //允许多端登陆
+    /** 允许多端登陆 */
     private static Map<String, List<Session>> sessionPoolsS = new HashMap<>();
 
     /**
@@ -43,8 +45,6 @@ public class WebSocketServer {
      */
     public void sendMessage(Session session, String message) throws IOException {
         if(session != null){
-            //验证过
-//            session.getBasicRemote().sendText(message);
             //没验证过 - 异步
             session.getAsyncRemote().sendText(message);
         }
@@ -164,7 +164,6 @@ public class WebSocketServer {
      * @throws IOException
      */
     public void sendInfoByLikeKey(String userName, String message){
-//        List<Session> session = sessionPoolsS.get(userName);
         Map<String, List<Session>> stringListMap = SocketUtil.parseMapForFilter(sessionPoolsS, userName);
         List<Session> session = new ArrayList<>();
         stringListMap.forEach((key,value) -> {
