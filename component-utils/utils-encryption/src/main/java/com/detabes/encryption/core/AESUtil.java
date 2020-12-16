@@ -31,11 +31,13 @@ public class AESUtil {
 	private AESUtil() {
 
 	}
+
 	/**
 	 * 单例工厂
+	 *
+	 * @return com.detabes.crc.util.AESOperator
 	 * @author lxw
 	 * @date 2020/10/10 14:23
-	 * @return com.detabes.crc.util.AESOperator
 	 */
 	public static AESUtil getInstance() {
 		if (instance == null) {
@@ -47,7 +49,7 @@ public class AESUtil {
 	/**
 	 * 加密-带偏移量
 	 *
-	 * @param sSrc   需要加密的字符串
+	 * @param sSrc      需要加密的字符串
 	 * @param secretKey 密钥
 	 * @param vector    偏移量
 	 * @return java.lang.String
@@ -87,7 +89,7 @@ public class AESUtil {
 	 * @date 2020/10/9 17:02
 	 */
 	public String encrypt(String sSrc) {
-		return this.encrypt(sSrc,S_KEY,IV_PARAMETER);
+		return this.encrypt(sSrc, S_KEY, IV_PARAMETER);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class AESUtil {
 	 * @date 2020/10/9 17:02
 	 */
 	public String decrypt(String sSrc) {
-		return this.decrypt(sSrc,S_KEY,IV_PARAMETER);
+		return this.decrypt(sSrc, S_KEY, IV_PARAMETER);
 	}
 
 	/**
@@ -112,7 +114,7 @@ public class AESUtil {
 	 * @author lxw
 	 * @date 2020/10/9 17:09
 	 */
-	public String decrypt(String sSrc, String key, String ivs){
+	public String decrypt(String sSrc, String key, String ivs) {
 		try {
 			byte[] raw = key.getBytes(StandardCharsets.US_ASCII);
 			SecretKeySpec skySpec = new SecretKeySpec(raw, "AES");
@@ -136,24 +138,4 @@ public class AESUtil {
 		}
 		return strBuf.toString();
 	}
-
-//	public static void main(String[] args) {
-//		// 需要加密的字串
-//		String cSrc = "123";
-//
-//		// 加密
-//		long lStart = System.currentTimeMillis();
-//		String enString = AESUtil.getInstance().encrypt(cSrc);
-//		System.out.println("加密后的字串是：" + enString);
-//
-//		long lUseTime = System.currentTimeMillis() - lStart;
-//		System.out.println("加密耗时：" + lUseTime + "毫秒");
-//		// 解密
-//		lStart = System.currentTimeMillis();
-//		String DeString = AESUtil.getInstance().decrypt(enString);
-//		System.out.println("解密后的字串是：" + DeString);
-//		lUseTime = System.currentTimeMillis() - lStart;
-//		System.out.println("解密耗时：" + lUseTime + "毫秒");
-//	}
-
 }
