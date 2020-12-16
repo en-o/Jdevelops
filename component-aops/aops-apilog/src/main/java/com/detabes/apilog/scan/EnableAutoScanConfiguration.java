@@ -24,7 +24,7 @@ public class EnableAutoScanConfiguration {
 
     @ConditionalOnMissingBean(name = "apiLogSaveImpl")
     @Bean
-    public ApiLogSaveImpl ApiLogSaveImpl(){
+    public ApiLogSaveImpl apiLogSaveImpl(){
         return new ApiLogSaveImpl();
     }
 }

@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.detabes.apilog.annotation.ApiLog;
 import com.detabes.apilog.bean.ApiMonitoring;
 import com.detabes.apilog.server.ApiLogSave;
+import com.detabes.enums.string.StringEnum;
 import com.detabes.spring.core.aop.AopReasolver;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -157,7 +158,7 @@ public class ApiLogAspectSave {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey("empty") ){
+            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getStr()) ){
                 params = (Map<String, Object>) obj;
             }
         } catch (Exception e) {
