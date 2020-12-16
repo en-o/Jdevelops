@@ -10,6 +10,57 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>component-aops</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>aops-apilog</module>
+        <module>aops-apisign</module>
+    </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>apis-exception</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-spring</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-http</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
