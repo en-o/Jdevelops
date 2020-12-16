@@ -10,6 +10,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.detabes.map.core.map.MapSortUtil.sortByValueAscending;
 import static com.detabes.map.core.map.MapSortUtil.sortByValueDescending;
