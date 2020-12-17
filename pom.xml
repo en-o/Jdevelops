@@ -60,6 +60,8 @@
         <module>component-caches</module>
         <!-- starter  -->
         <module>component-starters</module>
+        <!-- 日志 -->
+        <module>component-logs</module>
 
     </modules>
 
