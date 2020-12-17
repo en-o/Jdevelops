@@ -9,10 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>caches-jpa</artifactId>
-    <modules>
-        <module>caches-jpa-core</module>
-        <module>caches-jpa-server</module>
-    </modules>
-
+    <artifactId>caches-jpa-core</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>apis-result</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+    </dependencies>
 </project>
