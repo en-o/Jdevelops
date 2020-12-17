@@ -11,5 +11,12 @@
 
     <artifactId>beans-entity</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-map</artifactId>
+            <version>${detabes.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
