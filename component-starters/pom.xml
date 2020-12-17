@@ -12,7 +12,10 @@
     <artifactId>component-starters</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <!-- 全部 utils -->
         <module>starters-utils</module>
+        <!-- 全部 beans -->
+        <module>starters-beans</module>
     </modules>
 
 
