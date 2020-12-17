@@ -16,6 +16,12 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-string</artifactId>
+            <version>${detabes.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
