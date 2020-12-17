@@ -47,14 +47,14 @@
  
 * [ ] cache模块
     - [ ] jpa
-        - [ ] jpaCore
-        - [ ] jpaServer
+        - [x] jpaCore
+        - [x] jpaServer
     - [ ] mybatis
         - [ ] mybatisCore
         - [ ] mybatisServer
     - [ ] redis
-        - [ ] redisCore
-        - [ ] redisSubscribePublished
+        - [x] redisCore
+        - [x] redisSubscribePublished
     - [ ] MongoDB
     
 * [ ] log模块
@@ -63,6 +63,7 @@
  
 * [ ] starter
     - [x] starters-utils
+    - [x] starters-beans
     - [ ] detabes-start
         - [ ] detabes-start-util
     - [ ] detabes-boot-start
