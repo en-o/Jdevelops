@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @date 2020-09-18 09:21
  */
 @ApiModel(value = "单位表", description = "单位表")
-public interface Unit {
+public interface HjUnit {
 
     @ApiModelProperty(value = "温度")
     public static String TEMPERATURE_UNIT = "℃";
