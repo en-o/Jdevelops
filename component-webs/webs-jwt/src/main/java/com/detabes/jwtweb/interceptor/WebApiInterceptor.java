@@ -1,7 +1,7 @@
 package com.detabes.jwtweb.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.detabes.result.vo.ResultVO;
+import com.detabes.result.result.ResultVO;
 import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.jwtweb.annotation.ApiMapping;
 import com.detabes.jwtweb.holder.ApplicationContextHolder;

@@ -7,7 +7,7 @@ import com.detabes.encryption.core.SignMD5Util;
 import com.detabes.encryption.core.SignShaUtil;
 import com.detabes.exception.exception.BusinessException;
 import com.detabes.http.core.HttpContextUtils;
-import com.detabes.result.vo.ResultVO;
+import com.detabes.result.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

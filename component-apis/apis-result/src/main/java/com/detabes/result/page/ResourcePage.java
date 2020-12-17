@@ -1,4 +1,4 @@
-package com.detabes.result.vo;
+package com.detabes.result.page;
 
 
 import io.swagger.annotations.ApiModel;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @date 2019年1月17日
  */
 @ApiModel(value = "分页返回统一工具类", description = "分页返回统一工具类")
-public class ResultPage<T> implements Serializable {
+public class ResourcePage<T> implements Serializable {
 
     @ApiModelProperty("当前页")
     private Integer currentPage;
@@ -26,7 +26,7 @@ public class ResultPage<T> implements Serializable {
     @ApiModelProperty("数据")
     private T rows;
 
-    public ResultPage() {
+    public ResourcePage() {
     }
 
 
@@ -39,25 +39,25 @@ public class ResultPage<T> implements Serializable {
      * @param <T>        t
      * @return
      */
-    public static <T> ResultPage<T> page(Integer pageIndex,
-                                         Integer pageSize,
-                                         Integer totalPages,
-                                         Long total,
-                                         T rows) {
-        ResultPage<T> tResultPageUtil = new ResultPage<>();
-        tResultPageUtil.setCurrentPage(pageIndex);
-        tResultPageUtil.setPageSize(pageSize);
-        tResultPageUtil.setTotalPages(totalPages);
-        tResultPageUtil.setTotal(total);
-        tResultPageUtil.setRows(rows);
-        return tResultPageUtil;
+    public static <T> ResourcePage<T> page(Integer pageIndex,
+                                           Integer pageSize,
+                                           Integer totalPages,
+                                           Long total,
+                                           T rows) {
+        ResourcePage<T> tResourcePageUtil = new ResourcePage<>();
+        tResourcePageUtil.setCurrentPage(pageIndex);
+        tResourcePageUtil.setPageSize(pageSize);
+        tResourcePageUtil.setTotalPages(totalPages);
+        tResourcePageUtil.setTotal(total);
+        tResourcePageUtil.setRows(rows);
+        return tResourcePageUtil;
     }
 
-    public static <T> ResultPage<T> page(Long total, T rows) {
-        ResultPage<T> tResultPageUtil = new ResultPage<>();
-        tResultPageUtil.setTotal(total);
-        tResultPageUtil.setRows(rows);
-        return tResultPageUtil;
+    public static <T> ResourcePage<T> page(Long total, T rows) {
+        ResourcePage<T> tResourcePageUtil = new ResourcePage<>();
+        tResourcePageUtil.setTotal(total);
+        tResourcePageUtil.setRows(rows);
+        return tResourcePageUtil;
     }
 
     /**

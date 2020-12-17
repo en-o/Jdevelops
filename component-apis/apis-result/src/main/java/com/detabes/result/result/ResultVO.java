@@ -1,6 +1,7 @@
-package com.detabes.result.vo;
+package com.detabes.result.result;
 
 import com.detabes.enums.result.ResultCodeEnum;
+import com.detabes.result.page.ResourcePage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -92,11 +93,11 @@ public class ResultVO<T> implements Serializable {
     }
 
 
-    public static <T> ResultVO<ResultPage> success(String message, ResultPage<T> resultPage) {
-        ResultVO<ResultPage> resultVO = new ResultVO<>();
+    public static <T> ResultVO<ResourcePage> success(String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage> resultVO = new ResultVO<>();
         resultVO.setCode(ResultCodeEnum.Success.getCode());
         resultVO.setMessage(message);
-        resultVO.setData(resultPage);
+        resultVO.setData(resourcePage);
         return resultVO;
     }
 
@@ -124,11 +125,11 @@ public class ResultVO<T> implements Serializable {
         return resultVO;
     }
 
-    public static <T> ResultVO<ResultPage> fail(int code, String message, ResultPage<T> resultPage) {
-        ResultVO<ResultPage> resultVO = new ResultVO<>();
+    public static <T> ResultVO<ResourcePage> fail(int code, String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage> resultVO = new ResultVO<>();
         resultVO.setCode(code);
         resultVO.setMessage(message);
-        resultVO.setData(resultPage);
+        resultVO.setData(resourcePage);
         return resultVO;
     }
 

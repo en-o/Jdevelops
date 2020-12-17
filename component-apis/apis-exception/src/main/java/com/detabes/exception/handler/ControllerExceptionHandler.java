@@ -2,7 +2,7 @@ package com.detabes.exception.handler;
 
 
 import com.detabes.exception.exception.BusinessException;
-import com.detabes.result.vo.ResultVO;
+import com.detabes.result.result.ResultVO;
 import com.detabes.enums.result.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
