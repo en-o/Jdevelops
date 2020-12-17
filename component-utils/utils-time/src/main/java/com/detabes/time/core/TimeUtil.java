@@ -2,6 +2,7 @@ package com.detabes.time.core;
 
 import com.detabes.constant.time.TimeFormat;
 import com.detabes.enums.number.NumEnum;
+import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -29,7 +30,7 @@ public class TimeUtil {
 	/**
 	 * 天
 	 */
-	static long nd = 1000 * 24 * 60 * 60;
+	static long nd = 1000 * 60 * 60 * 24;
 	/**
 	 * 时
 	 */
@@ -68,29 +69,29 @@ public class TimeUtil {
 	/**
 	 * 某个时间段内所有的日期
 	 *
-	 * @param dBegin 开始时间
-	 * @param dEnd   结束时间
+	 * @param beginDate 开始时间
+	 * @param endDate   结束时间
 	 * @return {List}
 	 */
-	public static List<String> findDates(Date dBegin, Date dEnd) {
-		List<String> lDate = new ArrayList<>();
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-		lDate.add(sd.format(dBegin));
+	public static List<String> findDates(Date beginDate, Date endDate) {
+		List<String> dateList = new ArrayList<>();
+		String begin = new DateTime(beginDate).toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+		dateList.add(begin);
 		Calendar calBegin = Calendar.getInstance();
 		// 使用给定的 Date 设置此 Calendar 的时间
-		calBegin.setTime(dBegin);
+		calBegin.setTime(beginDate);
 		Calendar calEnd = Calendar.getInstance();
 		// 使用给定的 Date 设置此 Calendar 的时间
-		calEnd.setTime(dEnd);
+		calEnd.setTime(endDate);
 		// 测试此日期是否在指定日期之后
-		while (dEnd.after(calBegin.getTime())) {
+		while (endDate.after(calBegin.getTime())) {
 			// 根据日历的规则，为给定的日历字段添加或减去指定的时间量
 			calBegin.add(Calendar.DAY_OF_MONTH, 1);
-			lDate.add(sd.format(calBegin.getTime()));
+			String end = new DateTime(calBegin.getTime()).toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+			dateList.add(end);
 		}
-		return lDate;
+		return dateList;
 	}
-
 
 	/**
 	 * 判断段两个时间的先后
@@ -109,7 +110,6 @@ public class TimeUtil {
 		return diff / nd;
 	}
 
-
 	/**
 	 * 某段时间相差几天几时几分几秒
 	 *
@@ -118,7 +118,7 @@ public class TimeUtil {
 	 * @param type      1、天，2、时；3、分；4，秒
 	 * @return {String}
 	 */
-	public static String getDatePoor(Date beginDate, Date endDate, int type) {
+	public static String getDatePoor2String(Date beginDate, Date endDate, int type) {
 
 		// 获得两个时间的毫秒时间差异
 		long diff = endDate.getTime() - beginDate.getTime();
@@ -159,7 +159,7 @@ public class TimeUtil {
 	 * @param type      1、天，2、时；3、分；4，秒
 	 * @return {long}
 	 */
-	public static Long getDatePoor1(Date beginDate, Date endDate, int type) {
+	public static Long getDatePoor2Number(Date beginDate, Date endDate, int type) {
 
 		// 获得两个时间的毫秒时间差异
 		long diff = endDate.getTime() - beginDate.getTime();
@@ -186,42 +186,41 @@ public class TimeUtil {
 
 
 	/**
-	 * 获取某年第一天日期
+	 * 获取指定年份的第一天日期
 	 *
-	 * @param year      指定年份
-	 * @param strFormat 指定时间格式
+	 * @param year           指定年份
+	 * @param timeFormatEnum 指定时间格式
 	 * @return {String}   yy-mm-dd 00:00:00
 	 */
 	@Deprecated
-	public static String getYearFirst(int year, TimeFormat strFormat) {
+	public static String getYearFirst(int year, TimeFormatEnum timeFormatEnum) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
 		calendar.set(Calendar.YEAR, year);
 		Date currYearFirst = calendar.getTime();
-		return new DateTime(currYearFirst).toString(strFormat.toString());
+		return new DateTime(currYearFirst).toString(timeFormatEnum.getFormat());
 	}
 
 	/**
-	 * 获取某年最后一天日期
+	 * 获取指定年份最后一天日期
 	 *
-	 * @param year      指定年份
-	 * @param strFormat 指定时间格式
-	 * @return {String}   yyyy-MM-dd HH:mm:ss 返回 yy-mm-dd 23:59:59
+	 * @param year           指定年份
+	 * @param timeFormatEnum 指定返回时间格式
+	 * @return {String}   timeFormatEnum
 	 */
 	@Deprecated
-	public static String getYearLast(int year, String strFormat) {
+	public static String getYearLast(int year, TimeFormatEnum timeFormatEnum) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
 		calendar.set(Calendar.YEAR, year);
 		calendar.roll(Calendar.DAY_OF_YEAR, -1);
 		Date currYearLast = calendar.getTime();
-		String format8 = new SimpleDateFormat(strFormat).format(currYearLast);
-		if (TimeFormat.DEFAULT_FORMAT.equals(strFormat)) {
-			format8 = new SimpleDateFormat(TimeFormat.NORM_DATE_FORMAT).format(currYearLast) + " 23:59:59";
+		String format8 = new DateTime(currYearLast).toString(timeFormatEnum.getFormat());
+		if (TimeFormat.DEFAULT_FORMAT_DATETIME.equals(timeFormatEnum.getFormat())) {
+			format8 = new DateTime(currYearLast).withMillisOfDay(0).plusHours(23).plusMinutes(59).plusSeconds(59).toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
 		}
 		return format8;
 	}
-
 
 	/**
 	 * date2比date1多的天数
