@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.detabes.doc.swagger.boot.scan.EnableAutoScanConfiguration
