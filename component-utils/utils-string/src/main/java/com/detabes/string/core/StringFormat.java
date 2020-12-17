@@ -2,7 +2,6 @@ package com.detabes.string.core;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -139,7 +138,7 @@ public class StringFormat {
      * @param smallCamel 大小驼峰,是否为小驼峰
      * @return 返回字符串
      */
-    public static String toCamlCase(String line,boolean smallCamel){
+    public static String toCamelCase(String line,boolean smallCamel){
         if(line==null||"".equals(line)){
             return "";
         }

@@ -112,7 +112,7 @@ public class StringByte {
         StringBuilder stringBuffer = new StringBuilder();
         for (byte b : respByte) {
             String s = Integer.toHexString(b);
-            stringBuffer.append(s + " ");
+            stringBuffer.append(s).append(" ");
         }
         return stringBuffer.toString();
     }
