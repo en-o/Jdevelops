@@ -8,21 +8,17 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * 分页排序
- *
- * @author cl
- * @date 2018年5月11日
+ * @author tn
+ * @ClassName OrderVo
+ * @description 分页
+ * @date 2020-12-17 14:26
  */
-@ApiModel("分页实体类")
+@ApiModel("分页排序实体类")
 @ToString
 @Getter
 @Setter
 @Accessors(chain = true)
-public class PageVO {
-    @ApiModelProperty("页码，默认第一页")
-    private Integer pageIndex = 1;
-    @ApiModelProperty("一页显示几条,默认20条")
-    private Integer pageSize = 20;
+public class PageOrderVo {
     @ApiModelProperty("根据那一列排序")
     private String orderBy;
     @ApiModelProperty("正序0--Direction.ASC，反序1--Direction.DESC")
