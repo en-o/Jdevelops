@@ -1,20 +1,14 @@
 # detabes 后端组件
-* [ ] 工具模块
-    - [x] String工具
-    - [x] environment(环境工具类) 
-    - [x] spring工具类 
-    - [x] time工具
-    - [x] Map/Bean工具
-    - [x] List工具
-    - [x] encryption(加解密工具)
-    - [x] jwt工具
-    - [x] http工具
-    
 * [ ] aop模块
-    - [x] 接口调用日志[apilog] 
-    - [x] 接口验签[apiSignature]
-    - [ ] 接口版本[apiVersion]
-    - [ ] 接口幂等[apiIdempotent]  
+    - [x] apilog [接口调用日志] 
+    - [x] apiSignature [接口验签]
+    - [ ] apiVersion [接口版本]
+    - [ ] apiIdempotent [接口幂等]  
+
+* [ ] api模块
+    - [x] exception [接口结果集]
+    - [x] result [全局异常]
+    - [x] annotation [自定义的注解]
     
 * [ ] bean模块
     - [ ] enum
@@ -24,27 +18,7 @@
         - [x] 实体公共基类
         - [x] 实体序列化
     - [x] constant
-            
-* [ ] web模块    
-    - [x] websocket
-        - [x] websocket-core
-        - [x] websocket-client
-    - [ ] webservice
-    - [x] jwt
-    
-* [ ] api模块
-    - [x] 接口结果集
-    - [x] 全局异常
-    - [x] 自定义的注解
- 
-* [ ] doc模块
-    - [ ] doc-core
-        - [x] swagger-core
-    - [ ] doc-swagger
-        - [x] 单机版swagger
-        - [x] cloude版swagger
-        - [ ] gateway版swagger
- 
+
 * [ ] cache模块
     - [ ] jpa
         - [x] jpaCore
@@ -56,6 +30,14 @@
         - [x] redisCore
         - [x] redisSubscribePublished
     - [ ] MongoDB
+ 
+* [ ] doc模块
+    - [ ] doc-core
+        - [x] swagger-core
+    - [ ] doc-swagger
+        - [x] 单机版swagger
+        - [x] cloude版swagger
+        - [ ] gateway版swagger
     
 * [ ] log模块
     - [ ] logs-cache 
@@ -73,6 +55,25 @@
         - [ ] detabes-cloud-start-web
         - [ ] detabes-cloud-start-spring-gateway
         - [ ] detabes-cloud-start-soul-gateway
+
+* [ ] 工具模块
+    - [x] String [String工具]
+    - [x] environment [环境工具类] 
+    - [x] spring [String工具类] 
+    - [x] time [时间工具]
+    - [x] Map/Bean [实体工具]
+    - [x] List [集合工具]
+    - [x] encryption [加解密工具]
+    - [x] jwt [jwt工具]
+    - [x] http [http工具]
+            
+* [ ] web模块    
+    - [x] websocket
+        - [x] websocket-core
+        - [x] websocket-client
+    - [ ] webservice
+    - [x] jwt
+
     
     
     
