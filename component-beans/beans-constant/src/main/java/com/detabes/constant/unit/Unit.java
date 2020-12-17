@@ -82,6 +82,6 @@ public interface Unit {
     public static  String A_UNIT = "A";
 
     @ApiModelProperty(value = "频率")
-    public static  String Hz_UNIT = "Hz";
+    public static  String HZ_UNIT = "Hz";
 
 }
