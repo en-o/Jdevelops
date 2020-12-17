@@ -1,5 +1,7 @@
 package com.detabes.http.core;
 
+import com.detabes.enums.http.HttpEnum;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -83,13 +85,13 @@ public class HttpContextUtils {
 	 * @return true 是form-data
 	 */
 	public static boolean isMultipartContent(HttpServletRequest request) {
-		if (!"post".equals(request.getMethod().toLowerCase())) {
+		if (!HttpEnum.POST.getStr().equalsIgnoreCase(request.getMethod())) {
 			return false;
 		}
 
 		//获取Content-Type
 		String contentType = request.getContentType();
-		if ((contentType != null) && (contentType.toLowerCase().startsWith("multipart/"))) {
+		if ((contentType != null) && (contentType.toLowerCase().startsWith(HttpEnum.MULTIPART_PATHSEPARATOR.getStr().toLowerCase()))) {
 			return true;
 		} else {
 			return false;

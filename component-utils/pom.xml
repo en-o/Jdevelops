@@ -31,11 +31,13 @@
             <groupId>com.detabes</groupId>
             <artifactId>beans-enum</artifactId>
             <version>${detabes.last.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.detabes</groupId>
             <artifactId>beans-constant</artifactId>
             <version>${detabes.last.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
