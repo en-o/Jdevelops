@@ -46,7 +46,6 @@
         - [ ] gateway版swagger
  
 * [ ] cache模块
-    - [ ] sql日志
     - [ ] jpa
         - [ ] jpaCore
         - [ ] jpaServer
@@ -58,6 +57,10 @@
         - [ ] redisSubscribePublished
     - [ ] MongoDB
     
+* [ ] log模块
+    - [ ] logs-cache 
+        - [x] logs-cache-p6spy sql调优用
+ 
 * [ ] starter
     - [x] starters-utils
     - [ ] detabes-start
