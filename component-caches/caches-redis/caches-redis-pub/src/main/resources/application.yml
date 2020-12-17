@@ -1,0 +1,14 @@
+spring:
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000
+tn:
+  redis:
+    cache:
+      subpub:
+        pattern-topic:
+          - test
+          - tn
+
