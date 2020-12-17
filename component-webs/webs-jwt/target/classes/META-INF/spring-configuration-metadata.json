@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "databstech.jwt.web.interceptor",
+      "type": "com.detabes.jwtweb.bean.InterceptorBean",
+      "sourceType": "com.detabes.jwtweb.bean.InterceptorBean"
+    }
+  ],
+  "properties": [
+    {
+      "name": "databstech.jwt.web.interceptor.add-path-patterns",
+      "type": "java.util.Set<java.lang.String>",
+      "description": "拦截 为空拦截所有",
+      "sourceType": "com.detabes.jwtweb.bean.InterceptorBean"
+    },
+    {
+      "name": "databstech.jwt.web.interceptor.exclude-path-patterns",
+      "type": "java.util.Set<java.lang.String>",
+      "description": "放行 默认放行swagger，\/user\/login\/**等路径",
+      "sourceType": "com.detabes.jwtweb.bean.InterceptorBean"
+    }
+  ],
+  "hints": []
+}

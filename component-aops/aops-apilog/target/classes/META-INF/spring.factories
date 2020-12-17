@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.detabes.apilog.scan.EnableAutoScanConfiguration

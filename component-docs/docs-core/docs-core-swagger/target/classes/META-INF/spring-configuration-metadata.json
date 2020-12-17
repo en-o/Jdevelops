@@ -1,0 +1,81 @@
+{
+  "groups": [
+    {
+      "name": "detabes.swagger",
+      "type": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean"
+    }
+  ],
+  "properties": [
+    {
+      "name": "detabes.swagger.base-package",
+      "type": "java.lang.String",
+      "description": "controller接口所在的包",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "com.detabes.controller"
+    },
+    {
+      "name": "detabes.swagger.contact-email",
+      "type": "java.lang.String",
+      "description": "联络邮箱",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "rarelit@sina.com"
+    },
+    {
+      "name": "detabes.swagger.contact-name",
+      "type": "java.lang.String",
+      "description": "联络人-作者",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "databstech"
+    },
+    {
+      "name": "detabes.swagger.contact-url",
+      "type": "java.lang.String",
+      "description": "联络 url",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "http:\/\/databstech.com:9528\/"
+    },
+    {
+      "name": "detabes.swagger.description",
+      "type": "java.lang.String",
+      "description": "当前文档的详细描述",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "详细描述"
+    },
+    {
+      "name": "detabes.swagger.docket",
+      "type": "java.lang.String",
+      "description": "swagger Docket  :     SWAGGER_2 (默认)     SWAGGER_12",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "SWAGGER_2"
+    },
+    {
+      "name": "detabes.swagger.group-name",
+      "type": "java.lang.String",
+      "description": "分组",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean"
+    },
+    {
+      "name": "detabes.swagger.show",
+      "type": "java.lang.Boolean",
+      "description": "true 显示swagger， false 关闭swagger",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": true
+    },
+    {
+      "name": "detabes.swagger.title",
+      "type": "java.lang.String",
+      "description": "网页标题",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "崇锐APIs"
+    },
+    {
+      "name": "detabes.swagger.version",
+      "type": "java.lang.String",
+      "description": "当前文档的版本",
+      "sourceType": "com.detabes.doc.core.swagger.bean.SwaggerBean",
+      "defaultValue": "1.0"
+    }
+  ],
+  "hints": []
+}
