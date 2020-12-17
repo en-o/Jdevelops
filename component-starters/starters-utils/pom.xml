@@ -53,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>com.detabes</groupId>
-            <artifactId>utils-string</artifactId>
+            <artifactId>utils-spring</artifactId>
             <version>${detabes.last.version}</version>
         </dependency>
     </dependencies>
