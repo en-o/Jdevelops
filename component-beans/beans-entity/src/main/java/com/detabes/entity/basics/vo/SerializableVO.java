@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2020/6/28 16:46
  */
 @Getter
-public class SerializableVo<T> implements Serializable {
+public class SerializableVO<T> implements Serializable {
 
     private static final long serialVersionUID = 315654089784739497L;
 
@@ -51,12 +51,12 @@ public class SerializableVo<T> implements Serializable {
      * @param clazz 需要转变的类型
      * @return List<clazz>
      */
-    public static <T, S extends SerializableVo> List<T> to(Collection<S> list, Class<T> clazz) {
+    public static <T, S extends SerializableVO> List<T> to(Collection<S> list, Class<T> clazz) {
         if (list != null && !list.isEmpty()) {
             List<T> result = new ArrayList(list.size());
             Iterator var3 = list.iterator();
             while(var3.hasNext()) {
-                SerializableVo abs = (SerializableVo)var3.next();
+                SerializableVO abs = (SerializableVO)var3.next();
                 result.add((T) abs.to(clazz));
             }
 
@@ -73,12 +73,12 @@ public class SerializableVo<T> implements Serializable {
      * @param clazz  需要转变的类型
      * @return List<clazz>
      */
-    public static <T, S extends SerializableVo> List<T> to(Iterable<S> iterable, Class<T> clazz) {
+    public static <T, S extends SerializableVO> List<T> to(Iterable<S> iterable, Class<T> clazz) {
         if (iterable !=null) {
             ArrayList result = new ArrayList();
             Iterator var3 = iterable.iterator();
             while(var3.hasNext()) {
-                SerializableVo abs = (SerializableVo)var3.next();
+                SerializableVO abs = (SerializableVO)var3.next();
                 result.add((T) abs.to(clazz));
             }
             return result;
@@ -96,7 +96,7 @@ public class SerializableVo<T> implements Serializable {
      */
     public static <T, S> T to(S object, Class<T> clazz) {
         if (object != null) {
-            SerializableVo abs = (SerializableVo)object;
+            SerializableVO abs = (SerializableVO)object;
             return (T) abs.to(clazz);
         } else {
             return (T)clazz;
@@ -113,7 +113,7 @@ public class SerializableVo<T> implements Serializable {
     public static <T, S> T to(Class<S> clazzs, Class<T> clazz) {
         Class<? extends Class> aClass = clazzs.getClass();
         try {
-            SerializableVo abs =(SerializableVo) clazzs.newInstance();
+            SerializableVO abs =(SerializableVO) clazzs.newInstance();
             return (T)abs.to(clazz);
         }catch (Exception e){
             return (T)clazz;

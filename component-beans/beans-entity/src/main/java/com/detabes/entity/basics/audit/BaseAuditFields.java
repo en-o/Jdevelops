@@ -1,6 +1,6 @@
 package com.detabes.entity.basics.audit;
 
-import com.detabes.entity.basics.vo.SerializableVo;
+import com.detabes.entity.basics.vo.SerializableVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class BaseAuditFields<T> extends SerializableVo<T> {
+public class BaseAuditFields<T> extends SerializableVO<T> {
 
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
