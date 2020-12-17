@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * jpa 查询工具之构建sql  具体实现
+ * @author tn
  */
 public class Restrictions {
 

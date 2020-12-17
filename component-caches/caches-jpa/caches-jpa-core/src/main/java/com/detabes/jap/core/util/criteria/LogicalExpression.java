@@ -10,10 +10,13 @@ import java.util.List;
 /**
  * sql表达式
  * 逻辑表达式对象， 用于指定两个表达式的逻辑关系， 有AndExpression和OrExpression两个子类；
+ * @author tt
  */
 public class LogicalExpression implements ExpandCriterion {
-    private ExpandCriterion[] criterion;  // 逻辑表达式中包含的表达式
-    private Operator operator;      //计算符  
+    /** 逻辑表达式中包含的表达式 */
+    private ExpandCriterion[] criterion;
+     /** 计算符  */
+    private Operator operator;
 
     public LogicalExpression(ExpandCriterion[] criterions, Operator operator) {
         this.criterion = criterions;

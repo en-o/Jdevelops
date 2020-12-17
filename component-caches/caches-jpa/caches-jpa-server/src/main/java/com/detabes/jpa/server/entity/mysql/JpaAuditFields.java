@@ -33,8 +33,8 @@ import java.util.List;
  */
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-@DynamicInsert //动态插入
-@DynamicUpdate //动态赋值
+@DynamicInsert
+@DynamicUpdate
 @SelectBeforeUpdate
 @Access(AccessType.FIELD)
 public class JpaAuditFields<T> extends BaseAuditFields<T> {

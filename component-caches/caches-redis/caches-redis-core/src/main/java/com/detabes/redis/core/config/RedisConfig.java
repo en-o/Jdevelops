@@ -32,7 +32,6 @@ import static java.util.Collections.singletonMap;
  */
 @Slf4j
 @EnableCaching
-//@Configuration
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Resource

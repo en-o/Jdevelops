@@ -49,7 +49,7 @@ public class ApiLogAspectSave {
     /**
      * appkey 异常时用
      */
-    String APP_KEY_ERROR = "";
+    String appKeyError = "";
 
 
     /**
@@ -71,9 +71,9 @@ public class ApiLogAspectSave {
         /*接口名*/
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-        String requestURI = (request).getRequestURI();
+        String requestUri = (request).getRequestURI();
         String url = request.getRequestURL().toString();
-        apiLog.setApiName(requestURI);
+        apiLog.setApiName(requestUri);
 
         /* outParams and  status  */
         if (ObjectUtil.isNotEmpty(rvt)) {
@@ -102,7 +102,7 @@ public class ApiLogAspectSave {
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
             Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
-            APP_KEY_ERROR = ObjectUtil.isNotEmpty(rvt) ? apiKey + "" : "";
+            appKeyError = ObjectUtil.isNotEmpty(rvt) ? apiKey + "" : "";
             apiLog.setApiKey(ObjectUtil.isNotEmpty(rvt) ? apiKey + "" : "");
         }
 

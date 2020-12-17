@@ -5,12 +5,15 @@ import javax.persistence.criteria.*;
 /**
  * sql 表达式
  * 简单表达式对象， 是所有简单操作表达式的父类， 如EqExpression, GtExpression等;
+ * @author tn
  */
-public class SimpleExpression implements ExpandCriterion{  
-    
-    private String fieldName;       //属性名  
-    private Object value;           //对应值  
-    private Operator operator;      //计算符  
+public class SimpleExpression implements ExpandCriterion{
+    /** 属性名 */
+    private String fieldName;
+    /** 对应值 */
+    private Object value;
+    /** 计算符 */
+    private Operator operator;
   
     protected SimpleExpression(String fieldName, Object value, Operator operator) {  
         this.fieldName = fieldName;  

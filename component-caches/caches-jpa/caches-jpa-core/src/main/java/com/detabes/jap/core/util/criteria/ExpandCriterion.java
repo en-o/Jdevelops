@@ -10,9 +10,55 @@ import javax.persistence.criteria.Root;
  * @author tnnn
  */
 public interface ExpandCriterion {
-	 public enum Operator {  
-	        EQ, NE, LIKE, GT, LT, GTE, LTE, AND, OR  
-	    }  
-	    public Predicate toPredicate(Root<?> root, CriteriaQuery<?> query,  
-	            CriteriaBuilder builder);  
+	/**
+	 *  sql 表达式连接词
+	 */
+	enum Operator {
+		/**
+		 *  等于
+		 */
+		EQ,
+		/**
+		 * 不相等
+		 */
+		NE,
+		/**
+		 * 模糊
+		 */
+		LIKE,
+		/**
+		 * 大于
+		 */
+		GT,
+		/**
+		 * 小于
+		 */
+		LT,
+		/**
+		 * 大于等于
+		 */
+		GTE,
+		/**
+		 * 小于等于
+		 */
+		LTE,
+		/**
+		 * 并且
+		 */
+		AND,
+		/**
+		 * 或者
+		 */
+		OR
+	}
+
+	/**
+	 *   Predicate 语句
+	 * @param root  root
+	 * @param query query
+	 * @param builder builder
+	 * @return Predicate
+	 */
+	Predicate toPredicate(Root<?> root, CriteriaQuery<?> query,
+						  CriteriaBuilder builder);
 }

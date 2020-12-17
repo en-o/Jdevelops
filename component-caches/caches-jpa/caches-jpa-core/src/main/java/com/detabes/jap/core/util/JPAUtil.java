@@ -237,7 +237,7 @@ public class JPAUtil<T> {
      * @return {Map}
      */
     private static Map<String, Object> object2Map(Object obj) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         if (obj == null) {
             return map;
         }
@@ -283,8 +283,8 @@ public class JPAUtil<T> {
     private static boolean isIterEmpty(Iterable<?> iterable) {
         return null == iterable || isIterEmpty2(iterable.iterator());
     }
-    private static boolean isIterEmpty2(Iterator<?> Iterator) {
-        return null == Iterator || !Iterator.hasNext();
+    private static boolean isIterEmpty2(Iterator<?> iterator) {
+        return null == iterator || !iterator.hasNext();
     }
     private static boolean isArray(Object obj) {
         return null == obj ? false : obj.getClass().isArray();
