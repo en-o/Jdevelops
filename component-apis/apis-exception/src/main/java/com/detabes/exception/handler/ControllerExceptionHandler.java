@@ -1,12 +1,11 @@
 package com.detabes.exception.handler;
 
 
+import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.exception.exception.BusinessException;
 import com.detabes.result.result.ResultVO;
-import com.detabes.enums.result.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -28,7 +27,6 @@ import java.util.Objects;
  */
 @Slf4j
 @RestControllerAdvice
-@ComponentScan(basePackages = "com.databstech.apis.resultexception.handler.**")
 public class ControllerExceptionHandler {
 
     private static final String JSON_ERROR_INFO = "JSON parse error:";
