@@ -1,7 +1,7 @@
 # detabes 后端组件
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
-    - [x] apiSignature [接口验签]
+    - [x] apisign [接口验签]
     - [ ] apiVersion [接口版本]
     - [ ] apiIdempotent [接口幂等]  
 
@@ -11,13 +11,15 @@
     - [x] annotation [自定义的注解]
     
 * [ ] bean模块
-    - [ ] enum
+    - [ ] enum [枚举]
         - [x] api相关枚举
         - [x] util相关枚举
-    - [ ] entity
+    - [ ] entity [实体]
         - [x] 实体公共基类
         - [x] 实体序列化
-    - [x] constant
+    - [x] constant [常量]
+        - [x] time [时间]
+        - [x] unit [单位]
 
 * [ ] cache模块
     - [ ] jpa
