@@ -18,6 +18,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ApiMonitoring {
 
     /** 接口名 */

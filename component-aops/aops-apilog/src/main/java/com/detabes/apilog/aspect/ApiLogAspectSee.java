@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 public class ApiLogAspectSee {
 
-    @Pointcut("execution(* com.*..controller..*(..))")
+    @Pointcut("execution(* com.*..controller..*(..))||execution(* io.*..controller..*(..))")
     public void executeService() {
     }
 

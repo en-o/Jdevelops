@@ -17,7 +17,7 @@ public class ApiLogSaveImpl implements ApiLogSave {
 
     @Override
     public ApiMonitoring saveLog(ApiMonitoring apilog) {
-        log.info("api接口调用信息默认输出控制台:"+ JSONObject.toJSONString(apilog));
+        log.info("api接口调用信息默认输出控制台:"+ apilog.toString());
         return apilog;
     }
 }
