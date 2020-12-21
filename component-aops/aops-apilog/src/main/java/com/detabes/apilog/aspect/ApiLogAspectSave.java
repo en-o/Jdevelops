@@ -1,22 +1,23 @@
 package com.detabes.apilog.aspect;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.detabes.apilog.annotation.ApiLog;
 import com.detabes.apilog.bean.ApiMonitoring;
 import com.detabes.apilog.server.ApiLogSave;
 import com.detabes.enums.string.StringEnum;
+import com.detabes.enums.time.TimeFormatEnum;
 import com.detabes.spring.core.aop.AopReasolver;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  * @author tn
  * @date  2020/6/1 21:04
- * @description   接口日志
+ * @description   接口日志保存
  */
 
 @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
@@ -76,7 +77,7 @@ public class ApiLogAspectSave {
         apiLog.setApiName(requestUri);
 
         /* outParams and  status  */
-        if (ObjectUtil.isNotEmpty(rvt)) {
+        if (ObjectUtils.allNotNull(rvt)) {
             try {
                 if (rvt instanceof String || rvt instanceof Integer) {
                     apiLog.setStatus("true");
@@ -102,12 +103,12 @@ public class ApiLogAspectSave {
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
             Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
-            appKeyError = ObjectUtil.isNotEmpty(rvt) ? apiKey + "" : "";
-            apiLog.setApiKey(ObjectUtil.isNotEmpty(rvt) ? apiKey + "" : "");
+            appKeyError = ObjectUtils.allNotNull(rvt) ? apiKey + "" : "";
+            apiLog.setApiKey(ObjectUtils.allNotNull(rvt) ? apiKey + "" : "");
         }
 
         /* callTime 调用时间  */
-        apiLog.setCallTime(DateUtil.now());
+        apiLog.setCallTime(DateTime.now().toString(TimeFormatEnum.DEFAULT_FORMAT_DATETIME.getFormat()));
         /* callTime 调用时间  */
 
         //获取请求的类名

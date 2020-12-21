@@ -41,10 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
-            <scope>provided</scope>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-time</artifactId>
+            <version>${detabes.last.version}</version>
         </dependency>
         <dependency>
             <groupId>com.detabes</groupId>
@@ -59,7 +58,6 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
