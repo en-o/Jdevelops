@@ -38,7 +38,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.detabes</groupId>
