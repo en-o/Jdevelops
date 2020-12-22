@@ -2,6 +2,7 @@ package com.detabes.apisign.util;
 
 import com.detabes.encryption.constant.SignConstant;
 import com.detabes.encryption.core.SignMD5Util;
+import com.detabes.encryption.core.SignShaUtil;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,9 +37,9 @@ public class SignUtil {
      * @param maps 参数map
      * @return sign
      */
-    public static <T extends Map,LinkedHashMap> String getSignByMap2Json(T maps){
+    public static <T extends Map,LinkedHashMap> String getMd5SignByMap2Json(T maps){
         String encrypt1 = SignMD5Util.encrypt(toJSONString(maps),true);
-        return SignMD5Util.encrypt(encrypt1+ SignConstant.MD5_PRIVATE_KEY, true);
+        return getMd5Sign(encrypt1);
     }
 
 
@@ -47,9 +48,9 @@ public class SignUtil {
      * @param maps 参数map
      * @return sign
      */
-    public static <T extends Map,LinkedHashMap> String getSignByMap2Str(T maps){
+    public static <T extends Map,LinkedHashMap> String getMd5SignByMap2Str(T maps){
         String encrypt1 = SignMD5Util.encrypt(map2Str(maps),true);
-        return SignMD5Util.encrypt(encrypt1+ SignConstant.MD5_PRIVATE_KEY, true);
+        return getMd5Sign(encrypt1);
     }
 
     /**
@@ -57,20 +58,37 @@ public class SignUtil {
      * @param jsonStr 传入json数据串换取sign
      * @return sign
      */
-    public static String getSignByJson(String jsonStr){
+    public static String getMd5SignByJson(String jsonStr){
         String encrypt1 = SignMD5Util.encrypt(jsonStr,true);
-        return SignMD5Util.encrypt(encrypt1+SignConstant.MD5_PRIVATE_KEY, true);
+        return getMd5Sign(encrypt1);
     }
-
 
     /**
      *
      * @param map2Str 传入map2Str数据串换取sign
      * @return sign
      */
-    public static String getSignBymap2Str(String map2Str){
+    public static String getMd5SignBymap2Str(String map2Str){
         String encrypt1 = SignMD5Util.encrypt(map2Str,true);
+        return getMd5Sign(encrypt1);
+    }
+
+    /**
+     *
+     * @param encrypt1 第一次加密的密钥
+     * @return 真正的密钥
+     */
+    private static String getMd5Sign(String encrypt1){
         return SignMD5Util.encrypt(encrypt1+SignConstant.MD5_PRIVATE_KEY, true);
+    }
+
+    /**
+     *
+     * @param map2Str map2Str解析过的字符串
+     * @return 真正的密钥
+     */
+    public static String getShaSign(String map2Str){
+        return SignShaUtil.encrypt(map2Str);
     }
 
 }
