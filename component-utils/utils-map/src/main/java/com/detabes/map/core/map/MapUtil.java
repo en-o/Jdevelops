@@ -275,19 +275,4 @@ public class MapUtil  {
         }
     }
 
-    /**
-     * map 转 str
-     * @param map
-     * @return
-     */
-    public static String map2Str(Map<String, Object> map) {
-        ArrayList<Map.Entry<String, Object>> list = new ArrayList<>(map.entrySet());
-
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Object> mapping : list) {
-            sb.append(mapping.getKey() + "=" + mapping.getValue() + "&");
-        }
-        return sb.substring(0, sb.length() - 1);
-    }
-
 }

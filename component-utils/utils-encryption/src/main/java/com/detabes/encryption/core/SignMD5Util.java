@@ -1,5 +1,6 @@
 package com.detabes.encryption.core;
 
+import com.detabes.encryption.constant.SignConstant;
 import com.detabes.encryption.util.RemarkUtil;
 import com.detabes.enums.number.NumEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Map;
+
 
 /**
  *接口签名用
@@ -23,7 +25,7 @@ import java.util.Map;
 @Slf4j
 public class SignMD5Util {
 
-    public static final String  PRIVATE_KEY = "MD5database";
+
 
     public static String encrypt(String plainText) {
         return encrypt(plainText,true);
@@ -96,7 +98,7 @@ public class SignMD5Util {
         if (StringUtils.isEmpty(result)) {
             return null;
         }
-        param = encrypt(encrypt(result)+PRIVATE_KEY);
+        param = encrypt(encrypt(result)+SignConstant.MD5_PRIVATE_KEY);
         if (flag) {
             return param;
         } else {
@@ -118,7 +120,7 @@ public class SignMD5Util {
         if (StringUtils.isEmpty(result)) {
             return null;
         }
-        param = encrypt(encrypt(result)+PRIVATE_KEY);
+        param = encrypt(encrypt(result)+ SignConstant.MD5_PRIVATE_KEY);
         if (flag) {
             return param;
         } else {
