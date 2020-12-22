@@ -5,6 +5,8 @@ import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.string.StringEnum;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -21,7 +23,7 @@ import static com.detabes.map.core.map.MapSortUtil.sortByValueDescending;
 /**
  * @author tn
  * @date  2020/4/9 15:12
- * @description  map工具类 继承了  cn.hutool.core.map.MapUtil
+ * @description  map工具类
  */
 public class MapUtil  {
     /**
@@ -109,6 +111,60 @@ public class MapUtil  {
             }
             if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getStr()) ){
                 params = (Map<String, Object>) obj;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return params;
+    }
+
+
+    /**
+     * 实体转Map
+     * @param obj
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static MultiValueMap<String, Object> beanToLinkedMultiValueMap(Object obj) {
+        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        try {
+            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+            PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
+            for (int i = 0; i < descriptors.length; i++) {
+                String name = descriptors[i].getName();
+                if (!"class".equals(name)) {
+                    params.add(name, propertyUtilsBean.getNestedProperty(obj, name));
+                }
+            }
+            if(obj!=null&&params.containsKey("empty") ){
+                params = (MultiValueMap<String, Object>) obj;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return params;
+    }
+
+
+    /**
+     * 实体转Map
+     * @param obj
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static LinkedHashMap<String, Object> beanToLinkedHashMap(Object obj) {
+        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+        try {
+            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+            PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
+            for (int i = 0; i < descriptors.length; i++) {
+                String name = descriptors[i].getName();
+                if (!"class".equals(name)) {
+                    params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
+                }
+            }
+            if(obj!=null&&params.containsKey("empty") ){
+                params = (LinkedHashMap<String, Object>) obj;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,23 +283,6 @@ public class MapUtil  {
         }
         return map;
 
-    }
-
-    /**
-     * map拆解 拼接成 xx=xx&xx=xx
-     * @param map map
-     * @return String
-     */
-    public static String mapOrderStr(Map<String, Object> map) {
-        ArrayList<Map.Entry<String, Object>> list = new ArrayList<>(map.entrySet());
-
-        Collections.sort(list, Comparator.comparing(Map.Entry::getKey));
-
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Object> mapping : list) {
-            sb.append(mapping.getKey() + "=" + mapping.getValue() + "&");
-        }
-        return sb.substring(0, sb.length() - 1);
     }
 
 
