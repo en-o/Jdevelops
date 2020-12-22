@@ -151,7 +151,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
     }
 
     /**
-     * 从 request 获取token
+     * 从 request 获取 sign
      * @param request request
      * @return sign
      */
@@ -162,11 +162,10 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             if (StringUtils.isNotBlank(sign)) {
                 return sign;
             }
-            sign = request.getParameter(signName);
-            return sign;
         }catch (Exception e){
-            return null;
+            log.warn("消息头中没有sign");
         }
+        return null;
     }
 
 }
