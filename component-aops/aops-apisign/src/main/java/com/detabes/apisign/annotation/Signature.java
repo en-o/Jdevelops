@@ -15,11 +15,11 @@ import java.lang.annotation.Target;
  *          如果参数中非要有list，jsonArray 和套娃 那就加密的时候不要他
  * @推荐加密网站： https://www.sojson.com/encrypt_md5.html 因为他的参数组合跟我的是一样的 AopMapUtil.map2Str
  * 工具使用
- *          参数转型: AopMapUtil.map2Str (规则为: key=value&ey=value)
+ *          参数转型: AopMapUtil.map2Str (规则为: key=value&key=value)
  *          接口加密: SignMD5Util.encrypt(str,true)
  *
  *
- *  签名方式MD5     加密时注意顺序，验证时会判断顺序的一致性
+ *  签名方式MD5     加密时注意顺序，验证时会判断顺序的一致性(参数为bean时可能会例外)
  *      sign(签名) = md5小写32位加密(
  *              md5小写32位加密(
  *                  params(key+value)
