@@ -2,6 +2,7 @@ package com.detabes.apisign.filter;
 
 import com.detabes.http.core.HttpContextUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -34,6 +35,7 @@ public class HttpServletRequestFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         ServletRequest requestWrapper = null;
+        servletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         // 判断是否是multipart/form-data请求
         if (!HttpContextUtils.isMultipartContent((HttpServletRequest)servletRequest)){
             if(servletRequest instanceof HttpServletRequest) {

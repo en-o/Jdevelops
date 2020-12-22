@@ -17,8 +17,9 @@ import java.lang.annotation.Target;
  * 工具使用
  *          参数转型: AopMapUtil.map2Str (规则为: key=value&ey=value)
  *          接口加密: SignMD5Util.encrypt(str,true)
- *          加密时注意顺序，验证时会判断顺序的一致性
- *  签名方式MD5
+ *
+ *
+ *  签名方式MD5     加密时注意顺序，验证时会判断顺序的一致性
  *      sign(签名) = md5小写32位加密(
  *              md5小写32位加密(
  *                  params(key+value)
@@ -31,7 +32,7 @@ import java.lang.annotation.Target;
  *  注意两层加密
  *
  *
- *  MD5HEADER加密：参数 list map string bean jsonAarray jsonObject
+ *  MD5HEADER加密：参数 list map string bean jsonAarray jsonObject ,（注： get拼接方式跟list参数会强制验证数据顺序）
  *      签名方式MD5
  *              sign(签名) = md5小写32位加密(
  *                  md5小写32位加密(
