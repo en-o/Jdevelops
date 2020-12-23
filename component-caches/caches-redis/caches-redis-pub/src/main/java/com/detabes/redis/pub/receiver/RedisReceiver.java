@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @date 2020/7/3 9:19
  */
 @Component
-public class RedisReceiver<S> implements MessageListener {
+public class RedisReceiver implements MessageListener {
 
     @Resource
     private RedisReceiverServer redisReceiverServer;
