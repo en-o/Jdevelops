@@ -20,7 +20,6 @@
             <groupId>com.detabes</groupId>
             <artifactId>utils-string</artifactId>
             <version>${detabes.last.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

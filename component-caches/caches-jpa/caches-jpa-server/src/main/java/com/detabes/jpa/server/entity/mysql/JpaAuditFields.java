@@ -46,10 +46,9 @@ public class JpaAuditFields<T> extends BaseAuditFields<T> {
     @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期' ")
     @Access(AccessType.PROPERTY)
     @Override
-    public void setCreateTime(LocalDateTime createTime) {
-        super.setCreateTime(createTime);
+    public LocalDateTime getCreateTime() {
+        return super.getCreateTime();
     }
-
 
     /**
      * 表示该字段为创建人， @CreatedBy 在这个实体被created的时候，会自动为其赋值
@@ -62,7 +61,6 @@ public class JpaAuditFields<T> extends BaseAuditFields<T> {
         return super.getCreateUserName();
     }
 
-
     /**
      * 表示该字段为修改时间字段，@LastModifiedDate在这个实体被update的时候，会自动为其赋值
      */
@@ -73,7 +71,6 @@ public class JpaAuditFields<T> extends BaseAuditFields<T> {
     public LocalDateTime getUpdateTime() {
         return super.getUpdateTime();
     }
-
 
     /**
      * 表示该字段为修改人，@LastModifiedBy 在这个实体被update的时候，会自动为其赋值
@@ -116,6 +113,5 @@ public class JpaAuditFields<T> extends BaseAuditFields<T> {
             return new ResourcePage();
         }
     }
-
 
 }
