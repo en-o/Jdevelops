@@ -29,7 +29,7 @@ public interface JpaBasicsDao<T,D> extends JpaRepository<T,D>, JpaSpecificationE
      */
     @Transactional(rollbackFor = Exception.class)
     @Modifying
-    int deleteByIdIn(List<Integer> ids);
+    int deleteByIdIn(List<D> ids);
 
 
     /**
