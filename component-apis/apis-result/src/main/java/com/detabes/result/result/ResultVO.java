@@ -63,7 +63,7 @@ public class ResultVO<T> implements Serializable {
         return resultVO;
     }
 
-    public static <T> ResultVO<T> success(T data) {
+    public static <T> ResultVO<T> successForData(T data) {
         ResultVO<T> resultVO = new ResultVO<>();
         resultVO.setCode(ResultCodeEnum.Success.getCode());
         resultVO.setMessage("success");
