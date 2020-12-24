@@ -65,6 +65,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResultVO<?> exceptionHandler(NoHandlerFoundException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        log.error("路径不存在，请检查路径是否正确 -> ", e);
         return ResultVO.fail(ResultCodeEnum.AuthError.getCode(), "路径不存在，请检查路径是否正确");
     }
 
@@ -72,13 +73,14 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     public ResultVO<?> handleNullPointerException(NullPointerException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("空指针异常->", e);
+        log.error("空指针异常 -> ", e);
         return ResultVO.fail(ResultCodeEnum.SysError.getCode(), "暂时无法获取数据");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResultVO<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        log.error("请求方式不对 - get post -> ", e);
         return ResultVO.fail(ResultCodeEnum.AuthError.getCode(), "请求方式不对 - get post ");
     }
 
@@ -100,6 +102,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResultVO<?> exception(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -124,7 +127,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResultVO<?> bindException(BindException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("Valid 数据格式校验异常->", e);
+        log.error("Valid 数据格式校验异常 -> ", e);
         StringBuilder resqStr = new StringBuilder();
         e.getFieldErrors().forEach(it -> {
             resqStr.append("字段:"+it.getField()+" ==》 验证不通过，原因是："+it.getDefaultMessage());
