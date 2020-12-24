@@ -58,7 +58,7 @@ import java.lang.annotation.Target;
  *
  *
  *
- *  接口测试参考: component-demo -> controller-sign-demo -> test -> com.databstech.sign.controller
+ *  接口测试参考: component-demo -> controller-sign-demo -> test -> com.detabes.sign.controller
  *
  * </pre>
  *

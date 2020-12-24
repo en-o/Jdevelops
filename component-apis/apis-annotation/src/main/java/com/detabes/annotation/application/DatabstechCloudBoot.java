@@ -22,5 +22,5 @@ import java.lang.annotation.*;
 public @interface DatabstechCloudBoot {
     @AliasFor(annotation = SpringBootApplication.class, attribute = "scanBasePackages")
     String[] scanComponentPackages() default {};
-//    String[] scanComponentPackages() default {"com.databstech.**"};
+//    String[] scanComponentPackages() default {"com.detabes.**"};
 }

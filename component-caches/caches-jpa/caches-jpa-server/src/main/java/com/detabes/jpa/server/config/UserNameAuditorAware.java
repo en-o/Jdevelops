@@ -1,4 +1,4 @@
-package com.detabes.jpa.server.config;//package com.databstech.cache.jpa.config;
+//package com.detabes.jpa.server.config;
 //
 //
 //import org.springframework.data.domain.AuditorAware;

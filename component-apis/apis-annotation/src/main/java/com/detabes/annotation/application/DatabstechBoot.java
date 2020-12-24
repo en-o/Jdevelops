@@ -18,6 +18,6 @@ import java.lang.annotation.*;
 @SpringBootApplication
 public @interface DatabstechBoot {
     @AliasFor(annotation = SpringBootApplication.class, attribute = "scanBasePackages")
-//    String[] scanComponentPackages() default {"com.databstech.**"};
+//    String[] scanComponentPackages() default {"com.detabes.**"};
     String[] scanComponentPackages() default {};
 }

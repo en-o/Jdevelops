@@ -48,12 +48,12 @@ public class SwaggerBean {
     /**
      *  联络 url
      */
-    private String contactUrl="http://databstech.com:9528/";
+    private String contactUrl="http://detabes.com:9528/";
 
     /**
      *  联络人-作者
      */
-    private String contactName="databstech";
+    private String contactName="detabes";
 
     /**
      *  联络邮箱
