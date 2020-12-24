@@ -20,7 +20,6 @@ import java.util.Set;
  * @date 2020/6/18 16:04
  */
 @Configuration
-
 public class WebApiConfig implements WebMvcConfigurer {
 
     @Autowired(required=false)

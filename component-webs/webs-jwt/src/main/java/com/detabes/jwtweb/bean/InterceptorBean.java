@@ -16,7 +16,7 @@ import java.util.Set;
  * @description 拦截器的放行与拦截
  * @date 2020-09-30 16:58
  */
-@ConfigurationProperties(prefix = "databstech.jwt.web.interceptor")
+@ConfigurationProperties(prefix = "detabes.jwt.web.interceptor")
 @Component
 @Getter
 @Setter
