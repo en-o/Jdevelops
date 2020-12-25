@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 /**
  * 分页排序
  *
- * @author cl
+ * @author lxw
  * @date 2018年5月11日
  */
 @ApiModel("分页下标实体类")
@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class PageIndexVO {
+public class PageVO {
     @ApiModelProperty("页码，默认第一页")
     private Integer pageIndex;
     @ApiModelProperty("一页显示几条,默认20条")

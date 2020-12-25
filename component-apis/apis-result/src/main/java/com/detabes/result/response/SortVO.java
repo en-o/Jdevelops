@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class OrderVO {
+public class SortVO {
     @ApiModelProperty("根据那一列排序")
     private String orderBy;
     @ApiModelProperty("正序0--Direction.ASC，反序1--Direction.DESC")
