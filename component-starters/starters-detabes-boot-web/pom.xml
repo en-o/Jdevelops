@@ -8,24 +8,17 @@
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>starters-detabes-boot-web</artifactId>
     <packaging>pom</packaging>
-
-    <artifactId>starters-beans</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>com.detabes</groupId>
-            <artifactId>beans-constant</artifactId>
+            <artifactId>starters-detabes-web</artifactId>
             <version>${detabes.last.version}</version>
         </dependency>
         <dependency>
             <groupId>com.detabes</groupId>
-            <artifactId>beans-entity</artifactId>
-            <version>${detabes.last.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.detabes</groupId>
-            <artifactId>beans-enum</artifactId>
+            <artifactId>doc-swagger-boot</artifactId>
             <version>${detabes.last.version}</version>
         </dependency>
     </dependencies>
