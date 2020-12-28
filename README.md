@@ -48,15 +48,10 @@
 * [ ] starter
     - [x] starters-utils
     - [x] starters-beans
-    - [ ] detabes-start
-        - [ ] detabes-start-util
-    - [ ] detabes-boot-start
-        - [ ] detabes-boot-start-web
-        - [ ] detabes-boot-srart-web-jwt
-    - [ ] detabes-cloud-start
-        - [ ] detabes-cloud-start-web
-        - [ ] detabes-cloud-start-spring-gateway
-        - [ ] detabes-cloud-start-soul-gateway
+    - [ ] starters-detabes-web
+        - [x] starters-detabes-boot-web
+        - [x] starters-detabes-boot-web-jpa
+        - [ ] starters-detabes-cloud-web
 
 * [ ] 工具模块
     - [x] String [String工具]
