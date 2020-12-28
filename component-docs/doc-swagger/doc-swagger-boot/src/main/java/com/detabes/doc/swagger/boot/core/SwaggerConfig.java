@@ -3,6 +3,7 @@ package com.detabes.doc.swagger.boot.core;
 import com.detabes.doc.core.swagger.bean.SwaggerBean;
 import com.detabes.doc.core.swagger.config.BaseConfig;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author tn
@@ -30,8 +28,8 @@ import static com.google.common.collect.Lists.newArrayList;
 @EnableKnife4j
 public class SwaggerConfig {
 
-    public static String SPIRIT = "/";
 
+    public static String SPIRIT = "/";
     /**
      * 项目访问根路径
      */
@@ -62,6 +60,7 @@ public class SwaggerConfig {
                 .build()
                 //全站统一参数token
                 .securitySchemes(BaseConfig.security())
+                .securityContexts(BaseConfig.securityContexts())
                 ;
     }
 
