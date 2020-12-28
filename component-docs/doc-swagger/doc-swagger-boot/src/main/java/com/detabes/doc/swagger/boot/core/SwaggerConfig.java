@@ -3,7 +3,6 @@ package com.detabes.doc.swagger.boot.core;
 import com.detabes.doc.core.swagger.bean.SwaggerBean;
 import com.detabes.doc.core.swagger.config.BaseConfig;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

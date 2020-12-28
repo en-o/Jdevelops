@@ -3,7 +3,6 @@ package com.detabes.doc.swagger.cloud.core;
 import com.detabes.doc.core.swagger.bean.SwaggerBean;
 import com.detabes.doc.core.swagger.config.BaseConfig;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -13,7 +12,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
