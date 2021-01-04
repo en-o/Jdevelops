@@ -3,7 +3,6 @@ package com.detabes.redis.pub.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 public class ReidsCacheBean {
 
     /**

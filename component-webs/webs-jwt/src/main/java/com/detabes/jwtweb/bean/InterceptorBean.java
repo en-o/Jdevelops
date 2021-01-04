@@ -3,7 +3,6 @@ package com.detabes.jwtweb.bean;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 public class InterceptorBean {
 
     /**

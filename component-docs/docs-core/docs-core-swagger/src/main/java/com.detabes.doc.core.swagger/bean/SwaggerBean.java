@@ -3,7 +3,6 @@ package com.detabes.doc.core.swagger.bean;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import springfox.documentation.spi.DocumentationType;
@@ -20,7 +19,6 @@ import springfox.documentation.spi.DocumentationType;
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 public class SwaggerBean {
 
     /**

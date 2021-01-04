@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * @author tn
@@ -17,7 +16,6 @@ import lombok.experimental.Accessors;
 @ToString
 @Getter
 @Setter
-@Accessors(chain = true)
 public class SortVO {
     @ApiModelProperty("根据那一列排序")
     private String orderBy;

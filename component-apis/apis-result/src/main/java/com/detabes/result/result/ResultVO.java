@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -22,7 +21,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@Accessors(chain = true)
 @ApiModel(value = "返回结果集",description = "全局返回对象")
 public class ResultVO<T> implements Serializable {
 

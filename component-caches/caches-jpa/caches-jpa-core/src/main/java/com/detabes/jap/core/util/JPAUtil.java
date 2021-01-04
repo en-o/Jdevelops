@@ -2,7 +2,6 @@ package com.detabes.jap.core.util;
 
 import lombok.AccessLevel;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -46,7 +45,6 @@ public class JPAUtil<T> {
     }
 
     @Setter
-    @Accessors(chain = true)
     public static class Builder<T>{
 
         List<Predicate> predicatesAnd ;

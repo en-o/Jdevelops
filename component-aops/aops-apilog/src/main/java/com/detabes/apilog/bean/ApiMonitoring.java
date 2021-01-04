@@ -1,9 +1,6 @@
 package com.detabes.apilog.bean;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 /**
  * @author tn
@@ -14,7 +11,6 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
-@Accessors(chain = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

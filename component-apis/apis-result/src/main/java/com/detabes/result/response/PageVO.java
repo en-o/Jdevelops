@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * 分页排序
@@ -17,7 +16,6 @@ import lombok.experimental.Accessors;
 @ToString
 @Getter
 @Setter
-@Accessors(chain = true)
 public class PageVO {
     @ApiModelProperty("页码，默认第一页")
     private Integer pageIndex;
