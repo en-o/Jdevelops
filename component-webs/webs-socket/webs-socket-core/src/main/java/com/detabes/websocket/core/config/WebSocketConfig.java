@@ -1,7 +1,6 @@
 package com.detabes.websocket.core.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @author tn
  * @date  2020-07-08 12:33
  */
-@Configuration
+//@Configuration
 public class WebSocketConfig {
 
     @Bean
