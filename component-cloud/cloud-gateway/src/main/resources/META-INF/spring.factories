@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.detabes.cloud.gateway.scan.EnableAutoScanConfiguration,\
+  com.detabes.cloud.gateway.exception.core.ExceptionHandlerConfiguration
