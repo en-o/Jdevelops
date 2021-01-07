@@ -64,6 +64,8 @@
         <module>component-logs</module>
         <!-- 全文检索 -->
         <module>component-search</module>
+        <!-- cloud相关 -->
+        <module>component-cloud</module>
 
     </modules>
 
