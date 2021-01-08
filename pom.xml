@@ -58,15 +58,14 @@
         <module>component-docs</module>
         <!-- 数据模块 -->
         <module>component-caches</module>
-        <!-- starter  -->
-        <module>component-starters</module>
         <!-- 日志 -->
         <module>component-logs</module>
         <!-- 全文检索 -->
         <module>component-search</module>
         <!-- cloud相关 -->
         <module>component-cloud</module>
-
+        <!-- starter  -->
+        <module>component-starters</module>
     </modules>
 
     <properties>
