@@ -136,5 +136,21 @@ public class IpUtil {
         return ip;
     }
 
+    /**
+     * 获取客户端IP地址
+     *
+     * @return
+     */
+    public static String getIpAddrAndName() throws IOException {
+        return InetAddress.getLocalHost().toString();
+    }
 
+    /**
+     * 获取客户端IP地址
+     *
+     * @return
+     */
+    public static String getIpAddr() throws IOException {
+        return InetAddress.getLocalHost().getHostAddress().toString();
+    }
 }
