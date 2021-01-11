@@ -3,7 +3,6 @@ package com.detabes.http.core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +17,15 @@ import java.util.regex.Pattern;
  * @date 2021/1/11 2:06
  */
 public class MacUtil {
+
+
+    /**
+     * 限制创建实例
+     */
+    private MacUtil() {
+
+    }
+
     private static String macAddressStr = null;
     private static String computerName = System.getenv().get("COMPUTERNAME");
 
@@ -121,10 +129,17 @@ public class MacUtil {
     }
 
     /**
-     * 限制创建实例
+     *  win separator Linux 相互转换
+     * @param path 地址
+     * @return
      */
-    private MacUtil() {
-
+    public static String win2Linux(String path) {
+        String os = System.getProperty("os.name");
+        if(os.toLowerCase().startsWith("win")){
+            path = path.replace("/","\\");
+        }else {
+            path = path.replace("\\","/");
+        }
+        return path;
     }
-
 }

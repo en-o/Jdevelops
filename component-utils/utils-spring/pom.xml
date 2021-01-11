@@ -18,6 +18,23 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>utils-http</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.5.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <version>5.5.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <scope>provided</scope>
@@ -37,6 +54,7 @@
             <artifactId>commons-lang3</artifactId>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
 </project>
