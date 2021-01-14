@@ -74,11 +74,11 @@ public class JarUtil {
 
     /**
      *  jar运行后网jar中新增文件
-     *
+     * @see <a href="https://cloud.tencent.com/developer/ask/137977">感谢</a>
      * @param srcJarFile jar地址
      * @param update 是否是更新
      * @param filesToAdd 添加的文件
-     * @throws IOException
+     * @throws IOException e
      */
     public static void updateJarFile(File srcJarFile, boolean update, List<JarAddFile> filesToAdd) throws IOException {
 
