@@ -46,6 +46,28 @@ public class JwtUtil {
 
 
 
+    /**
+     * 生成签名 - 接口传过期时间
+     * @param loginName 登录名  用户唯一凭证
+     * @param remark 其余数据
+     * @param expireTime 过期时间/毫秒
+     * @return 签名
+     */
+    public static String sign(String loginName, JSONObject remark, long expireTime){
+        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+        //过期时间
+        Date date = new Date(expireTime);
+        //私钥及加密算法
+        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
+        //设置头信息
+        HashMap<String, Object> header = new HashMap<>(2);
+        header.put("typ", "JWT");
+        header.put("alg", "HS256");
+        //附带username和userID生成签名
+        return JWT.create().withHeader(header).withClaim("loginName",loginName)
+                .withClaim("remark", remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
+    }
+
 
     /**
      * 生成签名
