@@ -17,21 +17,6 @@
             <version>${detabes.last.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.detabes</groupId>
-            <artifactId>beans-constant</artifactId>
-            <version>${detabes.last.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.detabes</groupId>
-            <artifactId>beans-entity</artifactId>
-            <version>${detabes.last.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.detabes</groupId>
-            <artifactId>beans-enum</artifactId>
-            <version>${detabes.last.version}</version>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>provided</scope>
