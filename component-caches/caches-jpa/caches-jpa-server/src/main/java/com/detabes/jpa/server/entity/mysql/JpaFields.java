@@ -44,8 +44,8 @@ public class JpaFields<T> extends BaseFields<T> {
     @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期' ")
     @Access(AccessType.PROPERTY)
     @Override
-    public void setCreateTime(LocalDateTime createTime) {
-        super.setCreateTime(createTime);
+    public LocalDateTime getCreateTime() {
+        return super.getCreateTime();
     }
 
 
