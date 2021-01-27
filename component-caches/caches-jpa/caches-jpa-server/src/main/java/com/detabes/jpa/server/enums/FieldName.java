@@ -18,7 +18,7 @@ public enum FieldName {
      */
     ID("id", "唯一id", Integer.class),
     UUID("uuid", "唯一编码UUID", String.class),
-    LOGIN_NAME("loginName", "唯一登录名", String.class),
+
     ;
 
     /**
