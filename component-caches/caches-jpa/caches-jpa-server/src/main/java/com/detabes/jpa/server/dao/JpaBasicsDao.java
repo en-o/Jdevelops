@@ -33,14 +33,6 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
     T findByUuid(String uuid);
 
     /**
-     * 根据 loginName 查询
-     *
-     * @param loginName loginName
-     * @return T
-     */
-    T findByLoginName(String loginName);
-
-    /**
      * 根据 UUID 查询
      *
      * @param uuid uuid
@@ -80,8 +72,32 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
     int deleteByIdIn(List<D> ids);
 
 
-    /**
+     /**
      * 更新 根据id
+     *
+     * @param t           实体类型的 数据
+     * @param idFieldName 字段名只能是id 
+     * @return
+     * @throws Exception
+     */
+    default Boolean updateEntity(T t, String idFieldName) throws Exception {
+        /* 跟根据ID获取需要更新的数据的 原始数据 */
+        T oidCamera  oidCamera = findById((D) CommUtils.getFieldValueByName("id", t)).orElse(null);
+        /**
+         *将新数据中非空字段 克隆到原始数据中 实现更新
+         * <p> oidCamera.copy(scCameraEntity); </p>
+         */
+        /** 获取method对象，其中包含方法名称和参数列表*/
+        Method setName = oidCamera.getClass().getMethod("copy", Object.class);
+        /** 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
+        setName.invoke(oidCamera, t);
+        /** 保存克隆之后的数据  且 saveAndFlush立即生效 */
+        T save = saveAndFlush(oidCamera);
+        return save != null;
+    }
+    
+    /**
+     * 更新 根据id，uuid
      *
      * @param t           实体类型的 数据
      * @param idFieldName 字段名
@@ -94,10 +110,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
         switch (idFieldName.getFieldName()){
             case "uuid":
                 oidCamera = findByUuid((String) CommUtils.getFieldValueByName(idFieldName.getFieldName(), t));
-                break;
-            case "loginName":
-                oidCamera = findByLoginName((String) CommUtils.getFieldValueByName(idFieldName.getFieldName(), t));
-                break;
+                break;    
             default:
                 oidCamera = findById((D) CommUtils.getFieldValueByName(idFieldName.getFieldName(), t)).orElse(null);
                 break;
