@@ -11,7 +11,6 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @author tn
  * @date  2020-07-08 12:33
  */
-//@Configuration
 public class WebSocketConfig {
 
     @Bean

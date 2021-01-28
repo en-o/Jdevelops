@@ -3,6 +3,7 @@ package com.detabes.entity.basics.vo;
 import com.detabes.map.core.bean.BeanCopier;
 import com.detabes.map.core.bean.BeanCopyUtil;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2020/6/28 16:46
  */
 @Getter
+@ToString
 public class SerializableVO<T> implements Serializable {
 
     private static final long serialVersionUID = 315654089784739497L;

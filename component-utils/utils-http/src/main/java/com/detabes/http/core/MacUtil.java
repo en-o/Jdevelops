@@ -29,9 +29,9 @@ public class MacUtil {
     private static String macAddressStr = null;
     private static String computerName = System.getenv().get("COMPUTERNAME");
 
-    private static final String[] windowsCommand = { "ipconfig", "/all" };
-    private static final String[] linuxCommand = { "/sbin/ifconfig", "-a" };
-    private static final Pattern macPattern = Pattern.compile(".*((:?[0-9a-f]{2}[-:]){5}[0-9a-f]{2}).*",
+    private static final String[] WINDOWS_COMMAND = { "ipconfig", "/all" };
+    private static final String[] LINUX_COMMAND = { "/sbin/ifconfig", "-a" };
+    private static final Pattern MAC_PATTERN = Pattern.compile(".*((:?[0-9a-f]{2}[-:]){5}[0-9a-f]{2}).*",
             Pattern.CASE_INSENSITIVE);
 
     /**
@@ -46,9 +46,9 @@ public class MacUtil {
         final String command[];
 
         if (os.startsWith("Windows")) {
-            command = windowsCommand;
+            command = WINDOWS_COMMAND;
         } else if (os.startsWith("Linux")) {
-            command = linuxCommand;
+            command = LINUX_COMMAND;
         } else {
             throw new IOException("Unknow operating system:" + os);
         }
@@ -57,7 +57,7 @@ public class MacUtil {
 
         BufferedReader bufReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         for (String line = null; (line = bufReader.readLine()) != null;) {
-            Matcher matcher = macPattern.matcher(line);
+            Matcher matcher = MAC_PATTERN.matcher(line);
             if (matcher.matches()) {
                 macAddressList.add(matcher.group(1));
                 // macAddressList.add(matcher.group(1).replaceAll("[-:]",
@@ -77,7 +77,8 @@ public class MacUtil {
      */
     public static String getMacAddress() {
         if (macAddressStr == null || macAddressStr.equals("")) {
-            StringBuffer sb = new StringBuffer(); // 存放多个网卡地址用，目前只取一个非0000000000E0隧道的值
+            // 存放多个网卡地址用，目前只取一个非0000000000E0隧道的值
+            StringBuffer sb = new StringBuffer();
             try {
                 List<String> macList = getMacAddressList();
                 for (Iterator<String> iter = macList.iterator(); iter.hasNext();) {
@@ -116,7 +117,7 @@ public class MacUtil {
      *
      * @return
      */
-    public static String getComputerID() {
+    public static String getComputerId() {
         String id = getMacAddress();
         if (id == null || id.equals("")) {
             try {

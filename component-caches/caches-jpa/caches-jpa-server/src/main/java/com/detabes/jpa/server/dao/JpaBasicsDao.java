@@ -30,7 +30,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @param uuid uuid
      * @return T
      */
-    T findByUuid(String uuid);
+    <UT> T findByUuid(UT uuid);
 
     /**
      * 根据 loginName 查询
@@ -46,7 +46,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @param uuid uuid
      * @return List<T>
      */
-    List<T> findByUuidIn(List<T> uuid);
+    <UT> List<T> findByUuidIn(List<UT> uuid);
 
     /**
      * 根据 uuid删除 对象
