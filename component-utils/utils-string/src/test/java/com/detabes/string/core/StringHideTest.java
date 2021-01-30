@@ -19,7 +19,7 @@ public class StringHideTest {
 
     @Test
     public void hideCerCardNum() {
-        System.out.println("hideCerCardNum = " + StringHide.hideCerCardNum("000230192512056251", 2,5));
+        System.out.println("hideCerCardNum = " + StringHide.hideCerCardNum("000230192512056251", 2, 5));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class StringHideTest {
 
     @Test
     public void hidePhone() {
-        System.out.println("hidePhone = " + StringHide.hidePhone("13320385140",2));
+        System.out.println("hidePhone = " + StringHide.hidePhone("13320385140", 2));
     }
 
     @Test
@@ -41,5 +41,10 @@ public class StringHideTest {
     @Test
     public void bankCard() {
         System.out.println("bankCard = " + StringHide.bankCard("61251495156475491"));
+    }
+
+    @Test
+    public void address() {
+        System.out.println("address = " + StringHide.address("重庆市重庆市重庆市", 2));
     }
 }

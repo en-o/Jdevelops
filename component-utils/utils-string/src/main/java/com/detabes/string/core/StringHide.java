@@ -82,6 +82,35 @@ public class StringHide {
         }
         return StringUtils.leftPad(StringUtils.right(phoneNum, retain), StringUtils.length(phoneNum), "*");
     }
+
+    /**
+     * [手机号码] 前三位，后四位，其他隐藏<例子:138******1234>
+     *
+     * @param phoneNum phoneNum
+     * @return
+     */
+    public static String mobilePhone(String phoneNum) {
+        if (StringUtils.isBlank(phoneNum)) {
+            return "";
+        }
+        return StringUtils.left(phoneNum, 3)
+                .concat(StringUtils.removeStart(StringUtils.leftPad(StringUtils.right(phoneNum, 4),
+                        StringUtils.length(phoneNum), "*"), "***"));
+    }
+
+    /**
+     * [固定电话] 后四位，其他隐藏<例子：****1234>
+     * @param phone phone
+     * @return String
+     */
+    public static String fixedPhone(String phone) {
+        if (StringUtils.isBlank(phone)) {
+            return "";
+        }
+        return StringUtils.leftPad(StringUtils.right(phone, 4), StringUtils.length(phone), "*");
+    }
+
+
     /**
      * 邮箱遮掩
      * @param email 邮箱
@@ -111,4 +140,24 @@ public class StringHide {
         }
         return StringUtils.left(cardNum, 4).concat(StringUtils.removeStart(StringUtils.leftPad(StringUtils.right(cardNum, 4), StringUtils.length(cardNum), "*"), "******"));
     }
+
+
+
+    /**
+     * [地址] 只显示到地区，不显示详细地址；我们要对个人信息增强保护<例子：北京市海淀区****>
+     *
+     * @param address 地址
+     * @param retain 遮掩几位
+     * @return String
+     */
+    public static String address(String address, int retain) {
+        if (StringUtils.isBlank(address)) {
+            return "";
+        }
+        int length = StringUtils.length(address);
+        return StringUtils.rightPad(StringUtils.left(address, length - retain), length, "*");
+    }
+
+
+
 }
