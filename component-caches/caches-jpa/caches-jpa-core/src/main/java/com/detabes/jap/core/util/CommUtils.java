@@ -59,8 +59,12 @@ public class CommUtils {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (int i = 0; i < fields.length; i++) {
+            String fieldName = fields[i].getName();
+            if("serialVersionUID".equals(fieldName)){
+                continue;
+            }
             Object fieldValue = ReflectUtil.getFieldValue(bean, fields[i]);
-            jpaSelect.add(Restrictions.eq(fields[i].getName(), fieldValue, true));
+            jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
         }
         return jpaSelect;
     }
