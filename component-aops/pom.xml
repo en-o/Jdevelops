@@ -14,7 +14,7 @@
     <modules>
         <module>aops-apilog</module>
         <module>aops-apisign</module>
-        <module>aops-apiVersion</module>
+        <module>aops-apiversion</module>
     </modules>
 
     <dependencies>

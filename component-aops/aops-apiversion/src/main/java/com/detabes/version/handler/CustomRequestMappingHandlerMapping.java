@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.lang.reflect.Method;
 
 /**
- * 版本控制注解
+ * URL请求映射（带@ApiVersion注解的走匹配规则）
  * @author tnnn
  * @link https://www.cnblogs.com/amuge/articles/13821162.html
  */
