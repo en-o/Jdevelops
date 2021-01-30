@@ -47,7 +47,7 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
     @Override
     public Boolean deleteById(List<Integer> ids) {
-        return commonDao.deleteByIdIn((List<D>) ids)>0;
+        return commonDao.deleteByIdIn((List<D>) ids)>=0;
     }
 
     @Override
@@ -63,18 +63,27 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
     @Override
     public Boolean deleteByUuid(List<String> uuid) {
-        return commonDao.deleteByUuidIn(uuid)>0;
+        return commonDao.deleteByUuidIn(uuid)>=0;
     }
 
     @Override
     public Boolean deleteByUuid(String uuid) {
-        return commonDao.deleteByUuid(uuid)>0;
+        return commonDao.deleteByUuid(uuid)>=0;
     }
 
     @Override
     public Boolean updateByBean(T bean) {
         try {
-            return commonDao.updateEntity(bean, FieldName.ID);
+            return commonDao.updateEntity(bean, "id");
+        } catch (Exception e) {
+            throw new RuntimeException("更新出错");
+        }
+    }
+
+    @Override
+    public Boolean updateByBean(T bean, FieldName fieldName) {
+        try {
+            return commonDao.updateEntity(bean, fieldName);
         } catch (Exception e) {
             throw new RuntimeException("更新出错");
         }
@@ -87,7 +96,7 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
     
     @Override
     public List<T> findById(List<Integer> id) {
-        return commonDao.findByIdIn(id);
+        return commonDao.findByIdIn((List<D>) id);
     }
 
     @Override
@@ -96,7 +105,7 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
     }
     
     @Override
-    public List<T> findByUuidIn(List<String> uuid) {
+    public List<T> findByUuid(List<String> uuid) {
         return commonDao.findByUuidIn(uuid);
     }
 

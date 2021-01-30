@@ -1,5 +1,6 @@
 package com.detabes.jpa.server.service;
 
+import com.detabes.jpa.server.enums.FieldName;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
@@ -68,9 +69,18 @@ public interface JService<T> {
      *
      * @param t 实体 id一定要有且键名为ID
      * @return Boolean
-     * @throws Exception Exception
      */
     Boolean updateByBean(T t);
+
+
+    /**
+     * 更新数据 返回实体
+     *
+     * @param t 实体 id一定要有且键名为ID
+     * @param fieldName  fieldName
+     * @return Boolean
+     */
+    Boolean updateByBean(T t, FieldName fieldName);
 
     /**
      * 根据 id 查询
@@ -87,7 +97,7 @@ public interface JService<T> {
      * @return T
      */
     List<T> findById(final List<Integer> id);
-    
+
     /**
      * 根据 uuid 查询
      *
@@ -95,8 +105,8 @@ public interface JService<T> {
      * @return T
      */
     T findByUuid(final String uuid);
-    
-     /**
+
+    /**
      * 根据 uuid 查询
      *
      * @param uuid uuid

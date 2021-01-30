@@ -30,7 +30,14 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @param uuid uuid
      * @return T
      */
-    <UT> T findByUuid(UT uuid);
+    T findByUuid(String uuid);
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    List<T> findByIdIn(List<D> id);
 
     /**
      * 根据 UUID 查询
@@ -38,7 +45,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @param uuid uuid
      * @return List<T>
      */
-    <UT> List<T> findByUuidIn(List<UT> uuid);
+    List<T> findByUuidIn(List<String> uuid);
 
     /**
      * 根据 uuid删除 对象
@@ -82,7 +89,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      */
     default Boolean updateEntity(T t, String idFieldName) throws Exception {
         /* 跟根据ID获取需要更新的数据的 原始数据 */
-        T oidCamera  oidCamera = findById((D) CommUtils.getFieldValueByName("id", t)).orElse(null);
+        T  oidCamera = findById((D) CommUtils.getFieldValueByName("id", t)).orElse(null);
         /**
          *将新数据中非空字段 克隆到原始数据中 实现更新
          * <p> oidCamera.copy(scCameraEntity); </p>
