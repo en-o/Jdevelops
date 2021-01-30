@@ -84,11 +84,22 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
     public T findById(Integer id) {
         return commonDao.findById((D) id).get();
     }
+    
+    @Override
+    public List<T> findById(List<Integer> id) {
+        return commonDao.findByIdIn(id);
+    }
 
     @Override
     public T findByUuid(String uuid) {
         return commonDao.findByUuid(uuid);
     }
+    
+    @Override
+    public List<T> findByUuidIn(List<String> uuid) {
+        return commonDao.findByUuidIn(uuid);
+    }
+
 
     @Override
     public List<T> findByBean(T t) {

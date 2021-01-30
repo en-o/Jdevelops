@@ -81,12 +81,29 @@ public interface JService<T> {
     T findById(final Integer id);
 
     /**
+     * 根据 id 查询
+     *
+     * @param id id
+     * @return T
+     */
+    List<T> findById(final List<Integer> id);
+    
+    /**
      * 根据 uuid 查询
      *
      * @param uuid uuid
      * @return T
      */
     T findByUuid(final String uuid);
+    
+     /**
+     * 根据 uuid 查询
+     *
+     * @param uuid uuid
+     * @return T
+     */
+    List<T> findByUuid(final List<String> uuid);
+
 
     /**
      * 默认可以不用的实现
