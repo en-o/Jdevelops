@@ -19,6 +19,11 @@ public interface TimeFormat {
 	String DEFAULT_FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
 	/**
+	 * 格式  yyyy-MM-dd HH:mm:ss.SSS  年月日时分秒毫秒
+	 */
+	String FORMAT_MSEC_DATETIME = "yyyy-MM-dd HH:mm:ss.SSS";
+
+	/**
 	 * 格式  yyyy-MM-dd HH:mm  年月日时分
 	 */
 	String NORM_FORMAT_DATETIME_MINUTE = "yyyy-MM-dd HH:mm";

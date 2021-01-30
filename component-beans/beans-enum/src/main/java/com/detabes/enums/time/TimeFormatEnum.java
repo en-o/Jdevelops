@@ -4,10 +4,6 @@ package com.detabes.enums.time;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 时间格式常量
  *
@@ -22,6 +18,12 @@ public enum TimeFormatEnum {
 	 * 默认格式  yyyy-MM-dd HH:mm:ss
 	 */
 	DEFAULT_FORMAT_DATETIME("yyyy-MM-dd HH:mm:ss", "年月日时分秒"),
+
+
+	/**
+	 * 格式  yyyy-MM-dd HH:mm:ss.SSS  年月日时分秒毫秒
+	 */
+	FORMAT_MSEC_DATETIME("yyyy-MM-dd HH:mm:ss.SSS","年月日时分秒毫秒"),
 
 	/**
 	 * 格式  yyyy-MM-dd HH:mm

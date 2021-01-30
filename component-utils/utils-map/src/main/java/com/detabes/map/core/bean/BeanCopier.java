@@ -38,7 +38,9 @@ public class BeanCopier {
                     try {
                         sourceField.setAccessible(true);
                         targetField.setAccessible(true);
-                        if (simpleName.equals(Date.class.getSimpleName())) {
+                        if(sourceField.get(source)==null){
+                            targetField.set(target, null);
+                        }else if (simpleName.equals(Date.class.getSimpleName())) {
                             // 创建时间
                             Date date =(Date)sourceField.get(source);
                             // 将时间转为 秒级时间戳

@@ -3,6 +3,10 @@
 - [示例代码](https://github.com/en-o/detabes-boot-example)
 - [文档](https://www.yuque.com/tanning/yg9ipo/)
 
+# 待新增功能
+- 公共方法
+    - jdbc 分页查询封装to.ResourcePage
+    - solr 分页查询封装to.ResourcePage
 
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
