@@ -8,6 +8,9 @@
     - 公共增删改
 - 公共dao
     - 修改updateEntity 可以根据指定字段查询更新
+- 公共方法
+    - jdbc 分页查询封装to.ResourcePage
+    - solr 分页查询封装to.ResourcePage
 
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
