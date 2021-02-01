@@ -25,13 +25,13 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.5.6</version>
+            <version>${hutool.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
-            <version>5.5.6</version>
+            <version>${hutool.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
