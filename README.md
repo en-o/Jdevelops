@@ -9,8 +9,9 @@
 - 公共dao
     - 修改updateEntity 可以根据指定字段查询更新
 - 公共方法
-    - jdbc 分页查询封装to.ResourcePage
-    - solr 分页查询封装to.ResourcePage
+    - jdbc 分页查询封装
+    - solr 分页查询封装
+    - 添加一个公共的分页返回对象
 
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
