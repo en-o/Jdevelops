@@ -2,16 +2,6 @@
 - 在工作中的一些积累
 - [示例代码](https://github.com/en-o/detabes-boot-example)
 - [文档](https://www.yuque.com/tanning/yg9ipo/)
-# 待新增功能
-- 公共service
-    - 公共多条件查询
-    - 公共增删改
-- 公共dao
-    - 修改updateEntity 可以根据指定字段查询更新
-- 公共方法
-    - jdbc 分页查询封装
-    - solr 分页查询封装
-    - 添加一个公共的分页返回对象
 
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
