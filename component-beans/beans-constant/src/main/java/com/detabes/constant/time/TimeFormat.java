@@ -83,6 +83,10 @@ public interface TimeFormat {
 	 */
 	String PURE_FORMAT_DATETIME_SECOND = "yyyyMMddHHmmss";
 	/**
+	 * 年月日时分秒毫秒  yyyyMMddHHmmssSSS
+	 */
+	String PURE_FORMAT_DATETIME_MSEC = "yyyyMMddHHmmssSSS";
+	/**
 	 * 格式  MMddHHmmss 年月日时分
 	 */
 	String PURE_FORMAT_DATETIME_MINUTE = "yyyyMMddHHmm";
