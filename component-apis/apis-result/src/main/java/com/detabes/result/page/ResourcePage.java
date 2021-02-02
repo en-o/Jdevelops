@@ -155,7 +155,7 @@ public class ResourcePage<T> implements Serializable {
      * @author lxw
      * @date 2019年3月25日
      */
-    public Object getRows() {
+    public T getRows() {
         return rows;
     }
 
