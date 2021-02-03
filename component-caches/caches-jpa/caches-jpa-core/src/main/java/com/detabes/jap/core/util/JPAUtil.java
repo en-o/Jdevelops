@@ -13,6 +13,28 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
+ *
+ * <p>
+ *
+ *         Set<String> requestDataAnd = new HashSet<>();
+ *         Set<String> requestDataOr = new HashSet<>();
+ *         Set<String> requestDataLike = new HashSet<>();
+ *         Set<String> requestDataBetween = new HashSet<>();
+ *         requestDataAnd.add("sex");
+ *         requestDataLike.add("nickname");
+ *         requestDataLike.add("remark");
+ * //        requestDataBetween.add("nickname");
+ * //        Specification beanByDynamic = new JpaUtils.Builder(new UserBean().setNickname("张")).setLikeAnd(requestDataLike).findBeanByDynamic();
+ *
+ * //        Specification beanByDynamic = new JpaUtils.Builder(new UserBean().setNickname("2,3")).setBetweenAnd(requestDataBetween).findBeanByDynamic();
+ *         Specification beanByDynamic = new JpaUtils.Builder(new UserBean().setSex("1").setNickname("张").setRemark("测"))
+ *                 .setAnd(requestDataAnd)
+ * //                .setLikeAnd(requestDataLike)
+ *                 .setLikeOr(requestDataLike)
+ *                 .findBeanByDynamic();
+ *         return userDao.findAll(beanByDynamic);
+ * </p>
+ *
  * @author tn
  * @version 1
  * @ClassName JPAUtil
