@@ -2,8 +2,7 @@ package com.detabes.encryption.core;
 
 
 import com.detabes.enums.number.NumEnum;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -73,7 +72,7 @@ public class AESUtil {
 			cipher.init(Cipher.ENCRYPT_MODE, skySpec, iv);
 			byte[] encrypted = cipher.doFinal(sSrc.getBytes(StandardCharsets.UTF_8));
 			// 此处使用BASE64做转码。
-			return new BASE64Encoder().encode(encrypted);
+			return Base64.encodeBase64String(encrypted);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -123,20 +122,12 @@ public class AESUtil {
 			IvParameterSpec iv = new IvParameterSpec(ivs.getBytes());
 			cipher.init(Cipher.DECRYPT_MODE, skySpec, iv);
 			// 先用base64解密
-			byte[] encrypted1 = new BASE64Decoder().decodeBuffer(sSrc);
-			byte[] original = cipher.doFinal(encrypted1);
+			byte[] encrypted = Base64.decodeBase64(sSrc);
+			byte[] original = cipher.doFinal(encrypted);
 			return new String(original, StandardCharsets.UTF_8);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
-	}
-
-	public String encodeBytes(byte[] bytes) {
-		StringBuilder strBuf = new StringBuilder();
-		for (int i = 0; i < bytes.length; i++) {
-			strBuf.append((char) (((bytes[i] >> 4) & 0xF) + ((int) 'a')));
-			strBuf.append((char) (((bytes[i]) & 0xF) + ((int) 'a')));
-		}
-		return strBuf.toString();
 	}
 }
