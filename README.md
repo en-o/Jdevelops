@@ -6,7 +6,7 @@
 * [ ] aop模块
     - [x] apilog [接口调用日志] 
     - [x] apisign [接口验签]
-    - [ ] apiVersion [接口版本]
+    - [x] apiVersion [接口版本]
     - [ ] apiIdempotent [接口幂等]  
 
 * [ ] api模块
@@ -61,6 +61,7 @@
     - [x] String [String工具]
     - [x] environment [环境工具类] 
     - [x] spring [String工具类] 
+        - [x]jar
     - [x] time [时间工具]
     - [x] Map/Bean [实体工具]
     - [x] List [集合工具]

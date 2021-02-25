@@ -14,6 +14,7 @@
         <module>utils-list</module>
         <module>utils-encryption</module>
         <module>utils-jwt</module>
+        <module>utils-message</module>
     </modules>
     <parent>
         <artifactId>detabes-component</artifactId>
