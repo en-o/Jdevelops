@@ -68,6 +68,8 @@
     - [x] encryption [加解密工具]
     - [x] jwt [jwt工具]
     - [x] http [http工具]
+    - [x] message [消息工具]
+        - [x] 微信小程序订阅消息发送
             
 * [ ] web模块    
     - [x] websocket
