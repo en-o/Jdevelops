@@ -66,6 +66,7 @@
         <module>component-cloud</module>
         <!-- starter  -->
         <module>component-starters</module>
+        <module>component-sms</module>
     </modules>
 
     <properties>
@@ -97,6 +98,7 @@
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <okhttp.version>3.7.0</okhttp.version>
         <skipTests>false</skipTests>
+        <sms.aliyun.version>2.0.1</sms.aliyun.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
