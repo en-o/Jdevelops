@@ -3,6 +3,14 @@
 ## 开启短信
 
 > 启动类上添加注解 @Sms
+## 依赖添加
+```java
+    <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>sms-aliyun</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+```
 
 ```java
 @Sms
