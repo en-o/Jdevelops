@@ -34,15 +34,17 @@ import java.util.List;
  * @date 2020/12/8  15:25
  * @description mybatis 父级通用controller
  */
-public class BaseController<M extends IService<T>, T, S extends SerializableVO<S>, U extends SerializableVO<U>,
+public class BaseController<M extends IService<T>, T extends SerializableVO<T>, S extends SerializableVO<S>,
+        U extends SerializableVO<U>,
         R extends SerializableVO<R>> {
     @Autowired
     private M service;
-    private static final int T_INDEX=1;
+    private static final int T_INDEX = 1;
 
-    private static final int R_INDEX=4;
+    private static final int R_INDEX = 4;
     private Class<T> tClass;
     private Class<R> rClass;
+
     protected BaseController() {
         Type type = getClass().getGenericSuperclass();
         Type trueType1 = ((ParameterizedType) type).getActualTypeArguments()[T_INDEX];
@@ -50,6 +52,7 @@ public class BaseController<M extends IService<T>, T, S extends SerializableVO<S
         Type trueType2 = ((ParameterizedType) type).getActualTypeArguments()[R_INDEX];
         this.rClass = (Class<R>) trueType2;
     }
+
     /**
      * description: 单个保存或更新
      *
@@ -165,7 +168,7 @@ public class BaseController<M extends IService<T>, T, S extends SerializableVO<S
             wrapper = WrapperUtils.createOrderBy(wrapper, sortVO);
         }
         List<T> list = service.list(wrapper);
-        List<R> list1 = (List<R>) R.to(list, rClass);
+        List<R> list1 = R.to(list, rClass);
         return ResultVO.resultDataMsgForT(true, list1, "查询全部");
     }
 
@@ -188,7 +191,7 @@ public class BaseController<M extends IService<T>, T, S extends SerializableVO<S
         Page<T> page = service.page(pageParam, wrapper);
         long total = page.getTotal();
         List<T> records = page.getRecords();
-        List<R> list = (List<R>) R.to(records, rClass);
+        List<R> list = R.to(records, rClass);
         ResourcePage<List<R>> resultPage = ResourcePage.page(total, list);
         return ResultVO.success(resultPage, "查询成功");
     }
