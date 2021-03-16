@@ -66,6 +66,7 @@
         <module>component-cloud</module>
         <!-- starter  -->
         <module>component-starters</module>
+        <!-- 短信-->
         <module>component-sms</module>
     </modules>
 
