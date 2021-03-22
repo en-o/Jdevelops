@@ -10,6 +10,15 @@ import java.util.List;
  * @link https://blog.csdn.net/weixin_42514654/article/details/114046759
  * 在代码中调用另外一个jar
  *  - 直接调用线程会阻塞
+ * 使用线程读取
+ * <pr>
+        ExecutorService jar = Executors.newFixedThreadPool(1);
+        jar.execute(() -> {
+        JarExecutor jarExecutor = new JarExecutor();
+        jarExecutor.executeJar("E:\\西信\\demo1\\target\\demo1-0.0.1-SNAPSHOT.jar",null);
+        });
+        jar.shutdown();
+ * </pr>
  */
 public class JarExecutor {
     private BufferedReader error;
