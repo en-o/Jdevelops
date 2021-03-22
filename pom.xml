@@ -296,6 +296,20 @@
         </dependencies>
 
     </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>detabes-component-Release</name>
+            <url>http://192.168.0.3:1100/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>detabes-component-SNAPSHOTS</name>
+            <url>http://192.168.0.3:1100/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <!--Maven远程仓库设置 非必要，可以删除-->
     <repositories>
         <repository>
