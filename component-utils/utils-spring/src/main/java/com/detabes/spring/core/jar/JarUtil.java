@@ -37,7 +37,7 @@ public class JarUtil {
      * @param os 1：windows 2：Linux 3: mac
      */
     public static void bindingMachine(List<EPlatform> os) throws Exception {
-        // 当强系统名
+        // 当前系统
         EPlatform oSname = OSinfo.getOSname();
         if (os.contains(oSname)) {
             throw new RuntimeException("当前平台不允许使用该Jar!");
