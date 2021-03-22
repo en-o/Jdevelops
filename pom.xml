@@ -297,6 +297,7 @@
 
     </dependencyManagement>
 
+    <!-- 项目发布管理-->
     <distributionManagement>
         <repository>
             <id>releases</id>
