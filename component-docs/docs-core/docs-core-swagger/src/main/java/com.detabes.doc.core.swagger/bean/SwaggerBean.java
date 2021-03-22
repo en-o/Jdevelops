@@ -60,10 +60,11 @@ public class SwaggerBean {
 
     /**
      * swagger Docket  :
-     *     SWAGGER_2 (默认)
+     *     SWAGGER_2
      *     SWAGGER_12
+     *     OAS_30 (默认)
      */
-    private String docket = "SWAGGER_2";
+    private String docket = "OAS_30";
 
     /**
      *  true 显示swagger， false 关闭swagger
@@ -81,8 +82,10 @@ public class SwaggerBean {
         switch (docket){
             case "SWAGGER_12":
                 return DocumentationType.SWAGGER_12;
-            default:
+            case "SWAGGER_2":
                 return DocumentationType.SWAGGER_2;
+            default:
+                return DocumentationType.OAS_30;
         }
     }
 }

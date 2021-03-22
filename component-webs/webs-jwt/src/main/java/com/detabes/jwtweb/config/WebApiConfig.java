@@ -44,6 +44,8 @@ public class WebApiConfig implements WebMvcConfigurer {
         excludePathPatterns.add("/swagger-resources/**");
         excludePathPatterns.add("/webjars/**");
         excludePathPatterns.add("/v2/**");
+        excludePathPatterns.add("/v3/**");
+        excludePathPatterns.add("/swagger**/**");
         excludePathPatterns.add("/swagger-ui.html/**");
         excludePathPatterns.add("/doc.html/**");
         excludePathPatterns.add("/user/login/**");

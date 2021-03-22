@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -23,7 +23,7 @@ import java.net.InetAddress;
  * @description swagger配置
  * @date 2020/6/18 15:49
  */
-@EnableSwagger2
+@EnableOpenApi
 @EnableKnife4j
 public class SwaggerConfig {
 
@@ -86,6 +86,27 @@ public class SwaggerConfig {
                 .build();
     }
 
-
+//    /**
+//     * 通用拦截器排除swagger设置，所有拦截器都会自动加swagger相关的资源排除信息
+//     */
+//    @SuppressWarnings("unchecked")
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        try {
+//            Field registrationsField = FieldUtils.getField(InterceptorRegistry.class, "registrations", true);
+//            List<InterceptorRegistration> registrations = (List<InterceptorRegistration>) ReflectionUtils.getField(registrationsField, registry);
+//            if (registrations != null) {
+//                for (InterceptorRegistration interceptorRegistration : registrations) {
+//                    interceptorRegistration
+//                            .excludePathPatterns("/swagger**/**")
+//                            .excludePathPatterns("/webjars/**")
+//                            .excludePathPatterns("/v3/**")
+//                            .excludePathPatterns("/doc.html");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }
