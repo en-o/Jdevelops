@@ -55,6 +55,7 @@ public class ConsoleConfig implements ApplicationRunner {
 					" swagger 启动. Access URLs:\n\t" +
 					"swagger 启动成功！接口文档地址(cloud没有页面)-HTML: http://" + getRealIp() + ":" + serverPort + serverName + "/doc.html" + "\n\t" +
 					"swagger 启动成功！接口文档地址-JSON: http://" + getRealIp() + ":" + serverPort + serverName + "/v2/api-docs" + groupStr + "\n\t" +
+					"swagger 启动成功！接口文档地址-OpenApi-JSON: http://" + getRealIp() + ":" + serverPort + serverName + "/v3/api-docs" + groupStr + "\n\t" +
 					"----------------------------------------------------------");
 
 
