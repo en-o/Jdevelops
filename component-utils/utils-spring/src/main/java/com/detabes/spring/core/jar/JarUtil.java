@@ -5,7 +5,9 @@ import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.detabes.http.core.MacUtil;
+import com.detabes.spring.core.system.OSinfo;
 import com.detabes.spring.entity.JarAddFile;
+import com.detabes.spring.enums.EPlatform;
 import org.springframework.util.ClassUtils;
 
 import java.io.*;
@@ -28,12 +30,28 @@ public class JarUtil {
 
     static String property = System.getProperty("user.home");
 
+    /**
+     * 设置不允许启动的系统平台
+     * 默认全部都可以
+     *
+     * @param os 1：windows 2：Linux 3: mac
+     */
+    public static void bindingMachine(List<EPlatform> os) throws Exception {
+        // 当强系统名
+        EPlatform oSname = OSinfo.getOSname();
+        if (os.contains(oSname)) {
+            throw new RuntimeException("当前平台不允许使用该Jar!");
+        }
+        bindingMachine();
+    }
+
 
     /**
-     *  jar绑定本机运行（复制到其他机器上就无法运行了） - 测试通过了linux（windows还无法实现）
-     *  启动后都配置读不到，直接在jar中生产文件。
-     *  因为第二次启动就不会出现读不到的问题！
-     * @return
+     * jar绑定本机运行（复制到其他机器上就无法运行了） - 测试通过了linux（windows还无法实现）
+     * 启动后都配置读不到，直接在jar中生产文件。
+     * 因为第二次启动就不会出现读不到的问题！
+     *
+     * @return String
      * @throws IOException
      */
     public static String bindingMachine() throws Exception {
@@ -73,12 +91,13 @@ public class JarUtil {
 
 
     /**
-     *  jar运行后网jar中新增文件
-     * @see <a href="https://cloud.tencent.com/developer/ask/137977">感谢</a>
+     * jar运行后网jar中新增文件
+     *
      * @param srcJarFile jar地址
-     * @param update 是否是更新
+     * @param update     是否是更新
      * @param filesToAdd 添加的文件
      * @throws IOException e
+     * @see <a href="https://cloud.tencent.com/developer/ask/137977">感谢</a>
      */
     public static void updateJarFile(File srcJarFile, boolean update, List<JarAddFile> filesToAdd) throws IOException {
 
@@ -98,7 +117,7 @@ public class JarUtil {
                     try {
                         byte[] buffer = new byte[1024];
                         int bytesRead = 0;
-                        JarEntry entry = new JarEntry(fileRelativePath+file.getName());
+                        JarEntry entry = new JarEntry(fileRelativePath + file.getName());
                         fileNames.add(entry.getName());
                         tempJarOutputStream.putNextEntry(entry);
                         while ((bytesRead = fis.read(buffer)) != -1) {
@@ -161,23 +180,24 @@ public class JarUtil {
 
     /**
      * 获取jar的路径 （war包没测试）
+     *
      * @return
      */
     public static String getJarPath() {
         String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
         String os = System.getProperty("os.name");
-        if(path.contains("!")) {
-            path = path.substring(0,path.indexOf("!"));
+        if (path.contains("!")) {
+            path = path.substring(0, path.indexOf("!"));
         }
-        String substring = path.substring(0,path.indexOf(":"));
-        if("jar".equalsIgnoreCase(substring)){
-            path = path.substring(path.indexOf(":")+1);
+        String substring = path.substring(0, path.indexOf(":"));
+        if ("jar".equalsIgnoreCase(substring)) {
+            path = path.substring(path.indexOf(":") + 1);
         }
         if ("file".equalsIgnoreCase(substring)) {
-            path = path.substring(path.indexOf(":")+1);
+            path = path.substring(path.indexOf(":") + 1);
         }
-        if(os.toLowerCase().startsWith("win")){
-            path = path.substring(1).replace("/","\\");
+        if (os.toLowerCase().startsWith("win")) {
+            path = path.substring(1).replace("/", "\\");
         }
         return path;
     }
