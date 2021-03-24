@@ -134,6 +134,12 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
             <version>${swagger-models.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators -->
         <dependency>
