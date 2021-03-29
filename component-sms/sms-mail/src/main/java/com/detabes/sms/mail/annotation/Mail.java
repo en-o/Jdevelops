@@ -18,5 +18,5 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Import(MailConfiguration.class)
-public @interface mail {
+public @interface Mail {
 }

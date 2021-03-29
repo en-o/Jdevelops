@@ -1,7 +1,8 @@
 package com.detabes.sms.mail.config;
 
 import com.detabes.sms.mail.service.MailService;
-import com.detabes.sms.mail.service.impl.JavaMailServiceImpl;
+
+import com.detabes.sms.mail.service.impl.MailServiceImpl;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
@@ -25,16 +26,13 @@ import javax.annotation.Resource;
 @Configuration
 @AutoConfigureAfter(MailSenderAutoConfiguration.class)
 public class MailConfiguration {
-
     @Resource
-    private JavaMailSender mailSender;
-
+    private  JavaMailSender mailSender;
     @Resource
-    private MailProperties mailProperties;
+    private  MailProperties mailProperties;
 
     @Bean
-    @ConditionalOnBean({MailProperties.class, JavaMailSender.class})
     public MailService mailService() {
-        return new JavaMailServiceImpl(mailSender, mailProperties);
+        return new MailServiceImpl(mailSender, mailProperties);
     }
 }
