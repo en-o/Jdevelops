@@ -7,8 +7,9 @@
         <groupId>com.detabes</groupId>
         <version>1.0.0</version>
     </parent>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-
+    <description>阿里云短信配置</description>
     <artifactId>sms-aliyun</artifactId>
 
     <dependencies>
