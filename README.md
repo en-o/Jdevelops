@@ -30,13 +30,16 @@
         - [x] jpaCore
         - [x] jpaServer
     - [ ] mybatis
-        - [ ] mybatisCore
-        - [ ] mybatisServer
+        - [x] mybatisCore
+        - [x] mybatisServer
     - [ ] redis
         - [x] redisCore
         - [x] redisSubscribePublished
     - [ ] MongoDB
- 
+* [ ] 短信发送模块
+    - [x] sms-aliyun 阿里云短信发送
+    - [x] sms-mail 邮件发送
+
 * [ ] doc模块
     - [ ] doc-core
         - [x] swagger-core

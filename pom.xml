@@ -66,6 +66,8 @@
         <module>component-cloud</module>
         <!-- starter  -->
         <module>component-starters</module>
+        <!-- 短信-->
+        <module>component-sms</module>
     </modules>
 
     <properties>
@@ -97,6 +99,7 @@
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <okhttp.version>3.7.0</okhttp.version>
         <skipTests>false</skipTests>
+        <sms.aliyun.version>2.0.1</sms.aliyun.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
@@ -293,6 +296,21 @@
         </dependencies>
 
     </dependencyManagement>
+
+    <!-- 项目发布管理-->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>detabes-component-Release</name>
+            <url>http://192.168.0.3:1100/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>detabes-component-SNAPSHOTS</name>
+            <url>http://192.168.0.3:1100/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <!--Maven远程仓库设置 非必要，可以删除-->
     <repositories>
         <repository>
