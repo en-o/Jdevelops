@@ -1,22 +1,19 @@
 package com.detabes.mybatis.server.controller;
 
-import cn.hutool.core.util.TypeUtil;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.detabes.entity.basics.vo.SerializableVO;
 import com.detabes.mybatis.server.util.ObjectUtil;
-import com.detabes.mybatis.server.util.TypeClassUtil;
 import com.detabes.mybatis.server.util.WrapperUtils;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
 import com.detabes.result.result.ResultVO;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,9 +62,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation("单个保存或更新")
     public ResultVO<R> saveOrUpdate(@RequestBody U u) {
-
-        service.saveOrUpdate(U.to(u, tClass));
-        return ResultVO.success(R.to(u, rClass), "修改成功");
+        T t = U.to(u, tClass);
+        service.saveOrUpdate(t);
+        return ResultVO.success(R.to(t, rClass), "修改成功");
     }
 
     /**
@@ -116,18 +113,8 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
     @ApiOperation("根据id查询")
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
     public ResultVO<R> getById(@RequestParam("id") Long id) {
-        List<T> list = service.list(new QueryWrapper<T>().eq("id", id));
-        try {
-            T t = tClass.newInstance();
-            if (list != null) {
-                t = list.get(0);
-            }
-            return ResultVO.resultDataMsgForT(true, R.to(t, rClass), "查询");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultVO.fail("查询失败！");
-        }
-
+            service.getById(id);
+            return ResultVO.resultDataMsgForT(true, R.to(service.getById(id), rClass), "查询");
     }
 
     /**
