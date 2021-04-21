@@ -1,5 +1,20 @@
 # 后端组件 
 # [版本v1.0.0 已经发布到私服上了](https://gitee.com/detabes/detabes-component/tree/v1/)
+## 项目使用，在pom文件中加入 私库地址
+```xml
+ <repositories>
+        <repository>
+            <id>local-nexus</id>
+            <url>http://192.168.0.3:1100/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+```
 ## 现在此分支准备构建2.0.0 版本
 
 
