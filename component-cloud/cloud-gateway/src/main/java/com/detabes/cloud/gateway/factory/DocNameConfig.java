@@ -25,6 +25,7 @@ import lombok.Data;
  * 用在： http://192.168.0.111:200/swagger-resources
  * 接口文档的搜索框中
  * </pre>
+ * @author tnnn
  */
 @Data
 public class DocNameConfig {

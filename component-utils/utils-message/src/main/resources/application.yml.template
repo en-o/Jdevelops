@@ -1,0 +1,13 @@
+logging:
+  level:
+    org.springframework.web: INFO
+    com.github.binarywang.demo.wx.mp: DEBUG
+    me.chanjar.weixin: DEBUG
+
+wechat:
+  miniapp:
+    appid: # appid
+    secret: # appsecret
+    template-id: # 消息模板id
+    mini-program-state: # 开发正式
+    msg-data-format: # 数据格式

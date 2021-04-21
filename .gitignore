@@ -29,3 +29,4 @@ target/
 hs_err_pid*
 /component-docs/docs-core/docs-core-swagger/target/
 /component-logs/logs-cache/logs-cache-p6spy/target/
+/component-utils/utils-message/target/

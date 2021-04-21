@@ -85,6 +85,10 @@ public enum TimeFormatEnum {
 	 */
 	PURE_FORMAT_DATETIME_SECOND("yyyyMMddHHmmss", "年月日时分秒"),
 	/**
+	 * 格式  yyyyMMddHHmmssSSS
+	 */
+	PURE_FORMAT_DATETIME_MSEC("yyyyMMddHHmmssSSS", "年月日时分秒毫秒"),
+	/**
 	 * 格式  MMddHHmmss
 	 */
 	PURE_FORMAT_DATETIME_MINUTE("yyyyMMddHHmm", "年月日时分"),

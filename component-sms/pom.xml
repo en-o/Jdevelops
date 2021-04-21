@@ -5,7 +5,7 @@
     <parent>
         <artifactId>detabes-component</artifactId>
         <groupId>com.detabes</groupId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>短信</description>

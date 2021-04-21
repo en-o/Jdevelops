@@ -49,7 +49,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> handleBusinessException(BusinessException e) {
         log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-//        response.setStatus(e.getCode());
         return ResultVO.fail(e.getCode(), e.getErrorMessage());
     }
 
@@ -67,7 +66,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> exceptionHandler(NoHandlerFoundException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         log.error("路径不存在，请检查路径是否正确 -> ", e);
-//        response.setStatus(ResultCodeEnum.AuthError.getCode());
         return ResultVO.fail(ResultCodeEnum.AuthError.getCode(), "路径不存在，请检查路径是否正确");
     }
 
@@ -76,7 +74,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> handleNullPointerException(NullPointerException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         log.error("空指针异常 -> ", e);
-//        response.setStatus(ResultCodeEnum.SysError.getCode());
         return ResultVO.fail(ResultCodeEnum.SysError.getCode(), "暂时无法获取数据");
     }
 
@@ -84,7 +81,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         log.error("请求方式不对 - get post -> ", e);
-//        response.setStatus(ResultCodeEnum.AuthError.getCode());
         return ResultVO.fail(ResultCodeEnum.AuthError.getCode(), "请求方式不对 - get post ");
     }
 
@@ -97,11 +93,9 @@ public class ControllerExceptionHandler {
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
                 Objects.nonNull(jsonErrorMsg =
                         dealWithJsonExceptionError(e.getLocalizedMessage()))) {
-//            response.setStatus(ResultCodeEnum.JsonError.getCode());
             return ResultVO.fail(ResultCodeEnum.JsonError.getCode(),"格式转换错误,请检查" + jsonErrorMsg + "字段");
 
         }
-//        response.setStatus(ResultCodeEnum.MessageNoReading.getCode());
         return ResultVO.fail(ResultCodeEnum.MessageNoReading.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
     }
 
@@ -110,7 +104,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> exception(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-//        response.setStatus(ResultCodeEnum.CheckError.getCode());
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         StringBuilder sb = new StringBuilder();
@@ -126,7 +119,6 @@ public class ControllerExceptionHandler {
     public ResultVO<?> handleException(Exception e) {
         log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-//        response.setStatus(ResultCodeEnum.SysError.getCode());
         return ResultVO.fail(ResultCodeEnum.SysError.getCode(), e.getMessage());
     }
 
@@ -141,7 +133,6 @@ public class ControllerExceptionHandler {
             resqStr.append("字段:"+it.getField()+" ==》 验证不通过，原因是："+it.getDefaultMessage());
             resqStr.append("。  ");
         });
-//        response.setStatus(ResultCodeEnum.SysError.getCode());
         return ResultVO.fail(ResultCodeEnum.SysError.getCode(), resqStr.toString());
     }
 

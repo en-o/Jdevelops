@@ -5,7 +5,7 @@
     <parent>
         <artifactId>doc-swagger</artifactId>
         <groupId>com.detabes</groupId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,6 +16,16 @@
             <groupId>com.detabes</groupId>
             <artifactId>docs-core-swagger</artifactId>
             <version>${detabes.last.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>swagger-models</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

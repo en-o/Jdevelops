@@ -5,10 +5,10 @@
     <parent>
         <artifactId>component-beans</artifactId>
         <groupId>com.detabes</groupId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <packaging>jar</packaging>
     <artifactId>beans-constant</artifactId>
 
 

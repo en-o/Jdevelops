@@ -4,6 +4,7 @@ import com.detabes.constant.time.TimeFormat;
 import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -407,5 +408,65 @@ public class TimeUtil {
 		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 
+	/**
+	 * 计算时间差
+	 * @param beginTime 开始时间
+	 * @param endTime 结束时间
+	 * @param beginTimeFormat 开始时间格式
+	 * @param endTimeFormat 结束时间格式
+	 * @param returnTime 输出类型 0：天，1:小时，2:分钟，3：秒，4：毫秒
+	 */
+	public static Long timeDifference(String beginTime, TimeFormatEnum beginTimeFormat,
+									  String endTime, TimeFormatEnum endTimeFormat,
+									  Integer returnTime) {
+
+		org.joda.time.format.DateTimeFormatter beginFormatter = DateTimeFormat.forPattern(beginTimeFormat.getFormat());
+		org.joda.time.format.DateTimeFormatter endTFormatter = DateTimeFormat.forPattern(endTimeFormat.getFormat());
+		DateTime begin = DateTime.parse(beginTime, beginFormatter);
+		DateTime end = DateTime.parse(endTime, endTFormatter);
+//        计算区间毫秒数
+		Duration etime = new Duration(begin, end);
+		switch (returnTime) {
+			case 0:
+				return etime.getStandardDays();
+			case 1:
+				return etime.getStandardHours();
+			case 2:
+				return etime.getStandardMinutes();
+			case 3:
+				return etime.getStandardSeconds();
+			default:
+				return etime.getMillis();
+		}
+	}
+
+
+	/**
+	 * 格式化时间字符传为 dateTime
+	 * @param time 时间
+	 * @param timeFormat 时间类型
+	 * @return DateTime
+	 */
+	public static DateTime formatStr(String time, TimeFormatEnum timeFormat){
+		org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(timeFormat.getFormat());
+		return DateTime.parse(time, dateTimeFormatter);
+	}
+
+	/**
+	 * 得到指定时间的默认格式
+	 * @param date 时间
+	 * @return  yyyy-MM-dd HH:mm:ss
+	 */
+	public static String time2DefaultFormat(Date date){
+		return new DateTime(date).toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
+	}
+
+	/**
+	 * 得到当前时间的默认格式
+	 * @return  yyyy-MM-dd HH:mm:ss
+	 */
+	public static String time2DefaultFormat(){
+		return DateTime.now().toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
+	}
 
 }

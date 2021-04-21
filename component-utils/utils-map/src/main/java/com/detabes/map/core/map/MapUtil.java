@@ -3,17 +3,24 @@ package com.detabes.map.core.map;
 
 import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.string.StringEnum;
+import com.detabes.string.json.GsonUtils;
+import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.detabes.map.core.map.MapSortUtil.sortByValueAscending;
@@ -26,6 +33,9 @@ import static com.detabes.map.core.map.MapSortUtil.sortByValueDescending;
  * @description  map工具类
  */
 public class MapUtil  {
+
+    private static final Pattern PATTERN = Pattern.compile("([^&=]+)(=?)([^&]+)?");
+
     /**
      * 实体对象转成Map
      *
@@ -116,6 +126,39 @@ public class MapUtil  {
             e.printStackTrace();
         }
         return params;
+    }
+
+    /**
+     * map.
+     *
+     * @param <K>      the type parameter
+     * @param <V>      the type parameter
+     * @param supplier supplier
+     * @return String string
+     */
+    public static <K, V> String toMap(final Supplier<MultiValueMap<K, V>> supplier) {
+        return GsonUtils.getInstance().toJson(supplier.get().toSingleValueMap());
+    }
+
+    /**
+     * Init query params map.
+     *
+     * @param query the query
+     * @return the map
+     */
+    public static Map<String, String> initQueryParams(final String query) {
+        final Map<String, String> queryParams = new LinkedHashMap<>();
+        if (!StringUtils.isEmpty(query)) {
+            final Matcher matcher = PATTERN.matcher(query);
+            while (matcher.find()) {
+                String name = decodeQueryParam(matcher.group(1));
+                String eq = matcher.group(2);
+                String value = matcher.group(3);
+                value = !StringUtils.isEmpty(value) ? decodeQueryParam(value) : (StringUtils.hasLength(eq) ? "" : null);
+                queryParams.put(name, value);
+            }
+        }
+        return queryParams;
     }
 
 
@@ -312,6 +355,18 @@ public class MapUtil  {
         }else {
             return false;
         }
+    }
+
+
+    /**
+     * Decode query param string.
+     *
+     * @param value the value
+     * @return the string
+     */
+    @SneakyThrows
+    public static String decodeQueryParam(final String value) {
+        return URLDecoder.decode(value, "UTF-8");
     }
 
 }

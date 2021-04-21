@@ -5,7 +5,7 @@
     <parent>
         <artifactId>caches-jpa</artifactId>
         <groupId>com.detabes</groupId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,8 +17,29 @@
             <version>${detabes.last.version}</version>
         </dependency>
         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.5.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>beans-constant</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>beans-entity</artifactId>
+            <version>${detabes.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.detabes</groupId>
+            <artifactId>beans-enum</artifactId>
+            <version>${detabes.last.version}</version>
         </dependency>
     </dependencies>
 </project>
