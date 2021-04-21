@@ -1,4 +1,8 @@
 # 后端组件 
+# [版本v1.0.0 已经发布到私服上了](https://gitee.com/detabes/detabes-component/tree/v1/)
+## 现在此分支准备构建2.0.0 版本
+
+
 # 待新增功能
 - 公共service
     - 公共多条件查询
