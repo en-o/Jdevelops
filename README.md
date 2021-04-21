@@ -64,7 +64,7 @@
     - [x] String [String工具]
     - [x] environment [环境工具类] 
     - [x] spring [String工具类] 
-        - [x]jar
+        - [x] jar
     - [x] time [时间工具]
     - [x] Map/Bean [实体工具]
     - [x] List [集合工具]
