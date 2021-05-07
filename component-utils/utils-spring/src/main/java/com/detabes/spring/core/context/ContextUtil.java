@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @description 获取上下文
  * @date 2020/6/19 15:30
  */
-@Component
 public class ContextUtil implements ApplicationContextAware {
 	private static ApplicationContext applicationContext;
 
