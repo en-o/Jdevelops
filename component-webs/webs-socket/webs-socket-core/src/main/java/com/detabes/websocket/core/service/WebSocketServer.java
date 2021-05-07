@@ -1,6 +1,7 @@
 package com.detabes.websocket.core.service;
 
 import com.detabes.websocket.core.util.SocketUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -23,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 @ServerEndpoint(value = "/socket/{name}")
+@Slf4j
 public class WebSocketServer {
 
     /** 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。 */
@@ -45,7 +47,7 @@ public class WebSocketServer {
      */
     public void sendMessage(Session session, String message) throws IOException {
         if(session != null){
-            //没验证过 - 异步
+            //异步
             session.getAsyncRemote().sendText(message);
         }
     }
@@ -70,7 +72,7 @@ public class WebSocketServer {
 
         sessionPoolsS.put(userName, sessionsArray);
         addOnlineCount();
-        System.out.println(userName + "加入webSocket！当前人数为" + online);
+        log.info(userName + "加入webSocket！当前人数为" + online);
         try {
             sendMessage(session, "欢迎" + userName + "加入连接！");
         } catch (IOException e) {
@@ -95,7 +97,7 @@ public class WebSocketServer {
             sessionPoolsS.put(userName, sessions);
         }
         subOnlineCount();
-        System.out.println(userName + "断开webSocket连接！当前人数为" + online);
+        log.info(userName + "断开webSocket连接！当前人数为" + online);
     }
 
     /**
@@ -120,13 +122,14 @@ public class WebSocketServer {
         }
     }
 
+
+
     /**
      * 发生错误时候
      * @param throwable throwable
      */
     @OnError
     public void onError(Throwable throwable){
-        System.out.println("发生错误");
         throwable.printStackTrace();
     }
 
