@@ -2,9 +2,7 @@ package com.detabes.mybatis.server.util;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.detabes.mybatis.server.vo.QueryVo;
-import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
 
 
