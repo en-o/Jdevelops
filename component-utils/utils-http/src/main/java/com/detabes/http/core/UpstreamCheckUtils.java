@@ -17,6 +17,7 @@
 
 package com.detabes.http.core;
 
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -26,21 +27,18 @@ import java.net.Socket;
 import java.util.regex.Pattern;
 
 /**
- * The type Uri utils.
+ * The type Ur i utils.
  *
  * @author xiaoyu(Myth)
  */
 public class UpstreamCheckUtils {
 
+    private static String COLONS = ":";
+
     private static final Pattern PATTERN = Pattern
-            .compile("(http://|https://)?(?:(?:[0,1]?\\d?\\d|2[0-4]\\d|25[0-5])\\.){3}(?:[0,1]?\\d?\\d|2[0-4]\\d|25[0-5]):\\d{0,5}");
+            .compile("(http:\\/\\/|https:\\/\\/)?(?:(?:[0,1]?\\d?\\d|2[0-4]\\d|25[0-5])\\.){3}(?:[0,1]?\\d?\\d|2[0-4]\\d|25[0-5]):\\d{0,5}");
 
     private static final String HTTP = "http";
-    /**
-     * The constant COLONS.
-     */
-    private static final String COLONS = ":";
-
 
     /**
      * Check url boolean.
