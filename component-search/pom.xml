@@ -14,6 +14,8 @@
     <modules>
         <!-- solr -->
         <module>search-solr</module>
+        <!-- es -->
+        <module>search-es</module>
     </modules>
 
 

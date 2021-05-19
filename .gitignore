@@ -29,3 +29,8 @@ target/
 hs_err_pid*
 /component-docs/docs-core/docs-core-swagger/target/
 /component-logs/logs-cache/logs-cache-p6spy/target/
+/component-search/search-es/mvnw.cmd
+/component-search/search-es/mvnw
+/component-search/search-es/HELP.md
+/component-search/search-es/.gitignore
+/component-search/search-es/.mvn/
