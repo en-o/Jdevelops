@@ -84,7 +84,7 @@
         <lombok.version>1.18.16</lombok.version>
         <mysql.version>8.0.20</mysql.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
-        <fastjson.version>1.2.72</fastjson.version>
+        <fastjson.version>1.2.76</fastjson.version>
         <jackson.version>2.11.1</jackson.version>
         <joda-time.version>2.10.6</joda-time.version>
         <guava.version>28.2-jre</guava.version>
@@ -100,6 +100,8 @@
         <okhttp.version>3.7.0</okhttp.version>
         <skipTests>false</skipTests>
         <sms.aliyun.version>2.0.1</sms.aliyun.version>
+        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <lucene-queryparser.version>8.8.0</lucene-queryparser.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
