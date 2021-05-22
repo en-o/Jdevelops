@@ -3,7 +3,7 @@ package com.detabes.map.core.map;
 
 import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.string.StringEnum;
-import com.detabes.string.json.GsonUtils;
+import com.detabes.json.GsonUtils;
 import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;

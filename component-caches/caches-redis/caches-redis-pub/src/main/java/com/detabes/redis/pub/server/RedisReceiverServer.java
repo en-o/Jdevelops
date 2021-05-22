@@ -1,6 +1,5 @@
 package com.detabes.redis.pub.server;
 
-import com.detabes.string.core.StringFormat;
 import org.springframework.data.redis.connection.Message;
 
 /**

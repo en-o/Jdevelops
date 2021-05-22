@@ -2,7 +2,6 @@ package com.detabes.redis.pub.server.impl;
 
 
 import com.detabes.redis.pub.server.RedisReceiverServer;
-import com.detabes.string.core.StringFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 
