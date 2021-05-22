@@ -30,3 +30,9 @@ hs_err_pid*
 /component-docs/docs-core/docs-core-swagger/target/
 /component-logs/logs-cache/logs-cache-p6spy/target/
 /component-utils/utils-message/target/
+/component-aops/aops-retrun/mvnw.cmd
+/component-aops/aops-retrun/mvnw
+/component-aops/aops-retrun/.gitignore
+/component-aops/aops-retrun/README.md
+/component-aops/aops-retrun/.mvn/
+/component-aops/aops-retrun/target/
