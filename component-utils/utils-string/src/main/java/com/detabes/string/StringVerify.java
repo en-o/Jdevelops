@@ -1,4 +1,4 @@
-package com.detabes.string.core;
+package com.detabes.string;
 
 import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.sql.SqlStrFilterEnum;

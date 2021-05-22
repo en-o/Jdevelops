@@ -1,4 +1,4 @@
-package com.detabes.string.core;
+package com.detabes.string;
 
 import lombok.extern.slf4j.Slf4j;
 

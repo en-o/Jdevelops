@@ -1,4 +1,4 @@
-package com.detabes.string.core;
+package com.detabes.string;
 
 import org.apache.commons.lang3.StringUtils;
 

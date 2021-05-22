@@ -50,6 +50,7 @@ public class GsonUtils {
      * The constant STRING.
      */
     private static final TypeAdapter<String> STRING = new TypeAdapter<String>() {
+        @Override
         @SneakyThrows
         public void write(final JsonWriter out, final String value) {
             if (StringUtils.isBlank(value)) {

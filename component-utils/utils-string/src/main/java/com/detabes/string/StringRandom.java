@@ -1,12 +1,10 @@
-package com.detabes.string.core;
+package com.detabes.string;
 
 
 
 import com.detabes.enums.random.RandomType;
 
 import java.util.Random;
-
-import static com.detabes.string.core.StringVerify.checkLoinName;
 
 
 /**
@@ -79,7 +77,7 @@ public class StringRandom {
                 val.append(random.nextInt(10));
             }
         }
-        if (!checkLoinName(val.toString())) {
+        if (!StringVerify.checkLoinName(val.toString())) {
             generateLoginName(length);
         }
         return val.toString();
