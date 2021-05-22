@@ -3,13 +3,16 @@ package com.detabes.retrun.aspect;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.detabes.map.core.map.MapUtil;
+import com.detabes.retrun.annotation.ReturnToCamlCase;
 import com.detabes.string.StringFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -36,6 +39,12 @@ public class ReturnToCamlCaseAop {
     public Object doAfterReturning(ProceedingJoinPoint pjp) throws Throwable {
         //指定方法 获取返回值
         Object rvt = pjp.proceed();
+        //从切面织入点处通过反射机制获取织入点处的方法
+        MethodSignature signature = (MethodSignature) pjp.getSignature();
+        //获取切入点所在的方法
+        Method method = signature.getMethod();
+        /*reBean 返回值类型*/
+        ReturnToCamlCase reBean = method.getAnnotation(ReturnToCamlCase.class);
         if(rvt!=null){
             if(rvt instanceof Map){
                 Map<String, Object> beanToMap = MapUtil.beanToMap(rvt);
@@ -53,8 +62,10 @@ public class ReturnToCamlCaseAop {
                     }
                     tmap.add(newMap);
                 }
-                //改变返回值
-//                return changeMap(tmap,new Rvo());
+                if(reBean != null){
+                    //改变返回值
+                return changeMap(tmap,reBean.reBean());
+                }
                 return tmap;
             }
 
