@@ -10,6 +10,7 @@ import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -28,11 +29,9 @@ import java.util.Optional;
 @NoRepositoryBean
 public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
-    private final JpaBasicsDao<T, D> commonDao;
+    @Autowired
+    private JpaBasicsDao<T, D> commonDao;
 
-    public JServiceImpl(JpaBasicsDao<T, D> commonDao) {
-        this.commonDao = commonDao;
-    }
 
     @Override
     public T saveByBean(T bean) {
