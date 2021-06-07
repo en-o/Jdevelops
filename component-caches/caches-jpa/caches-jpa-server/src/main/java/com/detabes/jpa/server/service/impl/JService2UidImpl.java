@@ -4,12 +4,14 @@ import com.detabes.entity.basics.vo.SerializableVO;
 import com.detabes.jap.core.util.CommUtils;
 import com.detabes.jap.core.util.JPAUtilExpandCriteria;
 import com.detabes.jap.core.util.JPageUtil;
-import com.detabes.jpa.server.dao.JpaBasicsDao;
-import com.detabes.jpa.server.service.JService;
+import com.detabes.jpa.server.dao.JpaBasics2UidDao;
+import com.detabes.jpa.server.enums.FieldName;
+import com.detabes.jpa.server.service.JService2Uid;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -26,13 +28,11 @@ import java.util.Optional;
  */
 @Slf4j
 @NoRepositoryBean
-public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
+public class JService2UidImpl<T extends SerializableVO, D> implements JService2Uid<T> {
 
-    private final JpaBasicsDao<T, D> commonDao;
+    @Autowired
+    private JpaBasics2UidDao<T, D> commonDao;
 
-    public JServiceImpl(JpaBasicsDao<T, D> commonDao) {
-        this.commonDao = commonDao;
-    }
 
     @Override
     public T saveByBean(T bean) {
@@ -60,27 +60,53 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
         return false;
     }
 
+    @Override
+    public Boolean deleteByUuid(List<String> uuid) {
+        return commonDao.deleteByUuidIn(uuid)>=0;
+    }
+
+    @Override
+    public Boolean deleteByUuid(String uuid) {
+        return commonDao.deleteByUuid(uuid)>=0;
+    }
 
     @Override
     public Boolean updateByBean(T bean) {
         try {
-            return commonDao.updateEntity(bean);
+            return commonDao.updateEntity(bean, "id");
         } catch (Exception e) {
             throw new RuntimeException("更新出错");
         }
     }
 
+    @Override
+    public Boolean updateByBean(T bean, FieldName fieldName) {
+        try {
+            return commonDao.updateEntity(bean, fieldName);
+        } catch (Exception e) {
+            throw new RuntimeException("更新出错");
+        }
+    }
 
     @Override
     public T findById(Integer id) {
         return commonDao.findById((D) id).get();
     }
-    
+
     @Override
     public List<T> findById(List<Integer> id) {
         return commonDao.findByIdIn((List<D>) id);
     }
 
+    @Override
+    public T findByUuid(String uuid) {
+        return commonDao.findByUuid(uuid);
+    }
+
+    @Override
+    public List<T> findByUuid(List<String> uuid) {
+        return commonDao.findByUuidIn(uuid);
+    }
 
 
     @Override

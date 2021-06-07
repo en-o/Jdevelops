@@ -1,5 +1,6 @@
 package com.detabes.jpa.server.service;
 
+import com.detabes.jpa.server.enums.FieldName;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
 import com.detabes.result.response.SortVO;
@@ -13,7 +14,7 @@ import java.util.List;
  * @className JService
  * @date 2021-01-22 13:35
  */
-public interface JService<T> {
+public interface JService2Uid<T> {
 
     /**
      * 保存数据 返回实体
@@ -47,6 +48,21 @@ public interface JService<T> {
      */
     Boolean deleteById(final Integer id);
 
+    /**
+     * 根据UuIds删除对象
+     *
+     * @param uuid UuIds
+     * @return Boolean
+     */
+    Boolean deleteByUuid(final List<String> uuid);
+
+    /**
+     * 根据Uuid删除对象
+     *
+     * @param uuid Uuid
+     * @return Boolean
+     */
+    Boolean deleteByUuid(final String uuid);
 
     /**
      * 更新数据 返回实体
@@ -56,6 +72,15 @@ public interface JService<T> {
      */
     Boolean updateByBean(T t);
 
+
+    /**
+     * 更新数据 返回实体
+     *
+     * @param t 实体 id一定要有且键名为ID
+     * @param fieldName  fieldName
+     * @return Boolean
+     */
+    Boolean updateByBean(T t, FieldName fieldName);
 
     /**
      * 根据 id 查询
@@ -72,6 +97,22 @@ public interface JService<T> {
      * @return T
      */
     List<T> findById(final List<Integer> id);
+
+    /**
+     * 根据 uuid 查询
+     *
+     * @param uuid uuid
+     * @return T
+     */
+    T findByUuid(final String uuid);
+
+    /**
+     * 根据 uuid 查询
+     *
+     * @param uuid uuid
+     * @return T
+     */
+    List<T> findByUuid(final List<String> uuid);
 
 
     /**

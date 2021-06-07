@@ -33,7 +33,7 @@ public class CommUtils {
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
         String getter = "get" + firstLetter + fieldName.substring(1);
         Method method = target.getClass().getMethod(getter, new Class[0]);
-        Object e = method.invoke(target);
+        Object e = method.invoke(target, new Object[0]);
         return e;
     }
 
