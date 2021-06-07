@@ -6,6 +6,7 @@ import com.detabes.jap.core.util.criteria.Restrictions;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * @author tn
@@ -32,7 +33,7 @@ public class CommUtils {
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
         String getter = "get" + firstLetter + fieldName.substring(1);
         Method method = target.getClass().getMethod(getter, new Class[0]);
-        Object e = method.invoke(target, new Object[0]);
+        Object e = method.invoke(target);
         return e;
     }
 
@@ -65,6 +66,33 @@ public class CommUtils {
             }
             Object fieldValue = ReflectUtil.getFieldValue(bean, fields[i]);
             jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
+        }
+        return jpaSelect;
+    }
+
+
+
+    /**
+     * 多条件查询 的 条件组装 AND
+     * @param bean 多条件查询
+     * @param <T> 多条件查询
+     * @param isFieldOr 指定条件为 or 的字段名
+     * @return JPAUtilExpandCriteria
+     */
+    public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean, List<String> isFieldOr) {
+        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
+        Field[] fields = ReflectUtil.getFields(bean.getClass());
+        for (int i = 0; i < fields.length; i++) {
+            String fieldName = fields[i].getName();
+            if("serialVersionUID".equals(fieldName)){
+                continue;
+            }
+            Object fieldValue = ReflectUtil.getFieldValue(bean, fields[i]);
+            if(isFieldOr!=null && isFieldOr.contains(fieldName)){
+                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
+            }else {
+                jpaSelect.or(Restrictions.eq(fieldName, fieldValue, true));
+            }
         }
         return jpaSelect;
     }
