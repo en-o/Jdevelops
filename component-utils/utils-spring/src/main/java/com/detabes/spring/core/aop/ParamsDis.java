@@ -60,11 +60,7 @@ public class ParamsDis {
         log.info("入参:{}", params);
         long ts = System.currentTimeMillis();
         Object result = pjp.proceed();
-        if (RequestMethod.POST.toString().equals(method)) {
-            log.info("出参:{}, 耗时 {} 毫秒", JSONObject.toJSONString(result), System.currentTimeMillis() - ts);
-        } else {
-            log.info("出参 ... 耗时 {} 毫秒", System.currentTimeMillis() - ts);
-        }
+        log.info("出参 ... 耗时 {} 毫秒", System.currentTimeMillis() - ts);
         return result;
     }
 }
