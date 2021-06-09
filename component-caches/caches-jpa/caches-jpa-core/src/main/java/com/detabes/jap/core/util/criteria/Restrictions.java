@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * jpa 查询工具之构建sql  具体实现
+ *
  * @author tn
  */
 public class Restrictions {
@@ -19,7 +20,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ);
@@ -34,7 +35,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE);
@@ -48,13 +49,43 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return
      */
-    public static SimpleExpression like(String fieldName, String value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)||"null".equals(value)) {
+    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull) {
+        if (ignoreNull && StringUtils.isEmpty(value) || "null".equals(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE);
     }
 
+    /**
+     * 左模糊匹配
+     *
+     * @param fieldName
+     * @param value
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return
+     */
+    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull) {
+        if (ignoreNull && StringUtils.isEmpty(value) || "null".equals(value)) {
+            return null;
+        }
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE);
+    }
+
+
+    /**
+     * 右模糊匹配
+     *
+     * @param fieldName
+     * @param value
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return
+     */
+    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull) {
+        if (ignoreNull && StringUtils.isEmpty(value) || "null".equals(value)) {
+            return null;
+        }
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE);
+    }
 
     /**
      * 大于
@@ -65,7 +96,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT);
@@ -80,7 +111,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT);
@@ -95,7 +126,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE);
@@ -110,7 +141,7 @@ public class Restrictions {
      * @return
      */
     public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull&&StringUtils.isEmpty(value)) {
+        if (ignoreNull && StringUtils.isEmpty(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE);

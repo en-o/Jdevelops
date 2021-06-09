@@ -27,6 +27,14 @@ public interface ExpandCriterion {
 		 */
 		LIKE,
 		/**
+		 * 左模糊
+		 */
+		LLIKE,
+		/**
+		 * 右模糊
+		 */
+		RLIKE,
+		/**
 		 * 大于
 		 */
 		GT,
