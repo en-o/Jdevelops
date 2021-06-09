@@ -43,6 +43,7 @@ public class Restrictions {
 
     /**
      * 模糊匹配
+     * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
      * @param fieldName
      * @param value
@@ -58,7 +59,7 @@ public class Restrictions {
 
     /**
      * 左模糊匹配
-     *
+     * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      * @param fieldName
      * @param value
      * @param ignoreNull true 空值不做查询，false 不忽略空
@@ -74,7 +75,7 @@ public class Restrictions {
 
     /**
      * 右模糊匹配
-     *
+     * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      * @param fieldName
      * @param value
      * @param ignoreNull true 空值不做查询，false 不忽略空

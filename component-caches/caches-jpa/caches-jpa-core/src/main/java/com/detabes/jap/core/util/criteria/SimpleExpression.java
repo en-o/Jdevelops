@@ -61,11 +61,14 @@ public class SimpleExpression implements ExpandCriterion {
             case NE:
                 return builder.notEqual(expression, value);
             case LIKE:
-                return builder.like(expression, "%" + value + "%");
+                String like = "%" + value + "%";
+                return builder.like((Expression<String>) expression, like);
             case LLIKE:
-                return builder.like(expression, "%" + value);
+                String llike = "%" + value;
+                return builder.like((Expression<String>) expression, llike);
             case RLIKE:
-                return builder.like(expression, value + "%");
+                String rlike = value + "%";
+                return builder.like((Expression<String>) expression, rlike);
             case LT:
                 return builder.lessThan(expression, (Comparable) value);
             case GT:
