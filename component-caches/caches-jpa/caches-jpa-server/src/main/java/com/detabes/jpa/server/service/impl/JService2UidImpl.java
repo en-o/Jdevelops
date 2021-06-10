@@ -90,7 +90,7 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
 
     @Override
     public T findById(Integer id) {
-        return commonDao.findById((D) id).get();
+        return commonDao.findById((D) id).orElse(null);
     }
 
     @Override

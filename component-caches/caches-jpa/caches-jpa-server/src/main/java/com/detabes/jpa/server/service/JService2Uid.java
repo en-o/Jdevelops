@@ -84,7 +84,7 @@ public interface JService2Uid<T> {
 
     /**
      * 根据 id 查询
-     *
+     *  查询不到返回null
      * @param id id
      * @return T
      */

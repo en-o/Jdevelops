@@ -18,6 +18,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.List;
 import java.util.Optional;
 
+import static sun.plugin.util.ProgressMonitor.get;
+
 /**
  * 预约模块公共service实现
  *
@@ -72,7 +74,7 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
     @Override
     public T findById(Integer id) {
-        return commonDao.findById((D) id).get();
+        return commonDao.findById((D) id).orElse(null);
     }
     
     @Override
