@@ -71,6 +71,32 @@ public class CommUtils {
     }
 
 
+    /**
+     * 多条件查询 的 条件组装 AND
+     * @param bean 多条件查询
+     * @param <T> 多条件查询
+     * @return JPAUtilExpandCriteria
+     */
+    public static <T> JPAUtilExpandCriteria<T> getSelectBeanByLike(T bean ) {
+        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
+        Field[] fields = ReflectUtil.getFields(bean.getClass());
+        for (int i = 0; i < fields.length; i++) {
+            String fieldName = fields[i].getName();
+            if("serialVersionUID".equals(fieldName)){
+                continue;
+            }
+            Object fieldValue = ReflectUtil.getFieldValue(bean, fields[i]);
+            if(fieldValue instanceof Integer){
+                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
+            }else {
+                jpaSelect.add(Restrictions.like(fieldName, fieldValue, true));
+            }
+
+        }
+        return jpaSelect;
+    }
+
+
 
     /**
      * 多条件查询 的 条件组装 AND
