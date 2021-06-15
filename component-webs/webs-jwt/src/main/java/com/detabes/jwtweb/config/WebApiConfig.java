@@ -43,8 +43,8 @@ public class WebApiConfig implements WebMvcConfigurer {
         Set<String> excludePathPatterns = interceptorBean.getExcludePathPatterns();
         excludePathPatterns.add("/swagger-resources/**");
         excludePathPatterns.add("/webjars/**");
-        excludePathPatterns.add("/v2/**");
-        excludePathPatterns.add("/v3/**");
+        excludePathPatterns.add("/v2/api-docs/**");
+        excludePathPatterns.add("/v3/api-docs/**");
         excludePathPatterns.add("/swagger**/**");
         excludePathPatterns.add("/swagger-ui.html/**");
         excludePathPatterns.add("/doc.html/**");
