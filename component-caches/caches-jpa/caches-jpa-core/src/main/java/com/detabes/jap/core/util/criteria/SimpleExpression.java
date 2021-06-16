@@ -28,6 +28,11 @@ public class SimpleExpression implements ExpandCriterion {
         this.operator = operator;
     }
 
+    protected SimpleExpression(String fieldName, Operator operator) {
+        this.fieldName = fieldName;
+        this.operator = operator;
+    }
+
     public String getFieldName() {
         return fieldName;
     }
@@ -77,6 +82,10 @@ public class SimpleExpression implements ExpandCriterion {
                 return builder.lessThanOrEqualTo(expression, (Comparable) value);
             case GTE:
                 return builder.greaterThanOrEqualTo(expression, (Comparable) value);
+            case ISNULL:
+                return builder.isNull(expression);
+            case ISNOTNULL:
+                return builder.isNotNull(expression);
             default:
                 return null;
         }

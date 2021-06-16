@@ -51,6 +51,17 @@ public interface ExpandCriterion {
 		 */
 		LTE,
 		/**
+		 * 等于空值
+		 */
+		ISNULL,
+		/**
+		 * 并且
+		 */
+		/**
+		 * 空值
+		 */
+		ISNOTNULL,
+		/**
 		 * 并且
 		 */
 		AND,

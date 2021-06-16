@@ -189,4 +189,23 @@ public class Restrictions {
         }
         return new LogicalExpression(ses, ExpandCriterion.Operator.OR);
     }
+
+    /**
+     * 等于空值
+     *
+     * @param fieldName
+     * @return
+     */
+    public static SimpleExpression isNull(String fieldName) {
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL);
+    }
+
+    /**
+     * 空值
+     * @param fieldName
+     * @return
+     */
+    public static SimpleExpression isNotNull(String fieldName) {
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL);
+    }
 }
