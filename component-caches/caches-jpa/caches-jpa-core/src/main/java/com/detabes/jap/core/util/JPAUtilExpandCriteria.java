@@ -110,7 +110,12 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
      *     	        c.add(Restrictions.eq("needFollow", searchParam.getIsfollow(), true));
      *     	        c.add(Restrictions.ne("flowStatus", searchParam.getMainStatus() true));
      *     	        c.add(Restrictions.in("solveTeam.code",teamCodes, true));
+     *     	        c.add(Restrictions.and(Restrictions.in("solveTeam.code",teamCodes, true)));
+     *     	        c.add(Restrictions.or(Restrictions.in("solveTeam.code",teamCodes, true)));
      *     	repository.findAll(c);
+     *     	// 如果要给与的条件不满足请自定义
+     *     	 Specification<Custom> custom = new Specification<Custom>(){xxxx}
+     *     	 c.add(custom)
      *        }
      * </pr>
      *
