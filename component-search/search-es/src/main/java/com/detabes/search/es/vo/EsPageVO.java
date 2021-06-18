@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * ES分页结果类
+ *
  * @author l
  */
 @Getter
@@ -19,56 +20,56 @@ public class EsPageVO {
 	/**
 	 * 当前页
 	 */
-	private int currentPage;
+	private Integer currentPage;
 	/**
 	 * 每页显示多少条
 	 */
-	private int pageSize;
+	private Integer pageSize;
 
 	/**
 	 * 总记录数
 	 */
-	private int recordCount;
+	private Integer total;
 	/**
 	 * 本页的数据列表
 	 */
-	private List<Map<String, Object>> recordList;
+	private List<Map<String, Object>> rows;
 
 	/**
 	 * 总页数
 	 */
-	private int pageCount;
+	private Integer totalPages;
 	/**
 	 * 页码列表的开始索引（包含）
 	 */
-	private int beginPageIndex;
+	private Integer beginPageIndex;
 	/**
 	 * 页码列表的结束索引（包含）
 	 */
-	private int endPageIndex;
+	private Integer endPageIndex;
 
 	/**
 	 * 只接受前4个必要的属性，会自动的计算出其他3个属性的值
 	 *
-	 * @param currentPage
-	 * @param pageSize
-	 * @param recordCount
-	 * @param recordList
+	 * @param currentPage 当前页
+	 * @param pageSize    每页大小
+	 * @param total       总记录数
+	 * @param rows        数据
 	 */
-	public EsPageVO(int currentPage, int pageSize, int recordCount, List<Map<String, Object>> recordList) {
+	public EsPageVO(int currentPage, int pageSize, int total, List<Map<String, Object>> rows) {
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
-		this.recordCount = recordCount;
-		this.recordList = recordList;
+		this.total = total;
+		this.rows = rows;
 
 		// 计算总页码
-		pageCount = (recordCount + pageSize - 1) / pageSize;
+		totalPages = (total + pageSize - 1) / pageSize;
 
 		// 计算 beginPageIndex 和 endPageIndex
 		// >> 总页数不多于10页，则全部显示
-		if (pageCount <= 10) {
+		if (totalPages <= 10) {
 			beginPageIndex = 1;
-			endPageIndex = pageCount;
+			endPageIndex = totalPages;
 		}
 		// 总页数多于10页，则显示当前页附近的共10个页码
 		else {
@@ -81,9 +82,9 @@ public class EsPageVO {
 				endPageIndex = 10;
 			}
 			// 当后面的页码不足5个时，则显示后10个页码
-			if (endPageIndex > pageCount) {
-				endPageIndex = pageCount;
-				beginPageIndex = pageCount - 10 + 1;
+			if (endPageIndex > totalPages) {
+				endPageIndex = totalPages;
+				beginPageIndex = totalPages - 10 + 1;
 			}
 		}
 	}
