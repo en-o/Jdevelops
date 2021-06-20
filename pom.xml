@@ -102,6 +102,7 @@
         <sms.aliyun.version>2.0.1</sms.aliyun.version>
         <elasticsearch.version>7.12.1</elasticsearch.version>
         <lucene-queryparser.version>8.8.0</lucene-queryparser.version>
+        <skywalking.version>8.5.0</skywalking.version>
     </properties>
 
     <!-- 子项目强行依赖   -->

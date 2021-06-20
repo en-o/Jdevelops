@@ -2,11 +2,13 @@ package com.detabes.result.result;
 
 import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.result.page.ResourcePage;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 
 import java.io.Serializable;
 
@@ -63,6 +65,12 @@ public class ResultPageVO<T> implements Serializable {
     /** 时间戳 */
     @ApiModelProperty(value = "时间戳")
     private Long ts = System.currentTimeMillis();
+
+
+    /** traceId  */
+    @ApiModelProperty(value = "skywalking_traceId")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String traceId;
 
     /** 自动转换success的返回值：true,false*/
     public boolean isSuccess() {
@@ -148,5 +156,13 @@ public class ResultPageVO<T> implements Serializable {
         return pageVO;
     }
 
+
+    public String getTraceId() {
+        if(null!=traceId){
+            return traceId;
+        }else {
+            return traceId= TraceContext.traceId();
+        }
+    }
 
 }
