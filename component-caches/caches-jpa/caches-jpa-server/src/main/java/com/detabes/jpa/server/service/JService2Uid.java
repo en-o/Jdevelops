@@ -25,6 +25,21 @@ public interface JService2Uid<T> {
     T saveByBean(T t);
 
     /**
+     * 保存list
+     * @param bean
+     * @return
+     */
+    Boolean saveAll(List<T> bean);
+
+
+    /**
+     * 保存list
+     * @param bean
+     * @return
+     */
+    List<T> saveAllByBean(List<T> bean);
+
+    /**
      * 保存数据 返回 boolean
      *
      * @param t t
@@ -123,6 +138,13 @@ public interface JService2Uid<T> {
      * @return List<T>
      */
     List<T> findByBean(T t);
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<T> findAll();
+
 
     /**
      * 分页查询

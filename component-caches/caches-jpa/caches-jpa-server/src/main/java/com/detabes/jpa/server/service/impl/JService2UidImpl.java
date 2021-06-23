@@ -40,6 +40,22 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
     }
 
     @Override
+    public Boolean saveAll(List<T> bean) {
+        try {
+            commonDao.saveAll(bean);
+        }catch (Exception e){
+            log.error("保存失败",e);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public List<T> saveAllByBean(List<T> bean) {
+        return commonDao.saveAll(bean);
+    }
+
+    @Override
     public Boolean saveByBoolean(T bean) {
         return Optional.ofNullable(commonDao.save(bean)).isPresent();
     }
@@ -113,6 +129,11 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
     public List<T> findByBean(T t) {
         JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
         return commonDao.findAll(selectRegionBean);
+    }
+
+    @Override
+    public List<T> findAll() {
+        return commonDao.findAll();
     }
 
     @Override
