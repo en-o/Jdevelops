@@ -1,13 +1,16 @@
-package com.detabes.search.es.util;
+package com.detabes.search.es.service.impl;
 
 import com.detabes.search.es.dto.ConditionDTO;
 import com.detabes.search.es.dto.EqDTO;
 import com.detabes.search.es.dto.SortDTO;
 import com.detabes.search.es.dto.SpecialDTO;
+import com.detabes.search.es.service.EsSearchService;
 import com.detabes.search.es.vo.EsPageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -25,7 +28,7 @@ import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,31 +37,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 检索工具类
+ * 检索接口实现
  *
- * @author l
+ * @author lxw
  * @version V1.0
- * @date 2021/5/11
+ * @date 2021/6/23
  **/
 @Slf4j
-@Component
-public class EsSearchUtil {
+@Service
+public class EsSearchServiceImpl implements EsSearchService {
 
-	private final RestHighLevelClient restHighLevelClient;
+	private RestHighLevelClient restHighLevelClient;
 
-	public EsSearchUtil(RestHighLevelClient restHighLevelClient) {
+	public EsSearchServiceImpl(RestHighLevelClient restHighLevelClient) {
 		this.restHighLevelClient = restHighLevelClient;
 	}
 
-	/**
-	 * 无条件分页检索示例
-	 *
-	 * @param index     索引名称集合["anjuan","xiangmu","wenben"]
-	 * @param startPage 起始页
-	 * @param pageSize  每页大小
-	 * @return EsPageVO 返回值
-	 * @throws IOException 异常
-	 */
+	@Override
+	public Map<String, Object> searchDataById(String index, String esOnlyId, String fields) throws IOException {
+		GetRequest request = new GetRequest(index, esOnlyId);
+		if (StringUtils.isNotEmpty(fields)) {
+			//只查询特定字段。如果需要查询所有字段则不设置该项。
+			request.fetchSourceContext(new FetchSourceContext(true, fields.split(","), Strings.EMPTY_ARRAY));
+		}
+		GetResponse response = restHighLevelClient.get(request, RequestOptions.DEFAULT);
+		return response.getSource();
+	}
+
+	@Override
 	public EsPageVO getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -68,65 +74,24 @@ public class EsSearchUtil {
 		return executePage(request, null, startPage, pageSize);
 	}
 
-	/**
-	 * 分页检索示例
-	 *
-	 * @param index            索引名称集合
-	 * @param eqDTOList        等于类型的匹配条件集合(拼接结果效果类似于:
-	 *                         <p>
-	 *                         and field1 in ('value1','value2','value3'...) <br/>
-	 *                         and field2 in ('value1','value2','value3'...) <br/>
-	 *                         and field3 in ('value1','value2','value3'...) <br/>
-	 *                         ...)<br/>
-	 *                         </p><br/>
-	 * @param terms            检索词集合
-	 * @param fields           被检索字段集合
-	 * @param nested           被嵌套查询名称
-	 * @param nestedFields     被嵌套检索的字段集合
-	 * @param specialDTOList   指定条件模糊检索条件集合(拼接结果效果类似于:
-	 *                         <p>
-	 *                         and field1 like '%value1%' <br/>
-	 *                         and field2 like '%value2%' <br/>
-	 *                         and field3 like '%value3%' <br/>
-	 *                         ...)<br/>
-	 *                         </p><br/>
-	 * @param conditionDTOList 逻辑条件集合（拼接结果效果类似于:
-	 *                         <p>
-	 *                         and (高级组合))<br/>
-	 *                         </p><br/>
-	 * @param listList         AND 条件集合块(拼接结果效果类似于:
-	 *                         <p>
-	 *                         and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                         and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                         and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                         ...)<br/>
-	 *                         </p><br/>
-	 * @param highlightField   高亮字段，一定在fields集合中
-	 * @param startPage        起始页
-	 * @param pageSize         每页大小
-	 * @param sortDTOList      排序集合
-	 * @return com.detabes.search.es.vo.EsPageVO
-	 * @author lxw
-	 * @date 2021/5/20 14:30
-	 */
-	public EsPageVO getSearch(List<String> index, List<EqDTO> eqDTOList
-			, List<String> terms, List<String> fields, String nested, List<String> nestedFields
-			, List<SpecialDTO> specialDTOList
-			, List<ConditionDTO> conditionDTOList
-			, List<List<List<ConditionDTO>>> listList
-			, String highlightField, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException {
+	@Override
+	public EsPageVO getSearch(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+			, String nested, List<String> nestedFields
+			, List<SpecialDTO> specialDTOList, List<ConditionDTO> conditionDTOList
+			, List<List<List<ConditionDTO>>> listList, String highlightField
+			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		// AND 组装 eqDOTS
-		boolQueryBuilder = setEqCondition(boolQueryBuilder, eqDTOList);
+		setEqCondition(boolQueryBuilder, eqDTOList);
 		// AND 组装 常规条件集合
 		if (terms != null && terms.size() > 0) {
 			boolQueryBuilder.must(setConditionByTerm(terms, fields, nested, nestedFields));
 		}
 		// AND 组装 模糊条件集合
 		if (specialDTOList != null && specialDTOList.size() > 0) {
-			specialDTOList(boolQueryBuilder, specialDTOList);
+			setSpecialDTOList(boolQueryBuilder, specialDTOList);
 		}
 		// AND 高级条件组
 		boolQueryBuilder.must(setAdvanced(conditionDTOList));
@@ -144,20 +109,7 @@ public class EsSearchUtil {
 		return executePage(request, highlightField, startPage, pageSize);
 	}
 
-	/**
-	 * 文件检索示例
-	 *
-	 * @param index       索引集合
-	 * @param eqDTOList   等于类型的匹配条件集合
-	 * @param terms       检索词集合
-	 * @param fields      被检索字段集合
-	 * @param startPage   起始页
-	 * @param pageSize    每页大小
-	 * @param sortDTOList 排序集合
-	 * @return com.detabes.search.es.vo.EsPageVO
-	 * @author lxw
-	 * @date 2021/5/20 11:09
-	 */
+	@Override
 	public EsPageVO getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
@@ -178,48 +130,16 @@ public class EsSearchUtil {
 		return executePage(request, null, startPage, pageSize);
 	}
 
-	/**
-	 * 分组统计示例
-	 *
-	 * @param index        索引名称集合
-	 * @param eqDTOList    等于类型的匹配条件集合(拼接结果效果类似于:
-	 *                     <p>
-	 *                     and field1 in ('value1','value2','value3'...) <br/>
-	 *                     and field2 in ('value1','value2','value3'...) <br/>
-	 *                     and field3 in ('value1','value2','value3'...) <br/>
-	 *                     ...)<br/>
-	 *                     </p><br/>
-	 * @param terms        检索词集合
-	 * @param fields       被检索字段集合
-	 * @param nested       被嵌套查询名称
-	 * @param nestedFields 被嵌套检索的字段集合
-	 * @param listList     AND 条件集合块(拼接结果效果类似于:
-	 *                     <p>
-	 *                     and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                     and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                     and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 *                     ...)<br/>
-	 *                     </p><br/>
-	 * @param groupField   分组字段，唯一一个
-	 * @return List<Map < String, Object>>
-	 * @author lxw
-	 * @date 2021/5/20 14:30
-	 */
+	@Override
 	public List<Map<String, Object>> getGroup(List<String> index, List<EqDTO> eqDTOList
-			, List<String> terms, List<String> fields, String nested, List<String> nestedFields
+			, List<String> terms, List<String> fields
+			, String nested, List<String> nestedFields
 			, List<List<List<ConditionDTO>>> listList
 			, String groupField) throws IOException {
 		SearchRequest searchRequest = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		// AND 组装 eqDOTS
-		setEqCondition(boolQueryBuilder, eqDTOList);
-		// AND 组装 常规条件集合
-		if (terms != null && terms.size() > 0) {
-			boolQueryBuilder.must(setConditionByTerm(terms, fields, nested, nestedFields));
-		}
-		// AND 组装多块条件集合
-		setAdvancedList(boolQueryBuilder, listList);
+		getBoolQueryBuilder(boolQueryBuilder, eqDTOList, terms, fields, nested, nestedFields, listList);
 		// 将条件初始化到查询对象
 		sourceBuilder.query(boolQueryBuilder);
 		// 根据 groupField 进行分组统计，统计出的列别名叫 sum
@@ -229,14 +149,21 @@ public class EsSearchUtil {
 		return executeGroup(searchRequest);
 	}
 
-	/**
-	 * 执行分组聚合统计
-	 *
-	 * @param searchRequest
-	 * @return java.util.List<java.util.Map < java.lang.String, java.lang.Object>>
-	 * @author lxw 请求对象
-	 * @date 2021/5/20 16:20
-	 */
+	private void getBoolQueryBuilder(BoolQueryBuilder boolQueryBuilder, List<EqDTO> eqDTOList
+			, List<String> terms, List<String> fields
+			, String nested, List<String> nestedFields
+			, List<List<List<ConditionDTO>>> listList) {
+		// AND 组装 eqDOTS
+		setEqCondition(boolQueryBuilder, eqDTOList);
+		// AND 组装 常规条件集合
+		if (terms != null && terms.size() > 0) {
+			boolQueryBuilder.must(setConditionByTerm(terms, fields, nested, nestedFields));
+		}
+		// AND 组装多块条件集合
+		setAdvancedList(boolQueryBuilder, listList);
+	}
+
+	@Override
 	public List<Map<String, Object>> executeGroup(SearchRequest searchRequest) throws IOException {
 		SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 		//得到这个分组的数据集合
@@ -255,24 +182,15 @@ public class EsSearchUtil {
 		return list;
 	}
 
-	/**
-	 * 执行分页查询
-	 *
-	 * @param request        请求对象
-	 * @param highlightField 高亮字段
-	 * @param startPage      起始页
-	 * @param pageSize       分页
-	 * @return com.detabes.search.es.vo.EsPageVO
-	 * @author lxw
-	 * @date 2021/5/12 18:13
-	 */
+	@Override
 	public EsPageVO executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException {
 		SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
 		log.info("totalHits:" + response.getHits().getTotalHits());
 		long totalHits = response.getHits().getTotalHits().value;
 		long length = response.getHits().getHits().length;
 		log.debug("共查询到[{}]条数据,处理数据条数[{}]", totalHits, length);
-		if (response.status().getStatus() == 200) {
+		int status = 200;
+		if (response.status().getStatus() == status) {
 			// 解析对象
 			List<Map<String, Object>> maps = handleSearchResponse(response, highlightField);
 			return new EsPageVO(startPage, pageSize, (int) totalHits, maps);
@@ -280,23 +198,8 @@ public class EsSearchUtil {
 		return null;
 	}
 
-	/**
-	 * 设置字段等于多个值的条件拼接 拼接结果效果类似于:
-	 * <p>
-	 * and field1 in ('value1','value2','value3'...) <br/>
-	 * and field2 in ('value1','value2','value3'...) <br/>
-	 * and field3 in ('value1','value2','value3'...) <br/>
-	 * ...<br/>
-	 * </p><br/>
-	 *
-	 * @param boolQueryBuilder 传入bool
-	 * @param eqDTOList        等于多值的条件集合
-	 * @return org.elasticsearch.index.query.BoolQueryBuilder
-	 * @author lxw
-	 * @date 2021/5/20 11:56
-	 */
+	@Override
 	public BoolQueryBuilder setEqCondition(BoolQueryBuilder boolQueryBuilder, List<EqDTO> eqDTOList) {
-
 		if (eqDTOList == null || eqDTOList.isEmpty()) {
 			return boolQueryBuilder;
 		}
@@ -308,20 +211,7 @@ public class EsSearchUtil {
 		return boolQueryBuilder;
 	}
 
-	/**
-	 * 设置多块指定条件 拼接结果效果类似于:
-	 * <p>
-	 * and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 * and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 * and ((高级组合) or (高级组合) or(高级组合)) <br/>
-	 * ...<br/>
-	 * </p><br/>
-	 *
-	 * @param boolQueryBuilder 参数
-	 * @param listList      参数
-	 * @author lxw
-	 * @date 2021/5/20 12:05
-	 */
+	@Override
 	public void setAdvancedList(BoolQueryBuilder boolQueryBuilder, List<List<List<ConditionDTO>>> listList) {
 		if (listList == null || listList.isEmpty()) {
 			return;
@@ -339,16 +229,7 @@ public class EsSearchUtil {
 		});
 	}
 
-	/**
-	 * 多条件常规拼接拼接结果效果类似于:
-	 * <p>
-	 * and (高级组合))<br/>
-	 * </p><br/>
-	 *
-	 * @param conditionDTOList 条件集合
-	 * @return BoolQueryBuilder
-	 * @author l
-	 */
+	@Override
 	public BoolQueryBuilder setAdvanced(List<ConditionDTO> conditionDTOList) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		if (conditionDTOList != null && conditionDTOList.size() > 0) {
@@ -369,34 +250,15 @@ public class EsSearchUtil {
 		return boolQueryBuilder;
 	}
 
-	/**
-	 * 设置拼接指定条件 拼接结果效果类似于:
-	 * <p>
-	 * and field1 like '%value1%' <br/>
-	 * and field2 like '%value2%' <br/>
-	 * and field3 like '%value3%' <br/>
-	 * ...<br/>
-	 * </p><br/>
-	 *
-	 * @param specialDTOList 指定条件集合
-	 */
-	public void specialDTOList(BoolQueryBuilder bq, List<SpecialDTO> specialDTOList) {
+	@Override
+	public void setSpecialDTOList(BoolQueryBuilder bq, List<SpecialDTO> specialDTOList) {
 		if (specialDTOList != null && specialDTOList.size() > 0) {
 			specialDTOList.forEach(i -> bq.must(QueryBuilders.matchPhraseQuery(i.getField(), i.getFieldValue())));
 		}
 	}
 
-	/**
-	 * 设置查询条件
-	 *
-	 * @param terms        检索词集合
-	 * @param fields       需要检索常规字段集合
-	 * @param nested       嵌套名称 如“fubiao”
-	 * @param nestedFields 需要嵌套检索的字段集合
-	 * @return BoolQueryBuilder
-	 */
-	public BoolQueryBuilder setConditionByTerm(List<String> terms, List<String> fields, String
-			nested, List<String> nestedFields) {
+	@Override
+	public BoolQueryBuilder setConditionByTerm(List<String> terms, List<String> fields, String nested, List<String> nestedFields) {
 		BoolQueryBuilder bq = QueryBuilders.boolQuery();
 		if (terms != null && terms.size() > 0) {
 			// 常规查询条件
@@ -411,13 +273,7 @@ public class EsSearchUtil {
 		return bq;
 	}
 
-	/**
-	 * 拼接常规条件
-	 *
-	 * @param terms  检索词集合
-	 * @param fields 被检索字段集合
-	 * @return BoolQueryBuilder
-	 */
+	@Override
 	public BoolQueryBuilder setFieldsTerm(List<String> terms, List<String> fields) {
 		BoolQueryBuilder bq2 = QueryBuilders.boolQuery();
 		for (String str : terms) {
@@ -435,14 +291,7 @@ public class EsSearchUtil {
 		return bq2;
 	}
 
-	/**
-	 * 拼接嵌套条件
-	 *
-	 * @param nested       索引嵌套结构名称
-	 * @param terms        检索词集合
-	 * @param nestedFields 被检索的嵌套条件
-	 * @return BoolQueryBuilder
-	 */
+	@Override
 	public BoolQueryBuilder setNestedFieldsTerm(String nested, List<String> terms, List<String> nestedFields) {
 		BoolQueryBuilder bq3 = QueryBuilders.boolQuery();
 		for (String str : terms) {
@@ -460,23 +309,7 @@ public class EsSearchUtil {
 		return bq3;
 	}
 
-	/**
-	 * 判断拼接条件<br/>
-	 *
-	 * @param field      字段
-	 * @param fieldValue 值
-	 * @param symbol     匹配类型
-	 *                   PS:symbol包含
-	 *                   <p>
-	 *                   EQ 就是 EQUAL等于 <br/>
-	 *                   NE 就是 NOT EQUAL不等于 <br/>
-	 *                   GT 就是 GREATER THAN大于　<br/>
-	 *                   LT 就是 LESS THAN小于 <br/>
-	 *                   GE 就是 GREATER THAN OR EQUAL 大于等于 <br/>
-	 *                   LE 就是 LESS THAN OR EQUAL 小于等于 <br/>
-	 *                   LIKE  就是 模糊 <br/>
-	 *                   <p/>
-	 */
+	@Override
 	public BoolQueryBuilder setConSymbol(String field, String fieldValue, String symbol) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		switch (symbol.trim()) {
@@ -515,31 +348,15 @@ public class EsSearchUtil {
 		return boolQueryBuilder;
 	}
 
-	/**
-	 * 设定指定检索字段
-	 *
-	 * @param sourceBuilder 查询条件对象
-	 * @param fields        指定检索字段
-	 * @return org.elasticsearch.search.builder.SearchSourceBuilder
-	 * @author lxw
-	 */
-	public SearchSourceBuilder setAppointFields(SearchSourceBuilder sourceBuilder, String fields) {
+	@Override
+	public void setAppointFields(SearchSourceBuilder sourceBuilder, String fields) {
 		if (StringUtils.isNotBlank(fields)) {
 			//只查询特定字段。如果需要查询所有字段则不设置该项。
 			sourceBuilder.fetchSource(new FetchSourceContext(true, fields.split(","), Strings.EMPTY_ARRAY));
 		}
-		return sourceBuilder;
 	}
 
-	/**
-	 * 设置分页
-	 *
-	 * @param sourceBuilder 查询对象
-	 * @param startPage     起始页
-	 * @param pageSize      每页大小
-	 * @author lxw
-	 * @date 2021/5/11 16:28
-	 */
+	@Override
 	public void setPage(SearchSourceBuilder sourceBuilder, Integer startPage, Integer pageSize) {
 		if (startPage > 0) {
 			startPage = startPage - 1;
@@ -551,19 +368,7 @@ public class EsSearchUtil {
 		sourceBuilder.trackTotalHits(true);
 	}
 
-	/**
-	 * 设置排序
-	 *
-	 * @param sourceBuilder 查询对象
-	 * @param list          排序对象
-	 *                      PS：数据如下
-	 *                      <p>
-	 *                      orderField 排序字段 <br/>
-	 *                      orderType 排序方式 0、降序，1、升序<br/>
-	 *                      </p>
-	 * @author lxw
-	 * @date 2021/5/12 18:38
-	 */
+	@Override
 	public void setOrderField(SearchSourceBuilder sourceBuilder, List<SortDTO> list) {
 		list.forEach(i -> {
 			if (StringUtils.isNotBlank(i.getOrderBy())) {
@@ -577,14 +382,7 @@ public class EsSearchUtil {
 		});
 	}
 
-	/**
-	 * 设置高亮
-	 *
-	 * @param query          查询对象
-	 * @param highlightField 高亮字段
-	 * @author lxw
-	 * @date 2021/5/11 16:31
-	 */
+	@Override
 	public void setHighlightField(SearchSourceBuilder query, String highlightField) {
 		if (StringUtils.isNotBlank(highlightField)) {
 			//高亮
@@ -598,13 +396,7 @@ public class EsSearchUtil {
 		}
 	}
 
-	/**
-	 * 高亮结果集 特殊处理
-	 * map转对象 JSONObject.parseObject(JSONObject.toJSONString(map), Content.class)
-	 *
-	 * @param searchResponse 结果集
-	 * @param highlightField 高亮字段
-	 */
+	@Override
 	public List<Map<String, Object>> handleSearchResponse(SearchResponse searchResponse, String highlightField) {
 		//解析结果
 		ArrayList<Map<String, Object>> list = new ArrayList<>();
