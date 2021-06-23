@@ -40,7 +40,7 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
     }
 
     @Override
-    public Boolean saveAll(List<T> bean) {
+    public Boolean saveAllByBoolean(List<T> bean) {
         try {
             commonDao.saveAll(bean);
         }catch (Exception e){
@@ -132,7 +132,7 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAllBean() {
         return commonDao.findAll();
     }
 

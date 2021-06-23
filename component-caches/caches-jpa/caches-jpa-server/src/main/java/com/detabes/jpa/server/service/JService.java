@@ -28,7 +28,7 @@ public interface JService<T> {
      * @param bean
      * @return
      */
-    Boolean saveAll(List<T> bean);
+    Boolean saveAllByBoolean(List<T> bean);
 
     /**
      * 保存list
@@ -101,7 +101,7 @@ public interface JService<T> {
      * 查询所有
      * @return
      */
-    List<T> findAll();
+    List<T> findAllBean();
 
     /**
      * 分页查询

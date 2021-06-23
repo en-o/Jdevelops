@@ -29,7 +29,7 @@ public interface JService2Uid<T> {
      * @param bean
      * @return
      */
-    Boolean saveAll(List<T> bean);
+    Boolean saveAllByBoolean(List<T> bean);
 
 
     /**
@@ -143,7 +143,7 @@ public interface JService2Uid<T> {
      * 查询所有
      * @return
      */
-    List<T> findAll();
+    List<T> findAllBean();
 
 
     /**
