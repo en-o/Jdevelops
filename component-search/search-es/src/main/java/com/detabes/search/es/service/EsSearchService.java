@@ -4,7 +4,7 @@ import com.detabes.search.es.dto.ConditionDTO;
 import com.detabes.search.es.dto.EqDTO;
 import com.detabes.search.es.dto.SortDTO;
 import com.detabes.search.es.dto.SpecialDTO;
-import com.detabes.search.es.vo.EsPageVO;
+import com.detabes.search.es.page.EsPage;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -40,10 +40,10 @@ public interface EsSearchService {
 	 * @param index     索引名称集合["anjuan","xiangmu","wenben"]
 	 * @param startPage 起始页
 	 * @param pageSize  每页大小
-	 * @return com.detabes.search.es.vo.EsPageVO
+	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 */
-	EsPageVO getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException;
+	EsPage getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException;
 
 	/**
 	 * 分页检索示例
@@ -82,12 +82,12 @@ public interface EsSearchService {
 	 * @param startPage        起始页
 	 * @param pageSize         每页大小
 	 * @param sortDTOList      排序集合
-	 * @return com.detabes.search.es.vo.EsPageVO
+	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 * @author lxw
 	 * @date 2021/5/20 14:30
 	 */
-	EsPageVO getSearch(List<String> index, List<EqDTO> eqDTOList
+	EsPage getSearch(List<String> index, List<EqDTO> eqDTOList
 			, List<String> terms, List<String> fields, String nested, List<String> nestedFields
 			, List<SpecialDTO> specialDTOList
 			, List<ConditionDTO> conditionDTOList
@@ -104,12 +104,12 @@ public interface EsSearchService {
 	 * @param startPage   起始页
 	 * @param pageSize    每页大小
 	 * @param sortDTOList 排序集合
-	 * @return com.detabes.search.es.vo.EsPageVO
+	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 * @author lxw
 	 * @date 2021/5/20 11:09
 	 */
-	EsPageVO getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	EsPage getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException;
 
 	/**
@@ -135,7 +135,7 @@ public interface EsSearchService {
 	 *                     ...)<br/>
 	 *                     </p><br/>
 	 * @param groupField   分组字段，唯一一个
-	 * @return com.detabes.search.es.vo.EsPageVO
+	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 * @date 2021/5/20 14:30
 	 */
@@ -160,12 +160,12 @@ public interface EsSearchService {
 	 * @param highlightField 高亮字段
 	 * @param startPage      起始页
 	 * @param pageSize       分页
-	 * @return com.detabes.search.es.vo.EsPageVO
+	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 * @author lxw
 	 * @date 2021/5/12 18:13
 	 */
-	EsPageVO executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException;
+	EsPage executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException;
 
 
 	/**

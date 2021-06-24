@@ -4,8 +4,8 @@ import com.detabes.search.es.dto.ConditionDTO;
 import com.detabes.search.es.dto.EqDTO;
 import com.detabes.search.es.dto.SortDTO;
 import com.detabes.search.es.dto.SpecialDTO;
+import com.detabes.search.es.page.EsPage;
 import com.detabes.search.es.service.EsSearchService;
-import com.detabes.search.es.vo.EsPageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -65,7 +65,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPageVO getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException {
+	public EsPage getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 		// 设置分页
@@ -75,7 +75,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPageVO getSearch(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	public EsPage getSearch(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, String nested, List<String> nestedFields
 			, List<SpecialDTO> specialDTOList, List<ConditionDTO> conditionDTOList
 			, List<List<List<ConditionDTO>>> listList, String highlightField
@@ -110,7 +110,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPageVO getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	public EsPage getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -183,7 +183,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPageVO executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException {
+	public EsPage executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException {
 		SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
 		log.info("totalHits:" + response.getHits().getTotalHits());
 		long totalHits = response.getHits().getTotalHits().value;
@@ -193,7 +193,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 		if (response.status().getStatus() == status) {
 			// 解析对象
 			List<Map<String, Object>> maps = handleSearchResponse(response, highlightField);
-			return new EsPageVO(startPage, pageSize, (int) totalHits, maps);
+			return EsPage.page(startPage, pageSize, (int) totalHits, maps);
 		}
 		return null;
 	}
