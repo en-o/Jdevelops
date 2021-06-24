@@ -4,7 +4,6 @@ import com.detabes.search.es.dto.ConditionDTO;
 import com.detabes.search.es.dto.EqDTO;
 import com.detabes.search.es.dto.SortDTO;
 import com.detabes.search.es.dto.SpecialDTO;
-import com.detabes.search.es.page.EsPage;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -43,7 +42,7 @@ public interface EsSearchService {
 	 * @return com.detabes.search.es.vo.EsPage
 	 * @throws IOException IOException
 	 */
-	EsPage getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException;
+	SearchResponse getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException;
 
 	/**
 	 * 分页检索示例
@@ -87,7 +86,7 @@ public interface EsSearchService {
 	 * @author lxw
 	 * @date 2021/5/20 14:30
 	 */
-	EsPage getSearch(List<String> index, List<EqDTO> eqDTOList
+	SearchResponse getSearch(List<String> index, List<EqDTO> eqDTOList
 			, List<String> terms, List<String> fields, String nested, List<String> nestedFields
 			, List<SpecialDTO> specialDTOList
 			, List<ConditionDTO> conditionDTOList
@@ -109,7 +108,7 @@ public interface EsSearchService {
 	 * @author lxw
 	 * @date 2021/5/20 11:09
 	 */
-	EsPage getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	SearchResponse getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException;
 
 	/**
@@ -156,16 +155,14 @@ public interface EsSearchService {
 	/**
 	 * 执行分页查询
 	 *
-	 * @param request        请求对象
-	 * @param highlightField 高亮字段
-	 * @param startPage      起始页
-	 * @param pageSize       分页
-	 * @return com.detabes.search.es.vo.EsPage
+	 * @param request 请求对象
+	 * @return org.elasticsearch.action.search.SearchResponse
 	 * @throws IOException IOException
 	 * @author lxw
-	 * @date 2021/5/12 18:13
+	 * @date 2021/6/24 11:56
 	 */
-	EsPage executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException;
+
+	SearchResponse executePage(SearchRequest request) throws IOException;
 
 
 	/**

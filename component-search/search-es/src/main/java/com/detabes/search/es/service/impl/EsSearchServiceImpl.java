@@ -4,7 +4,6 @@ import com.detabes.search.es.dto.ConditionDTO;
 import com.detabes.search.es.dto.EqDTO;
 import com.detabes.search.es.dto.SortDTO;
 import com.detabes.search.es.dto.SpecialDTO;
-import com.detabes.search.es.page.EsPage;
 import com.detabes.search.es.service.EsSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -65,17 +64,17 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPage getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException {
+	public SearchResponse getSearch(List<String> index, Integer startPage, Integer pageSize) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 		// 设置分页
 		setPage(sourceBuilder, startPage, pageSize);
 		request.source(sourceBuilder);
-		return executePage(request, null, startPage, pageSize);
+		return executePage(request);
 	}
 
 	@Override
-	public EsPage getSearch(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	public SearchResponse getSearch(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, String nested, List<String> nestedFields
 			, List<SpecialDTO> specialDTOList, List<ConditionDTO> conditionDTOList
 			, List<List<List<ConditionDTO>>> listList, String highlightField
@@ -106,11 +105,11 @@ public class EsSearchServiceImpl implements EsSearchService {
 		// 设置高亮
 		setHighlightField(sourceBuilder, highlightField);
 		request.source(sourceBuilder);
-		return executePage(request, highlightField, startPage, pageSize);
+		return executePage(request);
 	}
 
 	@Override
-	public EsPage getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
+	public SearchResponse getSearchFile(List<String> index, List<EqDTO> eqDTOList, List<String> terms, List<String> fields
 			, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException {
 		SearchRequest request = new SearchRequest(index.toArray(new String[]{}));
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -127,7 +126,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 		// 设置排序
 		setOrderField(sourceBuilder, sortDTOList);
 		request.source(sourceBuilder);
-		return executePage(request, null, startPage, pageSize);
+		return executePage(request);
 	}
 
 	@Override
@@ -183,17 +182,14 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
-	public EsPage executePage(SearchRequest request, String highlightField, Integer startPage, Integer pageSize) throws IOException {
+	public SearchResponse executePage(SearchRequest request) throws IOException {
 		SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
-		log.info("totalHits:" + response.getHits().getTotalHits());
 		long totalHits = response.getHits().getTotalHits().value;
 		long length = response.getHits().getHits().length;
 		log.debug("共查询到[{}]条数据,处理数据条数[{}]", totalHits, length);
 		int status = 200;
 		if (response.status().getStatus() == status) {
-			// 解析对象
-			List<Map<String, Object>> maps = handleSearchResponse(response, highlightField);
-			return EsPage.page(startPage, pageSize, (int) totalHits, maps);
+			return response;
 		}
 		return null;
 	}
