@@ -97,7 +97,7 @@ public class TimeUtil {
 	 *
 	 * @param beginDate 开始时间
 	 * @param endDate   结束时间
-	 * @return {long}
+	 * @return {long}  beginDate<endDate 返回 endDate 大多少天，反正直接返回-1
 	 */
 	public static long result(Date beginDate, Date endDate) {
 		// 获得两个时间的毫秒时间差异

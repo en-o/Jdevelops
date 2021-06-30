@@ -4,9 +4,12 @@ import com.detabes.constant.time.TimeFormat;
 import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -18,6 +21,13 @@ public class TimeUtilTest {
     public void formatStr() {
         DateTime dateTime = TimeUtil.formatStr("20200202", TimeFormatEnum.PURE_FORMAT_DATETIME_DAY);
         assertNotNull(dateTime);
+    }
+    @Test
+    public void resultNumbers() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(TimeFormat.DEFAULT_FORMAT_DATETIME);
+        List<Integer> integers = TimeUtil.resultNumbers(DateTime.parse("2021-06-30 17:31:51",dateTimeFormatter).toDate());
+//         [年，月，日，周几，12小时制小时，二十四小时制小时，分，秒]
+        assertEquals(Arrays.asList(2021, 6, 30, 3, 5, 17, 31, 51),integers);
     }
 
     @Test
@@ -43,6 +53,13 @@ public class TimeUtilTest {
         }
         assertEquals(TimeUtil.findDates(DateTime.now().toDate(), DateTime.now().plusDays(3).toDate()),list);
 
+    }
+    @Test
+    public void result() {
+        long result = TimeUtil.result(DateTime.now().toDate(), DateTime.now().plusDays(3).toDate());
+        long result1 = TimeUtil.result(DateTime.now().plusDays(3).toDate(),DateTime.now().toDate());
+        assertEquals(result,3);
+        assertEquals(result1,-1);
     }
 
     @Test
