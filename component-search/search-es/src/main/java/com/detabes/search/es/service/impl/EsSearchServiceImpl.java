@@ -10,12 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.text.Text;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -195,6 +195,50 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
+	public List<Map<String, Object>> getAll(SearchRequest searchRequest) throws IOException {
+		List<Map<String, Object>> list = new ArrayList<>();
+		list.clear();
+		searchRequest.scroll(TimeValue.timeValueMinutes(5));
+		SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		for (SearchHit hit : response.getHits().getHits()) {
+			//4.1、首页数据
+			Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+			list.add(sourceAsMap);
+		}
+		String scrollId = response.getScrollId();
+		while (true) {
+			// 5、循环创建SearchScrollRequest
+			SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+			//6、再指定scroll的生存时间，若不指定它会归零
+			scrollRequest.scroll(TimeValue.timeValueMinutes(2L));
+			//7、执行查询获取结果
+			SearchResponse scrollResp = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
+			scrollId = scrollResp.getScrollId();
+			//8、判断是否查询到了数据输出
+			SearchHit[] hits = scrollResp.getHits().getHits();
+			if (hits != null && hits.length > 0) {
+				for (SearchHit hit : hits) {
+					//循环输出
+					Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+					list.add(sourceAsMap);
+				}
+			} else {
+				//9、若无数据则退出
+				break;
+			}
+		}
+		//10、创建ClearScrollRequest
+		ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
+		//11、指定scrollId
+		clearScrollRequest.addScrollId(scrollId);
+		//12、删除scrollId
+		ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
+		//13、根据它返回判断删除成功没
+		boolean succeeded = clearScrollResponse.isSucceeded();
+		return list;
+	}
+
+	@Override
 	public BoolQueryBuilder setEqCondition(BoolQueryBuilder boolQueryBuilder, List<EqDTO> eqDTOList) {
 		if (eqDTOList == null || eqDTOList.isEmpty()) {
 			return boolQueryBuilder;
@@ -309,32 +353,32 @@ public class EsSearchServiceImpl implements EsSearchService {
 	public BoolQueryBuilder setConSymbol(String field, String fieldValue, String symbol) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		switch (symbol.trim()) {
-			// EQ 就是 EQUAL等于
+			// EQ 就是 EQUAL等于 必须加 “.keyword”
 			case "EQ":
 				boolQueryBuilder.must(QueryBuilders.termQuery(field + ".keyword", fieldValue));
 				break; //可选
-			// NE 就是 NOT EQUAL不等于
+			// NE 就是 NOT EQUAL不等于 必须加 “.keyword”
 			case "NE":
 				boolQueryBuilder.mustNot(QueryBuilders.termQuery(field + ".keyword", fieldValue));
 				//语句
 				break; //可选
-			// GT 就是 GREATER THAN大于
+			// GT 就是 GREATER THAN大于 不要加“.keyword”
 			case "GT":
 				boolQueryBuilder.must(QueryBuilders.rangeQuery(field).gt(fieldValue));
 				break; //可选
-			// LT 就是 LESS THAN小于
+			// LT 就是 LESS THAN小于 不要加“.keyword”
 			case "LT":
 				boolQueryBuilder.must(QueryBuilders.rangeQuery(field).lt(fieldValue));
 				break; //可选
-			// GE 就是 GREATER THAN OR EQUAL 大于等于
+			// GE 就是 GREATER THAN OR EQUAL 大于等于 不要加“.keyword”
 			case "GE":
 				boolQueryBuilder.must(QueryBuilders.rangeQuery(field).gte(fieldValue));
 				break; //可选
-			// LE 就是 LESS THAN OR EQUAL 小于等于
+			// LE 就是 LESS THAN OR EQUAL 小于等于 不要加“.keyword”
 			case "LE":
 				boolQueryBuilder.must(QueryBuilders.rangeQuery(field).lte(fieldValue));
 				break; //可选
-			// LIKE  就是 模糊
+			// LIKE  就是 模糊 不要加“.keyword”
 			case "LIKE":
 				boolQueryBuilder.must(QueryBuilders.matchPhraseQuery(field, fieldValue));
 				break; //可选

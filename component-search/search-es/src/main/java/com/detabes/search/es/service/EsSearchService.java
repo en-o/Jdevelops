@@ -164,6 +164,16 @@ public interface EsSearchService {
 
 	SearchResponse executePage(SearchRequest request) throws IOException;
 
+	/**
+	 * 查询所有
+	 *
+	 * @param searchRequest 请求参数
+	 * @return org.elasticsearch.action.search.SearchResponse
+	 * @throws IOException IOException
+	 * @author lxw
+	 * @date 2021/6/29 17:20
+	 */
+	List<Map<String, Object>> getAll(SearchRequest searchRequest) throws IOException;
 
 	/**
 	 * 设置字段等于多个值的条件拼接 拼接结果效果类似于:
