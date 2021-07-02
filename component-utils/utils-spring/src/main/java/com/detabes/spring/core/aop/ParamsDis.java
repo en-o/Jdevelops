@@ -1,7 +1,6 @@
 package com.detabes.spring.core.aop;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
@@ -11,10 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Objects;
 
 /**
  * @author tn
@@ -27,12 +22,13 @@ import java.util.Objects;
 public class ParamsDis {
     /**
      * 调用日志打印
+     *
      * @param request
      * @param pjp
      * @return
      * @throws Throwable
      */
-    public  static  Object aopDis(HttpServletRequest request, ProceedingJoinPoint pjp) throws Throwable {
+    public static Object aopDis(HttpServletRequest request, ProceedingJoinPoint pjp) throws Throwable {
         String url = request.getRequestURL().toString();
         String method = request.getMethod();
         String queryString = request.getQueryString();
@@ -49,14 +45,9 @@ public class ParamsDis {
                         continue;
                     } else {
                         try {
-                            //如果入参是LocalDate LocalDateTime的格式进行其它处理
-                            if (arg instanceof LocalDate || arg instanceof LocalDateTime || arg instanceof LocalTime){
-                                log.info("入参参数为时间格式类");
-                                params=params.concat(Objects.isNull(arg) ?arg.toString():"").concat(",");
-                            }else {
-                                params = params.concat(JSON.toJSONString(arg, SerializerFeature.WriteDateUseDateFormat)).concat(",");
-                            }
-                        }catch (Exception e){
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            params = params.concat(objectMapper.writeValueAsString(arg)).concat(",");
+                        } catch (Exception e) {
                             log.error("入参参数处理异常，就打印了");
                         }
                     }
