@@ -64,7 +64,11 @@ public class CamlCaseUtil {
             matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
         }
         matcher.appendTail(sb);
-        return sb.toString();
+        String string = sb.toString();
+        if(str.substring(0, 1).toCharArray()[0]>='A'&&str.substring(0, 1).toCharArray()[0]<='Z'){
+            string = string.substring(1);
+        }
+        return string;
     }
 
     public static String replaceAll(String str, String replacement) {
