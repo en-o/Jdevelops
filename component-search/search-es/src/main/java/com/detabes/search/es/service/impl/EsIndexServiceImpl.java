@@ -170,9 +170,10 @@ public class EsIndexServiceImpl implements EsIndexService {
 	 * 若包含"time"，则类型为 keyword；<br/>
 	 * 若包含 "dateFormat"，则类型为 date； <br/>
 	 * 若等于 "status"，则类型为 integer； <br/>
+	 * 若等于 "id"，则类型为 integer； <br/>
 	 * 若包含 "stats"，则类型为 integer； <br/>
 	 * 若包含 "type"，则类型为 integer； <br/>
-	 * 若等于 "id"，则类型为 long； <br/>
+	 *
 	 * </p>
 	 *
 	 * @param builder 构建器
@@ -196,12 +197,11 @@ public class EsIndexServiceImpl implements EsIndexService {
 			builder.startObject(field).field("type", "keyword").endObject();
 
 		} else if (StringUtils.equals(field.toLowerCase(), status)
+				|| StringUtils.equals(field.toLowerCase(), id)
 				|| field.toLowerCase().contains(type)
-				|| field.toLowerCase().contains(stats)) {
+				|| field.toLowerCase().contains(stats)
+		) {
 			builder.startObject(field).field("type", "integer").endObject();
-
-		} else if (StringUtils.equals(field.toLowerCase(), id)) {
-			builder.startObject(field).field("type", "long").endObject();
 
 		} else {
 			builder.startObject(field)
