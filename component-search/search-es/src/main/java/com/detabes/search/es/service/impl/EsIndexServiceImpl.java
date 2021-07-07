@@ -169,10 +169,6 @@ public class EsIndexServiceImpl implements EsIndexService {
 	 * <p>
 	 * 若包含"time"，则类型为 keyword；<br/>
 	 * 若包含 "dateFormat"，则类型为 date； <br/>
-	 * 若等于 "status"，则类型为 integer； <br/>
-	 * 若等于 "id"，则类型为 integer； <br/>
-	 * 若包含 "stats"，则类型为 integer； <br/>
-	 * 若包含 "type"，则类型为 integer； <br/>
 	 *
 	 * </p>
 	 *
@@ -185,23 +181,12 @@ public class EsIndexServiceImpl implements EsIndexService {
 	private void timeOrDate2Keyword(XContentBuilder builder, String field) throws IOException {
 		String time = "time";
 		String dateFormat = "dateFormat";
-		String status = "status";
-		String stats = "stats";
-		String type = "type";
-		String id = "id";
 
 		if (field.toLowerCase().contains(dateFormat.toLowerCase())) {
 			builder.startObject(field).field("type", "date").field("format", "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis").endObject();
 
 		} else if (field.toLowerCase().contains(time)) {
 			builder.startObject(field).field("type", "keyword").endObject();
-
-		} else if (StringUtils.equals(field.toLowerCase(), status)
-				|| StringUtils.equals(field.toLowerCase(), id)
-				|| field.toLowerCase().contains(type)
-				|| field.toLowerCase().contains(stats)
-		) {
-			builder.startObject(field).field("type", "integer").endObject();
 
 		} else {
 			builder.startObject(field)
