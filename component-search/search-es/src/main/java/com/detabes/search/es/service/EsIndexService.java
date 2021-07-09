@@ -44,6 +44,14 @@ public interface EsIndexService {
 	/**
 	 * 创建索引库映射
 	 * <p> index不存在会先创建，存在则会先执行删除，再创建index，最后创建字段映射</p>
+	 * <p>
+	 * 若结尾是"time"，则类型为 keyword；<br/>
+	 * 若结尾是 "dateFormat"，则类型为 date； <br/>
+	 * 若等于 "status"，则类型为 integer； <br/>
+	 * 若等于 "id"，则类型为 integer； <br/>
+	 * 若结尾是 "stats"，则类型为 integer； <br/>
+	 * 若结尾是 "type"，则类型为 integer； <br/>
+	 * </p>
 	 *
 	 * @param index  索引名称
 	 * @param fields 常规字段
@@ -57,6 +65,14 @@ public interface EsIndexService {
 	/**
 	 * 单个字段创建索引库映射
 	 * PS: index 必须存在，若不存在则无法创建映射。
+	 * <p>
+	 * 若结尾是"time"，则类型为 keyword；<br/>
+	 * 若结尾是 "dateFormat"，则类型为 date； <br/>
+	 * 若等于 "status"，则类型为 integer； <br/>
+	 * 若等于 "id"，则类型为 integer； <br/>
+	 * 若结尾是 "stats"，则类型为 integer； <br/>
+	 * 若结尾是 "type"，则类型为 integer； <br/>
+	 * </p>
 	 *
 	 * @param index 索引名称
 	 * @param field 常规字段
@@ -67,6 +83,14 @@ public interface EsIndexService {
 
 	/**
 	 * 创建嵌套映射
+	 * <p>
+	 * 若结尾是"time"，则类型为 keyword；<br/>
+	 * 若结尾是 "dateFormat"，则类型为 date； <br/>
+	 * 若等于 "status"，则类型为 integer； <br/>
+	 * 若等于 "id"，则类型为 integer； <br/>
+	 * 若结尾是 "stats"，则类型为 integer； <br/>
+	 * 若结尾是 "type"，则类型为 integer； <br/>
+	 * </p>
 	 *
 	 * @param index        索引名称
 	 * @param nested       嵌套名称

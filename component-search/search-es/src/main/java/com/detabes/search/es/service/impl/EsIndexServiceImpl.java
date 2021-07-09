@@ -167,9 +167,12 @@ public class EsIndexServiceImpl implements EsIndexService {
 	/**
 	 * 包含time或者date的字段类型设定为keyword，且不分词
 	 * <p>
-	 * 若包含"time"，则类型为 keyword；<br/>
-	 * 若包含 "dateFormat"，则类型为 date； <br/>
-	 *
+	 * 若结尾是"time"，则类型为 keyword；<br/>
+	 * 若结尾是 "dateFormat"，则类型为 date； <br/>
+	 * 若等于 "status"，则类型为 integer； <br/>
+	 * 若等于 "id"，则类型为 integer； <br/>
+	 * 若结尾是 "stats"，则类型为 integer； <br/>
+	 * 若结尾是 "type"，则类型为 integer； <br/>
 	 * </p>
 	 *
 	 * @param builder 构建器
@@ -181,12 +184,22 @@ public class EsIndexServiceImpl implements EsIndexService {
 	private void timeOrDate2Keyword(XContentBuilder builder, String field) throws IOException {
 		String time = "time";
 		String dateFormat = "dateFormat";
-
-		if (field.toLowerCase().contains(dateFormat.toLowerCase())) {
+		String status = "status";
+		String stats = "stats";
+		String type = "type";
+		String id = "id";
+		if (field.toLowerCase().endsWith(dateFormat.toLowerCase())) {
 			builder.startObject(field).field("type", "date").field("format", "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis").endObject();
 
-		} else if (field.toLowerCase().contains(time)) {
+		} else if (field.toLowerCase().endsWith(time)) {
 			builder.startObject(field).field("type", "keyword").endObject();
+
+		} else if (StringUtils.equals(field.toLowerCase(), status)
+				|| StringUtils.equals(field.toLowerCase(), id)
+				|| field.toLowerCase().endsWith(type)
+				|| field.toLowerCase().endsWith(stats)
+		) {
+			builder.startObject(field).field("type", "integer").endObject();
 
 		} else {
 			builder.startObject(field)
