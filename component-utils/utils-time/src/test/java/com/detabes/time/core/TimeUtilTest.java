@@ -7,9 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -71,8 +69,25 @@ public class TimeUtilTest {
 
 
     @Test
-    public void testGetLastDayOfMonth() {
-        String lastDayOfMonth = TimeUtil.getLastDayOfMonth("2021-05");
-        assertEquals("2021-05-31",lastDayOfMonth);
+    public void testFormatStr2Str() {
+        String str = TimeUtil.formatStr2Str("2021-05", TimeFormatEnum.NORM_FORMAT_DATETIME_MONTH,
+                TimeFormatEnum.DEFAULT_FORMAT_DATETIME);
+        assertEquals("2021-05-01 00:00:00",str);
+
+        String str2 = TimeUtil.formatStr2Str("2021-05-01 00:00:00", TimeFormatEnum.DEFAULT_FORMAT_DATETIME,
+                TimeFormatEnum.NORM_FORMAT_DATETIME_MONTH);
+        assertEquals("2021-05",str2);
     }
+
+    @Test
+    public void testFormatStr2StrByDefault() {
+        String str = TimeUtil.formatStr2StrByDefault("2021-05", TimeFormatEnum.NORM_FORMAT_DATETIME_MONTH);
+        assertEquals("2021-05-01 00:00:00",str);
+
+        String str2 = TimeUtil.formatStr2StrByDefault("2021/05/02", TimeFormatEnum.EN_FORMAT_DATETIME_DAY);
+        assertEquals("2021-05-02 00:00:00",str2);
+    }
+
+
+
 }
