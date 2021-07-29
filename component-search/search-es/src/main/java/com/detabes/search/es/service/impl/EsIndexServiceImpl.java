@@ -58,6 +58,22 @@ public class EsIndexServiceImpl implements EsIndexService {
 		}
 		//1.创建索引请求
 		CreateIndexRequest request = new CreateIndexRequest(index);
+		//1.settings
+		XContentBuilder builder = XContentFactory.jsonBuilder()
+				.startObject()
+				.startObject("analysis");
+		builder.startObject("analyzer")
+				.startObject("ngram_analyzer").field("tokenizer", "ngram_tokenizer").endObject()
+				.endObject();
+
+		builder.startObject("tokenizer")
+				.startObject("ngram_tokenizer")
+				.field("type","ngram")
+				.array("token_chars", "letter", "digit")
+				.endObject()
+				.endObject();
+		builder.endObject().endObject();
+		request.settings(builder);
 		//2.执行客户端请求
 		CreateIndexResponse response = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
 		return response.isAcknowledged();
@@ -204,10 +220,21 @@ public class EsIndexServiceImpl implements EsIndexService {
 		} else {
 			builder.startObject(field)
 					.field("type", "text")
-					.startObject("fields")
-					.startObject("keyword").field("type", "keyword").field("ignore_above", "256").endObject()
-					.endObject()
 					.field("analyzer", "ik_max_word")
+						.startObject("fields")
+							.startObject("keyword")
+							.field("type", "keyword")
+							.field("ignore_above", "256")
+							.endObject()
+							.startObject("standard")
+							.field("type", "text")
+							.field("analyzer", "standard")
+							.endObject()
+							.startObject("ngram")
+							.field("type", "text")
+							.field("analyzer", "ngram_analyzer")
+							.endObject()
+						.endObject()
 					.endObject();
 		}
 	}

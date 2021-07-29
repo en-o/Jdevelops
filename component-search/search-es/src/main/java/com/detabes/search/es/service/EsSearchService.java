@@ -152,6 +152,7 @@ public interface EsSearchService {
 	 */
 	List<Map<String, Object>> executeGroup(SearchRequest searchRequest) throws IOException;
 
+
 	/**
 	 * 执行分页查询
 	 *
