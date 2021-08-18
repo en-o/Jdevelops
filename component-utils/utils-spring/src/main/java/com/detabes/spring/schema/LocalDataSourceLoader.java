@@ -63,9 +63,11 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
         // because the shenyu database does not need to be specified when executing the SQL file,
         // otherwise the shenyu database will be disconnected when the shenyu database does not exist
 //        String jdbcUrl = StringUtils.replace(properties.getUrl(), "/shenyu?", "?");
-        StringBuilder sb = new StringBuilder(properties.getUrl());
-        int i = sb.lastIndexOf("/");
-        int j = sb.lastIndexOf("?")<0?sb.length():sb.lastIndexOf("?");
+        String url = properties.getUrl();
+        StringBuilder sb = new StringBuilder(url);
+        String sub1 = url.substring(0, url.indexOf("?") < 0 ? url.length() : url.indexOf("?") - 1);
+        int i = sub1.lastIndexOf("/");
+        int j = sb.indexOf("?")<0?sb.length():sb.indexOf("?");
         String jdbcUrl = sb.replace(i , j,"").toString();
         Connection connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
         this.execute(connection,properties.getUrl().substring(i+1,j));
