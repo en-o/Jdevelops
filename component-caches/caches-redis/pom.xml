@@ -14,6 +14,7 @@
     <modules>
         <module>caches-redis-core</module>
         <module>caches-redis-pub</module>
+        <module>cache-redis-currentlimit</module>
     </modules>
 
     <dependencies>
