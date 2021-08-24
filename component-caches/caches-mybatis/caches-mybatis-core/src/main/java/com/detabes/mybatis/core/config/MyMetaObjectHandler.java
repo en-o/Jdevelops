@@ -2,11 +2,12 @@ package com.detabes.mybatis.core.config;
 
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -30,9 +31,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         }
         if (updateTime == null) {
             // 起始版本 3.3.0
-            this.strictInsertFill(metaObject, "updateTime",  LocalDateTime.class, LocalDateTime.now());
+            this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
         }
-        if (uuid == null) {
+        if (Objects.isNull(uuid) ||StringUtils.isBlank(uuid.toString())) {
             // 起始版本 3.3.0
             this.strictInsertFill(metaObject, "uuid", String.class, UUID.randomUUID().toString().replaceAll("-", ""));
         }
