@@ -68,7 +68,7 @@ public class EsIndexServiceImpl implements EsIndexService {
 
 		builder.startObject("tokenizer")
 				.startObject("ngram_tokenizer")
-				.field("type","ngram")
+				.field("type", "ngram")
 				.array("token_chars", "letter", "digit")
 				.endObject()
 				.endObject();
@@ -221,20 +221,20 @@ public class EsIndexServiceImpl implements EsIndexService {
 			builder.startObject(field)
 					.field("type", "text")
 					.field("analyzer", "ik_max_word")
-						.startObject("fields")
-							.startObject("keyword")
-							.field("type", "keyword")
-							.field("ignore_above", "256")
-							.endObject()
-							.startObject("standard")
-							.field("type", "text")
-							.field("analyzer", "standard")
-							.endObject()
-							.startObject("ngram")
-							.field("type", "text")
-							.field("analyzer", "ngram_analyzer")
-							.endObject()
-						.endObject()
+					.startObject("fields")
+					.startObject("keyword")
+					.field("type", "keyword")
+					.field("ignore_above", "256")
+					.endObject()
+					.startObject("standard")
+					.field("type", "text")
+					.field("analyzer", "standard")
+					.endObject()
+					.startObject("ngram")
+					.field("type", "text")
+					.field("analyzer", "ngram_analyzer")
+					.endObject()
+					.endObject()
 					.endObject();
 		}
 	}
@@ -266,14 +266,20 @@ public class EsIndexServiceImpl implements EsIndexService {
 		//将数据放入请求 json
 		request.source(JSON.toJSONString(source), XContentType.JSON);
 		//客户端发送请求
-		IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
-		log.info("添加数据成功 索引为: {}, response 状态: {}, esOnlyId为: {}", index, response.status().getStatus(), response.getId());
-		return response.getId() != null;
+		return addData(request);
 	}
 
 	@Override
 	public boolean addData(String index, Object source) throws IOException {
 		return addData(index, source, UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
+	}
+
+	@Override
+	public boolean addData(IndexRequest request) throws IOException {
+		//客户端发送请求
+		IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
+		log.info("添加数据成功 索引为: {}, response 状态: {}, esOnlyId为: {}", response.getIndex(), response.status().getStatus(), response.getId());
+		return response.getId() != null;
 	}
 
 	@Override
@@ -325,6 +331,12 @@ public class EsIndexServiceImpl implements EsIndexService {
 			request.source(JSON.toJSONString(source), XContentType.JSON);
 			bulkRequest.add(request);
 		}
+		BulkResponse response = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+		return null != response && response.hasFailures();
+	}
+
+	@Override
+	public boolean bulkPost(BulkRequest bulkRequest) throws IOException {
 		BulkResponse response = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
 		return null != response && response.hasFailures();
 	}

@@ -1,5 +1,8 @@
 package com.detabes.search.es.service;
 
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.index.IndexRequest;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +138,15 @@ public interface EsIndexService {
 	boolean addData(String index, Object source) throws IOException;
 
 	/**
+	 * 数据添加
+	 *
+	 * @param request request
+	 * @return boolean true is success！
+	 * @throws IOException IOException
+	 */
+	boolean addData(IndexRequest request) throws IOException;
+
+	/**
 	 * 通过ID删除数据
 	 *
 	 * @param index    索引，类似数据库
@@ -189,6 +201,16 @@ public interface EsIndexService {
 	boolean bulkPost(String index, List<Object> objects) throws IOException;
 
 	/**
+	 * 批量插入
+	 * PS: false 指得是没有失败的数据
+	 *
+	 * @param bulkRequest bulkRequest
+	 * @return boolean false is success！
+	 * @throws IOException IOException
+	 */
+	boolean bulkPost(BulkRequest bulkRequest) throws IOException;
+
+	/**
 	 * 指定ID，批量插入
 	 * PS: false 指得是没有失败的数据
 	 *
@@ -198,4 +220,5 @@ public interface EsIndexService {
 	 * @throws IOException IOException
 	 */
 	boolean bulkPostAppointId(String index, List<Map<String, Object>> list) throws IOException;
+
 }
