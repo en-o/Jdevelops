@@ -32,7 +32,7 @@
 
     <!-- ERROR日志输出到文件  -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8" >
             <pattern>[%-5level] %X{tl} %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <!-- 设置当前日志文档输出的级别，只记录ERROR级别的日志 -->
@@ -54,7 +54,7 @@
 
     <!-- WARN日志输出到文件 -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8" >
             <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -73,7 +73,7 @@
 
     <!-- INFO日志输出到文件 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8" >
             <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -92,7 +92,7 @@
 
     <!-- DEBUG日志输出到文件 -->
     <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8" >
             <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -112,7 +112,7 @@
 
     <!-- TRACE日志输出到文件 -->
     <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8" >
             <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
