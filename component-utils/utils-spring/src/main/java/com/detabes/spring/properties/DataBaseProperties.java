@@ -31,10 +31,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "detabes.database")
 public class DataBaseProperties {
 
-    /**
-     * 数据库类型 默认mysql
-     */
-    private String dialect="mysql";
 
     /**
      * 创库脚本 （如果没写 (根据spring.datasource.url上的库名创建,且为 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;)）
