@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcessor {
 
     private static final String PRE_FIX = "file:";
-    private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;";
+    private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
     private static final String AUTO_INITSCRIPT_PGSQL = " CREATE DATABASE  %s ;";
     @Resource
     private DataBaseProperties dataBaseProperties;
