@@ -3,6 +3,8 @@ package com.detabes.time.core;
 import com.detabes.constant.time.TimeFormat;
 import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.ReadablePeriod;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
@@ -88,6 +90,29 @@ public class TimeUtilTest {
         assertEquals("2021-05-02 00:00:00",str2);
     }
 
+    @Test
+    public void differDay() {
+        assertEquals(3, TimeUtil.differDay(LocalDate.now(), DateTime.now().plusDays(3).toLocalDate()));
+        assertEquals(-3, TimeUtil.differDay(LocalDate.now(), DateTime.now().plusDays(-3).toLocalDate()));
+        assertEquals(0, TimeUtil.differDay(LocalDate.now(), LocalDate.now()));
+        assertEquals(0, TimeUtil.differDay(LocalDate.now(), DateTime.now().toLocalDate()));
+    }
 
+
+    @Test
+    public void differentDays() {
+        assertEquals(3, TimeUtil.differentDays(new Date(), DateTime.now().plusDays(3).toDate()));
+        assertEquals(-3, TimeUtil.differentDays(new Date(), DateTime.now().plusDays(-3).toDate()));
+        assertEquals(0, TimeUtil.differentDays(new Date(), LocalDate.now().toDate()));
+        assertEquals(0, TimeUtil.differentDays(new Date(), DateTime.now().toDate()));
+    }
+
+
+    @Test
+    public void getDatePoor2Number() {
+        assertEquals(3, TimeUtil.getDatePoor2Number(new Date(), DateTime.now().plusDays(3).toDate(),1));
+        assertEquals(-3, TimeUtil.getDatePoor2Number(new Date(), DateTime.now().plusDays(-3).toDate(),1));
+        assertEquals(0, TimeUtil.getDatePoor2Number(new Date(),new Date(),1));
+    }
 
 }

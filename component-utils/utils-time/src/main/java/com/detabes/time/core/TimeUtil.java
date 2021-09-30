@@ -5,6 +5,7 @@ import com.detabes.constant.time.TimeFormat;
 import com.detabes.enums.number.NumEnum;
 import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -159,7 +160,7 @@ public class TimeUtil {
 	 * @param type      1、天，2、时；3、分；4，秒
 	 * @return {long}
 	 */
-	public static Long getDatePoor2Number(Date beginDate, Date endDate, int type) {
+	public static long getDatePoor2Number(Date beginDate, Date endDate, int type) {
 
 		// 获得两个时间的毫秒时间差异
 		long diff = endDate.getTime() - beginDate.getTime();
@@ -220,47 +221,6 @@ public class TimeUtil {
 			format8 = new DateTime(currYearLast).withMillisOfDay(0).plusHours(23).plusMinutes(59).plusSeconds(59).toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
 		}
 		return format8;
-	}
-
-	/**
-	 * date2比date1多的天数
-	 *
-	 * @param date1 date1
-	 * @param date2 date2
-	 * @return int
-	 */
-	public static int differentDays(Date date1, Date date2) {
-		Calendar cal1 = Calendar.getInstance();
-		cal1.setTime(date1);
-
-		Calendar cal2 = Calendar.getInstance();
-		cal2.setTime(date2);
-		int day1 = cal1.get(Calendar.DAY_OF_YEAR);
-		int day2 = cal2.get(Calendar.DAY_OF_YEAR);
-
-		int year1 = cal1.get(Calendar.YEAR);
-		int year2 = cal2.get(Calendar.YEAR);
-		//同一年
-		if (year1 != year2) {
-			int timeDistance = 0;
-			for (int i = year1; i < year2; i++) {
-				//闰年
-				//不是闰年
-				if (((i % 4) == 0) && ((i % 100) != 0)) {
-					timeDistance += 366;
-				} else if ((i % 400) == 0) {
-					timeDistance += 366;
-				} else {
-					timeDistance += 365;
-				}
-			}
-
-			return timeDistance + (day2 - day1);
-		}
-		//不同年
-		else {
-			return day2 - day1;
-		}
 	}
 
 
@@ -501,7 +461,7 @@ public class TimeUtil {
 	 * 获取指定月份的以周分组的结果集
 	 *
 	 * @param times 指定 月份  eg：2021-05
-	 * @return
+	 * @return Map
 	 * @throws ParseException
 	 */
 	public static Map<Integer, List<String>> getMonthForWeek(String times) throws ParseException {
@@ -554,8 +514,8 @@ public class TimeUtil {
 	/**
 	 * 月最后一天
 	 *
-	 * @param yearMonth
-	 * @return
+	 * @param yearMonth yyyy-MM
+	 * @return String
 	 */
 	public static String getLastDayOfMonth(String yearMonth) {
 		int year = Integer.parseInt(yearMonth.split("-")[0]);  //年
@@ -576,4 +536,57 @@ public class TimeUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(cal.getTime());
 	}
+
+	/**
+	 * 计算时间相差天数
+	 * @param begin 开始时间
+	 * @param end 结束时间
+	 * @return 天数
+	 */
+	public static int differDay(org.joda.time.LocalDate begin, org.joda.time.LocalDate end){
+		// 验证是否为工作日且为  当前时间3天后
+		return Days.daysBetween( begin ,end).getDays();
+	}
+
+	/**
+	 * 计算时间相差天数
+	 * @param begin 开始时间
+	 * @param end 结束时间
+	 * @return int
+	 */
+	@Deprecated
+	public static int differentDays(Date begin, Date end) {
+		Calendar cal1 = Calendar.getInstance();
+		cal1.setTime(begin);
+
+		Calendar cal2 = Calendar.getInstance();
+		cal2.setTime(end);
+		int day1 = cal1.get(Calendar.DAY_OF_YEAR);
+		int day2 = cal2.get(Calendar.DAY_OF_YEAR);
+
+		int year1 = cal1.get(Calendar.YEAR);
+		int year2 = cal2.get(Calendar.YEAR);
+		//同一年
+		if (year1 != year2) {
+			int timeDistance = 0;
+			for (int i = year1; i < year2; i++) {
+				//闰年
+				//不是闰年
+				if (((i % 4) == 0) && ((i % 100) != 0)) {
+					timeDistance += 366;
+				} else if ((i % 400) == 0) {
+					timeDistance += 366;
+				} else {
+					timeDistance += 365;
+				}
+			}
+
+			return timeDistance + (day2 - day1);
+		}
+		//不同年
+		else {
+			return day2 - day1;
+		}
+	}
+
 }
