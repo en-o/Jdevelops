@@ -43,7 +43,7 @@
         </filter>
         <!-- 设置日志记录器的滚动策略，按日期和大小记录-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/error.%i.log</fileNamePattern>
+            <fileNamePattern>${ROOT}%d/error.%i.log.zip</fileNamePattern>
             <maxHistory>${MAXHISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -63,7 +63,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/warn.%i.log</fileNamePattern>
+            <fileNamePattern>${ROOT}%d/warn.%i.log.zip</fileNamePattern>
             <maxHistory>${MAXHISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>${FILESIZE}</maxFileSize>
@@ -82,7 +82,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/info.%i.log</fileNamePattern>
+            <fileNamePattern>${ROOT}%d/info.%i.log.zip</fileNamePattern>
             <maxHistory>${MAXHISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>${FILESIZE}</maxFileSize>
@@ -101,7 +101,7 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/debug.%i.log</fileNamePattern>
+            <fileNamePattern>${ROOT}%d/debug.%i.log.zip</fileNamePattern>
             <maxHistory>${MAXHISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -122,7 +122,7 @@
         </filter>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/trace.%i.log</fileNamePattern>
+            <fileNamePattern>${ROOT}%d/trace.%i.log.zip</fileNamePattern>
             <maxHistory>${MAXHISTORY}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -134,7 +134,8 @@
     <!-- 输出sql相关日志，不需要可删除；additivity：是否向上级loger传递打印信息，默认是true-->
     <logger name="org.apache.ibatis" level="INFO" additivity="false" />
     <logger name="org.mybatis.spring" level="INFO" additivity="false" />
-    <logger name="com.github.miemiedev.mybatis.paginator" level="INFO" additivity="false" />
+    <logger name="org.mybatis.spring" level="INFO" additivity="false" />
+    <logger name="io.lettuce.core.protocol" level="INFO" additivity="false" />
     <!-- nacos改变日志级别 -->
     <logger name="com.alibaba.nacos.client" level="ERROR" additivity="false" />
 
