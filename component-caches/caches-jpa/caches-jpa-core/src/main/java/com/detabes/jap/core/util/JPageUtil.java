@@ -84,7 +84,11 @@ public class JPageUtil {
                     page.getTotalElements(),
                     result);
         } else {
-            return new ResourcePage();
+            return ResourcePage.page(1,
+                    page.getPageable().getPageSize(),
+                    0,
+                    0L,
+                    null);
         }
     }
 
