@@ -3,11 +3,13 @@ package com.detabes.result.result;
 import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.result.page.ResourcePage;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yomahub.tlog.context.TLogContext;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 
 import java.io.Serializable;
@@ -158,10 +160,21 @@ public class ResultPageVO<T> implements Serializable {
 
 
     public String getTraceId() {
-        if(null!=traceId){
+        try {
+//            // 如果设置了就用设置的
+            if (StringUtils.isNotBlank(traceId)) {
+                return traceId;
+            } else { // 没设置就从系统中找找看
+//                 skywalking traceId 优先
+                traceId = TraceContext.traceId();
+                if (StringUtils.isBlank(traceId)) {
+//                     tlog traceId
+                    traceId = TLogContext.getTraceId();;
+                }
+                return traceId;
+            }
+        } catch (Exception e) {
             return traceId;
-        }else {
-            return traceId= TraceContext.traceId();
         }
     }
 

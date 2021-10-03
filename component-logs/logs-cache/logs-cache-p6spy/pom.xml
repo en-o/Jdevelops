@@ -19,10 +19,5 @@
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.yomahub</groupId>
-            <artifactId>tlog-web-spring-boot-starter</artifactId>
-            <version>${tlog.version}</version>
-        </dependency>
     </dependencies>
 </project>
