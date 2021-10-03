@@ -2,7 +2,9 @@ package com.detabes.jpa.server.service;
 
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
+import com.detabes.result.response.RoutinePageDTO;
 import com.detabes.result.response.SortVO;
+import com.detabes.result.result.ResultVO;
 
 import java.util.List;
 
@@ -114,5 +116,43 @@ public interface JService<T> {
      * @return ResourcePage<List < R>>
      */
     <R> ResourcePage<List<R>> findByBean(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+
+    /**
+     * 分页查询
+     *
+     * @param t      查询条件
+     * @param pageVO 分页
+     * @param sortVO 排序
+     * @param clazz  返回实体类型
+     * @param <R>    返回实体类型
+     * @return ResourcePage<List < R>>
+     */
+    <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+
+    /**
+     * 分页查询
+     *
+     * @param t      查询条件
+     * @param pageDTO 分页 排序
+     * @param clazz  返回实体类型
+     * @param <R>    返回实体类型
+     * @return ResourcePage<List < R>>
+     */
+    <R> ResourcePage<List<R>> findByBean(T t, RoutinePageDTO pageDTO, Class<R> clazz);
+
+    /**
+     * 分页查询
+     *
+     * @param t      查询条件
+     * @param pageDTO 分页 排序
+     * @param clazz  返回实体类型
+     * @param <R>    返回实体类型
+     * @return ResourcePage<List < R>>
+     */
+    <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, RoutinePageDTO pageDTO, Class<R> clazz);
+
+
+
+
 
 }
