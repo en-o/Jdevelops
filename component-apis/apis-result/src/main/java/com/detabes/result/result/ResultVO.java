@@ -3,17 +3,20 @@ package com.detabes.result.result;
 import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.result.page.ResourcePage;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yomahub.tlog.context.TLogContext;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 
 import java.io.Serializable;
 
 /**
  * 全局结果集
+ *
  * @author tn
  * @version 1
  * @ClassName ResultVO
@@ -23,33 +26,45 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "返回结果集",description = "全局返回对象")
+@ApiModel(value = "返回结果集", description = "全局返回对象")
 public class ResultVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
 
-    /** 返回结果状态码 */
+    /**
+     * 返回结果状态码
+     */
     @ApiModelProperty(value = "返回结果状态码")
     private Integer code;
 
-    /** 返回消息 */
+    /**
+     * 返回消息
+     */
     @ApiModelProperty(value = "返回消息")
     private String message;
 
-    /** 数据 */
+    /**
+     * 数据
+     */
     @ApiModelProperty(value = "数据")
     private T data;
 
-    /** 时间戳 */
+    /**
+     * 时间戳
+     */
     @ApiModelProperty(value = "时间戳")
     private Long ts = System.currentTimeMillis();
 
-    /** traceId  */
+    /**
+     * traceId
+     */
     @ApiModelProperty(value = "skywalking_traceId")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 
-    /** 自动转换success的返回值：true,false*/
+    /**
+     * 自动转换success的返回值：true,false
+     */
     public boolean isSuccess() {
         return this.code == ResultCodeEnum.Success.getCode();
     }
@@ -169,7 +184,7 @@ public class ResultVO<T> implements Serializable {
 
     /**
      * @param isok   返回 (true)success   false(fail)
-     * @param obj 对象数据
+     * @param obj    对象数据
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
@@ -183,11 +198,11 @@ public class ResultVO<T> implements Serializable {
 
     /**
      * @param isok   返回 (true)success   false(fail)
-     * @param obj 对象数据
+     * @param obj    对象数据
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static<T> ResultVO<T> resultDataMsgForT(Boolean isok, T obj, String msgStr) {
+    public static <T> ResultVO<T> resultDataMsgForT(Boolean isok, T obj, String msgStr) {
         if (isok) {
             return ResultVO.success(obj, msgStr + "成功");
         } else {
@@ -197,10 +212,21 @@ public class ResultVO<T> implements Serializable {
 
 
     public String getTraceId() {
-        if(null!=traceId){
+        try {
+//            // 如果设置了就用设置的
+            if (StringUtils.isNotBlank(traceId)) {
+                return traceId;
+            } else { // 没设置就从系统中找找看
+//                 skywalking traceId 优先
+                traceId = TraceContext.traceId();
+                if (StringUtils.isBlank(traceId)) {
+//                     tlog traceId
+                    traceId = TLogContext.getTraceId();;
+                }
+                return traceId;
+            }
+        } catch (Exception e) {
             return traceId;
-        }else {
-            return traceId= TraceContext.traceId();
         }
     }
 }
