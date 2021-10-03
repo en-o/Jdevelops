@@ -3,6 +3,7 @@ package com.detabes.jap.core.util;
 import com.detabes.entity.basics.vo.SerializableVO;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
+import com.detabes.result.response.RoutinePageDTO;
 import com.detabes.result.response.SortVO;
 import com.detabes.result.util.PageUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,26 @@ public class JPageUtil {
         }
     }
 
+
+    /**
+     * RoutinePageDTO  转成 Sort
+     *
+     * @param sort sort
+     * @return
+     */
+    public static Sort getSv2S(RoutinePageDTO sort) {
+        if (StringUtils.isBlank(sort.getOrderBy()) && sort.getOrderDesc() == null) {
+            return Sort.by(Sort.Direction.DESC, "id");
+        } else {
+            if (sort.getOrderDesc().equals(0)) {
+                return Sort.by(Sort.Direction.ASC,
+                        StringUtils.isNotBlank(sort.getOrderBy()) ? sort.getOrderBy() : "id");
+            }
+            return Sort.by(Sort.Direction.DESC,
+                    StringUtils.isNotBlank(sort.getOrderBy()) ? sort.getOrderBy() : "id");
+        }
+    }
+
     /**
      * 获取分页 Pageable
      *
@@ -50,9 +71,24 @@ public class JPageUtil {
      * @return Pageable
      */
     public static Pageable getPageable(PageVO pageVO, SortVO sortVO) {
-        return PageRequest.of(PageUtil.setNullPageVoDef(pageVO).getPageIndex(),
-                PageUtil.setNullPageVoDef(pageVO).getPageSize(),
+        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+        return PageRequest.of(pageVoDef.getPageIndex(),
+                pageVoDef.getPageSize(),
                 getSv2S(sortVO));
+    }
+
+
+    /**
+     * 获取分页 Pageable
+     *
+     * @param pageDTO 分页 排序
+     * @return Pageable
+     */
+    public static Pageable getPageable(RoutinePageDTO pageDTO) {
+        RoutinePageDTO pageDTODef = PageUtil.setNullRoutinePageDTODef(pageDTO);
+        return PageRequest.of(pageDTODef.getPageIndex(),
+                pageDTODef.getPageSize(),
+                getSv2S(pageDTODef));
     }
 
 

@@ -8,7 +8,9 @@ import com.detabes.jpa.server.dao.JpaBasicsDao;
 import com.detabes.jpa.server.service.JService;
 import com.detabes.result.page.ResourcePage;
 import com.detabes.result.response.PageVO;
+import com.detabes.result.response.RoutinePageDTO;
 import com.detabes.result.response.SortVO;
+import com.detabes.result.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -117,4 +119,33 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return JPageUtil.to(pages, clazz);
     }
+
+
+    @Override
+    public <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
+        Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
+        return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
+    }
+
+    @Override
+    public <R> ResourcePage<List<R>> findByBean(T t, RoutinePageDTO pageDTO, Class<R> clazz) {
+        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        Pageable pageable = JPageUtil.getPageable(pageDTO);
+        Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
+        return JPageUtil.to(pages, clazz);
+    }
+
+    @Override
+    public <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, RoutinePageDTO pageDTO, Class<R> clazz) {
+        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        Pageable pageable = JPageUtil.getPageable(pageDTO);
+        Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
+        return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
+    }
+
+
+
+
 }
