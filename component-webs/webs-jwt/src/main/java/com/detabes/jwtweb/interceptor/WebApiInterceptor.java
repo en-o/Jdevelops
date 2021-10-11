@@ -1,12 +1,12 @@
 package com.detabes.jwtweb.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.detabes.result.result.ResultVO;
 import com.detabes.enums.result.ResultCodeEnum;
 import com.detabes.jwtweb.annotation.ApiMapping;
 import com.detabes.jwtweb.holder.ApplicationContextHolder;
 import com.detabes.jwtweb.server.CheckTokenInterceptor;
 import com.detabes.jwtweb.server.impl.DefaultInterceptor;
+import com.detabes.result.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,31 +15,25 @@ import org.slf4j.MDC;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
- * @author Tianms
+ * @author tan
  * @date 2020/4/18 22:12
  * @description
  */
 @Slf4j
 public class WebApiInterceptor implements HandlerInterceptor {
 
+
     private CheckTokenInterceptor checkTokenInterceptor;
 
-    @PostConstruct
-    public void init() {
-        try {
-            checkTokenInterceptor = ApplicationContextHolder.get().getBean(CheckTokenInterceptor.class);
-        } catch (Exception e) {
-            log.info("iTaichiInterceptor 拦截器采用默认的拦截方式.");
-            checkTokenInterceptor = new DefaultInterceptor();
-        }
-    }
+    private DefaultInterceptor defaultInterceptor;
+
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -64,6 +58,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
 
     private boolean check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws IOException {
             String token = getToken(request);
+            getCheckTokenInterceptor();
             boolean flag = checkTokenInterceptor.checkToken(token);
             logger.info("需要验证token,校验结果：{}", flag);
             if (!flag) {
@@ -83,5 +78,14 @@ public class WebApiInterceptor implements HandlerInterceptor {
         }
         token = request.getParameter(tokenName);
         return token;
+    }
+
+    private  void getCheckTokenInterceptor (){
+        try {
+            checkTokenInterceptor = ApplicationContextHolder.get().getBean(CheckTokenInterceptor.class);
+        } catch (Exception e) {
+            // 使用默认拦截
+            checkTokenInterceptor = ApplicationContextHolder.get().getBean(DefaultInterceptor.class);
+        }
     }
 }
