@@ -1,5 +1,6 @@
 package com.detabes.map.core.map;
 
+import com.detabes.map.core.bean.BeanCopier;
 import com.detabes.map.core.bean.BeanCopyUtil;
 
 /**
@@ -19,7 +20,9 @@ public class MapCopy {
     public static <T> T to(Class<T> tClass,Object t){
         try {
             T tag = tClass.newInstance();
-            BeanCopyUtil.beanCopy(t, tag);
+            BeanCopier.copy(t, tag);
+            /* 无法处理时间 */
+//           BeanCopyUtil.beanCopy(t, tag);
             return tag;
         } catch (Exception var3) {
             throw new RuntimeException(var3);
