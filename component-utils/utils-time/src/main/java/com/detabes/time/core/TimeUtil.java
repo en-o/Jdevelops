@@ -312,6 +312,7 @@ public class TimeUtil {
 	 * @param localDateTime java.time.LocalDateTime
 	 * @return Date
 	 */
+	@Deprecated
 	public static Date localDateTimeToDate(java.time.LocalDateTime localDateTime) {
 		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
@@ -322,6 +323,7 @@ public class TimeUtil {
 	 * @param localDate LocalDate
 	 * @return Date
 	 */
+	@Deprecated
 	public static Date localDateToDate(LocalDate localDate) {
 		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 	}
@@ -332,6 +334,7 @@ public class TimeUtil {
 	 * @param date date
 	 * @return LocalDate
 	 */
+	@Deprecated
 	public static LocalDate dateToLocalDate(Date date) {
 		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
@@ -342,6 +345,7 @@ public class TimeUtil {
 	 * @param date Date
 	 * @return java.time.LocalDateTime
 	 */
+	@Deprecated
 	public static java.time.LocalDateTime dateToLocalDateTime(Date date) {
 		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
@@ -420,6 +424,7 @@ public class TimeUtil {
 	 * @param newTimeFormat 需要转换的新格式
 	 * @return String
 	 */
+	@Deprecated
 	public static String formatStr2Str(String time, TimeFormatEnum timeFormat,
 										 TimeFormatEnum newTimeFormat) {
 		DateTime dateTime = formatStr(time, timeFormat);
@@ -443,6 +448,7 @@ public class TimeUtil {
 	 * @param date 时间
 	 * @return yyyy-MM-dd HH:mm:ss
 	 */
+	@Deprecated
 	public static String time2DefaultFormat(Date date) {
 		return new DateTime(date).toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
 	}

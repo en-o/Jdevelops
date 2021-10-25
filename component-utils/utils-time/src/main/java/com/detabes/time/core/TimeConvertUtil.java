@@ -78,6 +78,19 @@ public class TimeConvertUtil {
 
 
     /**
+     * 指定时间字符串格式转 joda.time.DateTime
+     *
+     * @param timeStr    时间字符串
+     * @param timeFormat 时间字符串格式
+     * @return joda.time.DateTime
+     */
+    public static DateTime str2DateTime(String timeStr, TimeFormatEnum timeFormat) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(timeFormat.getFormat());
+        return DateTime.parse(timeStr, formatter).toDateTime();
+    }
+
+
+    /**
      * 时间 转默认时间字符串
      *
      * @param date util.Date
@@ -122,14 +135,48 @@ public class TimeConvertUtil {
     }
 
     /**
-     *  joda.time.LocalDateTime  转化成  java.time.LocalDateTime
+     * joda.time.LocalDateTime  转化成  java.time.LocalDateTime
+     *
      * @param localDateTime joda.time.LocalDateTime
-     * @return  java.time.LocalDateTime
+     * @return java.time.LocalDateTime
      */
     public static java.time.LocalDateTime joda2JavaLocalDateTime(LocalDateTime localDateTime) {
         Instant instant = localDateTime.toDate().toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
         return java.time.LocalDateTime.ofInstant(instant, zoneId);
+    }
+
+    /**
+     * 获取当前时间的周一
+     * @return yyyy-MM-dd
+     */
+    public static String nowMonday() {
+        return DateTime.now().dayOfWeek().withMinimumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+    }
+
+    /**
+     * 获取当前时间的周末
+     * @return yyyy-MM-dd
+     */
+    public static String nowWeekend() {
+        return DateTime.now().dayOfWeek().withMaximumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+    }
+
+    /**
+     *获取 当前月的第一天
+     * @return yyyy-MM-dd
+     */
+    public static String nowBeginMonth(){
+        return  DateTime.now().dayOfMonth().withMinimumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+
+    }
+
+    /**
+     *获取  当前月的最后一天
+     * @return yyyy-MM-dd
+     */
+    public static String nowEndMonth(){
+        return DateTime.now().dayOfMonth().withMaximumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
     }
 
 }
