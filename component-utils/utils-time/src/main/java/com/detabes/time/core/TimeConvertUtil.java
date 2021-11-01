@@ -179,4 +179,26 @@ public class TimeConvertUtil {
         return DateTime.now().dayOfMonth().withMaximumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
     }
 
+
+    /**
+     * 默认字符串时间格式转 java.time.LocalDateTime
+     * @param defTimeStr yyyy-MM-dd HH:mm:ss
+     * @return java.time.LocalDateTime
+     */
+    public static java.time.LocalDateTime str2LocalDate(String defTimeStr) {
+        java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(TimeFormat.DEFAULT_FORMAT_DATETIME);
+        return java.time.LocalDateTime.parse(defTimeStr, df);
+    }
+
+    /**
+     * 默认字符串时间格式转 java.time.LocalDateTime
+     * @param strDateTime 时间字符串
+     * @param format 时间字符串的格式
+     * @return java.time.LocalDateTime
+     */
+    public static java.time.LocalDateTime str2LocalDate(String strDateTime, String format) {
+        java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(format);
+        return java.time.LocalDateTime.parse(strDateTime, df);
+    }
+
 }
