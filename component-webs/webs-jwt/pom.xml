@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>webs-jwt</artifactId>
-    <version>2.0.1</version>
 
     <dependencies>
         <dependency>
