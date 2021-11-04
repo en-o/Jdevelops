@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.detabes.map.core.map.MapUtil;
 import com.detabes.retrun.annotation.ReturnToCamlCase;
-import com.detabes.string.StringFormat;
+import com.detabes.string.core.StringFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -47,9 +47,7 @@ public class ReturnToCamlCaseAop {
         ReturnToCamlCase reBean = method.getAnnotation(ReturnToCamlCase.class);
         if(rvt!=null){
             if(rvt instanceof Map){
-                Map<String, Object> beanToMap = MapUtil.beanToMap(rvt);
-                beanToMap.forEach((str,value) ->{
-                    System.err.println(str+":"+value);});
+                return  MapUtil.beanToMap(rvt);
             }else if(rvt instanceof List){
                 List<Map<String, Object>> tmap = new ArrayList<>();
                 for (Map item : (List<Map>)rvt) {
@@ -57,7 +55,7 @@ public class ReturnToCamlCaseAop {
                     Iterator<String> iter = item.keySet().iterator();//通过迭代器获取key，vale
                     while(iter.hasNext()) {
                         String key=iter.next();
-                        String newkey = StringFormat.toCamelCase(key.toString(), true);
+                        String newkey = StringFormat.toCamelCase(key, true);
                         newMap.put(newkey,newMap.remove(key));
                     }
                     tmap.add(newMap);
