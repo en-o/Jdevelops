@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.web.StartersDetabesWebConfiguration
+  com.detabes.web.StartersDetabesWebConfiguration,\
+  com.detabes.spring.http.resttemplate.RestTemplateConfiguration
