@@ -7,7 +7,7 @@
     <groupId>com.detabes</groupId>
     <artifactId>detabes-component</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
 
     <!--springboot版本管理   这个版本是因为微服务 后期可能还会降级  -->
@@ -391,6 +391,15 @@
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <skip>${skipTests}</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <!--pom不备份-->
+                    <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
             </plugin>
         </plugins>
