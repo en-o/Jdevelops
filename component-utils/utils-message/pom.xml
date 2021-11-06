@@ -16,7 +16,7 @@
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
-            <version>4.0.5.B</version>
+            <version>${weixin-java-miniapp.version}</version>
         </dependency>
     </dependencies>
 

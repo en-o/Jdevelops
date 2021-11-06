@@ -23,8 +23,6 @@
     </parent>
 
     <artifactId>component-utils</artifactId>
-    <version>2.0.1</version>
-
 
     <dependencies>
         <dependency>
