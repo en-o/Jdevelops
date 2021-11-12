@@ -1,6 +1,9 @@
 package com.detabes.string;
 
+import com.detabes.string.enums.FiltrationCodeEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 遮掩
@@ -9,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2021/1/30 20:22
  */
 public class StringHide {
+
+    private static Logger logger = LoggerFactory.getLogger(StringHide.class);
+
 
     /**
      * 姓名遮掩
@@ -38,7 +44,7 @@ public class StringHide {
         }else if(userName.length()==1){
             return userName;
         }
-        return userName.substring(0, 1) +"*"+ userName.substring(userName.length() - 1);
+        return userName.charAt(0) +"*"+ userName.substring(userName.length() - 1);
     }
 
     /**
@@ -87,7 +93,7 @@ public class StringHide {
      * [手机号码] 前三位，后四位，其他隐藏<例子:138******1234>
      *
      * @param phoneNum phoneNum
-     * @return
+     * @return String
      */
     public static String mobilePhone(String phoneNum) {
         if (StringUtils.isBlank(phoneNum)) {
@@ -158,6 +164,68 @@ public class StringHide {
         return StringUtils.rightPad(StringUtils.left(address, length - retain), length, "*");
     }
 
+
+    /**
+     * .
+     * 字段信息脱敏处理
+     *
+     * @param objStr     原始字段
+     * @param methodName 过滤具体方法
+     * @return 返回已脱敏字段
+     */
+    public static String filtration(Object objStr, FiltrationCodeEnum methodName) {
+        String newStr = "";
+        String oldStr = String.valueOf(objStr);
+        if (StringUtils.isBlank(oldStr)) {
+            return oldStr;
+        }
+        try {
+            switch (methodName.getMethod()) {
+                case "bankCard": //银行卡号
+                    newStr = oldStr.replaceAll("(\\w{4})\\w*(\\w{4})", "$1***********$2");
+                    break;
+                case "fixedPhone"://固定电话
+                    newStr = oldStr.substring(0, (oldStr.indexOf('-') + 1)) + "******" + oldStr.substring(oldStr.length() - 2);
+                    break;
+                case "address": //住址数字
+                    newStr = oldStr.replaceAll("[\\d一二三四五六七八九十壹贰叁肆伍陆柒捌玖拾佰]+", "***");
+                    break;
+                case "chineseName": //中文姓名
+                    String name = StringUtils.left(oldStr, 1);
+                    newStr = StringUtils.rightPad(name, StringUtils.length(oldStr), "*");
+                    break;
+                case "email": //邮箱
+                    int index = oldStr.indexOf('@');
+                    if (index == 2) {//下标为2：@前面数字小于两位完全拼接显示
+                        newStr = oldStr.substring(0, index) + "****" + oldStr.substring(index);
+                    } else {
+                        newStr = oldStr.replaceAll("(^\\w{3})[^@]*(@.*$)", "$1****$2");
+                    }
+                    break;
+                case "maskIdCard": //证件号
+                    if (oldStr.length() == 15) {
+                        newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{2})", "$1**********$2");
+                    } else if (oldStr.length() == 18) {
+                        newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{2})", "$1*************$2");
+                    }
+                    break;
+                case "maskPhone": //手机号
+                    if (oldStr.matches("^(852|853)\\d*$")) {//港澳手机号处理
+                        newStr = oldStr.substring(3, 5) + "****" + oldStr.substring((oldStr.length() - 2));
+                    } else if (oldStr.matches("^(886)\\d*$")) {//台湾手机号处理 //8860930849111
+                        newStr = oldStr.substring(3, 5) + "****" + oldStr.substring((oldStr.length() - 3));
+                    } else {
+                        newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{4})", "$1****$2");
+                    }
+                    break;
+                default:
+                    logger.error("方法未定义,字段脱敏失败");
+            }
+        } catch (Exception e) {
+            logger.error(String.format("处理导出字段脱敏异常[Error=%s]...", e.getMessage()));
+        }
+        return newStr;
+    }
 
 
 }
