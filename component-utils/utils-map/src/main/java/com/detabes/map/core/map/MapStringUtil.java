@@ -1,5 +1,7 @@
 package com.detabes.map.core.map;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -24,6 +26,23 @@ public class MapStringUtil {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Object> mapping : list) {
             sb.append(mapping.getKey() + "=" + mapping.getValue() + "&");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+    /**
+     *  处理中文转义
+     * map拆解 拼接成 xx=xx&xx=xx
+     * @param map map
+     * @return String
+     */
+    public static String mapOrderStrFixURLEncoder(Map<String, Object> map) throws UnsupportedEncodingException {
+        ArrayList<Map.Entry<String, Object>> list = new ArrayList<>(map.entrySet());
+
+        Collections.sort(list, Comparator.comparing(Map.Entry::getKey));
+
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Object> mapping : list) {
+            sb.append(mapping.getKey() + "=" + URLEncoder.encode(String.valueOf(mapping.getValue()),"UTF-8") + "&");
         }
         return sb.substring(0, sb.length() - 1);
     }
