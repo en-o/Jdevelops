@@ -7,6 +7,7 @@ import com.detabes.apilog.bean.ApiMonitoring;
 import com.detabes.apilog.server.ApiLogSave;
 import com.detabes.enums.string.StringEnum;
 import com.detabes.enums.time.TimeFormatEnum;
+import com.detabes.http.core.IpUtil;
 import com.detabes.spring.core.aop.AopReasolver;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -127,7 +128,7 @@ public class ApiLogAspectSave {
             apiLog.setInParams(null);
         }
         /**inParams    输入 */
-
+        apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
         apiLogSave.saveLog(apiLog);
     }
     /**

@@ -35,4 +35,9 @@ public class ApiMonitoring {
     /**接口名*/
     private String callTime;
 
+    /**
+     * 请求IP
+     */
+    private String  poxyIp;
+
 }

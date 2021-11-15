@@ -1,5 +1,6 @@
 package com.detabes.spring.core.aop;
 
+import com.detabes.http.core.IpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -57,6 +58,7 @@ public class ParamsDis {
             }
         }
         Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
+        log.info("请求IP:{}", IpUtil.getPoxyIp(request));
         log.info("请求地址:{} {}", method, url);
         log.info("入参:{}", params);
         long ts = System.currentTimeMillis();
