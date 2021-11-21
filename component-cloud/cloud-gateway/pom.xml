@@ -16,24 +16,18 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
-            <!-- 不放进jar包里 用户自己单独加入  -->
-            <!-- <scope>provided</scope>-->
         </dependency>
         <!--  注册中心 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
             <version>${alibaba-cloud.version}</version>
-            <!-- 不放进jar包里 用户自己单独加入  -->
-            <!--<scope>provided</scope>-->
         </dependency>
         <!--配置 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
             <version>${alibaba-cloud.version}</version>
-            <!-- 不放进jar包里 用户自己单独加入 d -->
-            <!--<scope>provided</scope>-->
         </dependency>
 
         <!--  openfeign  rpc  -->
