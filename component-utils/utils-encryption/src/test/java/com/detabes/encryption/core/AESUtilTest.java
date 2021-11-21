@@ -19,15 +19,4 @@ public class AESUtilTest extends TestCase {
         assertThat(aesUtil.encrypt("13123"), is("h1Sdww/AuY29sJtGxnf2kw=="));
     }
 
-    public void testTestEncrypt() {
-    }
-
-    public void testDecrypt() {
-    }
-
-    public void testTestDecrypt() {
-    }
-
-    public void testEncodeBytes() {
-    }
 }

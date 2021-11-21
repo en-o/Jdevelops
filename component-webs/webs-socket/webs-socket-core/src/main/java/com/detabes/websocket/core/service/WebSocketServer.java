@@ -169,21 +169,17 @@ public class WebSocketServer {
     public void sendInfoByLikeKey(String userName, String message){
         Map<String, List<Session>> stringListMap = SocketUtil.parseMapForFilter(sessionPoolsS, userName);
         List<Session> session = new ArrayList<>();
-        stringListMap.forEach((key,value) -> {
-            session.addAll(value);
-        });
-        if(session!=null){
-            try {
-                session.forEach(sessionf -> {
-                    try {
-                        sendMessage(sessionf, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        stringListMap.forEach((key,value) -> session.addAll(value));
+        try {
+            session.forEach(sessionf -> {
+                try {
+                    sendMessage(sessionf, message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

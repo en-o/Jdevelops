@@ -4,6 +4,7 @@ package com.detabes.string;
 
 import com.detabes.enums.random.RandomType;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 
@@ -35,7 +36,7 @@ public class StringRandom {
         char[] ss = new char[length];
         int i=0;
         while(i<length) {
-            int f = new Random().nextInt(3);
+            int f = new SecureRandom().nextInt(3);
             if(f==0){
                 ss[i] = (char) ('A'+Math.random()*26);
             }
@@ -62,7 +63,7 @@ public class StringRandom {
     public static String generateLoginName(int length) {
 
         StringBuilder val = new StringBuilder();
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
 
         //参数length，表示生成几位随机数
         for(int i = 0; i < length; i++) {
@@ -87,7 +88,7 @@ public class StringRandom {
     /**
      * 随机数
      */
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
      *   随机数生成

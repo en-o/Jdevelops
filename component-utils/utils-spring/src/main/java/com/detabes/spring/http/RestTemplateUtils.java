@@ -128,7 +128,7 @@ public class RestTemplateUtils {
      * 
      * @param url 请求URL
      * @param responseType 返回对象类型
-     * @return
+     * @return ResponseEntity
      */
     public  <T> ResponseEntity<T> post(String url, Class<T> responseType) {
         return restTemplate.postForEntity(url, HttpEntity.EMPTY, responseType);
@@ -199,7 +199,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> post(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return post(url, requestEntity, responseType, uriVariables);
     }
 
@@ -230,7 +230,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> post(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return post(url, requestEntity, responseType, uriVariables);
     }
 
@@ -284,7 +284,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> put(String url, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody);
         return put(url, requestEntity, responseType, uriVariables);
     }
 
@@ -298,7 +298,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> put(String url, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody);
         return put(url, requestEntity, responseType, uriVariables);
     }
 
@@ -329,7 +329,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> put(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return put(url, requestEntity, responseType, uriVariables);
     }
 
@@ -360,7 +360,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> put(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return put(url, requestEntity, responseType, uriVariables);
     }
 
@@ -426,7 +426,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 
@@ -440,7 +440,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 
@@ -469,7 +469,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, HttpHeaders headers, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 
@@ -498,7 +498,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(headers);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 
@@ -529,7 +529,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 
@@ -560,7 +560,7 @@ public class RestTemplateUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public  <T> ResponseEntity<T> delete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         return delete(url, requestEntity, responseType, uriVariables);
     }
 

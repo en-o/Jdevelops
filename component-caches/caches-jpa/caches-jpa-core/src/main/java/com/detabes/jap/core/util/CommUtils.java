@@ -20,9 +20,9 @@ public class CommUtils {
     /**
      * 根据字段名称获取对象的属性
      *
-     * @param fieldName
-     * @param target
-     * @return
+     * @param fieldName  fieldName
+     * @param target 目标
+     * @return Object
      * @throws Exception
      */
     public static Object getFieldValueByName(String fieldName, Object target) throws Exception {
@@ -33,8 +33,7 @@ public class CommUtils {
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
         String getter = "get" + firstLetter + fieldName.substring(1);
         Method method = target.getClass().getMethod(getter, new Class[0]);
-        Object e = method.invoke(target, new Object[0]);
-        return e;
+        return method.invoke(target, new Object[0]);
     }
 
     public static boolean isBlank(final CharSequence idFieldName) {
@@ -57,7 +56,7 @@ public class CommUtils {
      * @return JPAUtilExpandCriteria
      */
     public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean ) {
-        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
+        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (int i = 0; i < fields.length; i++) {
             String fieldName = fields[i].getName();
@@ -78,7 +77,7 @@ public class CommUtils {
      * @return JPAUtilExpandCriteria
      */
     public static <T> JPAUtilExpandCriteria<T> getSelectBeanByLike(T bean ) {
-        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
+        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (int i = 0; i < fields.length; i++) {
             String fieldName = fields[i].getName();
@@ -106,7 +105,7 @@ public class CommUtils {
      * @return JPAUtilExpandCriteria
      */
     public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean, List<String> isFieldOr) {
-        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<T>();
+        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (int i = 0; i < fields.length; i++) {
             String fieldName = fields[i].getName();

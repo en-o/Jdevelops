@@ -37,7 +37,7 @@ public class SignUtil {
      * @param maps 参数map
      * @return sign
      */
-    public static <T extends Map,LinkedHashMap> String getMd5SignByMap2Json(T maps){
+    public static <T extends Map> String getMd5SignByMap2Json(T maps){
         String encrypt1 = SignMD5Util.encrypt(toJSONString(maps),true);
         return getMd5Sign(encrypt1);
     }
@@ -48,7 +48,7 @@ public class SignUtil {
      * @param maps 参数map
      * @return sign
      */
-    public static <T extends Map,LinkedHashMap> String getMd5SignByMap2Str(T maps){
+    public static <T extends Map> String getMd5SignByMap2Str(T maps){
         String encrypt1 = SignMD5Util.encrypt(map2Str(maps),true);
         return getMd5Sign(encrypt1);
     }

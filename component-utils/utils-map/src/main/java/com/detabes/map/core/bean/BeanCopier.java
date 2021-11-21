@@ -76,16 +76,15 @@ public class BeanCopier {
     }
 
     public static <T> List<T> listCopy(List<?> sources, Class<T> clazz) {
-        return (List)(sources == null ? new ArrayList() : (List)sources.stream().map((source) -> {
-            return copy(source, clazz);
-        }).collect(Collectors.toList()));
+        return (sources == null ? new ArrayList() : sources.stream().map((source) ->
+                copy(source, clazz)).collect(Collectors.toList()));
     }
 
     private static Field[] getAllField(Class clazz) {
         Field[] array;
         for(array = null; clazz != Object.class; clazz = clazz.getSuperclass()) {
             Field[] field = clazz.getDeclaredFields();
-            array = (Field[]) ArrayUtils.addAll(array, field);
+            array =  ArrayUtils.addAll(array, field);
         }
 
         return array;

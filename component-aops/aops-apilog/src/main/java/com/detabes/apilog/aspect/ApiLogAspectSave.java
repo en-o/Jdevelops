@@ -74,7 +74,6 @@ public class ApiLogAspectSave {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         String requestUri = (request).getRequestURI();
-        String url = request.getRequestURL().toString();
         apiLog.setApiName(requestUri);
 
         /* outParams and  status  */
@@ -112,10 +111,6 @@ public class ApiLogAspectSave {
         apiLog.setCallTime(DateTime.now().toString(TimeFormatEnum.DEFAULT_FORMAT_DATETIME.getFormat()));
         /* callTime 调用时间  */
 
-        //获取请求的类名
-        String className = joinPoint.getTarget().getClass().getName();
-        //获取请求的方法名
-        String methodName = method.getName();
 
         /*inParams    输入 */
         //请求的参数
@@ -127,7 +122,7 @@ public class ApiLogAspectSave {
         }catch (Exception e){
             apiLog.setInParams(null);
         }
-        /**inParams    输入 */
+        /*inParams    输入 */
         apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
         apiLogSave.saveLog(apiLog);
     }
@@ -145,12 +140,12 @@ public class ApiLogAspectSave {
 
     /**
      * 实体转Map
-     * @param obj
-     * @return
+     * @param obj 实体
+     * @return  Map
      */
     @SuppressWarnings("unchecked")
     private   Map<String, Object> beanToMap(Object obj) {
-        Map<String, Object> params = new HashMap<String, Object>(0);
+        Map<String, Object> params = new HashMap<>(15);
         try {
             PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
             PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);

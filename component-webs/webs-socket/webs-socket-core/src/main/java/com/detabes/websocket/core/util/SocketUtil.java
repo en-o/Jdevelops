@@ -22,8 +22,8 @@ public class SocketUtil {
             map = map.entrySet().stream()
                     .filter((e) -> checkKey(e.getKey(),filters))
                     .collect(Collectors.toMap(
-                            (e) -> (String) e.getKey(),
-                            (e) -> e.getValue()
+                            Map.Entry::getKey,
+                            Map.Entry::getValue
                     ));
         }
         return map;
@@ -33,7 +33,7 @@ public class SocketUtil {
      * 通过indexof匹配想要查询的字符
      */
     private static boolean checkKey(String key, String filters) {
-        if (key.indexOf(filters)>-1){
+        if (key.contains(filters)){
             return true;
         }else {
             return false;

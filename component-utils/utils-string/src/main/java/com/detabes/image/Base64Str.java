@@ -24,7 +24,7 @@ public class Base64Str {
      * @param imgFilePath    图片本地路径
      * @return  Base64
      */
-    public static String ImageToBase64(String imgFilePath) throws IOException {
+    public static String imageToBase64(String imgFilePath) throws IOException {
         File file = FileUtil.file(imgFilePath);
         BufferedImage bufferedImage = ImageIO.read(FileUtil.file(imgFilePath));
         //  Image scalerRImage = ImgUtil.scale(rRead, 0.5f); // 压缩下
@@ -37,7 +37,7 @@ public class Base64Str {
      * @return Base64
      * @throws IOException IOException
      */
-    public static String ImageToBase64DataUri(String imgFilePath) throws IOException {
+    public static String imageToBase64DataUri(String imgFilePath) throws IOException {
         File file = FileUtil.file(imgFilePath);
         BufferedImage bufferedImage = ImageIO.read(FileUtil.file(imgFilePath));
         return ImgUtil.toBase64DataUri(bufferedImage, FilenameUtils.getExtension(file.getName()));
@@ -49,7 +49,7 @@ public class Base64Str {
      * @throws  IOException IOException
      * @return Base64
      */
-    public static String ImageToBase64(MultipartFile multipartImageFile) throws IOException {
+    public static String imageToBase64(MultipartFile multipartImageFile) throws IOException {
         // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
         BufferedImage rRead = ImageIO.read(multipartImageFile.getInputStream());
         return ImgUtil.toBase64(rRead, FilenameUtils.getExtension(multipartImageFile.getName()));
@@ -61,7 +61,7 @@ public class Base64Str {
      * @return Base64
      * @throws IOException IOException
      */
-    public static String ImageToBase64DataUri(MultipartFile multipartImageFile) throws IOException {
+    public static String imageToBase64DataUri(MultipartFile multipartImageFile) throws IOException {
         // 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
         BufferedImage rRead = ImageIO.read(multipartImageFile.getInputStream());
         return ImgUtil.toBase64DataUri(rRead, FilenameUtils.getExtension(multipartImageFile.getName()));

@@ -83,7 +83,7 @@ public abstract class UniCodeUtil implements Serializable {
      */  
     private static String bitWeight(int bitSize) {  
         String str = String.valueOf(Math.random()).substring(2);  
-        while (str.length() < bitSize || str.indexOf('-') > 0) {  
+        while (str.length() < bitSize || str.indexOf('-') > -1) {
             str = String.valueOf(Math.random()).substring(2);  
         }  
         return str.substring(0, bitSize);  

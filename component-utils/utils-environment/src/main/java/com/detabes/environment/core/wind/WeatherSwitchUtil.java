@@ -47,9 +47,9 @@ public class WeatherSwitchUtil {
     private static Map<String, String> windDirectMap = getWindDirect();
 
     public static String getWindPower(double windVelocity){
-        for(Entry map : windPowerMap.entrySet()){
-            String windRegion = map.getValue().toString();
-            String windName = map.getKey().toString();
+        for(Entry<String, String> map : windPowerMap.entrySet()){
+            String windRegion = map.getValue();
+            String windName = map.getKey();
             if(windRegion.contains("-")){
                 String[] windRegionArray = windRegion.split("-");
                 double windMin = Double.parseDouble(windRegionArray[0]);
@@ -71,9 +71,9 @@ public class WeatherSwitchUtil {
     }
 
     public static String getWindVelocity(double windVelocity){
-        for(Entry map : windDirectMap.entrySet()){
-            String windRegion = map.getValue().toString();
-            String windName = map.getKey().toString();
+        for(Entry<String, String> map : windDirectMap.entrySet()){
+            String windRegion = map.getValue();
+            String windName = map.getKey();
             if(windRegion.contains("-")){
                 String[] windRegionArray = windRegion.split("-");
                 double windMin = Double.parseDouble(windRegionArray[0]);

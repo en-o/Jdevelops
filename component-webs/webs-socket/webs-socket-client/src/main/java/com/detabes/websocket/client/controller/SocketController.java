@@ -4,6 +4,7 @@ import com.detabes.websocket.core.service.WebSocketServer;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ public interface SocketController {
      * @param message 消息
      * @param webSocketServer  webSocketServer
      */
-    @RequestMapping(value = "/only", method = RequestMethod.GET)
+    @GetMapping(value = "/only")
     @ApiOperation("给指定用户推送消息")
     @ApiImplicitParams({
             @ApiImplicitParam(name="userName", value="用户名",  dataType="String", required=true),
@@ -42,7 +43,7 @@ public interface SocketController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @GetMapping(value = "/all")
     default void allUserSocket(@RequestParam String message, WebSocketServer webSocketServer){
         webSocketServer.onMessage(message);
     }

@@ -16,10 +16,10 @@ import java.util.Map;
 public class RestTemplateUtil {
 	/**
 	 * restTemplate 发送post请求
-	 * @param restTemplate
-	 * @param url
-	 * @param json
-	 * @return
+	 * @param restTemplate restTemplate
+	 * @param url url
+	 * @param json json
+	 * @return ResponseEntity
 	 */
 	public static ResponseEntity<String> getRestTemplatePost(RestTemplate restTemplate,String url,String json){
 		HttpHeaders headers = new HttpHeaders();
@@ -32,10 +32,10 @@ public class RestTemplateUtil {
 	}
 	/**
 	 * restTemplate 发送get请求
-	 * @param restTemplate
-	 * @param url
-	 * @param json
-	 * @return
+	 * @param restTemplate  restTemplate
+	 * @param url url
+	 * @param json json
+	 * @return ResponseEntity
 	 */
 	public static ResponseEntity<String> getRestTemplateGet(RestTemplate restTemplate,String url,String json){
 		ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class,json);
@@ -43,8 +43,13 @@ public class RestTemplateUtil {
 		return entity;
 	}
 
+	/**
+	 *
+	 * @param entity entity
+	 * @return Map
+	 */
 	public static Map<String, Object> parseResponseEntity(ResponseEntity<String> entity) {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<>();
 		Integer code = entity.getStatusCodeValue();
 		if(entity.getStatusCodeValue()==200) {
 			JSONObject obj = JSONObject.parseObject(entity.getBody());

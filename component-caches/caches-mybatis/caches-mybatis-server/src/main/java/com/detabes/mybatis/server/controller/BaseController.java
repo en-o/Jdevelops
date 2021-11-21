@@ -14,10 +14,7 @@ import com.detabes.result.response.SortVO;
 import com.detabes.result.result.ResultVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -57,9 +54,8 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/8  15:34
-     * @expection
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping(value = "saveOrUpdate")
     @ApiOperation("单个保存或更新")
     public ResultVO<R> saveOrUpdate(@RequestBody U u) {
         T t = U.to(u, tClass);
@@ -75,10 +71,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/8  15:36
-     * @expection
      */
     @ApiOperation("批量保存或更新")
-    @RequestMapping(value = "/batchSaveOrUpdate", method = RequestMethod.POST)
+    @PostMapping(value = "/batchSaveOrUpdate")
     public ResultVO<String> batchSaveOrUpdate(@RequestBody List<U> list) {
         return ResultVO.resultMsg(service.saveOrUpdateBatch(U.to(list, tClass)), "批量操作");
     }
@@ -91,10 +86,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/8  15:39
-     * @expection
      */
     @ApiOperation("根据id删除")
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping("delete")
     public ResultVO<String> delete(@RequestParam("id") Long id) {
         return ResultVO.resultMsg(service.removeById(id), "删除");
 
@@ -108,10 +102,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/8  15:39
-     * @expection
      */
     @ApiOperation("根据id查询")
-    @RequestMapping(value = "/getById", method = RequestMethod.GET)
+    @GetMapping(value = "/getById")
     public ResultVO<R> getById(@RequestParam("id") Long id) {
             service.getById(id);
             return ResultVO.resultDataMsgForT(true, R.to(service.getById(id), rClass), "查询");
@@ -125,10 +118,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/15  10:42
-     * @expection
      */
     @ApiOperation("根据uuid查询")
-    @RequestMapping(value = "/uuid", method = RequestMethod.GET)
+    @GetMapping(value = "/uuid")
     public ResultVO<R> getById(@RequestParam("uuid") Object uuid) {
         T t = service.getOne(new QueryWrapper<T>().eq("uuid", uuid));
         return ResultVO.resultDataMsgForT(true, R.to(t, rClass), "查询");
@@ -141,10 +133,9 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @company Peter
      * @date 2020/12/8  15:39
-     * @expection
      */
     @ApiOperation("查询全部")
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @PostMapping(value = "/list")
     public ResultVO<List<R>> getList(@RequestBody S s) {
         T t = S.to(s, tClass);
         QueryWrapper<T> wrapper = WrapperUtils.createWrapper(t);
@@ -161,7 +152,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
 
 
     @ApiOperation("条件分页查询")
-    @RequestMapping(value = "/queryPage", method = RequestMethod.POST)
+    @PostMapping(value = "/queryPage")
     public ResultVO<ResourcePage<List<R>>> queryPage(@RequestBody S s) {
         PageVO pageVO = (PageVO) ObjectUtil.getFieldValue(s, "pageVO");
         SortVO sortVO = (SortVO) ObjectUtil.getFieldValue(s, "sortVO");

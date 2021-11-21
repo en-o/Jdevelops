@@ -2,7 +2,6 @@ package com.detabes.time.core;
 
 import com.detabes.enums.time.TimeFormatEnum;
 import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 
 import java.util.Date;
 
@@ -14,7 +13,6 @@ import java.util.Date;
  * @date 2021-10-25 15:13
  */
 public class TimeVerifyUtil {
-
 
     /**
      * 验证闰年

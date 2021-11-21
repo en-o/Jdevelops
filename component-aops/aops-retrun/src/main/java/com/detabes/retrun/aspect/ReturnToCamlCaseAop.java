@@ -18,10 +18,9 @@ import java.util.*;
 
 
 /**
+ * 修改方法的返回值
  * @author tn
  * @version 1
- * @ClassName JpaAop
- * @description  修改方法的返回值
  * @date 2020/4/30 2:32
  */
 
@@ -50,7 +49,7 @@ public class ReturnToCamlCaseAop {
                 return  MapUtil.beanToMap(rvt);
             }else if(rvt instanceof List){
                 List<Map<String, Object>> tmap = new ArrayList<>();
-                for (Map item : (List<Map>)rvt) {
+                for (Map<String, Object> item : (List<Map<String, Object>>)rvt) {
                     Map<String, Object> newMap = new HashMap<>(item);
                     Iterator<String> iter = item.keySet().iterator();//通过迭代器获取key，vale
                     while(iter.hasNext()) {

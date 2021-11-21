@@ -55,10 +55,8 @@ public class WrapperUtils {
         //判断排序方式 1是desc 0是asc
         if (sortVO!=null) {
             boolean flag = true;
-            if (sortVO.getOrderDesc() != null) {
-                if (sortVO.getOrderDesc() == 1) {
-                    flag = false;
-                }
+            if (sortVO.getOrderDesc() != null && sortVO.getOrderDesc() == 1) {
+                flag = false;
             }
             wrapper = wrapper.orderBy(StringUtils.isNotBlank(sortVO.getOrderBy()), flag,
                     sortVO.getOrderBy());

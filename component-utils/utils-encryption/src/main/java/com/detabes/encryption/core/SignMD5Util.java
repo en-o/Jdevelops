@@ -33,7 +33,7 @@ public class SignMD5Util {
 
     /**
      *  加密
-     * @description  TODO(16位或32位密码)
+     * @description  (16位或32位密码)
      * @param plainText 需要加密的字符
      * @param  flag true为32位,false为16位
      * @return 返回密钥
@@ -85,7 +85,7 @@ public class SignMD5Util {
 
     /**
      * 16位或32位密码
-     * @description  TODO(16位或32位密码)
+     * @description  (16位或32位密码)
      * @param map 加密串
      * @param flag true为32位,false为16位
      * @return 返回密钥
@@ -110,7 +110,7 @@ public class SignMD5Util {
 
     /**
      * 16位或32位密码
-     * @description  TODO(16位或32位密码)
+     * @description  (16位或32位密码)
      * @param result 加密串
      * @param flag true为32位,false为16位
      * @return 返回密钥

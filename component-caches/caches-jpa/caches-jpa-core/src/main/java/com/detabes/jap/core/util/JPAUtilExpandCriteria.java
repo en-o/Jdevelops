@@ -16,8 +16,8 @@ import java.util.List;
  * @author tn
  */
 public class JPAUtilExpandCriteria<T> implements Specification<T>{
-    private List<ExpandCriterion> criterionsAnd = new ArrayList<ExpandCriterion>();
-    private List<ExpandCriterion> criterionsOr = new ArrayList<ExpandCriterion>();
+    private List<ExpandCriterion> criterionsAnd = new ArrayList<>();
+    private List<ExpandCriterion> criterionsOr = new ArrayList<>();
 
     List<Predicate> predicatesAnd ;
     List<Predicate> predicatesOr;
@@ -29,7 +29,7 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
 
 
         if (criterionsAnd!=null&&!criterionsAnd.isEmpty()) {
-             predicatesAnd = new ArrayList<Predicate>();
+             predicatesAnd = new ArrayList<>();
             for(ExpandCriterion c : criterionsAnd){
                 predicatesAnd.add(c.toPredicate(root, query,builder));
             }  
@@ -39,7 +39,7 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
             }
         }
         if (criterionsOr!=null&&!criterionsOr.isEmpty()) {
-            predicatesOr = new ArrayList<Predicate>();
+            predicatesOr = new ArrayList<>();
             for(ExpandCriterion c : criterionsOr){
                 predicatesOr.add(c.toPredicate(root, query,builder));
             }

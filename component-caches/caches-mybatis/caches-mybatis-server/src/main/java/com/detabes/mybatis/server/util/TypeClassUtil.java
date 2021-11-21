@@ -12,7 +12,8 @@ import java.lang.reflect.Type;
  * @description
  */
 public class TypeClassUtil {
-    public static <T> Class<?> getClass(Class<?> clazz,int index) {
+
+    public static Class<?> getClass(Class<?> clazz,int index) {
         Type type = clazz.getGenericSuperclass();
         Type[] types = ((ParameterizedType) type).getActualTypeArguments();
         return types[index].getClass();
