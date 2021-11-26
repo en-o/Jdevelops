@@ -47,20 +47,22 @@ public class SwaggerConfig {
 
     public Docket createRestApi() {
 
-
-
-        return new Docket(swaggerBean.getDocket())
+        Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerBean.getBasePackage()))
                 /*对所有路径进行监控*/
                 .paths(PathSelectors.any())
-                .build()//赋予插件体系
-                //全站统一参数token
-                .securitySchemes(BaseConfig.security())
-                .securityContexts(BaseConfig.securityContexts())
-                ;
+                .build();//赋予插件体系
+
+        if(swaggerBean.getAddHeaderToken()){
+            //全站统一参数token
+            return  build.securitySchemes(BaseConfig.security())
+                    .securityContexts(BaseConfig.securityContexts());
+        }else {
+            return build;
+        }
     }
 
     private ApiInfo apiInfo() {

@@ -48,8 +48,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket createRestApi() {
-
-        return new Docket(swaggerBean.getDocket())
+        Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
                 .apiInfo(apiInfo())
                 .groupName(swaggerBean.getGroupName())
@@ -57,11 +56,15 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(swaggerBean.getBasePackage()))
                 /*对所有路径进行监控*/
                 .paths(PathSelectors.any())
-                .build()
-                //全站统一参数token
-                .securitySchemes(BaseConfig.security())
-                .securityContexts(BaseConfig.securityContexts())
-                ;
+                .build();
+       if(swaggerBean.getAddHeaderToken()){
+           //全站统一参数token
+           return  build.securitySchemes(BaseConfig.security())
+                   .securityContexts(BaseConfig.securityContexts());
+       }else {
+           return build;
+       }
+
     }
 
     private ApiInfo apiInfo() {

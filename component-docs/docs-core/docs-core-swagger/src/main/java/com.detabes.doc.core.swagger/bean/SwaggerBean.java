@@ -76,6 +76,10 @@ public class SwaggerBean {
      */
     private String groupName;
 
+    /**
+     *  是否添加全局Header token参数
+     */
+    private Boolean addHeaderToken = true;
 
 
     public DocumentationType getDocket() {
