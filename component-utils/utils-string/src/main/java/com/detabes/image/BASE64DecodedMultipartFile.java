@@ -1,9 +1,10 @@
 package com.detabes.image;
 
+import org.springframework.lang.NonNullApi;
 import org.springframework.web.multipart.MultipartFile;
-import sun.misc.BASE64Decoder;
 
 import java.io.*;
+import java.util.Base64;
 
 /**
  * 来源于网络
@@ -45,18 +46,22 @@ public class BASE64DecodedMultipartFile implements MultipartFile {
     }
   
     @Override
-    public byte[] getBytes() throws IOException {
+    public byte[] getBytes() {
         return imgContent;
     }
   
     @Override
-    public InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() {
         return new ByteArrayInputStream(imgContent);
     }
   
     @Override
     public void transferTo(File dest) throws IOException, IllegalStateException {
-        new FileOutputStream(dest).write(imgContent);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(dest)){
+            fileOutputStream.write(imgContent);
+        } catch (Exception e){
+            throw e;
+        }
     }
 
     /**
@@ -65,22 +70,17 @@ public class BASE64DecodedMultipartFile implements MultipartFile {
      * @return MultipartFile
      */
     public static MultipartFile base64ToMultipart(String base64) {
-        try {
-            String[] baseStrs = base64.split(",");
-  
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] b = decoder.decodeBuffer(baseStrs[1]);
-  
-            for (int i = 0; i < b.length; ++i) {
-                if (b[i] < 0) {
-                    b[i] += 256;
-                }
+        String[] baseStrs = base64.split(",");
+
+        Base64.Decoder decoder = Base64.getMimeDecoder();
+        byte[] b = decoder.decode(baseStrs[1]);
+
+        for (int i = 0; i < b.length; ++i) {
+            if (b[i] < 0) {
+                b[i] += 256;
             }
-            return new BASE64DecodedMultipartFile(b, baseStrs[0]);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
+        return new BASE64DecodedMultipartFile(b, baseStrs[0]);
     }
   
 }
