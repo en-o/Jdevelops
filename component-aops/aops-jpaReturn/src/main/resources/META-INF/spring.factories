@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.retrun.aspect.ReturnToCamlCaseAop
+  com.detabes.retrun.aspect.JpaReturnAop

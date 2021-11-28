@@ -2,8 +2,7 @@ package com.detabes.retrun.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.detabes.map.core.map.MapUtil;
-import com.detabes.retrun.annotation.ReturnToCamlCase;
+import com.detabes.retrun.annotation.JpaReturn;
 import com.detabes.string.StringFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,14 +26,14 @@ import java.util.*;
 @Aspect
 @Component
 @Lazy(false)
-public class ReturnToCamlCaseAop {
+public class JpaReturnAop {
 
     /**
      * 设置jpa注解为切入点
      *环绕通知：灵活自由的在目标方法中切入代码
-     *@paramjoinPoint
+     *@param pjp pjp
      */
-    @Around(value="@annotation(com.detabes.retrun.annotation.ReturnToCamlCase)")
+    @Around(value="@annotation(com.detabes.retrun.annotation.JpaReturn)")
     public Object doAfterReturning(ProceedingJoinPoint pjp) throws Throwable {
         //指定方法 获取返回值
         Object rvt = pjp.proceed();
@@ -43,10 +42,14 @@ public class ReturnToCamlCaseAop {
         //获取切入点所在的方法
         Method method = signature.getMethod();
         /*reBean 返回值类型*/
-        ReturnToCamlCase reBean = method.getAnnotation(ReturnToCamlCase.class);
+        JpaReturn reBean = method.getAnnotation(JpaReturn.class);
         if(rvt!=null){
             if(rvt instanceof Map){
-                return  MapUtil.beanToMap(rvt);
+                Map<String, Object> map = new HashMap<>((Map<String, Object>)rvt);
+                return JSON.parseObject(JSON.toJSONString(map,
+                        SerializerFeature.WriteNullStringAsEmpty,
+                        SerializerFeature.WriteNullNumberAsZero,
+                        SerializerFeature.WriteMapNullValue), (Type) reBean.reBean());
             }else if(rvt instanceof List){
                 List<Map<String, Object>> tmap = new ArrayList<>();
                 for (Map<String, Object> item : (List<Map<String, Object>>)rvt) {
@@ -72,12 +75,9 @@ public class ReturnToCamlCaseAop {
 
 
     /**
-     *@Author: lmz
-     *@Company: Peter
-     *@Date: 2020/4/29  13:29
-     *@Description:  将 List<Map<String,Object>> 转为对应的实体对象
-     @param list list
-     *@Return: java.util.List<T>
+     * @author lmz
+     * @param list list
+     * @return t
      */
     public static <T> List<T> changeMap(List<Map<String, Object>> list, T t){
         List<T> list1=new ArrayList<>();
@@ -85,7 +85,7 @@ public class ReturnToCamlCaseAop {
             T o = JSON.parseObject(JSON.toJSONString(map,
                     SerializerFeature.WriteNullStringAsEmpty,
                     SerializerFeature.WriteNullNumberAsZero,
-                    SerializerFeature.WriteMapNullValue),(Type) t.getClass());
+                    SerializerFeature.WriteMapNullValue), (Type) t);
             list1.add(o);
         });
 

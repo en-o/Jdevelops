@@ -36,3 +36,9 @@ hs_err_pid*
 /component-aops/aops-retrun/README.md
 /component-aops/aops-retrun/.mvn/
 /component-aops/aops-retrun/target/
+/component-aops/aops-return/mvnw.cmd
+/component-aops/aops-return/mvnw
+/component-aops/aops-return/.mvn/
+/component-aops/aops-jpaReturn/.mvn/
+/component-aops/aops-jpaReturn/mvnw
+/component-aops/aops-jpaReturn/mvnw.cmd

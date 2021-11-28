@@ -11,10 +11,10 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ReturnToCamlCase {
+public @interface JpaReturn {
      /**
-      * 返回值类型
-      * @return
+      * 返回值类型 可以不写
+      * @return Class
       */
      Class reBean() default Object.class;
 }
