@@ -319,12 +319,12 @@
         <repository>
             <id>releases</id>
             <name>detabes-component-Release</name>
-            <url>http://nexus.tannn.cn/repository/maven-releases/</url>
+            <url>https://nexus.tannn.cn/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>detabes-component-SNAPSHOTS</name>
-            <url>http://nexus.tannn.cn/repository/maven-snapshots/</url>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
