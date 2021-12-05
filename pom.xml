@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.detabes</groupId>
-    <artifactId>detabes-component</artifactId>
+    <groupId>cn.jdevelop</groupId>
+    <artifactId>jdevelop</artifactId>
     <packaging>pom</packaging>
     <version>2.0.1</version>
 
@@ -24,8 +24,8 @@
 
 
     <organization>
-        <name>detabes</name>
-        <url>http://databstech.com</url>
+        <name>tan</name>
+        <url>https://tannn.cn/</url>
     </organization>
 
     <!-- 开发者信息 -->
@@ -34,7 +34,7 @@
             <id>tanning</id>
             <name>tanning</name>
             <email>1445763190@qq.com</email>
-            <organization>com.detabes</organization>
+            <organization>cn.jdevelop</organization>
             <roles>
                 <role>author</role>
             </roles>
@@ -44,36 +44,36 @@
     <!--  子模块 -->
     <modules>
         <!-- 工具模块 -->
-        <module>component-utils</module>
+        <module>jdevelop-utils</module>
         <!-- bean模块 -->
-        <module>component-beans</module>
+        <module>jdevelop-beans</module>
         <!-- aop模块 -->
-        <module>component-aops</module>
+        <module>jdevelop-aops</module>
         <!-- web模块 -->
-        <module>component-webs</module>
+        <module>jdevelop-webs</module>
         <!-- 接口模块 -->
-        <module>component-apis</module>
+        <module>jdevelop-apis</module>
         <!-- 文档模块 -->
-        <module>component-docs</module>
+        <module>jdevelop-docs</module>
         <!-- 数据模块 -->
-        <module>component-caches</module>
+        <module>jdevelop-caches</module>
         <!-- 日志 -->
-        <module>component-logs</module>
+        <module>jdevelop-logs</module>
         <!-- 全文检索 -->
-        <module>component-search</module>
+        <module>jdevelop-search</module>
         <!-- cloud相关 -->
-        <module>component-cloud</module>
+        <module>jdevelop-cloud</module>
         <!-- starter  -->
-        <module>component-starters</module>
+        <module>jdevelop-starters</module>
         <!-- 短信-->
-        <module>component-sms</module>
+        <module>jdevelop-sms</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <detabes.last.version>2.0.1</detabes.last.version>
+        <jdevelop.last.version>2.0.1</jdevelop.last.version>
         <knife4j.version>3.0.3</knife4j.version>
         <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
         <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
@@ -318,12 +318,12 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <name>detabes-component-Release</name>
+            <name>jdevelop-Release</name>
             <url>https://nexus.tannn.cn/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
-            <name>detabes-component-SNAPSHOTS</name>
+            <name>jdevelop-SNAPSHOTS</name>
             <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>

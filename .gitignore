@@ -27,18 +27,18 @@ target/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/component-docs/docs-core/docs-core-swagger/target/
-/component-logs/logs-cache/logs-cache-p6spy/target/
-/component-utils/utils-message/target/
-/component-aops/aops-retrun/mvnw.cmd
-/component-aops/aops-retrun/mvnw
-/component-aops/aops-retrun/.gitignore
-/component-aops/aops-retrun/README.md
-/component-aops/aops-retrun/.mvn/
-/component-aops/aops-retrun/target/
-/component-aops/aops-return/mvnw.cmd
-/component-aops/aops-return/mvnw
-/component-aops/aops-return/.mvn/
-/component-aops/aops-jpaReturn/.mvn/
-/component-aops/aops-jpaReturn/mvnw
-/component-aops/aops-jpaReturn/mvnw.cmd
+/jdevelop-docs/docs-core/docs-core-swagger/target/
+/jdevelop-logs/logs-cache/logs-cache-p6spy/target/
+/jdevelop-utils/utils-message/target/
+/jdevelop-aops/aops-retrun/mvnw.cmd
+/jdevelop-aops/aops-retrun/mvnw
+/jdevelop-aops/aops-retrun/.gitignore
+/jdevelop-aops/aops-retrun/README.md
+/jdevelop-aops/aops-retrun/.mvn/
+/jdevelop-aops/aops-retrun/target/
+/jdevelop-aops/aops-return/mvnw.cmd
+/jdevelop-aops/aops-return/mvnw
+/jdevelop-aops/aops-return/.mvn/
+/jdevelop-aops/aops-jpaReturn/.mvn/
+/jdevelop-aops/aops-jpaReturn/mvnw
+/jdevelop-aops/aops-jpaReturn/mvnw.cmd
