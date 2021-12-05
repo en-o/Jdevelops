@@ -44,29 +44,29 @@
     <!--  子模块 -->
     <modules>
         <!-- 工具模块 -->
-        <module>component-utils</module>
+        <module>jdevelop-utils</module>
         <!-- bean模块 -->
-        <module>component-beans</module>
+        <module>jdevelop-beans</module>
         <!-- aop模块 -->
-        <module>component-aops</module>
+        <module>jdevelop-aops</module>
         <!-- web模块 -->
-        <module>component-webs</module>
+        <module>jdevelop-webs</module>
         <!-- 接口模块 -->
-        <module>component-apis</module>
+        <module>jdevelop-apis</module>
         <!-- 文档模块 -->
-        <module>component-docs</module>
+        <module>jdevelop-docs</module>
         <!-- 数据模块 -->
-        <module>component-caches</module>
+        <module>jdevelop-caches</module>
         <!-- 日志 -->
-        <module>component-logs</module>
+        <module>jdevelop-logs</module>
         <!-- 全文检索 -->
-        <module>component-search</module>
+        <module>jdevelop-search</module>
         <!-- cloud相关 -->
-        <module>component-cloud</module>
+        <module>jdevelop-cloud</module>
         <!-- starter  -->
-        <module>component-starters</module>
+        <module>jdevelop-starters</module>
         <!-- 短信-->
-        <module>component-sms</module>
+        <module>jdevelop-sms</module>
     </modules>
 
     <properties>
