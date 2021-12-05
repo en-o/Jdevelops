@@ -5,11 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author lmz
- * @projectName detabes-component
- * @packageName com.detabes.redis.limit.config
- * @company Peter
  * @date 2021/8/24  10:14
- * @description
  */
 @Component
 @ConfigurationProperties(prefix = "cache.redis", ignoreUnknownFields = false)

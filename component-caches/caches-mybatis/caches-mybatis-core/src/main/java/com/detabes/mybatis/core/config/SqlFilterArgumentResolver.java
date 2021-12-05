@@ -1,5 +1,6 @@
 package com.detabes.mybatis.core.config;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,15 +19,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * 解决Mybatis Plus Order By SQL注入问题
  * @author lmz
- * @projectName detabes-component
- * @packageName com.detabes.mybatis.core.config
- * @company Peter
  * @date 2021/3/9  9:53
- * @description 解决Mybatis Plus Order By SQL注入问题
  */
 public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver {
-    private final static String[] KEYWORDS = { "master", "truncate", "insert", "select", "delete", "update", "declare",
+    private static final  String[] KEYWORDS = { "master", "truncate", "insert", "select", "delete", "update", "declare",
             "alter", "drop", "sleep" };
     /**
      * 判断Controller是否包含page 参数
@@ -84,7 +82,7 @@ public class SqlFilterArgumentResolver implements HandlerMethodArgumentResolver 
     private Predicate<String> sqlInjectPredicate() {
         return sql -> {
             for (String keyword : KEYWORDS) {
-                if (StrUtil.containsIgnoreCase(sql, keyword)) {
+                if (CharSequenceUtil.containsIgnoreCase(sql, keyword)) {
                     return false;
                 }
             }
