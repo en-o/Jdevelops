@@ -4,7 +4,7 @@
 
     <parent>
         <artifactId>component-caches</artifactId>
-        <groupId>com.detabes</groupId>
+        <groupId>cn.jdevelop</groupId>
         <version>2.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>

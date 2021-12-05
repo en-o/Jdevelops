@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.apisign.scan.EnableAutoScanConfiguration
+  cn.jdevelop.apisign.scan.EnableAutoScanConfiguration

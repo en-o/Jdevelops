@@ -6,7 +6,7 @@
 ## 依赖添加
 ```maven
     <dependency>
-       <groupId>com.detabes</groupId>
+       <groupId>cn.jdevelop</groupId>
        <artifactId>sms-aliyun</artifactId>
        <version>2.0.0</version>
     </dependency>
@@ -38,13 +38,13 @@ sms:
 ## 使用例子
 
 ```java
-package com.detabes.user;
+package cn.jdevelop.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.detabes.sms.aliyun.annotaion.Sms;
-import com.detabes.sms.aliyun.config.SmsConfig;
-import com.detabes.sms.aliyun.service.AliYunService;
-import com.detabes.sms.mail.service.MailService;
+import Sms;
+import SmsConfig;
+import AliYunService;
+import MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,7 +81,7 @@ class UserApplicationTests {
 ## 依赖添加
 ```maven
    <dependency>
-       <groupId>com.detabes</groupId>
+       <groupId>cn.jdevelop</groupId>
        <artifactId>sms-mail</artifactId>
        <version>2.0.0</version>
     </dependency>
@@ -123,13 +123,13 @@ spring:
 ## 使用例子
 
 ```java
-package com.detabes.user;
+package cn.jdevelop.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.detabes.sms.aliyun.annotaion.Sms;
-import com.detabes.sms.aliyun.config.SmsConfig;
-import com.detabes.sms.aliyun.service.AliYunService;
-import com.detabes.sms.mail.service.MailService;
+import Sms;
+import SmsConfig;
+import AliYunService;
+import MailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

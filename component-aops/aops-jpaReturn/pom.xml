@@ -7,7 +7,7 @@
     <description>Demo project for Spring Boot</description>
     <parent>
         <artifactId>component-aops</artifactId>
-        <groupId>com.detabes</groupId>
+        <groupId>cn.jdevelop</groupId>
         <version>2.0.1</version>
     </parent>
     <properties>
@@ -18,14 +18,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>utils-map</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>utils-string</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
     </dependencies>
 

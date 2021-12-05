@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.redis.pub.scan.EnableAutoScanConfiguration
+  cn.jdevelop.redis.pub.scan.EnableAutoScanConfiguration

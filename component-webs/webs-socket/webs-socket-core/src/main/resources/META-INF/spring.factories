@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.websocket.core.scan.EnableAutoScanConfiguration
+  cn.jdevelop.websocket.core.scan.EnableAutoScanConfiguration

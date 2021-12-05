@@ -18,7 +18,7 @@
     </modules>
     <parent>
         <artifactId>jdevelop</artifactId>
-        <groupId>com.detabes</groupId>
+        <groupId>cn.jdevelop</groupId>
         <version>2.0.1</version>
     </parent>
 
@@ -26,15 +26,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>beans-enum</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>beans-constant</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>caches-mybatis</artifactId>
-        <groupId>com.detabes</groupId>
+        <groupId>cn.jdevelop</groupId>
         <version>2.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,19 +12,19 @@
     <artifactId>caches-mybatis-server</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>apis-result</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>beans-entity</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>caches-mybatis-core</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
     </dependencies>
 

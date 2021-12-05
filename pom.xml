@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.detabes</groupId>
+    <groupId>cn.jdevelop</groupId>
     <artifactId>jdevelop</artifactId>
     <packaging>pom</packaging>
     <version>2.0.1</version>
@@ -73,7 +73,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <detabes.last.version>2.0.1</detabes.last.version>
+        <jdevelop.last.version>2.0.1</jdevelop.last.version>
         <knife4j.version>3.0.3</knife4j.version>
         <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
         <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>

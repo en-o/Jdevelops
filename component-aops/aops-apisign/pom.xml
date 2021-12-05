@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>component-aops</artifactId>
-        <groupId>com.detabes</groupId>
+        <groupId>cn.jdevelop</groupId>
         <version>2.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,9 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>utils-encryption</artifactId>
-            <version>${detabes.last.version}</version>
+            <version>${jdevelop.last.version}</version>
         </dependency>
     </dependencies>
 

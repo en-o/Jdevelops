@@ -1,6 +1,6 @@
 # 后端组件 
 - 在工作中的一些积累
-- [示例代码](https://github.com/en-o/detabes-boot-example)
+- [示例代码](https://github.com/en-o/jdevelop-boot-example)
 - [文档](https://www.yuque.com/tanning/yg9ipo/)
  
 * [ ] aop模块
@@ -55,10 +55,10 @@
 * [ ] starter
     - [x] starters-utils
     - [x] starters-beans
-    - [ ] starters-detabes-web
-        - [x] starters-detabes-boot-web
-        - [x] starters-detabes-boot-web-jpa
-        - [ ] starters-detabes-cloud-web
+    - [ ] starters-jdevelop-web
+        - [x] starters-jdevelop-boot-web
+        - [x] starters-jdevelop-boot-web-jpa
+        - [ ] starters-jdevelop-cloud-web
 
 * [ ] 工具模块
     - [x] String [String工具]

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.redis.limit.config.RedisConfig
+  cn.jdevelop.redis.limit.config.RedisConfig

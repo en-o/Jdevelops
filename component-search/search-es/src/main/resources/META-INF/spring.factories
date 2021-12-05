@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.search.es.config.EsConfig,\
-  com.detabes.search.es.service.impl.EsIndexServiceImpl,\
-  com.detabes.search.es.service.impl.EsSearchServiceImpl
+  cn.jdevelop.search.es.config.EsConfig,\
+  cn.jdevelop.search.es.service.impl.EsIndexServiceImpl,\
+  cn.jdevelop.search.es.service.impl.EsSearchServiceImpl

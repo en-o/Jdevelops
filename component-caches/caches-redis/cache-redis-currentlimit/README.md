@@ -3,7 +3,7 @@
  1. 引入依赖
 ```maven
         <dependency>
-            <groupId>com.detabes</groupId>
+            <groupId>cn.jdevelop</groupId>
             <artifactId>cache-redis-currentlimit</artifactId>
             <version>2.0.0</version>
         </dependency>
@@ -14,7 +14,7 @@
 package com.test.controller;
 
 
-import com.detabes.redis.limit.annation.Limiter;
+import Limiter;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author lmz
- * @projectName mybatis-cache-test
- * @packageName com.test.controller
- * @company Peter
  * @date 2021/3/9  12:01
- * @description
  */
 @RestController
 @RequestMapping("/test")

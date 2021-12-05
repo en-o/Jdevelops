@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.version.config.WebMvcRegistrationsConfig
+  cn.jdevelop.version.config.WebMvcRegistrationsConfig

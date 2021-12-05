@@ -6,7 +6,7 @@
 ### 1.1 依赖添加
 ```maven
     <dependency>
-       <groupId>com.detabes</groupId>
+       <groupId>cn.jdevelop</groupId>
        <artifactId>search-es</artifactId>
        <version>2.0.0</version>
     </dependency>

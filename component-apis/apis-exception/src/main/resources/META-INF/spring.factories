@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.detabes.exception.handler.ControllerExceptionHandler
+  cn.jdevelop.exception.handler.ControllerExceptionHandler
