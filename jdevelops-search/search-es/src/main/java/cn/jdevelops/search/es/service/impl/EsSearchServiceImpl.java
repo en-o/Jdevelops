@@ -15,7 +15,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -197,7 +197,6 @@ public class EsSearchServiceImpl implements EsSearchService {
 	@Override
 	public List<Map<String, Object>> getAll(SearchRequest searchRequest) throws IOException {
 		List<Map<String, Object>> list = new ArrayList<>();
-		list.clear();
 		searchRequest.scroll(TimeValue.timeValueMinutes(5));
 		SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 		for (SearchHit hit : response.getHits().getHits()) {

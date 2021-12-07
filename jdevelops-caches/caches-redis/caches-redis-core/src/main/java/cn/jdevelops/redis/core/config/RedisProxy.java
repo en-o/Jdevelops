@@ -43,8 +43,6 @@ public class RedisProxy {
     /**
      * 通配符 *  查询 key
      *
-     * @param pattern
-     * @return
      */
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -113,7 +111,8 @@ public class RedisProxy {
             if (key.length == 1) {
                 redisTemplate.delete(key[0]);
             } else {
-                redisTemplate.delete(CollectionUtils.arrayToList(key));
+                List<String> objects = (List<String>) CollectionUtils.arrayToList(key);
+                redisTemplate.delete(objects);
             }
         }
     }
@@ -337,7 +336,6 @@ public class RedisProxy {
      * @param key  键
      * @param item 项
      * @param by   要增加几(大于0)
-     * @return
      */
     public double hincr(String key, String item, double by) {
         return redisTemplate.opsForHash().increment(key, item, by);
@@ -429,7 +427,6 @@ public class RedisProxy {
      * 获取set缓存的长度
      *
      * @param key 键
-     * @return
      */
     public long sGetSetSize(String key) {
         try {
@@ -464,7 +461,6 @@ public class RedisProxy {
      * @param key   键
      * @param start 开始
      * @param end   结束 0 到 -1代表所有值
-     * @return
      */
     public List<Object> lGet(String key, long start, long end) {
         try {
@@ -479,7 +475,6 @@ public class RedisProxy {
      * 获取list缓存的长度
      *
      * @param key 键
-     * @return
      */
     public long lGetListSize(String key) {
         try {
@@ -631,7 +626,6 @@ public class RedisProxy {
      * @param stringRedisTemplate  stringRedisTemplate
      * @param match key*
      * @param count 200
-     * @return
      */
     public List<String> scan(StringRedisTemplate stringRedisTemplate, String match, int count) {
         ScanOptions scanOptions = ScanOptions.scanOptions().match(match).count(count).build();
