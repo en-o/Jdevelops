@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.jdevelops.cloud.gateway.scan.EnableAutoScanConfiguration,\
+  cn.jdevelops.cloud.gateway.exception.core.ExceptionHandlerConfiguration

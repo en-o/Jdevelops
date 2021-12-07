@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>utils-string</module>
+        <module>utils-http</module>
+        <module>utils-environment</module>
+        <module>utils-spring</module>
+        <module>utils-time</module>
+        <module>utils-map</module>
+        <module>utils-list</module>
+        <module>utils-encryption</module>
+        <module>utils-jwt</module>
+        <module>utils-message</module>
+    </modules>
+    <parent>
+        <artifactId>jdevelops</artifactId>
+        <groupId>cn.jdevelops</groupId>
+        <version>2.0.1</version>
+    </parent>
+
+    <artifactId>jdevelops-utils</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>beans-enum</artifactId>
+            <version>${jdevelops.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>beans-constant</artifactId>
+            <version>${jdevelops.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

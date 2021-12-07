@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelop.apisign.scan.EnableAutoScanConfiguration

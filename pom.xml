@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.jdevelop</groupId>
-    <artifactId>jdevelop</artifactId>
+    <groupId>cn.jdevelops</groupId>
+    <artifactId>jdevelops</artifactId>
     <packaging>pom</packaging>
     <version>2.0.1</version>
 
@@ -34,7 +34,7 @@
             <id>tanning</id>
             <name>tanning</name>
             <email>1445763190@qq.com</email>
-            <organization>cn.jdevelop</organization>
+            <organization>cn.jdevelops</organization>
             <roles>
                 <role>author</role>
             </roles>
@@ -44,36 +44,36 @@
     <!--  子模块 -->
     <modules>
         <!-- 工具模块 -->
-        <module>jdevelop-utils</module>
+        <module>jdevelops-utils</module>
         <!-- bean模块 -->
-        <module>jdevelop-beans</module>
+        <module>jdevelops-beans</module>
         <!-- aop模块 -->
-        <module>jdevelop-aops</module>
+        <module>jdevelops-aops</module>
         <!-- web模块 -->
-        <module>jdevelop-webs</module>
+        <module>jdevelops-webs</module>
         <!-- 接口模块 -->
-        <module>jdevelop-apis</module>
+        <module>jdevelops-apis</module>
         <!-- 文档模块 -->
-        <module>jdevelop-docs</module>
+        <module>jdevelops-docs</module>
         <!-- 数据模块 -->
-        <module>jdevelop-caches</module>
+        <module>jdevelops-caches</module>
         <!-- 日志 -->
-        <module>jdevelop-logs</module>
+        <module>jdevelops-logs</module>
         <!-- 全文检索 -->
-        <module>jdevelop-search</module>
+        <module>jdevelops-search</module>
         <!-- cloud相关 -->
-        <module>jdevelop-cloud</module>
+        <module>jdevelops-cloud</module>
         <!-- starter  -->
-        <module>jdevelop-starters</module>
+        <module>jdevelops-starters</module>
         <!-- 短信-->
-        <module>jdevelop-sms</module>
+        <module>jdevelops-sms</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jdevelop.last.version>2.0.1</jdevelop.last.version>
+        <jdevelops.last.version>2.0.1</jdevelops.last.version>
         <knife4j.version>3.0.3</knife4j.version>
         <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
         <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
@@ -318,12 +318,12 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <name>jdevelop-Release</name>
+            <name>jdevelops-Release</name>
             <url>https://nexus.tannn.cn/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
-            <name>jdevelop-SNAPSHOTS</name>
+            <name>jdevelops-SNAPSHOTS</name>
             <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
