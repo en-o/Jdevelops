@@ -8,7 +8,9 @@
     <artifactId>jdevelops</artifactId>
     <packaging>pom</packaging>
     <version>2.0.1</version>
-
+    <name>jdevelops</name>
+    <description>开发用的小组件</description>
+    <url>https://github.com/en-o/Jdevelops</url>
 
     <!--springboot版本管理   这个版本是因为微服务 后期可能还会降级  -->
     <!--
@@ -28,6 +30,14 @@
         <url>https://tannn.cn/</url>
     </organization>
 
+    <!-- 开源许可证 -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
     <!-- 开发者信息 -->
     <developers>
         <developer>
@@ -35,6 +45,7 @@
             <name>tanning</name>
             <email>1445763190@qq.com</email>
             <organization>cn.jdevelops</organization>
+            <url>https://github.com/en-o/Jdevelops.git</url>
             <roles>
                 <role>author</role>
             </roles>
@@ -314,18 +325,35 @@
 
     </dependencyManagement>
 
-    <!-- 项目发布管理-->
+    <!--开源地址-->
+    <scm>
+        <!-- 发布分支 -->
+        <!--<tag>master</tag>-->
+        <url>https://github.com/en-o/Jdevelops.git</url>
+        <connection>https://github.com/en-o/Jdevelops.git</connection>
+        <developerConnection>https://github.com/en-o/Jdevelops.git</developerConnection>
+    </scm>
+    <!-- 项目发布管理 -->
     <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>jdevelops-Release</name>
-            <url>https://nexus.tannn.cn/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>jdevelops-SNAPSHOTS</name>
-            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
-        </snapshotRepository>
+        <!--私库-->
+         <!--<repository>
+             <id>tan-releases</id>
+             <name>jdevelops-Release</name>
+             <url>https://nexus.tannn.cn/repository/maven-releases/</url>
+         </repository>
+         <snapshotRepository>
+             <id>tan-snapshots</id>
+             <name>jdevelops-SNAPSHOTS</name>
+             <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
+         </snapshotRepository>-->
+            <snapshotRepository>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            </snapshotRepository>
+            <repository>
+                <id>ossrh</id>
+                <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            </repository>
     </distributionManagement>
 
     <!--Maven远程仓库设置 非必要，可以删除-->
@@ -410,4 +438,69 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>oss</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- 测试覆盖度 -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <version>2.7</version>
+                        <configuration>
+                            <formats>
+                                <format>html</format>
+                                <format>xml</format>
+                            </formats>
+                            <check />
+                        </configuration>
+                    </plugin>
+                    <!-- Gpg Signature -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>oss</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
