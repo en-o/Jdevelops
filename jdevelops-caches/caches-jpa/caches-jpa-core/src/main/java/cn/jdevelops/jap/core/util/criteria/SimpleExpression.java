@@ -51,7 +51,7 @@ public class SimpleExpression implements ExpandCriterion {
                                  CriteriaBuilder builder) {
         Path expression;
         if (fieldName.contains(".")) {
-            String[] names = fieldName.split(".");
+            String[] names = fieldName.split("\\.");
             expression = root.get(names[0]);
             for (int i = 1; i < names.length; i++) {
                 expression = expression.get(names[i]);
@@ -66,14 +66,13 @@ public class SimpleExpression implements ExpandCriterion {
             case NE:
                 return builder.notEqual(expression, value);
             case LIKE:
-                String like = "%" + value + "%";
-                return builder.like((Expression<String>) expression, like);
+                return builder.like(expression, "%" + value + "%");
+            case NOTLIKE:
+                return builder.notLike(expression, "%" + value + "%");
             case LLIKE:
-                String llike = "%" + value;
-                return builder.like((Expression<String>) expression, llike);
+                return builder.like(expression, "%" + value);
             case RLIKE:
-                String rlike = value + "%";
-                return builder.like((Expression<String>) expression, rlike);
+                return builder.like(expression, value + "%");
             case LT:
                 return builder.lessThan(expression, (Comparable) value);
             case GT:

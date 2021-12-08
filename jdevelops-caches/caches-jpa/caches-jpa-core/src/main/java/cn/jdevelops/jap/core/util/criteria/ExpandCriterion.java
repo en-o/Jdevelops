@@ -27,6 +27,10 @@ public interface ExpandCriterion {
 		 */
 		LIKE,
 		/**
+		 * 模糊不包含
+		 */
+		NOTLIKE,
+		/**
 		 * 左模糊
 		 */
 		LLIKE,
@@ -54,9 +58,6 @@ public interface ExpandCriterion {
 		 * 等于空值
 		 */
 		ISNULL,
-		/**
-		 * 并且
-		 */
 		/**
 		 * 空值
 		 */
