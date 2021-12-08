@@ -5,10 +5,12 @@ import cn.jdevelops.enums.string.StringEnum;
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.jap.core.util.criteria.Restrictions;
 import cn.jdevelops.jap.core.util.criteria.SimpleExpression;
+import cn.jdevelops.jap.enums.SQLConnect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Jpa项目里的工具类
@@ -69,44 +71,11 @@ public class CommUtils {
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
             if (null != annotation) {
-                switch (annotation.operator()) {
-                    case NE:
-                        jpaSelect.add(Restrictions.ne(fieldName, fieldValue, true));
-                        break;
-                    case LIKE:
-                        jpaSelect.add(Restrictions.like(fieldName, fieldValue, true));
-                        break;
-                    case NOTLIKE:
-                        jpaSelect.add(Restrictions.notLike(fieldName, fieldValue, true));
-                        break;
-                    case LLIKE:
-                        jpaSelect.add(Restrictions.llike(fieldName, fieldValue, true));
-                        break;
-                    case RLIKE:
-                        jpaSelect.add(Restrictions.rlike(fieldName, fieldValue, true));
-                        break;
-                    case LT:
-                        jpaSelect.add(Restrictions.lt(fieldName, fieldValue, true));
-                        break;
-                    case GT:
-                        jpaSelect.add(Restrictions.gt(fieldName, fieldValue, true));
-                        break;
-                    case LTE:
-                        jpaSelect.add(Restrictions.lte(fieldName, fieldValue, true));
-                        break;
-                    case GTE:
-                        jpaSelect.add(Restrictions.gte(fieldName, fieldValue, true));
-                        break;
-                    case ISNULL:
-                        jpaSelect.add(Restrictions.isNull(fieldName));
-                        break;
-                    case ISNOTNULL:
-                        jpaSelect.add(Restrictions.isNotNull(fieldName));
-                        break;
-                    case EQ:
-                    default:
-                        jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
-                        break;
+                SimpleExpression simpleExpression = jpaSelectOperatorSwitch(annotation, fieldName, fieldValue);
+                if(Objects.equals(annotation.connect(), SQLConnect.OR)){
+                    jpaSelect.or(simpleExpression);
+                }else {
+                    jpaSelect.add(simpleExpression);
                 }
             } else {
                 jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
@@ -117,74 +86,6 @@ public class CommUtils {
 
 
     /**
-     * 多条件查询 的 默认全员like
-     *
-     * @param bean 多条件查询
-     * @param <T>  多条件查询
-     * @return JPAUtilExpandCriteria
-     */
-    public static <T> JPAUtilExpandCriteria<T> getSelectBeanByLike(T bean) {
-        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
-        Field[] fields = ReflectUtil.getFields(bean.getClass());
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            if ("serialVersionUID".equals(fieldName)) {
-                continue;
-            }
-            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-
-            JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
-            if (null != annotation) {
-                jpaSelect.add(jpaSelectOperatorSwitch(annotation,fieldName,fieldValue));
-            } else {
-                if (fieldValue instanceof Integer) {
-                    jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
-                } else {
-                    jpaSelect.add(Restrictions.like(fieldName, fieldValue, true));
-                }
-            }
-        }
-        return jpaSelect;
-    }
-
-
-    /**
-     * 多条件查询 的 条件组装 AND
-     *
-     * @param bean      多条件查询
-     * @param <T>       多条件查询
-     * @param isFieldOr 指定条件为 or 的字段名
-     * @return JPAUtilExpandCriteria
-     */
-    public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean, List<String> isFieldOr) {
-        JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
-        Field[] fields = ReflectUtil.getFields(bean.getClass());
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            if ("serialVersionUID".equals(fieldName)) {
-                continue;
-            }
-            JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
-            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            if (isFieldOr != null && isFieldOr.contains(fieldName)) {
-                if (null != annotation) {
-                    jpaSelect.add(jpaSelectOperatorSwitch(annotation,fieldName,fieldValue));
-                } else {
-                    jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
-                }
-            } else {
-                if (null != annotation) {
-                    jpaSelect.or(jpaSelectOperatorSwitch(annotation,fieldName,fieldValue));
-                } else {
-                    jpaSelect.or(Restrictions.eq(fieldName, fieldValue, true));
-                }
-
-            }
-        }
-        return jpaSelect;
-    }
-
-    /**
      * 根据注解组装  jpa动态查询
      *
      * @param annotation  JpaSelectOperator 注解
@@ -193,8 +94,8 @@ public class CommUtils {
      * @return SimpleExpression
      */
     public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
-                                                               String fieldName,
-                                                               Object fieldValue) {
+                                                           String fieldName,
+                                                           Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
                 return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull());
