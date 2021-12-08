@@ -51,7 +51,7 @@ public class SimpleExpression implements ExpandCriterion {
                                  CriteriaBuilder builder) {
         Path expression;
         if (fieldName.contains(".")) {
-            String[] names = fieldName.split("\\.");
+            String[] names = fieldName.split(".");
             expression = root.get(names[0]);
             for (int i = 1; i < names.length; i++) {
                 expression = expression.get(names[i]);
