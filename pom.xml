@@ -80,6 +80,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jdevelops.last.version>2.0.1</jdevelops.last.version>
         <knife4j.version>3.0.3</knife4j.version>
+        <spring-core.version>5.3.13</spring-core.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <!--https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E-->
         <alibaba-cloud.version>2021.1</alibaba-cloud.version>
@@ -319,8 +320,12 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspect.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring-core.version}</version>
+            </dependency>
         </dependencies>
-
     </dependencyManagement>
 
     <!--开源地址-->
