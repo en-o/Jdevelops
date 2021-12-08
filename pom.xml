@@ -101,6 +101,7 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.11.0</commons-io.version>
+        <commons-logging.version>1.2</commons-logging.version>
         <soul.version>2.2.1</soul.version>
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
         <okhttp.version>3.7.0</okhttp.version>
@@ -117,6 +118,8 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <weixin-java-miniapp.version>4.2.1.B</weixin-java-miniapp.version>
         <openfeign.version>3.0.5</openfeign.version>
+        <log4j.version>1.2.17</log4j.version>
+        <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
