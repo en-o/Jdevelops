@@ -22,11 +22,6 @@
             <artifactId>utils-map</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-string</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

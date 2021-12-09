@@ -25,6 +25,12 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>utils-map</artifactId>
             <version>${jdevelops.last.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.jdevelops</groupId>
+                    <artifactId>utils-string</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>

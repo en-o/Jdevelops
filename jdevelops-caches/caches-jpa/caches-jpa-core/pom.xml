@@ -36,10 +36,5 @@
             <artifactId>beans-entity</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>beans-enum</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
     </dependencies>
 </project>

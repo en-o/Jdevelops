@@ -21,6 +21,12 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>caches-jpa-server</artifactId>
             <version>${jdevelops.last.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.jdevelops</groupId>
+                    <artifactId>apis-result</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
