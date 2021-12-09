@@ -53,14 +53,14 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && (ObjectUtils.isEmpty(value) || StringEnum.NULL_STRING.equals(value))) {
+        if (ignoreNull && isaBoolean(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE);
     }
 
     /**
-     * 不包含
+     * 模糊不包含
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
      * @param fieldName  字段名
@@ -69,13 +69,16 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && (ObjectUtils.isEmpty(value) || StringEnum.NULL_STRING.equals(value))) {
+        if (ignoreNull && isaBoolean(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NOTLIKE);
     }
 
+
+
     /**
+     *
      * 左模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
@@ -85,7 +88,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && (ObjectUtils.isEmpty(value) || StringEnum.NULL_STRING.equals(value))) {
+        if (ignoreNull && isaBoolean(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE);
@@ -102,7 +105,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value) || "null".equals(value)) {
+        if (ignoreNull && isaBoolean(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE);
@@ -146,7 +149,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
+    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && ObjectUtils.isEmpty(value)) {
             return null;
         }
@@ -161,7 +164,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
+    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && ObjectUtils.isEmpty(value)) {
             return null;
         }
@@ -198,7 +201,7 @@ public class Restrictions {
      */
     @SuppressWarnings("rawtypes")
     public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull) {
-        if (ignoreNull && (value == null || value.isEmpty())) {
+        if (ignoreNull && isaBoolean(value)) {
             return null;
         }
         SimpleExpression[] ses = new SimpleExpression[value.size()];
@@ -228,5 +231,14 @@ public class Restrictions {
      */
     public static SimpleExpression isNotNull(String fieldName) {
         return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL);
+    }
+
+    /**
+     * 判空包括 “null”
+     * @param value 值
+     * @return true 空
+     */
+    private static boolean isaBoolean(Object value) {
+        return ObjectUtils.isEmpty(value) || StringEnum.NULL_STRING.equals(value);
     }
 }
