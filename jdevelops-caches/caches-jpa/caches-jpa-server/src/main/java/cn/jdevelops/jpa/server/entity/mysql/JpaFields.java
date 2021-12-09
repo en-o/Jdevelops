@@ -24,8 +24,10 @@ import java.util.List;
  *
  *新建BaseDate，里面主要包含审计的公共字段，如新增人、新增时间、最后更新人、最后更新时间
  *
- * @EntityListeners(AuditingEntityListener.class):声明实体监听器,用于实体修改时做处理
- * @MappedSuperclass:声明该类为实体父类,不会映射单独的表,而是把字段映射到子类表中
+ * <pre>
+ *   EntityListeners(AuditingEntityListener.class):声明实体监听器,用于实体修改时做处理
+ *   MappedSuperclass:声明该类为实体父类,不会映射单独的表,而是把字段映射到子类表中
+ * </pre>
  * @date 2020-09-28 16:11
  */
 @EntityListeners(AuditingEntityListener.class)
@@ -63,11 +65,11 @@ public class JpaFields<T> extends BaseFields<T> {
 
     /**
      * page
-     * @param page
-     * @param clazz
-     * @param <T>
-     * @param <S>
-     * @return
+     * @param page 页面
+     * @param clazz 实体转换对象
+     * @param <T> 实体对象
+     * @param <S> 分页对象
+     * @return ResourcePage
      */
     public static <T, S extends SerializableVO> ResourcePage<List<T>> to(Page<S> page, Class<T> clazz) {
         if (page != null && !page.isEmpty()) {

@@ -54,24 +54,24 @@
         <module>jdevelops-beans</module>
         <!-- 文档模块 -->
         <module>jdevelops-docs</module>
-         <!-- 日志 -->
+        <!-- 日志 -->
         <module>jdevelops-logs</module>
         <!-- 数据模块 -->
         <module>jdevelops-caches</module>
         <!-- 接口模块 -->
         <module>jdevelops-apis</module>
-         <!-- aop模块 -->
+        <!-- aop模块 -->
         <module>jdevelops-aops</module>
         <!-- 全文检索 -->
         <module>jdevelops-search</module>
         <!-- web模块 -->
         <module>jdevelops-webs</module>
-         <!-- cloud相关 -->
+        <!-- cloud相关 -->
         <module>jdevelops-cloud</module>
         <!-- starter  -->
         <module>jdevelops-starters</module>
         <!-- 短信-->
-       <!-- <module>jdevelops-sms</module>-->
+        <!-- <module>jdevelops-sms</module>-->
     </modules>
 
     <properties>
@@ -340,16 +340,16 @@
     <!-- 项目发布管理 -->
     <distributionManagement>
         <!--私库-->
-         <!--<repository>
-             <id>tan-releases</id>
-             <name>jdevelops-Release</name>
-             <url>https://nexus.tannn.cn/repository/maven-releases/</url>
-         </repository>
-         <snapshotRepository>
-             <id>tan-snapshots</id>
-             <name>jdevelops-SNAPSHOTS</name>
-             <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
-         </snapshotRepository>-->
+        <!--<repository>
+            <id>tan-releases</id>
+            <name>jdevelops-Release</name>
+            <url>https://nexus.tannn.cn/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>tan-snapshots</id>
+            <name>jdevelops-SNAPSHOTS</name>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
+        </snapshotRepository>-->
         <!--maven中央仓库配置 -->
         <snapshotRepository>
             <id>ossrh</id>
@@ -387,32 +387,68 @@
                         <!--意思是在什么阶段打包源文件-->
                         <phase>package</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
             <!-- javadoc 接口文档 -->
+            <!-- Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
+                    <doclint>none</doclint>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <charset>${project.build.sourceEncoding}</charset>
+                    <docencoding>${project.build.sourceEncoding}</docencoding>
                     <tags>
                         <tag>
                             <name>description</name>
                             <placement>a</placement>
+                            <head>描述</head>
+                        </tag>
+                        <tag>
+                            <name>return</name>
+                            <placement>a</placement>
+                            <head>return</head>
                         </tag>
                         <tag>
                             <name>ClassName</name>
+                            <placement>a</placement>
+                            <head>类名</head>
+                        </tag>
+                        <tag>
+                            <name>link</name>
+                            <placement>a</placement>
+                            <head>外链</head>
+                        </tag>
+                        <tag>
+                            <head>参数</head>
+                            <name>param</name>
                             <placement>a</placement>
                         </tag>
                         <tag>
                             <name>date</name>
                             <placement>a</placement>
+                            <head>时间</head>
+                        </tag>
+                        <tag>
+                            <name>author</name>
+                            <placement>a</placement>
+                            <head>作者</head>
                         </tag>
                     </tags>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- 编译的时候指定JDK和编码 ,-->
             <plugin>

@@ -26,7 +26,7 @@ public class RemarkUtil {
 
     public static byte[] bytes(CharSequence str, Charset charset) {
         if (str == null) {
-            return null;
+            return new byte[0];
         } else {
             return null == charset ? str.toString().getBytes() : str.toString().getBytes(charset);
         }
@@ -43,7 +43,7 @@ public class RemarkUtil {
     }
 
     /**
-     * 包装 {@link System#arraycopy(Object, int, Object, int, int)}<br>
+     * 包装 { System#arraycopy(Object, int, Object, int, int) }<br>
      * 数组复制，缘数组和目标数组都是从位置0开始复制
      *
      * @param src 源数组

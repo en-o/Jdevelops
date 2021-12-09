@@ -23,7 +23,7 @@ public class BaseConfig {
 
     /**
      * 统一填写一次token
-     * @return
+     * @return List
      */
     public static List<SecurityScheme> security() {
         return newArrayList(

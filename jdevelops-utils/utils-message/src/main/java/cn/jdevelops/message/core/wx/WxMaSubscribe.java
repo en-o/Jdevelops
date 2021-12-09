@@ -34,7 +34,7 @@ public class WxMaSubscribe {
      *                         "formal", "正式版" (默认)
      * @param date             模板数据
      *                         date:中的字符不要超过20字符
-     * @return
+     * @return Boolean
      */
     public Boolean subScribe(String templateId,
                              String toUser,

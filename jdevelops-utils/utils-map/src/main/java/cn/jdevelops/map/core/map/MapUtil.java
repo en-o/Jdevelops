@@ -164,8 +164,8 @@ public class MapUtil  {
 
     /**
      * 实体转Map
-     * @param obj
-     * @return
+     * @param obj 实体
+     * @return MultiValueMap
      */
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, Object> beanToLinkedMultiValueMap(Object obj) {
@@ -191,8 +191,8 @@ public class MapUtil  {
 
     /**
      * 实体转Map
-     * @param obj
-     * @return
+     * @param obj 实体
+     * @return LinkedHashMap
      */
     @SuppressWarnings("unchecked")
     public static LinkedHashMap<String, Object> beanToLinkedHashMap(Object obj) {

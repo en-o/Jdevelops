@@ -179,7 +179,7 @@ public class JwtUtil {
      *  解析 jwt的 Map<String, Claim>  为 Map<String,Object>
      *     eg： 只要是为了解析 Claim
      * @param claims jwt.getClaims();
-     * @return
+     * @return Map
      */
     public static Map<String,Object> getClaims( Map<String, Claim> claims){
         Iterator<String> iterator = claims.keySet().iterator();

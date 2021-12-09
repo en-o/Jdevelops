@@ -16,7 +16,7 @@ import java.util.Enumeration;
  */
 @Slf4j
 public class IpUtil {
-    static String UNKNOWN = "unKnown";
+   final static String UNKNOWN = "unKnown";
 
     /**
      * 获取有网关是 的真正客户端IP  - 未测试
@@ -122,7 +122,7 @@ public class IpUtil {
      * ip转换
      *
      * @param domainName 域名
-     * @return {@link String}
+     * @return String
      */
     public static String ipConvert(String domainName) {
         String ip ;

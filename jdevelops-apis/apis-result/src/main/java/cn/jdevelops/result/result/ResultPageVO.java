@@ -84,7 +84,7 @@ public class ResultPageVO<T> implements Serializable {
      * @param total      总记录数
      * @param rows       数据
      * @param <T>        t
-     * @return
+     * @return T
      */
     public static <T> ResultPageVO<T> pageSuccess(Integer pageIndex,
                                            Integer pageSize,

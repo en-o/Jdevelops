@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * jpa util
- * @param <T>
  * @author tn
  */
 public class JPAUtilExpandCriteria<T> implements Specification<T>{
@@ -76,8 +75,7 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
     }  
     /** 
      * 增加简单条件表达式 
-     * @Methods Name add 
-     * @Create In 2012-2-8 By lee 
+     * @date  2021-12-03 14:13
      */
     public void add(ExpandCriterion criterion){  
         if(criterion!=null){
@@ -86,8 +84,7 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
     }
     /**
      * 增加简单条件表达式
-     * @Methods Name or
-     * @Create In 2012-2-8 By lee
+     * @date  2021-12-03 14:13
      */
     public void or(ExpandCriterion criterion){
         if(criterion!=null){
@@ -95,29 +92,29 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
         }
     }
 
-    /**
-     * <pr>
-     *      public static void main(String[] args) {
-     *     	使用示例Demo
-     *     	JPAUtilExpandCriteria<Entity> c = new JPAUtilExpandCriteria<Entity>();
-     *     	c.add(Restrictions.like("code", searchParam.getCode(), true));
-     *     	        c.add(Restrictions.eq("level", searchParam.getLevel(), false));
-     *     	        c.add(Restrictions.eq("mainStatus", searchParam.getMainStatus(), true));
-     *     	        c.add(Restrictions.eq("flowStatus", searchParam.getFlowStatus(), true));
-     *     	        c.add(Restrictions.eq("createUser.userName", searchParam.getCreateUser(), true));
-     *     	        c.add(Restrictions.lte("submitTime", searchParam.getStartSubmitTime(), true));
-     *     	        c.add(Restrictions.gte("submitTime", searchParam.getEndSubmitTime(), true));
-     *     	        c.add(Restrictions.eq("needFollow", searchParam.getIsfollow(), true));
-     *     	        c.add(Restrictions.ne("flowStatus", searchParam.getMainStatus() true));
-     *     	        c.add(Restrictions.in("solveTeam.code",teamCodes, true));
-     *     	        c.add(Restrictions.and(Restrictions.in("solveTeam.code",teamCodes, true)));
-     *     	        c.add(Restrictions.or(Restrictions.in("solveTeam.code",teamCodes, true)));
-     *     	repository.findAll(c);
-     *     	// 如果要给与的条件不满足请自定义
-     *     	 Specification<Custom> custom = new Specification<Custom>(){xxxx}
-     *     	 c.add(custom)
-     *        }
-     * </pr>
-     *
+    /*
+      <pr>
+           public static void main(String[] args) {
+          	使用示例Demo
+          	JPAUtilExpandCriteria<Entity> c = new JPAUtilExpandCriteria<Entity>();
+          	c.add(Restrictions.like("code", searchParam.getCode(), true));
+          	        c.add(Restrictions.eq("level", searchParam.getLevel(), false));
+          	        c.add(Restrictions.eq("mainStatus", searchParam.getMainStatus(), true));
+          	        c.add(Restrictions.eq("flowStatus", searchParam.getFlowStatus(), true));
+          	        c.add(Restrictions.eq("createUser.userName", searchParam.getCreateUser(), true));
+          	        c.add(Restrictions.lte("submitTime", searchParam.getStartSubmitTime(), true));
+          	        c.add(Restrictions.gte("submitTime", searchParam.getEndSubmitTime(), true));
+          	        c.add(Restrictions.eq("needFollow", searchParam.getIsfollow(), true));
+          	        c.add(Restrictions.ne("flowStatus", searchParam.getMainStatus() true));
+          	        c.add(Restrictions.in("solveTeam.code",teamCodes, true));
+          	        c.add(Restrictions.and(Restrictions.in("solveTeam.code",teamCodes, true)));
+          	        c.add(Restrictions.or(Restrictions.in("solveTeam.code",teamCodes, true)));
+          	repository.findAll(c);
+          	// 如果要给与的条件不满足请自定义
+          	 Specification<Custom> custom = new Specification<Custom>(){xxxx}
+          	 c.add(custom)
+             }
+      </pr>
+
      */
 }  

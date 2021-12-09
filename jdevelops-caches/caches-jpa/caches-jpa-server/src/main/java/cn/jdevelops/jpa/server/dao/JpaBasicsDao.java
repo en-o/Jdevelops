@@ -12,14 +12,16 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
+ * 公共dao层
+ * <br></>
  * 默认了 两个方法  deleteByIdIn（删除），updateEntity（更新）
- *
+ * <br></>
+ * {NoRepositoryBean：Spring Data Jpa在启动时就不会去实例化BaseRepository这个接口}
+ * <br></>
  * @author tn
- * @NoRepositoryBean：Spring Data Jpa在启动时就不会去实例化BaseRepository这个接口
  * JpaSpecificationExecutor ：JPA复杂查询
  * JpaRepository 普通查询
  * @date 2020/5/14 15:31
- * @description 公共dao层
  */
 @NoRepositoryBean
 public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificationExecutor<T> {

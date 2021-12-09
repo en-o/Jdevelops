@@ -179,7 +179,6 @@ class UserApplicationTests {
          * @param cc      抄送地址
          * @throws MessagingException 邮件发送异常
          * @author lmz
-         * @company Peter
          * @date 2021/3/29  11:35
          */
 

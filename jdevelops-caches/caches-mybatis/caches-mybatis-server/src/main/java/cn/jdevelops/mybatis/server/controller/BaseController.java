@@ -49,7 +49,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      *
      * @return void
      * @author lmz
-     * @company Peter
      * @date 2020/12/8  15:34
      */
     @PostMapping(value = "saveOrUpdate")
@@ -66,7 +65,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @param list list
      * @return void
      * @author lmz
-     * @company Peter
      * @date 2020/12/8  15:36
      */
     @ApiOperation("批量保存或更新")
@@ -81,7 +79,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @param id id
      * @return void
      * @author lmz
-     * @company Peter
      * @date 2020/12/8  15:39
      */
     @ApiOperation("根据id删除")
@@ -97,7 +94,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @param id id
      * @return T
      * @author lmz
-     * @company Peter
      * @date 2020/12/8  15:39
      */
     @ApiOperation("根据id查询")
@@ -113,7 +109,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @param uuid uuid
      * @return com.databstech.apis.result.vo.ResultVO<T>
      * @author lmz
-     * @company Peter
      * @date 2020/12/15  10:42
      */
     @ApiOperation("根据uuid查询")
@@ -128,7 +123,6 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      *
      * @return java.util.List<T>
      * @author lmz
-     * @company Peter
      * @date 2020/12/8  15:39
      */
     @ApiOperation("查询全部")

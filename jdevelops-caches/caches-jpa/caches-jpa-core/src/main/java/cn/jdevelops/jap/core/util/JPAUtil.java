@@ -69,8 +69,10 @@ public class JPAUtil<T> {
 
         List<Predicate> predicatesAnd ;
         List<Predicate> predicatesOr;
-//        List<Predicate> predicatesAnd = new ArrayList<>();
-//        List<Predicate> predicatesOr = new ArrayList<>();
+/*
+        List<Predicate> predicatesAnd = new ArrayList<>();
+        List<Predicate> predicatesOr = new ArrayList<>();
+*/
         /**
          * 必选
          */
@@ -140,7 +142,7 @@ public class JPAUtil<T> {
                             }
                         }
                     };
-                    return (Specification<T>) spf;
+                    return spf;
                 }else {
                     return null;
                 }
@@ -158,7 +160,6 @@ public class JPAUtil<T> {
          * @param evalue 实体类的值（里面是 条件 参数）
          * @param root Root<T>
          * @param cb  CriteriaBuilder
-         * @return
          */
         protected void disposeLisk(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
             if(evalue instanceof String && ((String) evalue).contains(",")) {
@@ -187,7 +188,6 @@ public class JPAUtil<T> {
          * @param evalue 实体类的值（里面是 条件 参数）
          * @param root Root<T>
          * @param cb  CriteriaBuilder
-         * @return
          */
         protected void disposeBetween(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
 
@@ -208,7 +208,6 @@ public class JPAUtil<T> {
          * @param evalue 实体类的值（里面是 条件 参数）
          * @param root Root<T>
          * @param cb  CriteriaBuilder
-         * @return
          */
         protected void disposeAnd(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
             if( and!=null && and.contains(ekey)) {

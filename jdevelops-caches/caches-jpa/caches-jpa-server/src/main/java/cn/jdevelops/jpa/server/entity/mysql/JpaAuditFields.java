@@ -26,8 +26,11 @@ import java.util.List;
  *
  *新建BaseDate，里面主要包含审计的公共字段，如新增人、新增时间、最后更新人、最后更新时间
  *
- * @EntityListeners(AuditingEntityListener.class):声明实体监听器,用于实体修改时做处理
- * @MappedSuperclass:声明该类为实体父类,不会映射单独的表,而是把字段映射到子类表中
+ * <pre>
+ *     EntityListeners(AuditingEntityListener.class):声明实体监听器,用于实体修改时做处理
+ *     MappedSuperclass:声明该类为实体父类,不会映射单独的表,而是把字段映射到子类表中
+ * </pre>
+ *
  * @date 2020-09-28 16:11
  */
 @EntityListeners(AuditingEntityListener.class)

@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *  MD5加密： 参数类型:  Map bean String   (json 跟 普通传参都可以)
  *          禁止list 禁止jsonArray 禁止套娃
  *          如果参数中非要有list，jsonArray 和套娃 那就加密的时候不要他
- * @推荐加密网站： https://www.sojson.com/encrypt_md5.html 因为他的参数组合跟我的是一样的 AopMapUtil.map2Str
+ * 推荐加密网站： https://www.sojson.com/encrypt_md5.html 因为他的参数组合跟我的是一样的 AopMapUtil.map2Str
  * 工具使用
  *          参数转型: AopMapUtil.map2Str (规则为: key=value&key=value)
  *          接口加密: SignMD5Util.encrypt(str,true)
@@ -69,6 +69,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Signature {
-    //默认不需要签名
+    /*默认不需要签名*/
     SginEnum type() default SginEnum.ANY;
 }

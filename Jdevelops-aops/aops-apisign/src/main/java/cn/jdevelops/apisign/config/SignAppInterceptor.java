@@ -57,7 +57,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      *  签名验证
      * @param request req
      * @param enumm  SginEnum
-     * @return
+     * @return boolean
      */
     private boolean signCheck(HttpServletRequest request, SginEnum enumm) throws IOException {
         Object map= null;
@@ -81,8 +81,8 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
 
     /**
      * 获取请求信息 返回的加密集
-     * @param request
-     * @return
+     * @param request request
+     * @return String
      */
     public static String showParamsHeader(HttpServletRequest request) throws IOException {
         try {
