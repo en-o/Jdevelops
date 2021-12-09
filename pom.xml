@@ -52,21 +52,21 @@
         <module>jdevelops-utils</module>
         <!-- bean模块 -->
         <module>jdevelops-beans</module>
-        <!-- aop模块 -->
-        <module>jdevelops-aops</module>
-        <!-- web模块 -->
-        <module>jdevelops-webs</module>
-        <!-- 接口模块 -->
-        <module>jdevelops-apis</module>
         <!-- 文档模块 -->
         <module>jdevelops-docs</module>
+         <!-- 日志 -->
+        <module>jdevelops-logs</module>
         <!-- 数据模块 -->
         <module>jdevelops-caches</module>
-        <!-- 日志 -->
-        <module>jdevelops-logs</module>
+        <!-- 接口模块 -->
+        <module>jdevelops-apis</module>
+         <!-- aop模块 -->
+        <module>jdevelops-aops</module>
         <!-- 全文检索 -->
         <module>jdevelops-search</module>
-        <!-- cloud相关 -->
+        <!-- web模块 -->
+        <module>jdevelops-webs</module>
+         <!-- cloud相关 -->
         <module>jdevelops-cloud</module>
         <!-- starter  -->
         <module>jdevelops-starters</module>
