@@ -14,11 +14,4 @@
         <module>webs-socket-core</module>
         <module>webs-socket-client</module>
     </modules>
-    <dependencies>
-        <!--引入websocket依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-    </dependencies>
 </project>
