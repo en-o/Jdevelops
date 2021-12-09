@@ -102,6 +102,15 @@ public class ResultVO<T> implements Serializable {
     }
 
 
+    public static <T> ResultVO<T> success(int code, String message, T data) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+
     public static <T> ResultVO<T> success(T data, String message) {
         ResultVO<T> resultVO = new ResultVO<>();
         resultVO.setCode(ResultCodeEnum.Success.getCode());
@@ -111,8 +120,8 @@ public class ResultVO<T> implements Serializable {
     }
 
 
-    public static <T> ResultVO<ResourcePage> success(String message, ResourcePage<T> resourcePage) {
-        ResultVO<ResourcePage> resultVO = new ResultVO<>();
+    public static <T> ResultVO<ResourcePage<T>> success(String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
         resultVO.setCode(ResultCodeEnum.Success.getCode());
         resultVO.setMessage(message);
         resultVO.setData(resourcePage);
@@ -143,8 +152,8 @@ public class ResultVO<T> implements Serializable {
         return resultVO;
     }
 
-    public static <T> ResultVO<ResourcePage> fail(int code, String message, ResourcePage<T> resourcePage) {
-        ResultVO<ResourcePage> resultVO = new ResultVO<>();
+    public static <T> ResultVO<ResourcePage<T>> fail(int code, String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
         resultVO.setCode(code);
         resultVO.setMessage(message);
         resultVO.setData(resourcePage);
@@ -172,7 +181,7 @@ public class ResultVO<T> implements Serializable {
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static ResultVO<String> resultMsg(Boolean isok, String msgStr) {
+    public static ResultVO<String> resultMsg(boolean isok, String msgStr) {
         if (isok) {
             return ResultVO.success(msgStr + "成功");
         } else {
@@ -186,7 +195,7 @@ public class ResultVO<T> implements Serializable {
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static ResultVO<Object> resultDataMsg(Boolean isok, Object obj, String msgStr) {
+    public static ResultVO<Object> resultDataMsg(boolean isok, Object obj, String msgStr) {
         if (isok) {
             return ResultVO.success(obj, msgStr + "成功");
         } else {
@@ -200,7 +209,7 @@ public class ResultVO<T> implements Serializable {
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static <T> ResultVO<T> resultDataMsgForT(Boolean isok, T obj, String msgStr) {
+    public static <T> ResultVO<T> resultDataMsgForT(boolean isok, T obj, String msgStr) {
         if (isok) {
             return ResultVO.success(obj, msgStr + "成功");
         } else {
