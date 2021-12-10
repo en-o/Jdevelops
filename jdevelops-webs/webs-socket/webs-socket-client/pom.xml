@@ -17,6 +17,12 @@
             <artifactId>webs-socket-core</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-models.version}</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

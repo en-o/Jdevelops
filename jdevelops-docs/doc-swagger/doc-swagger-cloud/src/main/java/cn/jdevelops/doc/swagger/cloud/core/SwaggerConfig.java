@@ -4,6 +4,7 @@ import cn.jdevelops.doc.core.swagger.bean.SwaggerBean;
 import cn.jdevelops.doc.core.swagger.config.BaseConfig;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -13,7 +14,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 
 /**
@@ -24,10 +24,11 @@ import java.net.InetAddress;
  */
 @EnableOpenApi
 @EnableKnife4j
+@Configurable
 public class SwaggerConfig {
 
 
-    public static String SPIRIT = "/";
+    public static final String SPIRIT = "/";
 
     /**
      * 项目访问根路径
@@ -55,7 +56,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();//赋予插件体系
 
-        if(swaggerBean.getAddHeaderToken()){
+        if(Boolean.TRUE.equals(swaggerBean.getAddHeaderToken())){
             //全站统一参数token
             return  build.securitySchemes(BaseConfig.security())
                     .securityContexts(BaseConfig.securityContexts());
@@ -70,7 +71,7 @@ public class SwaggerConfig {
                 swaggerBean.getContactEmail());
         String address = "127.0.0.1";
         try {
-            InetAddress inetAddress = Inet4Address.getLocalHost();
+            InetAddress inetAddress = InetAddress.getLocalHost();
             address = inetAddress.getHostAddress();
         }catch (Exception e){
             e.printStackTrace();
@@ -86,28 +87,5 @@ public class SwaggerConfig {
                 .termsOfServiceUrl("http://"+address+":"+serverPort+serverName)
                 .build();
     }
-
-//    /**
-//     * 通用拦截器排除swagger设置，所有拦截器都会自动加swagger相关的资源排除信息
-//     */
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        try {
-//            Field registrationsField = FieldUtils.getField(InterceptorRegistry.class, "registrations", true);
-//            List<InterceptorRegistration> registrations = (List<InterceptorRegistration>) ReflectionUtils.getField(registrationsField, registry);
-//            if (registrations != null) {
-//                for (InterceptorRegistration interceptorRegistration : registrations) {
-//                    interceptorRegistration
-//                            .excludePathPatterns("/swagger**/**")
-//                            .excludePathPatterns("/webjars/**")
-//                            .excludePathPatterns("/v3/**")
-//                            .excludePathPatterns("/doc.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }

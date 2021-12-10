@@ -16,6 +16,10 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>docs-core-swagger</artifactId>
             <version>${jdevelops.last.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>swagger-models</artifactId>
@@ -28,8 +32,14 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <artifactId>swagger-annotations</artifactId>
+            <groupId>io.swagger</groupId>
+            <version>${swagger-models.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>swagger-models</artifactId>
+            <groupId>io.swagger</groupId>
+            <version>${swagger-models.version}</version>
         </dependency>
     </dependencies>
 

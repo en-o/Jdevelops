@@ -29,7 +29,7 @@ public class SwaggerBean {
     /**
      * 网页标题
      */
-    private String title="崇锐APIs";
+    private String title="JdevelopsAPIs";
 
     /**
      * 当前文档的详细描述
@@ -39,7 +39,7 @@ public class SwaggerBean {
     /**
      * 当前文档的版本
      */
-    private String version="1.0";
+    private String version="2.0.2";
 
 
     /**
