@@ -17,17 +17,17 @@
 
 package cn.jdevelops.exception.utils;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * SpringBeanUtils.
- * @author shenyu
+ * @author shneyu
  */
 public final class SpringBeanUtils {
 
     private static final SpringBeanUtils INSTANCE = new SpringBeanUtils();
 
-    private ApplicationContext applicationContext;
+    private ConfigurableApplicationContext cfgContext;
 
     private SpringBeanUtils() {
     }
@@ -49,15 +49,15 @@ public final class SpringBeanUtils {
      * @return bean
      */
     public <T> T getBean(final Class<T> type) {
-        return applicationContext.getBean(type);
+        return cfgContext.getBean(type);
     }
 
     /**
      * set application context.
      *
-     * @param applicationContext application context
+     * @param cfgContext application context
      */
-    public void setApplicationContext(final ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public void setCfgContext(final ConfigurableApplicationContext cfgContext) {
+        this.cfgContext = cfgContext;
     }
 }

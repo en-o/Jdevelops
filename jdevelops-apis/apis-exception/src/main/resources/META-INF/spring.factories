@@ -1,2 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.exception.handler.ControllerExceptionHandler
+  cn.jdevelops.exception.handler.ControllerExceptionHandler,\
+  cn.jdevelops.exception.config.SpringExtConfiguration,\
+  cn.jdevelops.exception.config.ExceptionConfiguration
