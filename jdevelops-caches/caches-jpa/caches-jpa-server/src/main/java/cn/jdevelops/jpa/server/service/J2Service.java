@@ -17,7 +17,11 @@ import java.util.List;
  */
 public interface J2Service<T> {
 
-    JpaBasicsDao getJpaBasicsDao();
+    /**
+     * getJpaBasicsDao
+     * @return JpaBasicsDao
+     */
+    JpaBasicsDao<T,?> getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体
