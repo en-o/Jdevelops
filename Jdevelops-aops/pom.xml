@@ -38,10 +38,6 @@
             <version>${jdevelops.last.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.jdevelops</groupId>
             <artifactId>utils-time</artifactId>
             <version>${jdevelops.last.version}</version>
