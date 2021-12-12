@@ -1,12 +1,12 @@
 package cn.jdevelops.jwtweb.interceptor;
 
+import cn.jdevelops.exception.result.ExceptionResultWrap;
 import com.alibaba.fastjson.JSON;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.jwtweb.annotation.ApiMapping;
 import cn.jdevelops.jwtweb.holder.ApplicationContextHolder;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import cn.jdevelops.jwtweb.server.impl.DefaultInterceptor;
-import cn.jdevelops.result.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             logger.info("需要验证token,校验结果：{}", flag);
             if (!flag) {
                 response.setHeader("content-type", "application/json;charset=UTF-8");
-                response.getWriter().write(JSON.toJSONString(ResultVO.fail(ResultCodeEnum.TokenError.getCode(), "无效的token")));
+                response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TokenError.getCode(), "无效的token")));
                 return false;
             }
             MDC.put("token", token);
