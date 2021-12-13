@@ -1,6 +1,5 @@
 package cn.jdevelops.encryption.core;
 
-import cn.jdevelops.encryption.constant.SignConstant;
 import cn.jdevelops.encryption.util.RemarkUtil;
 import cn.jdevelops.enums.number.NumEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,7 @@ public class SignMD5Util {
     }
 
     /**
-     *  加密
-     * @description  (16位或32位密码)
+     *  加密 （(16位或32位密码)）
      * @param plainText 需要加密的字符
      * @param  flag true为32位,false为16位
      * @return 返回密钥
@@ -64,10 +62,11 @@ public class SignMD5Util {
     /**
      * 对 map 进行加密
      * @param obj obj
+     * @param salt 盐
      * @return 返回字符串
      */
     @SuppressWarnings("unchecked")
-    public static String encrypt(Object obj){
+    public static String encrypt(Object obj,String salt){
         if (obj != null) {
             Map<String, Object> map ;
             if (obj instanceof Map) {
@@ -75,20 +74,20 @@ public class SignMD5Util {
             } else {
                 map = RemarkUtil.transBean2Map(obj);
             }
-            return encrypt(map, true);
+            return encrypt(map, salt,true);
         } else {
             return null;
         }
     }
 
     /**
-     * 16位或32位密码
-     * @description  (16位或32位密码)
+     * 16位或32位密码 （(16位或32位密码)）
      * @param map 加密串
+     * @param salt  盐
      * @param flag true为32位,false为16位
      * @return 返回密钥
      */
-    public static String encrypt(Map<String, Object> map, boolean flag) {
+    public static String encrypt(Map<String, Object> map,String salt, boolean flag) {
         String param ;
         map.remove("sign");
         map.remove("encrypt");
@@ -96,7 +95,7 @@ public class SignMD5Util {
         if (StringUtils.isEmpty(result)) {
             return null;
         }
-        param = encrypt(encrypt(result)+SignConstant.MD5_PRIVATE_KEY);
+        param = encrypt(encrypt(result)+salt);
         if (flag) {
             return param;
         } else {
@@ -109,15 +108,16 @@ public class SignMD5Util {
     /**
      * 16位或32位密码
      * @param result 加密串
+     * @param salt 盐
      * @param flag true为32位,false为16位
      * @return 返回密钥
      */
-    public static String encryptHeader(String result, boolean flag) {
+    public static String encryptHeader(String result, String salt, boolean flag) {
         String param;
         if (StringUtils.isEmpty(result)) {
             return null;
         }
-        param = encrypt(encrypt(result)+ SignConstant.MD5_PRIVATE_KEY);
+        param = encrypt(encrypt(result)+ salt);
         if (flag) {
             return param;
         } else {
@@ -128,10 +128,11 @@ public class SignMD5Util {
     /**
      *  检查
      * @param obj 对象
+     * @param salt 盐
      * @return 对错
      */
     @SuppressWarnings("unchecked")
-    public static boolean check(Object obj){
+    public static boolean check(Object obj,String salt){
         try {
             Map<String, Object> map;
             if(obj==null){
@@ -146,7 +147,7 @@ public class SignMD5Util {
             if(StringUtils.isEmpty(sign)){
                 return false;
             }
-            String str=encrypt(map);
+            String str=encrypt(map,salt);
             return sign.equals(str);
         }catch (Exception e){
             throw new IllegalArgumentException("加密参数有误",e);
@@ -158,15 +159,16 @@ public class SignMD5Util {
     /**
      *  检查
      * @param jsonString json params
+     * @param salt 盐
      * @return 对错
      */
-    public static boolean checkHeader(HttpServletRequest request, String jsonString){
+    public static boolean checkHeader(HttpServletRequest request, String jsonString,String salt){
         try {
             String sign = getHeaderSign(request);
             if(StringUtils.isEmpty(sign)){
                 return false;
             }
-            String str= encryptHeader(jsonString, true);
+            String str= encryptHeader(jsonString, salt,true);
 
             return sign.equals(str);
         }catch (Exception e){
