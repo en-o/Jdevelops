@@ -1,5 +1,7 @@
 package cn.jdevelops.apisign.config;
 
+import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.exception.result.ExceptionResultWrap;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.jdevelops.apisign.annotation.Signature;
@@ -31,8 +33,6 @@ import java.util.*;
 @Slf4j
 public class SignAppInterceptor extends InterceptorRegistry implements HandlerInterceptor {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SignAppInterceptor.class);
-
     private static final String CONTENT_TYPE="text/json;charset=UTF-8";
 
     @Override
@@ -44,7 +44,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             //验签
             if(signAnt!=null && !signCheck(request,signAnt.type())){
                 response.setContentType(CONTENT_TYPE);
-                response.getWriter().print(JSONObject.toJSONString(ResultVO.fail("签名不正确")));
+                response.getWriter().print(JSONObject.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.API_SIGN_ERROR)));
                 return false;
             }
             return true;
