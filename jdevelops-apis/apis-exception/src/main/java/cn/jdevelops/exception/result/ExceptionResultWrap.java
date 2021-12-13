@@ -1,5 +1,6 @@
 package cn.jdevelops.exception.result;
 
+import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.utils.SpringBeanUtils;
 
 /**
@@ -42,5 +43,16 @@ public final class ExceptionResultWrap {
      */
     public static Object error(final int code, final String message) {
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(code, message);
+    }
+
+
+    /**
+     * Error object.
+     *
+     * @param resultCodeEnum    the resultCodeEnum
+     * @return the object
+     */
+    public static Object error(ResultCodeEnum resultCodeEnum) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(resultCodeEnum.getCode(), resultCodeEnum.getMessage());
     }
 }

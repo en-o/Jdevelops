@@ -91,6 +91,12 @@ public enum ResultCodeEnum {
      * 消息不可读
      */
     MessageNoReading(10012,"消息不可读"),
+
+
+    /**
+     * 消息不可读
+     */
+    API_SIGN_ERROR(10013,"接口签名不正确"),
     /**
      * 数据格式检验失败
      */
@@ -98,12 +104,10 @@ public enum ResultCodeEnum {
     /**
      * 用户不存在
      */
-    USER_EXIST(2445,"用户不存在"),
+    USER_EXIST(2445,"用户不存在")
 
-    /**
-     * token 校验失败异常
-     */
-    Token_Error(10003,"token检验失败");
+    ;
+
 
     /**
      * code
