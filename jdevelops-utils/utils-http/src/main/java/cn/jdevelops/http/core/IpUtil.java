@@ -16,12 +16,23 @@ import java.util.Enumeration;
  */
 @Slf4j
 public class IpUtil {
-   final static String UNKNOWN = "unKnown";
+
+    static final String UNKNOWN = "unKnown";
 
     /**
-     * 获取有网关是 的真正客户端IP  - 未测试
+     * 获取有网关是 的真正客户端IP 测试过nginx可以获取
+     * <pre>
+     *
+     * location /test/ {
+     *     proxy_pass http://localhost:9002/;
+     *     proxy_set_header Host $host;
+     *     proxy_set_header X-Forwarded-Host $server_name;
+     *     proxy_set_header X-Real-IP $remote_addr;
+     *     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     * }
+     * </pre>
      * @param request request
-     * @return String
+     * @return ip
      */
     public static String getPoxyIp(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
@@ -40,6 +51,63 @@ public class IpUtil {
         }
         return request.getRemoteAddr();
     }
+
+    /***
+     * 增强版 - 普通使用getPoxyIp即可满足需求
+     * 获取有网关是 的真正客户端IP 测试过nginx可以获取
+     * @param request request
+     * @return ip
+     */
+    public static String getPoxyIpEnhance(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        log.info("X-Forwarded-For:" + ip);
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+            log.info("Proxy-Client-IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+            log.info("WL-Proxy-Client-IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+            log.info("HTTP_X_FORWARDED_FOR:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED");
+            log.info("HTTP_X_FORWARDED:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");
+            log.info("HTTP_X_CLUSTER_CLIENT_IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+            log.info("HTTP_CLIENT_IP:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_FORWARDED_FOR");
+            log.info("HTTP_FORWARDED_FOR:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_FORWARDED");
+            log.info("HTTP_FORWARDED:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_VIA");
+            log.info("HTTP_VIA:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getHeader("REMOTE_ADDR");
+            log.info("REMOTE_ADDR:" + ip);
+        }
+        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+            log.info("getRemoteAddr:" + ip);
+        }
+        return ip;
+    }
+
 
 
 
@@ -70,13 +138,11 @@ public class IpUtil {
             }
             Enumeration<InetAddress> addresses = netInterface
                     .getInetAddresses();
-            /*System.out.println(netInterface.getDisplayName());*/
             while (addresses.hasMoreElements()) {
                 InetAddress ip = addresses.nextElement();
                 if (ip != null) {
                     // ipv4
                     if (ip instanceof Inet4Address) {
-                        /* System.out.println("ipv4 = " + ip.getHostAddress());*/
                         return ip.getHostAddress();
                     }
                 }
