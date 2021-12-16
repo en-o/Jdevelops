@@ -3,12 +3,8 @@ package cn.jdevelops.exception.handler;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.exception.result.ExceptionResult;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
-import cn.jdevelops.result.result.ResultVO;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -30,7 +26,6 @@ import java.util.Objects;
  * 全局异常处理
  * @author tn
  */
-@Slf4j
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
@@ -49,7 +44,6 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public Object handleBusinessException(BusinessException e) {
-        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(e.getCode(), e.getErrorMessage(),null);
     }
@@ -67,7 +61,6 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object exceptionHandler(NoHandlerFoundException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("路径不存在，请检查路径是否正确 -> ", e);
         return ExceptionResultWrap.error(ResultCodeEnum.AuthError.getCode(), "路径不存在，请检查路径是否正确");
     }
 
@@ -75,14 +68,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     public Object handleNullPointerException(NullPointerException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("空指针异常 -> ", e);
+        // 空指针异常
         return ExceptionResultWrap.error(ResultCodeEnum.SysError.getCode(), "暂时无法获取数据");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("请求方式不对 - get post -> ", e);
         return ExceptionResultWrap.error(ResultCodeEnum.AuthError.getCode(), "请求方式不对 - get post ");
     }
 
@@ -90,7 +82,6 @@ public class ControllerExceptionHandler {
     @ExceptionHandler
     public Object  exceptionHandler(HttpMessageNotReadableException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("[Handle_HttpMessageNotReadableException] - {}", e);
         String jsonErrorMsg;
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
                 Objects.nonNull(jsonErrorMsg =
@@ -104,7 +95,6 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object exception(MethodArgumentNotValidException e) {
-        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -119,7 +109,6 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
-        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(ResultCodeEnum.SysError.getCode(), e.getMessage());
     }
@@ -129,7 +118,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(BindException.class)
     public Object bindException(BindException e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        log.error("Valid 数据格式校验异常 -> ", e);
+        // Valid 数据格式校验异常
         StringBuilder resqStr = new StringBuilder();
         e.getFieldErrors().forEach(it -> {
             resqStr.append("字段:").append(it.getField()).append(" ==》 验证不通过，原因是：").append(it.getDefaultMessage());
