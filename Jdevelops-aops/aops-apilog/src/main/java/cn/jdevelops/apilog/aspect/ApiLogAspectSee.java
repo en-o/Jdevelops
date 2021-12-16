@@ -18,6 +18,7 @@ import java.util.Objects;
 
 /**
  * 接口记录
+ *
  * @author tn
  * @version 1
  * @date 2020/6/16 10:03
@@ -29,19 +30,21 @@ public class ApiLogAspectSee {
 
     @Around("execution(* *.*..controller..*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
-       // 过来 @ApiLog 注解。 存在这个注解就不用在这里打印了
+        // 过来 @ApiLog 注解。 存在这个注解就不用在这里打印了
         try {
-           Signature signature = pjp.getSignature();
-           MethodSignature methodSignature = (MethodSignature)signature;
-           Method targetMethod = methodSignature.getMethod();
-           if (targetMethod.getClass().isAnnotationPresent(ApiLog.class)){
-               return pjp.proceed();
-           }
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+            // @link https://www.cnblogs.com/qiumingcheng/p/5923928.html
+            Signature signature = pjp.getSignature();
+            MethodSignature methodSignature = (MethodSignature) signature;
+            Method targetMethod = methodSignature.getMethod();
+            Method realMethod = pjp.getTarget().getClass().getDeclaredMethod(signature.getName(), targetMethod.getParameterTypes());
+            if (realMethod.isAnnotationPresent(ApiLog.class)) {
+                return pjp.proceed();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         HttpServletRequest request = getRequest();
-        if(Objects.isNull(request)){
+        if (Objects.isNull(request)) {
             return pjp.proceed();
         }
         return ParamsDis.aopDis(request, pjp);
@@ -54,7 +57,7 @@ public class ApiLogAspectSee {
             ServletRequestAttributes sra = (ServletRequestAttributes) ra;
             assert sra != null;
             return sra.getRequest();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
