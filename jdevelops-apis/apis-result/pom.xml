@@ -64,12 +64,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- log4j的核心包 -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>

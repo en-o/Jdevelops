@@ -119,7 +119,6 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <weixin-java-miniapp.version>4.2.1.B</weixin-java-miniapp.version>
         <openfeign.version>3.0.5</openfeign.version>
-        <log4j.version>1.2.16</log4j.version>
         <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
     </properties>
 
