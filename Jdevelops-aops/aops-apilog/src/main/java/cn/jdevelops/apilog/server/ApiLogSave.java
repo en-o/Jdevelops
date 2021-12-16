@@ -13,8 +13,7 @@ public interface ApiLogSave {
     /**
      * 接口日志输出
      * @param apilog apilog
-     * @return ApiMonitoring
      */
-    ApiMonitoring saveLog(ApiMonitoring apilog);
+    void saveLog(ApiMonitoring apilog);
 
 }

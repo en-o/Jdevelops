@@ -2,6 +2,7 @@ package cn.jdevelops.apilog.scan;
 
 import cn.jdevelops.apilog.aspect.ApiLogAspectSave;
 import cn.jdevelops.apilog.aspect.ApiLogAspectSee;
+import cn.jdevelops.apilog.server.ApiLogSave;
 import cn.jdevelops.apilog.server.impl.ApiLogSaveImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -21,9 +22,9 @@ import org.springframework.context.annotation.Import;
 @ComponentScan("cn.jdevelops.apilog.**")
 public class EnableAutoScanConfiguration {
 
-    @ConditionalOnMissingBean(name = "apiLogSaveImpl")
+    @ConditionalOnMissingBean(name = {"apiLogSave","apiLogSaveImpl"})
     @Bean
-    public ApiLogSaveImpl apiLogSaveImpl(){
+    public ApiLogSave apiLogSaveImpl(){
         return new ApiLogSaveImpl();
     }
 }
