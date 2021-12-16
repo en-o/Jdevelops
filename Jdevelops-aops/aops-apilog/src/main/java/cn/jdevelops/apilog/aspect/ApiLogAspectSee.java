@@ -4,13 +4,13 @@ import cn.jdevelops.spring.core.aop.ParamsDis;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * 接口记录
@@ -22,20 +22,26 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 public class ApiLogAspectSee {
 
-    @Pointcut("execution(* com.*..controller..*(..))||execution(* io.*..controller..*(..))")
-    public void executeService() {
-    }
 
-    @Around("executeService()")
+    @Around("execution(* *.*..controller..*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         HttpServletRequest request = getRequest();
+        if(Objects.isNull(request)){
+            return pjp.proceed();
+        }
         return ParamsDis.aopDis(request, pjp);
     }
 
 
     private static HttpServletRequest getRequest() {
-        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
-        return sra.getRequest();
+        try {
+            RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+            assert sra != null;
+            return sra.getRequest();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

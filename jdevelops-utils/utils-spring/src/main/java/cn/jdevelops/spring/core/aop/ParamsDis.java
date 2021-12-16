@@ -41,7 +41,7 @@ public class ParamsDis {
                     } else if (arg instanceof MultipartFile[] && arg.getClass().isArray()) {
                         params = params.concat("【多文件参数】").concat(",");
                     } else if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
-                        continue;
+                        params = "";
                     } else {
                         try {
                             ObjectMapper objectMapper = new ObjectMapper();
@@ -56,7 +56,7 @@ public class ParamsDis {
             }
         }
         Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
-        log.info("请求IP:{}", IpUtil.getPoxyIp(request));
+        log.info("请求IP:{}", IpUtil.getPoxyIpEnhance(request));
         log.info("请求地址:{} {}", method, url);
         log.info("入参:{}", params);
         long ts = System.currentTimeMillis();
