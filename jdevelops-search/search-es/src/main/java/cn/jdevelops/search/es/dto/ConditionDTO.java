@@ -1,8 +1,6 @@
 package cn.jdevelops.search.es.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -13,10 +11,13 @@ import java.io.Serializable;
  * @version V1.0
  * @date 2020/6/2
  **/
+@ToString
 @Getter
 @Setter
-@ToString
-public class ConditionDTO  implements Serializable {
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
+public class ConditionDTO implements Serializable {
 
 
 	/**
@@ -34,7 +35,6 @@ public class ConditionDTO  implements Serializable {
 	 * PS:
 	 * <p>
 	 * EQ 就是 EQUAL等于 <br/>
-	 * NE 就是 NOT EQUAL不等于 <br/>
 	 * GT 就是 GREATER THAN大于　<br/>
 	 * LT 就是 LESS THAN小于 <br/>
 	 * GE 就是 GREATER THAN OR EQUAL 大于等于 <br/>
@@ -50,6 +50,7 @@ public class ConditionDTO  implements Serializable {
 	 * <p>
 	 * AND 就是 并且
 	 * OR 就是 或者
+	 * NOT 就是 非
 	 * <p/>
 	 */
 	private String connectSymbol;

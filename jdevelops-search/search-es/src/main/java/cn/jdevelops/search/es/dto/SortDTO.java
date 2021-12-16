@@ -1,8 +1,6 @@
 package cn.jdevelops.search.es.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,6 +10,9 @@ import java.io.Serializable;
 @ToString
 @Getter
 @Setter
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class SortDTO  implements Serializable {
 	/**
 	 * 排序字段

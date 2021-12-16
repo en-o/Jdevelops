@@ -1,7 +1,7 @@
 package cn.jdevelops.search.es.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import cn.jdevelops.search.es.service.EsIndexService;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;

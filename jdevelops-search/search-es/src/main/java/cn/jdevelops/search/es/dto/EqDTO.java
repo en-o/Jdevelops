@@ -1,8 +1,6 @@
 package cn.jdevelops.search.es.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,14 +15,17 @@ import java.util.List;
  * @version V1.0
  * @date 2020/6/2
  **/
+@ToString
 @Getter
 @Setter
-@ToString
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class EqDTO implements Serializable {
 
 
     /**
-     * 字段代码
+     * 字段代码，字段类型是text，必须添加“.keyword”
      */
     private String field;
 
