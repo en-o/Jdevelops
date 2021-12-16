@@ -1,15 +1,19 @@
 package cn.jdevelops.apilog.aspect;
 
+import cn.jdevelops.apilog.annotation.ApiLog;
 import cn.jdevelops.spring.core.aop.ParamsDis;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -25,6 +29,17 @@ public class ApiLogAspectSee {
 
     @Around("execution(* *.*..controller..*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
+       // 过来 @ApiLog 注解。 存在这个注解就不用在这里打印了
+        try {
+           Signature signature = pjp.getSignature();
+           MethodSignature methodSignature = (MethodSignature)signature;
+           Method targetMethod = methodSignature.getMethod();
+           if (targetMethod.getClass().isAnnotationPresent(ApiLog.class)){
+               return pjp.proceed();
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
         HttpServletRequest request = getRequest();
         if(Objects.isNull(request)){
             return pjp.proceed();
