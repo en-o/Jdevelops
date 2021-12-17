@@ -1,5 +1,6 @@
 package cn.jdevelops.map.core.bean;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * @version 1
  * @date 2020/6/29 9:08
  */
+@Slf4j
 public class BeanCopier {
 
     public static void copy(Object source, Object target) {
@@ -32,7 +34,7 @@ public class BeanCopier {
             String simpleName = sourceField.getType().getSimpleName();
             if (simpleName.equals(Date.class.getSimpleName()) || simpleName.equals(LocalDateTime.class.getSimpleName())) {
                 Field targetField = getSameNameField(targetDeclaredFields, sourceField);
-                if (targetField != null && targetField.getType().getSimpleName().equals(String.class.getSimpleName())) {
+                if (targetField != null && targetField.getType().isAssignableFrom(String.class)) {
                     try {
                         sourceField.setAccessible(true);
                         targetField.setAccessible(true);
@@ -54,7 +56,7 @@ public class BeanCopier {
                             targetField.set(target, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         }
                     } catch (IllegalAccessException var11) {
-                        var11.printStackTrace();
+                        log.error(var11.getMessage(),var11);
                     }
                 }
             }
@@ -68,7 +70,7 @@ public class BeanCopier {
             copy(source, t);
             return t;
         } catch (IllegalAccessException | InstantiationException var3) {
-            var3.printStackTrace();
+            log.error(var3.getMessage(),var3);
             return null;
         }
     }
