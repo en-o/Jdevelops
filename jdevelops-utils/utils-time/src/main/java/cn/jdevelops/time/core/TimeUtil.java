@@ -31,15 +31,15 @@ public class TimeUtil {
 	/**
 	 * 天
 	 */
-	static long nd = 1000 * 60 * 60 * 24;
+	static long nd = 1000 * 60 * 60 * 24L;
 	/**
 	 * 时
 	 */
-	static long nh = 1000 * 60 * 60;
+	static long nh = 1000 * 60 * 60L;
 	/**
 	 * 分
 	 */
-	static long nm = 1000 * 60;
+	static long nm = 1000 * 60L;
 	/**
 	 * 秒
 	 */
@@ -188,12 +188,10 @@ public class TimeUtil {
 
 	/**
 	 * 获取指定年份的第一天日期
-	 *
 	 * @param year           指定年份
 	 * @param timeFormatEnum 指定时间格式
 	 * @return {String}   yy-mm-dd 00:00:00
 	 */
-	@Deprecated
 	public static String getYearFirst(int year, TimeFormatEnum timeFormatEnum) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
@@ -209,7 +207,6 @@ public class TimeUtil {
 	 * @param timeFormatEnum 指定返回时间格式
 	 * @return {String}   timeFormatEnum
 	 */
-	@Deprecated
 	public static String getYearLast(int year, TimeFormatEnum timeFormatEnum) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
@@ -312,14 +309,13 @@ public class TimeUtil {
 	 * @param localDateTime java.time.LocalDateTime
 	 * @return Date
 	 */
-	@Deprecated
 	public static Date localDateTimeToDate(java.time.LocalDateTime localDateTime) {
 		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 
 	/**
 	 * LocalDate 转 Date
-	 *
+	 * @deprecated (TimeConvertUtil)
 	 * @param localDate LocalDate
 	 * @return Date
 	 */
@@ -330,7 +326,7 @@ public class TimeUtil {
 
 	/**
 	 * Date 转 LocalDate
-	 *
+	 * @deprecated (TimeConvertUtil)
 	 * @param date date
 	 * @return LocalDate
 	 */
@@ -341,7 +337,7 @@ public class TimeUtil {
 
 	/**
 	 * Date 转 LocalDateTime
-	 *
+	 * @deprecated (TimeConvertUtil)
 	 * @param date Date
 	 * @return java.time.LocalDateTime
 	 */
@@ -419,6 +415,7 @@ public class TimeUtil {
 
 	/**
 	 * 时间字符串格式转另外一个格式
+	 * @deprecated (TimeConvertUtil)
 	 * @param time 时间字符串
 	 * @param timeFormat 格式
 	 * @param newTimeFormat 需要转换的新格式
@@ -444,7 +441,7 @@ public class TimeUtil {
 
 	/**
 	 * 得到指定时间的默认格式
-	 *
+	 * @deprecated （TimeConvertUtil.date2DefStr）
 	 * @param date 时间
 	 * @return yyyy-MM-dd HH:mm:ss
 	 */
@@ -503,7 +500,6 @@ public class TimeUtil {
 				count2++;
 			}
 			objects.add(new java.sql.Date(c_begin.getTime().getTime()).toString());
-//            System.out.println("第" + count + "周  日期：" + new java.sql.Date(c_begin.getTime().getTime()) + "," + weeks[c_begin.get(Calendar.DAY_OF_WEEK)]);
 			if (c_begin.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				map.put(count, objects);
 				count++;
@@ -529,13 +525,10 @@ public class TimeUtil {
 		// 设置年份
 		cal.set(Calendar.YEAR, year);
 		// 设置月份
-		// cal.set(Calendar.MONTH, month - 1);
 		cal.set(Calendar.MONTH, month); //设置当前月的上一个月
 		// 获取某月最大天数
-		//int lastDay = cal.getActualMaximum(Calendar.DATE);
 		int lastDay = cal.getMinimum(Calendar.DATE); //获取月份中的最小值，即第一天
 		// 设置日历中月份的最大天数
-		//cal.set(Calendar.DAY_OF_MONTH, lastDay);
 		cal.set(Calendar.DAY_OF_MONTH, lastDay - 1); //上月的第一天减去1就是当月的最后一天
 		// 格式化日期
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -549,7 +542,6 @@ public class TimeUtil {
 	 * @return 天数
 	 */
 	public static int differDay(org.joda.time.LocalDate begin, org.joda.time.LocalDate end){
-		// 验证是否为工作日且为  当前时间3天后
 		return Days.daysBetween( begin ,end).getDays();
 	}
 
@@ -559,7 +551,6 @@ public class TimeUtil {
 	 * @param end 结束时间
 	 * @return int
 	 */
-	@Deprecated
 	public static int differentDays(Date begin, Date end) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.setTime(begin);

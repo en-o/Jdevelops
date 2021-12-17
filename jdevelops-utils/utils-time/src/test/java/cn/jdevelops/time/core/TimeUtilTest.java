@@ -57,7 +57,7 @@ public class TimeUtilTest {
     public void result() {
         long result = TimeUtil.result(DateTime.now().toDate(), DateTime.now().plusDays(3).toDate());
         long result1 = TimeUtil.result(DateTime.now().plusDays(3).toDate(),DateTime.now().toDate());
-        assertEquals(result,3);
+        assertEquals(3, result);
         assertEquals(result1,-1);
     }
 
