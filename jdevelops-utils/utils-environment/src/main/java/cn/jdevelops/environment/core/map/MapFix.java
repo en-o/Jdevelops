@@ -65,10 +65,8 @@ public class MapFix {
 		try {
 			double num = x * 3686400.0;
 			double num2 = y * 3686400.0;
-			double num3 = 0.0;
-			double num4 = 0.0;
-			double num5 = 0.0;
-			MapPoint point = wgtochinaLb(1, (int) num, (int) num2, (int) num5, (int) num3, (int) num4);
+			MapPoint point = wgtochinaLb((int) num, (int) num2);
+			assert point != null;
 			double num6 = point.getX();
 			double num7 = point.getY();
 			num6 /= 3686400.0;
@@ -122,7 +120,7 @@ public class MapFix {
 	}
 
 	private double transformYj5(double x, double y) {
-		double num = ((((300.0 + (1.0 * x)) + (2.0 * y)) + ((0.1 * x) * x)) + ((0.1 * x) * y))
+		double num = ((((300.0 + (x)) + (2.0 * y)) + ((0.1 * x) * x)) + ((0.1 * x) * y))
 				+ (0.1 * Math.sqrt(Math.sqrt(x * x)));
 		num += ((20.0 * yjSin2(18.849555921538762 * x)) + (20.0 * yjSin2(6.283185307179588 * x))) * 0.6667;
 		num += ((20.0 * yjSin2(3.141592653589794 * x)) + (40.0 * yjSin2(1.0471975511965981 * x))) * 0.6667;
@@ -137,9 +135,9 @@ public class MapFix {
 		return (num + (((160.0 * yjSin2(0.26179938779914952 * y)) + (320.0 * yjSin2(0.10471975511965979 * y))) * 0.6667));
 	}
 
-	private MapPoint wgtochinaLb(int wgFlag, int wgLng, int wgLat, int wgHeit, int wgWeek, int wgTime) {
-		MapPoint point = null;
-		if (wgHeit <= 0x1388) {
+	private MapPoint wgtochinaLb(int wgLng, int wgLat) {
+		MapPoint point = new MapPoint();
+		if (0 <= 0x1388) {
 			double num = wgLng;
 			num /= 3686400.0;
 			double x = wgLat;
@@ -156,14 +154,14 @@ public class MapFix {
 			if (x > 55.8271) {
 				return null;
 			}
-			if (wgFlag == 0) {
-				iniCasm(wgTime, wgLng, wgLat);
+			if (1 == 0) {
+				iniCasm(0, wgLng, wgLat);
 				point = new MapPoint();
 				point.setLatitude(wgLng);
 				point.setLongitude(wgLat);
 				return point;
 			}
-			casmT2 = wgTime;
+			casmT2 = 0;
 			double num3 = (casmT2 - casmT1) / 1000.0;
 			if (num3 <= 0.0) {
 				casmT1 = casmT2;
@@ -194,8 +192,8 @@ public class MapFix {
 			}
 			double xx = transformYj5(num - 105.0, x - 35.0);
 			double yy = transformYjy5(num - 105.0, x - 35.0);
-			xx = ((xx + (wgHeit * 0.001)) + yjSin2(wgTime * 0.0174532925199433)) + randomYj();
-			yy = ((yy + (wgHeit * 0.001)) + yjSin2(wgTime * 0.0174532925199433)) + randomYj();
+			xx = ((xx + (0 * 0.001)) + yjSin2(0 * 0.0174532925199433)) + randomYj();
+			yy = ((yy + (0 * 0.001)) + yjSin2(0 * 0.0174532925199433)) + randomYj();
 			point = new MapPoint();
 			point.setX((num + transformJy5(x, xx)) * 3686400.0);
 			point.setY((x + transformJyj5(x, yy)) * 3686400.0);

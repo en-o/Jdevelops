@@ -22,9 +22,24 @@ public class MapPoint {
 	/**
 	 * X坐标
 	 */
-	private double x;
+	private Double x;
 	/**
 	 * Y坐标
 	 */
-	private double y;
+	private Double y;
+
+
+	public double getX() {
+		if(x == null){
+			return 0L;
+		}
+		return x;
+	}
+
+	public double getY() {
+		if(y == null){
+			return 0L;
+		}
+		return y;
+	}
 }
