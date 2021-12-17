@@ -467,7 +467,7 @@ public class RedisProxy {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Collections.emptyList();
         }
     }
 
