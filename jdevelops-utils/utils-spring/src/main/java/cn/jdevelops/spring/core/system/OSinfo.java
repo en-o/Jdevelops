@@ -4,14 +4,20 @@ import cn.jdevelops.spring.enums.EPlatform;
 
 /**
  * 获取OS数据
+ *  <pre>
  *
+ *    public static void main(String[] args) {
+ *        System.out.println(OSinfo.getOSname());// 获取系统类型
+ *        System.out.println(OSinfo.isWindows());// 判断是否为windows系统
+ //    }
+ *  </pre>
  * @link : https://blog.csdn.net/fangchao2011/article/details/88785637
  */
 public class OSinfo {
 
-    private static String OS = System.getProperty("os.name").toLowerCase();
+    private static final String OS = System.getProperty("os.name").toLowerCase();
 
-    private static OSinfo _instance = new OSinfo();
+    private static final OSinfo INSTANCE = new OSinfo();
 
     private EPlatform platform;
 
@@ -23,11 +29,11 @@ public class OSinfo {
     }
 
     public static boolean isMacOS() {
-        return OS.contains("mac") && OS.indexOf("os") > 0 && !OS.contains("x");
+        return OS.contains("mac") && OS.contains("os") && !OS.contains("x");
     }
 
     public static boolean isMacOSX() {
-        return OS.contains("mac") && OS.indexOf("os") > 0 && OS.indexOf("x") > 0;
+        return OS.contains("mac") && OS.contains("os") && OS.contains("x");
     }
 
     public static boolean isWindows() {
@@ -71,7 +77,7 @@ public class OSinfo {
     }
 
     public static boolean isDigitalUnix() {
-        return OS.contains("digital") && OS.indexOf("unix") > 0;
+        return OS.contains("digital") && OS.contains("unix");
     }
 
     public static boolean isNetWare() {
@@ -93,48 +99,44 @@ public class OSinfo {
      */
     public static EPlatform getOSname() {
         if (isAix()) {
-            _instance.platform = EPlatform.AIX;
+            INSTANCE.platform = EPlatform.AIX;
         } else if (isDigitalUnix()) {
-            _instance.platform = EPlatform.Digital_Unix;
+            INSTANCE.platform = EPlatform.Digital_Unix;
         } else if (isFreeBSD()) {
-            _instance.platform = EPlatform.FreeBSD;
+            INSTANCE.platform = EPlatform.FreeBSD;
         } else if (isHPUX()) {
-            _instance.platform = EPlatform.HP_UX;
+            INSTANCE.platform = EPlatform.HP_UX;
         } else if (isIrix()) {
-            _instance.platform = EPlatform.Irix;
+            INSTANCE.platform = EPlatform.Irix;
         } else if (isLinux()) {
-            _instance.platform = EPlatform.Linux;
+            INSTANCE.platform = EPlatform.Linux;
         } else if (isMacOS()) {
-            _instance.platform = EPlatform.Mac_OS;
+            INSTANCE.platform = EPlatform.Mac_OS;
         } else if (isMacOSX()) {
-            _instance.platform = EPlatform.Mac_OS_X;
+            INSTANCE.platform = EPlatform.Mac_OS_X;
         } else if (isMPEiX()) {
-            _instance.platform = EPlatform.MPEiX;
+            INSTANCE.platform = EPlatform.MPEiX;
         } else if (isNetWare()) {
-            _instance.platform = EPlatform.NetWare_411;
+            INSTANCE.platform = EPlatform.NetWare_411;
         } else if (isOpenVMS()) {
-            _instance.platform = EPlatform.OpenVMS;
+            INSTANCE.platform = EPlatform.OpenVMS;
         } else if (isOS2()) {
-            _instance.platform = EPlatform.OS2;
+            INSTANCE.platform = EPlatform.OS2;
         } else if (isOS390()) {
-            _instance.platform = EPlatform.OS390;
+            INSTANCE.platform = EPlatform.OS390;
         } else if (isOSF1()) {
-            _instance.platform = EPlatform.OSF1;
+            INSTANCE.platform = EPlatform.OSF1;
         } else if (isSolaris()) {
-            _instance.platform = EPlatform.Solaris;
+            INSTANCE.platform = EPlatform.Solaris;
         } else if (isSunOS()) {
-            _instance.platform = EPlatform.SunOS;
+            INSTANCE.platform = EPlatform.SunOS;
         } else if (isWindows()) {
-            _instance.platform = EPlatform.Windows;
+            INSTANCE.platform = EPlatform.Windows;
         } else {
-            _instance.platform = EPlatform.Others;
+            INSTANCE.platform = EPlatform.Others;
         }
-        return _instance.platform;
+        return INSTANCE.platform;
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(OSinfo.getOSname());// 获取系统类型
-//        System.out.println(OSinfo.isWindows());// 判断是否为windows系统
-//    }
 
 }
