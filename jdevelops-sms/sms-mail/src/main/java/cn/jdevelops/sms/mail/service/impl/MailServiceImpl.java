@@ -56,7 +56,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendHtmlMail(String to, String subject, String content, String... cc) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = buildHelper(to, subject, content, message, cc);
+        buildHelper(to, subject, content, message, cc);
         mailSender.send(message);
     }
 
@@ -101,7 +101,7 @@ public class MailServiceImpl implements MailService {
         for (String url : urls) {
             try {
                 // 向multipart中添加远程附件
-                URLDataSource urlDataSource = new URLDataSource(new URL(url));
+                new URLDataSource(new URL(url));
                 BodyPart bodyPart = new MimeBodyPart();
                 DataHandler dh;
                 dh = new DataHandler(new URLDataSource(new URL(url)));
