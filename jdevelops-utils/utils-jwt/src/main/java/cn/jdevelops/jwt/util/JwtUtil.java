@@ -107,7 +107,7 @@ public class JwtUtil {
             JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
             Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT jwt = verifier.verify(token);
+            verifier.verify(token);
             return true;
         }catch (Exception e){
             return false;
@@ -129,7 +129,7 @@ public class JwtUtil {
             Map<String, Claim> claims = jwt.getClaims();
             return getClaims(claims);
         }catch (Exception e){
-            throw new IllegalArgumentException(ResultCodeEnum.TokenError.getMessage(),e);
+            throw new IllegalArgumentException(ResultCodeEnum.TOKEN_ERROR.getMessage(),e);
         }
 
     }

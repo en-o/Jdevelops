@@ -14,7 +14,7 @@ public enum ResultCodeEnum {
     /**
      * 成功
      */
-    Success(200,"成功"),
+    SUCCESS(200,"成功"),
 
     /**
      * 失败
@@ -24,73 +24,73 @@ public enum ResultCodeEnum {
     /**
      * 失败
      */
-    Fail(10000,"失败"),
+    FAIL(10000,"失败"),
 
     /**
      * 失败
      */
-    Fail5(500,"失败"),
+    FAIL_5(500,"失败"),
 
     /**
      * 业务异常
      */
-    BizError(10001,"业务异常"),
+    BIZ_ERROR(10001,"业务异常"),
 
     /**
      * 入参校验异常
      */
-    CheckError(10002,"入参校验异常"),
+    CHECK_ERROR(10002,"入参校验异常"),
 
     /**
      * token 校验失败异常
      */
-    TokenError(10003,"token 校验失败异常"),
+    TOKEN_ERROR(10003,"token 校验失败异常"),
 
     /**
      * 访问权限异常
      */
-    AuthError(10004,"访问权限异常"),
+    AUTH_ERROR(10004,"访问权限异常"),
 
     /**
      * 系统异常
      */
-    SysError(10005,"系统异常"),
+    SYS_ERROR(10005,"系统异常"),
 
     /**
      * 未找到
      */
-    NotFoundError(10006,"未找到"),
+    NOT_FOUND_ERROR(10006,"未找到"),
 
     /**
      * 系统限流
      */
-    SysThrottling(10007,"系统限流"),
+    SYS_THROTTLING(10007,"系统限流"),
 
     /**
      * 系统未授权
      */
-    SysUnauthorized(10008,"系统未授权"),
+    SYS_UNAUTHORIZED(10008,"系统未授权"),
 
     /**
      * 授权过期
      */
-    SysAuthorizedPast(10009,"授权过期"),
+    SYS_AUTHORIZED_PAST(10009,"授权过期"),
 
     /**
      * 数据访问异常
      */
-    DataAccessException(10010,"数据访问异常"),
+    DATA_ACCESS_EXCEPTION(10010,"数据访问异常"),
 
     /**
      * JSON格式错误
      */
-    JsonError(10011,"JSON格式错误"),
+    JSON_ERROR(10011,"JSON格式错误"),
 
 
     /**
      * 消息不可读
      */
-    MessageNoReading(10012,"消息不可读"),
+    MESSAGE_NO_READING(10012,"消息不可读"),
 
 
     /**
@@ -112,11 +112,11 @@ public enum ResultCodeEnum {
     /**
      * code
      */
-    private int code;
+    private final int code;
     /**
      * 消息
      */
-    private String message;
+    private final String message;
 
     ResultCodeEnum(int code, String message) {
         this.code = code;

@@ -19,7 +19,7 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(String message) {
         super(message);
-        this.code = ResultCodeEnum.Fail.getCode();
+        this.code = ResultCodeEnum.FAIL.getCode();
     }
 
     public BusinessException(String message, Throwable cause) {

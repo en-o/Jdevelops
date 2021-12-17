@@ -64,26 +64,26 @@ public class ResultVO<T> implements Serializable {
      * 自动转换success的返回值：true,false
      */
     public boolean isSuccess() {
-        return this.code == ResultCodeEnum.Success.getCode();
+        return this.code == ResultCodeEnum.SUCCESS.getCode();
     }
 
     public static <T> ResultVO<T> success() {
         ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.Success.getCode());
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage("success");
         return resultVO;
     }
 
     public static <T> ResultVO<T> success(String message) {
         ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.Success.getCode());
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage(message);
         return resultVO;
     }
 
     public static <T> ResultVO<T> successForData(T data) {
         ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.Success.getCode());
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage("success");
         resultVO.setData(data);
         return resultVO;
@@ -91,7 +91,8 @@ public class ResultVO<T> implements Serializable {
 
 
     /**
-     * 不要使用
+     * 尽量不要使用
+     * @deprecated (成功代码应该唯一)
      */
     @Deprecated
     public static <T> ResultVO<T> success(int code, String message) {
@@ -113,7 +114,7 @@ public class ResultVO<T> implements Serializable {
 
     public static <T> ResultVO<T> success(T data, String message) {
         ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.Success.getCode());
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage(message);
         resultVO.setData(data);
         return resultVO;
@@ -122,7 +123,7 @@ public class ResultVO<T> implements Serializable {
 
     public static <T> ResultVO<ResourcePage<T>> success(String message, ResourcePage<T> resourcePage) {
         ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.Success.getCode());
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage(message);
         resultVO.setData(resourcePage);
         return resultVO;
@@ -170,7 +171,7 @@ public class ResultVO<T> implements Serializable {
 
     public static <T> ResultVO<T> fail(String message) {
         ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.BizError.getCode());
+        resultVO.setCode(ResultCodeEnum.BIZ_ERROR.getCode());
         resultVO.setMessage(message);
         return resultVO;
     }

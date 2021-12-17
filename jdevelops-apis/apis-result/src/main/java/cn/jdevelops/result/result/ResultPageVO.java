@@ -73,7 +73,7 @@ public class ResultPageVO<T> implements Serializable {
 
     /** 自动转换success的返回值：true,false*/
     public boolean isSuccess() {
-        return this.code == ResultCodeEnum.Success.getCode();
+        return this.code == ResultCodeEnum.SUCCESS.getCode();
     }
 
 
@@ -92,7 +92,7 @@ public class ResultPageVO<T> implements Serializable {
                                            Long total,
                                            T rows) {
         ResultPageVO<T> resultPageVO = new ResultPageVO<>();
-        resultPageVO.setCode(ResultCodeEnum.Success.getCode());
+        resultPageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultPageVO.setMessage("success");
         resultPageVO.setCurrentPage(pageIndex);
         resultPageVO.setPageSize(pageSize);
@@ -119,7 +119,7 @@ public class ResultPageVO<T> implements Serializable {
                                                   T rows,
                                                   String message) {
         ResultPageVO<T> resultPageVO = new ResultPageVO<>();
-        resultPageVO.setCode(ResultCodeEnum.Success.getCode());
+        resultPageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultPageVO.setMessage(message);
         resultPageVO.setCurrentPage(pageIndex);
         resultPageVO.setPageSize(pageSize);
@@ -133,7 +133,7 @@ public class ResultPageVO<T> implements Serializable {
         ResultPageVO<T> pageVO = new ResultPageVO<>();
         pageVO.setTotal(total);
         pageVO.setRows(rows);
-        pageVO.setCode(ResultCodeEnum.Success.getCode());
+        pageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         pageVO.setMessage("success");
         return pageVO;
     }
@@ -150,7 +150,7 @@ public class ResultPageVO<T> implements Serializable {
         ResultPageVO<T> pageVO = new ResultPageVO<>();
         pageVO.setTotal(total);
         pageVO.setRows(rows);
-        pageVO.setCode(ResultCodeEnum.Success.getCode());
+        pageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         pageVO.setMessage(message);
         return pageVO;
     }
