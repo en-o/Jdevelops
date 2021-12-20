@@ -181,38 +181,48 @@ public class StringHide {
         }
         try {
             switch (methodName.getMethod()) {
-                case "bankCard": //银行卡号
+                case "bankCard":
+                    //银行卡号
                     newStr = oldStr.replaceAll("(\\w{4})\\w*(\\w{4})", "$1***********$2");
                     break;
-                case "fixedPhone"://固定电话
+                case "fixedPhone":
+                    //固定电话
                     newStr = oldStr.substring(0, (oldStr.indexOf('-') + 1)) + "******" + oldStr.substring(oldStr.length() - 2);
                     break;
-                case "address": //住址数字
+                case "address":
+                    //住址数字
                     newStr = oldStr.replaceAll("[\\d一二三四五六七八九十壹贰叁肆伍陆柒捌玖拾佰]+", "***");
                     break;
-                case "chineseName": //中文姓名
+                case "chineseName":
+                    //中文姓名
                     String name = StringUtils.left(oldStr, 1);
                     newStr = StringUtils.rightPad(name, StringUtils.length(oldStr), "*");
                     break;
-                case "email": //邮箱
+                case "email":
+                    //邮箱
                     int index = oldStr.indexOf('@');
-                    if (index == 2) {//下标为2：@前面数字小于两位完全拼接显示
+                    if (index == 2) {
+                        //下标为2：@前面数字小于两位完全拼接显示
                         newStr = oldStr.substring(0, index) + "****" + oldStr.substring(index);
                     } else {
                         newStr = oldStr.replaceAll("(^\\w{3})[^@]*(@.*$)", "$1****$2");
                     }
                     break;
-                case "maskIdCard": //证件号
+                case "maskIdCard":
+                    //证件号
                     if (oldStr.length() == 15) {
                         newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{2})", "$1**********$2");
                     } else if (oldStr.length() == 18) {
                         newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{2})", "$1*************$2");
                     }
                     break;
-                case "maskPhone": //手机号
-                    if (oldStr.matches("^(852|853)\\d*$")) {//港澳手机号处理
+                case "maskPhone":
+                    //手机号处理
+                    if (oldStr.matches("^(852|853)\\d*$")) {
+                        //港澳手机号处理
                         newStr = oldStr.substring(3, 5) + "****" + oldStr.substring((oldStr.length() - 2));
-                    } else if (oldStr.matches("^(886)\\d*$")) {//台湾手机号处理 //8860930849111
+                    } else if (oldStr.matches("^(886)\\d*$")) {
+                        //台湾手机号处理 //8860930849111
                         newStr = oldStr.substring(3, 5) + "****" + oldStr.substring((oldStr.length() - 3));
                     } else {
                         newStr = oldStr.replaceAll("(\\w{3})\\w*(\\w{4})", "$1****$2");

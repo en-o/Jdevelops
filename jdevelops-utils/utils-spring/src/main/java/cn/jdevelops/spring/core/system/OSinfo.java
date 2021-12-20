@@ -11,6 +11,7 @@ import cn.jdevelops.spring.enums.EPlatform;
  *        System.out.println(OSinfo.isWindows());// 判断是否为windows系统
  //    }
  *  </pre>
+ * @author 来源于网络
  * @link : https://blog.csdn.net/fangchao2011/article/details/88785637
  */
 public class OSinfo {
@@ -28,11 +29,11 @@ public class OSinfo {
         return OS.contains("linux");
     }
 
-    public static boolean isMacOS() {
+    public static boolean isMacOs() {
         return OS.contains("mac") && OS.contains("os") && !OS.contains("x");
     }
 
-    public static boolean isMacOSX() {
+    public static boolean isMacOsX() {
         return OS.contains("mac") && OS.contains("os") && OS.contains("x");
     }
 
@@ -40,7 +41,7 @@ public class OSinfo {
         return OS.contains("windows");
     }
 
-    public static boolean isOS2() {
+    public static boolean isOs2() {
         return OS.contains("os/2");
     }
 
@@ -48,15 +49,15 @@ public class OSinfo {
         return OS.contains("solaris");
     }
 
-    public static boolean isSunOS() {
+    public static boolean isSunOs() {
         return OS.contains("sunos");
     }
 
-    public static boolean isMPEiX() {
+    public static boolean ismpeix() {
         return OS.contains("mpe/ix");
     }
 
-    public static boolean isHPUX() {
+    public static boolean ishpux() {
         return OS.contains("hp-ux");
     }
 
@@ -64,11 +65,11 @@ public class OSinfo {
         return OS.contains("aix");
     }
 
-    public static boolean isOS390() {
+    public static boolean isos390() {
         return OS.contains("os/390");
     }
 
-    public static boolean isFreeBSD() {
+    public static boolean isfreebsd() {
         return OS.contains("freebsd");
     }
 
@@ -84,11 +85,11 @@ public class OSinfo {
         return OS.contains("netware");
     }
 
-    public static boolean isOSF1() {
+    public static boolean isosf1() {
         return OS.contains("osf1");
     }
 
-    public static boolean isOpenVMS() {
+    public static boolean isOpenVms() {
         return OS.contains("openvms");
     }
 
@@ -97,43 +98,43 @@ public class OSinfo {
      *
      * @return 操作系统名
      */
-    public static EPlatform getOSname() {
+    public static EPlatform getOsName() {
         if (isAix()) {
             INSTANCE.platform = EPlatform.AIX;
         } else if (isDigitalUnix()) {
-            INSTANCE.platform = EPlatform.Digital_Unix;
-        } else if (isFreeBSD()) {
-            INSTANCE.platform = EPlatform.FreeBSD;
-        } else if (isHPUX()) {
+            INSTANCE.platform = EPlatform.DIGITAL_UNIX;
+        } else if (isfreebsd()) {
+            INSTANCE.platform = EPlatform.FREE_BSD;
+        } else if (ishpux()) {
             INSTANCE.platform = EPlatform.HP_UX;
         } else if (isIrix()) {
-            INSTANCE.platform = EPlatform.Irix;
+            INSTANCE.platform = EPlatform.IRIX;
         } else if (isLinux()) {
-            INSTANCE.platform = EPlatform.Linux;
-        } else if (isMacOS()) {
-            INSTANCE.platform = EPlatform.Mac_OS;
-        } else if (isMacOSX()) {
-            INSTANCE.platform = EPlatform.Mac_OS_X;
-        } else if (isMPEiX()) {
-            INSTANCE.platform = EPlatform.MPEiX;
+            INSTANCE.platform = EPlatform.LINUX;
+        } else if (isMacOs()) {
+            INSTANCE.platform = EPlatform.MAC_OS;
+        } else if (isMacOsX()) {
+            INSTANCE.platform = EPlatform.MAC_OS_X;
+        } else if (ismpeix()) {
+            INSTANCE.platform = EPlatform.MP_EI_X;
         } else if (isNetWare()) {
-            INSTANCE.platform = EPlatform.NetWare_411;
-        } else if (isOpenVMS()) {
-            INSTANCE.platform = EPlatform.OpenVMS;
-        } else if (isOS2()) {
-            INSTANCE.platform = EPlatform.OS2;
-        } else if (isOS390()) {
+            INSTANCE.platform = EPlatform.NET_WARE_411;
+        } else if (isOpenVms()) {
+            INSTANCE.platform = EPlatform.OPEN_VMS;
+        } else if (isOs2()) {
+            INSTANCE.platform = EPlatform.OS_2;
+        } else if (isos390()) {
             INSTANCE.platform = EPlatform.OS390;
-        } else if (isOSF1()) {
+        } else if (isosf1()) {
             INSTANCE.platform = EPlatform.OSF1;
         } else if (isSolaris()) {
-            INSTANCE.platform = EPlatform.Solaris;
-        } else if (isSunOS()) {
-            INSTANCE.platform = EPlatform.SunOS;
+            INSTANCE.platform = EPlatform.SOLARIS;
+        } else if (isSunOs()) {
+            INSTANCE.platform = EPlatform.SUN_OS;
         } else if (isWindows()) {
-            INSTANCE.platform = EPlatform.Windows;
+            INSTANCE.platform = EPlatform.WINDOWS;
         } else {
-            INSTANCE.platform = EPlatform.Others;
+            INSTANCE.platform = EPlatform.OTHERS;
         }
         return INSTANCE.platform;
     }

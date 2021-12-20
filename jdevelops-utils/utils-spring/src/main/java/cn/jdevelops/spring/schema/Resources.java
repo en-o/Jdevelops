@@ -11,6 +11,9 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+/**
+ * @author tnnn
+ */
 public class Resources {
     private static ClassLoaderWrapper classLoaderWrapper = new ClassLoaderWrapper();
     private static Charset charset;
@@ -26,12 +29,12 @@ public class Resources {
         classLoaderWrapper.defaultClassLoader = defaultClassLoader;
     }
 
-    public static URL getResourceURL(String resource) throws IOException {
-        return getResourceURL(null, resource);
+    public static URL getResourceUrl(String resource) throws IOException {
+        return getResourceUrl(null, resource);
     }
 
-    public static URL getResourceURL(ClassLoader loader, String resource) throws IOException {
-        URL url = classLoaderWrapper.getResourceAsURL(resource, loader);
+    public static URL getResourceUrl(ClassLoader loader, String resource) throws IOException {
+        URL url = classLoaderWrapper.getResourceAsUrl(resource, loader);
         if (url == null) {
             throw new IOException("Could not find resource " + resource);
         } else {
@@ -91,11 +94,11 @@ public class Resources {
     }
 
     public static File getResourceAsFile(String resource) throws IOException {
-        return new File(getResourceURL(resource).getFile());
+        return new File(getResourceUrl(resource).getFile());
     }
 
     public static File getResourceAsFile(ClassLoader loader, String resource) throws IOException {
-        return new File(getResourceURL(loader, resource).getFile());
+        return new File(getResourceUrl(loader, resource).getFile());
     }
 
     public static InputStream getUrlAsStream(String urlString) throws IOException {

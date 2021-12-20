@@ -5,6 +5,9 @@
 
 package cn.jdevelops.spring.exception;
 
+/**
+ * @author tnnn
+ */
 public class RuntimeSqlException extends RuntimeException {
     private static final long serialVersionUID = 5224696788505678598L;
 

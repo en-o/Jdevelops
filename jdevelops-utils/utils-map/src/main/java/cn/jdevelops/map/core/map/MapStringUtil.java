@@ -34,7 +34,7 @@ public class MapStringUtil {
      * @param map map
      * @return String
      */
-    public static String mapOrderStrFixURLEncoder(Map<String, Object> map) throws UnsupportedEncodingException {
+    public static String mapOrderStrFixUrlEncoder(Map<String, Object> map) throws UnsupportedEncodingException {
         ArrayList<Map.Entry<String, Object>> list = new ArrayList<>(map.entrySet());
 
         list.sort(Map.Entry.comparingByKey());

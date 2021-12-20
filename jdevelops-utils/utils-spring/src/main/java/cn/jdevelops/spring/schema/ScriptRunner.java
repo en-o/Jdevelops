@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.sql.*;
 
+/**
+ * @author tnnn
+ */
 public class ScriptRunner {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
     private static final String DEFAULT_DELIMITER = ";";
@@ -19,7 +22,7 @@ public class ScriptRunner {
     private boolean stopOnError;
     private boolean autoCommit;
     private boolean sendFullScript;
-    private boolean removeCRs;
+    private boolean removeCrs;
     private boolean escapeProcessing = true;
     private PrintWriter logWriter;
     private PrintWriter errorLogWriter;
@@ -46,8 +49,8 @@ public class ScriptRunner {
         this.sendFullScript = sendFullScript;
     }
 
-    public void setRemoveCRs(boolean removeCRs) {
-        this.removeCRs = removeCRs;
+    public void setRemoveCrs(boolean removeCrs) {
+        this.removeCrs = removeCrs;
     }
 
     public void setEscapeProcessing(boolean escapeProcessing) {
@@ -210,7 +213,7 @@ public class ScriptRunner {
         Statement statement = this.connection.createStatement();
         statement.setEscapeProcessing(this.escapeProcessing);
         String sql = command;
-        if (this.removeCRs) {
+        if (this.removeCrs) {
             sql = command.replaceAll("\r\n", "\n");
         }
 

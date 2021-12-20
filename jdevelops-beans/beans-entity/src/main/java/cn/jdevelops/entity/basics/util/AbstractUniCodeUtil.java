@@ -9,7 +9,7 @@ import java.util.UUID;
  *
  * @author QIANG （来源于网络）
  */  
-public abstract class UniCodeUtil implements Serializable {  
+public abstract class AbstractUniCodeUtil implements Serializable {
   
     private static final long serialVersionUID = -5628028113003022356L;  
   
@@ -42,9 +42,9 @@ public abstract class UniCodeUtil implements Serializable {
         int bitSize = BASE_SIZE + (div << 2 >> 1);  
         int baseSize = offset - bitSize;  
   
-        String baseID = randomBaseID(baseSize);  
+        String baseid = randombaseId(baseSize);
   
-        StringBuilder rcid = new StringBuilder(baseID);  
+        StringBuilder rcid = new StringBuilder(baseid);
         String rv = bitWeight(bitSize);  
         char[] ch = rv.toCharArray();  
         for (char c : ch) {  
@@ -58,7 +58,7 @@ public abstract class UniCodeUtil implements Serializable {
      *  
      * @return  String
      */  
-    public static String randomBaseID(int baseSize) {  
+    public static String randombaseId(int baseSize) {
         UUID uid = UUID.randomUUID();  
         long idx = uid.getLeastSignificantBits();  
         StringBuilder buff = new StringBuilder();  
@@ -73,7 +73,7 @@ public abstract class UniCodeUtil implements Serializable {
             buff.append(toa(0x1F & idx));  
             idx >>>= 5;  
         }  
-        return buff.reverse().toString().substring(0, baseSize);  
+        return buff.reverse().substring(0, baseSize);
     }  
   
     /** 

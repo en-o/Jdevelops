@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author tnnn
  * @link https://blog.csdn.net/weixin_42514654/article/details/114046759
  * 在代码中调用另外一个jar
  *  - 直接调用线程会阻塞
@@ -42,8 +43,6 @@ public class JarExecutor {
         try {
             final Runtime re = Runtime.getRuntime();
 
-//final Process command = re.exec(cmdString, args.toArray(new String[0]));
-
             final Process command = re.exec((String[]) actualArgs.toArray(new String[0]));
 
             this.error = new BufferedReader(new InputStreamReader(command.getErrorStream()));
@@ -67,28 +66,30 @@ public class JarExecutor {
     }
 
     public String getExecutionLog() {
-        String error = "";
+        StringBuilder error = new StringBuilder();
 
         String line;
 
         try {
             while ((line = this.error.readLine()) != null) {
-                error = error + "\n" + line;
+                error.append("\n").append(line);
 
             }
 
         } catch (final IOException e) {
+            e.printStackTrace();
         }
 
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         try {
             while ((line = this.op.readLine()) != null) {
-                output = output + "\n" + line;
+                output.append("\n").append(line);
 
             }
 
         } catch (final IOException e) {
+            e.printStackTrace();
         }
 
         try {
@@ -97,6 +98,7 @@ public class JarExecutor {
             this.op.close();
 
         } catch (final IOException e) {
+            e.printStackTrace();
         }
 
         return "exitVal: " + this.exitVal + ", error: " + error + ", output: " + output;

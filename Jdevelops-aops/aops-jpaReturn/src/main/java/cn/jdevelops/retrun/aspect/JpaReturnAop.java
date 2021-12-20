@@ -54,7 +54,7 @@ public class JpaReturnAop {
                 List<Map<String, Object>> tmap = new ArrayList<>();
                 for (Map<String, Object> item : (List<Map<String, Object>>)rvt) {
                     Map<String, Object> newMap = new HashMap<>(item);
-                    Iterator<String> iter = item.keySet().iterator();//通过迭代器获取key，vale
+                    Iterator<String> iter = item.keySet().iterator();
                     while(iter.hasNext()) {
                         String key=iter.next();
                         String newkey = StringFormat.toCamelCase(key, true);

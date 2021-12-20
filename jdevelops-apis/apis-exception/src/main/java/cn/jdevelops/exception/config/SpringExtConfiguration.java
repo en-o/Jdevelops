@@ -27,6 +27,7 @@ import org.springframework.lang.NonNull;
 
 /**
  * The type spring ext configuration.
+ * @author shneyu
  */
 public class SpringExtConfiguration {
 

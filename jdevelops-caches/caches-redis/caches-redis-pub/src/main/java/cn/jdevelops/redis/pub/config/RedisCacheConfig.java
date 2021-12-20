@@ -2,6 +2,7 @@ package cn.jdevelops.redis.pub.config;
 
 import cn.jdevelops.redis.pub.entity.ReidsCacheBean;
 import cn.jdevelops.redis.pub.receiver.RedisReceiver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +21,11 @@ import java.util.List;
  *  配置监听适配器、消息监听容器
  *  public class RedisListenDefault extends RedisCacheConfig
  *
+ * @author tnnn
  */
 @Component
 @EnableCaching
+@Slf4j
 public class RedisCacheConfig {
 
 
@@ -55,7 +58,7 @@ public class RedisCacheConfig {
      */
     @Bean
     MessageListenerAdapter listenerAdapter(RedisReceiver receiver) {
-        System.out.println("消息适配器1");
+       log.info("消息适配器1");
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 

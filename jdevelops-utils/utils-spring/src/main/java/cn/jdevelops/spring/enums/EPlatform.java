@@ -2,28 +2,68 @@ package cn.jdevelops.spring.enums;
 
 /**
  * 系统名
+ * @author 来源于网络
  * @link : https://blog.csdn.net/fangchao2011/article/details/88785637
  */
 public enum EPlatform {
-    Any("any"),
-    Linux("Linux"),
-    Mac_OS("Mac OS"),
-    Mac_OS_X("Mac OS X"),
-    Windows("Windows"),
-    OS2("OS/2"),
-    Solaris("Solaris"),
-    SunOS("SunOS"),
-    MPEiX("MPE/iX"),
+
+    /* any */
+    ANY("any"),
+
+    /* Linux */
+    LINUX("Linux"),
+
+    /* Mac OS */
+    MAC_OS("Mac OS"),
+
+    /* Mac OS X */
+    MAC_OS_X("Mac OS X"),
+
+    /* Windows */
+    WINDOWS("Windows"),
+
+    /* OS/2 */
+    OS_2("OS/2"),
+
+    /* Solaris */
+    SOLARIS("Solaris"),
+
+    /* SunOS */
+    SUN_OS("SunOS"),
+
+    /* MPE/iX */
+    MP_EI_X("MPE/iX"),
+
+    /* HP-UX */
     HP_UX("HP-UX"),
+
+    /* AIX */
     AIX("AIX"),
+
+    /* OS/390 */
     OS390("OS/390"),
-    FreeBSD("FreeBSD"),
-    Irix("Irix"),
-    Digital_Unix("Digital Unix"),
-    NetWare_411("NetWare"),
+
+    /* FreeBSD */
+    FREE_BSD("FreeBSD"),
+
+    /* Irix */
+    IRIX("Irix"),
+
+    /* Digital Unix */
+    DIGITAL_UNIX("Digital Unix"),
+
+    /* NetWare */
+    NET_WARE_411("NetWare"),
+
+    /* OSF1 */
     OSF1("OSF1"),
-    OpenVMS("OpenVMS"),
-    Others("Others");
+
+    /* OpenVMS */
+    OPEN_VMS("OpenVMS"),
+
+    /* Others */
+    OTHERS("Others");
+
 
     EPlatform(String desc) {
         this.description = desc;
@@ -34,5 +74,8 @@ public enum EPlatform {
         return description;
     }
 
-    private String description;
+    /**
+     * 描述
+     */
+    private final String description;
 }

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Local DataSource configuration.
+ * @author tnnn
  */
 @Getter
 @Setter

@@ -89,11 +89,10 @@ public class BeanCopier {
     }
 
     private static Field getSameNameField(Field[] fields, Field targetField) {
-        Field[] var2 = fields;
         int var3 = fields.length;
 
         for(int var4 = 0; var4 < var3; ++var4) {
-            Field field = var2[var4];
+            Field field = fields[var4];
             if (field.getName().equals(targetField.getName())) {
                 return field;
             }
@@ -127,7 +126,8 @@ public class BeanCopier {
                 throw new IllegalArgumentException("Cannot store " + type2.getName() + " in an array of "
                         + type1.getName(), ase);
             }
-            throw ase; // No, so rethrow original
+            // No, so rethrow original
+            throw ase;
         }
         return joinedArray;
     }

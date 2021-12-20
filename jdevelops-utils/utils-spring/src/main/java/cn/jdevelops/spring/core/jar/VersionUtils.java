@@ -25,6 +25,7 @@ import java.security.CodeSource;
 
 /**
  * VersionUtils.
+ * @author shneyu
  */
 public final class VersionUtils {
 

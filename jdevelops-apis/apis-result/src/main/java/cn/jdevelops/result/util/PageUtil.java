@@ -44,7 +44,7 @@ public class PageUtil {
      * @param pageDTO pageDTO
      * @return PageVO
      */
-    public static RoutinePageDTO setNullRoutinePageDTODef(RoutinePageDTO pageDTO) {
+    public static RoutinePageDTO setNullRoutinePageDef(RoutinePageDTO pageDTO) {
         if (pageDTO == null) {
             pageDTO = new RoutinePageDTO();
             pageDTO.setPageIndex(0);

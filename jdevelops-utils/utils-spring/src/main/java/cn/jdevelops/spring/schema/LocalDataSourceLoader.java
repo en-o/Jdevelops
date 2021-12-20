@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * for execute schema sql file.
+ * @author tnnn
  */
 @Slf4j
 @Component
@@ -65,10 +66,9 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
         // If jdbcUrl in the configuration file specifies the shenyu database, it is removed,
         // because the shenyu database does not need to be specified when executing the SQL file,
         // otherwise the shenyu database will be disconnected when the shenyu database does not exist
-//        String jdbcUrl = StringUtils.replace(properties.getUrl(), "/shenyu?", "?");
         String url = properties.getUrl();
         StringBuilder sb = new StringBuilder(url);
-        String sub1 = url.substring(0, url.indexOf("?") < 0 ? url.length() : url.indexOf("?") - 1);
+        String sub1 = url.substring(0, !url.contains("?") ? url.length() : url.indexOf("?") - 1);
         int i = sub1.lastIndexOf("/");
         int j = sb.indexOf("?") < 0 ? sb.length() : sb.indexOf("?");
         String jdbcUrl = sb.replace(i, j, "").toString();
@@ -103,7 +103,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                     String checkSchema = new StringBuilder().append("select count(*) as isok from pg_catalog.pg_database where datname = '").append(schemaName).append("' ;").toString();
                     Statement statement = conn.createStatement();
                     ResultSet resultSet = statement.executeQuery(checkSchema);
-                    /**
+                    /*
                      * 0不存在
                      */
                     int isok = 0;

@@ -86,8 +86,6 @@ public class BeanCopyUtil {
 		try {
 			T tag = tClass.newInstance();
 			BeanCopier.copy(t, tag);
-			/* 无法处理时间 */
-//           BeanCopyUtil.beanCopy(t, tag);
 			return tag;
 		} catch (Exception var3) {
 			throw new RuntimeException(var3);

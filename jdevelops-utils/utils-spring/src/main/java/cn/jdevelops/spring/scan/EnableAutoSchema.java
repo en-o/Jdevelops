@@ -9,6 +9,7 @@ import java.lang.annotation.*;
 
 /**
  * 启动是检查库存在与否，进行自动建库
+ * @author tnnn
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

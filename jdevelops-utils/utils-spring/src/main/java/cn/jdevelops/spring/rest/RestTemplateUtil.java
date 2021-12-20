@@ -14,6 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author tnnn
+ */
 @Slf4j
 public class RestTemplateUtil {
 	/**
@@ -51,7 +54,7 @@ public class RestTemplateUtil {
 	 * @return Map
 	 */
 	public static Map<String, Object> parseResponseEntity(ResponseEntity<String> entity) {
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<>(100);
 		Integer code = entity.getStatusCodeValue();
 		if(entity.getStatusCodeValue()==200) {
 			JSONObject obj = JSON.parseObject(entity.getBody());

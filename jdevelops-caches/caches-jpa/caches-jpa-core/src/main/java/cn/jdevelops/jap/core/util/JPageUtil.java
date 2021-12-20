@@ -85,10 +85,10 @@ public class JPageUtil {
      * @return Pageable
      */
     public static Pageable getPageable(RoutinePageDTO pageDTO) {
-        RoutinePageDTO pageDTODef = PageUtil.setNullRoutinePageDTODef(pageDTO);
-        return PageRequest.of(pageDTODef.getPageIndex(),
-                pageDTODef.getPageSize(),
-                getSv2S(pageDTODef));
+        RoutinePageDTO pageDef = PageUtil.setNullRoutinePageDef(pageDTO);
+        return PageRequest.of(pageDef.getPageIndex(),
+                pageDef.getPageSize(),
+                getSv2S(pageDef));
     }
 
 

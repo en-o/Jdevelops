@@ -44,27 +44,26 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      */
     List<T> findByIdIn(List<D> id);
 
-
-     /**
-     * 更新 根据id
-     *
-     * @param t           实体类型的 数据
+    /**
+     *  更新 根据id
+     * @param t 实体类型的 数据
      * @return Boolean
-      */
+     * @throws Exception Exception
+     */
     default Boolean updateEntity(T t) throws Exception {
         /* 跟根据ID获取需要更新的数据的 原始数据 */
         T  oidCamera = findById((D) CommUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
                 .orElse(null);
-        /**
+        /*
          *将新数据中非空字段 克隆到原始数据中 实现更新
          * <p> oidCamera.copy(scCameraEntity); </p>
          */
-        /** 获取method对象，其中包含方法名称和参数列表*/
+        /* 获取method对象，其中包含方法名称和参数列表*/
         Method setName = oidCamera.getClass().getMethod("copy", Object.class);
-        /** 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
+        /* 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
         setName.invoke(oidCamera, t);
-        /** 保存克隆之后的数据  且 saveAndFlush立即生效 */
-        T save = saveAndFlush(oidCamera);
+        /* 保存克隆之后的数据  且 saveAndFlush立即生效 */
+        saveAndFlush(oidCamera);
         return true;
     }
 

@@ -381,9 +381,9 @@ public class TimeUtil {
 									  Integer returnTime) {
 
 		org.joda.time.format.DateTimeFormatter beginFormatter = DateTimeFormat.forPattern(beginTimeFormat.getFormat());
-		org.joda.time.format.DateTimeFormatter endTFormatter = DateTimeFormat.forPattern(endTimeFormat.getFormat());
+		org.joda.time.format.DateTimeFormatter endTtimeFormatter = DateTimeFormat.forPattern(endTimeFormat.getFormat());
 		DateTime begin = DateTime.parse(beginTime, beginFormatter);
-		DateTime end = DateTime.parse(endTime, endTFormatter);
+		DateTime end = DateTime.parse(endTime, endTtimeFormatter);
 //        计算区间毫秒数
 		Duration etime = new Duration(begin, end);
 		switch (returnTime) {
@@ -467,44 +467,32 @@ public class TimeUtil {
 	 * @return Map
 	 */
 	public static Map<Integer, List<String>> getMonthForWeek(String times) throws ParseException {
-		Map<Integer, List<String>> map = new HashMap<>();
+		Map<Integer, List<String>> map = new HashMap<>(10);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar c_begin = new GregorianCalendar();
-		Calendar c_end = new GregorianCalendar();
+		Calendar cBegin = new GregorianCalendar();
+		Calendar cEnd = new GregorianCalendar();
 		DateFormatSymbols dfs = new DateFormatSymbols();
-		String[] weeks = dfs.getWeekdays();
-		c_begin.setTime(sdf.parse(times + "-01"));
-		c_end.setTime(sdf.parse(getLastDayOfMonth(times)));
-//        c_begin.set(2019, 3, 2); //Calendar的月从0-11，所以4月是3.
-//        c_end.set(2019, 3, 29); //Calendar的月从0-11，所以5月是4.
+		cBegin.setTime(sdf.parse(times + "-01"));
+		cEnd.setTime(sdf.parse(getLastDayOfMonth(times)));
+		//  c_begin.set(2019, 3, 2); //Calendar的月从0-11，所以4月是3.
+		//  c_end.set(2019, 3, 29); //Calendar的月从0-11，所以5月是4.
 
 		int count = 1;
 		int count2 = 1;
-        /*
-          cal1.add(Calendar.DAY_OF_MONTH,1);
-          cal1.add(Calendar.DAY_OF_YEAR,1);
-          cal1.add(Calendar.DATE,1);
-          就单纯的add操作结果都一样，因为都是将日期+1,区别就是在月的日期中加1还是年的日期中加1
-          但是Calendar设置DAY_OF_MONTH和DAY_OF_YEAR的目的不是用来+1
-          将日期加1，这通过cal1.add(Calendar.DATE,1)就可以实现
-          DAY_OF_MONTH的主要作用是cal.get(DAY_OF_MONTH)，用来获得这一天在是这个月的第多少天
-          Calendar.DAY_OF_YEAR的主要作用是cal.get(DAY_OF_YEAR)，用来获得这一天在是这个年的第多少天。
-          DAY_OF_WEEK，用来获得当前日期是一周的第几天
-         */
-
-		c_end.add(Calendar.DAY_OF_YEAR, 1);  //结束日期下滚一天是为了包含最后一天
+		//结束日期下滚一天是为了包含最后一天
+		cEnd.add(Calendar.DAY_OF_YEAR, 1);
 		ArrayList<String> objects = new ArrayList<>();
-		while (c_begin.before(c_end)) {
+		while (cBegin.before(cEnd)) {
 			if (count == count2) {
 				objects = new ArrayList<>();
 				count2++;
 			}
-			objects.add(new java.sql.Date(c_begin.getTime().getTime()).toString());
-			if (c_begin.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			objects.add(new java.sql.Date(cBegin.getTime().getTime()).toString());
+			if (cBegin.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				map.put(count, objects);
 				count++;
 			}
-			c_begin.add(Calendar.DAY_OF_YEAR, 1);
+			cBegin.add(Calendar.DAY_OF_YEAR, 1);
 
 		}
 		map.put(count, objects);
@@ -519,17 +507,17 @@ public class TimeUtil {
 	 * @return String
 	 */
 	public static String getLastDayOfMonth(String yearMonth) {
-		int year = Integer.parseInt(yearMonth.split("-")[0]);  //年
-		int month = Integer.parseInt(yearMonth.split("-")[1]); //月
+		int year = Integer.parseInt(yearMonth.split("-")[0]);
+		int month = Integer.parseInt(yearMonth.split("-")[1]);
 		Calendar cal = Calendar.getInstance();
 		// 设置年份
 		cal.set(Calendar.YEAR, year);
-		// 设置月份
-		cal.set(Calendar.MONTH, month); //设置当前月的上一个月
-		// 获取某月最大天数
-		int lastDay = cal.getMinimum(Calendar.DATE); //获取月份中的最小值，即第一天
-		// 设置日历中月份的最大天数
-		cal.set(Calendar.DAY_OF_MONTH, lastDay - 1); //上月的第一天减去1就是当月的最后一天
+		// 设置月份(设置当前月的上一个月)
+		cal.set(Calendar.MONTH, month);
+		// 获取某月最大天数(获取月份中的最小值，即第一天)
+		int lastDay = cal.getMinimum(Calendar.DATE);
+		// 设置日历中月份的最大天数(上月的第一天减去1就是当月的最后一天)
+		cal.set(Calendar.DAY_OF_MONTH, lastDay - 1);
 		// 格式化日期
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(cal.getTime());

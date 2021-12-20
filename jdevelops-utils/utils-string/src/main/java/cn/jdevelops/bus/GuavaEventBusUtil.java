@@ -13,13 +13,13 @@ import java.util.concurrent.Executor;
 public class GuavaEventBusUtil {
     private static volatile EventBus eventBus;
     private static AsyncEventBus asyncEventBus;
-    private static final Executor executor = command -> new Thread(command).start();
+    private static final Executor EXECUTOR = command -> new Thread(command).start();
     //双重锁单例模式
     private static AsyncEventBus getAsynEventBus(){
         if(asyncEventBus==null){
             synchronized (AsyncEventBus.class){
                 if(asyncEventBus==null){
-                    asyncEventBus = new AsyncEventBus(executor);
+                    asyncEventBus = new AsyncEventBus(EXECUTOR);
                 }
             }
         }

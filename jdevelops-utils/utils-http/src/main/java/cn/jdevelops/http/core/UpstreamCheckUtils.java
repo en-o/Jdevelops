@@ -28,6 +28,7 @@ import java.net.Socket;
 
 /**
  * The type Uri utils.
+ * @author shenyu
  */
 public class UpstreamCheckUtils {
 

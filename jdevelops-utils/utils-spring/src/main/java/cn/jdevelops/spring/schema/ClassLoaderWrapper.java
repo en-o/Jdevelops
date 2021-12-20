@@ -8,6 +8,9 @@ package cn.jdevelops.spring.schema;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * @author tnnn
+ */
 public class ClassLoaderWrapper {
     ClassLoader defaultClassLoader;
     ClassLoader systemClassLoader;
@@ -21,12 +24,12 @@ public class ClassLoaderWrapper {
 
     }
 
-    public URL getResourceAsURL(String resource) {
-        return this.getResourceAsURL(resource, this.getClassLoaders(null));
+    public URL getResourceAsUrl(String resource) {
+        return this.getResourceAsUrl(resource, this.getClassLoaders(null));
     }
 
-    public URL getResourceAsURL(String resource, ClassLoader classLoader) {
-        return this.getResourceAsURL(resource, this.getClassLoaders(classLoader));
+    public URL getResourceAsUrl(String resource, ClassLoader classLoader) {
+        return this.getResourceAsUrl(resource, this.getClassLoaders(classLoader));
     }
 
     public InputStream getResourceAsStream(String resource) {
@@ -46,10 +49,10 @@ public class ClassLoaderWrapper {
     }
 
     InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
-        int len$ = classLoader.length;
+        int length = classLoader.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
-            ClassLoader cl = classLoader[i$];
+        for(int i = 0; i < length; ++i) {
+            ClassLoader cl = classLoader[i];
             if (null != cl) {
                 InputStream returnValue = cl.getResourceAsStream(resource);
                 if (null == returnValue) {
@@ -65,11 +68,11 @@ public class ClassLoaderWrapper {
         return null;
     }
 
-    URL getResourceAsURL(String resource, ClassLoader[] classLoader) {
-        int len$ = classLoader.length;
+    URL getResourceAsUrl(String resource, ClassLoader[] classLoader) {
+        int length = classLoader.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
-            ClassLoader cl = classLoader[i$];
+        for(int i = 0; i < length; ++i) {
+            ClassLoader cl = classLoader[i];
             if (null != cl) {
                 URL url = cl.getResource(resource);
                 if (null == url) {
@@ -86,10 +89,10 @@ public class ClassLoaderWrapper {
     }
 
     Class<?> classForName(String name, ClassLoader[] classLoader) throws ClassNotFoundException {
-        int len$ = classLoader.length;
+        int length = classLoader.length;
 
-        for(int i$ = 0; i$ < len$; ++i$) {
-            ClassLoader cl = classLoader[i$];
+        for(int i = 0; i < length; ++i) {
+            ClassLoader cl = classLoader[i];
             if (null != cl) {
                 try {
                     return Class.forName(name, true, cl);
