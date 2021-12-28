@@ -1,5 +1,6 @@
 package cn.jdevelops.spring.core.aop;
 
+import cn.hutool.core.util.URLUtil;
 import cn.jdevelops.http.core.IpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,7 @@ public class ParamsDis {
                     }
                 }
             } else if (RequestMethod.GET.toString().equals(method)) {
-                params = queryString;
+                params = URLUtil.decode(queryString);
             }
         }
         Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
