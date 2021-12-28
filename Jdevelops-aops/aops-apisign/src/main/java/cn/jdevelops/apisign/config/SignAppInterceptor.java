@@ -5,23 +5,28 @@ import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
 import cn.jdevelops.exception.utils.SpringBeanUtils;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import cn.jdevelops.apisign.annotation.Signature;
 import cn.jdevelops.apisign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.http.core.HttpContextUtils;
+import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
+import java.util.function.IntFunction;
+
+import static com.alibaba.fastjson.JSON.*;
 
 /**
  * 签名拦截器 使用签名注解需要注册该拦截器到 WebMvcConfigurer 中
@@ -36,7 +41,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
     private static final String CONTENT_TYPE = "text/json;charset=UTF-8";
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, Object handler)
             throws Exception {
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
@@ -45,24 +50,22 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
-                response.getWriter().print(JSONObject.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.API_SIGN_ERROR)));
+                response.getWriter().print(toJSONString(ExceptionResultWrap.error(ResultCodeEnum.API_SIGN_ERROR)));
                 return false;
             }
-            return true;
-        } else {
-            return true;
         }
+        return true;
     }
 
     /**
      * 签名验证
      *
      * @param request req
-     * @param enumm   SginEnum
+     * @param enums   SignEnum
      * @param salt 盐
      * @return boolean
      */
-    private boolean signCheck(HttpServletRequest request, SginEnum enumm, String salt) throws IOException {
+    private boolean signCheck(HttpServletRequest request, SginEnum enums, String salt) {
         Object map = null;
         String paramsHeader = "";
         if (StringUtils.isNotEmpty(getHeaderSign(request))) {
@@ -70,11 +73,11 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         } else {
             map = showParams(request);
         }
-        if (enumm == SginEnum.MD5) {
+        if (enums == SginEnum.MD5) {
             return SignMD5Util.check(map, salt);
-        } else if (enumm == SginEnum.SHA) {
+        } else if (enums == SginEnum.SHA) {
             return SignShaUtil.check(map);
-        } else if (enumm == SginEnum.MD5HEADER) {
+        } else if (enums == SginEnum.MD5HEADER) {
             return SignMD5Util.checkHeader(request, paramsHeader, salt);
         }
         return true;
@@ -89,10 +92,10 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      */
     public static String showParamsHeader(HttpServletRequest request) {
         try {
-            Map map = new LinkedHashMap();
-            Enumeration paramNames = request.getParameterNames();
+            Map<String,Object> map = new LinkedHashMap<>();
+            Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
-                String paramName = (String) paramNames.nextElement();
+                String paramName =  paramNames.nextElement();
                 String[] paramValues = request.getParameterValues(paramName);
                 if (paramValues.length == 1) {
                     String paramValue = paramValues[0];
@@ -106,11 +109,11 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = HttpContextUtils.getBodyString(request);
+                String bodyString = parse(HttpContextUtils.getBodyString(request), Feature.OrderedField).toString();
                 log.info("加密集：" + bodyString);
                 return bodyString;
             } else {
-                String jsonString = JSONObject.toJSONString(map);
+                String jsonString = toJSONString(map);
                 log.info("加密集：" + jsonString);
                 return jsonString;
             }
@@ -124,10 +127,10 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      */
     public static Object showParams(HttpServletRequest request) {
         try {
-            Map map = new LinkedHashMap();
-            Enumeration paramNames = request.getParameterNames();
+            Map<String,Object> map = new LinkedHashMap<>();
+            Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
-                String paramName = (String) paramNames.nextElement();
+                String paramName =  paramNames.nextElement();
                 String[] paramValues = request.getParameterValues(paramName);
                 if (paramValues.length == 1) {
                     String paramValue = paramValues[0];
@@ -140,11 +143,11 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
                 //封装request
                 String bodyString = HttpContextUtils.getBodyString(request);
                 //获取json数据
-                LinkedHashMap linkedHashMap = JSON.parseObject(bodyString, LinkedHashMap.class);
-                log.info("加密集：" + JSON.toJSONString(linkedHashMap));
+                LinkedHashMap<String, Object> linkedHashMap = parseObject(bodyString, LinkedHashMap.class);
+                log.info("加密集：" + toJSONString(linkedHashMap));
                 return linkedHashMap;
             } else {
-                log.info("加密集：" + JSON.toJSONString(map));
+                log.info("加密集：" + toJSONString(map));
                 return map;
             }
         } catch (Exception e) {
