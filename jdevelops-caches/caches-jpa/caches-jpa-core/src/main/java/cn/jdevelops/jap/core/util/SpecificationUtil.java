@@ -1,14 +1,10 @@
 package cn.jdevelops.jap.core.util;
 
-import cn.hutool.core.util.ReflectUtil;
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
-import cn.jdevelops.jap.enums.SQLConnect;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.lang.reflect.Field;
-import java.util.Objects;
 
 /**
  * CustomerSpecs
@@ -66,35 +62,6 @@ public final class SpecificationUtil<T> {
      */
     public static <T> SpecificationUtil<T> getInstance() {
         return (SpecificationUtil<T>)INSTANCE;
-    }
-
-
-    /**
-     * CommUtils.getSelectBean（）的替代品
-     * ps: 跟getSelectBean一摸一样。灵活不高
-     *
-     * @param bean 实体
-     * @return Specification
-     */
-    public Specification<T> customer(T bean) {
-        Field[] fields = ReflectUtil.getFields(bean.getClass());
-        Specification<T> eq = (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
-            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            if (null != annotation) {
-                boolean ignoreNull = annotation.ignoreNull();
-                if (Objects.equals(annotation.connect(), SQLConnect.OR)) {
-                    eq.or(specification(annotation, fieldName, fieldValue, ignoreNull));
-                } else {
-                    eq.and(specification(annotation, fieldName, fieldValue, ignoreNull));
-                }
-            } else {
-                eq.and(eq(fieldName, fieldValue, true));
-            }
-        }
-        return eq;
     }
 
 
@@ -311,6 +278,7 @@ public final class SpecificationUtil<T> {
     public Specification<T> isNull(String key) {
         return (root, query, builder) -> builder.isNull(root.get(key));
     }
+
 
     /**
      * 排序
