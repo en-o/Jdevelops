@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * 公共的分页DTO
  *
@@ -16,7 +18,9 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class RoutinePageDTO {
+public class RoutinePageDTO implements Serializable {
+
+    private static final long serialVersionUID = 1905122041950251207L;
 
     @ApiModelProperty("根据那一列排序")
     private String orderBy;
