@@ -1,5 +1,6 @@
 package cn.jdevelops.jap.core.util;
 
+import cn.jdevelops.constant.Constants;
 import lombok.AccessLevel;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
@@ -43,11 +44,29 @@ public class JPAUtil<T> {
 
 
     private final T bean;
+    /**
+     * and
+     */
     private final Set<String> and;
+    /**
+     * or
+     */
     private final Set<String> or;
+    /**
+     *  likeOr
+     */
     private final Set<String> likeOr;
+    /**
+     * likeAnd
+     */
     private final Set<String> likeAnd;
+    /**
+     * betweenOr
+     */
     private final Set<String> betweenOr;
+    /**
+     * betweenAnd
+     */
     private final Set<String> betweenAnd;
 
     /**
@@ -100,49 +119,44 @@ public class JPAUtil<T> {
                 if(!isObjectEmpty(bean)) {
                     //实体类
                     Map<String, Object> entity = object2Map(bean);
-                    @SuppressWarnings("serial")
-                    Specification<T> spf =  new Specification<T>() {
-                        @Override
-                        public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                            //解决分页查询的冗余条件
-                            predicatesAnd = new ArrayList<>();
-                            predicatesOr = new ArrayList<>();
-                            //获取 搜索条件  key 一定要和传进来的实体key一致
-                            Iterator<String> entityIterator = entity.keySet().iterator();
-                            while(entityIterator.hasNext()){
-                                String ekey=entityIterator.next();//键
-                                Object evalue = entity.get(ekey);//值
-                                if(!isObjectEmpty(evalue)&&!"serialVersionUID".equals(ekey)) {
-                                    disposeLisk(ekey,evalue,root,cb);
-                                    disposeBetween(ekey,evalue,root,cb);
-                                    disposeOr(ekey,evalue,root,cb);
-                                    disposeAnd(ekey,evalue,root,cb);
-                                }
+                    return (root, query, cb) -> {
+                        //解决分页查询的冗余条件
+                        predicatesAnd = new ArrayList<>();
+                        predicatesOr = new ArrayList<>();
+                        //获取 搜索条件  key 一定要和传进来的实体key一致
+                        Iterator<String> entityIterator = entity.keySet().iterator();
+                        while(entityIterator.hasNext()){
+                            String ekey=entityIterator.next();//键
+                            Object evalue = entity.get(ekey);//值
+                            if(!isObjectEmpty(evalue)&&!"serialVersionUID".equals(ekey)) {
+                                disposeLisk(ekey,evalue,root,cb);
+                                disposeBetween(ekey,evalue,root,cb);
+                                disposeOr(ekey,evalue,root,cb);
+                                disposeAnd(ekey,evalue,root,cb);
                             }
-                            Predicate predicateAnds = null;
-                            Predicate predicateOrs = null;
-                            if(!predicatesAnd.isEmpty()) {//and
-                                predicateAnds = cb.and(predicatesAnd.toArray(new Predicate[predicatesAnd.size()]));
-                                predicateAnds = cb.and(predicateAnds);
-                            }
-                            if(!predicatesOr.isEmpty()) {//or
-                                predicateOrs = cb.or(predicatesOr.toArray(new Predicate[predicatesOr.size()]));
-                                predicateOrs = cb.and(predicateOrs);
-                            }
-                            if(predicateOrs!=null&&predicateAnds!=null) {
-                                return query.where(predicateAnds,predicateOrs).getRestriction();
+                        }
+                        Predicate predicateAnds = null;
+                        Predicate predicateOrs = null;
+                        if(!predicatesAnd.isEmpty()) {//and
+                            predicateAnds = cb.and(predicatesAnd.toArray(new Predicate[predicatesAnd.size()]));
+                            predicateAnds = cb.and(predicateAnds);
+                        }
+                        if(!predicatesOr.isEmpty()) {//or
+                            predicateOrs = cb.or(predicatesOr.toArray(new Predicate[predicatesOr.size()]));
+                            predicateOrs = cb.and(predicateOrs);
+                        }
+                        if(predicateOrs!=null&&predicateAnds!=null) {
+                            return query.where(predicateAnds,predicateOrs).getRestriction();
+                        }else {
+                            if(predicateAnds != null ){
+                                return query.where(predicateAnds).getRestriction();
+                            }else if(predicateOrs != null) {
+                                return query.where(predicateOrs).getRestriction();
                             }else {
-                                if(predicateAnds != null ){
-                                    return query.where(predicateAnds).getRestriction();
-                                }else if(predicateOrs != null) {
-                                    return query.where(predicateOrs).getRestriction();
-                                }else {
-                                    return null;
-                                }
+                                return null;
                             }
                         }
                     };
-                    return spf;
                 }else {
                     return null;
                 }
@@ -162,7 +176,7 @@ public class JPAUtil<T> {
          * @param cb  CriteriaBuilder
          */
         protected void disposeLisk(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
-            if(evalue instanceof String && ((String) evalue).contains(",")) {
+            if(evalue instanceof String && ((String) evalue).contains(Constants.DOU_HAO)) {
                 String[] split = (evalue+"").split(",");//分割
                 if( likeOr!=null && likeOr.contains(ekey)) {
                     predicatesAnd.add(cb.like(root.get(ekey).as(String.class),"%"+split[0]+"%"));
@@ -191,7 +205,7 @@ public class JPAUtil<T> {
          */
         protected void disposeBetween(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
 
-            if(evalue instanceof String && ((String) evalue).contains(",")) {
+            if(evalue instanceof String && ((String) evalue).contains(Constants.DOU_HAO)) {
                 String[] split = (evalue+"").split(",");//分割
                 if(betweenOr!=null && betweenOr.contains(ekey)){
                     predicatesOr.add(cb.between(root.get(ekey).as(String.class),split[0], split[1]));
@@ -211,7 +225,7 @@ public class JPAUtil<T> {
          */
         protected void disposeAnd(String ekey,Object evalue,Root<T> root, CriteriaBuilder cb){
             if( and!=null && and.contains(ekey)) {
-                if(evalue instanceof String && ((String) evalue).contains(",")) {
+                if(evalue instanceof String && ((String) evalue).contains(Constants.DOU_HAO)) {
                     String[] split = (evalue+"").split(",");//分割
                     predicatesAnd.add(cb.equal(root.get(ekey).as(String.class),split[0]));
                     predicatesAnd.add(cb.equal(root.get(ekey).as(String.class),split[1]));
@@ -232,7 +246,7 @@ public class JPAUtil<T> {
          */
         protected void disposeOr(String ekey, Object evalue, Root<T> root, CriteriaBuilder cb){
             if(or!=null && or.contains(ekey)){
-                if(evalue instanceof String && ((String) evalue).contains(",")) {
+                if(evalue instanceof String && ((String) evalue).contains(Constants.DOU_HAO)) {
                     String[] split = (evalue+"").split(",");//分割
                     predicatesOr.add(cb.equal(root.get(ekey).as(String.class),split[0]));
                     predicatesOr.add(cb.equal(root.get(ekey).as(String.class),split[1]));
