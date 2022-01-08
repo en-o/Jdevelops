@@ -36,7 +36,6 @@ import java.util.function.Function;
  *
  * @author Oliver Gierke
  * @since 2.2
- * @soundtrack The Intersphere - Don't Think Twice (The Grand Delusion)
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MethodInvocationRecorder {
@@ -201,13 +200,11 @@ public class MethodInvocationRecorder {
     }
 
     private enum DefaultPropertyNameDetectionStrategy implements PropertyNameDetectionStrategy {
-
+        /**
+         * spring的我也不知道干嘛的
+         */
         INSTANCE;
 
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.hateoas.core.Recorder.PropertyNameDetectionStrategy#getPropertyName(java.lang.reflect.Method)
-         */
         @Nonnull
         @Override
         public String getPropertyName(Method method) {
