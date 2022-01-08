@@ -63,7 +63,7 @@ public class ResultPageVO<T> implements Serializable {
 
     /** 时间戳 */
     @ApiModelProperty(value = "时间戳")
-    private Long ts = System.currentTimeMillis();
+    private Long ts;
 
 
     /** traceId  */
@@ -76,6 +76,9 @@ public class ResultPageVO<T> implements Serializable {
         return this.code == ResultCodeEnum.SUCCESS.getCode();
     }
 
+    public Long getTs() {
+        return System.currentTimeMillis();
+    }
 
     /**
      * @param pageIndex  当前页
