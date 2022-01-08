@@ -16,6 +16,10 @@ import java.util.regex.Pattern;
  */
 public class MacUtil {
 
+    private static final String WIN="win";
+    private static final String WINDOWS="Windows";
+    private static final String LINUX="Linux";
+
 
     /**
      * 限制创建实例
@@ -42,9 +46,9 @@ public class MacUtil {
         final String os = System.getProperty("os.name");
         String[] command;
 
-        if (os.startsWith("Windows")) {
+        if (os.startsWith(WINDOWS)) {
             command = WINDOWS_COMMAND;
-        } else if (os.startsWith("Linux")) {
+        } else if (os.startsWith(LINUX)) {
             command = LINUX_COMMAND;
         } else {
             throw new IOException("Unknow operating system:" + os);
@@ -132,7 +136,7 @@ public class MacUtil {
      */
     public static String win2Linux(String path) {
         String os = System.getProperty("os.name");
-        if(os.toLowerCase().startsWith("win")){
+        if(os.toLowerCase().startsWith(WIN)){
             path = path.replace("/","\\");
         }else {
             path = path.replace("\\","/");

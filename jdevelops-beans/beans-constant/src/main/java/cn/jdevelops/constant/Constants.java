@@ -10,9 +10,13 @@ package cn.jdevelops.constant;
 public interface Constants {
 
     /**
-     * The constant COLONS.
+     * The constant 冒号.
      */
     String COLONS = ":";
+    /**
+     * The constant 逗号.
+     */
+    String DOU_HAO = ",";
 
     /**
      * The constant SUCCESS.

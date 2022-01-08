@@ -5,19 +5,19 @@ import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.jdevelops.http.core.MacUtil;
+import cn.jdevelops.spring.constant.JarConstant;
 import cn.jdevelops.spring.core.system.OSinfo;
 import cn.jdevelops.spring.entity.JarAddFile;
 import cn.jdevelops.spring.enums.EPlatform;
 import org.springframework.util.ClassUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+
+import static org.springframework.util.ClassUtils.*;
 
 /**
  * jar包相关工具类
@@ -39,7 +39,7 @@ public class JarUtil {
         // 当前系统
         EPlatform oSname = OSinfo.getOsName();
         if (os.contains(oSname)) {
-            throw new RuntimeException("当前平台不允许使用该Jar!");
+            throw new RuntimeException(JarConstant.SYSTEM_NO_USE_MESSAGE);
         }
         bindingMachine();
     }
@@ -51,7 +51,6 @@ public class JarUtil {
      * 因为第二次启动就不会出现读不到的问题！
      *
      * @return String
-     * @throws IOException
      */
     public static String bindingMachine() throws Exception {
         String jarPath = JarUtil.getJarPath();
@@ -59,10 +58,10 @@ public class JarUtil {
         //文件读取
         try {
             // 查询项目中是否有这个文件
-            String str = ResourceUtil.readUtf8Str("test.txt");
+            String str = ResourceUtil.readUtf8Str(JarConstant.SYSTEM_MAC_FILE);
             if (null != str && str.length() > 0) {
                 if (SecureUtil.md5(macAddress).equals(str)) {
-                    return "jar授权失败!";
+                    return JarConstant.JAR_ERROPR_MESSAGE;
                 }
             }
         } catch (Exception e) {
@@ -70,22 +69,22 @@ public class JarUtil {
                 //创建文件
                 List<JarAddFile> jarAddFiles = new ArrayList<>();
 
-                FileWriter writer = new FileWriter(property + "/test.txt");
+                FileWriter writer = new FileWriter(property + JarConstant.SYSTEM_MAC_FILE_PATH);
                 File file = writer.write(SecureUtil.md5(macAddress));
                 //判断是部署启动
-                String isJarUp = JarUtil.class.getResource("AstrictJarApplication.class").toString();
+                String isJarUp = Objects.requireNonNull(JarUtil.class.getResource("AstrictJarApplication.class")).toString();
                 String substring = isJarUp.substring(0, isJarUp.indexOf(":"));
-                if ("jar".equalsIgnoreCase(substring)) {
+                if (JarConstant.JAR.equalsIgnoreCase(substring)) {
                     JarAddFile jarAddFile = new JarAddFile();
                     jarAddFile.setFilesToAdd(file);
                     jarAddFile.setFilesToAddRelativePath(MacUtil.win2Linux("BOOT-INF/classes/"));
                     jarAddFiles.add(jarAddFile);
                     JarUtil.updateJarFile(new File(jarPath), true, jarAddFiles);
                 }
-                return "jar授权成功!";
+                return JarConstant.JAR_SUCCESS_MESSAGE;
             }
         }
-        throw new RuntimeException("当前jar未经授权!");
+        throw new RuntimeException(JarConstant.NO_PERMISSION_MESSAGE);
     }
 
 
@@ -100,7 +99,7 @@ public class JarUtil {
      */
     public static void updateJarFile(File srcJarFile, boolean update, List<JarAddFile> filesToAdd) throws IOException {
 
-        File tmpJarFile = File.createTempFile("tempJar", ".tmp");
+        File tmpJarFile = File.createTempFile(JarConstant.TEMP_JAR, ".tmp");
         JarFile jarFile = new JarFile(srcJarFile);
         boolean jarUpdated = false;
         List<String> fileNames = new ArrayList<>();
@@ -112,18 +111,15 @@ public class JarUtil {
                 for (int i = 0; i < filesToAdd.size(); i++) {
                     File file = filesToAdd.get(i).getFilesToAdd();
                     String fileRelativePath = filesToAdd.get(i).getFilesToAddRelativePath();
-                    FileInputStream fis = new FileInputStream(file);
-                    try {
+                    try (FileInputStream fis = new FileInputStream(file)) {
                         byte[] buffer = new byte[1024];
-                        int bytesRead = 0;
+                        int bytesRead;
                         JarEntry entry = new JarEntry(fileRelativePath + file.getName());
                         fileNames.add(entry.getName());
                         tempJarOutputStream.putNextEntry(entry);
                         while ((bytesRead = fis.read(buffer)) != -1) {
                             tempJarOutputStream.write(buffer, 0, bytesRead);
                         }
-                    } finally {
-                        fis.close();
                     }
                 }
 
@@ -182,20 +178,20 @@ public class JarUtil {
      * @return String
      */
     public static String getJarPath() {
-        String path = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        String path = getDefaultClassLoader().getResource("").getPath();
         String os = System.getProperty("os.name");
-        if (path.contains("!")) {
+        if (path.contains(JarConstant.GAN_TAN)) {
             path = path.substring(0, path.indexOf("!"));
         }
         String substring = path.substring(0, path.indexOf(":"));
-        if ("jar".equalsIgnoreCase(substring)) {
-            path = path.substring(path.indexOf(":") + 1);
+        if (JarConstant.JAR.equalsIgnoreCase(substring)) {
+            path = path.substring(path.indexOf(JarConstant.MAO_HAO) + 1);
         }
-        if ("file".equalsIgnoreCase(substring)) {
-            path = path.substring(path.indexOf(":") + 1);
+        if (JarConstant.FILE.equalsIgnoreCase(substring)) {
+            path = path.substring(path.indexOf(JarConstant.MAO_HAO) + 1);
         }
-        if (os.toLowerCase().startsWith("win")) {
-            path = path.substring(1).replace("/", "\\");
+        if (os.toLowerCase().startsWith(JarConstant.WIN)) {
+            path = path.substring(1).replace(JarConstant.XIE_GANG, "\\");
         }
         return path;
     }

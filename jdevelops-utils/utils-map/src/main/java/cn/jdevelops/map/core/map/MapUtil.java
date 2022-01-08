@@ -35,6 +35,7 @@ import static cn.jdevelops.map.core.map.MapSortUtil.sortByValueDescending;
 public class MapUtil  {
 
     private static final Pattern PATTERN = Pattern.compile("([^&=]+)(=?)([^&]+)?");
+    private static final String CONTAINS_KEY_EMPTY = "empty";
 
     /**
      * 实体对象转成Map
@@ -109,7 +110,7 @@ public class MapUtil  {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> beanToMap(Object obj) {
-        Map<String, Object> params = new HashMap<String, Object>(0);
+        Map<String, Object> params = new HashMap<>(0);
         try {
             PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
             PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
@@ -179,7 +180,7 @@ public class MapUtil  {
                     params.add(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey("empty") ){
+            if(obj!=null&&params.containsKey(CONTAINS_KEY_EMPTY) ){
                 params = (MultiValueMap<String, Object>) obj;
             }
         } catch (Exception e) {
@@ -206,7 +207,7 @@ public class MapUtil  {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey("empty") ){
+            if(obj!=null&&params.containsKey(CONTAINS_KEY_EMPTY) ){
                 params = (LinkedHashMap<String, Object>) obj;
             }
         } catch (Exception e) {
@@ -320,7 +321,7 @@ public class MapUtil  {
 
             }
         } catch (Exception e) {
-            System.out.println("transBean2Map Error " + e);
+            e.printStackTrace();
         }
         return map;
 
@@ -332,7 +333,7 @@ public class MapUtil  {
      */
     public static<T> Map<String, T> parseMapForFilter(Map<String, T> map, String filters) {
         if (map == null) {
-            return null;
+            return Collections.emptyMap();
         } else {
             map = map.entrySet().stream()
                     .filter(e -> checkKey(e.getKey(),filters))

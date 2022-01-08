@@ -19,6 +19,8 @@ import java.util.Map;
  */
 @Slf4j
 public class RestTemplateUtil {
+	private static final int STATUS_CODE_SUCCESS = 200;
+
 	/**
 	 * restTemplate 发送post请求
 	 * @param restTemplate restTemplate
@@ -56,7 +58,7 @@ public class RestTemplateUtil {
 	public static Map<String, Object> parseResponseEntity(ResponseEntity<String> entity) {
 		Map<String,Object> map = new HashMap<>(100);
 		Integer code = entity.getStatusCodeValue();
-		if(entity.getStatusCodeValue()==200) {
+		if(entity.getStatusCodeValue()==STATUS_CODE_SUCCESS) {
 			JSONObject obj = JSON.parseObject(entity.getBody());
 			map.put("code", code+"");
 			map.put("data", obj);

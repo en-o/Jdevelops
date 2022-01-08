@@ -22,6 +22,8 @@ import java.util.Enumeration;
 @Slf4j
 public class ServerConfig implements ApplicationListener<WebServerInitializedEvent> {
 
+    private static final String PATH_XIE_HANG = "/";
+
     private int serverPort;
 
     @Value("${server.servlet.context-path:/}")
@@ -36,7 +38,7 @@ public class ServerConfig implements ApplicationListener<WebServerInitializedEve
     public void onApplicationEvent(WebServerInitializedEvent event) {
         try {
             this.serverPort = event.getWebServer().getPort();
-            if("/".equals(serverName)){
+            if(PATH_XIE_HANG.equals(serverName)){
                 serverName = "";
             }
             log.info("\n----------------------------------------------------------\n\t" +
@@ -53,10 +55,9 @@ public class ServerConfig implements ApplicationListener<WebServerInitializedEve
     /**
      *
      *获取本地真正的IP地址，即获得有线或者无线WiFi地址。
-     *
+     * (过滤虚拟机、蓝牙等地址)
      * @author tn
      * @date  2020/4/21 23:44
-     * @description 过滤虚拟机、蓝牙等地址
      * @return java.lang.String
      */
 
@@ -65,7 +66,7 @@ public class ServerConfig implements ApplicationListener<WebServerInitializedEve
             Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface
                     .getNetworkInterfaces();
             while (allNetInterfaces.hasMoreElements()) {
-                NetworkInterface netInterface = (NetworkInterface) allNetInterfaces
+                NetworkInterface netInterface = allNetInterfaces
                         .nextElement();
 
                 // 去除回环接口，子接口，未运行和接口
