@@ -161,6 +161,7 @@ public class GpsCoordinateUtils {
 	 * @param longitude 经度
 	 * @return true 在多边形区域内，false 在多边形区域外
 	 */
+	@SuppressWarnings("AlibabaAvoidComplexCondition")
 	private static boolean pointInPolygon(Point[] polygon, double latitude, double longitude) {
 		int i;
 		int j = polygon.length - 1;
