@@ -2,6 +2,7 @@ package cn.jdevelops.entity.basics.vo;
 
 import cn.jdevelops.map.core.bean.BeanCopier;
 import cn.jdevelops.map.core.bean.BeanCopyUtil;
+import cn.jdevelops.map.core.bean.ColumnUtil;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -29,6 +30,24 @@ public class SerializableVO<T> implements Serializable {
     public void copy(T source) {
         BeanCopyUtil.beanCopy(source, this);
     }
+
+
+
+    /**
+     * 获取实体类的字段名称
+     */
+    public static <T>  String of(ColumnUtil.SFunction<T, ?> fn){
+        return ColumnUtil.getFieldName(fn);
+    }
+
+    /**
+     * 获取实体类的字段名称
+     * @param toLine  是否转驼峰（默认不转） true:驼峰 。 false：正常bean字段
+     */
+    public static <T> String of(ColumnUtil.SFunction<T, ?> fn, Boolean toLine){
+        return ColumnUtil.getFieldName(fn,toLine);
+    }
+
 
     /**
      * vo dto entity 之间的转换
