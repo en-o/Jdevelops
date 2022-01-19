@@ -45,15 +45,15 @@ public class MethodInvocationRecorder {
     private Optional<RecordingMethodInterceptor> interceptor;
 
     /**
-     * Creates a new {@link MethodInvocationRecorder}. For ad-hoc instantation prefer the static
-     * {@link #forProxyOf(Class)}.
+     * Creates a new MethodInvocationRecorder . For ad-hoc instantation prefer the static
+     * forProxyOf(Class).
      */
     private MethodInvocationRecorder() {
         this(Optional.empty());
     }
 
     /**
-     * Creates a new {@link Recorded} for the given type.
+     * Creates a new Recorded for the given type.
      *
      * @param type must not be {@literal null}.
      */
@@ -66,7 +66,7 @@ public class MethodInvocationRecorder {
     }
 
     /**
-     * Creates a new {@link Recorded} for the given type based on the current {@link MethodInvocationRecorder} setup.
+     * Creates a new Recorded for the given type based on the current  MethodInvocationRecorder setup.
      *
      * @param type type
      */
@@ -194,7 +194,11 @@ public class MethodInvocationRecorder {
     }
 
     public interface PropertyNameDetectionStrategy {
-
+        /**
+         *  getPropertyName
+         * @param method method
+         * @return String
+         */
         @Nullable
         String getPropertyName(Method method);
     }

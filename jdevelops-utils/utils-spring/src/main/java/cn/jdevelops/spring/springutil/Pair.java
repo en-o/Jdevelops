@@ -45,7 +45,7 @@ public final class Pair<S, T> {
 	private final @NonNull T second;
 
 	/**
-	 * Creates a new {@link Pair} for the given elements.
+	 * Creates a new Pair for the given elements.
 	 *
 	 * @param first must not be {@literal null}.
 	 * @param second must not be {@literal null}.
@@ -55,7 +55,7 @@ public final class Pair<S, T> {
 	}
 
 	/**
-	 * Returns the first element of the {@link Pair}.
+	 * Returns the first element of the Pair.
 	 *
 	 */
 	public S getFirst() {
@@ -63,7 +63,7 @@ public final class Pair<S, T> {
 	}
 
 	/**
-	 * Returns the second element of the {@link Pair}.
+	 * Returns the second element of the Pair.
 	 *
 	 */
 	public T getSecond() {
@@ -71,7 +71,7 @@ public final class Pair<S, T> {
 	}
 
 	/**
-	 * A collector to create a {@link Map} from a {@link Stream} of {@link Pair}s.
+	 * A collector to create a  Map from a Stream of Pairs.
 	 *
 	 */
 	public static <S, T> Collector<Pair<S, T>, ?, Map<S, T>> toMap() {

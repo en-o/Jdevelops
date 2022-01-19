@@ -21,17 +21,19 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * Utility methods to work with {@link Optional}s.
+ * Utility methods to work with Optional s.
  *
  * @author Oliver Gierke
  * @author Christoph Strobl
  */
 public interface Optionals {
 
+
 	/**
-	 * Invokes the given {@link Supplier}s for {@link Optional} results one by one and returns the first non-empty one.
-	 *
-	 * @param suppliers must not be {@literal null}.
+	 * Invokes the given Supplier s for Optional results one by one and returns the first non-empty one.
+	 * @param suppliers must not be null.
+	 * @param <T> t
+	 * @return Optional
 	 */
 	@SafeVarargs
 	static <T> Optional<T> firstNonEmpty(Supplier<Optional<T>>... suppliers) {
@@ -41,11 +43,13 @@ public interface Optionals {
 		return firstNonEmpty(Streamable.of(suppliers));
 	}
 
-    /**
-     * Invokes the given {@link Supplier}s for {@link Optional} results one by one and returns the first non-empty one.
-     *
-     * @param suppliers must not be {@literal null}.
-     */
+
+	/**
+	 *  Invokes the given Supplier s for Optional results one by one and returns the first non-empty one.
+	 * @param suppliers  must not be null.
+	 * @param <T> t
+	 * @return Optional
+	 */
     static <T> Optional<T> firstNonEmpty(Iterable<Supplier<Optional<T>>> suppliers) {
 
         Assert.notNull(suppliers, "Suppliers must not be null!");
