@@ -1,6 +1,9 @@
 package cn.jdevelops.string;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author tn
@@ -8,7 +11,7 @@ import java.util.List;
  * @date 2021/2/20 10:27
  */
 public class StringCommon {
-
+    public static final String REGEX_EXTRACT_IP = "(^|[^\\d])(((2[0-4]\\d|25[0-5]|1\\d\\d|\\d\\d?)\\.){3}(2[0-4]\\d|25\\d|1\\d\\d|\\d\\d?))";
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     /**
@@ -47,6 +50,24 @@ public class StringCommon {
         char[] cs=name.toCharArray();
         cs[0]-=32;
         return String.valueOf(cs);
+    }
+
+    /**
+     * 提取字符串中的IP
+     * @link https://www.cnblogs.com/liugangmestery/p/7281994.html
+     * @param line 字符串
+     * @return ips
+     */
+    public static List<String> extractIp(String line) {
+        List<String> ret = new ArrayList<>();
+        if (line != null) {
+            Pattern p = Pattern.compile(REGEX_EXTRACT_IP);
+            Matcher m = p.matcher(line);
+            while (m.find()) {
+                ret.add(m.group(2));
+            }
+        }
+        return ret;
     }
 
 }

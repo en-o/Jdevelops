@@ -29,6 +29,9 @@ public class StringVerify {
 	private static final String REGX = "!|！|@|◎|#|＃|(\\$)|￥|%|％|(\\^)|……|(\\&)|※|(\\*)" +
 			"|×|(\\()|（|(\\))|）|_|——|(\\+)|＋|(\\|)|§ ";
 
+
+	private static final String IP_REGEX = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";	//IP地址的正则表达式
+
 	static {
 		PHONE_REGULAR.put("zh-CN", "^((\\+|00)86)?1([358][0-9]|4[579]|6[67]|7[01235678]|9[189])[0-9]{8}$");
 		PHONE_REGULAR.put("en-HK", "^(\\+?852[-\\s]?)?[456789]\\d{3}[-\\s]?\\d{4}$");
@@ -210,4 +213,29 @@ public class StringVerify {
 	public static boolean isEmptyString(String string) {
 		return StringUtils.isBlank(string) || StringEnum.NULL_STRING.getStr().equals(string);
 	}
+
+
+	/**
+	 * 验证字符串是否存在IP
+	 * @param ipString ipString
+	 * @return true 是一个ip
+	 */
+	public static boolean verifyIp(String ipString){
+	//如果前三项判断都满足，就判断每段数字是否都位于0-255之间
+			if (ipString.matches(IP_REGEX)) {
+				String[] ipArray = ipString.split("\\.");
+				for (int i = 0; i < ipArray.length; i++) {
+					int number = Integer.parseInt(ipArray[i]);
+					//4.判断每段数字是否都在0-255之间
+					if (number <0||number>255) {
+						return false;
+					}
+				}
+				return true;
+			}
+			else {
+				return false;	//如果与正则表达式不匹配，则返回false
+			}
+	}
+
 }
