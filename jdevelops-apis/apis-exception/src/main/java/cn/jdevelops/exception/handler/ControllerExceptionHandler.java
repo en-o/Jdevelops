@@ -4,6 +4,7 @@ package cn.jdevelops.exception.handler;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.string.StringCommon;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -110,9 +111,18 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), e.getMessage());
+        String message = e.getMessage();
+        List<String> list = StringCommon.extractIp(e.getMessage());
+        try {
+            if(!list.isEmpty()){
+                for ( String ms:list) {
+                    String[] split = message.split(ms);
+                    message = split[0];
+                }
+            }
+        }catch (Exception ignored){}
+        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), message);
     }
-
 
 
     @ExceptionHandler(BindException.class)
