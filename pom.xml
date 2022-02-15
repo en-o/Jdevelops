@@ -71,7 +71,7 @@
         <!-- starter  -->
         <module>jdevelops-starters</module>
         <!-- 短信-->
-        <!-- <module>jdevelops-sms</module>-->
+        <module>jdevelops-sms</module>
     </modules>
 
     <properties>
