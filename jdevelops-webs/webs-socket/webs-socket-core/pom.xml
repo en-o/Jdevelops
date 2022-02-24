@@ -17,6 +17,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>utils-jwt</artifactId>
+            <version>${jdevelops.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

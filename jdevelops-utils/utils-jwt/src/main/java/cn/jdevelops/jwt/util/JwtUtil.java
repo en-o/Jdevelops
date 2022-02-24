@@ -1,5 +1,7 @@
 package cn.jdevelops.jwt.util;
 
+import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.jwt.bean.JwtBean;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -7,8 +9,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.jwt.bean.JwtBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.util.*;
@@ -19,7 +21,10 @@ import java.util.*;
  * @version 1
  * @date 2020/6/19 11:52
  */
+
 public class JwtUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     /**
      * 生成签名
@@ -110,6 +115,7 @@ public class JwtUtil {
             verifier.verify(token);
             return true;
         }catch (Exception e){
+            logger.error("token过期");
             return false;
         }
 
