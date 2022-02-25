@@ -2,6 +2,7 @@ package cn.jdevelops.jwt.util;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.jwt.bean.JwtBean;
+import cn.jdevelops.jwt.constant.JwtConstant;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -26,6 +27,8 @@ public class JwtUtil {
 
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
+    private static final String JWT_BEAN_STR = "jwtBean";
+
     /**
      * 生成签名
      * @param loginName 登录名  用户唯一凭证
@@ -33,7 +36,7 @@ public class JwtUtil {
      * @return 签名
      */
     public static String sign(String loginName, JSONObject remark){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
         //过期时间
         Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
         //私钥及加密算法
@@ -43,8 +46,8 @@ public class JwtUtil {
         header.put("typ", "JWT");
         header.put("alg", "HS256");
         //附带username和userID生成签名
-        return JWT.create().withHeader(header).withClaim("loginName",loginName)
-                .withClaim("remark", remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withClaim(JwtConstant.TOKEN_REMARK, remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
     }
 
 
@@ -57,7 +60,7 @@ public class JwtUtil {
      * @return 签名
      */
     public static String sign(String loginName, JSONObject remark, long expireTime){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
         //过期时间
         Date date = new Date(expireTime);
         //私钥及加密算法
@@ -67,8 +70,8 @@ public class JwtUtil {
         header.put("typ", "JWT");
         header.put("alg", "HS256");
         //附带username和userID生成签名
-        return JWT.create().withHeader(header).withClaim("loginName",loginName)
-                .withClaim("remark", remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withClaim(JwtConstant.TOKEN_REMARK,remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
     }
 
 
@@ -79,7 +82,7 @@ public class JwtUtil {
      * @return 签名
      */
     public static String sign(String loginName, Map<String, Object> map){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
         //过期时间
         Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
         //私钥及加密算法
@@ -90,7 +93,7 @@ public class JwtUtil {
         header.put("alg", "HS256");
         //附带username和userID生成签名
         JWTCreator.Builder builder = JWT.create().withHeader(header);
-        builder.withClaim("loginName",loginName);
+        builder.withClaim(JwtConstant.TOKEN_KEY,loginName);
         if(map!=null){
             Iterator<String> iterator = map.keySet().iterator();
             while(iterator.hasNext()){
@@ -109,7 +112,7 @@ public class JwtUtil {
      */
     public static boolean verity(String token){
         try {
-            JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+            JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
             Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(token);
@@ -128,7 +131,7 @@ public class JwtUtil {
      */
     public static Map<String,Object> verityForMap(String token){
         try {
-            JwtBean jwtBean = (JwtBean) ContextUtil.getBean("jwtBean");
+            JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
             Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
@@ -150,7 +153,7 @@ public class JwtUtil {
     public static String getClaim(String token, String claim) {
         DecodedJWT jwt = JWT.decode(token);
         // 只能输出String类型，如果是其他类型返回null
-        return jwt.getClaim(claim==null?"loginName":claim).asString();
+        return jwt.getClaim(claim==null?JwtConstant.TOKEN_KEY:claim).asString();
     }
 
 
@@ -173,9 +176,8 @@ public class JwtUtil {
      * @return 返回token
      */
     public static String getToken(ServerHttpRequest request) {
-        final String tokenName = "token";
         //从请求头获取token
-        return Optional.ofNullable(request.getHeaders().get(tokenName))
+        return Optional.ofNullable(request.getHeaders().get(JwtConstant.TOKEN))
                 .map(t -> t.get(0))
                 .orElse(null);
 

@@ -1,6 +1,7 @@
 package cn.jdevelops.jwtweb.util;
 
 import cn.jdevelops.json.GsonUtils;
+import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.util.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,12 +20,11 @@ public class JwtWebUtil {
      * @return token
      */
     public static String getToken(HttpServletRequest request) {
-        final String tokenName = "token";
-        String token = request.getHeader(tokenName);
+        String token = request.getHeader(JwtConstant.TOKEN);
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
-        token = request.getParameter(tokenName);
+        token = request.getParameter(JwtConstant.TOKEN);
         return token;
     }
 
@@ -38,7 +38,7 @@ public class JwtWebUtil {
     public static <T> T getTokenUserInfoByRemark(HttpServletRequest request, Class<T> t ){
         String token = JwtWebUtil.getToken(request);
         Map<String, Object> loginNames = JwtUtil.parseJwt(token);
-        String remark = loginNames.get("remark").toString();
+        String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
         return GsonUtils.getGson().fromJson(remark, t);
     }
 
@@ -51,7 +51,7 @@ public class JwtWebUtil {
      */
     public static  <T> T  getTokenUserInfoByRemark(String token, Class<T> t ){
         Map<String, Object> loginNames = JwtUtil.parseJwt(token);
-        String remark = loginNames.get("remark").toString();
+        String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
         return GsonUtils.getGson().fromJson(remark, t);
     }
 }

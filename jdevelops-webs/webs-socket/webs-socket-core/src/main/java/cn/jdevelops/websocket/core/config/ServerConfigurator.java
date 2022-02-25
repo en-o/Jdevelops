@@ -1,5 +1,6 @@
 package cn.jdevelops.websocket.core.config;
 
+import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.util.JwtUtil;
 import cn.jdevelops.websocket.core.constant.CommonConstant;
 import cn.jdevelops.websocket.core.util.SocketUtil;
@@ -37,9 +38,9 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
             //  不用登录连接
             return true;
         }
-        String token = request.getParameter("token");
+        String token = request.getParameter(JwtConstant.TOKEN);
         if(Objects.isNull(token)){
-            token = request.getHeader("token");
+            token = request.getHeader(JwtConstant.TOKEN);
         }
         return JwtUtil.verity(token);
     }

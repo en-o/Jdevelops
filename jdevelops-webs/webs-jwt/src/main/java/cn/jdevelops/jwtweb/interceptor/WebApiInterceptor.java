@@ -1,6 +1,7 @@
 package cn.jdevelops.jwtweb.interceptor;
 
 import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.jwt.constant.JwtConstant;
 import com.alibaba.fastjson.JSON;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.jwtweb.annotation.ApiMapping;
@@ -64,17 +65,16 @@ public class WebApiInterceptor implements HandlerInterceptor {
                 response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TOKEN_ERROR.getCode(), "无效的token")));
                 return false;
             }
-            MDC.put("token", token);
+            MDC.put(JwtConstant.TOKEN, token);
             return true;
     }
 
     private String getToken(HttpServletRequest request) {
-        final String tokenName = "token";
-        String token = request.getHeader(tokenName);
+        String token = request.getHeader(JwtConstant.TOKEN);
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
-        token = request.getParameter(tokenName);
+        token = request.getParameter(JwtConstant.TOKEN);
         return token;
     }
 
