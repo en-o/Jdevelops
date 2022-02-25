@@ -29,6 +29,26 @@ public class JwtUtil {
 
     private static final String JWT_BEAN_STR = "jwtBean";
 
+
+
+    /**
+     * 生成签名
+     * @param loginName 登录名  用户唯一凭证
+     * @return 签名
+     */
+    public static String sign(String loginName){
+        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
+        //过期时间
+        Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
+        //私钥及加密算法
+        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
+        //设置头信息
+        HashMap<String, Object> header = new HashMap<>(2);
+        header.put("typ", "JWT");
+        header.put("alg", "HS256");
+        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName).withExpiresAt(date).sign(algorithm);
+    }
+
     /**
      * 生成签名
      * @param loginName 登录名  用户唯一凭证
