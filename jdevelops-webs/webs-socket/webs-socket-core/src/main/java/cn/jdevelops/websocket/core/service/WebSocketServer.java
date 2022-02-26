@@ -1,5 +1,7 @@
 package cn.jdevelops.websocket.core.service;
 
+import cn.jdevelops.websocket.core.config.ServerConfigurator;
+import cn.jdevelops.websocket.core.constant.CommonConstant;
 import cn.jdevelops.websocket.core.util.SocketUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,14 +20,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * webSocker服务端
  * 包含接收消息，推送消息等接口
- *
+ *  /socket/y/toip
+ *  /socket/n/toip
  * @author  tn
  * @date 2020-07-08 12:36
  */
 @Component
-@ServerEndpoint(value = "/socket/{name}")
+@ServerEndpoint(value = "/socket/{ver}/{name}", configurator = ServerConfigurator.class)
 @Slf4j
 public class WebSocketServer {
+
+
 
     /** 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。 */
     private static AtomicInteger online = new AtomicInteger();
@@ -53,14 +58,18 @@ public class WebSocketServer {
     }
 
 
+
     /**
      * 连接建立成功调用
      * @param session 客户端与socket建立的会话
      * @param userName 客户端的userName
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam(value = "name") String userName){
-
+    public void onOpen(Session session, @PathParam(value = "name") String userName, @PathParam(value = "ver") String verify){
+        if(!CommonConstant.OK_PATH.contains(verify)){
+            log.error( "第二路径不合法，第二路径只能为：y,n");
+            return;
+        }
         List<Session> sessionsArray = new ArrayList<>();
         //获取session
         List<Session> sessions = sessionPoolsS.get(userName);

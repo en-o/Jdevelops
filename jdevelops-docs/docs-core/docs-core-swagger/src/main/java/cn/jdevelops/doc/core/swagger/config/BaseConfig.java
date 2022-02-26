@@ -20,6 +20,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class BaseConfig {
 
+    private static final String SWAGGER_HEADER_hANDER = "token";
 
     /**
      * 统一填写一次token
@@ -27,7 +28,7 @@ public class BaseConfig {
      */
     public static List<SecurityScheme> security() {
         return newArrayList(
-                new ApiKey("token", "token", "header")
+                new ApiKey(SWAGGER_HEADER_hANDER, SWAGGER_HEADER_hANDER, "header")
         );
     }
 
@@ -36,7 +37,7 @@ public class BaseConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         List<SecurityReference> securityReferences=new ArrayList<>();
-        securityReferences.add(new SecurityReference("token", authorizationScopes));
+        securityReferences.add(new SecurityReference(SWAGGER_HEADER_hANDER, authorizationScopes));
         return securityReferences;
     }
 
