@@ -1,12 +1,16 @@
 package cn.jdevelops.string;
 
 import cn.jdevelops.string.enums.FiltrationCodeEnum;
+import cn.jdevelops.string.privates.Node;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * 遮掩
+ *
  * @author tn
  * @version 1
  * @date 2021/1/30 20:22
@@ -18,11 +22,12 @@ public class StringHide {
 
     /**
      * 姓名遮掩
+     *
      * @param userName 姓名
-     * @param index 第几位开始遮掩
+     * @param index    第几位开始遮掩
      * @return String
      */
-    public static String hideName(String userName,int index) {
+    public static String hideName(String userName, int index) {
         if (StringUtils.isBlank(userName)) {
             return "";
         }
@@ -32,29 +37,31 @@ public class StringHide {
 
     /**
      * 姓名遮掩 默认保留首尾
+     *
      * @param userName 姓名
      * @return String
      */
     public static String hideName(String userName) {
         if (StringUtils.isBlank(userName)) {
             return "";
-        }else if(userName.length()==2) {
+        } else if (userName.length() == 2) {
             String name = StringUtils.left(userName, 1);
             return StringUtils.rightPad(name, StringUtils.length(userName), "*");
-        }else if(userName.length()==1){
+        } else if (userName.length() == 1) {
             return userName;
         }
-        return userName.charAt(0) +"*"+ userName.substring(userName.length() - 1);
+        return userName.charAt(0) + "*" + userName.substring(userName.length() - 1);
     }
 
     /**
      * 身份证遮掩
+     *
      * @param cardNo 身份证
-     * @param index 第几位开始
+     * @param index  第几位开始
      * @param retain 保留后几位
      * @return String
      */
-    public static String hideCerCardNum(String cardNo,int index,int retain) {
+    public static String hideCerCardNum(String cardNo, int index, int retain) {
         if (StringUtils.isBlank(cardNo)) {
             return "";
         }
@@ -66,6 +73,7 @@ public class StringHide {
 
     /**
      * 护照保留前2后3位，护照一般为8或9位
+     *
      * @param id 护照
      * @return String
      */
@@ -76,13 +84,14 @@ public class StringHide {
         return id.substring(0, 2) + new String(new char[id.length() - 5]).replace("\0", "*") + id.substring(id.length() - 3);
     }
 
-    /**电话遮掩
+    /**
+     * 电话遮掩
      *
      * @param phoneNum 手机号
-     * @param retain 保留几位
+     * @param retain   保留几位
      * @return String
      */
-    public static String hidePhone(String phoneNum,int retain) {
+    public static String hidePhone(String phoneNum, int retain) {
         if (StringUtils.isBlank(phoneNum)) {
             return "";
         }
@@ -106,6 +115,7 @@ public class StringHide {
 
     /**
      * [固定电话] 后四位，其他隐藏<例子：****1234>
+     *
      * @param phone phone
      * @return String
      */
@@ -119,6 +129,7 @@ public class StringHide {
 
     /**
      * 邮箱遮掩
+     *
      * @param email 邮箱
      * @return String
      */
@@ -127,10 +138,9 @@ public class StringHide {
             return "";
         }
         int index = StringUtils.indexOf(email, "@");
-        if (index <= 1){
+        if (index <= 1) {
             return email;
-        }
-        else{
+        } else {
             return StringUtils.rightPad(StringUtils.left(email, 1), index, "*").concat(StringUtils.mid(email, index, StringUtils.length(email)));
         }
 
@@ -138,6 +148,7 @@ public class StringHide {
 
     /**
      * 银行卡号遮掩
+     *
      * @return String
      */
     public static String bankCard(String cardNum) {
@@ -148,12 +159,11 @@ public class StringHide {
     }
 
 
-
     /**
      * [地址] 只显示到地区，不显示详细地址；我们要对个人信息增强保护<例子：北京市海淀区****>
      *
      * @param address 地址
-     * @param retain 遮掩几位
+     * @param retain  遮掩几位
      * @return String
      */
     public static String address(String address, int retain) {
@@ -235,6 +245,31 @@ public class StringHide {
             logger.error(String.format("处理导出字段脱敏异常[Error=%s]...", e.getMessage()));
         }
         return newStr;
+    }
+
+    /**
+     * 根据前缀树进行遮掩
+     * @param words 需要遮掩的关键字
+     * @param text  需要遮掩的字符串
+     * @param sensitiveWords 遮掩（2342**sda）
+     * @return String
+     */
+    public static String nodeHide(List<String> words, String text, String sensitiveWords) {
+        Node node = new Node(new Node());
+        node.addWord(words);
+        return node.filter(text, sensitiveWords);
+    }
+
+    /**
+     * 根据前缀树进行遮掩 （sensitiveWords默认为***）
+     * @param words 需要遮掩的关键字
+     * @param text  需要遮掩的字符串
+     * @return String
+     */
+    public static String nodeHide(List<String> words, String text) {
+        Node node = new Node(new Node());
+        node.addWord(words);
+        return node.filter(text, "***");
     }
 
 
