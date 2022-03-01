@@ -1,39 +1,44 @@
 package cn.jdevelops.string;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
-public class StringHideTest {
+import java.util.Arrays;
+
+public class StringHideTest  extends TestCase {
 
 
-
-    @Test
-    public void hideCerCardNum() {
-        System.out.println("hideCerCardNum = " + StringHide.hideCerCardNum("000230192512056251", 2, 5));
+    public void testHideCerCardNum() {
+        assertEquals(StringHide.hideCerCardNum("000230192512056251", 2, 5),"00**********56251");
     }
 
-    @Test
-    public void idPassport() {
-        System.out.println("idPassport = " + StringHide.idPassport("154789369"));
+    public void testIdPassport() {
+        assertEquals(StringHide.idPassport("154789369"),"15****369");
     }
 
-    @Test
-    public void hidePhone() {
-        System.out.println("hidePhone = " + StringHide.hidePhone("13320385140", 2));
+    public void testHidePhone() {
+        assertEquals(StringHide.hidePhone("13320385140", 2),"*********40");
     }
 
-    @Test
-    public void email() {
-        System.out.println("email = " + StringHide.email("38asda41@163.com"));
-        System.out.println("email = " + StringHide.email("132我51@qq.com"));
+    public void testEmail() {
+        assertEquals(StringHide.email("38asda41@163.com"),"3*******@163.com");
+        assertEquals(StringHide.email("132我51@qq.com"),"1*****@qq.com");
     }
 
-    @Test
-    public void bankCard() {
-        System.out.println("bankCard = " + StringHide.bankCard("61251495156475491"));
+    public void testBankCard() {
+        assertEquals(StringHide.bankCard("61251495156475491"),"6125*******5491");
     }
 
-    @Test
-    public void address() {
-        System.out.println("address = " + StringHide.address("重庆市重庆市重庆市", 2));
+    public void testAddress() {
+        assertEquals(StringHide.address("重庆市重庆市重庆市", 2),"重庆市重庆市重**");
+    }
+
+    public void testNodeHide() {
+        assertEquals(StringHide.nodeHide(Arrays.asList("小猫","小狗"),"你好,小猫是小狗的小狗的小猫猫的小狗狗"),
+                "你好,***是***的***的***猫的***狗");
+    }
+
+    public void testTestNodeHide() {
+        assertEquals(StringHide.nodeHide(Arrays.asList("小猫","小狗"),"你好,小猫是小狗的小狗的小猫猫的小狗狗","hi"),
+                "你好,hi是hi的hi的hi猫的hi狗");
     }
 }
