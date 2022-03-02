@@ -3,6 +3,7 @@ package cn.jdevelops.websocket.core.config;
 import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.util.JwtUtil;
 import cn.jdevelops.websocket.core.constant.CommonConstant;
+import cn.jdevelops.websocket.core.service.WebSocketServer;
 import cn.jdevelops.websocket.core.util.SocketUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
 
     /**
      * token鉴权认证
+     * 用的是控制请求地址的方法来鉴权控制
      */
     @Override
     public boolean checkOrigin(String originHeaderValue) {
@@ -42,7 +44,14 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
         if(Objects.isNull(token)){
             token = request.getHeader(JwtConstant.TOKEN);
         }
-        return JwtUtil.verity(token);
+        boolean verity = JwtUtil.verity(token);
+        if(!verity) {
+            String topic = request.getServletPath();
+            String substring = topic.substring(topic.lastIndexOf("/")+1);
+            WebSocketServer.sessionPoolsS.remove(substring);
+        }
+        WebSocketServer.sessionPoolsS.keySet().forEach(System.out::println);
+        return verity;
     }
  
 

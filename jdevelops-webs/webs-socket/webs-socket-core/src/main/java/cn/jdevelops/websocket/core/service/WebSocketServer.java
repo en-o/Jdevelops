@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * webSocker服务端
  * 包含接收消息，推送消息等接口
- *  /socket/y/toip
- *  /socket/n/toip
+ *  /socket/y/topic
+ *  /socket/n/topic
  * @author  tn
  * @date 2020-07-08 12:36
  */
@@ -42,7 +42,7 @@ public class WebSocketServer {
      */
 
     /** 允许多端登陆 */
-    private static Map<String, List<Session>> sessionPoolsS = new HashMap<>();
+    public static Map<String, List<Session>> sessionPoolsS = new HashMap<>();
 
     /**
      * 发送消息方法
@@ -83,6 +83,7 @@ public class WebSocketServer {
         addOnlineCount();
         log.info(userName + "加入webSocket！当前人数为" + online);
         try {
+            sessionPoolsS.keySet().forEach(System.out::println);
             sendMessage(session, "欢迎" + userName + "加入连接！");
         } catch (IOException e) {
             e.printStackTrace();
