@@ -83,7 +83,6 @@ public class WebSocketServer {
         addOnlineCount();
         log.info(userName + "加入webSocket！当前人数为" + online);
         try {
-            sessionPoolsS.keySet().forEach(System.out::println);
             sendMessage(session, "欢迎" + userName + "加入连接！");
         } catch (IOException e) {
             e.printStackTrace();

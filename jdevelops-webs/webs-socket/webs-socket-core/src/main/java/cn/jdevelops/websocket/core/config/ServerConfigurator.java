@@ -50,7 +50,6 @@ public class ServerConfigurator extends ServerEndpointConfig.Configurator {
             String substring = topic.substring(topic.lastIndexOf("/")+1);
             WebSocketServer.sessionPoolsS.remove(substring);
         }
-        WebSocketServer.sessionPoolsS.keySet().forEach(System.out::println);
         return verity;
     }
  
