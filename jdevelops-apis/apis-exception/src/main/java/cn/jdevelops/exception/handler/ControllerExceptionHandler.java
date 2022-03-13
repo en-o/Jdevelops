@@ -1,13 +1,18 @@
 package cn.jdevelops.exception.handler;
 
 
+import ch.qos.logback.core.spi.PropertyContainer;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.result.result.ResultVO;
 import cn.jdevelops.string.StringCommon;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -29,6 +34,8 @@ import java.util.Objects;
  */
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     @Resource
     private HttpServletResponse response;
@@ -156,6 +163,14 @@ public class ControllerExceptionHandler {
         }
 
         return null;
+    }
+
+
+    @ExceptionHandler(BadSqlGrammarException.class)
+    public ResultVO<?> badSqlGrammarException(Exception e) {
+        log.error(e.getMessage(), e);
+        response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        return ResultVO.fail(ResultCodeEnum.SQL_ERROR);
     }
 
 }

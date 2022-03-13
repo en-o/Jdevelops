@@ -26,6 +26,11 @@
             <artifactId>utils-string</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

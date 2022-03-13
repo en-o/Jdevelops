@@ -104,7 +104,14 @@ public enum ResultCodeEnum {
     /**
      * 用户不存在
      */
-    USER_EXIST(2445,"用户不存在")
+    USER_EXIST(2445,"用户不存在"),
+
+
+    /**
+     * 用户不存在
+     */
+    SQL_ERROR(3306,"sql异常，详情请查看日志"),
+
 
     ;
 
