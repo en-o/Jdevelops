@@ -3,6 +3,8 @@ package cn.jdevelops.list.core;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import static java.util.Collections.*;
+
 /**
  * 集合相关
  * @author tn
@@ -26,26 +28,37 @@ public class ListGather {
     }
 
     /**
-     * 获取String 集合 中的最大值最小值
+     * 获取 String/Integer 集合 中的最大值最小值
      * @param listStr list
      * @param maxMin 1小 其余大(包含null)
      * @return 返回数值
      */
-    public static Integer getListStringForMaxMin(List<String> listStr, Integer maxMin){
+    public static <T> T getListSIForMaxMin(List<T> listStr, Integer maxMin){
         try{
             Comparator<String> cmp = (o1, o2) -> {
                 if(maxMin!=null&&maxMin==1){
-                    return Integer.valueOf(o2).compareTo(Integer.valueOf(o1));
+                    return o2.compareTo(o1);
                 }else{
-                    return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
+                    return o1.compareTo(o2);
                 }
 
             };
-            return Integer.parseInt(Collections.max(listStr, cmp));
+            return (T) max((List<String>)listStr, cmp);
         }catch (Exception e){
-            e.printStackTrace();
+           try {
+               Comparator<Integer> cmp = (o1, o2) -> {
+                   if(maxMin!=null&&maxMin==1){
+                       return o2.compareTo(o1);
+                   }else{
+                       return o1.compareTo(o2);
+                   }
+               };
+               return (T) max((List<Integer>)listStr, cmp);
+           }catch (Exception e1){
+               e.printStackTrace();
+           }
         }
-        return 0;
+        return null;
     }
 
 
