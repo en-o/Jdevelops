@@ -2,6 +2,7 @@ package cn.jdevelops.list.core;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
 
@@ -13,19 +14,6 @@ import static java.util.Collections.*;
  */
 public class ListGather {
 
-    /**
-     * 获取 set集合的 交集
-     * @param set1 集合1
-     * @param set2 集合2
-     * @param <T> 泛型
-     * @return 返回交集
-
-     */
-    public static<T> Set<T> getSetIntersection(Set<T> set1, Set<T> set2){
-        Set<T> result = new HashSet<>(set1);
-        result.retainAll(set2);
-        return result;
-    }
 
     /**
      * 获取 String/Integer 集合 中的最大值最小值
