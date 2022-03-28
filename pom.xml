@@ -91,7 +91,7 @@
         <lombok.version>1.18.22</lombok.version>
         <mysql.version>8.0.20</mysql.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
-        <fastjson.version>1.2.78</fastjson.version>
+        <fastjson.version>1.2.79</fastjson.version>
         <jackson.version>2.11.1</jackson.version>
         <joda-time.version>2.10.6</joda-time.version>
         <guava.version>[30.0-jre,)</guava.version>
@@ -300,7 +300,7 @@
     <!--开源地址-->
     <scm>
         <!-- 发布分支 -->
-        <!--<tag>master</tag>-->
+        <tag>master</tag>
         <url>https://github.com/en-o/Jdevelops.git</url>
         <connection>https://github.com/en-o/Jdevelops.git</connection>
         <developerConnection>https://github.com/en-o/Jdevelops.git</developerConnection>
