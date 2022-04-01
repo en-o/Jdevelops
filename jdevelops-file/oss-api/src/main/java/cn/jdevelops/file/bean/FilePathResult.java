@@ -1,4 +1,4 @@
-package cn.jdevelops.file;
+package cn.jdevelops.file.bean;
 
 import lombok.*;
 

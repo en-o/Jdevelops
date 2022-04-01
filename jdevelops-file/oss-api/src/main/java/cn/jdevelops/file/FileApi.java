@@ -1,6 +1,8 @@
 package cn.jdevelops.file;
 
 
+import cn.jdevelops.file.bean.*;
+
 /**
  * 文件接口类
  *
