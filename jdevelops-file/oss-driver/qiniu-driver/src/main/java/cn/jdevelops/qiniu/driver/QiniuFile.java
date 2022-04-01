@@ -1,6 +1,7 @@
 package cn.jdevelops.qiniu.driver;
 
 import cn.jdevelops.file.*;
+import cn.jdevelops.file.bean.*;
 
 /**
  * 七牛云上传下载文件

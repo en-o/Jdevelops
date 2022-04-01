@@ -1,6 +1,7 @@
 package cn.jdevelops.minio.driver;
 
 import cn.jdevelops.file.*;
+import cn.jdevelops.file.bean.*;
 
 /**
  * minio
