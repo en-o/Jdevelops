@@ -72,6 +72,8 @@
         <module>jdevelops-starters</module>
         <!-- 短信-->
         <module>jdevelops-sms</module>
+        <!-- SPI -->
+        <module>jdevelops-spi</module>
     </modules>
 
     <properties>
