@@ -74,6 +74,8 @@
         <module>jdevelops-sms</module>
         <!-- SPI -->
         <module>jdevelops-spi</module>
+        <!-- 文件下载服务 -->
+        <module>jdevelops-file</module>
     </modules>
 
     <properties>
