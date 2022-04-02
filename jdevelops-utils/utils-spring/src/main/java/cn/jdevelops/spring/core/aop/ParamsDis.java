@@ -48,7 +48,7 @@ public class ParamsDis {
                             ObjectMapper objectMapper = new ObjectMapper();
                             params = params.concat(objectMapper.writeValueAsString(arg)).concat(",");
                         } catch (Exception e) {
-                            log.error("入参参数处理异常，就打印了", e);
+                            log.warn("入参参数处理异常，就打印了");
                         }
                     }
                 }
