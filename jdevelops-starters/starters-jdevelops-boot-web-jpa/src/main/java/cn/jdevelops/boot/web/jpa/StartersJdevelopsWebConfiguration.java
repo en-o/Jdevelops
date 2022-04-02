@@ -1,4 +1,4 @@
-package cn.jdevelops.web;
+package cn.jdevelops.boot.web.jpa;
 
 import cn.jdevelops.spring.properties.DataBaseProperties;
 import cn.jdevelops.spring.schema.LocalDataSourceLoader;
