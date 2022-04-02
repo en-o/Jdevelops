@@ -2,7 +2,6 @@ package cn.jdevelops.minio.driver;
 
 import cn.jdevelops.file.*;
 import cn.jdevelops.file.bean.*;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,30 +18,26 @@ public class MinioOperate implements OssOperateAPI {
     @Autowired
     private OperateFileUtil operateFileUtil;
 
-    @SneakyThrows
     @Override
-    public FilePathResult uploadFile(UploadDTO uploaded) {
+    public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
         return operateFileUtil.uploadFile(uploaded.getFile(), uploaded.getBucket(), uploaded.getChildFolder());
     }
 
-    @SneakyThrows
+
     @Override
-    public void downloadFile(HttpServletResponse response, DownloadDTO download) {
+    public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
         operateFileUtil.download(response,download.getBucket(),download.getChildFolder_FreshName());
     }
 
-    @SneakyThrows
+
     @Override
-    public String expireDateUrl(ExpireDateDTO expireDate) {
+    public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
         return operateFileUtil.getExpiryObjectUrl(expireDate.getBucket(), expireDate.getChildFolder_FreshName(), expireDate.getExpires());
     }
 
-    @SneakyThrows
+
     @Override
-    public void removeFiles(RemoveFileDTO remove) {
-        if(remove.getChildFolder_FreshName().size()==1){
-            operateFileUtil.removeObject(remove.getBucket(), remove.getChildFolder_FreshName().get(0));
-        }
+    public void removeFiles(RemoveFileDTO remove) throws Exception {
         operateFileUtil.removeObjects(remove.getBucket(), remove.getChildFolder_FreshName());
     }
 }
