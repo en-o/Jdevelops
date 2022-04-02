@@ -32,5 +32,5 @@ public class UploadDTO {
 	/**
 	 * 文件流
 	 */
-	private MultipartFile file;
+	MultipartFile file;
 }
