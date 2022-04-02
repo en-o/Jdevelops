@@ -49,6 +49,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public Object handleBusinessException(BusinessException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(e.getCode(), e.getErrorMessage(),null);
     }
@@ -65,6 +66,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object exceptionHandler(NoHandlerFoundException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
@@ -72,6 +74,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     public Object handleNullPointerException(NullPointerException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
         return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "暂时无法获取数据");
@@ -79,6 +82,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
     }
@@ -86,6 +90,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler
     public Object  exceptionHandler(HttpMessageNotReadableException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         String jsonErrorMsg;
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
@@ -100,6 +105,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object exception(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -122,6 +128,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     public Object bindException(BindException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         // Valid 数据格式校验异常
         StringBuilder resqStr = new StringBuilder();
