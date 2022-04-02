@@ -110,7 +110,6 @@
         <commons-logging.version>1.2</commons-logging.version>
         <soul.version>2.2.1</soul.version>
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
-        <okhttp.version>3.7.0</okhttp.version>
         <skipTests>false</skipTests>
         <sms.aliyun.version>2.0.8</sms.aliyun.version>
         <elasticsearch.version>7.15.0</elasticsearch.version>
@@ -125,6 +124,7 @@
         <weixin-java-miniapp.version>4.2.2.B</weixin-java-miniapp.version>
         <openfeign.version>3.0.5</openfeign.version>
         <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
+        <okhttp3.version>4.9.3</okhttp3.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
@@ -454,20 +454,20 @@
                 </configuration>
             </plugin>
             <!-- maven中央仓库配置 GPG签署组件 -->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-gpg-plugin</artifactId>-->
-<!--                <version>1.5</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>sign-artifacts</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>sign</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-gpg-plugin</artifactId>-->
+            <!--                <version>1.5</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>sign-artifacts</id>-->
+            <!--                        <phase>verify</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>sign</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
             <!--
             https://central.sonatype.org/publish/publish-maven/#nexus-staging-maven-plugin-for-deployment-and-release
             mvn clean deploy
