@@ -16,12 +16,6 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>starters-jdevelops-boot-web</artifactId>
             <version>${jdevelops.last.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>javassist</artifactId>
-                    <groupId>org.javassist</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
