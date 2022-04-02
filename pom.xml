@@ -298,6 +298,21 @@
                 <artifactId>spring-core</artifactId>
                 <version>${spring-core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-boot-web</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-boot-web-jpa</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-web</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
