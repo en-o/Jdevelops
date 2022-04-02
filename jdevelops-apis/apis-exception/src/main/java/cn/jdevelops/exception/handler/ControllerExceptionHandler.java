@@ -1,7 +1,5 @@
 package cn.jdevelops.exception.handler;
 
-
-import ch.qos.logback.core.spi.PropertyContainer;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
@@ -12,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -117,18 +114,9 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        String message = e.getMessage();
-        List<String> list = StringCommon.extractIp(e.getMessage());
-        try {
-            if(!list.isEmpty()){
-                for ( String ms:list) {
-                    String[] split = message.split(ms);
-                    message = split[0];
-                }
-            }
-        }catch (Exception ignored){}
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), message);
+        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "系统异常，请联系管理员");
     }
 
 
@@ -165,12 +153,5 @@ public class ControllerExceptionHandler {
         return null;
     }
 
-
-    @ExceptionHandler(BadSqlGrammarException.class)
-    public ResultVO<?> badSqlGrammarException(Exception e) {
-        log.error(e.getMessage(), e);
-        response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        return ResultVO.fail(ResultCodeEnum.SQL_ERROR);
-    }
 
 }
