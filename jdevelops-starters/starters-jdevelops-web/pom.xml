@@ -51,11 +51,23 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>aops-apilog</artifactId>
             <version>${jdevelops.last.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.jdevelops</groupId>
+                    <artifactId>apis-exception</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
             <artifactId>aops-apisign</artifactId>
             <version>${jdevelops.last.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.jdevelops</groupId>
+                    <artifactId>apis-exception</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
