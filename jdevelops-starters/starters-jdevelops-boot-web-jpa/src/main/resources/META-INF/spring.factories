@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.spring.http.resttemplate.RestTemplateConfiguration
+  cn.jdevelops.web.StartersJdevelopsWebConfiguration
