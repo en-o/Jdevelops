@@ -13,7 +13,6 @@
     <properties>
         <java.version>1.8</java.version>
         <minio.version>8.3.7</minio.version>
-        <minio.okhttp3.version>4.9.3</minio.okhttp3.version>
     </properties>
 
     <dependencies>
@@ -26,20 +25,9 @@
             必须使用okhttp3 >= 4.8.1
             ps: spring中Spring Boot Dependencies  POM中强强制定义了 okhttp3为3.14.9，
             所以需要在最终项目pom文件的properties中加入<okhttp3.version>4.9.0</okhttp3.version>
-            ps2: 使用本项目不需要任何操作
+            ps2: 使用本项目的最外层父工程最为parent则不需要任何操作
              -->
             <version>${minio.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.squareup.okhttp3</groupId>
-                    <artifactId>okhttp</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${minio.okhttp3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
