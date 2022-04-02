@@ -26,7 +26,7 @@
             必须使用okhttp3 >= 4.8.1
             ps: spring中Spring Boot Dependencies  POM中强强制定义了 okhttp3为3.14.9，
             所以需要在最终项目pom文件的properties中加入<okhttp3.version>4.9.0</okhttp3.version>
-            ps2: 使用本项目的父工程做父依赖，则不需要任何操作
+            ps2: 使用本项目不需要任何操作
              -->
             <version>${minio.version}</version>
             <exclusions>
