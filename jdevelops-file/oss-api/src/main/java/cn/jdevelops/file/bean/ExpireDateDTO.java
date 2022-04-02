@@ -25,11 +25,12 @@ public class ExpireDateDTO {
     @Size(min = 5, max = 63)
     String bucket;
 
+
     /**
-     * 文件名（服务器中的新文件名）
+     * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
      */
     @NotBlank
-    String freshName;
+    String childFolder_FreshName;
 
     /**
      * 过期时间 失效时间（以秒为单位，最少1秒，最大604800即7天）

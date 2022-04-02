@@ -26,9 +26,10 @@ public class RemoveFileDTO {
     @NotBlank
     String bucket;
 
+
     /**
-     * 待删除的文件名集合（服务器中的新文件名）
+     * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
      */
     @NotEmpty
-    List<String> freshName;
+    List<String> childFolder_FreshName;
 }

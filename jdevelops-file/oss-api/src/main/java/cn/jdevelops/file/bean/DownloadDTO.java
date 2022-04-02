@@ -24,11 +24,12 @@ public class DownloadDTO {
 	@Size(min = 5, max = 63)
 	String bucket;
 
+
 	/**
-	 * 文件名（服务器中的新文件名）
+	 * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
 	 */
 	@NotBlank
-	String freshName;
+	String childFolder_FreshName;
 
 
 }
