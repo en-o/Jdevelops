@@ -19,15 +19,17 @@ import javax.validation.constraints.*;
 public class ExpireDateDTO {
 
     /**
-     * 桶名称(最少5个字符，最大63个）
+     * minio : 需要写
+     * 七牛  : 不需要写
      */
     @NotBlank
-    @Size(min = 5, max = 63)
     String bucket;
 
 
     /**
      * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
+     * 七牛：直接些文件名
+     * minio: 路径/文件名
      */
     @NotBlank
     String childFolder_FreshName;

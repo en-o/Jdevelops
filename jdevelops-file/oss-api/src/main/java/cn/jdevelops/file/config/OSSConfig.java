@@ -50,4 +50,5 @@ public class OSSConfig {
 	 */
 	private String secretKey;
 
+
 }

@@ -21,7 +21,6 @@ public class UploadDTO {
 	 * 桶名称(最少5个字符，最大63个）
 	 */
 	@NotBlank
-	@Size(min = 5, max = 63)
 	String bucket;
 
 	/**
