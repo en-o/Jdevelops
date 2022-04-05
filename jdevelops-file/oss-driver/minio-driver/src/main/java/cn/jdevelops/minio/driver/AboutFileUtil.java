@@ -72,10 +72,10 @@ public class AboutFileUtil {
 	public static String[] ALL_FILE = new String[1];
 
 	static {
-		ALL_FILE = (String[]) ArrayUtils.addAll(ALL_FILE, IMG_FILE);
-		ALL_FILE = (String[]) ArrayUtils.addAll(ALL_FILE, DOC_FILE);
-		ALL_FILE = (String[]) ArrayUtils.addAll(ALL_FILE, VIDEO_FILE);
-		ALL_FILE = (String[]) ArrayUtils.addAll(ALL_FILE, MUSIC_FILE);
+		ALL_FILE = ArrayUtils.addAll(ALL_FILE, IMG_FILE);
+		ALL_FILE = ArrayUtils.addAll(ALL_FILE, DOC_FILE);
+		ALL_FILE = ArrayUtils.addAll(ALL_FILE, VIDEO_FILE);
+		ALL_FILE = ArrayUtils.addAll(ALL_FILE, MUSIC_FILE);
 	}
 
 	/**
