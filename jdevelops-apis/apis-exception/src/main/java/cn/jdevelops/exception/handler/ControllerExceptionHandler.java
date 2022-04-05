@@ -1,7 +1,5 @@
 package cn.jdevelops.exception.handler;
 
-
-import ch.qos.logback.core.spi.PropertyContainer;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
@@ -12,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -52,6 +49,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public Object handleBusinessException(BusinessException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(e.getCode(), e.getErrorMessage(),null);
     }
@@ -68,6 +66,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object exceptionHandler(NoHandlerFoundException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
@@ -75,6 +74,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     public Object handleNullPointerException(NullPointerException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
         return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "暂时无法获取数据");
@@ -82,6 +82,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
     }
@@ -89,6 +90,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler
     public Object  exceptionHandler(HttpMessageNotReadableException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         String jsonErrorMsg;
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
@@ -103,6 +105,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object exception(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -117,23 +120,15 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        String message = e.getMessage();
-        List<String> list = StringCommon.extractIp(e.getMessage());
-        try {
-            if(!list.isEmpty()){
-                for ( String ms:list) {
-                    String[] split = message.split(ms);
-                    message = split[0];
-                }
-            }
-        }catch (Exception ignored){}
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), message);
+        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "系统异常，请联系管理员");
     }
 
 
     @ExceptionHandler(BindException.class)
     public Object bindException(BindException e) {
+        log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
         // Valid 数据格式校验异常
         StringBuilder resqStr = new StringBuilder();
@@ -165,12 +160,5 @@ public class ControllerExceptionHandler {
         return null;
     }
 
-
-    @ExceptionHandler(BadSqlGrammarException.class)
-    public ResultVO<?> badSqlGrammarException(Exception e) {
-        log.error(e.getMessage(), e);
-        response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        return ResultVO.fail(ResultCodeEnum.SQL_ERROR);
-    }
 
 }

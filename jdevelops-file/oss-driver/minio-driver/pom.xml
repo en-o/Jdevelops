@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>oss-driver</artifactId>
+        <groupId>cn.jdevelops</groupId>
+        <version>2.0.4</version>
+    </parent>
+    <packaging>jar</packaging>
+    <artifactId>minio-driver</artifactId>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <minio.version>8.3.7</minio.version>
+    </properties>
+
+    <dependencies>
+        <!-- minio相关依赖 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <!--
+            minio 8.3以上的MinioClient需要，发现不支持的OkHttp库。
+            必须使用okhttp3 >= 4.8.1
+            ps: spring中Spring Boot Dependencies  POM中强强制定义了 okhttp3为3.14.9，
+            所以需要在最终项目pom文件的properties中加入<okhttp3.version>4.9.0</okhttp3.version>
+            ps2: 使用本项目的最外层父工程最为parent则不需要任何操作
+             -->
+            <version>${minio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
