@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.jdevelops.qiniu.driver.EnableAutoScanConfiguration,cn.jdevelops.qiniu.driver.QiniuOperate
