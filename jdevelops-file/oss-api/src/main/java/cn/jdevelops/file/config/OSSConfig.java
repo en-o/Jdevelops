@@ -26,7 +26,7 @@ public class OSSConfig {
 	 */
 	private String uploadUrl;
 	/**
-	 * 文件浏览地址
+	 * 文件浏览地址: https://sda.xx.com
 	 */
 	private String browseUrl;
 
@@ -50,5 +50,9 @@ public class OSSConfig {
 	 */
 	private String secretKey;
 
-
+	/**
+	 * 配置自己空间所在的区域： z0, z1, z2
+	 * @see <a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">七牛云</a>
+	 */
+	private String regionId;
 }

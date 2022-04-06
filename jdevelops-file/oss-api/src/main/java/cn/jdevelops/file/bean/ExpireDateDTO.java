@@ -19,10 +19,11 @@ import javax.validation.constraints.*;
 public class ExpireDateDTO {
 
     /**
-     * minio : 需要写
-     * 七牛  : 不需要写
+     * 桶名称(最少1个字符，最大63个）
+     * e.g. tn
      */
     @NotBlank
+    @Size(min = 1,max = 63)
     String bucket;
 
 

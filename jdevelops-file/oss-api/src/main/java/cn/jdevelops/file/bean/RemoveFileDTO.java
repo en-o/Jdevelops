@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -21,9 +22,11 @@ import java.util.List;
 public class RemoveFileDTO {
 
     /**
-     * 桶名称
+     * 桶名称(最少1个字符，最大63个）
+     * e.g. tn
      */
     @NotBlank
+    @Size(min = 1,max = 63)
     String bucket;
 
 
