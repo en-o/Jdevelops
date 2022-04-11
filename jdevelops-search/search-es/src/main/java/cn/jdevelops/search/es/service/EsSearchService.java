@@ -3,8 +3,13 @@ package cn.jdevelops.search.es.service;
 import cn.jdevelops.search.es.dto.ConditionDTO;
 import cn.jdevelops.search.es.dto.EqDTO;
 import cn.jdevelops.search.es.dto.SortDTO;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetRequest;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.client.core.CountResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +24,7 @@ import java.util.Map;
  **/
 public interface EsSearchService {
 
+
 	/**
 	 * 通过ID获取数据
 	 *
@@ -28,6 +34,27 @@ public interface EsSearchService {
 	 * @throws IOException IOException
 	 */
 	Map<String, Object> searchDataById(String index, String esOnlyId) throws IOException;
+
+	/**
+	 * 通过ID获取数据
+	 *
+	 * @param index    索引，类似数据库
+	 * @param esOnlyId ES索引唯一值
+	 * @return java.util.Map<java.lang.String, java.lang.Object>
+	 * @throws IOException IOException
+	 */
+	GetResponse getById(String index, String esOnlyId) throws IOException;
+
+	/**
+	 * 一次性查询多个指定结果
+	 *
+	 * @param multiGetRequest 条件
+	 * @return MultiGetResponse 返回参数
+	 * @throws IOException IOException
+	 * @author lxw
+	 * @date 2022/3/16 16:13
+	 */
+	MultiGetResponse executMget(MultiGetRequest multiGetRequest) throws IOException;
 
 	/**
 	 * 查询
@@ -40,6 +67,18 @@ public interface EsSearchService {
 	 */
 
 	SearchResponse executeSearch(SearchRequest request) throws IOException;
+
+
+	/**
+	 * 统计
+	 *
+	 * @param countRequest 统计条件
+	 * @return CountResponse 返回参数
+	 * @throws IOException IOException
+	 * @author lxw
+	 * @date 2022/3/16 16:09
+	 */
+	CountResponse executeCount(CountRequest countRequest) throws IOException;
 
 	/**
 	 * 无条件分页检索示例

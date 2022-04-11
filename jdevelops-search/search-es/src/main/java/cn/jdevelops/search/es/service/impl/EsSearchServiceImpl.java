@@ -11,9 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetRequest;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -56,6 +60,17 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
+	public GetResponse getById(String index, String esOnlyId) throws IOException {
+		GetRequest request = new GetRequest(index, esOnlyId);
+		return restHighLevelClient.get(request, RequestOptions.DEFAULT);
+	}
+
+	@Override
+	public MultiGetResponse executMget(MultiGetRequest multiGetRequest) throws IOException {
+		return restHighLevelClient.mget(multiGetRequest, RequestOptions.DEFAULT);
+	}
+
+	@Override
 	public SearchResponse executeSearch(SearchRequest request) throws IOException {
 		SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
 		if (response.status().getStatus() == EsConstant.HTTP_200) {
@@ -65,6 +80,11 @@ public class EsSearchServiceImpl implements EsSearchService {
 			return response;
 		}
 		return null;
+	}
+
+	@Override
+	public CountResponse executeCount(CountRequest countRequest) throws IOException {
+		return restHighLevelClient.count(countRequest, RequestOptions.DEFAULT);
 	}
 
 	@Override
@@ -117,7 +137,11 @@ public class EsSearchServiceImpl implements EsSearchService {
 		EsBasicsUtil.setOrderField(sourceBuilder, sortDTOList);
 		// 设置高亮
 		EsBasicsUtil.setHighlightField(sourceBuilder, highlightField);
+		// 设置按照查询匹配度排序
+		sourceBuilder.explain(true);
+
 		request.source(sourceBuilder);
+
 		return executeSearch(request);
 	}
 

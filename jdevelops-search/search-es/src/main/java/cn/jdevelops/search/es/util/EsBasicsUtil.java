@@ -197,16 +197,45 @@ public class EsBasicsUtil {
 	}
 
 	/**
-	 * 设定指定检索字段
+	 * 设置返回数据中只需要的字段
 	 *
 	 * @param sourceBuilder 查询条件对象
-	 * @param fields        指定检索字段
+	 * @param includes      需要返回的字段
 	 * @author lxw
 	 */
-	public static void setAppointFields(SearchSourceBuilder sourceBuilder, String fields) {
-		if (StringUtils.isNotBlank(fields)) {
+	public static void setIncludesFields(SearchSourceBuilder sourceBuilder, String includes) {
+		if (StringUtils.isNotBlank(includes)) {
 			//只查询特定字段。如果需要查询所有字段则不设置该项。
-			sourceBuilder.fetchSource(new FetchSourceContext(true, fields.split(","), Strings.EMPTY_ARRAY));
+			sourceBuilder.fetchSource(new FetchSourceContext(true, includes.split(","), Strings.EMPTY_ARRAY));
+		}
+	}
+
+	/**
+	 * 设置返回数据中需要排除字段
+	 *
+	 * @param sourceBuilder 查询条件对象
+	 * @param excludes      需要排除字段
+	 * @author lxw
+	 */
+	public static void setExcludesFields(SearchSourceBuilder sourceBuilder, String excludes) {
+		if (StringUtils.isNotBlank(excludes)) {
+			//只查询特定字段。如果需要查询所有字段则不设置该项。
+			sourceBuilder.fetchSource(new FetchSourceContext(true, Strings.EMPTY_ARRAY, excludes.split(",")));
+		}
+	}
+
+	/**
+	 * 设置返回数据中需要排除字段
+	 *
+	 * @param sourceBuilder 查询条件对象
+	 * @param includes      需要返回的字段
+	 * @param excludes      需要排除字段
+	 * @author lxw
+	 */
+	public static void setExcludesFields(SearchSourceBuilder sourceBuilder, String includes, String excludes) {
+		if (StringUtils.isNotBlank(includes) && StringUtils.isNotBlank(excludes)) {
+			//只查询特定字段。如果需要查询所有字段则不设置该项。
+			sourceBuilder.fetchSource(new FetchSourceContext(true, includes.split(","), excludes.split(",")));
 		}
 	}
 
