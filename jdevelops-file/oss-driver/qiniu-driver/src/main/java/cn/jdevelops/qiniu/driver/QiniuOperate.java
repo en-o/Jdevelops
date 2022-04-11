@@ -3,6 +3,7 @@ package cn.jdevelops.qiniu.driver;
 import cn.jdevelops.file.*;
 import cn.jdevelops.file.bean.*;
 import cn.jdevelops.file.config.OSSConfig;
+import cn.jdevelops.file.util.UrlUtil;
 import com.google.gson.Gson;
 import com.qiniu.http.Response;
 import com.qiniu.storage.*;
@@ -59,7 +60,7 @@ public class QiniuOperate implements OssOperateAPI {
                 null);
         Gson gson = new Gson();
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
-        return FilePathResult.builder().freshName(defaultPutRet.key)
+        return FilePathResult.builder().freshName(originalFilename)
                 .absolutePath(updateFile)
                 .originalName(originalFilename)
                 .relativePath(ossConfig.getBrowseUrl()+"/"+updateFile).build();
@@ -69,21 +70,21 @@ public class QiniuOperate implements OssOperateAPI {
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
         //构造私有空间的需要生成的下载的链接
-        String urlString = ossConfig.getBrowseUrl()+"/"+download.getChildFolder_FreshName();
+        String  encodeName = URLEncoder.encode(download.getChildFolder_FreshName(),"UTF-8").replaceAll("\\+", "%20");
+        String urlString = ossConfig.getBrowseUrl()+"/"+encodeName;
         //调用privateDownloadUrl方法生成下载链接,第二个参数可以设置Token的过期时间
         String downloadRUL = auth.privateDownloadUrl(urlString, 3600);
-        String fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
+        String childFolder_freshName = download.getChildFolder_FreshName();
+        String fileName = childFolder_freshName.substring(childFolder_freshName.lastIndexOf('/') + 1);
         try {
             URL url = new URL(downloadRUL);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             response.reset();//避免空行
             // 设置response的Header
-            String suffixName = urlString.substring(downloadRUL.lastIndexOf("."));
-            String imgType = "image/" + suffixName;
-            response.setContentType(imgType + ";charset=utf-8");
+            response.setContentType(UrlUtil.getContentType(downloadRUL) + ";charset=utf-8");
             //setContentType 设置发送到客户机的响应的内容类型
             //设置响应头
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
             //设置文件大小
             response.setHeader("Content-Length", String.valueOf(url.openConnection().getContentLength()));
 
