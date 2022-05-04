@@ -20,13 +20,14 @@ import org.springframework.stereotype.Component;
 @Setter
 @ToString
 @Accessors(chain = true)
+@SuppressWarnings("all")
 public class OSSConfig {
 	/**
 	 * 文件上传地址
 	 */
 	private String uploadUrl;
 	/**
-	 * 文件浏览地址: https://sda.xx.com
+	 * 文件浏览地址: @link https://sda.xx.com
 	 */
 	private String browseUrl;
 
@@ -55,4 +56,9 @@ public class OSSConfig {
 	 * @see <a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">七牛云</a>
 	 */
 	private String regionId;
+
+	/**
+	 * 使用localDriver时，文件上传的存放路径
+	 */
+	private String localUploadDir;
 }
