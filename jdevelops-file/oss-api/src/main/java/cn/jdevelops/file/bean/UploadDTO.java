@@ -27,6 +27,7 @@ public class UploadDTO {
 
 	/**
 	 * 文件子目录(相对路径),为空则直接上传至桶的根目录下
+	 * 注意：最有一定要有斜杠
 	 * e.g. test/tn/
 	 */
 	String childFolder;

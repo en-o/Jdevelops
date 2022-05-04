@@ -50,7 +50,8 @@ public class LocalOperate implements OssOperateAPI {
         String originalName = file.getOriginalFilename();
         String freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
         String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + uploaded.getChildFolder() + freshName;
-        File dest = new File(ossConfig.getLocalUploadDir() + OSSConstants.PATH_SEPARATOR + relativePath);
+        File dest = new File(ossConfig.getLocal()
+                .getUploadDir() + OSSConstants.PATH_SEPARATOR + relativePath);
         // 判断文件所在目录是否存在，如果不存在就创建对应的目录
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -70,7 +71,8 @@ public class LocalOperate implements OssOperateAPI {
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
         String filePath = download.getBucket() + OSSConstants.PATH_SEPARATOR + download.getChildFolder_FreshName();
-        String absolutePath = ossConfig.getLocalUploadDir() + OSSConstants.PATH_SEPARATOR + filePath;
+        String absolutePath = ossConfig.getLocal()
+                .getUploadDir() + OSSConstants.PATH_SEPARATOR + filePath;
         File file = new File(absolutePath);
         try(InputStream in = Files.newInputStream(file.toPath())) {
             response.reset();//避免空行
@@ -103,7 +105,8 @@ public class LocalOperate implements OssOperateAPI {
         List<String> childFolder_freshName = remove.getChildFolder_FreshName();
         for (String it : childFolder_freshName) {
             try {
-                File file = new File(ossConfig.getLocalUploadDir() + OSSConstants.PATH_SEPARATOR
+                File file = new File(ossConfig.getLocal()
+                        .getUploadDir() + OSSConstants.PATH_SEPARATOR
                         + bucket + OSSConstants.PATH_SEPARATOR
                         + it);
                 file.delete();

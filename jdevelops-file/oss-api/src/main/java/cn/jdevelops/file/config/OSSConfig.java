@@ -22,43 +22,26 @@ import org.springframework.stereotype.Component;
 @Accessors(chain = true)
 @SuppressWarnings("all")
 public class OSSConfig {
-	/**
-	 * 文件上传地址
-	 */
-	private String uploadUrl;
+
 	/**
 	 * 文件浏览地址: @link https://sda.xx.com
+	 * 注意最后不要有斜杠
 	 */
 	private String browseUrl;
 
 	/**
-	 * 是否使用https
+	 * local-driver
 	 */
-	private Boolean https = false;
+	private LocalConfig local;
 
 	/**
-	 * 可访问端口 （IP时用）
+	 * minio-driver
 	 */
-	private Integer port;
+	private MinioConfig minio;
 
 	/**
-	 * Access key就像用户ID，可以唯一标识你的账户
+	 * qiniu-driver
 	 */
-	private String accessKey;
+	private QiNiuConfig qiniu;
 
-	/**
-	 * Secret key是你账户的密码。
-	 */
-	private String secretKey;
-
-	/**
-	 * 配置自己空间所在的区域： z0, z1, z2
-	 * @see <a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">七牛云</a>
-	 */
-	private String regionId;
-
-	/**
-	 * 使用localDriver时，文件上传的存放路径
-	 */
-	private String localUploadDir;
 }

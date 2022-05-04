@@ -140,7 +140,7 @@ public class OperateFileUtil {
 		// 文件上传之后的新文件名称
 		String objectName = filename + OSSConstants.SYMBOL_POINT + fileType;
 		if (StringUtils.isNotBlank(childFolder) && !StringUtils.equalsIgnoreCase("null", childFolder)) {
-			objectName = childFolder + OSSConstants.PATH_SEPARATOR + objectName;
+			objectName = childFolder + objectName;
 		}
 		InputStream in = file.getInputStream();
 		//默认类型，该“application/octet-stream”类型的时候，浏览器访问地址为下载

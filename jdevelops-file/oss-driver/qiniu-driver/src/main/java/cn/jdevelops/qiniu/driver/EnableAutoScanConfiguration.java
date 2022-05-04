@@ -28,7 +28,7 @@ public class EnableAutoScanConfiguration {
     @Bean
     public com.qiniu.storage.Configuration qiniuConfig(OSSConfig ossConfig) {
         Region region;
-        switch (ossConfig.getRegionId()){
+        switch (ossConfig.getQiniu().getRegionId()){
             case "z0":
                 region = Region.region1();
                 break;
@@ -72,7 +72,10 @@ public class EnableAutoScanConfiguration {
      */
     @Bean
     public Auth auth(OSSConfig ossConfig) {
-        return Auth.create(ossConfig.getAccessKey(), ossConfig.getSecretKey());
+        return Auth.create(ossConfig.getQiniu()
+                .getAccessKey(),
+                ossConfig.getQiniu()
+                .getSecretKey());
     }
 
     /**

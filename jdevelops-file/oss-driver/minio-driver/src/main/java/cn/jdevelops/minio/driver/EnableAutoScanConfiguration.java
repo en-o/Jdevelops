@@ -26,13 +26,20 @@ public class EnableAutoScanConfiguration {
     @Bean
     public MinioClient getMinioClient(OSSConfig ossConfig) {
         MinioClient minioClient;
-        if (ossConfig.getPort() == null) {
-            minioClient = MinioClient.builder().endpoint(ossConfig.getUploadUrl())
-                    .credentials(ossConfig.getAccessKey(), ossConfig.getSecretKey()).build();
+        if (ossConfig.getMinio().getPort() == null) {
+            minioClient = MinioClient.builder().endpoint(ossConfig.getMinio().getUploadUrl())
+                    .credentials(ossConfig.getMinio().getAccessKey(),
+                            ossConfig.getMinio().getSecretKey()).build();
         } else {
-            minioClient = MinioClient.builder().endpoint(ossConfig.getUploadUrl(), ossConfig.getPort(),
-                            ossConfig.getHttps())
-                    .credentials(ossConfig.getAccessKey(), ossConfig.getSecretKey()).build();
+            minioClient = MinioClient.builder().endpoint(ossConfig.getMinio()
+                                    .getUploadUrl(),
+                            ossConfig.getMinio()
+                                    .getPort(),
+                            ossConfig.getMinio()
+                                    .getHttps())
+                    .credentials(ossConfig.getMinio()
+                            .getAccessKey(), ossConfig.getMinio()
+                            .getSecretKey()).build();
         }
         return minioClient;
     }

@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @ToString
+@SuppressWarnings("all")
 public class DownloadDTO {
 
 	/**
@@ -28,6 +29,7 @@ public class DownloadDTO {
 
 	/**
 	 * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
+	 * e.g file/1.png
 	 */
 	@NotBlank
 	String childFolder_FreshName;
