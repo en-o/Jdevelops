@@ -1,10 +1,13 @@
 package cn.jdevelops.jap.core.util;
 
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
+import cn.jdevelops.map.core.bean.ColumnUtil;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.criteria.Predicate;
+import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * CustomerSpecs
@@ -51,6 +54,9 @@ public final class SpecificationUtil<T> {
 
     private static final SpecificationUtil<?> INSTANCE = new SpecificationUtil();
 
+    @FunctionalInterface
+    public interface FieldFunction<T, R> extends Function<T, R>, Serializable {
+    }
 
     private SpecificationUtil() {
     }
@@ -83,6 +89,22 @@ public final class SpecificationUtil<T> {
     }
 
     /**
+     * 等于
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> eq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.equal(root.get(ColumnUtil.getFieldName(fn)), value);
+        }
+    }
+
+    /**
      * 不相等
      *
      * @param key        键 (实体字段非数据库字段)
@@ -95,6 +117,22 @@ public final class SpecificationUtil<T> {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notEqual(root.get(key), value);
+        }
+    }
+
+    /**
+     * 不相等
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> notEq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.notEqual(root.get(ColumnUtil.getFieldName(fn)), value);
         }
     }
 
@@ -115,6 +153,22 @@ public final class SpecificationUtil<T> {
     }
 
     /**
+     * 大于
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> gt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.gt(root.get(ColumnUtil.getFieldName(fn)), value);
+        }
+    }
+
+    /**
      * 大于等于
      *
      * @param key        键 (实体字段非数据库字段)
@@ -127,6 +181,22 @@ public final class SpecificationUtil<T> {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.ge(root.get(key), value);
+        }
+    }
+
+    /**
+     * 大于等于
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> ge(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.ge(root.get(ColumnUtil.getFieldName(fn)), value);
         }
     }
 
@@ -147,6 +217,22 @@ public final class SpecificationUtil<T> {
     }
 
     /**
+     * 小于
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> lt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.ge(root.get(ColumnUtil.getFieldName(fn)), value);
+        }
+    }
+
+    /**
      * 小于等于
      *
      * @param key        键 (实体字段非数据库字段)
@@ -162,6 +248,23 @@ public final class SpecificationUtil<T> {
         }
     }
 
+
+    /**
+     * 小于等于
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> le(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.le(root.get(ColumnUtil.getFieldName(fn)), value);
+        }
+    }
+
     /**
      * not
      *
@@ -170,6 +273,17 @@ public final class SpecificationUtil<T> {
      */
     public Specification<T> not(String key) {
         return (root, query, builder) -> builder.not(root.get(key));
+    }
+
+
+    /**
+     * not
+     *
+     * @param fn 实体字段
+     * @return Specification
+     */
+    public Specification<T> not(ColumnUtil.SFunction<T, ?> fn) {
+        return (root, query, builder) -> builder.not(root.get(ColumnUtil.getFieldName(fn)));
     }
 
 
@@ -193,6 +307,27 @@ public final class SpecificationUtil<T> {
 
 
     /**
+     * between
+     * v1 <= fn <= v2
+     *
+     * @param fn        实体字段
+     * @param v1         值1
+     * @param v2         值2
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> between(ColumnUtil.SFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
+        if (ignoreNull && (ObjectUtils.isEmpty(v1) || ObjectUtils.isEmpty(v2))) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.between(root.get(ColumnUtil.getFieldName(fn)), v1, v2);
+        }
+    }
+
+
+
+
+    /**
      * 模糊匹配
      *
      * @param key        键 (实体字段非数据库字段)
@@ -208,6 +343,24 @@ public final class SpecificationUtil<T> {
         }
     }
 
+
+    /**
+     * 模糊匹配
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> like(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), "%" + value + "%");
+        }
+    }
+
+
     /**
      * 左模糊
      * %xxx
@@ -222,6 +375,24 @@ public final class SpecificationUtil<T> {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), "%" + value);
+        }
+    }
+
+
+    /**
+     * 左模糊
+     * %xxx
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> lLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), "%" + value);
         }
     }
 
@@ -243,6 +414,24 @@ public final class SpecificationUtil<T> {
         }
     }
 
+
+    /**
+     * 右模糊
+     * %xxx
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> rLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), value + "%");
+        }
+    }
+
     /**
      * 模糊不匹配
      *
@@ -260,6 +449,22 @@ public final class SpecificationUtil<T> {
     }
 
     /**
+     * 模糊不匹配
+     *
+     * @param fn        实体字段
+     * @param value      值
+     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @return Specification
+     */
+    public Specification<T> notLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.notLike(root.get(ColumnUtil.getFieldName(fn)), "%" + value + "%");
+        }
+    }
+
+    /**
      * 非空
      *
      * @param key 键 (实体字段非数据库字段)
@@ -270,6 +475,18 @@ public final class SpecificationUtil<T> {
     }
 
     /**
+     * 非空
+     *
+     * @param fn 实体字段
+     * @return Specification
+     */
+    public Specification<T> isNotNull(ColumnUtil.SFunction<T, ?> fn) {
+        return (root, query, builder) -> builder.isNotNull(root.get(ColumnUtil.getFieldName(fn)));
+    }
+
+
+
+    /**
      * 空
      *
      * @param key 键 (实体字段非数据库字段) (实体字段非数据库字段)
@@ -277,6 +494,17 @@ public final class SpecificationUtil<T> {
      */
     public Specification<T> isNull(String key) {
         return (root, query, builder) -> builder.isNull(root.get(key));
+    }
+
+
+    /**
+     * 空
+     *
+     * @param fn 实体字段
+     * @return Specification
+     */
+    public Specification<T> isNull(ColumnUtil.SFunction<T, ?> fn) {
+        return (root, query, builder) -> builder.isNull(root.get(ColumnUtil.getFieldName(fn)));
     }
 
 
@@ -293,6 +521,24 @@ public final class SpecificationUtil<T> {
             Predicate restriction = query.orderBy(builder.asc(root.get(key))).getRestriction();
             if (desc) {
                 restriction = query.orderBy(builder.desc(root.get(key))).getRestriction();
+            }
+            return restriction;
+        };
+    }
+
+    /**
+     * 排序
+     *
+     * @param fn  实体字段
+     * @param desc true desc
+     * @return Specification
+     */
+    public Specification<T> orderBy(ColumnUtil.SFunction<T, ?> fn, boolean desc) {
+
+        return (root, query, builder) -> {
+            Predicate restriction = query.orderBy(builder.asc(root.get(ColumnUtil.getFieldName(fn)))).getRestriction();
+            if (desc) {
+                restriction = query.orderBy(builder.desc(root.get(ColumnUtil.getFieldName(fn)))).getRestriction();
             }
             return restriction;
         };
