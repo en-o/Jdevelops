@@ -12,7 +12,7 @@ import java.util.Collection;
  *
  * @author tn
  */
-public class Restrictions<T> {
+public class Restrictions {
 
     /**
      * 等于
