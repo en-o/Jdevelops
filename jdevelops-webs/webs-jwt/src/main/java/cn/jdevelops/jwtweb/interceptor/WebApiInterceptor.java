@@ -59,7 +59,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             String token = getToken(request);
             getCheckTokenInterceptor();
             boolean flag = checkTokenInterceptor.checkToken(token);
-            logger.info("需要验证token,校验结果：{}", flag);
+            logger.info("需要验证token,校验结果：{},token:{}", flag,token);
             if (!flag) {
                 response.setHeader("content-type", "application/json;charset=UTF-8");
                 response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TOKEN_ERROR.getCode(), "无效的token")));
