@@ -15,9 +15,9 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 
 /**
- *  我照着spring 的 Sort 写了一个但是觉得不满足，后面就看看 Function 接口是不是可以做这件事，就看到了这个
+ *  我照着spring 的 Sort 写了一个但是觉得不是很好，后面就看看 Function 接口是不是可以做这件事，就看到了这个
  * Java8通过Function函数获取字段名称(获取实体类的字段名称)
- * @link  https://www.cnblogs.com/IT-study/p/15351980.html
+ * @link  <a href="https://www.cnblogs.com/IT-study/p/15351980.html">参考</a>
  * @author jx
  */
 public class ColumnUtil {
