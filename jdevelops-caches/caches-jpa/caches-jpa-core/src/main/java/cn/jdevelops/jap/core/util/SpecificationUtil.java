@@ -24,7 +24,7 @@ import java.util.function.Function;
  * )
  * ).forEach(System.out::println);
  * public static Specification<User> name() {
- * return (root, query, builder) -> builder.like(root.get("name"), "%用户%");
+ * return (root, query, builder) -> builder.like(root.get(User::getName), "%用户%");
  * }
  * <p>
  * public static Specification<User> loginPwd() {
@@ -54,9 +54,6 @@ public final class SpecificationUtil<T> {
 
     private static final SpecificationUtil<?> INSTANCE = new SpecificationUtil();
 
-    @FunctionalInterface
-    public interface FieldFunction<T, R> extends Function<T, R>, Serializable {
-    }
 
     private SpecificationUtil() {
     }
