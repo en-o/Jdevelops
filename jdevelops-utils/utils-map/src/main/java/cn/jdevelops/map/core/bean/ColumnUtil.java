@@ -53,7 +53,7 @@ public class ColumnUtil {
 
     /**
      * 获取实体类的字段名称
-     * @param toLine  是否转驼峰（默认不转） true:驼峰 。 false：正常bean字段
+     * @param toLine  是否转驼峰 true:驼峰 。 false：正常bean字段
      */
     public static <T> String getFieldName(SFunction<T, ?> fn, Boolean toLine) {
         SerializedLambda serializedLambda = getSerializedLambda(fn);
@@ -82,6 +82,9 @@ public class ColumnUtil {
 
     }
 
+    /**
+     * 获取实体类的字段名称
+     */
     private static <T> SerializedLambda getSerializedLambda(SFunction<T, ?> fn) {
         // 从function取出序列化方法
         Method writeReplaceMethod;
