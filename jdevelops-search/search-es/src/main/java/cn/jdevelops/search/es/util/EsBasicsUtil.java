@@ -53,7 +53,7 @@ public class EsBasicsUtil {
 		}
 		eqDTOList.parallelStream().forEach(
 				i -> {
-					if (i.getField() != null && i.getFieldValue() != null && !i.getFieldValue().isEmpty()) {
+					if (i.getField() != null && i.getFieldValue() != null && i.getFieldValue().size() > 0) {
 						boolQueryBuilder.filter(QueryBuilders.termsQuery(i.getField(), i.getFieldValue()));
 					}
 				}
@@ -79,7 +79,7 @@ public class EsBasicsUtil {
 			return;
 		}
 		listList.forEach(i -> {
-			if (i != null && !i.isEmpty()) {
+			if (i != null && i.size() > 0) {
 				BoolQueryBuilder bq2 = QueryBuilders.boolQuery();
 				i.forEach(f -> bq2.should(setAdvanced(f)));
 				boolQueryBuilder.must(bq2);
@@ -99,7 +99,7 @@ public class EsBasicsUtil {
 	 */
 	public static BoolQueryBuilder setAdvanced(List<ConditionDTO> conditionDTOList) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		if (conditionDTOList != null && !conditionDTOList.isEmpty()) {
+		if (conditionDTOList != null && conditionDTOList.size() > 0) {
 			for (ConditionDTO cond : conditionDTOList) {
 				if (StringUtils.isBlank(cond.getFieldValue())) {
 					continue;

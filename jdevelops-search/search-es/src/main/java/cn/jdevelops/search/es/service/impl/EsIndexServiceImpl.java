@@ -62,7 +62,7 @@ public class EsIndexServiceImpl implements EsIndexService {
 		//1.settings
 		XContentBuilder builder = XContentFactory.jsonBuilder()
 				.startObject()
-				.field("index.max_ngram_diff", "5")
+				.field("index.max_ngram_diff", "10")
 				.startObject("analysis");
 		builder.startObject("analyzer")
 				.startObject("ngram_analyzer")
@@ -74,15 +74,15 @@ public class EsIndexServiceImpl implements EsIndexService {
 		builder.startObject("tokenizer")
 				.startObject("ngram_tokenizer")
 				.field("type", "ngram")
-				.field("min_gram","1")
-				.field("max_gram","3")
+				.field("min_gram", "1")
+				.field("max_gram", "1")
 				.array("token_chars", "letter", "digit")
 				.endObject()
 				.endObject();
 		builder.startObject("normalizer")
 				.startObject("lowercase")
-				.field("type","custom")
-				.field("filter","lowercase")
+				.field("type", "custom")
+				.field("filter", "lowercase")
 				.endObject()
 				.endObject();
 		builder.endObject().endObject();
@@ -192,6 +192,29 @@ public class EsIndexServiceImpl implements EsIndexService {
 		return acknowledgedResponse.isAcknowledged();
 	}
 
+	/**
+	 * 创建索映射
+	 *
+	 * @param index   索引名称
+	 * @param mapping mapping映射json字符串
+	 * @return boolean
+	 * @throws IOException Exception
+	 * @author lxw
+	 * @date 2022/4/13 16:29
+	 */
+	@Override
+	public boolean submitMapping(String index, String mapping) throws IOException {
+		boolean b = isIndexExist(index);
+		if (b) {
+			deleteIndex(index);
+		}
+		//1.创建索引请求
+		CreateIndexRequest request = new CreateIndexRequest(index);
+		request.mapping(mapping, XContentType.JSON);
+		//2.执行客户端请求
+		CreateIndexResponse response = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
+		return response.isAcknowledged();
+	}
 
 	/**
 	 * 包含time或者date的字段类型设定为keyword，且不分词
@@ -277,7 +300,7 @@ public class EsIndexServiceImpl implements EsIndexService {
 		request.id(esOnlyId);
 		request.timeout(TimeValue.timeValueSeconds(1));
 		//将数据放入请求 json
-		JSONObject.toJSONString(source);
+		JSON.toJSONString(source);
 		request.source(JSON.toJSONString(source), XContentType.JSON);
 		//客户端发送请求
 		return addData(request);

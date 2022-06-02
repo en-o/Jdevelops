@@ -106,6 +106,18 @@ public interface EsIndexService {
 	boolean createIndexMapping(String index, String nested, List<String> nestedFields) throws Exception;
 
 	/**
+	 * 创建索映射
+	 *
+	 * @param index   索引名称
+	 * @param mapping mapping映射json字符串
+	 * @return boolean
+	 * @throws IOException Exception
+	 * @author lxw
+	 * @date 2022/4/13 16:29
+	 */
+	boolean submitMapping(String index, String mapping) throws IOException;
+
+	/**
 	 * 新增/更新数据
 	 *
 	 * @param index    索引，类似数据库
