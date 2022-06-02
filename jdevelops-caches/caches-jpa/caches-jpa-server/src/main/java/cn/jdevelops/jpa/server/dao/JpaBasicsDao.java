@@ -71,7 +71,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
 
 
     /**
-     *  更新 根据id
+     *  更新 根据只指定key
      * @param t 实体类型的 数据
      * @param selectKey 指定唯一键 (t中必须要有selectKey的值)，e.g uuid
      * @return Boolean
