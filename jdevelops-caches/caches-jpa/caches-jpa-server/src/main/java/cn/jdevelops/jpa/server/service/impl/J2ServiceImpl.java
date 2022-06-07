@@ -23,7 +23,9 @@ import java.util.Optional;
 
 /**
  * 预约模块公共service实现
- *
+ * @param <D> 实体的主键类型
+ * @param <T> 实体
+ * @param <M> 实体的Dao层
  * @author tn
  * @version 1
  * @date 2021/1/23 12:03
@@ -98,7 +100,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     public T findById(Integer id) {
         return commonDao.findById((D) id).orElse(null);
     }
-    
+
     @Override
     public List<T> findById(List<Integer> id) {
         return commonDao.findByIdIn((List<D>) id);

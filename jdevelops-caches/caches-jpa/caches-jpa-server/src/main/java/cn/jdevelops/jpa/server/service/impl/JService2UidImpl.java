@@ -21,7 +21,8 @@ import java.util.Optional;
 
 /**
  * 预约模块公共service实现
- *
+ * @param <D> 实体的主键类型
+ * @param <T> 实体
  * @author tn
  * @version 1
  * @date 2021/1/23 12:03

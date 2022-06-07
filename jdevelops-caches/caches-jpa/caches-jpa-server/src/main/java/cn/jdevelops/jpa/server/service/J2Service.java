@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * jpa公共service
- *
+ * @param <T> 实体
  * @author tn
  * @date 2021-01-22 13:35
  */
