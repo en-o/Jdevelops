@@ -22,6 +22,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.freewayso</groupId>
+            <artifactId>image-combiner</artifactId>
+            <version>${image-combiner.version}</version>
+        </dependency>
     </dependencies>
 
 

@@ -125,6 +125,8 @@
         <openfeign.version>3.0.5</openfeign.version>
         <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
         <okhttp3.version>4.9.3</okhttp3.version>
+        <!--http://dromara.gitee.io/image-combiner/-->
+        <image-combiner.version>2.3.3</image-combiner.version>
     </properties>
 
     <!-- 子项目强行依赖   -->
