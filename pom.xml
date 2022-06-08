@@ -85,7 +85,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jdevelops.last.version>2.0.5</jdevelops.last.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <spring-core.version>5.3.18</spring-core.version>
+        <spring-core.version>[5.3.20,)</spring-core.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
         <!--https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E-->
         <alibaba-cloud.version>2021.1</alibaba-cloud.version>
@@ -95,13 +95,13 @@
         <lombok.version>1.18.22</lombok.version>
         <mysql.version>8.0.20</mysql.version>
         <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
-        <fastjson.version>1.2.79</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <jackson.version>2.11.1</jackson.version>
         <joda-time.version>2.10.6</joda-time.version>
         <guava.version>[30.0-jre,)</guava.version>
-        <hutool.version>5.7.18</hutool.version>
+        <hutool.version>5.8.2</hutool.version>
         <validation.version>2.0.1.Final</validation.version>
-        <gson.version>2.8.6</gson.version>
+        <gson.version>[2.8.9,)</gson.version>
         <aspect.version>1.9.5</aspect.version>
         <java-jwt.version>3.18.2</java-jwt.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
