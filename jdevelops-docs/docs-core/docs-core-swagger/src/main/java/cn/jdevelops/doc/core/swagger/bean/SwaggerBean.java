@@ -39,7 +39,7 @@ public class SwaggerBean {
     /**
      * 当前文档的版本
      */
-    private String version="2.0.4";
+    private String version="2.0.5";
 
 
     /**
