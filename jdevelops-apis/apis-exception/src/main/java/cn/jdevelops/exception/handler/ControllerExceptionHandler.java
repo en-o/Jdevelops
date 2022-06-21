@@ -122,7 +122,8 @@ public class ControllerExceptionHandler {
     public Object handleException(Exception e) {
         log.error(e.getMessage(), e);
         response.setHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "系统异常，请联系管理员");
+//        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "系统异常，请联系管理员");
+        return ExceptionResultWrap.error(e);
     }
 
 

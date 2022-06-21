@@ -8,7 +8,7 @@ import cn.jdevelops.exception.utils.SpringBeanUtils;
  * @author tnnn
  */
 public final class ExceptionResultWrap {
-    
+
     /**
      * Success object.
      *
@@ -54,5 +54,10 @@ public final class ExceptionResultWrap {
      */
     public static Object error(ResultCodeEnum resultCodeEnum) {
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(resultCodeEnum.getCode(), resultCodeEnum.getMessage());
+    }
+
+
+    public static Object error(Exception e) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(ResultCodeEnum.SYS_ERROR.getCode(), e.getMessage());
     }
 }
