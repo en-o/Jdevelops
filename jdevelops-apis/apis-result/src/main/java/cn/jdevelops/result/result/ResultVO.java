@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 
@@ -24,6 +22,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(value = "返回结果集", description = "全局返回对象")
 public class ResultVO<T> implements Serializable {
 
@@ -241,4 +242,8 @@ public class ResultVO<T> implements Serializable {
             return traceId;
         }
     }
+
+
+
+
 }
