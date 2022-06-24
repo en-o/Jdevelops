@@ -28,3 +28,5 @@
 ## [文档](https://www.yuque.com/tanning/yg9ipo)
 ## [文档配套代码示例](https://github.com/en-o/Jdevelops-Example)
 ## [配套基础代码生成工具](https://code.tannn.cn/)
+## [maven archetype](ttps://gitee.com/etn/jdevelops-archetype.git)
+> [使用方法](https://www.yuque.com/tanning/yg9ipo/os0zl7#GocqT)
