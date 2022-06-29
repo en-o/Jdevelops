@@ -9,7 +9,6 @@ import cn.jdevelops.jap.enums.SQLConnect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -53,14 +52,32 @@ public class CommUtils {
         return true;
     }
 
+
     /**
      * 多条件查询 的 默认全员AND
      *
+     * @param bean 多条件查询
+     * @param <T>  返回参数
+     * @param <B>  实参类型
+     * @return JPAUtilExpandCriteria
+     */
+    public static <T,B> JPAUtilExpandCriteria<T> getSelectBean2(B bean) {
+        return getTjpaUtilExpandCriteria(bean);
+    }
+
+    /**
+     * 多条件查询 的 默认全员AND
+     * PS: 建议使用 getSelectBean2
      * @param bean 多条件查询
      * @param <T>  多条件查询
      * @return JPAUtilExpandCriteria
      */
     public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean) {
+        return getTjpaUtilExpandCriteria(bean);
+    }
+
+
+    private static <T,B>  JPAUtilExpandCriteria<T> getTjpaUtilExpandCriteria(B bean) {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (Field field : fields) {
