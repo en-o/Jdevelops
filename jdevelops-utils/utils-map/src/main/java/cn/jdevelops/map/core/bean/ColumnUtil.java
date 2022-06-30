@@ -62,12 +62,15 @@ public class ColumnUtil {
         String fieldName = serializedLambda.getImplMethodName().substring("get".length());
         fieldName = fieldName.replaceFirst(fieldName.charAt(0) + "", (fieldName.charAt(0) + "").toLowerCase());
         Field field;
+        Class<?> aClass = null;
         try {
-            field = Class.forName(serializedLambda.getImplClass().replace("/", ".")).getDeclaredField(fieldName);
-        } catch (ClassNotFoundException | NoSuchFieldException e) {
+            aClass = Class.forName(serializedLambda.getImplClass().replace("/", "."));
+            field = aClass.getDeclaredField(fieldName);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }catch (NoSuchFieldException ne) {
+            field = superclass(aClass,fieldName);
         }
-
         // 从field取出字段名，可以根据实际情况调整
         TableField tableField = field.getAnnotation(TableField.class);
         if (tableField != null && tableField.value().length() > 0) {
@@ -109,4 +112,11 @@ public class ColumnUtil {
 
 
 
+    private static Field superclass(Class<?> aClass,String fieldName){
+        try {
+            return aClass.getSuperclass().getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            return superclass(aClass,fieldName);
+        }
+    }
 }
