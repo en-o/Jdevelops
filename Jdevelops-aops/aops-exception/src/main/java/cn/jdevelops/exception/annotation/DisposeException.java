@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * exceptions[youerr.class,meerr.class]
  * @author tnnn
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DisposeException {

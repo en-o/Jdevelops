@@ -7,10 +7,10 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * 异常处理
@@ -21,14 +21,20 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
-@Lazy(false)
 public class ExceptionAspect {
 
     private static final int DEF_CODE = 500;
 
     private static Throwable oneEx;
 
-    @Pointcut("@annotation(cn.jdevelops.exception.annotation.DisposeException)")
+    /**
+     * <p>
+     *     within 对象级别
+     *     annotation 方法级别
+     * </p>
+     *
+     */
+    @Pointcut("@within(cn.jdevelops.exception.annotation.DisposeException) || @annotation(cn.jdevelops.exception.annotation.DisposeException)")
     public void disposeException() {
     }
 
@@ -39,9 +45,14 @@ public class ExceptionAspect {
     public void doAfterThrowing(JoinPoint jp, Exception ex) {
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) jp.getSignature();
+
+
         //获取切入点所在的方法
         Method method = signature.getMethod();
         DisposeException disposeException = method.getAnnotation(DisposeException.class);
+        if(Objects.isNull(disposeException)){
+            disposeException = jp.getTarget().getClass().getAnnotation(DisposeException.class);
+        }
         String[] messages = disposeException.messages();
         Class[] exceptions = disposeException.exceptions();
         int[] codes = disposeException.codes();
