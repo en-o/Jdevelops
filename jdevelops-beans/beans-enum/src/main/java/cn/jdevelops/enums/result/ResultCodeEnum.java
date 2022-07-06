@@ -44,7 +44,7 @@ public enum ResultCodeEnum {
     /**
      * token 校验失败异常
      */
-    TOKEN_ERROR(10003,"token 校验失败异常"),
+    TOKEN_ERROR(10003,"token校验失败"),
 
     /**
      * 访问权限异常
@@ -92,11 +92,29 @@ public enum ResultCodeEnum {
      */
     MESSAGE_NO_READING(10012,"消息不可读"),
 
-
     /**
      * 消息不可读
      */
     API_SIGN_ERROR(10013,"接口签名不正确"),
+
+
+    /**
+     * 敏感词汇
+     */
+    SENSITIVE_WORD(10014,"敏感词汇，请重新输入"),
+
+    /**
+     * 参数不正确
+     */
+    PARAMETER_ERROR(10015,"参数不正确"),
+
+
+    /**
+     * 数据重复
+     */
+    DATA_REDO(10016,"数据重复"),
+
+
     /**
      * 数据格式检验失败
      */
@@ -108,9 +126,32 @@ public enum ResultCodeEnum {
 
 
     /**
+     * 用户名或密码有误，请重新输入
+     */
+    USER_LOGIN_REDO(2446,"用户名或密码有误，请重新输入"),
+
+    /**
+     * 密码不一致，请重新输入
+     */
+    PWD_VERIFY(2446,"密码不一致，请重新输入"),
+
+
+    /**
+     * 单点登录失败
+     */
+    CAS_LOGIN_ERROR(2447,"单点登录失败"),
+
+    /**
+     * 数据重复
+     */
+    USER_DISABLED(2448,"您的账户目前是禁用状态，请联系管理员"),
+
+    /**
      * 用户不存在
      */
     SQL_ERROR(3306,"sql异常，详情请查看日志"),
+
+
 
 
     ;
