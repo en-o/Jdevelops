@@ -1,6 +1,7 @@
 package cn.jdevelops.jpa.server.service;
 
 import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
+import cn.jdevelops.map.core.bean.ColumnUtil;
 import cn.jdevelops.result.page.ResourcePage;
 import cn.jdevelops.result.response.PageVO;
 import cn.jdevelops.result.response.RoutinePageDTO;
@@ -81,6 +82,30 @@ public interface J2Service<T> {
     Boolean updateByBean(T t);
 
 
+
+
+    /**
+     * 更新数据 返回实体
+     *
+     * @param bean 实体 (指定的selectKey必须要有值)
+     * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
+     * @return Boolean
+     * @throws Exception Exception
+     */
+    Boolean updateByBean(T bean, String selectKey) throws Exception;
+
+
+    /**
+     * 更新数据 返回实体
+     *
+     * @param bean 实体 (指定的selectKey必须要有值)
+     * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
+     * @return Boolean
+     * @throws Exception Exception
+     */
+    Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws Exception;
+
+
     /**
      * 根据 id 查询
      * 查询不到返回null
@@ -123,9 +148,10 @@ public interface J2Service<T> {
      * @param sortVO 排序
      * @param clazz  返回实体类型
      * @param <R>    返回实体类型
+     * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourcePage<List < R>>
      */
-    <R> ResourcePage<List<R>> findByBean(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+    <R,B> ResourcePage<List<R>> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -135,9 +161,10 @@ public interface J2Service<T> {
      * @param sortVO 排序
      * @param clazz  返回实体类型
      * @param <R>    返回实体类型
+     * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourcePage<List < R>>
      */
-    <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+    <R,B> ResultVO<ResourcePage<List<R>>> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -146,9 +173,10 @@ public interface J2Service<T> {
      * @param pageDTO 分页 排序
      * @param clazz   返回实体类型
      * @param <R>     返回实体类型
+     * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourcePage<List < R>>
      */
-    <R> ResourcePage<List<R>> findByBean(T t, RoutinePageDTO pageDTO, Class<R> clazz);
+    <R,B> ResourcePage<List<R>> findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -157,9 +185,10 @@ public interface J2Service<T> {
      * @param pageDTO 分页 排序
      * @param clazz   返回实体类型
      * @param <R>     返回实体类型
+     * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourcePage<List < R>>
      */
-    <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, RoutinePageDTO pageDTO, Class<R> clazz);
+    <R,B> ResultVO<ResourcePage<List<R>>> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz);
 
 
 }
