@@ -31,6 +31,7 @@ import java.util.Optional;
  */
 @Slf4j
 @NoRepositoryBean
+@Deprecated
 public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
     @Autowired

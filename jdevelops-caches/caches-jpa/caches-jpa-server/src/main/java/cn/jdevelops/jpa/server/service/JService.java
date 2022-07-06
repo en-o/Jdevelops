@@ -14,6 +14,7 @@ import java.util.List;
  * @author tn
  * @date 2021-01-22 13:35
  */
+@Deprecated
 public interface JService<T> {
 
     /**
