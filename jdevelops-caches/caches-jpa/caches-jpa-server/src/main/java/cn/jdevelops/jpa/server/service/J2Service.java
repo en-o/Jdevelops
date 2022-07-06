@@ -133,6 +133,15 @@ public interface J2Service<T> {
      */
     List<T> findByBean(T t);
 
+
+    /**
+     * 复杂查询
+     * @param dto 数据实体的VO TDO BO PO等异形类
+     * @param sort 排序
+     * @return List<T>
+     */
+    <B> List<T> findComplex(B dto, SortVO sort);
+
     /**
      * 查询所有
      *

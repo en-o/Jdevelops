@@ -4,6 +4,7 @@ import cn.jdevelops.entity.basics.vo.SerializableVO;
 import cn.jdevelops.jap.core.util.CommUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.JPageUtil;
+import cn.jdevelops.jap.core.util.SortUtil;
 import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
 import cn.jdevelops.jpa.server.service.J2Service;
 import cn.jdevelops.map.core.bean.ColumnUtil;
@@ -124,6 +125,12 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     public List<T> findByBean(T t) {
         JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
         return commonDao.findAll(selectRegionBean);
+    }
+
+    @Override
+    public <B> List<T> findComplex(B dto, SortVO sort) {
+        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean2(dto);
+        return commonDao.findAll(selectRegionBean, JPageUtil.getSv2S(sort));
     }
 
     @Override
