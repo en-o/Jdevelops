@@ -12,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 分页相关
@@ -34,12 +36,7 @@ public class JPageUtil {
         if (sortVO == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            if (sortVO.getOrderDesc().equals(0)) {
-                return Sort.by(Sort.Direction.ASC,
-                        StringUtils.isNotBlank(sortVO.getOrderBy()) ? sortVO.getOrderBy() : "id");
-            }
-            return Sort.by(Sort.Direction.DESC,
-                    StringUtils.isNotBlank(sortVO.getOrderBy()) ? sortVO.getOrderBy() : "id");
+            return getOrders(sortVO.getOrderDesc(), sortVO.getOrderBy());
         }
     }
 
@@ -54,13 +51,18 @@ public class JPageUtil {
         if (StringUtils.isBlank(sort.getOrderBy()) && sort.getOrderDesc() == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            if (sort.getOrderDesc().equals(0)) {
-                return Sort.by(Sort.Direction.ASC,
-                        StringUtils.isNotBlank(sort.getOrderBy()) ? sort.getOrderBy() : "id");
-            }
-            return Sort.by(Sort.Direction.DESC,
-                    StringUtils.isNotBlank(sort.getOrderBy()) ? sort.getOrderBy() : "id");
+            return getOrders(sort.getOrderDesc(), sort.getOrderBy());
         }
+    }
+
+    @NotNull
+    private static Sort getOrders(Integer orderDesc, String orderBy) {
+        if (!Objects.isNull(orderDesc) && 0 == orderDesc) {
+            return Sort.by(Sort.Direction.ASC,
+                    StringUtils.isNotBlank(orderBy) ? orderBy : "id");
+        }
+        return Sort.by(Sort.Direction.DESC,
+                StringUtils.isNotBlank(orderBy) ? orderBy : "id");
     }
 
     /**
@@ -75,6 +77,18 @@ public class JPageUtil {
         return PageRequest.of(pageVoDef.getPageIndex(),
                 pageVoDef.getPageSize(),
                 getSv2S(sortVO));
+    }
+
+
+    /**
+     * 获取分页 Pageable
+     * @param pageVO 分页
+     * @return Pageable
+     */
+    public static Pageable getPageable(PageVO pageVO) {
+        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+        return PageRequest.of(pageVoDef.getPageIndex(),
+                pageVoDef.getPageSize());
     }
 
 
