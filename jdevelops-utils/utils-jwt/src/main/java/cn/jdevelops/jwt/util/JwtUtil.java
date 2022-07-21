@@ -30,7 +30,6 @@ public class JwtUtil {
     private static final String JWT_BEAN_STR = "jwtBean";
 
 
-
     /**
      * 生成签名
      * @param loginName 登录名  用户唯一凭证
@@ -111,8 +110,12 @@ public class JwtUtil {
         HashMap<String, Object> header = new HashMap<>(2);
         header.put("typ", "JWT");
         header.put("alg", "HS256");
-        //附带username和userID生成签名
-        JWTCreator.Builder builder = JWT.create().withHeader(header);
+        // jwt
+        JWTCreator.Builder builder = JWT.create();
+
+        //jwt header
+        builder.withHeader(header);
+        // 用户自定义字段
         builder.withClaim(JwtConstant.TOKEN_KEY,loginName);
         if(map!=null){
             Iterator<String> iterator = map.keySet().iterator();
@@ -121,7 +124,18 @@ public class JwtUtil {
                 builder.withClaim(key,map.get(key)+"");
             }
         }
-        return builder.withExpiresAt(date).sign(algorithm);
+        // 签发时间
+        builder.withIssuedAt(new Date());
+        // 过期时间
+        builder.withExpiresAt(date);
+        // 发行人
+        builder.withIssuer("jdevelops");
+        // 主题
+        builder.withSubject(loginName);
+        // 编号/版本
+        builder.withJWTId(UUID.randomUUID().toString());
+        // 生成token
+        return builder.sign(algorithm);
     }
 
 
