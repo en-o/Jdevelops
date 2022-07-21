@@ -8,6 +8,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.slf4j.Logger;
@@ -200,9 +201,33 @@ public class JwtUtil {
         DecodedJWT jwt = JWT.decode(token);
         Map<String, Claim> claims = jwt.getClaims();
         return getClaims(claims);
-
     }
 
+    /**
+     *  验证并解析
+     * @param token 获取token
+     * @return jwt内容
+     */
+    public static Map<String, Object> parseJwtVerify(String token){
+        boolean verity = verity(token);
+        if(!verity){
+            throw new JWTVerificationException("token过期");
+        }
+        DecodedJWT jwt = JWT.decode(token);
+        Map<String, Claim> claims = jwt.getClaims();
+        return getClaims(claims);
+    }
+
+
+    /**
+     * 获取 jwt 的内容 - 过期令牌也能解析
+     * @param token 获取token
+     * @return jwt内容
+     */
+    public static Map<String, Claim> parseJwt2(String token){
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getClaims();
+    }
 
     /**
      * 获取token
