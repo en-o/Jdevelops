@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package cn.jdevelops.spring.schema;
+package cn.jdevelops.schema;
 
 import java.io.InputStream;
 import java.net.URL;

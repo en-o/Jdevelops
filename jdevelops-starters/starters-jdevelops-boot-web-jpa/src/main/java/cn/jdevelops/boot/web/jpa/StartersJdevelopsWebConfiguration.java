@@ -1,7 +1,7 @@
 package cn.jdevelops.boot.web.jpa;
 
-import cn.jdevelops.spring.properties.DataBaseProperties;
-import cn.jdevelops.spring.schema.LocalDataSourceLoader;
+import cn.jdevelops.schema.LocalDataSourceLoader;
+import cn.jdevelops.schema.properties.DataBaseProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.spring.schema;
-import cn.jdevelops.spring.constant.SchemaConstant;
-import cn.jdevelops.spring.properties.DataBaseProperties;
+package cn.jdevelops.schema;
+import cn.jdevelops.schema.constant.SchemaConstant;
+import cn.jdevelops.schema.properties.DataBaseProperties;
+import cn.jdevelops.schema.util.StringUtil;
 import com.google.common.base.Splitter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -96,7 +96,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
         runner.setLogWriter(null);
         Resources.setCharset(StandardCharsets.UTF_8);
         String initScript = dataBaseProperties.getInitScript();
-        if (SchemaConstant.AUTO.equalsIgnoreCase(initScript) || StringUtils.isBlank(initScript)) {
+        if (SchemaConstant.AUTO.equalsIgnoreCase(initScript) || StringUtil.isBlank(initScript)) {
             switch (jdbcType.get()) {
                 case 1:
                     // 请查看示例 https://gist.github.com/retanoj/5fd369524a18ab68a4fe7ac5e0d121e8

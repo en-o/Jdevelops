@@ -28,6 +28,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>caches-auto-schema</artifactId>
+            <version>2.0.5</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

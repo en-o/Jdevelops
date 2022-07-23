@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.spring.properties;
+package cn.jdevelops.schema.properties;
 
 import lombok.Getter;
 import lombok.Setter;
