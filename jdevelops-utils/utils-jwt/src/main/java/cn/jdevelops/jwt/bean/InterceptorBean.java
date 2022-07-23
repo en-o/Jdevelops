@@ -1,4 +1,4 @@
-package cn.jdevelops.jwtweb.bean;
+package cn.jdevelops.jwt.bean;
 
 import lombok.Getter;
 import lombok.Setter;

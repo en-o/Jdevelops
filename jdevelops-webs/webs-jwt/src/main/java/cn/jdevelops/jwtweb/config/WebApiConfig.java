@@ -1,5 +1,5 @@
 package cn.jdevelops.jwtweb.config;
-import cn.jdevelops.jwtweb.bean.InterceptorBean;
+import cn.jdevelops.jwt.bean.InterceptorBean;
 import cn.jdevelops.jwtweb.interceptor.WebApiInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Configuration
 public class WebApiConfig implements WebMvcConfigurer {
 
-    @Autowired(required=false)
+    @Resource
     private InterceptorBean interceptorBean;
 
     @Bean
@@ -34,7 +35,7 @@ public class WebApiConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截
         Set<String> addPathPatterns = interceptorBean.getAddPathPatterns();
-        if(null==addPathPatterns||addPathPatterns.size() <= 0){
+        if(addPathPatterns.isEmpty()){
             addPathPatterns.add("/**");
         }
 

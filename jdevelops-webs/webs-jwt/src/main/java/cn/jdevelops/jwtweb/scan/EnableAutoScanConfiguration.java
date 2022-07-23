@@ -1,6 +1,6 @@
 package cn.jdevelops.jwtweb.scan;
 
-import cn.jdevelops.jwtweb.bean.InterceptorBean;
+import cn.jdevelops.jwt.bean.InterceptorBean;
 import cn.jdevelops.jwtweb.config.WebApiConfig;
 import cn.jdevelops.jwtweb.holder.ApplicationContextHolder;
 import cn.jdevelops.jwtweb.server.impl.DefaultInterceptor;

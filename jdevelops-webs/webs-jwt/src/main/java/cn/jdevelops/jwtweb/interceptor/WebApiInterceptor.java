@@ -1,10 +1,10 @@
 package cn.jdevelops.jwtweb.interceptor;
 
 import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.jwt.annotation.ApiMapping;
 import cn.jdevelops.jwt.constant.JwtConstant;
 import com.alibaba.fastjson.JSON;
 import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.jwtweb.annotation.ApiMapping;
 import cn.jdevelops.jwtweb.holder.ApplicationContextHolder;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import cn.jdevelops.jwtweb.server.impl.DefaultInterceptor;
