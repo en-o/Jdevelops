@@ -28,6 +28,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+
 /**
  * SPI的实现方法
  *  拓展类加载器（通过加载扩展文件来完成的。）
@@ -321,7 +322,7 @@ public class ExtensionLoader<T> {
         } else if (!Objects.equals(oldClass, subClass)) {
             if (subClass.getAnnotation(JoinSPI.class).cover()){
                 classes.put(name, subClass);
-                LOG.warn(name+"被"+subClass.getName()+"覆盖");
+                LOG.warn("{}被{}覆盖", name, subClass.getName());
             }else {
                 throw new IllegalStateException("load extension resources error,Duplicate class " + clazz.getName() + " name " + name + " on " + oldClass.getName() + " or " + subClass.getName());
             }
