@@ -319,7 +319,13 @@ public class ExtensionLoader<T> {
         if (Objects.isNull(oldClass)) {
             classes.put(name, subClass);
         } else if (!Objects.equals(oldClass, subClass)) {
-            throw new IllegalStateException("load extension resources error,Duplicate class " + clazz.getName() + " name " + name + " on " + oldClass.getName() + " or " + subClass.getName());
+            if (subClass.getAnnotation(JoinSPI.class).cover()){
+                classes.put(name, subClass);
+                LOG.warn(name+"被"+subClass.getName()+"覆盖");
+            }else {
+                throw new IllegalStateException("load extension resources error,Duplicate class " + clazz.getName() + " name " + name + " on " + oldClass.getName() + " or " + subClass.getName());
+            }
+
         }
     }
 

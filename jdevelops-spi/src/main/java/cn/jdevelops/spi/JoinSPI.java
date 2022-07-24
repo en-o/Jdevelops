@@ -29,4 +29,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface JoinSPI {
+
+    /**
+     * true 遇到相同以最新的覆盖掉
+     * @return boolean
+     */
+    boolean cover() default false;
 }
