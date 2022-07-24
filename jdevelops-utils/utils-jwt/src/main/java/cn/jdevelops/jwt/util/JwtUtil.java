@@ -26,7 +26,7 @@ import java.util.*;
 
 public class JwtUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     private static final String JWT_BEAN_STR = "jwtBean";
 
@@ -46,7 +46,11 @@ public class JwtUtil {
         HashMap<String, Object> header = new HashMap<>(2);
         header.put("typ", "JWT");
         header.put("alg", "HS256");
-        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header)
+                .withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withSubject(loginName)
+                .withExpiresAt(date)
+                .sign(algorithm);
     }
 
     /**
@@ -66,8 +70,12 @@ public class JwtUtil {
         header.put("typ", "JWT");
         header.put("alg", "HS256");
         //附带username和userID生成签名
-        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName)
-                .withClaim(JwtConstant.TOKEN_REMARK, remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header)
+                .withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withSubject(loginName)
+                .withClaim(JwtConstant.TOKEN_REMARK, remark==null?"":remark.toJSONString())
+                .withExpiresAt(date)
+                .sign(algorithm);
     }
 
 
@@ -90,8 +98,12 @@ public class JwtUtil {
         header.put("typ", "JWT");
         header.put("alg", "HS256");
         //附带username和userID生成签名
-        return JWT.create().withHeader(header).withClaim(JwtConstant.TOKEN_KEY,loginName)
-                .withClaim(JwtConstant.TOKEN_REMARK,remark==null?"":remark.toJSONString()).withExpiresAt(date).sign(algorithm);
+        return JWT.create().withHeader(header)
+                .withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withSubject(loginName)
+                .withClaim(JwtConstant.TOKEN_REMARK,remark==null?"":remark.toJSONString())
+                .withExpiresAt(date)
+                .sign(algorithm);
     }
 
 
@@ -189,6 +201,18 @@ public class JwtUtil {
         DecodedJWT jwt = JWT.decode(token);
         // 只能输出String类型，如果是其他类型返回null
         return jwt.getClaim(claim==null?JwtConstant.TOKEN_KEY:claim).asString();
+    }
+
+
+    /**
+     * 获得Token中的 Subject
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getSubject(String token) {
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getSubject();
     }
 
 
