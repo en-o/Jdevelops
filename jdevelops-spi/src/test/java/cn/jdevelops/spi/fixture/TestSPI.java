@@ -12,5 +12,5 @@ import cn.jdevelops.spi.SPI;
 @SPI
 public interface TestSPI {
 
-    void test();
+    String test();
 }

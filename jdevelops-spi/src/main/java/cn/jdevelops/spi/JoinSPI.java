@@ -31,7 +31,8 @@ import java.lang.annotation.*;
 public @interface JoinSPI {
 
     /**
-     * true 遇到相同以最新的覆盖掉
+     * true 表示如果存在重复则丢弃，不加入spi集合中去
+     * PS: 此参数一般用在不同的jar下面对统一接口进行spi实现
      * @return boolean
      */
     boolean cover() default false;

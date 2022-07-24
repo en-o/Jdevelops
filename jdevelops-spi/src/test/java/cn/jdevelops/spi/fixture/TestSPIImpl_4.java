@@ -12,7 +12,7 @@ import cn.jdevelops.spi.JoinSPI;
 @JoinSPI(cover = true)
 public class TestSPIImpl_4 implements TestSPI{
     @Override
-    public void test() {
-        System.out.println("test4 换 test3");
+    public String test() {
+        return "test4";
     }
 }

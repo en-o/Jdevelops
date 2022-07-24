@@ -320,9 +320,12 @@ public class ExtensionLoader<T> {
         if (Objects.isNull(oldClass)) {
             classes.put(name, subClass);
         } else if (!Objects.equals(oldClass, subClass)) {
-            if (subClass.getAnnotation(JoinSPI.class).cover()){
+            // 判断新进来的是否可以被丢弃
+            if(subClass.getAnnotation(JoinSPI.class).cover()){
+                LOG.warn("{}存在相同实现，此次{}操作被丢弃", name, oldClass.getName());
+            }else if(oldClass.getAnnotation(JoinSPI.class).cover()){
+                // 判断旧的是否可以被丢弃，可以则用新的替换旧的
                 classes.put(name, subClass);
-                LOG.warn("{}被{}覆盖", name, subClass.getName());
             }else {
                 throw new IllegalStateException("load extension resources error,Duplicate class " + clazz.getName() + " name " + name + " on " + oldClass.getName() + " or " + subClass.getName());
             }
