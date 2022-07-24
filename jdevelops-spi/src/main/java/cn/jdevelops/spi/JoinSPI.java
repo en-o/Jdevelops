@@ -22,6 +22,7 @@ import java.lang.annotation.*;
 /**
  * SPI注解的配套注解
  *  被此注解标记的类会被添加到SPI中
+ *  加载顺序：从最外层开始加载
  * @author web
  * @date 2022-04-01 10:18
  */
