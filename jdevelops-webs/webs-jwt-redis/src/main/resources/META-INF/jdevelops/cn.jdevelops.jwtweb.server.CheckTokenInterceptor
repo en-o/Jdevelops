@@ -1,0 +1,1 @@
+defaultInterceptor=cn.jdevelops.jredis.interceptor.RedisInterceptor

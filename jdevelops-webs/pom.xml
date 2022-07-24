@@ -15,6 +15,7 @@
         <module>webs-jwt</module>
         <module>webs-socket</module>
         <module>webs-springs</module>
+        <module>webs-jwt-redis</module>
     </modules>
 
     <dependencies>
