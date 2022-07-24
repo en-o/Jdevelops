@@ -7,7 +7,7 @@
     <groupId>cn.jdevelops</groupId>
     <artifactId>jdevelops</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.5</version>
+    <version>2.0.6</version>
     <name>jdevelops</name>
     <description>开发用的小组件</description>
     <url>https://github.com/en-o/Jdevelops</url>
@@ -83,7 +83,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jdevelops.last.version>2.0.5</jdevelops.last.version>
+        <jdevelops.last.version>2.0.6</jdevelops.last.version>
         <knife4j.version>3.0.3</knife4j.version>
         <spring-core.version>[5.3.20,)</spring-core.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
@@ -471,20 +471,20 @@
                 </configuration>
             </plugin>
             <!-- maven中央仓库配置 GPG签署组件 -->
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-gpg-plugin</artifactId>-->
-            <!--                <version>1.5</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>sign-artifacts</id>-->
-            <!--                        <phase>verify</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>sign</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-gpg-plugin</artifactId>
+                            <version>1.5</version>
+                            <executions>
+                                <execution>
+                                    <id>sign-artifacts</id>
+                                    <phase>verify</phase>
+                                    <goals>
+                                        <goal>sign</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
             <!--
             https://central.sonatype.org/publish/publish-maven/#nexus-staging-maven-plugin-for-deployment-and-release
             mvn clean deploy
