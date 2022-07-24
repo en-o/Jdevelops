@@ -22,6 +22,11 @@
             <artifactId>apis-exception</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-spi</artifactId>
+            <version>${jdevelops.last.version}</version>
+        </dependency>
     </dependencies>
 
 

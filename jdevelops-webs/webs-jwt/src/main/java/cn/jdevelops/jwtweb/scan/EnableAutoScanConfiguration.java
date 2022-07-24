@@ -3,7 +3,6 @@ package cn.jdevelops.jwtweb.scan;
 import cn.jdevelops.jwt.bean.InterceptorBean;
 import cn.jdevelops.jwtweb.config.WebApiConfig;
 import cn.jdevelops.jwtweb.holder.ApplicationContextHolder;
-import cn.jdevelops.jwtweb.server.impl.DefaultInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -16,8 +15,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnWebApplication
 @Import({WebApiConfig.class,
         ApplicationContextHolder.class,
-        InterceptorBean.class,
-        DefaultInterceptor.class
+        InterceptorBean.class
 })
 @ComponentScan("cn.jdevelops.jwtweb.**")
 public class EnableAutoScanConfiguration {

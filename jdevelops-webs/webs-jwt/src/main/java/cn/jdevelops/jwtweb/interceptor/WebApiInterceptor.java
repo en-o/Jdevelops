@@ -2,12 +2,13 @@ package cn.jdevelops.jwtweb.interceptor;
 
 import cn.jdevelops.exception.result.ExceptionResultWrap;
 import cn.jdevelops.jwt.annotation.ApiMapping;
+import cn.jdevelops.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.jwt.constant.JwtConstant;
+import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.spi.ExtensionLoader;
 import com.alibaba.fastjson.JSON;
 import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.jwtweb.holder.ApplicationContextHolder;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
-import cn.jdevelops.jwtweb.server.impl.DefaultInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,12 +28,11 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 public class WebApiInterceptor implements HandlerInterceptor {
-
-
     private CheckTokenInterceptor checkTokenInterceptor;
 
-
-
+    public WebApiInterceptor() {
+        getCheckTokenInterceptor();
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -46,29 +46,66 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (method.isAnnotationPresent(ApiMapping.class)) {
             ApiMapping annotation = method.getAnnotation(ApiMapping.class);
             if (annotation.checkToken()) {
-                return  check(request, response, handler, logger);
+                return check_refresh_token(request, response, handler, method, logger);
             }else{
                 return true;
             }
         }else{
-            return  check(request, response, handler, logger);
+            return check_refresh_token(request, response, handler, method, logger);
         }
     }
 
-    private boolean check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws IOException {
-            String token = getToken(request);
-            getCheckTokenInterceptor();
-            boolean flag = checkTokenInterceptor.checkToken(token);
-            logger.info("需要验证token,校验结果：{},token:{}", flag,token);
-            if (!flag) {
-                response.setHeader("content-type", "application/json;charset=UTF-8");
-                response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TOKEN_ERROR.getCode(), "无效的token")));
-                return false;
-            }
-            MDC.put(JwtConstant.TOKEN, token);
-            return true;
+
+    /**
+     *  验证并刷新token缓存
+     *
+     * @param request request
+     * @param response response
+     * @param handler handler
+     * @param method method
+     * @param logger logger
+     * @return boolean
+     * @throws IOException
+     */
+    private boolean check_refresh_token(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        Object handler, Method method,
+                                        Logger logger) throws IOException {
+        boolean check = check(request, response, handler, logger);
+        if(check){
+            refreshToken(request, method);
+        }
+        return check;
     }
 
+
+    /**
+     * 验证token
+     * @param request request
+     * @param response response
+     * @param handler handler
+     * @param logger logger
+     * @return check
+     * @throws IOException IOException
+     */
+    private boolean check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws IOException {
+        String token = getToken(request);
+        boolean flag = checkTokenInterceptor.checkToken(token);
+        logger.info("需要验证token,校验结果：{},token:{}", flag,token);
+        if (!flag) {
+            response.setHeader("content-type", "application/json;charset=UTF-8");
+            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TOKEN_ERROR.getCode(), "无效的token")));
+            return false;
+        }
+        MDC.put(JwtConstant.TOKEN, token);
+        return true;
+    }
+
+    /**
+     * 获取token
+     * @param request request
+     * @return String
+     */
     private String getToken(HttpServletRequest request) {
         String token = request.getHeader(JwtConstant.TOKEN);
         if (StringUtils.isNotBlank(token)) {
@@ -78,12 +115,36 @@ public class WebApiInterceptor implements HandlerInterceptor {
         return token;
     }
 
-    private  void getCheckTokenInterceptor (){
+
+    /**
+     * 刷新缓存
+     * @param request request
+     * @param method method
+     */
+    private void refreshToken(HttpServletRequest request, Method method) {
+        // token缓存刷新
         try {
-            checkTokenInterceptor = ApplicationContextHolder.get().getBean(CheckTokenInterceptor.class);
-        } catch (Exception e) {
-            // 使用默认拦截
-            checkTokenInterceptor = ApplicationContextHolder.get().getBean(DefaultInterceptor.class);
+            //  此注解表示不刷新缓存
+            if(!method.isAnnotationPresent(NotRefreshToken.class)){
+                // 每次接口进来都要属性 token缓存。刷新方式请自主实现
+                checkTokenInterceptor.refreshToken(getUserNoByToken(request));
+            }
+        }catch (Exception e){
+            log.warn("token缓存刷新失败",e);
         }
+    }
+
+    /**
+     * 获取用户的唯一编码
+     * @param request request
+     * @return String
+     */
+    private String getUserNoByToken(HttpServletRequest request) {
+        String token = getToken(request);
+        return JwtUtil.getSubject(token);
+    }
+
+    private  void getCheckTokenInterceptor (){
+        checkTokenInterceptor = ExtensionLoader.getExtensionLoader(CheckTokenInterceptor.class).getJoin("defaultInterceptor");
     }
 }

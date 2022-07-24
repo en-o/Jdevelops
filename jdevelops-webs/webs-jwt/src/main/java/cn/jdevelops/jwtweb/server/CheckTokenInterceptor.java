@@ -1,13 +1,14 @@
 package cn.jdevelops.jwtweb.server;
 
 
-import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.spi.SPI;
 
 /**
  * 请各自的服务去实现该接口, 并注入到spring上下文中去
  * @author Tianms
  * @date 2020/4/19 11:18
  */
+@SPI
 public interface CheckTokenInterceptor {
 
     /**
@@ -15,7 +16,12 @@ public interface CheckTokenInterceptor {
      * @param token token
      * @return boolean
      */
-    default boolean checkToken(String token) {
-        return JwtUtil.verity(token);
-    }
+    boolean checkToken(String token);
+
+
+    /**
+     * 刷新token缓存 (默认不刷新
+     * @param userCode 用户唯一编码
+     */
+    void refreshToken(String userCode);
 }
