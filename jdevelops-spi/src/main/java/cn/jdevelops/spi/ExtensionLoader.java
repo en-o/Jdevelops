@@ -322,7 +322,7 @@ public class ExtensionLoader<T> {
         } else if (!Objects.equals(oldClass, subClass)) {
             // 判断新进来的是否可以被丢弃
             if(subClass.getAnnotation(JoinSPI.class).cover()){
-                LOG.warn("{}存在相同实现，此次{}操作被丢弃", name, oldClass.getName());
+                LOG.warn("{}存在相同实现，此次{}操作被丢弃,存留{}", name, subClass.getName(), oldClass.getName());
             }else if(oldClass.getAnnotation(JoinSPI.class).cover()){
                 // 判断旧的是否可以被丢弃，可以则用新的替换旧的
                 classes.put(name, subClass);
