@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
+import javax.annotation.Resource;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+
+import static cn.jdevelops.doc.core.swagger.constant.PublicConstant.COLON;
+import static cn.jdevelops.doc.core.swagger.constant.PublicConstant.SPIRIT;
 
 /**
  * 控制台输出
@@ -24,8 +28,6 @@ import java.util.Enumeration;
 @Slf4j
 public class ConsoleConfig implements ApplicationRunner {
 
-	public static final String SPIRIT = "/";
-
 
 	@Value("${server.port:8080}")
 	private int serverPort;
@@ -34,12 +36,12 @@ public class ConsoleConfig implements ApplicationRunner {
 	private String serverName;
 
 
-	@Autowired(required = false)
+	@Resource
 	private SwaggerBean swaggerBean;
 
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		try {
 			if (SPIRIT.equals(serverName)) {
 				serverName = "";
@@ -51,9 +53,9 @@ public class ConsoleConfig implements ApplicationRunner {
 			}
 			log.info("\n----------------------------------------------------------\n\t" +
 					" swagger 启动. Access URLs:\n\t" +
-					"swagger 启动成功！接口文档地址(cloud没有页面)-HTML: http://" + getRealIp() + ":" + serverPort + serverName + "/doc.html" + "\n\t" +
-					"swagger 启动成功！接口文档地址-JSON: http://" + getRealIp() + ":" + serverPort + serverName + "/v2/api-docs" + groupStr + "\n\t" +
-					"swagger 启动成功！接口文档地址-OpenApi-JSON: http://" + getRealIp() + ":" + serverPort + serverName + "/v3/api-docs" + groupStr + "\n\t" +
+					"swagger 启动成功！接口文档地址(cloud没有页面)-HTML: http://" + getRealIp() + COLON + serverPort + serverName + "/doc.html" + "\n\t" +
+					"swagger 启动成功！接口文档地址-JSON: http://" + getRealIp() + COLON + serverPort + serverName + "/v2/api-docs" + groupStr + "\n\t" +
+					"swagger 启动成功！接口文档地址-OpenApi-JSON: http://" + getRealIp() + COLON + serverPort + serverName + "/v3/api-docs" + groupStr + "\n\t" +
 					"----------------------------------------------------------");
 
 

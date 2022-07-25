@@ -1,20 +1,16 @@
 package cn.jdevelops.doc.swagger.cloud.core;
 
 import cn.jdevelops.doc.core.swagger.bean.SwaggerBean;
-import cn.jdevelops.doc.core.swagger.config.BaseConfig;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.net.InetAddress;
+import javax.annotation.Resource;
+
+import static cn.jdevelops.doc.core.swagger.util.SwaggerUtil.*;
 
 /**
  * swagger配置
@@ -26,9 +22,6 @@ import java.net.InetAddress;
 @EnableKnife4j
 @Configurable
 public class SwaggerConfig {
-
-
-    public static final String SPIRIT = "/";
 
     /**
      * 项目访问根路径
@@ -42,50 +35,28 @@ public class SwaggerConfig {
     @Value("${server.port:8080}")
     private String serverPort;
 
-    @Autowired(required=false)
+    @Resource
     private SwaggerBean swaggerBean;
 
     public Docket createRestApi() {
 
         Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfo(swaggerBean, serverName, serverPort))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(swaggerBean.getBasePackage()))
+                .apis(basePackage(swaggerBean.getBasePackage()))
                 /*对所有路径进行监控*/
                 .paths(PathSelectors.any())
                 .build();//赋予插件体系
 
         if(Boolean.TRUE.equals(swaggerBean.getAddHeaderToken())){
             //全站统一参数token
-            return  build.securitySchemes(BaseConfig.security())
-                    .securityContexts(BaseConfig.securityContexts());
+            return  build.securitySchemes(security())
+                    .securityContexts(securityContexts());
         }else {
             return build;
         }
     }
 
-    private ApiInfo apiInfo() {
-        Contact contact = new Contact(swaggerBean.getContactName(),
-                swaggerBean.getContactUrl(),
-                swaggerBean.getContactEmail());
-        String address = "127.0.0.1";
-        try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            address = inetAddress.getHostAddress();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        if(SPIRIT.equals(serverName)){
-            serverName = "";
-        }
-        return new ApiInfoBuilder()
-                .title(swaggerBean.getTitle())
-                .description(swaggerBean.getDescription())
-                .contact(contact)
-                .version(swaggerBean.getVersion())
-                .termsOfServiceUrl("http://"+address+":"+serverPort+serverName)
-                .build();
-    }
 
 }
