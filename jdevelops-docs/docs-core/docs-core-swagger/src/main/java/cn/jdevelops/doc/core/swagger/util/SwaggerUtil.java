@@ -95,6 +95,7 @@ public class SwaggerUtil {
                 .description(swaggerBean.getDescription())
                 .contact(contact)
                 .version(swaggerBean.getVersion())
+                .license("jdevelops")
                 .termsOfServiceUrl("http://"+localIP()+":"+serverPort+serverName)
                 .build();
     }
