@@ -471,20 +471,20 @@
                 </configuration>
             </plugin>
             <!-- maven中央仓库配置 GPG签署组件 -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <version>1.5</version>
-                            <executions>
-                                <execution>
-                                    <id>sign-artifacts</id>
-                                    <phase>verify</phase>
-                                    <goals>
-                                        <goal>sign</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
+<!--                        <plugin>-->
+<!--                            <groupId>org.apache.maven.plugins</groupId>-->
+<!--                            <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                            <version>1.5</version>-->
+<!--                            <executions>-->
+<!--                                <execution>-->
+<!--                                    <id>sign-artifacts</id>-->
+<!--                                    <phase>verify</phase>-->
+<!--                                    <goals>-->
+<!--                                        <goal>sign</goal>-->
+<!--                                    </goals>-->
+<!--                                </execution>-->
+<!--                            </executions>-->
+<!--                        </plugin>-->
             <!--
             https://central.sonatype.org/publish/publish-maven/#nexus-staging-maven-plugin-for-deployment-and-release
             mvn clean deploy
