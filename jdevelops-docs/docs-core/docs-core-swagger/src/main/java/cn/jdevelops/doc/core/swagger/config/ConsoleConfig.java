@@ -93,11 +93,9 @@ public class ConsoleConfig implements ApplicationRunner {
 						.getInetAddresses();
 				while (addresses.hasMoreElements()) {
 					InetAddress ip = addresses.nextElement();
-					if (ip != null) {
-						// ipv4
-						if (ip instanceof Inet4Address) {
-							return ip.getHostAddress();
-						}
+					// ipv4
+					if (ip instanceof Inet4Address) {
+						return ip.getHostAddress();
 					}
 				}
 				break;
