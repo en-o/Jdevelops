@@ -70,7 +70,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
     private boolean check_refresh_token(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Object handler, Method method,
-                                        Logger logger) throws IOException {
+                                        Logger logger) throws Exception {
         boolean check = check(request, response, handler, logger);
         if(check){
             refreshToken(request, method);
@@ -88,8 +88,9 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @return check
      * @throws IOException IOException
      */
-    private boolean check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws IOException {
+    private boolean check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws Exception {
         String token = getToken(request);
+        // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
         logger.info("需要验证token,校验结果：{},token:{}", flag,token);
         if (!flag) {
@@ -98,6 +99,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
             return false;
         }
         MDC.put(JwtConstant.TOKEN, token);
+        // 验证用户状态
+        checkUserStatus(request);
         return true;
     }
 
@@ -115,6 +118,16 @@ public class WebApiInterceptor implements HandlerInterceptor {
         return token;
     }
 
+
+    /**
+     * 检查用户状态
+     * @param request request
+     * @exception  Exception 用户状态异常
+     */
+    private void checkUserStatus(HttpServletRequest request) throws Exception{
+        // 检查用户状态
+        checkTokenInterceptor.checkUserStatus(getUserNoByToken(request));
+    }
 
     /**
      * 刷新缓存

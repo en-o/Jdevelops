@@ -14,11 +14,12 @@ public class DefaultInterceptor implements CheckTokenInterceptor {
 
     @Override
     public boolean checkToken(String token) {
-        return JwtUtil.verity(token);
+        try {
+            return JwtUtil.verity(token);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    @Override
-    public void refreshToken(String userCode) {
-
-    }
 }

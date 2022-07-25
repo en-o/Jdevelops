@@ -23,5 +23,12 @@ public interface CheckTokenInterceptor {
      * 刷新token缓存 (默认不刷新
      * @param userCode 用户唯一编码
      */
-    void refreshToken(String userCode);
+    default void refreshToken(String userCode){}
+
+
+    /**
+     * 检查用户状态(不正常的直接抛异常出去
+     * @param userCode 用户唯一编码
+     */
+    default void checkUserStatus(String userCode) throws Exception{}
 }

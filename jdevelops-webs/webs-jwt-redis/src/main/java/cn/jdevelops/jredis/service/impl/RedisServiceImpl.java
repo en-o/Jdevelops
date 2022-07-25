@@ -60,7 +60,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public String verifyUserToken(String userCode) {
+    public String verifyUserToken(String userCode) throws ExpiredRedisException {
         String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, userCode);
         // redis 中比对 token 正确性
         String tokenRedis = (String) redisTemplate.boundHashOps(loginRedisFolder).get(userCode);
@@ -76,7 +76,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void verifyUserStatus(String userCode) {
+    public void verifyUserStatus(String userCode) throws ExpiredRedisException{
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, userCode);
         Object redisUser = redisTemplate
                 .boundHashOps(userRedisFolder)
