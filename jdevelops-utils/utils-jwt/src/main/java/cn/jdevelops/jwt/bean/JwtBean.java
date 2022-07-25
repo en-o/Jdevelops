@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 /**
  * jwt秘钥跟过期时间
  * @author tn
@@ -23,7 +25,7 @@ public class JwtBean {
     /**
      * token私钥
      */
-    private String tokenSecret = "U0JBUElKV1RkV2FuZzkyNjQ1NA";
+    private String tokenSecret;
 
 
     /**
@@ -42,4 +44,10 @@ public class JwtBean {
      */
     private long loginExpireTime = 86400000;
 
+    public String getTokenSecret() {
+        if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
+            return "U0JBUElKV1RkV2FuZzkyNjQ1NAadasdawq1qqwez123w@123";
+        }
+        return tokenSecret;
+    }
 }
