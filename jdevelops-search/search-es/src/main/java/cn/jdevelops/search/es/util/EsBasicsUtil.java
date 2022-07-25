@@ -1,5 +1,6 @@
 package cn.jdevelops.search.es.util;
 
+
 import cn.jdevelops.search.es.constant.EsConstant;
 import cn.jdevelops.search.es.dto.ConditionDTO;
 import cn.jdevelops.search.es.dto.EqDTO;
@@ -18,6 +19,7 @@ import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class EsBasicsUtil {
 		}
 		eqDTOList.parallelStream().forEach(
 				i -> {
-					if (i.getField() != null && i.getFieldValue() != null && i.getFieldValue().size() > 0) {
+					if (i.getField() != null && i.getFieldValue() != null && !i.getFieldValue().isEmpty()) {
 						boolQueryBuilder.filter(QueryBuilders.termsQuery(i.getField(), i.getFieldValue()));
 					}
 				}
@@ -79,7 +81,7 @@ public class EsBasicsUtil {
 			return;
 		}
 		listList.forEach(i -> {
-			if (i != null && i.size() > 0) {
+			if (i != null && !i.isEmpty()) {
 				BoolQueryBuilder bq2 = QueryBuilders.boolQuery();
 				i.forEach(f -> bq2.should(setAdvanced(f)));
 				boolQueryBuilder.must(bq2);
@@ -99,7 +101,7 @@ public class EsBasicsUtil {
 	 */
 	public static BoolQueryBuilder setAdvanced(List<ConditionDTO> conditionDTOList) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		if (conditionDTOList != null && conditionDTOList.size() > 0) {
+		if (conditionDTOList != null && !conditionDTOList.isEmpty()) {
 			for (ConditionDTO cond : conditionDTOList) {
 				if (StringUtils.isBlank(cond.getFieldValue())) {
 					continue;
@@ -302,6 +304,34 @@ public class EsBasicsUtil {
 			highlight.requireFieldMatch(false);
 			highlight.preTags("<span style='color:red'>");
 			highlight.postTags("</span>");
+			query.highlighter(highlight);
+		}
+	}
+
+	/**
+	 * 设置高亮
+	 *
+	 * @param query           查询对象
+	 * @param highlightFields 高亮字段
+	 * @author lxw
+	 * @date 2021/5/11 16:31
+	 */
+	public static void setHighlightField(SearchSourceBuilder query, List<String> highlightFields) {
+		if (!CollectionUtils.isEmpty(highlightFields)) {
+			//高亮
+			HighlightBuilder highlight = new HighlightBuilder();
+			for (String field : highlightFields) {
+				highlight.field(field);
+			}
+			//关闭多个高亮
+			highlight.requireFieldMatch(false);
+			highlight.preTags("<span style='color:red'>");
+			highlight.postTags("</span>");
+			//下面这两项,如果你要高亮如文字内容等有很多字的字段,必须配置,不然会导致高亮不全,文章内容缺失等
+			//最大高亮分片数
+			highlight.fragmentSize(800000);
+			//从第一个分片获取高亮片段
+			highlight.numOfFragments(0);
 			query.highlighter(highlight);
 		}
 	}

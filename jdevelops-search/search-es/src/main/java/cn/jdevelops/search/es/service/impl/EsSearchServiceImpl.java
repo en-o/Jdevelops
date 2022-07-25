@@ -71,6 +71,15 @@ public class EsSearchServiceImpl implements EsSearchService {
 	}
 
 	@Override
+	public MultiGetResponse executMget(String indexName, List<String> ids) throws IOException {
+		MultiGetRequest multiGetRequest = new MultiGetRequest();
+		for (String no : ids) {
+			multiGetRequest.add(indexName, no);
+		}
+		return restHighLevelClient.mget(multiGetRequest, RequestOptions.DEFAULT);
+	}
+
+	@Override
 	public SearchResponse executeSearch(SearchRequest request) throws IOException {
 		SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
 		if (response.status().getStatus() == EsConstant.HTTP_200) {

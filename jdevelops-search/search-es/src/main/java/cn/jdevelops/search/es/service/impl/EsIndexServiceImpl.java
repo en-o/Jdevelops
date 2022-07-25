@@ -2,7 +2,6 @@ package cn.jdevelops.search.es.service.impl;
 
 import cn.jdevelops.search.es.service.EsIndexService;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -300,7 +299,6 @@ public class EsIndexServiceImpl implements EsIndexService {
 		request.id(esOnlyId);
 		request.timeout(TimeValue.timeValueSeconds(1));
 		//将数据放入请求 json
-		JSON.toJSONString(source);
 		request.source(JSON.toJSONString(source), XContentType.JSON);
 		//客户端发送请求
 		return addData(request);

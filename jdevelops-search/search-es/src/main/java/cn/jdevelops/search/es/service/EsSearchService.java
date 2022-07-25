@@ -57,6 +57,17 @@ public interface EsSearchService {
 	MultiGetResponse executMget(MultiGetRequest multiGetRequest) throws IOException;
 
 	/**
+	 * 一次性查询多个指定结果
+	 * @param indexName 索引名称
+	 * @param ids ES 唯一编号集合
+	 * @return org.elasticsearch.action.get.MultiGetResponse
+	 * @author lxw
+	 * @date 2022/6/13 18:31
+	 * @exception IOException IOException
+	 */
+	MultiGetResponse executMget(String indexName,List<String> ids) throws IOException;
+
+	/**
 	 * 查询
 	 *
 	 * @param request 请求对象
@@ -132,7 +143,10 @@ public interface EsSearchService {
 			, String nested, List<String> nestedFields
 			, List<ConditionDTO> conditionDTOList
 			, List<List<List<ConditionDTO>>> listList
-			, String highlightField, Integer startPage, Integer pageSize, List<SortDTO> sortDTOList) throws IOException;
+			, String highlightField
+			, Integer startPage
+			, Integer pageSize
+			, List<SortDTO> sortDTOList) throws IOException;
 
 	/**
 	 * 查询所有
