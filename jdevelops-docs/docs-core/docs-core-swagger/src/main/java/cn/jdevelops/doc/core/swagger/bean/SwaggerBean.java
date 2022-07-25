@@ -21,7 +21,7 @@ import springfox.documentation.spi.DocumentationType;
 public class SwaggerBean {
 
     /**
-     * controller接口所在的包
+     * controller接口所在的包(多个包以分号拼接，eg. package.api1;package.api2
      */
     private String basePackage="cn.jdevelops.controller";
 
