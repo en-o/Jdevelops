@@ -12,12 +12,16 @@ import java.util.Enumeration;
 
 
 /**
- * @author  谭宁
+ * @author 谭宁
  */
 @Slf4j
 public class IpUtil {
 
     static final String UNKNOWN = "unKnown";
+    static final String LOCALHOST = "localhost";
+
+    static final String COMMA = ",";
+
 
     /**
      * 获取有网关是 的真正客户端IP 测试过nginx可以获取
@@ -31,22 +35,23 @@ public class IpUtil {
      *     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
      * }
      * </pre>
+     *
      * @param request request
      * @return ip
      */
     public static String getPoxyIp(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if ( null != ip && !UNKNOWN.equalsIgnoreCase(ip) ) {
+        if (null != ip && !UNKNOWN.equalsIgnoreCase(ip)) {
             // 多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = ip.indexOf(",");
-            if ( index != -1 ) {
+            if (index != -1) {
                 return ip.substring(0, index);
             } else {
                 return ip;
             }
         }
         ip = request.getHeader("X-Real-IP");
-        if ( null != ip && !UNKNOWN.equalsIgnoreCase(ip) ) {
+        if (null != ip && !UNKNOWN.equalsIgnoreCase(ip)) {
             return ip;
         }
         return request.getRemoteAddr();
@@ -93,19 +98,34 @@ public class IpUtil {
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
+        // 本机访问
+        if (LOCALHOST.equalsIgnoreCase(ip)
+                || "127.0.0.1".equalsIgnoreCase(ip)
+                || "0:0:0:0:0:0:0:1".equalsIgnoreCase(ip)) {
+            // 根据网卡取本机配置的IP
+            InetAddress inet;
+            try {
+                inet = InetAddress.getLocalHost();
+                ip = inet.getHostAddress();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+        // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if (null != ip && ip.indexOf(COMMA) > 15) {
+            ip = ip.substring(0, ip.indexOf(COMMA));
+        }
         return ip;
     }
 
 
-
-
     /**
-     *
      * 获取本地真正的IP地址，即获得有线或者无线WiFi地址。
      * 过滤虚拟机、蓝牙等地址
-     * @author tn
-     * @date  2020/4/21 23:44
+     *
      * @return java.lang.String
+     * @author tn
+     * @date 2020/4/21 23:44
      */
     public static String getRealIp() throws SocketException {
         Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface
@@ -128,11 +148,9 @@ public class IpUtil {
                     .getInetAddresses();
             while (addresses.hasMoreElements()) {
                 InetAddress ip = addresses.nextElement();
-                if (ip != null) {
-                    // ipv4
-                    if (ip instanceof Inet4Address) {
-                        return ip.getHostAddress();
-                    }
+                // ipv4
+                if (ip instanceof Inet4Address) {
+                    return ip.getHostAddress();
                 }
             }
             break;
@@ -144,13 +162,14 @@ public class IpUtil {
 
     /**
      * 获得MAC地址
-     * @author tn
-     * @date  2020/4/21 23:47
+     *
      * @param ip ip
      * @return java.lang.String
+     * @author tn
+     * @date 2020/4/21 23:47
      */
 
-    public static String getMacAddress(String ip){
+    public static String getMacAddress(String ip) {
         String str;
         String macAddress = "";
         try {
@@ -179,7 +198,7 @@ public class IpUtil {
      * @return String
      */
     public static String ipConvert(String domainName) {
-        String ip ;
+        String ip;
         try {
             ip = InetAddress.getByName(domainName).getHostAddress();
         } catch (UnknownHostException e) {
