@@ -35,7 +35,10 @@ public class LoginTokenRedis {
      */
     Boolean alwaysOnline;
 
-    public boolean isAlwaysOnline() {
+
+    public Boolean getAlwaysOnline() {
         return !Objects.isNull(alwaysOnline) && alwaysOnline;
     }
+
+
 }
