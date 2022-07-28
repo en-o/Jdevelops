@@ -8,6 +8,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -211,8 +212,13 @@ public class JwtUtil {
      * @return java.lang.String
      */
     public static String getSubject(String token) {
-        DecodedJWT jwt = JWT.decode(token);
-        return jwt.getSubject();
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getSubject();
+        }catch (JWTDecodeException e){
+            e.printStackTrace();
+            throw new JWTDecodeException("token是非法的");
+        }
     }
 
 
