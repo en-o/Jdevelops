@@ -21,6 +21,7 @@ public class LoginTokenRedis {
 
     /**
      * 用户唯一编码，建议登录名
+     * = subject
      */
     String userCode;
 

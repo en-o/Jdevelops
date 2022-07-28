@@ -26,37 +26,63 @@ public interface RedisService {
     /**
      * 刷新用户token
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      */
-    void refreshUserToken(String userCode);
+    void refreshUserToken(String subject);
 
 
     /**
      * 删除 用户TOKEN
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      */
-    void removeUserToken(String userCode);
+    void removeUserToken(String subject);
 
 
     /**
      * 验证 用户TOKEN是否存在，存在则返回 token
      * 不存在，或者 token 异常就报错
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    LoginTokenRedis verifyUserToken(String userCode) throws ExpiredRedisException;
+    LoginTokenRedis verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
+
+    /**
+     * 验证 用户TOKEN是否存在，存在则返回 token
+     * 不存在，或者 token 异常就报错
+     *
+     * @param token toekn
+     * @return LoginTokenRedis
+     * @throws ExpiredRedisException redis异常
+     */
+    LoginTokenRedis verifyUserTokenByToken(String token) throws ExpiredRedisException;
+
+
+    /**
+     * 获取存储的用户token详情
+     * @param subject 用户唯一值(一般用用户的登录名
+     * @return LoginTokenRedis
+     */
+    LoginTokenRedis loadUserTokenInfoBySubject(String subject) ;
+
+    /**
+     * 获取存储的用户token详情
+     * @param token token
+     * @return LoginTokenRedis
+     */
+    LoginTokenRedis loadUserTokenInfoByToken(String token) ;
+
 
     /**
      * 验证用户的状态
      * 有问题则异常 (ExpiredRedisException)
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      * @throws ExpiredRedisException redis异常
      */
-    void verifyUserStatus(String userCode) throws ExpiredRedisException;
+    void verifyUserStatus(String subject) throws ExpiredRedisException;
 
 
     /**
@@ -70,27 +96,27 @@ public interface RedisService {
      * 加载用户的状态
      * 有问题则异常
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      * @return RedisAccount
      */
-    <T> RedisAccount<T> loadUserStatus(String userCode);
+    <T> RedisAccount<T> loadUserStatus(String subject);
 
 
     /**
      * 存放 用户角色
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      * @param roles    权限集合
      */
-    void storageUserRole(String userCode, List<String> roles);
+    void storageUserRole(String subject, List<String> roles);
 
 
     /**
      * 加载用户角色
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
+     * @param subject 用户唯一值(一般用用户的登录名
      * @return List (如返回空对象则表示redis中无数据请先自行添加
      */
-    List<String> loadUserRole(String userCode);
+    List<String> loadUserRole(String subject);
 
 }

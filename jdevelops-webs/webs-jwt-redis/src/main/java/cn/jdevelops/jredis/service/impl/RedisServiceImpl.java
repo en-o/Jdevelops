@@ -58,15 +58,15 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void refreshUserToken(String userCode) {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, userCode);
-        Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(userCode);
+    public void refreshUserToken(String subject) {
+        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
-            LOG.warn("{}用户未登录，不需要刷新", userCode);
+            LOG.warn("{}用户未登录，不需要刷新", subject);
         }else {
             LoginTokenRedis tokenRedis = (LoginTokenRedis) loginRedis;
             if(Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())){
-                LOG.warn("{}用户是永久在线用户，不需要刷新", userCode);
+                LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             }else {
                 // 设置过期时间（秒
                 redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.SECONDS);
@@ -75,36 +75,56 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void removeUserToken(String userCode) {
-        String redisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, userCode);
+    public void removeUserToken(String subject) {
+        String redisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         redisTemplate.delete(redisFolder);
     }
 
     @Override
-    public LoginTokenRedis verifyUserToken(String userCode) throws ExpiredRedisException {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, userCode);
+    public LoginTokenRedis verifyUserTokenByToken(String token) throws ExpiredRedisException {
+        return verifyUserTokenBySubject(JwtUtil.getSubject(token));
+    }
+
+    @Override
+    public LoginTokenRedis verifyUserTokenBySubject(String subject) throws ExpiredRedisException {
+        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         // redis 中比对 token 正确性
         LoginTokenRedis tokenRedis;
-        Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(userCode);
+        Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             throw new ExpiredRedisException(REDIS_EXPIRED_USER);
         }else {
             tokenRedis = (LoginTokenRedis) loginRedis;
         }
-        //验证token是否过期
-        if(JwtUtil.verity(tokenRedis.getToken())){
-            throw new ExpiredRedisException(REDIS_EXPIRED_USER);
-        }
-
         return tokenRedis;
     }
 
+
+
+
     @Override
-    public void verifyUserStatus(String userCode) throws ExpiredRedisException{
-        String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, userCode);
+    public LoginTokenRedis loadUserTokenInfoByToken(String token) {
+        return loadUserTokenInfoBySubject(JwtUtil.getSubject(token));
+    }
+
+    @Override
+    public LoginTokenRedis loadUserTokenInfoBySubject(String subject) {
+        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        // redis 中比对 token 正确性
+        Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
+        if (Objects.isNull(loginRedis)) {
+            throw new ExpiredRedisException(REDIS_EXPIRED_USER);
+        }else {
+            return (LoginTokenRedis) loginRedis;
+        }
+    }
+
+    @Override
+    public void verifyUserStatus(String subject) throws ExpiredRedisException{
+        String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         Object redisUser = redisTemplate
                 .boundHashOps(userRedisFolder)
-                .get(userCode);
+                .get(subject);
 
         if(!Objects.isNull(redisUser) && redisUser instanceof RedisAccount ){
             if (((RedisAccount) redisUser).isExcessiveAttempts()) {
@@ -143,9 +163,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public List<String> loadUserRole(String userCode) {
-        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_ROLE_FOLDER, userCode);
-        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(userCode);
+    public List<String> loadUserRole(String subject) {
+        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_ROLE_FOLDER, subject);
+        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
         if (Objects.isNull(roles)) {
             return Collections.emptyList();
         } else {
