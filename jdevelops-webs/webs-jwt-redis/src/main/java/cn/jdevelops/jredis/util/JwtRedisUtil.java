@@ -1,6 +1,7 @@
 package cn.jdevelops.jredis.util;
 
-import cn.jdevelops.jredis.entity.LoginTokenRedis;
+import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.jredis.entity.only.SignEntity;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwt.constant.JwtConstant;
@@ -17,7 +18,7 @@ import java.util.*;
 
 
 /**
- * 此项目常用工具
+ * token 给相关工具类
  *
  * @author tnnn
  * @version V1.0
@@ -39,27 +40,28 @@ public class JwtRedisUtil {
     }
 
 
-
     /**
-     * 生成签名,并保存到redis中(默认有过期时间)
+     * 生成签名,并保存到redis中
+     * - 默认有过期时间
      *
-     * @param subject      用户唯一凭证(一般是登录名
-     * @param map          其余数据
+     * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    public static String sign(String subject, Map<String, Object> map) {
-        return sign(subject, map, false);
+    public static String sign(String subject) {
+        return sign(SignEntity.builder()
+                .subject(subject)
+                .alwaysOnline(false)
+                .build()
+        );
     }
 
     /**
      * 生成签名,并保存到redis中
      *
-     * @param subject      用户唯一凭证(一般是登录名
-     * @param map          其余数据
-     * @param alwaysOnline 是否永久在线
+     * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    public static String sign(String subject, Map<String, Object> map, boolean alwaysOnline) {
+    public static String sign(SignEntity subject) {
         JwtBean jwtBean = ContextUtil.getBean(JwtBean.class);
         RedisService redisService = ContextUtil.getBean(RedisService.class);
         //过期时间
@@ -76,12 +78,12 @@ public class JwtRedisUtil {
         //jwt header
         builder.withHeader(header);
         // 用户自定义字段
-        builder.withClaim(JwtConstant.TOKEN_KEY, subject);
-        if (map != null) {
-            Iterator<String> iterator = map.keySet().iterator();
+        builder.withClaim(JwtConstant.TOKEN_KEY, subject.getSubject());
+        if (Objects.nonNull(subject.getMap())) {
+            Iterator<String> iterator = subject.getMap().keySet().iterator();
             while (iterator.hasNext()) {
                 String key = iterator.next();
-                builder.withClaim(key, map.get(key) + "");
+                builder.withClaim(key, subject.getMap().get(key) + "");
             }
         }
         // 签发时间
@@ -91,70 +93,15 @@ public class JwtRedisUtil {
         // 发行人
         builder.withIssuer("jdevelops");
         // 主题
-        builder.withSubject(subject);
+        builder.withSubject(subject.getSubject());
         // 编号/版本
         builder.withJWTId(UUID.randomUUID().toString());
         // 生成token
         String sign = builder.sign(algorithm);
-        LoginTokenRedis build = LoginTokenRedis.builder()
-                .token(sign).userCode(subject)
-                .alwaysOnline(alwaysOnline)
-                .build();
-        redisService.storageUserToken(build);
-        return sign;
-    }
-
-
-    /**
-     * 生成签名,并保存到redis中 (默认有过期时间)
-     *
-     * @param subject 用户唯一凭证(一般是登录名
-     * @return 签名
-     */
-    public static String sign(String subject) {
-        return sign(subject, false);
-    }
-
-    /**
-     * 生成签名,并保存到redis中
-     *
-     * @param subject      用户唯一凭证(一般是登录名
-     * @param alwaysOnline 是否永久在线
-     * @return 签名
-     */
-    public static String sign(String subject, boolean alwaysOnline) {
-        JwtBean jwtBean = ContextUtil.getBean(JwtBean.class);
-        RedisService redisService = ContextUtil.getBean(RedisService.class);
-        //过期时间
-        Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-        // jwt
-        JWTCreator.Builder builder = JWT.create();
-
-        //jwt header
-        builder.withHeader(header);
-        // 用户自定义字段
-        builder.withClaim(JwtConstant.TOKEN_KEY, subject);
-        // 签发时间
-        builder.withIssuedAt(new Date());
-        // 过期时间
-        builder.withExpiresAt(date);
-        // 发行人
-        builder.withIssuer("jdevelops");
-        // 主题
-        builder.withSubject(subject);
-        // 编号/版本
-        builder.withJWTId(UUID.randomUUID().toString());
-        // 生成token
-        String sign = builder.sign(algorithm);
-        LoginTokenRedis build = LoginTokenRedis.builder()
-                .token(sign).userCode(subject)
-                .alwaysOnline(alwaysOnline)
+        StorageUserTokenEntity build = StorageUserTokenEntity.builder()
+                .userCode(subject.getSubject())
+                .alwaysOnline(subject.isAlwaysOnline())
+                .token(sign)
                 .build();
         redisService.storageUserToken(build);
         return sign;

@@ -1,7 +1,7 @@
 package cn.jdevelops.jredis.service;
 
 
-import cn.jdevelops.jredis.entity.LoginTokenRedis;
+import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.jredis.entity.RedisAccount;
 import cn.jdevelops.jredis.exception.ExpiredRedisException;
 
@@ -19,9 +19,9 @@ public interface RedisService {
     /**
      * 存放 用户TOKEN
      *
-     * @param loginTokenRedis 存储用户登录token
+     * @param storageUserTokenEntity 存储用户登录token
      */
-    void storageUserToken(LoginTokenRedis loginTokenRedis);
+    void storageUserToken(StorageUserTokenEntity storageUserTokenEntity);
 
     /**
      * 刷新用户token
@@ -47,7 +47,7 @@ public interface RedisService {
      * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    LoginTokenRedis verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
+    StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
 
     /**
      * 验证 用户TOKEN是否存在，存在则返回 token
@@ -57,7 +57,7 @@ public interface RedisService {
      * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    LoginTokenRedis verifyUserTokenByToken(String token) throws ExpiredRedisException;
+    StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException;
 
 
     /**
@@ -65,14 +65,14 @@ public interface RedisService {
      * @param subject 用户唯一值(一般用用户的登录名
      * @return LoginTokenRedis
      */
-    LoginTokenRedis loadUserTokenInfoBySubject(String subject) ;
+    StorageUserTokenEntity loadUserTokenInfoBySubject(String subject) ;
 
     /**
      * 获取存储的用户token详情
      * @param token token
      * @return LoginTokenRedis
      */
-    LoginTokenRedis loadUserTokenInfoByToken(String token) ;
+    StorageUserTokenEntity loadUserTokenInfoByToken(String token) ;
 
 
     /**

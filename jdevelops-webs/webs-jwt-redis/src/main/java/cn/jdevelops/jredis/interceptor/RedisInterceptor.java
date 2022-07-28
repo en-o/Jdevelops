@@ -1,6 +1,6 @@
 package cn.jdevelops.jredis.interceptor;
 
-import cn.jdevelops.jredis.entity.LoginTokenRedis;
+import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.jredis.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jwt.util.ContextUtil;
@@ -27,8 +27,8 @@ public class RedisInterceptor implements CheckTokenInterceptor {
     @Override
     public boolean checkToken(String token) {
         RedisService redisService = ContextUtil.getBean(RedisService.class);
-        LoginTokenRedis loginTokenRedis = redisService.verifyUserTokenByToken(token);
-        return Objects.nonNull(loginTokenRedis) && loginTokenRedis.getToken().equalsIgnoreCase(token);
+        StorageUserTokenEntity storageUserTokenEntity = redisService.verifyUserTokenByToken(token);
+        return Objects.nonNull(storageUserTokenEntity) && storageUserTokenEntity.getToken().equalsIgnoreCase(token);
     }
 
     @Override

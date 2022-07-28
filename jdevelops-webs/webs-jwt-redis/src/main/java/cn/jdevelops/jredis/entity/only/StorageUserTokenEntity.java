@@ -1,4 +1,4 @@
-package cn.jdevelops.jredis.entity;
+package cn.jdevelops.jredis.entity.only;
 
 import lombok.*;
 
@@ -17,7 +17,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginTokenRedis {
+public class StorageUserTokenEntity {
 
     /**
      * 用户唯一编码，建议登录名

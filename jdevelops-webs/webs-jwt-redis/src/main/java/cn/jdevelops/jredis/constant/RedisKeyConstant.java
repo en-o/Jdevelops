@@ -15,6 +15,12 @@ public interface RedisKeyConstant {
 
 
     /**
+     * redis中 不用客户端登录用户的文件夹名
+     */
+    String REDIS_USER_CLIENT_LOGIN_FOLDER = "login:client";
+
+
+    /**
      * redis中 用户状态
      */
     String REDIS_USER_INFO_FOLDER = "user_status";
