@@ -1,6 +1,7 @@
 package cn.jdevelops.jredis.service;
 
 
+import cn.jdevelops.jredis.entity.LoginTokenRedis;
 import cn.jdevelops.jredis.entity.RedisAccount;
 import cn.jdevelops.jredis.exception.ExpiredRedisException;
 
@@ -18,10 +19,9 @@ public interface RedisService {
     /**
      * 存放 用户TOKEN
      *
-     * @param userCode 用户唯一值(一般用用户的登录名
-     * @param token    jwt
+     * @param loginTokenRedis 存储用户登录token
      */
-    void storageUserToken(String userCode, String token);
+    void storageUserToken(LoginTokenRedis loginTokenRedis);
 
     /**
      * 刷新用户token
@@ -44,10 +44,10 @@ public interface RedisService {
      * 不存在，或者 token 异常就报错
      *
      * @param userCode 用户唯一值(一般用用户的登录名
-     * @return tokenRedis
+     * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    String verifyUserToken(String userCode) throws ExpiredRedisException;
+    LoginTokenRedis verifyUserToken(String userCode) throws ExpiredRedisException;
 
     /**
      * 验证用户的状态
