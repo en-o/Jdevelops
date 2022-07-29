@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  * 自定义异常处理<br>
- * https://www.cnblogs.com/viaiu/p/10403557.html
+ * <a href="https://www.cnblogs.com/viaiu/p/10403557.html">自定义异常处理</a>
  * @author tn
  * @date 2020-06-04
  */
@@ -36,21 +36,21 @@ import java.util.stream.Collectors;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass(WebFluxConfigurer.class)
 @AutoConfigureBefore(WebFluxAutoConfiguration.class)
-@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class})
+@EnableConfigurationProperties({ServerProperties.class, WebProperties.class})
 public class ExceptionHandlerConfiguration {
 
     private final ServerProperties serverProperties;
 
     private final ApplicationContext applicationContext;
 
-    private final ResourceProperties resourceProperties;
+    private final WebProperties resourceProperties;
 
     private final List<ViewResolver> viewResolvers;
 
     private final ServerCodecConfigurer serverCodecConfigurer;
 
     public ExceptionHandlerConfiguration(ServerProperties serverProperties,
-                                         ResourceProperties resourceProperties,
+                                         WebProperties resourceProperties,
                                          ObjectProvider<ViewResolver> viewResolversProvider,
                                          ServerCodecConfigurer serverCodecConfigurer,
                                          ApplicationContext applicationContext) {
@@ -62,16 +62,26 @@ public class ExceptionHandlerConfiguration {
         this.serverCodecConfigurer = serverCodecConfigurer;
     }
 
+
     @Bean
     @ConditionalOnMissingBean(value = ErrorAttributes.class, search = SearchStrategy.CURRENT)
     public DefaultErrorAttributes errorAttributes() {
-        return new DefaultErrorAttributes(this.serverProperties.getError().isIncludeException());
+            // this.serverProperties.getError().isIncludeException()
+         return new DefaultErrorAttributes();
     }
 
+
+
+
+    /**
+     *  ConditionalOnMissingBean(value = ErrorWebExceptionHandler.class, search = SearchStrategy.CURRENT)
+     * <a href="https://github.com/spring-projects/spring-boot/issues/30011">spingboot2.6+</a>
+     */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
-        JsonExceptionHandler exceptionHandler = new JsonExceptionHandler(errorAttributes, this.resourceProperties,
+        JsonExceptionHandler exceptionHandler = new JsonExceptionHandler(errorAttributes,
+                this.resourceProperties,
                 this.serverProperties.getError(), this.applicationContext);
         exceptionHandler.setViewResolvers(this.viewResolvers);
         exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
@@ -79,18 +89,4 @@ public class ExceptionHandlerConfiguration {
         return exceptionHandler;
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean(value = ErrorWebExceptionHandler.class, search = SearchStrategy.CURRENT)
-//    @Order(-1)
-//    public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
-//        JsonExceptionHandler exceptionHandler = new JsonExceptionHandler(
-//                errorAttributes,
-//                resourceProperties,
-//                this.serverProperties.getError(),
-//                applicationContext);
-//        exceptionHandler.setViewResolvers(this.viewResolvers);
-//        exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
-//        exceptionHandler.setMessageReaders(this.serverCodecConfigurer.getReaders());
-//        return exceptionHandler;
-//    }
 }

@@ -5,7 +5,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -93,7 +92,7 @@ public class RedisProxy {
      */
     public boolean hasKey(String key) {
         try {
-            return redisTemplate.hasKey(key);
+            return Boolean.TRUE.equals(redisTemplate.hasKey(key));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -446,8 +445,7 @@ public class RedisProxy {
      */
     public long setRemove(String key, Object... values) {
         try {
-            Long count = redisTemplate.opsForSet().remove(key, values);
-            return count;
+            return redisTemplate.opsForSet().remove(key, values);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -641,11 +639,7 @@ public class RedisProxy {
             //找到一次就添加一次
             keys.add(cursor.next());
         }
-        try {
-            cursor.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        cursor.close();
         return keys;
     }
 }

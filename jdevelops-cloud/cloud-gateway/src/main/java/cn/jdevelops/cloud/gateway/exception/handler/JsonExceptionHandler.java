@@ -2,7 +2,7 @@ package cn.jdevelops.cloud.gateway.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
@@ -21,10 +21,10 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
 
     public JsonExceptionHandler(ErrorAttributes errorAttributes,
-                                        ResourceProperties resourceProperties,
-                                        ErrorProperties errorProperties,
-                                        ApplicationContext applicationContext) {
-        super(errorAttributes, resourceProperties, errorProperties, applicationContext);
+                                WebProperties resourceProperties,
+                                ErrorProperties errorProperties,
+                                ApplicationContext applicationContext) {
+        super(errorAttributes, resourceProperties.getResources(), errorProperties, applicationContext);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     /**
      * 根据code获取对应的HttpStatus
-     * @param errorAttributes
+     * @param errorAttributes  Map
      */
     @Override
     protected int getHttpStatus(Map<String, Object> errorAttributes) {
