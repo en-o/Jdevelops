@@ -16,6 +16,7 @@
         <module>caches-mybatis</module>
         <module>caches-redis</module>
         <module>caches-auto-schema</module>
+        <module>caches-jdbctemplate</module>
     </modules>
 
 
