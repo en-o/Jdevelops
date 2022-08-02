@@ -9,19 +9,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Aop 相关反射工具
+ * aop  解析注解字段
  * @author tn
  * @version 1
  * @date 2020/4/22 10:35
  */
-public class AopReasolver {
+public class AnnotationParse {
 
-    private static AopReasolver resolver ;
+    private static AnnotationParse resolver ;
 
-    public static AopReasolver newInstance(){
+    public static AnnotationParse newInstance(){
 
         if (resolver == null) {
-            return resolver = new AopReasolver();
+            return resolver = new AnnotationParse();
         }else{
             return resolver;
         }
@@ -43,10 +43,7 @@ public class AopReasolver {
         if ( Objects.isNull(str)||str.length()<=0) {
             return null ;
         }
-
-        Object value = null;
-        String substring1 =null;
-        String substring2;
+        String valueStre = str;
 
         if(str.contains("#")) {
             //抽取 #{xxx}
@@ -55,35 +52,39 @@ public class AopReasolver {
             Matcher mat = comp.matcher(str);
             while(mat.find()){
                 String group = mat.group();
-                System.out.print(group+";");
-            }
-            substring1 = str.substring(0,str.indexOf("#"));
-            substring2 = str.substring(str.indexOf("#"));
-
-            // 如果name匹配上了#{},则把内容当作变量
-            if (substring2.matches("#\\{\\D*}")) {
-                String newStr = substring2.replaceAll("#\\{", "").replaceAll("}", "");
-                // 复杂类型
-                if (newStr.contains(".")) {
-                    try {
-                        value = complexResolver(joinPoint, newStr);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                // 如果name匹配上了#{},则把内容当作变量
+                if (group.matches("#\\{\\D*}")) {
+                    String newStr = group.replaceAll("#\\{", "").replaceAll("}", "");
+                    // 复杂类型
+                    if (newStr.contains(".")) {
+                        try {
+                            Object complexResolver = complexResolver(joinPoint, newStr);
+                            if(Objects.nonNull(complexResolver)){
+                                valueStre = valueStre.replace(group,complexResolver.toString() );
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Object simpleResolver = simpleResolver(joinPoint, newStr);
+                        if(Objects.nonNull(simpleResolver)){
+                            valueStre = valueStre.replace(group,simpleResolver.toString() );
+                        }
                     }
-                } else {
-                    value = simpleResolver(joinPoint, newStr);
                 }
-            } else { //非变量
-                value = str;
             }
-        }else {
-            value = str;
         }
-
-        return Objects.isNull(substring1)||substring1.length()<=0?value:substring1+value;
+        return valueStre;
     }
 
 
+    /**
+     * 获取 #{xxx.xx}的值
+     * @param joinPoint JoinPoint
+     * @param str 需要至的字段名
+     * @return #{xxx.xx}的值（从方法参数中来
+     * @throws Exception Exception
+     */
     private Object complexResolver(JoinPoint joinPoint, String str) throws Exception {
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -104,6 +105,14 @@ public class AopReasolver {
 
     }
 
+
+    /**
+     * 获取 #{xxx.xx}的值
+     * @param obj 参数对象
+     * @param index 1（默认
+     * @param strs #{xxx.xx}
+     * @return 值
+     */
     private Object getValue(Object obj, int index, String[] strs) {
 
         try {
@@ -122,11 +131,22 @@ public class AopReasolver {
 
     }
 
+    /**
+     * 获取get方法
+     * @param name 字段名
+     * @return getName
+     */
     private String getMethodName(String name) {
         return "get" + name.replaceFirst(name.substring(0, 1), name.substring(0, 1).toUpperCase());
     }
 
 
+    /**
+     * 获取 #{xxx}的值
+     * @param joinPoint JoinPoint
+     * @param str 需要至的字段名
+     * @return #{xxx}的值
+     */
     private  Object simpleResolver(JoinPoint joinPoint, String str) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String[] names = methodSignature.getParameterNames();

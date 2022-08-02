@@ -12,10 +12,13 @@ import java.lang.annotation.*;
 @Documented
 public @interface Query {
     /**
-     * 默认查询所有
      * @return sql 语句
      */
-    String value() default "";
+    String value() ;
 
-    Class clazz() default Object.class;
+    /**
+     *
+     * @return 返回的实体对象（String.class, Bean.class
+     */
+    Class clazz() ;
 }
