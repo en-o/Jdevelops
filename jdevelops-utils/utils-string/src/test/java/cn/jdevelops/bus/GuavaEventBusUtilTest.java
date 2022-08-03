@@ -1,7 +1,6 @@
 package cn.jdevelops.bus;
 
 import com.google.common.eventbus.Subscribe;
-import junit.framework.TestCase;
 
 public class GuavaEventBusUtilTest{
 
@@ -18,7 +17,7 @@ public class GuavaEventBusUtilTest{
 
         //  测试 3
 //        GuavaEventBusUtil.register(new TestEventListener()); // 多次注册会多次监听
-        GuavaEventBusUtil.asyncPost(123);
+        GuavaEventBusUtil.asyncPost(1232);
         // 发布消息
         GuavaEventBusUtil.asyncPost("测试3");
         System.out.println("测试 3:"+ System.currentTimeMillis());

@@ -7,14 +7,22 @@ import java.util.concurrent.Executor;
 
 /**
  * 事件总线工具类 来源
- * @link https://blog.csdn.net/qq_38345296/article/details/100539989
+ * @link <a href="https://blog.csdn.net/qq_38345296/article/details/100539989">事件总线工具类</a>
  * @author fengjiale
  **/
 public class GuavaEventBusUtil {
     private static volatile EventBus eventBus;
-    private static AsyncEventBus asyncEventBus;
+    private static volatile AsyncEventBus asyncEventBus;
     private static final Executor EXECUTOR = command -> new Thread(command).start();
-    //双重锁单例模式
+
+
+    private GuavaEventBusUtil() {
+    }
+
+    /**
+     * 双重锁单例模式
+     * @return AsyncEventBus
+     */
     private static AsyncEventBus getAsynEventBus(){
         if(asyncEventBus==null){
             synchronized (AsyncEventBus.class){
@@ -25,7 +33,11 @@ public class GuavaEventBusUtil {
         }
         return asyncEventBus;
     }
-    //双重锁单例模式
+
+    /**
+     * 双重锁单例模式
+     * @return EventBus
+     */
     private static EventBus getEventBus(){
         if(eventBus==null){
             synchronized (EventBus.class){
@@ -36,16 +48,30 @@ public class GuavaEventBusUtil {
         }
         return eventBus;
     }
+
+    /**
+     * 同步发送事件
+     * @param event 事件
+     */
     public static void post(Object event){
         getEventBus().post(event);
     }
-    //异步方式发送事件
+
+    /**
+     * 异步方式发送事件
+     * @param event 事件
+     */
     public static void asyncPost(Object event){
         getAsynEventBus().post(event);
     }
+
+    /**
+     * 注册监听器（即对事件的处理方法
+     * @param object EventListener  @Subscribe
+     */
     public static void register(Object object){
         getEventBus().register(object);
         getAsynEventBus().register(object);
     }
- 
+
 }
