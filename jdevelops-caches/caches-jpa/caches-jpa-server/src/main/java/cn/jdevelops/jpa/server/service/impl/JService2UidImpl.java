@@ -4,6 +4,7 @@ import cn.jdevelops.entity.basics.vo.SerializableVO;
 import cn.jdevelops.jap.core.util.CommUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.JPageUtil;
+import cn.jdevelops.jap.exception.JpaException;
 import cn.jdevelops.jpa.server.dao.JpaBasics2UidDao;
 import cn.jdevelops.jpa.server.enums.FieldName;
 import cn.jdevelops.jpa.server.service.JService2Uid;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 预约模块公共service实现
@@ -29,7 +29,7 @@ import java.util.Optional;
  */
 @Slf4j
 @NoRepositoryBean
-public class JService2UidImpl<T extends SerializableVO, D> implements JService2Uid<T> {
+public class JService2UidImpl<T extends SerializableVO<T>, D> implements JService2Uid<T> {
 
     @Autowired
     private JpaBasics2UidDao<T, D> commonDao;
@@ -58,7 +58,8 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
 
     @Override
     public Boolean saveByBoolean(T bean) {
-        return Optional.ofNullable(commonDao.save(bean)).isPresent();
+        commonDao.save(bean);
+        return true;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
         try {
             return commonDao.updateEntity(bean, "id");
         } catch (Exception e) {
-            throw new RuntimeException("更新出错");
+            throw new JpaException("更新出错");
         }
     }
 
@@ -101,7 +102,7 @@ public class JService2UidImpl<T extends SerializableVO, D> implements JService2U
         try {
             return commonDao.updateEntity(bean, fieldName);
         } catch (Exception e) {
-            throw new RuntimeException("更新出错");
+            throw new JpaException("更新出错");
         }
     }
 

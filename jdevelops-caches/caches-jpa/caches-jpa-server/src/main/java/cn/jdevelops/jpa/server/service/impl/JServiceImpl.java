@@ -4,6 +4,7 @@ import cn.jdevelops.entity.basics.vo.SerializableVO;
 import cn.jdevelops.jap.core.util.CommUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.JPageUtil;
+import cn.jdevelops.jap.exception.JpaException;
 import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
 import cn.jdevelops.jpa.server.service.JService;
 import cn.jdevelops.result.page.ResourcePage;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -32,7 +32,7 @@ import java.util.Optional;
 @Slf4j
 @NoRepositoryBean
 @Deprecated
-public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
+public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T> {
 
     @Autowired
     private JpaBasicsDao<T, D> commonDao;
@@ -61,7 +61,8 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
 
     @Override
     public Boolean saveByBoolean(T bean) {
-        return Optional.ofNullable(commonDao.save(bean)).isPresent();
+        commonDao.save(bean);
+        return true;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class JServiceImpl<T extends SerializableVO, D> implements JService<T> {
         try {
             return commonDao.updateEntity(bean);
         } catch (Exception e) {
-            throw new RuntimeException("更新出错");
+            throw new JpaException("更新出错");
         }
     }
 
