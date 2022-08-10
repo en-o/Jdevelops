@@ -1,7 +1,7 @@
 package cn.jdevelops.exception.aspect;
 
+import cn.jdevelops.exception.AopException;
 import cn.jdevelops.exception.annotation.DisposeException;
-import cn.jdevelops.exception.exception.BusinessException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -60,7 +60,7 @@ public class ExceptionAspect {
         for (int i = 0; i < exceptions.length; i++) {
             search(exceptions, codes, ex, messages, i);
         }
-        throw new BusinessException(DEF_CODE, oneEx.getMessage());
+        throw new AopException(DEF_CODE, oneEx.getMessage());
     }
 
     /**
@@ -92,7 +92,7 @@ public class ExceptionAspect {
             } catch (Exception ignored) {
             }
 
-            throw new BusinessException(code, message);
+            throw new AopException(code, message);
         } else {
             search(exceptions, codes, ex.getCause(), messages, index);
         }

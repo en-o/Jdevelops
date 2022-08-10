@@ -1,18 +1,17 @@
 package cn.jdevelops.apisign.config;
 
 import cn.jdevelops.apisign.bean.ApiSignBean;
+import cn.jdevelops.apisign.util.HttpUtil;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
-import cn.jdevelops.exception.utils.SpringBeanUtils;
 import cn.jdevelops.apisign.annotation.Signature;
 import cn.jdevelops.apisign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
 import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.http.core.HttpContextUtils;
 import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -34,6 +33,7 @@ import static com.alibaba.fastjson.JSON.*;
 @Slf4j
 public class SignAppInterceptor extends InterceptorRegistry implements HandlerInterceptor {
 
+    public static ConfigurableApplicationContext ac;
     private static final String CONTENT_TYPE = "text/json;charset=UTF-8";
 
     @Override
@@ -42,7 +42,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
             Signature signAnt = ((HandlerMethod) handler).getMethodAnnotation(Signature.class);
-            ApiSignBean apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignBean.class);
+            ApiSignBean apiSignBean = ac.getBean(ApiSignBean.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
@@ -64,7 +64,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
     private boolean signCheck(HttpServletRequest request, SginEnum enums, String salt) {
         Object map = null;
         String paramsHeader = "";
-        if (StringUtils.isNotEmpty(getHeaderSign(request))) {
+        if (isNotBlank(getHeaderSign(request))) {
             paramsHeader = showParamsHeader(request);
         } else {
             map = showParams(request);
@@ -105,7 +105,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = parse(HttpContextUtils.getBodyString(request), Feature.OrderedField).toString();
+                String bodyString = parse(HttpUtil.getBodyString(request), Feature.OrderedField).toString();
                 log.info("加密集：" + bodyString);
                 return bodyString;
             } else {
@@ -137,7 +137,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = HttpContextUtils.getBodyString(request);
+                String bodyString = HttpUtil.getBodyString(request);
                 //获取json数据
                 LinkedHashMap<String, Object> linkedHashMap = parseObject(bodyString, LinkedHashMap.class);
                 log.info("加密集：" + toJSONString(linkedHashMap));
@@ -161,13 +161,38 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         try {
             final String signName = "sign";
             String sign = request.getHeader(signName);
-            if (StringUtils.isNotBlank(sign)) {
+            if (isNotBlank(sign)) {
                 return sign;
             }
         } catch (Exception e) {
             log.warn("消息头中没有sign");
         }
         return null;
+    }
+
+
+
+
+    private static boolean isNotBlank(CharSequence cs) {
+        return !isBlank(cs);
+    }
+    private static boolean isBlank(CharSequence cs) {
+        int strLen = length(cs);
+        if (strLen == 0) {
+            return true;
+        } else {
+            for(int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(cs.charAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    private static int length(CharSequence cs) {
+        return cs == null ? 0 : cs.length();
     }
 
 }

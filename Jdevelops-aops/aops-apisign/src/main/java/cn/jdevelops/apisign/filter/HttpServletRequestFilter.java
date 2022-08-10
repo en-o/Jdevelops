@@ -1,6 +1,6 @@
 package cn.jdevelops.apisign.filter;
 
-import cn.jdevelops.http.core.HttpContextUtils;
+import cn.jdevelops.apisign.util.HttpUtil;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class HttpServletRequestFilter implements Filter {
         ServletRequest requestWrapper = null;
         servletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         // 判断是否是multipart/form-data请求
-        if (!HttpContextUtils.isMultipartContent((HttpServletRequest)servletRequest)){
+        if (!HttpUtil.isMultipartContent((HttpServletRequest)servletRequest)){
             if(servletRequest instanceof HttpServletRequest) {
                 requestWrapper = new RequestWrapper((HttpServletRequest) servletRequest);
             }
@@ -83,7 +83,7 @@ public class HttpServletRequestFilter implements Filter {
          * @return 请求体
          */
         private String getBody(HttpServletRequest request) {
-            return HttpContextUtils.getBodyString(request);
+            return HttpUtil.getBodyString(request);
         }
 
         /**
@@ -95,7 +95,7 @@ public class HttpServletRequestFilter implements Filter {
         }
 
         @Override
-        public BufferedReader getReader() throws IOException {
+        public BufferedReader getReader()  {
             return new BufferedReader(new InputStreamReader(getInputStream()));
         }
 

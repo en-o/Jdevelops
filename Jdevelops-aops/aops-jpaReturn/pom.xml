@@ -17,10 +17,11 @@
     </properties>
 
     <dependencies>
+        <!-- 自己导入依赖 -->
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-map</artifactId>
-            <version>${jdevelops.last.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

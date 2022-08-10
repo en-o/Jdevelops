@@ -33,21 +33,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-exception</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-time</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-spring</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

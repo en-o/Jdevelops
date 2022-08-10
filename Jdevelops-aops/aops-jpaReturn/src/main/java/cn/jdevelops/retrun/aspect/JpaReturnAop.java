@@ -3,7 +3,6 @@ package cn.jdevelops.retrun.aspect;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import cn.jdevelops.retrun.annotation.JpaReturn;
-import cn.jdevelops.string.StringFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +13,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.util.regex.Pattern.compile;
 
 
 /**
@@ -57,7 +60,7 @@ public class JpaReturnAop {
                     Iterator<String> iter = item.keySet().iterator();
                     while(iter.hasNext()) {
                         String key=iter.next();
-                        String newkey = StringFormat.toCamelCase(key, true);
+                        String newkey = toCamelCase(key, true);
                         newMap.put(newkey,newMap.remove(key));
                     }
                     tmap.add(newMap);
@@ -79,7 +82,7 @@ public class JpaReturnAop {
      * @param list list
      * @return t
      */
-    public static <T> List<T> changeMap(List<Map<String, Object>> list, T t){
+    private static <T> List<T> changeMap(List<Map<String, Object>> list, T t){
         List<T> list1=new ArrayList<>();
         list.forEach(map -> {
             T o = JSON.parseObject(JSON.toJSONString(map,
@@ -93,5 +96,33 @@ public class JpaReturnAop {
         return  list1;
     }
 
+
+
+
+    /**
+     *   下划线转驼峰法
+     * @param line 字符串
+     * @param smallCamel 大小驼峰,是否为小驼峰
+     * @return 返回字符串
+     */
+    private static String toCamelCase(String line,boolean smallCamel){
+        if(line==null||"".equals(line)){
+            return "";
+        }
+        StringBuilder sb=new StringBuilder();
+        Pattern pattern= compile("([A-Za-z\\d]+)(_)?");
+        Matcher matcher=pattern.matcher(line);
+        while(matcher.find()){
+            String word=matcher.group();
+            sb.append(smallCamel&&matcher.start()==0?Character.toLowerCase(word.charAt(0)):Character.toUpperCase(word.charAt(0)));
+            int index=word.lastIndexOf('_');
+            if(index>0){
+                sb.append(word.substring(1, index).toLowerCase());
+            }else{
+                sb.append(word.substring(1).toLowerCase());
+            }
+        }
+        return sb.toString();
+    }
 
 }

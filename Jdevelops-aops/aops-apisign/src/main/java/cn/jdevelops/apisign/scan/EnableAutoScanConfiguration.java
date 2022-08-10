@@ -4,7 +4,6 @@ import cn.jdevelops.apisign.config.SignAppInterceptor;
 import cn.jdevelops.apisign.config.SignWebConfig;
 import cn.jdevelops.apisign.filter.HttpServletRequestFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -17,6 +16,5 @@ import org.springframework.context.annotation.Import;
         SignAppInterceptor.class,
         SignWebConfig.class,
         HttpServletRequestFilter.class})
-@ComponentScan("cn.jdevelops.apisign.**")
 public class EnableAutoScanConfiguration {
 }

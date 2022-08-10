@@ -17,6 +17,13 @@
             <artifactId>utils-encryption</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
+        <!-- 自己导入依赖 -->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>apis-exception</artifactId>
+            <version>${jdevelops.last.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

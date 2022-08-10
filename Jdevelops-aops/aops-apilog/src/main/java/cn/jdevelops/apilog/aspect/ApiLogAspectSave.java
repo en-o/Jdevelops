@@ -1,20 +1,15 @@
 package cn.jdevelops.apilog.aspect;
 
+import cn.jdevelops.apilog.util.AopReasolver;
+import cn.jdevelops.apilog.util.IpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cn.jdevelops.apilog.annotation.ApiLog;
 import cn.jdevelops.apilog.bean.ApiMonitoring;
 import cn.jdevelops.apilog.server.ApiLogSave;
-import cn.jdevelops.enums.string.StringEnum;
-import cn.jdevelops.enums.time.TimeFormatEnum;
-import cn.jdevelops.http.core.IpUtil;
-import cn.jdevelops.spring.core.aop.AopReasolver;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -25,11 +20,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 接口日志保存
@@ -43,6 +39,7 @@ import java.util.Map;
 @Slf4j
 public class ApiLogAspectSave {
 
+   final static String DEFAULT_FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
     @Autowired
     private ApiLogSave apiLogSave;
@@ -76,7 +73,7 @@ public class ApiLogAspectSave {
         apiLog.setApiName(requestUri);
 
         /* outParams and  status  */
-        if (ObjectUtils.allNotNull(rvt)) {
+        if (Objects.nonNull(rvt)) {
             try {
                 if (rvt instanceof String || rvt instanceof Integer) {
                     apiLog.setStatus("true");
@@ -102,12 +99,12 @@ public class ApiLogAspectSave {
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
             Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
-            appKeyError = ObjectUtils.allNotNull(rvt) ? apiKey + "" : "";
-            apiLog.setApiKey(ObjectUtils.allNotNull(rvt) ? apiKey + "" : "");
+            appKeyError = Objects.nonNull(rvt) ? apiKey + "" : "";
+            apiLog.setApiKey(Objects.nonNull(rvt) ? apiKey + "" : "");
         }
 
         /* callTime 调用时间  */
-        apiLog.setCallTime(DateTime.now().toString(TimeFormatEnum.DEFAULT_FORMAT_DATETIME.getFormat()));
+        apiLog.setCallTime(DateTime.now().toString(DEFAULT_FORMAT_DATETIME));
         /* callTime 调用时间  */
 
 
@@ -125,42 +122,56 @@ public class ApiLogAspectSave {
         apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
         apiLogSave.saveLog(apiLog);
     }
-    /**
-     * 异常通知
-     */
-    @AfterThrowing("apiLog()")
-    public void doAfterThrowing(){
 
-    }
 
 
 
 
 
     /**
-     * 实体转Map
-     * @param obj 实体
-     * @return  Map
+     * bean转化为map
+     * @param bean bean
+     * @return Map
      */
-    @SuppressWarnings("unchecked")
-    private   Map<String, Object> beanToMap(Object obj) {
-        Map<String, Object> params = new HashMap<>(15);
-        try {
-            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
-            PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
-            for (int i = 0; i < descriptors.length; i++) {
-                String name = descriptors[i].getName();
-                if (!"class".equals(name)) {
-                    params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
+    private static Map<String, Object> beanToMap(Object bean) {
+        if (bean == null) {
+            return Collections.emptyMap();
+        } else {
+            HashMap<String, Object> hashMap = new HashMap<>(50);
+
+            try {
+                Class<?> c = bean.getClass();
+                Method[] methods = c.getMethods();
+
+                for (Method method : methods) {
+                    String name = method.getName();
+                    String key = "";
+                    if (name.startsWith("get")) {
+                        key = name.substring(3);
+                    }
+
+                    if (key.length() > 0 && Character.isUpperCase(key.charAt(0)) && method.getParameterTypes().length == 0) {
+                        if (key.length() == 1) {
+                            key = key.toLowerCase();
+                        } else if (!Character.isUpperCase(key.charAt(1))) {
+                            key = key.substring(0, 1).toLowerCase() + key.substring(1);
+                        }
+
+                        if (!"class".equalsIgnoreCase(key)) {
+                            Object value = method.invoke(bean);
+                            if (value != null) {
+                                hashMap.put(key, value);
+                            }
+                        }
+                    }
                 }
+            } catch (Throwable var9) {
+                var9.printStackTrace();
             }
-            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getStr()) ){
-                params = (Map<String, Object>) obj;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            return hashMap;
         }
-        return params;
     }
+
 
 }

@@ -3,7 +3,7 @@ package cn.jdevelops.apisign.util;
 import cn.jdevelops.apisign.bean.ApiSignBean;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
-import cn.jdevelops.exception.utils.SpringBeanUtils;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,6 +18,8 @@ import static com.alibaba.fastjson.JSON.toJSONString;
  * @date 2020/12/22 10:20
  */
 public class SignUtil {
+
+    public static ConfigurableApplicationContext ac;
 
     /**
      * map 转 str
@@ -96,7 +98,7 @@ public class SignUtil {
      * 获取盐
      */
     public static String getSalt() {
-        ApiSignBean apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignBean.class);
+        ApiSignBean apiSignBean = ac.getBean(ApiSignBean.class);
         return apiSignBean.getSalt();
     }
 
