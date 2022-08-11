@@ -67,11 +67,19 @@ public class GuavaEventBusUtil {
 
     /**
      * 注册监听器（即对事件的处理方法
-     * @param object EventListener  @Subscribe
+     * @param eventListener EventListener  @Subscribe
      */
-    public static void register(Object object){
-        getEventBus().register(object);
-        getAsynEventBus().register(object);
+    public static void register(Object eventListener){
+        getEventBus().register(eventListener);
+        getAsynEventBus().register(eventListener);
+    }
+
+    /**
+     * 注销监听器
+     * @param eventListener EventListener  @Subscribe
+     */
+    public static void unregister(Object eventListener) {
+        getEventBus().unregister(eventListener);
     }
 
 }
