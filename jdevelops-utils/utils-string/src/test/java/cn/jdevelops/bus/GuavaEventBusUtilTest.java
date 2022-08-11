@@ -1,5 +1,6 @@
 package cn.jdevelops.bus;
 
+import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 
 public class GuavaEventBusUtilTest{
@@ -9,7 +10,8 @@ public class GuavaEventBusUtilTest{
 
         //  测试 2
         System.out.println("测试 2:"+System.currentTimeMillis());
-        GuavaEventBusUtil.register(new TestEventListener());
+        TestEventListener testEventListener = new TestEventListener();
+        GuavaEventBusUtil.register(testEventListener);
         GuavaEventBusUtil.post(123);
         // 发布消息
         GuavaEventBusUtil.post("测试2");
@@ -23,6 +25,7 @@ public class GuavaEventBusUtilTest{
         System.out.println("测试 3:"+ System.currentTimeMillis());
 
         System.out.println(System.currentTimeMillis()+",主线程执行完毕："+Thread.currentThread().getName());
+        GuavaEventBusUtil.unregister(testEventListener);
     }
     /**
      * 创建监听者类
@@ -35,6 +38,7 @@ public class GuavaEventBusUtilTest{
          * 如果发送了OrderMessage消息，会进入到该函数的处理
          * @param event 消息
          */
+        @AllowConcurrentEvents // 这个异步注解才有效。
         @Subscribe
         public void dealWithEvent(String event) {
             try {
@@ -52,6 +56,7 @@ public class GuavaEventBusUtilTest{
          * @param event 消息
          */
         @Subscribe
+        @AllowConcurrentEvents
         public void dealWithEvent(Integer event) {
             try {
                 Thread.sleep(1000);

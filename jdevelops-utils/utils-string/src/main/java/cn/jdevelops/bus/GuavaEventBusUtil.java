@@ -80,6 +80,7 @@ public class GuavaEventBusUtil {
      */
     public static void unregister(Object eventListener) {
         getEventBus().unregister(eventListener);
+        getAsynEventBus().unregister(eventListener);
     }
 
 }
