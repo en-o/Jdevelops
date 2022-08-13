@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.exception.config;
+package cn.jdevelops.result.config;
 
-import cn.jdevelops.exception.utils.SpringBeanUtils;
+import cn.jdevelops.result.util.SpringBeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

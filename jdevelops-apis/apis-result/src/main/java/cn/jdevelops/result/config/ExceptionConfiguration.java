@@ -1,4 +1,4 @@
-package cn.jdevelops.exception.config;
+package cn.jdevelops.result.config;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,8 +17,8 @@ package cn.jdevelops.exception.config;
  * limitations under the License.
  */
 
-import cn.jdevelops.exception.result.DefaultExceptionResult;
-import cn.jdevelops.exception.result.ExceptionResult;
+import cn.jdevelops.result.custom.DefaultExceptionResult;
+import cn.jdevelops.result.custom.ExceptionResult;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.context.annotation.Bean;

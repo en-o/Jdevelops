@@ -1,4 +1,4 @@
-package cn.jdevelops.exception.result;
+package cn.jdevelops.result.custom;
 
 /**
  * 全局异常返回类

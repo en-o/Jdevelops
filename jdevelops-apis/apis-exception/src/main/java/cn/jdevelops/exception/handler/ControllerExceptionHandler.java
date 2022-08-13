@@ -2,7 +2,7 @@ package cn.jdevelops.exception.handler;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

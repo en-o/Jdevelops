@@ -1,8 +1,7 @@
 package cn.jdevelops.jwtweb.interceptor;
 
-import cn.hutool.core.lang.Assert;
 import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.exception.result.ExceptionResultWrap;
+import cn.jdevelops.result.custom.ExceptionResultWrap;
 import cn.jdevelops.jwt.annotation.ApiMapping;
 import cn.jdevelops.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.jwt.constant.JwtConstant;

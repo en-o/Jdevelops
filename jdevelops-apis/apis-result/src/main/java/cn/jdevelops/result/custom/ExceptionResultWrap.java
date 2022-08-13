@@ -1,7 +1,7 @@
-package cn.jdevelops.exception.result;
+package cn.jdevelops.result.custom;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.exception.utils.SpringBeanUtils;
+import cn.jdevelops.result.util.SpringBeanUtils;
 
 /**
  *  result warp.

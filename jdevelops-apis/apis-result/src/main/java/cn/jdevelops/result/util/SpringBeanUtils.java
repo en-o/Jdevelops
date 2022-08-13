@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.exception.utils;
+package cn.jdevelops.result.util;
 
 import org.springframework.context.ConfigurableApplicationContext;
 
