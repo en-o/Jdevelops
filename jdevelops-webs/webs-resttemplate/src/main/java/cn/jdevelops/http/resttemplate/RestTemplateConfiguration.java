@@ -1,6 +1,6 @@
-package cn.jdevelops.spring.http.resttemplate;
+package cn.jdevelops.http.resttemplate;
 
-import cn.jdevelops.spring.http.RestTemplateUtils;
+import cn.jdevelops.http.RestTemplateUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
