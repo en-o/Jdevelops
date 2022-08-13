@@ -31,6 +31,18 @@ public class AopException extends RuntimeException{
         this.msg = message;
     }
 
+    public AopException(String message, Throwable cause) {
+        super(message, cause);
+        this.msg = message;
+        this.code = 500;
+    }
+
+    public AopException(String message, Throwable cause, int code) {
+        super(message, cause);
+        this.msg = message;
+        this.code = code;
+    }
+
     public int getCode() {
         return code;
     }
