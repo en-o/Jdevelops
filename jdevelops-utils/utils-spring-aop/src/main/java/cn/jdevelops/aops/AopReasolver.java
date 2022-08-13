@@ -4,49 +4,50 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * Aop 相关反射工具
+ *
  * @author tn
  * @version 1
  * @date 2020/4/22 10:35
  */
 public class AopReasolver {
 
-    private static AopReasolver resolver ;
+    private static AopReasolver resolver;
 
-    public static AopReasolver newInstance(){
+    public static AopReasolver newInstance() {
 
         if (resolver == null) {
             return resolver = new AopReasolver();
-        }else{
+        } else {
             return resolver;
         }
 
     }
 
     /**
-     *
      * 该方法的作用可以把方法上的参数绑定到注解的变量中,注解的语法#{变量名}
      * 能解析类似#{task}或者#{task.taskName}或者{task.project.projectName}
      * 需要引入 aop依赖
      * 解析注解上的值
      *
      * @param joinPoint aop
-     * @param str 需要解析的字符串
+     * @param str       需要解析的字符串
      */
     public Object resolver(JoinPoint joinPoint, String str) {
 
         if (StringUtil.isBlank(str)) {
-            return null ;
+            return null;
         }
 
         Object value = null;
-        String substring1 =null;
+        String substring1 = null;
         String substring2;
 
-        if(str.contains("#")) {
-            substring1 = str.substring(0,str.indexOf("#"));
+        if (str.contains("#")) {
+            substring1 = str.substring(0, str.indexOf("#"));
             substring2 = str.substring(str.indexOf("#"));
             // 如果name匹配上了#{},则把内容当作变量
             if (substring2.matches("#\\{\\D*}")) {
@@ -64,11 +65,11 @@ public class AopReasolver {
             } else { //非变量
                 value = str;
             }
-        }else {
+        } else {
             value = str;
         }
 
-        return StringUtil.isBlank(substring1)?value:substring1+value;
+        return StringUtil.isBlank(substring1) ? value : substring1 + value;
     }
 
 
@@ -82,9 +83,14 @@ public class AopReasolver {
         for (int i = 0; i < names.length; i++) {
             if (stars[0].equals(names[i])) {
                 Object obj = args[i];
-                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]),  new  Class[ 0 ]);
-                Object value = dmethod.invoke(args[i]);
-                return getValue(value, 1, stars);
+                if (obj instanceof Map) {
+                    return getValueByMap(obj, stars);
+                } else {
+                    Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]), new Class[0]);
+                    Object value = dmethod.invoke(args[i]);
+                    return getValueByBean(value, 1, stars);
+                }
+
             }
         }
 
@@ -92,13 +98,27 @@ public class AopReasolver {
 
     }
 
-    private Object getValue(Object obj, int index, String[] strs) {
+
+    private Object getValueByMap(Object obj, String[] strs) {
+        try {
+            Map map = (Map) obj;
+            if( map.containsKey(strs[1])){
+                return map.get(strs[1]);
+            }
+            return obj;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Object getValueByBean(Object obj, int index, String[] strs) {
 
         try {
             if (obj != null && index < strs.length - 1) {
                 Method method = obj.getClass().getDeclaredMethod(getMethodName(strs[index + 1]), (Class<?>) null);
                 obj = method.invoke(obj);
-                getValue(obj, index + 1, strs);
+                getValueByBean(obj, index + 1, strs);
             }
 
             return obj;
@@ -107,7 +127,6 @@ public class AopReasolver {
             e.printStackTrace();
             return null;
         }
-
     }
 
     private String getMethodName(String name) {
@@ -115,7 +134,7 @@ public class AopReasolver {
     }
 
 
-    private  Object simpleResolver(JoinPoint joinPoint, String str) {
+    private Object simpleResolver(JoinPoint joinPoint, String str) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String[] names = methodSignature.getParameterNames();
         Object[] args = joinPoint.getArgs();

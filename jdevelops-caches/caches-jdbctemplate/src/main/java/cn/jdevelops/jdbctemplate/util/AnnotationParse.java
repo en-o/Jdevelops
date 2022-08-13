@@ -4,6 +4,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,9 +96,13 @@ public class AnnotationParse {
         for (int i = 0; i < names.length; i++) {
             if (stars[0].equals(names[i])) {
                 Object obj = args[i];
-                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]),  new  Class[ 0 ]);
-                Object value = dmethod.invoke(args[i]);
-                return getValue(value, 1, stars);
+                if (obj instanceof Map) {
+                    return getValueByMap(obj, stars);
+                } else {
+                    Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]),  new  Class[ 0 ]);
+                    Object value = dmethod.invoke(args[i]);
+                    return getValueByBean(value, 1, stars);
+                }
             }
         }
 
@@ -106,6 +111,19 @@ public class AnnotationParse {
     }
 
 
+    private Object getValueByMap(Object obj, String[] strs) {
+        try {
+            Map map = (Map) obj;
+            if( map.containsKey(strs[1])){
+                return map.get(strs[1]);
+            }
+            return obj;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 获取 #{xxx.xx}的值
      * @param obj 参数对象
@@ -113,13 +131,13 @@ public class AnnotationParse {
      * @param strs #{xxx.xx}
      * @return 值
      */
-    private Object getValue(Object obj, int index, String[] strs) {
+    private Object getValueByBean(Object obj, int index, String[] strs) {
 
         try {
             if (obj != null && index < strs.length - 1) {
                 Method method = obj.getClass().getDeclaredMethod(getMethodName(strs[index + 1]), (Class<?>) null);
                 obj = method.invoke(obj);
-                getValue(obj, index + 1, strs);
+                getValueByBean(obj, index + 1, strs);
             }
 
             return obj;
