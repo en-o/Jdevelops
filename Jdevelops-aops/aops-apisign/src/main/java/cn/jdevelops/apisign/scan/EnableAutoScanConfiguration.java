@@ -1,5 +1,6 @@
 package cn.jdevelops.apisign.scan;
 
+import cn.jdevelops.apisign.bean.ApiSignBean;
 import cn.jdevelops.apisign.config.SignAppInterceptor;
 import cn.jdevelops.apisign.config.SignWebConfig;
 import cn.jdevelops.apisign.filter.HttpServletRequestFilter;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         SignAppInterceptor.class,
         SignWebConfig.class,
-        HttpServletRequestFilter.class})
+        HttpServletRequestFilter.class,
+        ApiSignBean.class})
 public class EnableAutoScanConfiguration {
 }

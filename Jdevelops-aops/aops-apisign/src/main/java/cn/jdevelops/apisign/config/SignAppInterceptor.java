@@ -4,13 +4,13 @@ import cn.jdevelops.aops.ContextUtil;
 import cn.jdevelops.aops.StringUtil;
 import cn.jdevelops.apisign.bean.ApiSignBean;
 import cn.jdevelops.aops.HttpUtil;
+import cn.jdevelops.apisign.exception.SignException;
 import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.exception.result.ExceptionResultWrap;
 import cn.jdevelops.apisign.annotation.Signature;
 import cn.jdevelops.apisign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
-import cn.jdevelops.exception.exception.BusinessException;
+import cn.jdevelops.result.custom.ExceptionResultWrap;
 import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -115,7 +115,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
                 return jsonString;
             }
         } catch (Exception e) {
-            throw new BusinessException("加密参数有误", e);
+            throw new SignException("加密参数有误", e);
         }
     }
 
@@ -148,7 +148,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
                 return map;
             }
         } catch (Exception e) {
-            throw new BusinessException("加密参数有误", e);
+            throw new SignException("加密参数有误", e);
         }
     }
 

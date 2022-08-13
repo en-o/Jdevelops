@@ -17,12 +17,14 @@
             <artifactId>utils-encryption</artifactId>
             <version>${jdevelops.last.version}</version>
         </dependency>
-        <!-- 自己导入依赖 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-exception</artifactId>
+            <artifactId>apis-result</artifactId>
             <version>${jdevelops.last.version}</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
