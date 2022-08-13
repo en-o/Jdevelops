@@ -1,4 +1,4 @@
-package cn.jdevelops.apilog.util;
+package cn.jdevelops.aops;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -67,15 +67,15 @@ public class ParamsDis {
     }
 
 
-
-
     private static String decode(String url)  {
-        return decode(url, "UTF-8");
+        return decode(url,  charset("UTF-8"),true);
     }
 
-    private static String decode(String content, String charset)  {
-        return decode(content, isEmpty(charset) ? null : String.valueOf(charset(charset)));
+
+    public static String decode(String str, Charset charset, boolean isPlusToSpace) {
+        return null == charset ? str : StringUtil.str(StringUtil.decode(StringUtil.bytes(str, charset), isPlusToSpace), charset);
     }
+
 
     public static Charset charset(String charsetName) throws UnsupportedCharsetException {
         return isBlank(charsetName) ? Charset.defaultCharset() : Charset.forName(charsetName);
@@ -85,7 +85,7 @@ public class ParamsDis {
         int length;
         if (str != null && (length = str.length()) != 0) {
             for(int i = 0; i < length; ++i) {
-                if (!isBlankChar(str.charAt(i))) {
+                if (!StringUtil.isBlankChar(str.charAt(i))) {
                     return false;
                 }
             }
@@ -95,15 +95,8 @@ public class ParamsDis {
         }
     }
 
-    private static boolean isBlankChar(char c) {
-        return isBlankChar((int)c);
-    }
 
-    private static boolean isBlankChar(int c) {
-        return Character.isWhitespace(c) || Character.isSpaceChar(c) || c == 65279 || c == 8234 || c == 0;
-    }
 
-    private static boolean isEmpty(CharSequence str) {
-        return str == null || str.length() == 0;
-    }
+
+
 }

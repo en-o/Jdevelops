@@ -1,9 +1,8 @@
 package cn.jdevelops.apilog.aspect;
 
-import cn.jdevelops.apilog.util.AopReasolver;
-import cn.jdevelops.apilog.util.IpUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import cn.jdevelops.aops.AopReasolver;
+import cn.jdevelops.aops.IpUtil;
+import cn.jdevelops.aops.JsonUtils;
 import cn.jdevelops.apilog.annotation.ApiLog;
 import cn.jdevelops.apilog.bean.ApiMonitoring;
 import cn.jdevelops.apilog.server.ApiLogSave;
@@ -27,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static cn.jdevelops.aops.CommonConstant.DEFAULT_FORMAT_DATETIME;
+
 /**
  * 接口日志保存
  * @author tn
@@ -38,8 +39,6 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class ApiLogAspectSave {
-
-   final static String DEFAULT_FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
     @Autowired
     private ApiLogSave apiLogSave;
@@ -83,7 +82,7 @@ public class ApiLogAspectSave {
                     Map<String, Object> beanToMap = beanToMap(rvt);
                     apiLog.setStatus(beanToMap.get("success") + "");
                 }
-                apiLog.setOutParams(JSONObject.toJSONString(rvt));
+                apiLog.setOutParams(JsonUtils.toJson(rvt));
 
             } catch (Exception e) {
                 apiLog.setStatus("false");
@@ -100,7 +99,7 @@ public class ApiLogAspectSave {
         if (myLog != null) {
             Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
             appKeyError = Objects.nonNull(rvt) ? apiKey + "" : "";
-            apiLog.setApiKey(Objects.nonNull(rvt) ? apiKey + "" : "");
+            apiLog.setApiKey(appKeyError);
         }
 
         /* callTime 调用时间  */
@@ -113,7 +112,7 @@ public class ApiLogAspectSave {
         Object[] args = joinPoint.getArgs();
         //将参数所在的数组转换成json
         try {
-            String params = JSON.toJSONString(args);
+            String params = JsonUtils.toJson(args);
             apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
         }catch (Exception e){
             apiLog.setInParams(null);

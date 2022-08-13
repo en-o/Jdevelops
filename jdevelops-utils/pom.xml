@@ -15,6 +15,7 @@
         <module>utils-encryption</module>
         <module>utils-jwt</module>
         <module>utils-message</module>
+        <module>utils-spring-aop</module>
     </modules>
     <parent>
         <artifactId>jdevelops</artifactId>

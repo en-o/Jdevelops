@@ -1,5 +1,6 @@
 package cn.jdevelops.version.config;
 
+import cn.jdevelops.aops.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
@@ -40,7 +41,7 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
             reqVersion = Optional.ofNullable(reqVersion)
                     .orElse(httpServletRequest.getHeader("version"));
             reqVersion = Optional.ofNullable(reqVersion).orElse("1.0");
-            if (isNotBlank(reqVersion)) {
+            if (StringUtil.isNotBlank(reqVersion)) {
                 double version = Double.parseDouble(reqVersion);
                 if (version >= this.apiVersion) {
                     return this;
@@ -60,25 +61,5 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
     }
 
 
-    private static boolean isNotBlank(CharSequence cs) {
-        return !isBlank(cs);
-    }
-    private static boolean isBlank(CharSequence cs) {
-        int strLen = length(cs);
-        if (strLen == 0) {
-            return true;
-        } else {
-            for(int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
 
-            return true;
-        }
-    }
-
-    private static int length(CharSequence cs) {
-        return cs == null ? 0 : cs.length();
-    }
 }

@@ -1,7 +1,9 @@
 package cn.jdevelops.apisign.config;
 
+import cn.jdevelops.aops.ContextUtil;
+import cn.jdevelops.aops.StringUtil;
 import cn.jdevelops.apisign.bean.ApiSignBean;
-import cn.jdevelops.apisign.util.HttpUtil;
+import cn.jdevelops.aops.HttpUtil;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.exception.result.ExceptionResultWrap;
 import cn.jdevelops.apisign.annotation.Signature;
@@ -11,7 +13,6 @@ import cn.jdevelops.encryption.core.SignShaUtil;
 import cn.jdevelops.exception.exception.BusinessException;
 import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+import static cn.jdevelops.aops.CommonConstant.CONTENT_TYPE;
 import static com.alibaba.fastjson.JSON.*;
 
 /**
@@ -33,8 +35,7 @@ import static com.alibaba.fastjson.JSON.*;
 @Slf4j
 public class SignAppInterceptor extends InterceptorRegistry implements HandlerInterceptor {
 
-    public static ConfigurableApplicationContext ac;
-    private static final String CONTENT_TYPE = "text/json;charset=UTF-8";
+
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, Object handler)
@@ -42,7 +43,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
             Signature signAnt = ((HandlerMethod) handler).getMethodAnnotation(Signature.class);
-            ApiSignBean apiSignBean = ac.getBean(ApiSignBean.class);
+            ApiSignBean apiSignBean = ContextUtil.getBean(ApiSignBean.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
@@ -64,7 +65,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
     private boolean signCheck(HttpServletRequest request, SginEnum enums, String salt) {
         Object map = null;
         String paramsHeader = "";
-        if (isNotBlank(getHeaderSign(request))) {
+        if (StringUtil.isNotBlank(getHeaderSign(request))) {
             paramsHeader = showParamsHeader(request);
         } else {
             map = showParams(request);
@@ -161,7 +162,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         try {
             final String signName = "sign";
             String sign = request.getHeader(signName);
-            if (isNotBlank(sign)) {
+            if (StringUtil.isNotBlank(sign)) {
                 return sign;
             }
         } catch (Exception e) {
@@ -173,26 +174,5 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
 
 
 
-    private static boolean isNotBlank(CharSequence cs) {
-        return !isBlank(cs);
-    }
-    private static boolean isBlank(CharSequence cs) {
-        int strLen = length(cs);
-        if (strLen == 0) {
-            return true;
-        } else {
-            for(int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-    private static int length(CharSequence cs) {
-        return cs == null ? 0 : cs.length();
-    }
 
 }

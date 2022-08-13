@@ -1,6 +1,6 @@
 package cn.jdevelops.apisign.filter;
 
-import cn.jdevelops.apisign.util.HttpUtil;
+import cn.jdevelops.aops.HttpUtil;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

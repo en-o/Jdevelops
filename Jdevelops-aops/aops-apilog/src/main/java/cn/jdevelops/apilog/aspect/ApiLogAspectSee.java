@@ -1,7 +1,7 @@
 package cn.jdevelops.apilog.aspect;
 
+import cn.jdevelops.aops.ParamsDis;
 import cn.jdevelops.apilog.annotation.ApiLog;
-import cn.jdevelops.apilog.util.ParamsDis;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;

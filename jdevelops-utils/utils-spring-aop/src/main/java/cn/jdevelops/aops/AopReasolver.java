@@ -1,4 +1,4 @@
-package cn.jdevelops.apilog.util;
+package cn.jdevelops.aops;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -37,7 +37,7 @@ public class AopReasolver {
      */
     public Object resolver(JoinPoint joinPoint, String str) {
 
-        if (isBlank(str)) {
+        if (StringUtil.isBlank(str)) {
             return null ;
         }
 
@@ -68,7 +68,7 @@ public class AopReasolver {
             value = str;
         }
 
-        return isBlank(substring1)?value:substring1+value;
+        return StringUtil.isBlank(substring1)?value:substring1+value;
     }
 
 
@@ -127,25 +127,5 @@ public class AopReasolver {
         }
         return null;
     }
-
-    private static boolean isBlank(CharSequence cs) {
-        int strLen = length(cs);
-        if (strLen == 0) {
-            return true;
-        } else {
-            for(int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    }
-
-    private static int length(CharSequence cs) {
-        return cs == null ? 0 : cs.length();
-    }
-
 
 }
