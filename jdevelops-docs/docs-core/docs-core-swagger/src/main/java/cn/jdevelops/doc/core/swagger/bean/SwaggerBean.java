@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import springfox.documentation.spi.DocumentationType;
 
+import java.util.Objects;
+
 /**
  * swagger配置类
  * @author tn
@@ -90,5 +92,9 @@ public class SwaggerBean {
             default:
                 return DocumentationType.OAS_30;
         }
+    }
+
+    public String getGroupName() {
+        return Objects.isNull(groupName)?"Jdevelops接口":groupName;
     }
 }
