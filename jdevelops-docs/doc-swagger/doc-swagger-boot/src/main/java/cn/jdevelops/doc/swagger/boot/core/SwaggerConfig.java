@@ -40,14 +40,20 @@ public class SwaggerConfig {
     private SwaggerBean swaggerBean;
 
 
-    @Bean
-    public Docket createRestApi() {
+
+    @Bean(value = "defaultApi")
+    public Docket defaultApi() {
+        return createRestApi(swaggerBean.getGroupName(), swaggerBean.getBasePackage());
+    }
+
+
+    public Docket createRestApi(String groupName, String packageName) {
         Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
                 .apiInfo(apiInfo(swaggerBean, serverName, serverPort))
-                .groupName(swaggerBean.getGroupName())
+                .groupName(groupName)
                 .select()
-                .apis(basePackage(swaggerBean.getBasePackage()))
+                .apis(basePackage(packageName))
 //                .apis(RequestHandlerSelectors.basePackage(swaggerBean.getBasePackage()))
                 /*对所有路径进行监控*/
                 .paths(PathSelectors.any())
