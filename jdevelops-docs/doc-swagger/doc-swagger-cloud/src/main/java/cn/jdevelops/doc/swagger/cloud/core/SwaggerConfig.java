@@ -4,6 +4,7 @@ import cn.jdevelops.doc.core.swagger.bean.SwaggerBean;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -38,17 +39,23 @@ public class SwaggerConfig {
     @Resource
     private SwaggerBean swaggerBean;
 
-    public Docket createRestApi() {
+    @Bean(value = "defaultApi")
+    public Docket defaultApi() {
+        return createRestApi(swaggerBean.getGroupName(), swaggerBean.getBasePackage());
+    }
 
+
+    public Docket createRestApi(String groupName, String packageName) {
         Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
                 .apiInfo(apiInfo(swaggerBean, serverName, serverPort))
+                .groupName(groupName)
                 .select()
-                .apis(basePackage(swaggerBean.getBasePackage()))
+                .apis(basePackage(packageName))
+//                .apis(RequestHandlerSelectors.basePackage(swaggerBean.getBasePackage()))
                 /*对所有路径进行监控*/
                 .paths(PathSelectors.any())
-                .build();//赋予插件体系
-
+                .build();
         if(Boolean.TRUE.equals(swaggerBean.getAddHeaderToken())){
             //全站统一参数token
             return  build.securitySchemes(security())
@@ -56,6 +63,7 @@ public class SwaggerConfig {
         }else {
             return build;
         }
+
     }
 
 
