@@ -23,7 +23,8 @@ import java.util.Objects;
 public class SwaggerBean {
 
     /**
-     * controller接口所在的包(多个包以分号拼接，eg. package.api1;package.api2
+     * controller接口所在的包(多个包以分号拼接，eg. package.api;package.controller
+     * ps: 注意如果包名前缀一样只需要写一个就行 eg. package.api1;package.api2 ＝ package.api
      */
     private String basePackage="cn.jdevelops.controller";
 
