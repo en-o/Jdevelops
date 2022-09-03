@@ -15,7 +15,6 @@
         <module>aops-apilog</module>
         <module>aops-apisign</module>
         <module>aops-apiversion</module>
-        <module>aops-jpaReturn</module>
         <module>aops-exception</module>
     </modules>
 
