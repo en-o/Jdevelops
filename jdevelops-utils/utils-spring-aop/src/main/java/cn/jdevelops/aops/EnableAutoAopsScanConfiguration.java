@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnWebApplication
 public class EnableAutoAopsScanConfiguration {
 
-    @ConditionalOnMissingBean(ContextUtil.class)
+    @ConditionalOnMissingBean(AopContextUtil.class)
     @Bean
-    public ContextUtil contextUtil(){
-        return new ContextUtil();
+    public AopContextUtil aopContextUtil(){
+        return new AopContextUtil();
     }
 
 

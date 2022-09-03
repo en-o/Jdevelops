@@ -9,13 +9,13 @@ import org.springframework.context.ApplicationContextAware;
  * @version 1
  * @date 2020/6/19 15:30
  */
-public class ContextUtil implements ApplicationContextAware {
+public class AopContextUtil implements ApplicationContextAware {
 	private static ApplicationContext applicationContext;
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
-		if (ContextUtil.applicationContext == null) {
-			ContextUtil.applicationContext = applicationContext;
+		if (AopContextUtil.applicationContext == null) {
+			AopContextUtil.applicationContext = applicationContext;
 		}
 	}
 

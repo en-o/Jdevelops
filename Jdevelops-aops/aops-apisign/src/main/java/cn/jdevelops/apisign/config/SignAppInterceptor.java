@@ -1,6 +1,6 @@
 package cn.jdevelops.apisign.config;
 
-import cn.jdevelops.aops.ContextUtil;
+import cn.jdevelops.aops.AopContextUtil;
 import cn.jdevelops.aops.StringUtil;
 import cn.jdevelops.apisign.bean.ApiSignBean;
 import cn.jdevelops.aops.HttpUtil;
@@ -43,7 +43,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
             Signature signAnt = ((HandlerMethod) handler).getMethodAnnotation(Signature.class);
-            ApiSignBean apiSignBean = ContextUtil.getBean(ApiSignBean.class);
+            ApiSignBean apiSignBean = AopContextUtil.getBean(ApiSignBean.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
