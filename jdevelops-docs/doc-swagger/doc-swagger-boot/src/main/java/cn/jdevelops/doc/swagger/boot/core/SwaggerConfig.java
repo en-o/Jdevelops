@@ -40,13 +40,6 @@ public class SwaggerConfig {
     private SwaggerBean swaggerBean;
 
 
-
-    @Bean(value = "defaultApi")
-    public Docket defaultApi() {
-        return createRestApi(swaggerBean.getGroupName(), swaggerBean.getBasePackage());
-    }
-
-
     public Docket createRestApi(String groupName, String packageName) {
         Docket build = new Docket(swaggerBean.getDocket())
                 .enable(swaggerBean.getShow())
