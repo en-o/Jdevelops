@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class OSSConfig {
 
 	/**
-	 * 文件浏览地址: @link https://sda.xx.com
+	 * 文件浏览地址:  https://sda.xx.com
 	 * 注意最后不要有斜杠
 	 */
 	private String browseUrl;

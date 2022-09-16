@@ -225,7 +225,7 @@ class PropertyContainer {
 	}
 
 	/**
-	 * @deprecated Use the {@link #propertyIterator()} method instead.
+	 * @deprecated Use the { #propertyIterator()} method instead.
 	 */
 	@Deprecated
 	public Collection getProperties() {

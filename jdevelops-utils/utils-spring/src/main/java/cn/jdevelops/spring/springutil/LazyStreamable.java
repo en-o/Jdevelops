@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Lazy implementation of {@link Streamable} obtains a {@link Stream} from a given {@link Supplier}.
+ * Lazy implementation of { Streamable} obtains a { Stream} from a given {Supplier}.
  *
  * @author Oliver Gierke
  * @since 2.0
@@ -32,7 +32,7 @@ class LazyStreamable<T> implements Streamable<T> {
 
 	Supplier<? extends Stream<T>> stream;
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */
@@ -41,7 +41,7 @@ class LazyStreamable<T> implements Streamable<T> {
 		return stream().iterator();
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * @see org.springframework.data.util.Streamable#stream()
 	 */

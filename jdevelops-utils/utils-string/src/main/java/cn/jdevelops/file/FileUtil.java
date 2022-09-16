@@ -324,10 +324,10 @@ public class FileUtil {
 	}
 
     /**
-     * 文件转为{@link FileInputStream}
+     * 文件转为{ FileInputStream}
      *
      * @param file 文件
-     * @return {@link FileInputStream}
+     * @return {FileInputStream}
      */
     public static FileInputStream toStream(File file) throws IOException {
         try {

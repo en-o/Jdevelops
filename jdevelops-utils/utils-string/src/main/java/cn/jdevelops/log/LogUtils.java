@@ -47,7 +47,7 @@ public final class LogUtils {
      * debug log.
      * @param logger   logger
      * @param format   format
-     * @param supplier {@linkplain Supplier}
+     * @param supplier { Supplier}
      */
     public static void debug(final Logger logger, final String format, final Supplier<Object> supplier) {
         if (logger.isDebugEnabled()) {
@@ -58,7 +58,7 @@ public final class LogUtils {
     /**
      * debug log.
      * @param logger   logger
-     * @param supplier  {@linkplain Supplier}
+     * @param supplier  { Supplier}
      */
     public static void debug(final Logger logger, final Supplier<Object> supplier) {
         if (logger.isDebugEnabled()) {
@@ -71,7 +71,7 @@ public final class LogUtils {
      *
      * @param logger   logger
      * @param format   format
-     * @param supplier {@linkplain Supplier}
+     * @param supplier { Supplier}
      */
     public static void info(final Logger logger, final String format, final Supplier<Object> supplier) {
         if (logger.isInfoEnabled()) {
@@ -83,7 +83,7 @@ public final class LogUtils {
      * info log.
      *
      * @param logger   logger
-     * @param supplier {@linkplain Supplier}
+     * @param supplier {Supplier}
      */
     public static void info(final Logger logger, final Supplier<Object> supplier) {
         if (logger.isInfoEnabled()) {
@@ -96,7 +96,7 @@ public final class LogUtils {
      *
      * @param logger   logger
      * @param format   format
-     * @param supplier {@linkplain Supplier}
+     * @param supplier {Supplier}
      */
     public static void error(final Logger logger, final String format, final Supplier<Object> supplier) {
         if (logger.isErrorEnabled()) {
@@ -108,7 +108,7 @@ public final class LogUtils {
      * error log.
      *
      * @param logger   logger
-     * @param supplier {@linkplain Supplier}
+     * @param supplier {Supplier}
      */
     public static void error(final Logger logger, final Supplier<Object> supplier) {
         if (logger.isErrorEnabled()) {
@@ -121,7 +121,7 @@ public final class LogUtils {
      *
      * @param logger   logger
      * @param format   format
-     * @param supplier {@linkplain Supplier}
+     * @param supplier {Supplier}
      */
     public static void warn(final Logger logger, final String format, final Supplier<Object> supplier) {
         if (logger.isWarnEnabled()) {
@@ -133,7 +133,7 @@ public final class LogUtils {
      * warn log.
      *
      * @param logger   logger
-     * @param supplier {@linkplain Supplier}
+     * @param supplier {Supplier}
      */
     public static void warn(final Logger logger, final Supplier<Object> supplier) {
         if (logger.isWarnEnabled()) {
