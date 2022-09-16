@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
  * HttpServletRequest 过滤器
  * 解决: request.getInputStream()只能读取一次的问题
  * @author link
- * @link https://blog.csdn.net/itdragons/article/details/106632260
+ * <a href="https://blog.csdn.net/itdragons/article/details/106632260">参考</a>
  * 目标: 流可重复读
  */
 @Component

@@ -3,7 +3,7 @@ package cn.jdevelops.spring.enums;
 /**
  * 系统名
  * @author 来源于网络
- * @link : https://blog.csdn.net/fangchao2011/article/details/88785637
+ * <a href="https://blog.csdn.net/fangchao2011/article/details/88785637">参考</a>
  */
 public enum EPlatform {
 

@@ -8,17 +8,17 @@ import java.util.List;
 
 /**
  * @author tnnn
- * @link https://blog.csdn.net/weixin_42514654/article/details/114046759
+ * <a href="https://blog.csdn.net/weixin_42514654/article/details/114046759">参考</a>
  * 在代码中调用另外一个jar
  *  - 直接调用线程会阻塞
  * 使用线程读取
  * <pr>
-        ExecutorService jar = Executors.newFixedThreadPool(1);
-        jar.execute(() -> {
-        JarExecutor jarExecutor = new JarExecutor();
-        jarExecutor.executeJar("E:\\西信\\demo1\\target\\demo1-0.0.1-SNAPSHOT.jar",null);
-        });
-        jar.shutdown();
+ExecutorService jar = Executors.newFixedThreadPool(1);
+jar.execute(() -> {
+JarExecutor jarExecutor = new JarExecutor();
+jarExecutor.executeJar("E:\\西信\\demo1\\target\\demo1-0.0.1-SNAPSHOT.jar",null);
+});
+jar.shutdown();
  * </pr>
  */
 public class JarExecutor {

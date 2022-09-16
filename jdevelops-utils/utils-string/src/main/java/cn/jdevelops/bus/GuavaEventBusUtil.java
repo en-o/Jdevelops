@@ -7,7 +7,7 @@ import java.util.concurrent.Executor;
 
 /**
  * 事件总线工具类 来源
- * @link <a href="https://blog.csdn.net/qq_38345296/article/details/100539989">事件总线工具类</a>
+ *  <a href="https://blog.csdn.net/qq_38345296/article/details/100539989">事件总线工具类</a>
  * @author fengjiale
  **/
 public class GuavaEventBusUtil {

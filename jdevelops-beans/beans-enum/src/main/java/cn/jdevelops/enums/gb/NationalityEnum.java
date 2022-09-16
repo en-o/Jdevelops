@@ -6,7 +6,7 @@ import lombok.Getter;
  * 民族
  *
  * @author tnnn
- * @link https://blog.csdn.net/zona_wzq/article/details/103207065
+ * <a href="https://blog.csdn.net/zona_wzq/article/details/103207065">来源</a>
  */
 @Getter
 public enum NationalityEnum {

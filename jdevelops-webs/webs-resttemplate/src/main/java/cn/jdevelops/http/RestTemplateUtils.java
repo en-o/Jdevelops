@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * RestTemplate 远程调用工具类
- * @author 来源网络 @link https://www.cnblogs.com/qingmuchuanqi48/p/12318707.html
+ * @author  <a href="https://www.cnblogs.com/qingmuchuanqi48/p/12318707.html">来源网络</a>
  *
  */
 @Component

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 /**
  * URL请求映射（带@ApiVersion注解的走匹配规则）
  * @author tnnn
- * @link https://www.cnblogs.com/amuge/articles/13821162.html
+ * <a href="https://www.cnblogs.com/amuge/articles/13821162.html">URL请求映射</a>
  */
 public class CustomRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
 

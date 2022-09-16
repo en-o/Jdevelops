@@ -6,7 +6,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 /**
  * 控制器映射请求定义（URL映射）
  * @author tnnn
- * @link https://www.cnblogs.com/amuge/articles/13821162.html
+ * <a href="https://www.cnblogs.com/amuge/articles/13821162.html">参考</a>
  */
 public class WebMvcRegistrationsConfig implements WebMvcRegistrations {
 

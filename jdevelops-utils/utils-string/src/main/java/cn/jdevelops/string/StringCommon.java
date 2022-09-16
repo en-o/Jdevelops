@@ -54,7 +54,7 @@ public class StringCommon {
 
     /**
      * 提取字符串中的IP
-     * @link https://www.cnblogs.com/liugangmestery/p/7281994.html
+     *  <a href="https://www.cnblogs.com/liugangmestery/p/7281994.html">参考</a>
      * @param line 字符串
      * @return ips
      */

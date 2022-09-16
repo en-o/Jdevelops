@@ -11,7 +11,7 @@ import java.util.Optional;
  * 版本匹配
  *
  * @author tnnn
- * @link https://www.cnblogs.com/amuge/articles/13821162.html
+ * <a href="https://www.cnblogs.com/amuge/articles/13821162.html">参考</a>
  */
 @Slf4j
 public class ApiVersionCondition implements RequestCondition<ApiVersionCondition> {

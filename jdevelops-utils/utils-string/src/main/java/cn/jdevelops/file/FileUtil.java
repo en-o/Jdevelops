@@ -312,10 +312,10 @@ public class FileUtil {
 	}
 
 	/**
-	 * 转换为{@link BufferedInputStream}
+	 * 转换为{BufferedInputStream}
 	 *
-	 * @param in {@link InputStream}
-	 * @return {@link BufferedInputStream}
+	 * @param in { InputStream}
+	 * @return { BufferedInputStream}
 	 * @since 4.0.10
 	 */
 	public static BufferedInputStream toBuffered(InputStream in) {

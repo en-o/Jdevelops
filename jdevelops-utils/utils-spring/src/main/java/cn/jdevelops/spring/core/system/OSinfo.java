@@ -12,7 +12,7 @@ import cn.jdevelops.spring.enums.EPlatform;
  //    }
  *  </pre>
  * @author 来源于网络
- * @link : https://blog.csdn.net/fangchao2011/article/details/88785637
+ *  <a href="https://blog.csdn.net/fangchao2011/article/details/88785637">参考</a>
  */
 public class OSinfo {
 
