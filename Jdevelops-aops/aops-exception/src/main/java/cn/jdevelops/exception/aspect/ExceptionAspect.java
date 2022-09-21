@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -22,6 +24,8 @@ import java.util.Objects;
 @Aspect
 @Component
 public class ExceptionAspect {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExceptionAspect.class);
 
     private static final int DEF_CODE = 500;
 
@@ -45,8 +49,7 @@ public class ExceptionAspect {
     public void doAfterThrowing(JoinPoint jp, Exception ex) {
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) jp.getSignature();
-
-
+        LOG.error("处理异常时打印原始异常信息：",ex);
         //获取切入点所在的方法
         Method method = signature.getMethod();
         DisposeException disposeException = method.getAnnotation(DisposeException.class);
