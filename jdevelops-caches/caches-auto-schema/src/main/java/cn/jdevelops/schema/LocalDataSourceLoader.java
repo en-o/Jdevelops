@@ -20,7 +20,6 @@ import cn.jdevelops.schema.constant.SchemaConstant;
 import cn.jdevelops.schema.properties.DataBaseProperties;
 import cn.jdevelops.schema.util.StringUtil;
 import com.google.common.base.Splitter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -61,33 +60,37 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
         return bean;
     }
 
-    @SneakyThrows
     protected void init(final DataSourceProperties properties) {
-        // If jdbcUrl in the configuration file specifies the shenyu database, it is removed,
-        // because the shenyu database does not need to be specified when executing the SQL file,
-        // otherwise the shenyu database will be disconnected when the shenyu database does not exist
-        String url = properties.getUrl();
-        StringBuilder sb = new StringBuilder(url);
-        String sub1 = url.substring(0, !url.contains("?") ? url.length() : url.indexOf("?") - 1);
-        int i = sub1.lastIndexOf("/");
-        int j = sb.indexOf("?") < 0 ? sb.length() : sb.indexOf("?");
-        String jdbcUrl = sb.replace(i, j, "").toString();
-        Connection connection;
-        AtomicInteger jdbcType = new AtomicInteger(0);
-        String jdbcUrlPrefix = jdbcUrl.substring(0,jdbcUrl.lastIndexOf(":") - 1);
-        if (properties.getDriverClassName().contains(SchemaConstant.POSTGRESQL)
-                ||jdbcUrlPrefix.contains(SchemaConstant.POSTGRESQL)) {
-            connection = DriverManager.getConnection(jdbcUrl + "/", properties.getUsername(), properties.getPassword());
-            jdbcType.set(1);
-        } else if (properties.getDriverClassName().contains(SchemaConstant.MYSQL)
-                ||jdbcUrlPrefix.contains(SchemaConstant.MYSQL)) {
-            connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
-            jdbcType.set(2);
-        } else {
-            log.info("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
-            return;
+        try {
+            // If jdbcUrl in the configuration file specifies the shenyu database, it is removed,
+            // because the shenyu database does not need to be specified when executing the SQL file,
+            // otherwise the shenyu database will be disconnected when the shenyu database does not exist
+            String url = properties.getUrl();
+            StringBuilder sb = new StringBuilder(url);
+            String sub1 = url.substring(0, !url.contains("?") ? url.length() : url.indexOf("?") - 1);
+            int i = sub1.lastIndexOf("/");
+            int j = sb.indexOf("?") < 0 ? sb.length() : sb.indexOf("?");
+            String jdbcUrl = sb.replace(i, j, "").toString();
+            Connection connection;
+            AtomicInteger jdbcType = new AtomicInteger(0);
+            String jdbcUrlPrefix = jdbcUrl.substring(0,jdbcUrl.lastIndexOf(":") - 1);
+            if (properties.getDriverClassName().contains(SchemaConstant.POSTGRESQL)
+                    ||jdbcUrlPrefix.contains(SchemaConstant.POSTGRESQL)) {
+                jdbcUrl = jdbcUrl.contains("?")?jdbcUrl.substring(0,jdbcUrl.indexOf("?")):jdbcUrl;
+                connection = DriverManager.getConnection(jdbcUrl + "/", properties.getUsername(), properties.getPassword());
+                jdbcType.set(1);
+            } else if (properties.getDriverClassName().contains(SchemaConstant.MYSQL)
+                    ||jdbcUrlPrefix.contains(SchemaConstant.MYSQL)) {
+                connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
+                jdbcType.set(2);
+            } else {
+                log.warn("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
+                return;
+            }
+            this.execute(connection, properties.getUrl().substring(i + 1, j), jdbcType);
+        }catch (Exception e){
+            log.warn("自动建库失败,请手动创建",e);
         }
-        this.execute(connection, properties.getUrl().substring(i + 1, j), jdbcType);
     }
 
     private void execute(final Connection conn, final String schemaName, AtomicInteger jdbcType) throws Exception {
@@ -117,7 +120,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                         runner.setAutoCommit(true);
                         break;
                     }else {
-                        log.info("当前库("+schemaName+")已存在，不用在自动创建");
+                        log.warn("当前库("+schemaName+")已存在，不用在自动创建");
                         runner.closeConnection();
                         conn.close();
                         return;
@@ -131,7 +134,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                     return;
             }
             Reader fileReader = getResourceAsReaderStr(initScript);
-            log.info("execute auto schema sql: {}", initScript);
+            log.warn("创建数据库 ==> execute auto schema sql: {}", initScript);
             runner.runScript(fileReader);
         } else {
             List<String> initScripts = Splitter.on(";").splitToList(initScript);
@@ -139,11 +142,11 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                 if (sqlScript.startsWith(PRE_FIX)) {
                     String sqlFile = sqlScript.substring(PRE_FIX.length());
                     Reader fileReader = getResourceAsReader(sqlFile);
-                    log.info("execute auto schema sql: {}", sqlFile);
+                    log.warn("创建数据库 ==> execute auto schema sql: {}", sqlFile);
                     runner.runScript(fileReader);
                 } else {
                     Reader fileReader = getResourceAsReader(sqlScript);
-                    log.info("execute auto schema sql: {}", sqlScript);
+                    log.warn("创建数据库 ==> execute auto schema sql: {}", sqlScript);
                     runner.runScript(fileReader);
                 }
             }
