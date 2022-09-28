@@ -2,6 +2,7 @@ package cn.jdevelops.jap.core.util;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.jdevelops.enums.string.StringEnum;
+import cn.jdevelops.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.jap.core.util.criteria.Restrictions;
 import cn.jdevelops.jap.core.util.criteria.SimpleExpression;
@@ -97,11 +98,17 @@ public class JpaUtils {
             if ("serialVersionUID".equals(fieldName)) {
                 continue;
             }
+            // 字段被忽略
+            JpaSelectIgnoreField ignoreField = field.getAnnotation(JpaSelectIgnoreField.class);
+            if(Objects.nonNull(ignoreField)){
+                continue;
+            }
+
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
-            if (null != annotation) {
-                SimpleExpression simpleExpression = jpaSelectOperatorSwitch(annotation, fieldName, fieldValue);
-                if(Objects.equals(annotation.connect(), SQLConnect.OR)){
+            JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
+            if (Objects.nonNull(selectOperator)) {
+                SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
+                if(Objects.equals(selectOperator.connect(), SQLConnect.OR)){
                     jpaSelect.or(simpleExpression);
                 }else {
                     jpaSelect.add(simpleExpression);
