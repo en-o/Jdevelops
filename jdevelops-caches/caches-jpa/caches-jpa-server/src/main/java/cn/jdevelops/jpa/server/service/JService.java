@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * jpa公共service
+ * 请使用J2Service
  * @param <T> 实体
  * @author tn
  * @date 2021-01-22 13:35

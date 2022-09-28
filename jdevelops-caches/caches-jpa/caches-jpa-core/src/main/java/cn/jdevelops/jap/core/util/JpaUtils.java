@@ -13,13 +13,12 @@ import java.util.Objects;
 
 /**
  * Jpa项目里的工具类
- * 此工具类废弃，请使用 JpaUtils
+ *
  * @author tn
  * @version 1
  * @date 2020/6/28 23:16
  */
-@Deprecated
-public class CommUtils {
+public class JpaUtils {
 
     /**
      * 根据字段名称获取对象的属性
@@ -40,6 +39,11 @@ public class CommUtils {
         return method.invoke(target, new Object[0]);
     }
 
+    /**
+     * 字符判空
+     * @param idFieldName CharSequence
+     * @return boolean
+     */
     public static boolean isBlank(final CharSequence idFieldName) {
         int strLen;
         if (idFieldName == null || StringEnum.NULL_STRING.getStr().contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
@@ -63,7 +67,7 @@ public class CommUtils {
      * @return JPAUtilExpandCriteria
      */
     public static <T,B> JPAUtilExpandCriteria<T> getSelectBean2(B bean) {
-        return getTjpaUtilExpandCriteria(bean);
+        return getJpaUtilExpandCriteria(bean);
     }
 
     /**
@@ -74,11 +78,18 @@ public class CommUtils {
      * @return JPAUtilExpandCriteria
      */
     public static <T> JPAUtilExpandCriteria<T> getSelectBean(T bean) {
-        return getTjpaUtilExpandCriteria(bean);
+        return getJpaUtilExpandCriteria(bean);
     }
 
 
-    private static <T,B>  JPAUtilExpandCriteria<T> getTjpaUtilExpandCriteria(B bean) {
+    /**
+     * 组装查询条件
+     * @param bean 条件实体
+     * @return  JPAUtilExpandCriteria
+     * @param <T> 返回实体
+     * @param <B> 条件实体
+     */
+    private static <T,B>  JPAUtilExpandCriteria<T> getJpaUtilExpandCriteria(B bean) {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (Field field : fields) {

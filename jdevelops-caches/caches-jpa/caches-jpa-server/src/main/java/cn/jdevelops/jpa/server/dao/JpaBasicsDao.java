@@ -1,6 +1,6 @@
 package cn.jdevelops.jpa.server.dao;
 
-import cn.jdevelops.jap.core.util.CommUtils;
+import cn.jdevelops.jap.core.util.JpaUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.criteria.Restrictions;
 import cn.jdevelops.jpa.server.enums.FieldName;
@@ -54,7 +54,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      */
     default Boolean updateEntity(T t) throws Exception {
         /* 跟根据ID获取需要更新的数据的 原始数据 */
-        T  oidCamera = findById((D) CommUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
+        T  oidCamera = findById((D) JpaUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
                 .orElse(null);
         /*
          *将新数据中非空字段 克隆到原始数据中 实现更新
@@ -82,7 +82,7 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
         T  oidCamera;
         try {
             JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
-            jpaSelect.add(Restrictions.eq(selectKey, CommUtils.getFieldValueByName(selectKey,t), false));
+            jpaSelect.add(Restrictions.eq(selectKey, JpaUtils.getFieldValueByName(selectKey,t), false));
             oidCamera = findAll(jpaSelect).get(0);
         }catch (Exception e){
             throw new RuntimeException("更新失败，查询数据为空",e);

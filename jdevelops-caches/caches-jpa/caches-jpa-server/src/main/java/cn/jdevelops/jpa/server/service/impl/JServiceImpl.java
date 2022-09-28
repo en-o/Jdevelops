@@ -1,7 +1,7 @@
 package cn.jdevelops.jpa.server.service.impl;
 
 import cn.jdevelops.entity.basics.vo.SerializableVO;
-import cn.jdevelops.jap.core.util.CommUtils;
+import cn.jdevelops.jap.core.util.JpaUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.JPageUtil;
 import cn.jdevelops.jap.exception.JpaException;
@@ -23,6 +23,7 @@ import java.util.List;
 
 /**
  * 预约模块公共service实现
+ * 请使用  J2ServiceImpl
  * @param <D> 实体的主键类型
  * @param <T> 实体
  * @author tn
@@ -106,7 +107,7 @@ public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T>
 
     @Override
     public List<T> findByBean(T t) {
-        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean(t);
         return commonDao.findAll(selectRegionBean);
     }
 
@@ -117,7 +118,7 @@ public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T>
 
     @Override
     public <R> ResourcePage<List<R>> findByBean(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
-        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return JPageUtil.to(pages, clazz);
@@ -126,7 +127,7 @@ public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T>
 
     @Override
     public <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
-        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
@@ -134,7 +135,7 @@ public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T>
 
     @Override
     public <R> ResourcePage<List<R>> findByBean(T t, RoutinePageDTO pageDTO, Class<R> clazz) {
-        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return JPageUtil.to(pages, clazz);
@@ -142,7 +143,7 @@ public class JServiceImpl<T extends SerializableVO<T>, D> implements JService<T>
 
     @Override
     public <R> ResultVO<ResourcePage<List<R>>> findByBeanForVO(T t, RoutinePageDTO pageDTO, Class<R> clazz) {
-        JPAUtilExpandCriteria<T> selectRegionBean = CommUtils.getSelectBean(t);
+        JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
