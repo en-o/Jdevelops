@@ -40,7 +40,6 @@ public class HostsUtilTest {
     @Test
     public void exists() throws IOException {
         assertFalse(HostsUtil.exists("192.168.0.61", "tan.cn"));
-        assertTrue(HostsUtil.exists("127.0.0.1", "localhost"));
     }
 
     @Test
