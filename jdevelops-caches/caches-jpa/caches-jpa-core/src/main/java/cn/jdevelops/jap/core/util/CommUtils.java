@@ -89,7 +89,7 @@ public class CommUtils {
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             JpaSelectOperator annotation = field.getAnnotation(JpaSelectOperator.class);
             if (null != annotation) {
-                SimpleExpression simpleExpression = jpaSelectOperatorSwitch(annotation, fieldName, fieldValue);
+                SimpleExpression simpleExpression = JpaUtils.jpaSelectOperatorSwitch(annotation, fieldName, fieldValue);
                 if(Objects.equals(annotation.connect(), SQLConnect.OR)){
                     jpaSelect.or(simpleExpression);
                 }else {
@@ -100,47 +100,6 @@ public class CommUtils {
             }
         }
         return jpaSelect;
-    }
-
-
-    /**
-     * 根据注解组装  jpa动态查询
-     *
-     * @param annotation  JpaSelectOperator 注解
-     * @param fieldName 字段名
-     * @param fieldValue 字段值
-     * @return SimpleExpression
-     */
-    public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
-                                                           String fieldName,
-                                                           Object fieldValue) {
-        switch (annotation.operator()) {
-            case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull());
-            case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull());
-            case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull());
-            case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull());
-            case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull());
-            case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull());
-            case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull());
-            case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull());
-            case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull());
-            case ISNULL:
-                return Restrictions.isNull(fieldName);
-            case ISNOTNULL:
-                return Restrictions.isNotNull(fieldName);
-            case EQ:
-            default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull());
-        }
     }
 
 }
