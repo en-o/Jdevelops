@@ -49,7 +49,8 @@ public class LocalOperate implements OssOperateAPI {
         // getOriginalFilename方法获取文件名(带后缀)
         String originalName = file.getOriginalFilename();
         String freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
-        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + uploaded.getChildFolder() + freshName;
+        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + uploaded.getChildFolder()
+                + OSSConstants.PATH_SEPARATOR +freshName;
         File dest = new File(ossConfig.getLocal()
                 .getUploadDir() + OSSConstants.PATH_SEPARATOR + relativePath);
         // 判断文件所在目录是否存在，如果不存在就创建对应的目录
