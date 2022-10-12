@@ -8,6 +8,7 @@
         <version>2.0.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <description>环境相关工具类</description>
 
     <artifactId>utils-environment</artifactId>
 
