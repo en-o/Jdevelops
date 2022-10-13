@@ -194,4 +194,14 @@ public class ResourcePage<T> implements Serializable {
 	}
 
 
+	@Override
+	public String toString() {
+		return "ResourcePage{" +
+				"currentPage=" + currentPage +
+				", pageSize=" + pageSize +
+				", totalPages=" + totalPages +
+				", total=" + total +
+				", rows=" + rows +
+				'}';
+	}
 }

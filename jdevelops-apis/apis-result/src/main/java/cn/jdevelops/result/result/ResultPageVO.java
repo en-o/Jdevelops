@@ -1,6 +1,7 @@
 package cn.jdevelops.result.result;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.result.page.ResourcePage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
 import io.swagger.annotations.ApiModel;
@@ -14,7 +15,7 @@ import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import java.io.Serializable;
 
 /**
- * 分页全局结果集
+ * 分页全局结果集直接放回
  * @author tn
  * @version 1
  * @date 2020/6/8 17:28
@@ -23,140 +24,201 @@ import java.io.Serializable;
 @Setter
 @ToString
 @ApiModel(value = "分页全局结果集",description = "全局返回对象")
-@Deprecated
 public class ResultPageVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
 
-    /** 返回结果状态码 */
+    /**
+     * 返回结果状态码
+     */
     @ApiModelProperty(value = "返回结果状态码")
     private Integer code;
 
-    /** 返回消息 */
+    /**
+     * 返回消息
+     */
     @ApiModelProperty(value = "返回消息")
     private String message;
 
     /**
-     * 当前页
-     */
-    @ApiModelProperty("当前页")
-    private Integer currentPage;
-    /**
-     * 每页显示条数
-     */
-    @ApiModelProperty("每页显示条数")
-    private Integer pageSize;
-    /**
-     * 总页数
-     */
-    @ApiModelProperty("总页数")
-    private Integer totalPages;
-    /**
-     * 总记录数
-     */
-    @ApiModelProperty("总记录数")
-    private Long total;
-    /**
      * 数据
      */
-    @ApiModelProperty("数据")
-    private T rows;
+    @ApiModelProperty(value = "数据")
+    private ResourcePage<T> data;
 
-    /** 时间戳 */
+    /**
+     * 时间戳
+     */
     @ApiModelProperty(value = "时间戳")
     private Long ts;
 
-
-    /** traceId  */
+    /**
+     * traceId
+     */
     @ApiModelProperty(value = "skywalking_traceId")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 
-    /** 自动转换success的返回值：true,false*/
+    /**
+     * 自动转换success的返回值：true,false
+     */
     public boolean isSuccess() {
         return this.code == ResultCodeEnum.SUCCESS.getCode();
     }
 
     public Long getTs() {
-        return System.currentTimeMillis();
+        return  System.currentTimeMillis();
+    }
+
+    public static <T> ResultVO<T> success() {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage("success");
+        return resultVO;
+    }
+
+    public static <T> ResultVO<T> success(String message) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage(message);
+        return resultVO;
+    }
+
+    public static <T> ResultVO<T> successForData(T data) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage("success");
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+
+    /**
+     * 尽量不要使用
+     * @deprecated (成功代码应该唯一)
+     */
+    @Deprecated
+    public static <T> ResultVO<T> success(int code, String message) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        return resultVO;
+    }
+
+
+    public static <T> ResultVO<T> success(int code, String message, T data) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+
+    public static <T> ResultVO<T> success(T data, String message) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage(message);
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+
+    public static <T> ResultVO<ResourcePage<T>> success(String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage(message);
+        resultVO.setData(resourcePage);
+        return resultVO;
+    }
+
+
+    public static <T> ResultVO<T> fail(int code, String message, T data) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+    public static <T> ResultVO<T> fail(ResultCodeEnum resultCodeEnum, T data) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(resultCodeEnum.getCode());
+        resultVO.setMessage(resultCodeEnum.getMessage());
+        resultVO.setData(data);
+        return resultVO;
+    }
+
+    public static <T> ResultVO<T> fail(int code, String message) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        return resultVO;
+    }
+
+    public static <T> ResultVO<ResourcePage<T>> fail(int code, String message, ResourcePage<T> resourcePage) {
+        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
+        resultVO.setCode(code);
+        resultVO.setMessage(message);
+        resultVO.setData(resourcePage);
+        return resultVO;
+    }
+
+
+    public static <T> ResultVO<T> fail(ResultCodeEnum resultCodeEnum) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(resultCodeEnum.getCode());
+        resultVO.setMessage(resultCodeEnum.getMessage());
+        return resultVO;
+    }
+
+    public static <T> ResultVO<T> fail(String message) {
+        ResultVO<T> resultVO = new ResultVO<>();
+        resultVO.setCode(ResultCodeEnum.BIZ_ERROR.getCode());
+        resultVO.setMessage(message);
+        return resultVO;
+    }
+
+
+    /**
+     * @param isok   返回 (true)success   false(fail)
+     * @param msgStr 返回消息
+     * @return { msgStr+"成功" or msgStr+"失败" }
+     */
+    public static ResultVO<String> resultMsg(boolean isok, String msgStr) {
+        if (isok) {
+            return ResultVO.success(msgStr + "成功");
+        } else {
+            return ResultVO.fail(msgStr + "失败");
+        }
     }
 
     /**
-     * @param pageIndex  当前页
-     * @param pageSize   每页显示条数
-     * @param totalPages 总页数
-     * @param total      总记录数
-     * @param rows       数据
-     * @param <T>        t
-     * @return T
+     * @param isok   返回 (true)success   false(fail)
+     * @param obj    对象数据
+     * @param msgStr 返回消息
+     * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static <T> ResultPageVO<T> pageSuccess(Integer pageIndex,
-                                           Integer pageSize,
-                                           Integer totalPages,
-                                           Long total,
-                                           T rows) {
-        ResultPageVO<T> resultPageVO = new ResultPageVO<>();
-        resultPageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        resultPageVO.setMessage("success");
-        resultPageVO.setCurrentPage(pageIndex);
-        resultPageVO.setPageSize(pageSize);
-        resultPageVO.setTotalPages(totalPages);
-        resultPageVO.setTotal(total);
-        resultPageVO.setRows(rows);
-        return resultPageVO;
+    public static ResultVO<Object> resultDataMsg(boolean isok, Object obj, String msgStr) {
+        if (isok) {
+            return ResultVO.success(obj, msgStr + "成功");
+        } else {
+            return ResultVO.fail(msgStr + "失败");
+        }
     }
 
     /**
-     * @param pageIndex  当前页
-     * @param pageSize   每页显示条数
-     * @param totalPages 总页数
-     * @param total      总记录数
-     * @param rows       数据
-     * @param message    消息
-     * @param <T>        t
-     * @return ResultPageVO
+     * @param isok   返回 (true)success   false(fail)
+     * @param obj    对象数据
+     * @param msgStr 返回消息
+     * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static <T> ResultPageVO<T> pageSuccess(Integer pageIndex,
-                                                  Integer pageSize,
-                                                  Integer totalPages,
-                                                  Long total,
-                                                  T rows,
-                                                  String message) {
-        ResultPageVO<T> resultPageVO = new ResultPageVO<>();
-        resultPageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        resultPageVO.setMessage(message);
-        resultPageVO.setCurrentPage(pageIndex);
-        resultPageVO.setPageSize(pageSize);
-        resultPageVO.setTotalPages(totalPages);
-        resultPageVO.setTotal(total);
-        resultPageVO.setRows(rows);
-        return resultPageVO;
-    }
-
-    public static <T> ResultPageVO<T> pageSuccess(Long total, T rows) {
-        ResultPageVO<T> pageVO = new ResultPageVO<>();
-        pageVO.setTotal(total);
-        pageVO.setRows(rows);
-        pageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        pageVO.setMessage("success");
-        return pageVO;
-    }
-
-    /**
-     *
-     * @param total      总记录数
-     * @param rows       数据
-     * @param message    消息
-     * @param <T> T
-     * @return ResultPageVO
-     */
-    public static <T> ResultPageVO<T> pageSuccess(Long total, T rows,String message) {
-        ResultPageVO<T> pageVO = new ResultPageVO<>();
-        pageVO.setTotal(total);
-        pageVO.setRows(rows);
-        pageVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        pageVO.setMessage(message);
-        return pageVO;
+    public static <T> ResultVO<T> resultDataMsgForT(boolean isok, T obj, String msgStr) {
+        if (isok) {
+            return ResultVO.success(obj, msgStr + "成功");
+        } else {
+            return ResultVO.fail(msgStr + "失败");
+        }
     }
 
 

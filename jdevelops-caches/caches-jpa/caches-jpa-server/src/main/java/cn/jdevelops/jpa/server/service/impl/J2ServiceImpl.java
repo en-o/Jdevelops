@@ -5,14 +5,14 @@ import cn.jdevelops.jap.core.util.JpaUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.JPageUtil;
 import cn.jdevelops.jap.exception.JpaException;
+import cn.jdevelops.jap.page.ResourceJpaPage;
+import cn.jdevelops.jap.page.ResultJpaPageVO;
 import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
 import cn.jdevelops.jpa.server.service.J2Service;
 import cn.jdevelops.map.core.bean.ColumnUtil;
-import cn.jdevelops.result.page.ResourcePage;
 import cn.jdevelops.result.response.PageVO;
 import cn.jdevelops.result.response.RoutinePageDTO;
 import cn.jdevelops.result.response.SortVO;
-import cn.jdevelops.result.result.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -139,36 +139,36 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B> ResourcePage<List<R>> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R,B> ResourceJpaPage<List<R>> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return JPageUtil.to(pages, clazz);
+        return new ResourceJpaPage(pages, clazz);
     }
 
 
     @Override
-    public <R,B> ResultVO<ResourcePage<List<R>>> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R,B>  ResultJpaPageVO<ResourceJpaPage<List<R>>> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
+        return ResultJpaPageVO.success(new ResourceJpaPage(pages, clazz), "查询成功");
     }
 
     @Override
-    public <R,B> ResourcePage<List<R>> findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R,B> ResourceJpaPage<List<R>>  findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return JPageUtil.to(pages, clazz);
+        return new ResourceJpaPage(pages, clazz);
     }
 
     @Override
-    public <R,B> ResultVO<ResourcePage<List<R>>> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R,B>  ResultJpaPageVO<ResourceJpaPage<List<R>>> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return ResultVO.success(JPageUtil.to(pages, clazz), "查询成功");
+        return ResultJpaPageVO.success(new ResourceJpaPage(pages, clazz), "查询成功");
     }
 
 

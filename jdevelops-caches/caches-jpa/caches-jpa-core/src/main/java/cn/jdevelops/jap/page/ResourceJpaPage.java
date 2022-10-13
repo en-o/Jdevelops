@@ -1,11 +1,15 @@
 package cn.jdevelops.jap.page;
 
 
+import cn.jdevelops.entity.basics.vo.SerializableVO;
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,6 +42,21 @@ public class ResourceJpaPage<T> implements Serializable {
 		this.totalPages = rows.getTotalPages();
 		this.total = rows.getTotalElements();
 		this.rows = rows.getContent();
+	}
+
+	public <S extends SerializableVO> ResourceJpaPage(Page<S> rows, Class<T> clazz) {
+		List<S> content = rows.getContent();
+		List<T> result = new ArrayList(content.size());
+		Iterator var3 = content.iterator();
+		while (var3.hasNext()) {
+			SerializableVO abs = (SerializableVO) var3.next();
+			result.add((T) abs.to(clazz));
+		}
+		this.currentPage = rows.getNumber()+1;
+		this.pageSize = rows.getSize();
+		this.totalPages = rows.getTotalPages();
+		this.total = rows.getTotalElements();
+		this.rows = result;
 	}
 
 	/**
@@ -140,5 +159,16 @@ public class ResourceJpaPage<T> implements Serializable {
 	 */
 	public void setRows(List<T> rows) {
 		this.rows = rows;
+	}
+
+	@Override
+	public String toString() {
+		return "ResourceJpaPage{" +
+				"currentPage=" + currentPage +
+				", pageSize=" + pageSize +
+				", totalPages=" + totalPages +
+				", total=" + total +
+				", rows=" + JSON.toJSONString(rows) +
+				'}';
 	}
 }

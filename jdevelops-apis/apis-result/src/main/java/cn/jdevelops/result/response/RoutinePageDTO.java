@@ -30,4 +30,14 @@ public class RoutinePageDTO implements Serializable {
     private Integer pageIndex;
     @ApiModelProperty(value = "一页显示几条,默认20条",example = "20")
     private Integer pageSize;
+
+    public RoutinePageDTO(String orderBy, Integer orderDesc, Integer pageIndex, Integer pageSize) {
+        this.orderBy = orderBy;
+        this.orderDesc = orderDesc;
+        this.pageIndex = pageIndex;
+        this.pageSize = pageSize;
+    }
+
+    public RoutinePageDTO() {
+    }
 }

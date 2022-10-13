@@ -20,4 +20,27 @@ public class SortVO {
     private String orderBy;
     @ApiModelProperty("正序0--Direction.ASC，反序1--Direction.DESC")
     private Integer orderDesc;
+
+
+    /**
+     * 默认倒序
+     * @param orderBy 排序字段
+     */
+    public SortVO(String orderBy) {
+        this.orderBy = orderBy;
+        this.orderDesc = 1;
+    }
+
+    /**
+     *  倒序
+     * @param orderBy 排序字段
+     * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     */
+    public SortVO(String orderBy, Integer orderDesc) {
+        this.orderBy = orderBy;
+        this.orderDesc = orderDesc;
+    }
+
+    public SortVO() {
+    }
 }

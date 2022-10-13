@@ -21,4 +21,26 @@ public class PageVO {
     private Integer pageIndex;
     @ApiModelProperty("一页显示几条,默认20条")
     private Integer pageSize;
+
+    public PageVO() {
+    }
+
+    /**
+     * 默认 pageIndex = 1
+     * @param pageSize 一页显示几条
+     */
+    public PageVO(Integer pageSize) {
+        this.pageIndex = 1;
+        this.pageSize = pageSize;
+    }
+
+    /**
+     * 分页
+     * @param pageIndex 页码
+     * @param pageSize 一页显示几条
+     */
+    public PageVO(Integer pageIndex, Integer pageSize) {
+        this.pageIndex = pageIndex;
+        this.pageSize = pageSize;
+    }
 }

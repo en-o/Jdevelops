@@ -1,8 +1,6 @@
 package cn.jdevelops.jap.page;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.result.page.ResourcePage;
-import cn.jdevelops.result.result.ResultVO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
 import io.swagger.annotations.ApiModel;
@@ -71,22 +69,29 @@ public class ResultJpaPageVO<T> implements Serializable {
         return  System.currentTimeMillis();
     }
 
-    public static <T> ResultVO<T> success() {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> success() {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage("success");
         return resultVO;
     }
 
-    public static <T> ResultVO<T> success(String message) {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> success(String message) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage(message);
         return resultVO;
     }
+    public static <T> ResultJpaPageVO<T> success(ResourceJpaPage<T> data, String message) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
+        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
+        resultVO.setMessage("success");
+        resultVO.setData(data);
+        return resultVO;
+    }
 
-    public static <T> ResultVO<T> successForData(T data) {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> success(ResourceJpaPage<T> data) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
         resultVO.setMessage("success");
         resultVO.setData(data);
@@ -94,87 +99,23 @@ public class ResultJpaPageVO<T> implements Serializable {
     }
 
 
-    /**
-     * 尽量不要使用
-     * @deprecated (成功代码应该唯一)
-     */
-    @Deprecated
-    public static <T> ResultVO<T> success(int code, String message) {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> fail(int code, String message) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(code);
         resultVO.setMessage(message);
         return resultVO;
     }
 
 
-    public static <T> ResultVO<T> success(int code, String message, T data) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(code);
-        resultVO.setMessage(message);
-        resultVO.setData(data);
-        return resultVO;
-    }
-
-
-    public static <T> ResultVO<T> success(T data, String message) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        resultVO.setMessage(message);
-        resultVO.setData(data);
-        return resultVO;
-    }
-
-
-    public static <T> ResultVO<ResourcePage<T>> success(String message, ResourcePage<T> resourcePage) {
-        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
-        resultVO.setCode(ResultCodeEnum.SUCCESS.getCode());
-        resultVO.setMessage(message);
-        resultVO.setData(resourcePage);
-        return resultVO;
-    }
-
-
-    public static <T> ResultVO<T> fail(int code, String message, T data) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(code);
-        resultVO.setMessage(message);
-        resultVO.setData(data);
-        return resultVO;
-    }
-
-    public static <T> ResultVO<T> fail(ResultCodeEnum resultCodeEnum, T data) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(resultCodeEnum.getCode());
-        resultVO.setMessage(resultCodeEnum.getMessage());
-        resultVO.setData(data);
-        return resultVO;
-    }
-
-    public static <T> ResultVO<T> fail(int code, String message) {
-        ResultVO<T> resultVO = new ResultVO<>();
-        resultVO.setCode(code);
-        resultVO.setMessage(message);
-        return resultVO;
-    }
-
-    public static <T> ResultVO<ResourcePage<T>> fail(int code, String message, ResourcePage<T> resourcePage) {
-        ResultVO<ResourcePage<T>> resultVO = new ResultVO<>();
-        resultVO.setCode(code);
-        resultVO.setMessage(message);
-        resultVO.setData(resourcePage);
-        return resultVO;
-    }
-
-
-    public static <T> ResultVO<T> fail(ResultCodeEnum resultCodeEnum) {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> fail(ResultCodeEnum resultCodeEnum) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(resultCodeEnum.getCode());
         resultVO.setMessage(resultCodeEnum.getMessage());
         return resultVO;
     }
 
-    public static <T> ResultVO<T> fail(String message) {
-        ResultVO<T> resultVO = new ResultVO<>();
+    public static <T> ResultJpaPageVO<T> fail(String message) {
+        ResultJpaPageVO<T> resultVO = new ResultJpaPageVO<>();
         resultVO.setCode(ResultCodeEnum.BIZ_ERROR.getCode());
         resultVO.setMessage(message);
         return resultVO;
@@ -186,39 +127,11 @@ public class ResultJpaPageVO<T> implements Serializable {
      * @param msgStr 返回消息
      * @return { msgStr+"成功" or msgStr+"失败" }
      */
-    public static ResultVO<String> resultMsg(boolean isok, String msgStr) {
+    public static ResultJpaPageVO<String> resultMsg(boolean isok, String msgStr) {
         if (isok) {
-            return ResultVO.success(msgStr + "成功");
+            return ResultJpaPageVO.success(msgStr + "成功");
         } else {
-            return ResultVO.fail(msgStr + "失败");
-        }
-    }
-
-    /**
-     * @param isok   返回 (true)success   false(fail)
-     * @param obj    对象数据
-     * @param msgStr 返回消息
-     * @return { msgStr+"成功" or msgStr+"失败" }
-     */
-    public static ResultVO<Object> resultDataMsg(boolean isok, Object obj, String msgStr) {
-        if (isok) {
-            return ResultVO.success(obj, msgStr + "成功");
-        } else {
-            return ResultVO.fail(msgStr + "失败");
-        }
-    }
-
-    /**
-     * @param isok   返回 (true)success   false(fail)
-     * @param obj    对象数据
-     * @param msgStr 返回消息
-     * @return { msgStr+"成功" or msgStr+"失败" }
-     */
-    public static <T> ResultVO<T> resultDataMsgForT(boolean isok, T obj, String msgStr) {
-        if (isok) {
-            return ResultVO.success(obj, msgStr + "成功");
-        } else {
-            return ResultVO.fail(msgStr + "失败");
+            return ResultJpaPageVO.fail(msgStr + "失败");
         }
     }
 
