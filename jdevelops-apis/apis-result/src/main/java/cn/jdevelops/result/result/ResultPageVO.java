@@ -23,6 +23,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 @ApiModel(value = "分页全局结果集",description = "全局返回对象")
+@Deprecated
 public class ResultPageVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
