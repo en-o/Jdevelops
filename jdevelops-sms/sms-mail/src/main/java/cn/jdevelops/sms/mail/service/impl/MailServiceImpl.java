@@ -7,7 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.activation.DataHandler;
 import javax.activation.URLDataSource;
@@ -20,6 +19,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -47,7 +47,7 @@ public class MailServiceImpl implements MailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(content);
-        if (!ObjectUtils.isEmpty(cc)) {
+        if (!Objects.isNull(cc)) {
             message.setCc(cc);
         }
         mailSender.send(message);
@@ -134,7 +134,7 @@ public class MailServiceImpl implements MailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(content, true);
-        if (!ObjectUtils.isEmpty(cc)) {
+        if (!Objects.isNull(cc)) {
             helper.setCc(cc);
         }
         return helper;
