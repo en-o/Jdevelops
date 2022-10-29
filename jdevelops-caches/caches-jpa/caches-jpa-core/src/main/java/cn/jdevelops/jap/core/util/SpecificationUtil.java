@@ -3,15 +3,12 @@ package cn.jdevelops.jap.core.util;
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.ObjectUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.io.Serializable;
-import java.util.function.Function;
+import java.util.Objects;
 
 /**
  * CustomerSpecs
- *
  * <code>
  * ## 原始示例
  * userService.getJpaBasicsDao().findAll(
@@ -42,7 +39,6 @@ import java.util.function.Function;
  * public static Specification<User> userNo() {
  * return (root, query, builder) -> builder.like(root.get("phone"), "123");
  * }
- *
  * </code>
  *
  * @author tn
@@ -77,7 +73,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> eq(String key, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.equal(root.get(key), value);
@@ -94,7 +90,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> eq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.equal(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -110,7 +106,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> notEq(String key, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notEqual(root.get(key), value);
@@ -126,7 +122,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> notEq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notEqual(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -142,7 +138,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> gt(String key, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.gt(root.get(key), value);
@@ -158,7 +154,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> gt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.gt(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -174,7 +170,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> ge(String key, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.ge(root.get(key), value);
@@ -190,7 +186,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> ge(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.ge(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -206,7 +202,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> lt(String key, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.ge(root.get(key), value);
@@ -222,7 +218,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> lt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.ge(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -238,7 +234,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> le(String key, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.le(root.get(key), value);
@@ -255,7 +251,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> le(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.le(root.get(ColumnUtil.getFieldName(fn)), value);
@@ -295,7 +291,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> between(String key, String v1, String v2, boolean ignoreNull) {
-        if (ignoreNull && (ObjectUtils.isEmpty(v1) || ObjectUtils.isEmpty(v2))) {
+        if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.between(root.get(key), v1, v2);
@@ -314,7 +310,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> between(ColumnUtil.SFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
-        if (ignoreNull && (ObjectUtils.isEmpty(v1) || ObjectUtils.isEmpty(v2))) {
+        if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.between(root.get(ColumnUtil.getFieldName(fn)), v1, v2);
@@ -333,7 +329,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> like(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), "%" + value + "%");
@@ -350,7 +346,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> like(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), "%" + value + "%");
@@ -368,7 +364,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> lLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), "%" + value);
@@ -386,7 +382,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> lLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), "%" + value);
@@ -404,7 +400,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> rLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), value + "%");
@@ -422,7 +418,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> rLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(ColumnUtil.getFieldName(fn)), value + "%");
@@ -438,7 +434,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> notLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notLike(root.get(key), "%" + value + "%");
@@ -454,7 +450,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> notLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notLike(root.get(ColumnUtil.getFieldName(fn)), "%" + value + "%");

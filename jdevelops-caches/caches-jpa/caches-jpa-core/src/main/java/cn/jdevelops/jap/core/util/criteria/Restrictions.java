@@ -3,9 +3,9 @@ package cn.jdevelops.jap.core.util.criteria;
 
 import cn.jdevelops.enums.string.StringEnum;
 import cn.jdevelops.map.core.bean.ColumnUtil;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * jpa 查询工具之构建sql  具体实现
@@ -23,7 +23,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ);
@@ -39,7 +39,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression eq(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.EQ);
@@ -54,7 +54,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE);
@@ -69,7 +69,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression ne(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.NE);
@@ -218,7 +218,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT);
@@ -233,7 +233,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression gt(ColumnUtil.SFunction<T, ?>  fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.GT);
@@ -248,7 +248,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT);
@@ -263,7 +263,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression lt(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LT);
@@ -278,7 +278,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE);
@@ -293,7 +293,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression gte(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.GTE);
@@ -308,7 +308,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE);
@@ -323,7 +323,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression lte(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && ObjectUtils.isEmpty(value)) {
+        if (ignoreNull && Objects.isNull(value)) {
             return null;
         }
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LTE);
@@ -442,6 +442,6 @@ public class Restrictions {
      * @return true 空
      */
     private static boolean isaBoolean(Object value) {
-        return ObjectUtils.isEmpty(value) || StringEnum.NULL_STRING.equals(value);
+        return Objects.isNull(value) || StringEnum.NULL_STRING.equals(value);
     }
 }
