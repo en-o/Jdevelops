@@ -56,7 +56,7 @@ public class ParamsDis {
                 params = decode(queryString);
             }
         }
-        Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
+        Logger log = LoggerFactory.getLogger("api");
         log.info("请求IP:{}", IpUtil.getPoxyIpEnhance(request));
         log.info("请求地址:{} {}", method, url);
         log.info("入参:{}", params);
