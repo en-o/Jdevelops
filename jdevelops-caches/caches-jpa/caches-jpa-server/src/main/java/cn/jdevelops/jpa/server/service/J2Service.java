@@ -160,7 +160,7 @@ public interface J2Service<T> {
      * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourceJpaPage<List < R>>
      */
-    <R,B> ResourceJpaPage<List<R>> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+    <R,B> ResourceJpaPage<R> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -173,7 +173,7 @@ public interface J2Service<T> {
      * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResultJpaPageVO<List < R>>
      */
-    <R,B> ResultJpaPageVO<List<R>> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
+    <R,B> ResultJpaPageVO<R> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -185,7 +185,7 @@ public interface J2Service<T> {
      * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResourceJpaPage<List < R>>
      */
-    <R,B>  ResourceJpaPage<List<R>> findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz);
+    <R,B>  ResourceJpaPage<R> findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz);
 
     /**
      * 分页查询
@@ -197,7 +197,7 @@ public interface J2Service<T> {
      * @param <B>    数据实体的VO TDO BO PO等异形类
      * @return ResultJpaPageVO<List < R>>
      */
-    <R,B> ResultJpaPageVO<List<R>> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz);
+    <R,B> ResultJpaPageVO<R> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz);
 
 
 }

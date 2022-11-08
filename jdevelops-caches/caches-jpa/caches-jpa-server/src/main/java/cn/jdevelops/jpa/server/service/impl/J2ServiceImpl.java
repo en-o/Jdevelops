@@ -139,7 +139,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B> ResourceJpaPage<List<R>> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R,B> ResourceJpaPage<R> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -148,7 +148,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
 
 
     @Override
-    public <R,B>  ResultJpaPageVO<List<R>> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R,B>  ResultJpaPageVO<R> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -156,7 +156,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B> ResourceJpaPage<List<R>>  findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R,B> ResourceJpaPage<R>  findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -164,7 +164,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B>  ResultJpaPageVO<List<R>> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R,B>  ResultJpaPageVO<R> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
