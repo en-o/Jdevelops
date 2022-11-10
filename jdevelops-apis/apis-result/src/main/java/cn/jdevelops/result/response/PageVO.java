@@ -17,9 +17,9 @@ import lombok.ToString;
 @Getter
 @Setter
 public class PageVO {
-    @ApiModelProperty("页码，默认第一页")
+    @ApiModelProperty(value = "页码，默认第一页",example = "1")
     private Integer pageIndex;
-    @ApiModelProperty("一页显示几条,默认20条")
+    @ApiModelProperty(value = "一页显示几条,默认20条",example = "20")
     private Integer pageSize;
 
     public PageVO() {
