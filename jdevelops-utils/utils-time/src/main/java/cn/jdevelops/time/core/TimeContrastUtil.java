@@ -51,6 +51,7 @@ public class TimeContrastUtil {
 
     /**
      * 验证 开始时间 大于 结束时间
+     *  ps: 年份差距太大会报错：  Value cannot fit in an int
      * @param begin 开始
      * @param end   结束
      * @return true 大于 ， false 小于（等于）
