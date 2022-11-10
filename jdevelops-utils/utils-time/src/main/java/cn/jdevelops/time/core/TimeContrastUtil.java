@@ -24,10 +24,7 @@ public class TimeContrastUtil {
      * @return true 大于(等于)  ， false 小于
      */
     public static boolean beginGteEnd(Date begin, Date end) {
-        DateTime beginTime = new DateTime(begin);
-        DateTime endTime = new DateTime(end);
-        int seconds = Seconds.secondsBetween(beginTime, endTime).getSeconds();
-        return seconds <= 0;
+        return begin.toInstant().isAfter(end.toInstant()) || begin.toInstant().equals(end.toInstant());
     }
 
 
@@ -45,22 +42,18 @@ public class TimeContrastUtil {
 
         DateTime end = DateTime.parse(defTimeFormatBeginEnd,
                 DateTimeFormat.forPattern(TimeFormat.DEFAULT_FORMAT_DATETIME));
-        return beginGteEnd(begin.toDate(), end.toDate());
+        return begin.isAfter(end) || begin.isEqual(end);
     }
 
 
     /**
      * 验证 开始时间 大于 结束时间
-     *  ps: 年份差距太大会报错：  Value cannot fit in an int
      * @param begin 开始
      * @param end   结束
      * @return true 大于 ， false 小于（等于）
      */
     public static boolean beginGtEnd(Date begin, Date end) {
-        DateTime beginTime = new DateTime(begin);
-        DateTime endTime = new DateTime(end);
-        int seconds = Seconds.secondsBetween(beginTime, endTime).getSeconds();
-        return seconds < 0;
+        return begin.toInstant().isAfter(end.toInstant());
     }
 
 
@@ -78,7 +71,7 @@ public class TimeContrastUtil {
 
         DateTime end = DateTime.parse(defTimeFormatBeginEnd,
                 DateTimeFormat.forPattern(TimeFormat.DEFAULT_FORMAT_DATETIME));
-        return beginGtEnd(begin.toDate(), end.toDate());
+        return begin.isAfter(end);
     }
 
     /**
@@ -88,9 +81,9 @@ public class TimeContrastUtil {
      * @return true 大于等于
      */
     public static boolean timeGteNow(String defTimeFormat) {
-        DateTime dateTime = TimeUtil.formatStr(defTimeFormat, TimeFormatEnum.DEFAULT_FORMAT_DATETIME);
-        int seconds = Seconds.secondsBetween(dateTime, new DateTime()).getSeconds();
-        return seconds <= 0;
+        DateTime begin = TimeUtil.formatStr(defTimeFormat, TimeFormatEnum.DEFAULT_FORMAT_DATETIME);
+        DateTime end = new DateTime();
+        return begin.isAfter(end) || begin.isEqual(end);
     }
 
     /**
@@ -101,8 +94,8 @@ public class TimeContrastUtil {
      */
     public static boolean timeGtNow(String defTimeFormat) {
         DateTime dateTime = TimeUtil.formatStr(defTimeFormat, TimeFormatEnum.DEFAULT_FORMAT_DATETIME);
-        int seconds = Seconds.secondsBetween(dateTime, new DateTime()).getSeconds();
-        return seconds < 0;
+        DateTime end = new DateTime();
+        return dateTime.isAfter(end);
     }
 
 

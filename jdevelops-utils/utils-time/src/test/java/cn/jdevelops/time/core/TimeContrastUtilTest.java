@@ -42,6 +42,8 @@ public class TimeContrastUtilTest extends TestCase {
                 DateTime.now().plusDays(2).toString(TimeFormat.DEFAULT_FORMAT_DATETIME)));
         assertTrue(TimeContrastUtil.beginGtEnd(DateTime.now().toString(TimeFormat.DEFAULT_FORMAT_DATETIME),
                 DateTime.now().plusDays(-2).toString(TimeFormat.DEFAULT_FORMAT_DATETIME)));
+        assertFalse(TimeContrastUtil.beginGtEnd("2022-11-10 10:05:01",
+                "2099-11-10 10:05:01"));
     }
 
     public void testTimeGteNow() {
