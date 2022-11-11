@@ -1,12 +1,12 @@
 package cn.jdevelops.jap.core.util;
 
 import cn.hutool.core.util.ReflectUtil;
-import cn.jdevelops.enums.string.StringEnum;
 import cn.jdevelops.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.jap.core.util.criteria.Restrictions;
 import cn.jdevelops.jap.core.util.criteria.SimpleExpression;
 import cn.jdevelops.jap.enums.SQLConnect;
+import cn.jdevelops.jap.util.IObjects;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ public class JpaUtils {
      * @throws Exception Exception
      */
     public static Object getFieldValueByName(String fieldName, Object target) throws Exception {
-        if (isBlank(fieldName)) {
+        if (IObjects.isBlank(fieldName)) {
             fieldName = "id";
         }
 
@@ -40,23 +40,7 @@ public class JpaUtils {
         return method.invoke(target, new Object[0]);
     }
 
-    /**
-     * 字符判空
-     * @param idFieldName CharSequence
-     * @return boolean
-     */
-    public static boolean isBlank(final CharSequence idFieldName) {
-        int strLen;
-        if (idFieldName == null || StringEnum.NULL_STRING.getStr().contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(idFieldName.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 
 
     /**
@@ -100,13 +84,13 @@ public class JpaUtils {
             }
             // 字段被忽略
             JpaSelectIgnoreField ignoreField = field.getAnnotation(JpaSelectIgnoreField.class);
-            if(Objects.nonNull(ignoreField)){
+            if(IObjects.nonNull(ignoreField)){
                 continue;
             }
 
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
-            if (Objects.nonNull(selectOperator)) {
+            if (IObjects.nonNull(selectOperator)) {
                 SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
                 if(Objects.equals(selectOperator.connect(), SQLConnect.OR)){
                     jpaSelect.or(simpleExpression);
