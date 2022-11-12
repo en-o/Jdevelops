@@ -38,7 +38,7 @@ public class IObjects {
      * @return true 空
      */
     public static boolean isaBoolean(Object value) {
-        return isNull(value) || StringEnum.NULL_STRING.equals(value);
+        return isNull(value) || StringEnum.NULL_STRING.getStr().equals(value);
     }
 
 
