@@ -4,7 +4,9 @@ package cn.jdevelops.jap.core.util.criteria;
 import cn.jdevelops.jap.util.IObjects;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * jpa 查询工具之构建sql  具体实现
@@ -335,7 +337,10 @@ public class Restrictions {
      * @return LogicalExpression
      */
     public static LogicalExpression and(ExpandCriterion... criterions) {
-        return new LogicalExpression(criterions, ExpandCriterion.Operator.AND);
+        ExpandCriterion[] expandCriteria = Arrays.stream(criterions)
+                .filter(Objects::nonNull)
+                .toArray(ExpandCriterion[]::new);
+        return expandCriteria.length>0?new LogicalExpression(expandCriteria, ExpandCriterion.Operator.OR):null;
     }
 
     /**
@@ -345,7 +350,10 @@ public class Restrictions {
      * @return LogicalExpression
      */
     public static LogicalExpression or(ExpandCriterion... criterions) {
-        return new LogicalExpression(criterions, ExpandCriterion.Operator.OR);
+        ExpandCriterion[] expandCriteria = Arrays.stream(criterions)
+                .filter(Objects::nonNull)
+                .toArray(ExpandCriterion[]::new);
+        return expandCriteria.length>0?new LogicalExpression(expandCriteria, ExpandCriterion.Operator.OR):null;
     }
 
     /**
