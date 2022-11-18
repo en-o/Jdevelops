@@ -25,7 +25,7 @@ import static cn.jdevelops.idempotent.util.ParamUtil.isMultipartContent;
  * 目标: 流可重复读
  */
 @Component
-@WebFilter(filterName = "HttpServletRequestIdempotentFilter", urlPatterns = "/")
+@WebFilter(filterName = "HttpServletRequestFilter", urlPatterns = "/")
 @Order(10000)
 public class HttpServletRequestIdempotentFilter implements Filter {
 

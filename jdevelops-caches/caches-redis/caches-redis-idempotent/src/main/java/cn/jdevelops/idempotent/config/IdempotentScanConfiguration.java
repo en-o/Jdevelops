@@ -6,7 +6,6 @@ import cn.jdevelops.idempotent.service.IdempotentServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
 /**
  * 自动扫描
@@ -14,9 +13,14 @@ import org.springframework.context.annotation.Import;
  * @date 2020-09-27 10:17
  */
 @ConditionalOnWebApplication
-@Import({HttpServletRequestIdempotentFilter.class})
 public class IdempotentScanConfiguration {
 
+
+    @ConditionalOnMissingBean(name = "HttpServletRequestFilter")
+    @Bean
+    public HttpServletRequestIdempotentFilter httpServletRequestIdempotentFilter(){
+        return new HttpServletRequestIdempotentFilter();
+    }
 
     @ConditionalOnMissingBean(IdempotentConfig.class)
     @Bean
