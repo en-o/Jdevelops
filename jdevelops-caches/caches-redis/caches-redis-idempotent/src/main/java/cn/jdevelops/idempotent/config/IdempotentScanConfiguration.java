@@ -37,7 +37,7 @@ public class IdempotentScanConfiguration {
 
     @ConditionalOnMissingBean(IdempotentMVCConfig.class)
     @Bean
-    public IdempotentMVCConfig webApiConfig(){
+    public IdempotentMVCConfig idempotentMVCConfig(){
         return new IdempotentMVCConfig();
     }
 
