@@ -109,4 +109,22 @@ public class ParamUtil {
         }
         return sb.toString();
     }
+
+
+    /**
+     * 判断是否是multipart/form-data请求
+     *
+     * @param request request
+     * @return true 是form-data
+     */
+    public static boolean isMultipartContent(HttpServletRequest request) {
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+
+        //获取Content-Type
+        String contentType = request.getContentType();
+        return (contentType != null) && (contentType.toLowerCase().startsWith("MULTIPART/".toLowerCase()));
+
+    }
 }
