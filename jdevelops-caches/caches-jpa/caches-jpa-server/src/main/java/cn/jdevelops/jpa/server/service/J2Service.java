@@ -57,20 +57,46 @@ public interface J2Service<T> {
     Boolean saveByBoolean(T t);
 
     /**
-     * 根据ids删除对象
-     *
-     * @param ids ids
+     * 根据删除对象
+     * ps： 失败会抛异常，如果有需要手动处理请接住他
+     * @param unique 唯一值
+     * @param <U> 唯一值的类型
+     * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    Boolean deleteById(final List<Integer> ids);
+    <U> Boolean deleteByUnique(final List<U> unique, String selectKey);
+
 
     /**
-     * 根据id删除对象
-     *
-     * @param id id
+     * 根据删除对象
+     * ps： 失败会抛异常，如果有需要手动处理请接住他
+     * @param unique 唯一值
+     * @param <U> 唯一值的类型
+     * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    Boolean deleteById(final Integer id);
+    <U> Boolean deleteByUnique(final List<U> unique, ColumnUtil.SFunction<T, ?> selectKey);
+
+    /**
+     * 根据删除对象
+     * ps： 失败会抛异常，如果有需要手动处理请接住他
+     * @param unique 唯一值
+     * @param <U> 唯一值的类型
+     * @param selectKey 唯一值的Key名
+     * @return Boolean
+     */
+    <U> Boolean deleteByUnique(final U unique, String selectKey);
+
+
+    /**
+     * 根据删除对象
+     * ps： 失败会抛异常，如果有需要手动处理请接住他
+     * @param unique 唯一值
+     * @param <U> 唯一值的类型
+     * @param selectKey 唯一值的Key名
+     * @return Boolean
+     */
+    <U> Boolean deleteByUnique(final U unique, ColumnUtil.SFunction<T, ?> selectKey);
 
 
     /**
@@ -104,24 +130,6 @@ public interface J2Service<T> {
      * @throws Exception Exception
      */
     Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws Exception;
-
-
-    /**
-     * 根据 id 查询
-     * 查询不到返回null
-     *
-     * @param id id
-     * @return T
-     */
-    T findById(final Integer id);
-
-    /**
-     * 根据 id 查询
-     *
-     * @param id id
-     * @return T
-     */
-    List<T> findById(final List<Integer> id);
 
 
     /**

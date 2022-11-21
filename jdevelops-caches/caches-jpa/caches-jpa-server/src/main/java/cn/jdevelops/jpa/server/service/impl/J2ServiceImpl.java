@@ -19,11 +19,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import java.util.Collections;
 import java.util.List;
 
 
 /**
  * 预约模块公共service实现
+ *
  * @param <D> 实体的主键类型
  * @param <T> 实体
  * @param <M> 实体的Dao层
@@ -52,9 +54,9 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     @Override
     public Boolean saveAllByBoolean(List<T> bean) {
         try {
-             commonDao.saveAll(bean);
-        }catch (Exception e){
-            log.error("保存失败",e);
+            commonDao.saveAll(bean);
+        } catch (Exception e) {
+            log.error("保存失败", e);
             return false;
         }
         return true;
@@ -72,19 +74,25 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public Boolean deleteById(List<Integer> ids) {
-        return commonDao.deleteByIdIn((List<D>) ids)>=0;
+    public <U> Boolean deleteByUnique(List<U> unique, String selectKey) {
+        return commonDao.deleteByUnique(unique, selectKey);
     }
 
     @Override
-    public Boolean deleteById(Integer id) {
-        try {
-            commonDao.deleteById((D) id);
-            return true;
-        }catch (Exception e){
-            log.error("根据id删除出错",e);
-        }
-        return false;
+    public <U> Boolean deleteByUnique(List<U> unique, ColumnUtil.SFunction<T, ?> selectKey) {
+        String field = ColumnUtil.getFieldName(selectKey);
+        return commonDao.deleteByUnique(unique, field);
+    }
+
+    @Override
+    public <U> Boolean deleteByUnique(U unique, String selectKey) {
+        return   commonDao.deleteByUnique(Collections.singletonList(unique), selectKey);
+    }
+
+    @Override
+    public <U> Boolean deleteByUnique(U unique, ColumnUtil.SFunction<T, ?> selectKey) {
+        String field = ColumnUtil.getFieldName(selectKey);
+        return   commonDao.deleteByUnique(Collections.singletonList(unique), field);
     }
 
 
@@ -99,26 +107,14 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
 
     @Override
     public Boolean updateByBean(T bean, String selectKey) throws Exception {
-        return commonDao.updateEntity(bean,selectKey);
+        return commonDao.updateEntity(bean, selectKey);
     }
 
     @Override
     public Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws Exception {
         String field = ColumnUtil.getFieldName(selectKey);
-        return commonDao.updateEntity(bean,field);
+        return commonDao.updateEntity(bean, field);
     }
-
-
-    @Override
-    public T findById(Integer id) {
-        return commonDao.findById((D) id).orElse(null);
-    }
-
-    @Override
-    public List<T> findById(List<Integer> id) {
-        return commonDao.findByIdIn((List<D>) id);
-    }
-
 
 
     @Override
@@ -139,7 +135,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B> ResourceJpaPage<R> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R, B> ResourceJpaPage<R> findByBean(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -148,7 +144,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
 
 
     @Override
-    public <R,B>  ResultJpaPageVO<R> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
+    public <R, B> ResultJpaPageVO<R> findByBeanForVO(B t, PageVO pageVO, SortVO sortVO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -156,7 +152,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B> ResourceJpaPage<R>  findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R, B> ResourceJpaPage<R> findByBean(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
@@ -164,14 +160,12 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     }
 
     @Override
-    public <R,B>  ResultJpaPageVO<R> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
+    public <R, B> ResultJpaPageVO<R> findByBeanForVO(B t, RoutinePageDTO pageDTO, Class<R> clazz) {
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
         return ResultJpaPageVO.success(new ResourceJpaPage(pages, clazz), "查询成功");
     }
-
-
 
 
 }
