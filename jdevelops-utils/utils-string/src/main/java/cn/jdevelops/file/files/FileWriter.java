@@ -2,10 +2,10 @@ package cn.jdevelops.file.files;
 
 
 import cn.jdevelops.file.FileUtil;
-import org.springframework.util.Assert;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * 文件写入器
@@ -42,7 +42,9 @@ public class FileWriter extends FileWrapper {
 	 * @throws IOException IO异常
 	 */
 	private void checkFile() throws IOException {
-		Assert.notNull(file, "File to write content is null !");
+		if (Objects.isNull(file)) {
+			throw new IllegalArgumentException("File to write content is null !");
+		}
 		if (this.file.exists() && !file.isFile()) {
 			throw new IOException("File [{}] is not a file !"+this.file.getAbsoluteFile());
 		}

@@ -3,13 +3,13 @@ package cn.jdevelops.file;
 
 import cn.jdevelops.file.files.FileReader;
 import cn.jdevelops.file.files.FileWriter;
-import org.springframework.util.Assert;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 文件工具类
@@ -319,7 +319,9 @@ public class FileUtil {
 	 * @since 4.0.10
 	 */
 	public static BufferedInputStream toBuffered(InputStream in) {
-		Assert.notNull(in, "InputStream must be not null!");
+		if (Objects.isNull(in)) {
+			throw new IllegalArgumentException("InputStream must be not null!");
+		}
 		return (in instanceof BufferedInputStream) ? (BufferedInputStream) in : new BufferedInputStream(in);
 	}
 
