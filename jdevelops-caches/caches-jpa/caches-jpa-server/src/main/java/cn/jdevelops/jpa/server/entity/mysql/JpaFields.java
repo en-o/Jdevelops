@@ -3,6 +3,7 @@ package cn.jdevelops.jpa.server.entity.mysql;
 import cn.jdevelops.entity.basics.audit.BaseFields;
 import cn.jdevelops.entity.basics.vo.SerializableVO;
 import cn.jdevelops.result.page.ResourcePage;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
@@ -42,8 +43,9 @@ public class JpaFields<T> extends BaseFields<T> {
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
      */
     @CreatedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期' ")
+    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP")
     @Access(AccessType.PROPERTY)
+    @Comment("创建日期")
     @Override
     public LocalDateTime getCreateTime() {
         return super.getCreateTime();
@@ -55,8 +57,9 @@ public class JpaFields<T> extends BaseFields<T> {
      * 表示该字段为修改时间字段，@LastModifiedDate在这个实体被update的时候，会自动为其赋值
      */
     @LastModifiedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期'")
+    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @Access(AccessType.PROPERTY)
+    @Comment("更新日期")
     @Override
     public LocalDateTime getUpdateTime() {
         return super.getUpdateTime();
