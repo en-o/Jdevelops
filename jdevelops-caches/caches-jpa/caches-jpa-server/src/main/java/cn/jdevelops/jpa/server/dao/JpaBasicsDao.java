@@ -3,6 +3,7 @@ package cn.jdevelops.jpa.server.dao;
 import cn.jdevelops.jap.core.util.JpaUtils;
 import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
 import cn.jdevelops.jap.core.util.criteria.Restrictions;
+import cn.jdevelops.jap.exception.JpaException;
 import cn.jdevelops.jpa.server.enums.FieldName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -52,23 +53,28 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      *
      * @param t 实体类型的 数据
      * @return Boolean
-     * @throws Exception Exception
+     * @throws JpaException JpaException
      */
-    default Boolean updateEntity(T t) throws Exception {
-        /* 跟根据ID获取需要更新的数据的 原始数据 */
-        T oidCamera = findById((D) JpaUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
-                .orElse(null);
-        /*
-         *将新数据中非空字段 克隆到原始数据中 实现更新
-         * <p> oidCamera.copy(scCameraEntity); </p>
-         */
-        /* 获取method对象，其中包含方法名称和参数列表*/
-        Method setName = oidCamera.getClass().getMethod("copy", Object.class);
-        /* 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
-        setName.invoke(oidCamera, t);
-        /* 保存克隆之后的数据  且 saveAndFlush立即生效 */
-        saveAndFlush(oidCamera);
-        return true;
+    default T updateEntity(T t) throws JpaException {
+       try {
+           /* 跟根据ID获取需要更新的数据的 原始数据 */
+           T oidCamera = findById((D) JpaUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
+                   .orElse(null);
+           /*
+            *将新数据中非空字段 克隆到原始数据中 实现更新
+            * <p> oidCamera.copy(scCameraEntity); </p>
+            */
+           /* 获取method对象，其中包含方法名称和参数列表*/
+           Method setName = oidCamera.getClass().getMethod("copy", Object.class);
+           /* 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
+           setName.invoke(oidCamera, t);
+           /* 保存克隆之后的数据  且 saveAndFlush立即生效 */
+           saveAndFlush(oidCamera);
+           return oidCamera;
+       }catch (Exception e){
+           e.printStackTrace();
+           throw new JpaException("更新失败！",e);
+       }
     }
 
 
@@ -78,29 +84,33 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @param t         实体类型的 数据
      * @param selectKey 指定唯一键 (t中必须要有selectKey的值)，e.g uuid
      * @return Boolean
-     * @throws Exception Exception
+     * @throws JpaException JpaException
      */
-    default Boolean updateEntity(T t, String selectKey) throws Exception {
-        /* 跟根据ID获取需要更新的数据的 原始数据 */
-        T oidCamera;
+    default T updateEntity(T t, String selectKey) throws JpaException {
         try {
+            /* 跟根据ID获取需要更新的数据的 原始数据 */
             JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
             jpaSelect.add(Restrictions.eq(selectKey, JpaUtils.getFieldValueByName(selectKey, t), false));
-            oidCamera = findAll(jpaSelect).get(0);
-        } catch (Exception e) {
-            throw new RuntimeException("更新失败，查询数据为空", e);
+            T oidCamera = findOne(jpaSelect).orElseThrow(() -> new JpaException("更新失败，查询数据为空"));
+            /*
+             *将新数据中非空字段 克隆到原始数据中 实现更新
+             * <p> oidCamera.copy(scCameraEntity); </p>
+             */
+            /* 获取method对象，其中包含方法名称和参数列表*/
+            Method setName = oidCamera.getClass().getMethod("copy", Object.class);
+            /* 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
+            setName.invoke(oidCamera, t);
+            /* 保存克隆之后的数据  且 saveAndFlush立即生效 */
+            saveAndFlush(oidCamera);
+            return oidCamera;
+        }catch (Exception e){
+            e.printStackTrace();
+            String msg = "更新失败！";
+            if(e instanceof JpaException){
+                msg = e.getMessage();
+            }
+            throw new JpaException(msg,e);
         }
-        /*
-         *将新数据中非空字段 克隆到原始数据中 实现更新
-         * <p> oidCamera.copy(scCameraEntity); </p>
-         */
-        /* 获取method对象，其中包含方法名称和参数列表*/
-        Method setName = oidCamera.getClass().getMethod("copy", Object.class);
-        /* 执行method，t为实例对象，后面是方法参数列表；setName没有返回值 */
-        setName.invoke(oidCamera, t);
-        /* 保存克隆之后的数据  且 saveAndFlush立即生效 */
-        saveAndFlush(oidCamera);
-        return true;
     }
 
 

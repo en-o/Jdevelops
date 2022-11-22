@@ -26,6 +26,10 @@ public class JpaException  extends RuntimeException{
         this.code = ResultCodeEnum.FAIL.getCode();
     }
 
+    public JpaException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public JpaException(Integer code, String message) {
         super(message);
         this.code = code;
@@ -41,7 +45,15 @@ public class JpaException  extends RuntimeException{
         return code;
     }
 
-    public String get() {
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
         return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

@@ -1,5 +1,6 @@
 package cn.jdevelops.jpa.server.service;
 
+import cn.jdevelops.jap.exception.JpaException;
 import cn.jdevelops.jap.page.ResourceJpaPage;
 import cn.jdevelops.jap.page.ResultJpaPageVO;
 import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
@@ -101,35 +102,38 @@ public interface J2Service<T> {
 
     /**
      * 更新数据 返回实体
-     *
      * @param t 实体 id一定要有且键名为ID
      * @return Boolean
      */
     Boolean updateByBean(T t);
 
 
-
-
     /**
      * 更新数据 返回实体
-     *
+     * @param t 实体 id一定要有且键名为ID
+     * @return Boolean
+     * @throws JpaException Exception
+     */
+    T updateByBeanForBean(T t) throws JpaException;
+
+    /**
+     * 更新数据
      * @param bean 实体 (指定的selectKey必须要有值)
      * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
      * @return Boolean
-     * @throws Exception Exception
+     * @throws JpaException Exception
      */
-    Boolean updateByBean(T bean, String selectKey) throws Exception;
+    Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException;
 
 
     /**
-     * 更新数据 返回实体
-     *
+     * 更新数据
      * @param bean 实体 (指定的selectKey必须要有值)
      * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
-     * @return Boolean
-     * @throws Exception Exception
+     * @return T
+     * @throws JpaException Exception
      */
-    Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws Exception;
+    T updateByBeanForBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException;
 
 
     /**

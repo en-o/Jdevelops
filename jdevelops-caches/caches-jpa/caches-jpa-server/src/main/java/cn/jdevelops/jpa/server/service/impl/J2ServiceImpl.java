@@ -99,19 +99,32 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     @Override
     public Boolean updateByBean(T bean) {
         try {
-            return commonDao.updateEntity(bean);
+            commonDao.updateEntity(bean);
+            return true;
         } catch (Exception e) {
             throw new JpaException("更新出错");
         }
     }
 
     @Override
-    public Boolean updateByBean(T bean, String selectKey) throws Exception {
-        return commonDao.updateEntity(bean, selectKey);
+    public T updateByBeanForBean(T bean) throws JpaException {
+        return commonDao.updateEntity(bean);
+    }
+
+
+    @Override
+    public Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException {
+        try {
+            String field = ColumnUtil.getFieldName(selectKey);
+            commonDao.updateEntity(bean, field);
+            return true;
+        } catch (Exception e) {
+            throw new JpaException("更新出错");
+        }
     }
 
     @Override
-    public Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws Exception {
+    public T updateByBeanForBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException {
         String field = ColumnUtil.getFieldName(selectKey);
         return commonDao.updateEntity(bean, field);
     }
@@ -139,7 +152,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return new ResourceJpaPage(pages, clazz);
+        return new ResourceJpaPage<>(pages, clazz);
     }
 
 
@@ -148,7 +161,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageVO, sortVO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return ResultJpaPageVO.success(new ResourceJpaPage(pages, clazz), "查询成功");
+        return ResultJpaPageVO.success(new ResourceJpaPage<>(pages, clazz), "查询成功");
     }
 
     @Override
@@ -156,7 +169,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return new ResourceJpaPage(pages, clazz);
+        return new ResourceJpaPage<>(pages, clazz);
     }
 
     @Override
@@ -164,7 +177,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
         JPAUtilExpandCriteria<T> selectRegionBean = JpaUtils.getSelectBean2(t);
         Pageable pageable = JPageUtil.getPageable(pageDTO);
         Page<T> pages = commonDao.findAll(selectRegionBean, pageable);
-        return ResultJpaPageVO.success(new ResourceJpaPage(pages, clazz), "查询成功");
+        return ResultJpaPageVO.success(new ResourceJpaPage<>(pages, clazz), "查询成功");
     }
 
 
