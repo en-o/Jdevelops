@@ -62,6 +62,7 @@ public class IdempotentServiceImpl implements IdempotentService {
 
     @Override
     public boolean checkApiRedo(HttpServletRequest request) {
+        // todo 考虑md5让数据变短
         String paramsHeader = getRequestParam(request);
         String requestUri = request.getRequestURI();
         String idempotentRedisFolder = getRedisFolder(request, idempotentConfig, requestUri);
