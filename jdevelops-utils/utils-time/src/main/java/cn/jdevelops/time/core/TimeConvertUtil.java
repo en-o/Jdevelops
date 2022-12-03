@@ -22,6 +22,16 @@ import java.util.Date;
 public class TimeConvertUtil {
 
     /**
+     * 获取当前时间的字符格式
+     * @param timeFormat 需要的格式
+     * @return string of timeFormat
+     */
+    public static String thisNow(TimeFormatEnum timeFormat) {
+        return DateTime.now().toString(timeFormat.getFormat());
+    }
+
+
+    /**
      * 获取当前时间的默认字符格式
      *
      * @return yyyy-MM-dd HH:mm:ss
