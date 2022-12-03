@@ -364,4 +364,41 @@ public class MapUtil  {
         return URLDecoder.decode(value, "UTF-8");
     }
 
+
+
+    /**
+     * 根据value值获取到对应的一个key值
+     * ps: 此方法用于 k,v 都不允许重复的情况下
+     * @param map map
+     * @param value value
+     * @return key
+     */
+    public static <K,V> K getKey(Map<K,V> map, V value){
+        K key = null;
+        for (K getKey : map.keySet()) {
+            if (map.get(getKey).equals(value)) {
+                key = getKey;
+            }
+        }
+        return key;
+    }
+
+
+    /**
+     * 判断map中的某个值是否存在
+     *
+     * @param map   map
+     * @param value value
+     * @return true 存在
+     */
+    public static <K,V> boolean valueExist(Map<K,V> map, V value){
+        Collection<V> values = map.values();
+        for (Object v : values) {
+            if(value.equals(v)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
