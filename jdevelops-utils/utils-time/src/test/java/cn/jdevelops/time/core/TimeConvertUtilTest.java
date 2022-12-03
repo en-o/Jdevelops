@@ -56,19 +56,26 @@ public class TimeConvertUtilTest extends TestCase {
         assertNotNull(TimeConvertUtil.joda2JavaLocalDateTime(new LocalDateTime()));
     }
 
-//    public void testNowMonday() {
-//        assertEquals(TimeConvertUtil.nowMonday(),"2021-10-25");
-//    }
-//
-//    public void testNowWeekend() {
-//        assertEquals(TimeConvertUtil.nowWeekend(),"2021-10-31");
-//    }
-//
-//    public void testNowBeginMonth() {
-//        assertEquals(TimeConvertUtil.nowBeginMonth(),"2021-10-01");
-//    }
-//
-//    public void testNowEndMonth() {
-//        assertEquals(TimeConvertUtil.nowEndMonth(),"2021-10-31");
-//    }
+    public void testThisNow() {
+        assertNotNull(TimeConvertUtil.thisNow(TimeFormatEnum.EN_FORMAT_DATETIME_DAY));
+    }
+
+    public void testNowMonday() {
+        assertNotNull(TimeConvertUtil.nowMonday());
+    }
+
+    public void testNowWeekend() {
+        assertNotNull(TimeConvertUtil.nowWeekend());
+    }
+
+    public void testNowBeginMonth() {
+        assertNotNull(TimeConvertUtil.nowBeginMonth());
+    }
+
+    public void testNowEndMonth() {
+        assertNotNull(TimeConvertUtil.nowEndMonth());
+    }
+
+
+
 }
