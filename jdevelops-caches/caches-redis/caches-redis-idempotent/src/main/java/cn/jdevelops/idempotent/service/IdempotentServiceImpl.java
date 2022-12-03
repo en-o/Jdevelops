@@ -3,6 +3,7 @@ package cn.jdevelops.idempotent.service;
 
 import cn.jdevelops.idempotent.config.IdempotentConfig;
 import cn.jdevelops.idempotent.exception.IdempotentException;
+import cn.jdevelops.idempotent.util.ParseSha256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -62,8 +63,11 @@ public class IdempotentServiceImpl implements IdempotentService {
 
     @Override
     public boolean checkApiRedo(HttpServletRequest request) {
-        // todo 考虑md5让数据变短
+        // 加密让数据变短
         String paramsHeader = getRequestParam(request);
+        if(idempotentConfig.isParameterEncryption()){
+            paramsHeader = ParseSha256.getSha256StrJava(paramsHeader);
+        }
         String requestUri = request.getRequestURI();
         String idempotentRedisFolder = getRedisFolder(request, idempotentConfig, requestUri);
         String redisValue = (String) redisTemplate.boundHashOps(idempotentRedisFolder).get(requestUri);
@@ -101,12 +105,11 @@ public class IdempotentServiceImpl implements IdempotentService {
      */
     private static String getToken(HttpServletRequest request, String groupStr) {
         String token = request.getHeader(groupStr);
-        if (Objects.nonNull(token) && !"".equals(token)) {
-            return token;
+        if (Objects.isNull(token) || "".equals(token)) {
+            token = request.getParameter(groupStr);
         }
-        token = request.getParameter(groupStr);
         if (Objects.nonNull(token) && !"".equals(token)) {
-            return token;
+            return ParseSha256.getSha256StrJava(token);
         }
         return getPoxyIpEnhance(request);
     }

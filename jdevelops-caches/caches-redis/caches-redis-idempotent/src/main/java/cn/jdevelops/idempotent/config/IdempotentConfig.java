@@ -30,4 +30,10 @@ public class IdempotentConfig {
      * 分组名 默认token
      */
     private String groupStr = "token";
+
+
+    /**
+     * 参数是否加密（加密过后存储的数据会变短减少缓存空间和对比时间（默认是）
+     */
+    private boolean parameterEncryption = true;
 }
