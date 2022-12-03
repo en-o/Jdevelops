@@ -26,6 +26,7 @@ import java.util.*;
  *
  * @author tn
  */
+@Deprecated
 public class TimeUtil {
 
 	/**
