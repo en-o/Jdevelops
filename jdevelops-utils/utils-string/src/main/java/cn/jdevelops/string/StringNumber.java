@@ -1,5 +1,8 @@
 package cn.jdevelops.string;
 
+
+
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,12 +17,17 @@ import static java.util.regex.Pattern.compile;
  */
 public class StringNumber {
 
+	/**
+	 * 数字
+	 */
+	private static Pattern PATTERN_IS_INTEGER = Pattern.compile("^[-\\+]?[\\d]*$");
+
 
 	/**
 	 * 返回 字符串 中的数字
-	 *
+	 *  第一次遇到的数字串
 	 * @param s 字符串
-	 * @return int
+	 * @return int (报错或没有返回0)
 	 */
 	public static Integer getNum(String s) {
 		try {
@@ -31,9 +39,8 @@ public class StringNumber {
 			}
 			return 0;
 		} catch (Exception e) {
-			e.printStackTrace();
+			return 0;
 		}
-		return 0;
 	}
 
 	/**
@@ -54,5 +61,18 @@ public class StringNumber {
 			sb.append(matcher.group());
 		}
 		return sb.toString();
+	}
+
+
+	/**
+	 * 判断是否为整数
+	 * @param str 传入的字符串
+	 * @return 是整数返回true,否则返回false
+	 */
+	public static boolean isInteger(String str) {
+		if(Objects.isNull(str)|| str.length() == 0){
+			return false;
+		}
+		return PATTERN_IS_INTEGER.matcher(str).matches();
 	}
 }
