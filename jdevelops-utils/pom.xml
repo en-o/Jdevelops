@@ -16,6 +16,7 @@
         <module>utils-jwt</module>
         <module>utils-message</module>
         <module>utils-spring-aop</module>
+        <module>utils-validation</module>
     </modules>
     <parent>
         <artifactId>jdevelops</artifactId>
