@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 时间格式转换相关
@@ -23,6 +24,7 @@ public class TimeConvertUtil {
 
     /**
      * 获取当前时间的字符格式
+     *
      * @param timeFormat 需要的格式
      * @return string of timeFormat
      */
@@ -158,6 +160,7 @@ public class TimeConvertUtil {
 
     /**
      * 获取当前时间的周一
+     *
      * @return yyyy-MM-dd
      */
     public static String nowMonday() {
@@ -166,6 +169,7 @@ public class TimeConvertUtil {
 
     /**
      * 获取当前时间的周末
+     *
      * @return yyyy-MM-dd
      */
     public static String nowWeekend() {
@@ -173,25 +177,28 @@ public class TimeConvertUtil {
     }
 
     /**
-     *获取 当前月的第一天
+     * 获取 当前月的第一天
+     *
      * @return yyyy-MM-dd
      */
-    public static String nowBeginMonth(){
-        return  DateTime.now().dayOfMonth().withMinimumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
+    public static String nowBeginMonth() {
+        return DateTime.now().dayOfMonth().withMinimumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
 
     }
 
     /**
-     *获取  当前月的最后一天
+     * 获取  当前月的最后一天
+     *
      * @return yyyy-MM-dd
      */
-    public static String nowEndMonth(){
+    public static String nowEndMonth() {
         return DateTime.now().dayOfMonth().withMaximumValue().toString(TimeFormat.NORM_FORMAT_DATETIME_DAY);
     }
 
 
     /**
      * 默认字符串时间格式转 java.time.LocalDateTime
+     *
      * @param defTimeStr yyyy-MM-dd HH:mm:ss
      * @return java.time.LocalDateTime
      */
@@ -202,8 +209,9 @@ public class TimeConvertUtil {
 
     /**
      * 默认字符串时间格式转 java.time.LocalDateTime
+     *
      * @param strDateTime 时间字符串
-     * @param format 时间字符串的格式
+     * @param format      时间字符串的格式
      * @return java.time.LocalDateTime
      */
     public static java.time.LocalDateTime str2LocalDate(String strDateTime, String format) {
@@ -211,4 +219,24 @@ public class TimeConvertUtil {
         return java.time.LocalDateTime.parse(strDateTime, df);
     }
 
+
+    /**
+     * 时间格式验证
+     *
+     * @param sDate  校验的日期
+     * @param format 校验的格式
+     * @return true  时间字符串格式=format
+     */
+    public static boolean verifyFormat(String sDate, TimeFormatEnum format) {
+        if (Objects.isNull(sDate) || sDate.length() == 0) {
+            return false;
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(format.getFormat());
+            DateTime.parse(sDate, formatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

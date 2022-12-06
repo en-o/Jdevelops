@@ -77,5 +77,8 @@ public class TimeConvertUtilTest extends TestCase {
     }
 
 
-
+    public void testVerifyFormat() {
+        assertTrue(TimeConvertUtil.verifyFormat("2022-12-06 14:55:38", TimeFormatEnum.DEFAULT_FORMAT_DATETIME));
+        assertFalse(TimeConvertUtil.verifyFormat("2022/12/06 14:55:38", TimeFormatEnum.DEFAULT_FORMAT_DATETIME));
+    }
 }
