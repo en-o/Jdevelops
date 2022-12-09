@@ -19,7 +19,7 @@ public interface CommonConstant {
 
 
     /**
-     * 需要验证登录的socket请求
+     * 不需要验证登录的socket请求
      */
     String VERIFY_PATH_NO = "/socket/n/";
 
