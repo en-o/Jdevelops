@@ -23,11 +23,6 @@
             <version>${jdevelops.last.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>caches-redis-core</artifactId>
-            <version>${jdevelops.last.version}</version>
-        </dependency>
     </dependencies>
 
 </project>
