@@ -57,4 +57,17 @@ public class SocketUtil {
         logger.error( socketPath + "路径不合法，只允许\"/socket/y/\",\"/socket/n/\"");
         return true;
     }
+
+
+
+    /**
+     * redis简单存储建立文件夹
+     *
+     * @param folderName 文件夹名
+     * @param key        key
+     * @return folderName:key
+     */
+    public static String getRedisFolder(String folderName, String key) {
+        return folderName + ":" + key;
+    }
 }
