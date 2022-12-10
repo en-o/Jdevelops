@@ -26,7 +26,7 @@ public interface SocketController {
             @ApiImplicitParam(name="userName", value="用户名",  dataType="String", required=true),
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
-    default void onlyUserSocket(@RequestParam String userName, @RequestParam String message, WebSocketServer webSocketServer){
+    default void onlyUserSocket(@RequestParam("userName") String userName, @RequestParam("message") String message, WebSocketServer webSocketServer){
         webSocketServer.sendInfo(userName, message);
     }
 
@@ -40,7 +40,7 @@ public interface SocketController {
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
     @GetMapping(value = "/all")
-    default void allUserSocket(@RequestParam String message, WebSocketServer webSocketServer){
+    default void allUserSocket(@RequestParam("message") String message, WebSocketServer webSocketServer){
         webSocketServer.onMessage(message);
     }
 }
