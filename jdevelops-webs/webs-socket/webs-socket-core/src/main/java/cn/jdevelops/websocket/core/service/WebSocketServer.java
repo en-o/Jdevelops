@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * webSocker服务端
@@ -169,11 +171,18 @@ public class WebSocketServer {
     public void sendMessage(Session session, String message) {
         try {
             if (session != null) {
-                //异步
-                session.getAsyncRemote().sendText(message);
+                Lock lock=new ReentrantLock();
+                lock.lock();
+                try{
+                    session.getAsyncRemote().sendText(message);
+                }catch(Exception ignored){
+                }finally{
+                    lock.unlock();   //释放锁
+                }
             }
         }catch (Exception e){
-            logger.error("发送消息失败", e);
+            // 这个异常好像不影响什么
+            logger.warn("发送消息失败",e);
         }
     }
 
