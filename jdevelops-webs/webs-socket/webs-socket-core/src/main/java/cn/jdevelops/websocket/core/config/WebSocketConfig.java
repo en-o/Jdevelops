@@ -1,18 +1,58 @@
 package cn.jdevelops.websocket.core.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
- *   往 spring 容器中注入ServerEndpointExporter实例
+ *
  *   socket配置
  * @author tn
  * @date  2020-07-08 12:33
  */
+
+@ConfigurationProperties(prefix = "jdevelops.websocket")
+@Component
 public class WebSocketConfig {
 
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter(){
-        return new ServerEndpointExporter();
+    /**
+     * 缓存选择
+     * falas: 本地缓存 (默认)
+     * true:  redis 缓存
+     */
+    private boolean enable = false;
+
+    /**
+     * 多端登录
+     * true: 允许 (默认)
+     * false: 不允许
+     */
+    private boolean multipart = true;
+
+
+
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+
+    public boolean isMultipart() {
+        return multipart;
+    }
+
+    public void setMultipart(boolean multipart) {
+        this.multipart = multipart;
+    }
+
+    @Override
+    public String toString() {
+        return "WebSocketConfig{" +
+                "enable=" + enable +
+                ", multipart=" + multipart +
+                '}';
     }
 }
