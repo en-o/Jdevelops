@@ -34,8 +34,9 @@ public class SocketController {
             @ApiImplicitParam(name="userName", value="用户名",  dataType="String", required=true),
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
-    public void onlyUserSocket(@RequestParam("userName") String userName, @RequestParam("message") String message){
+    public Object onlyUserSocket(@RequestParam("userName") String userName, @RequestParam("message") String message){
         webSocketServer.sendInfo(userName, message);
+        return "success";
     }
 
     /**
@@ -47,8 +48,9 @@ public class SocketController {
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
     @GetMapping(value = "/all")
-    public void allUserSocket(@RequestParam("message") String message){
+    public Object allUserSocket(@RequestParam("message") String message){
         webSocketServer.onMessage(message);
+        return "success";
     }
 
 
@@ -64,7 +66,7 @@ public class SocketController {
             @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
     })
     @RequestMapping("/sendInfoByLikeKey")
-    public String sendInfoByLikeKey(@RequestParam("keyPrefix") String keyPrefix, @RequestParam("message") String message){
+    public Object sendInfoByLikeKey(@RequestParam("keyPrefix") String keyPrefix, @RequestParam("message") String message){
         webSocketServer.sendInfoByLikeKey(keyPrefix,message);
         return "success";
     }

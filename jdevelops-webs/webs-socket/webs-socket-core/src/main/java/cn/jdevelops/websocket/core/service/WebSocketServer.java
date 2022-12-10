@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -33,7 +34,7 @@ public class WebSocketServer {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
 
-    public  final CacheService cacheService;
+    public final CacheService cacheService;
 
 
     /**
@@ -58,22 +59,14 @@ public class WebSocketServer {
             logger.error("第二路径不合法，第二路径只能为：y,n");
             return;
         }
-        List<Session> sessionsArray = new ArrayList<>();
-        //获取session
-        List<Session> sessions = cacheService.loadSession(userName);
-        //存在session
-        if (sessions != null) {
-            sessionsArray.addAll(sessions);
+        Session onCloseSession = cacheService.saveSession(userName, session);
+        if (Objects.nonNull(onCloseSession)) {
+            // 不允许的清空下下线用户
+            onClose(userName, onCloseSession);
         }
-        sessionsArray.add(session);
-        cacheService.saveSession(userName, sessionsArray);
         addOnlineCount();
         logger.info("{}加入webSocket！当前人数为{}", userName, online);
-        try {
-            sendMessage(session, "欢迎" + userName + "加入连接！");
-        } catch (IOException e) {
-            logger.error("发送欢迎消息失败", e);
-        }
+        sendMessage(session, "欢迎" + userName + "加入连接！");
     }
 
     /**
@@ -84,17 +77,18 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose(@PathParam(value = "name") String userName, Session session) {
-
-        //获取session
-        List<Session> sessions = cacheService.loadSession(userName);
-        if (session == null) {
-            cacheService.removeSession(userName);
-        } else {
-            sessions.remove(session);
-            // 重新保存用户信息
-            cacheService.saveSession(userName, sessions);
-        }
+        // 有session ,删除指定session值, 没有session 直接删除key的所有值
+        cacheService.removeSession(userName, session);
         subOnlineCount();
+        sendMessage(session, "不允许多端登录,您已被断开了连接！");
+        try {
+            // 关闭session
+            if (Objects.nonNull(session)) {
+                session.close();
+            }
+        } catch (IOException e) {
+            logger.error("session关闭异常", e);
+        }
         logger.info("{}断开webSocket连接！当前人数为{}", userName, online);
     }
 
@@ -107,13 +101,7 @@ public class WebSocketServer {
     public void onMessage(String message) {
         for (List<Session> session : cacheService.loadSession()) {
             try {
-                session.forEach(ss -> {
-                    try {
-                        sendMessage(ss, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                session.forEach(ss -> sendMessage(ss, message));
             } catch (Exception e) {
                 logger.error("群发消息失败", e);
             }
@@ -141,13 +129,7 @@ public class WebSocketServer {
         List<Session> sessions = cacheService.loadSession(userName);
         if (sessions != null) {
             try {
-                sessions.forEach(session -> {
-                    try {
-                        sendMessage(session, message);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+                sessions.forEach(session -> sendMessage(session, message));
             } catch (Exception e) {
                 logger.error("指定用户发送消息失败", e);
             }
@@ -171,13 +153,7 @@ public class WebSocketServer {
         List<Session> session = new ArrayList<>();
         stringListMap.forEach((key, value) -> session.addAll(value));
         try {
-            session.forEach(se -> {
-                try {
-                    sendMessage(se, message);
-                } catch (IOException e) {
-                    logger.error("发送消息失败", e);
-                }
-            });
+            session.forEach(se -> sendMessage(se, message));
         } catch (Exception e) {
             logger.error("发送消息失败", e);
         }
@@ -188,12 +164,15 @@ public class WebSocketServer {
      *
      * @param session 客户端与socket建立的会话
      * @param message 消息
-     * @throws IOException 抛出异常
      */
-    public void sendMessage(Session session, String message) throws IOException {
-        if (session != null) {
-            //异步
-            session.getAsyncRemote().sendText(message);
+    public void sendMessage(Session session, String message) {
+        try {
+            if (session != null) {
+                //异步
+                session.getAsyncRemote().sendText(message);
+            }
+        }catch (Exception e){
+            logger.error("发送消息失败", e);
         }
     }
 
@@ -204,7 +183,6 @@ public class WebSocketServer {
     public static void subOnlineCount() {
         online.decrementAndGet();
     }
-
 
 
 }

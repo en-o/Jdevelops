@@ -4,6 +4,7 @@ import cn.jdevelops.websocket.core.config.WebSocketConfig;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,18 +30,42 @@ public class CacheService {
 
     /**
      * 保存用户连接信息
+     * ps: 会根据配置判断是否能多端登录
      * @param userName key
-     * @param sessionsArray  session array
+     * @param session  Session
+     * @return 返回需要下先的session
+     */
+    public Session saveSession( final String userName,final Session session){
+        Session resultSession = null;
+        // 等待保存的 集合
+        List<Session> sessionsArray = new ArrayList<>();
+        //获取存储了的session(已连接用户)
+        List<Session> sessions = loadSession(userName);
+
+        if(webSocketConfig.isMultipart()){
+            //允许多端时,保存用户的所有session
+            if (sessions != null) {
+                sessionsArray.addAll(sessions);
+            }
+        }else {
+            // 不允许多端时,先清空key下的数据在进行添加
+            sessionPools.remove(userName);
+            resultSession = (sessions == null || sessions.isEmpty() ? null:sessions.get(0));
+        }
+        sessionsArray.add(session);
+        sessionPools.put(userName, sessionsArray);
+        return resultSession;
+    }
+
+
+    /**
+     * 保存用户连接信息
+     * ps 不做任何其他判断只会进行保存动作
+     * @param userName key
+     * @param sessionsArray  Session Array
      */
     public void saveSession( final String userName,final List<Session> sessionsArray){
-        if(webSocketConfig.isMultipart()){
-            sessionPools.put(userName, sessionsArray);
-        }else {
-            // 不允许多端时,先情况key下的数据在进行添加
-            sessionPools.remove(userName);
-            sessionPools.put(userName, sessionsArray);
-        }
-
+        sessionPools.put(userName, sessionsArray);
     }
 
     /**
@@ -79,6 +104,25 @@ public class CacheService {
      */
     public void removeSession(final String userName){
         sessionPools.remove(userName);
+    }
+
+
+    /**
+     * 删除用户连接信息
+     * ps: 有session ,删除指定session值, 没有session 直接删除key的所有值
+     * @param userName key
+     * @param session  Session
+     */
+    public void removeSession(final String userName,final Session session){
+        if (session == null) {
+            removeSession(userName);
+        } else {
+            //这个用户的所有session
+            List<Session> sessions = loadSession(userName);
+            // 删除这个session,后重新保存
+            sessions.remove(session);
+            saveSession(userName, sessions);
+        }
     }
 
 
