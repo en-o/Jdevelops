@@ -29,6 +29,14 @@ public class WebSocketConfig {
     private boolean multipart = true;
 
 
+    /**
+     *  true: 下线之前的来连接,(默认)
+     *  false: 下线当前连接
+     *  multipart = false 时使用,其余无效
+     */
+    private boolean onClose = true;
+
+
 
 
     public boolean isEnable() {
@@ -48,11 +56,20 @@ public class WebSocketConfig {
         this.multipart = multipart;
     }
 
+    public boolean isOnClose() {
+        return onClose;
+    }
+
+    public void setOnClose(boolean onClose) {
+        this.onClose = onClose;
+    }
+
     @Override
     public String toString() {
         return "WebSocketConfig{" +
                 "enable=" + enable +
                 ", multipart=" + multipart +
+                ", onClose=" + onClose +
                 '}';
     }
 }

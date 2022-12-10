@@ -4,10 +4,7 @@ import cn.jdevelops.websocket.core.config.WebSocketConfig;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static cn.jdevelops.websocket.core.cache.LocalCache.sessionPools;
 
@@ -47,13 +44,30 @@ public class CacheService {
             if (sessions != null) {
                 sessionsArray.addAll(sessions);
             }
+            sessionsArray.add(session);
+            saveSession(userName, sessionsArray);
         }else {
-            // 不允许多端时,先清空key下的数据在进行添加
-            sessionPools.remove(userName);
-            resultSession = (sessions == null || sessions.isEmpty() ? null:sessions.get(0));
+            // 不允许多端时, 保证必须有一个
+            if(sessions == null || sessions.isEmpty() ){
+                sessionsArray.add(session);
+                saveSession(userName, sessionsArray);
+            }
+            // 下线之前的
+            if(webSocketConfig.isOnClose()){
+                // 不知道前面的是谁统统清空后在添加
+                removeSession(userName);
+                sessionsArray.add(session);
+                saveSession(userName, sessionsArray);
+                // 终止以前的连接
+                resultSession = (sessions == null || sessions.isEmpty() ? null:sessions.get(0));
+            }else {
+                if(Objects.nonNull(sessions) && !sessions.isEmpty() ){
+                    // 后来的不允许连接
+                    resultSession = session;
+                }
+            }
+
         }
-        sessionsArray.add(session);
-        sessionPools.put(userName, sessionsArray);
         return resultSession;
     }
 

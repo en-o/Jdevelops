@@ -60,11 +60,12 @@ public class WebSocketServer {
             return;
         }
         Session onCloseSession = cacheService.saveSession(userName, session);
+        addOnlineCount();
         if (Objects.nonNull(onCloseSession)) {
             // 不允许的清空下下线用户
             onClose(userName, onCloseSession);
         }
-        addOnlineCount();
+
         logger.info("{}加入webSocket！当前人数为{}", userName, online);
         sendMessage(session, "欢迎" + userName + "加入连接！");
     }
