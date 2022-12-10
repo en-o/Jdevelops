@@ -16,10 +16,10 @@ public class WebSocketConfig {
 
     /**
      * 缓存选择
-     * falas: 本地缓存 (默认)
-     * true:  redis 缓存
+     * true: 本地缓存 (默认)
+     * falas:  redis 缓存 (redis 无法存储非序列化数据,websocket的session无法序列化,所以此参数废弃)
      */
-    private boolean enable = false;
+    private boolean enable = true;
 
     /**
      * 多端登录
