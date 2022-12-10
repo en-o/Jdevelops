@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,4 +50,23 @@ public class SocketController {
     public void allUserSocket(@RequestParam("message") String message){
         webSocketServer.onMessage(message);
     }
+
+
+    /**
+     *  使用 sendInfoByLikeKey 进行模糊匹配用户进行消息发送
+     *  匹配  keyPrefix 开头的 websocket 用户 给他们发送消息 （keyPrefix用户1, keyPrefix用户2）
+     *  @param keyPrefix 主键前缀
+     *  @param message 消息
+     */
+    @ApiOperation("模糊匹配用户进行消息发送")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="keyPrefix", value="用户关键字", dataType="String", required=true),
+            @ApiImplicitParam(name="message", value="消息", dataType="String", required=true)
+    })
+    @RequestMapping("/sendInfoByLikeKey")
+    public String sendInfoByLikeKey(@RequestParam("keyPrefix") String keyPrefix, @RequestParam("message") String message){
+        webSocketServer.sendInfoByLikeKey(keyPrefix,message);
+        return "success";
+    }
+
 }
