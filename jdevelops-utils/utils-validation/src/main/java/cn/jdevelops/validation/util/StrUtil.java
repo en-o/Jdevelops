@@ -14,6 +14,11 @@ import java.util.regex.Pattern;
 public class StrUtil {
 
     /**
+     * 字符串常量：空字符串 {@code ""}
+     */
+    public static final String EMPTY = "";
+
+    /**
      * 判空
      * @param str str
      * @return true不为空
