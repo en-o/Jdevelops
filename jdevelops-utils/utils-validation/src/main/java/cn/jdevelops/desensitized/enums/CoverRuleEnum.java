@@ -49,7 +49,7 @@ public enum CoverRuleEnum {
 
 
     /**
-     * 可自行添加其他脱敏策略
+     * 枚举的值： 函数式接口
      */
     private final Function<String, String> rules;
 
