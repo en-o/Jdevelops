@@ -19,6 +19,11 @@ public class StrUtil {
     public static final String EMPTY = "";
 
     /**
+     * 字符常量：空格符 {@code ' '}
+     */
+    public static final char SPACE = ' ';
+
+    /**
      * 判空
      * @param str str
      * @return true不为空
