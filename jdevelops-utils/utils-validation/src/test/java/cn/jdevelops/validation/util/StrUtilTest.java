@@ -42,4 +42,17 @@ public class StrUtilTest {
     }
 
 
+    @Test
+    public void replace() {
+        assertEquals(StrUtil.replace("13321285210",3,4),"133****5210");
+        assertEquals(StrUtil.replace("谭宁",1,0),"谭*");
+        assertEquals(StrUtil.replace("谭宁宁",1,0),"谭**");
+        assertEquals(StrUtil.replace("200220129212056022",3,4),"200***********6022");
+    }
+
+    @Test
+    public void testReplace() {
+        assertEquals(StrUtil.replace("谭宁",1),"谭*");
+        assertEquals(StrUtil.replace("谭宁宁",1),"谭**");
+    }
 }

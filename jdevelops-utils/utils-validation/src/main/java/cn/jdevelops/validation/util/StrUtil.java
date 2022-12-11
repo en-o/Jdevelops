@@ -69,6 +69,48 @@ public class StrUtil {
         Matcher m = pattern.matcher(str);
         return m.matches();
     }
+
+
+    /**
+     * 替换指定位置的字符为*
+     * @param str 字符串
+     * @param start 开始位置（包含） 从1开始
+     * @param end 结束位置（不包含） 从1开始
+     * @return String
+     */
+    public static String replace(String str,int start,int end){
+        StringBuilder replacedStr = new StringBuilder("*");
+        // 不能为空
+        if (StrUtil.isBlank(str)) {
+            return StrUtil.EMPTY;
+        }
+        //需要截取的长度不能大于身份证号长度
+        if ((start + end) > str.length()) {
+            return StrUtil.EMPTY;
+        }
+        //需要截取的不能小于0
+        if (start < 0 || end < 0) {
+            return StrUtil.EMPTY;
+        }
+        for (int i = 1; i < (str.length() - (start+end) ); i++) {
+            replacedStr.append("*");
+        }
+        StringBuilder sb = new StringBuilder(str);
+
+        sb.replace(start, str.length() - end, replacedStr.toString());
+        return sb.toString();
+    }
+
+
+    /**
+     * 替换指定位置的字符为*
+     * @param str 字符串
+     * @param start 开始位置（包含） （结束位置=后面全部）
+     * @return String
+     */
+    public static String replace(String str,int start){
+        return replace(str, start, 0);
+    }
 }
 
 
