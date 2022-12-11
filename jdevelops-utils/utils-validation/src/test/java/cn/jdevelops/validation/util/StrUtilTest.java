@@ -31,4 +31,15 @@ public class StrUtilTest {
         assertFalse(StrUtil.verifyRegular(idCard,"5122301993111"));
         assertFalse(StrUtil.verifyRegular(idCard,"512230199311156070123"));
     }
+
+
+
+    @Test
+    public void isBlank() {
+        assertFalse(StrUtil.isBlank("2131"));
+        assertTrue(StrUtil.isBlank(""));
+        assertTrue(StrUtil.isBlank(null));
+    }
+
+
 }
