@@ -22,6 +22,22 @@ public class StrUtil {
         return str != null && str.length() > 0 && containsText(str);
     }
 
+    /**
+     * 判空
+     * @param str str
+     * @return true 空
+     */
+    public static boolean isBlank(CharSequence str) {
+        return str == null || str.length() == 0 || !containsText(str);
+    }
+
+
+
+    /**
+     * 非空
+     * @param str CharSequence
+     * @return true不空
+     */
     private static boolean containsText(CharSequence str) {
         int strLen = str.length();
         for(int i = 0; i < strLen; ++i) {
