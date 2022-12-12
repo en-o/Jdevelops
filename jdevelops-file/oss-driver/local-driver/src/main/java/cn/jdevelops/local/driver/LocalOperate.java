@@ -22,7 +22,7 @@ import java.util.List;
 import static cn.jdevelops.file.util.StrUtil.notBlank;
 
 /**
- * minio
+ * 本地撒上传
  *
  * @author tn
  * @version 1
