@@ -27,4 +27,10 @@ public class LocalConfig {
     private String uploadDir;
 
 
+    /**
+     * 映射路径 即: 前端相对访问路径前缀
+     * e.g /image ： image/contextPath/xx.png(数据库存的/xx.png)
+     */
+    private String contextPath;
+
 }

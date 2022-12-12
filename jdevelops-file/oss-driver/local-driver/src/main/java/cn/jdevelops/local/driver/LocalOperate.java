@@ -19,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static cn.jdevelops.file.util.StrUtil.notBlank;
+
 /**
  * minio
  *
@@ -59,6 +61,10 @@ public class LocalOperate implements OssOperateAPI {
         }
         // 将文件存放到对应的目录下，如果上传重复的文件不会报错，后上传的文件会覆盖已上传的文件
         file.transferTo(dest);
+        String contextPath = LocalDirverUtil.contextPath(ossConfig.getLocal().getContextPath());
+        if(notBlank(contextPath)){
+            relativePath = contextPath.substring(0,contextPath.lastIndexOf("/")+1)+relativePath;
+        }
         String absolutePath = getBrowserUrl() + OSSConstants.PATH_SEPARATOR + relativePath;
         return FilePathResult.builder()
                 .absolutePath(absolutePath)

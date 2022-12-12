@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Enumeration;
+
+import static cn.jdevelops.file.util.StrUtil.isBlank;
 
 /**
  * 本地使用的util
@@ -83,5 +83,20 @@ public class LocalDirverUtil {
                     + e.getMessage());
         }
         return "127.0.0.1";
+    }
+
+
+    /**
+     * context的的特殊处理
+     * @param contextPath local.getContextPath()
+     * @return
+     */
+    public static String contextPath(String contextPath){
+        if(isBlank(contextPath)){
+            contextPath = "/**";
+        }else if(!contextPath.contains("**")){
+            contextPath = contextPath+"/**";
+        }
+        return contextPath;
     }
 }

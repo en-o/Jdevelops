@@ -13,11 +13,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EnableAutoScanConfiguration {
 
+    /**
+     * 配置文件
+     */
     @ConditionalOnMissingBean(name = {"ossConfig"})
     @Bean
     public OSSConfig ossConfig(){
         return new OSSConfig();
     }
 
+
+    /**
+     * 配置映射
+     */
+    @ConditionalOnMissingBean(FileContextPathConfig.class)
+    @Bean
+    public FileContextPathConfig fileContextPathConfig(){
+        return new FileContextPathConfig();
+    }
 
 }
