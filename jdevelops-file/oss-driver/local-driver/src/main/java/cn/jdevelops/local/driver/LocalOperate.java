@@ -4,6 +4,7 @@ import cn.jdevelops.file.OssOperateAPI;
 import cn.jdevelops.file.bean.*;
 import cn.jdevelops.file.config.OSSConfig;
 import cn.jdevelops.file.constants.OSSConstants;
+import cn.jdevelops.file.util.StrUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,12 @@ public class LocalOperate implements OssOperateAPI {
         MultipartFile file = uploaded.getFile();
         // getOriginalFilename方法获取文件名(带后缀)
         String originalName = file.getOriginalFilename();
-        String freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
+        String freshName;
+        if(StrUtil.notBlank(uploaded.getFileName())){
+            freshName = uploaded.getFileName().trim() + originalName.substring(originalName.lastIndexOf("."));
+        }else {
+            freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
+        }
         String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + uploaded.getChildFolder()
                 + OSSConstants.PATH_SEPARATOR +freshName;
         File dest = new File(ossConfig.getLocal()

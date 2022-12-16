@@ -20,7 +20,7 @@ public class MinioOperate implements OssOperateAPI {
 
     @Override
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
-        return operateFileUtil.uploadFile(uploaded.getFile(), uploaded.getBucket(), uploaded.getChildFolder());
+        return operateFileUtil.uploadFile(uploaded.getFile(), uploaded.getFileName(), uploaded.getBucket(), uploaded.getChildFolder());
     }
 
 

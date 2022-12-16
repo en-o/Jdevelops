@@ -3,6 +3,7 @@ package cn.jdevelops.minio.driver;
 import cn.jdevelops.file.bean.FilePathResult;
 import cn.jdevelops.file.config.OSSConfig;
 import cn.jdevelops.file.constants.OSSConstants;
+import cn.jdevelops.file.util.StrUtil;
 import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
@@ -118,13 +119,14 @@ public class OperateFileUtil {
 	 * 文件上传，成功后返回相对地址，需要自己加上minio的url
 	 *
 	 * @param file        文件流
+	 * @param fileName 自定义文件名
 	 * @param bucket      存储桶(文件地址)
 	 * @param childFolder 下级文件夹（例单级："bus"，多级："bus/bus/bus" ）
 	 * @return java.lang.String
 	 * @author lxw
 	 * @date 2021/2/1 10:38
 	 */
-	public FilePathResult uploadFile(MultipartFile file, String bucket, String childFolder) throws Exception {
+	public FilePathResult uploadFile(MultipartFile file,String fileName, String bucket, String childFolder) throws Exception {
 		// 检查存储桶是否已经存在
 		makeBucket(bucket);
 		// 文件名称
@@ -138,24 +140,29 @@ public class OperateFileUtil {
 		// 文件类型后缀 如 jpg png
 		String fileType = AboutFileUtil.getFileSuffix(originalName);
 		// 文件上传之后的新文件名称
-		String objectName = filename + OSSConstants.SYMBOL_POINT + fileType;
+		String freshName;
+		if(StrUtil.notBlank(fileName)){
+			freshName = fileName.trim() + OSSConstants.SYMBOL_POINT + fileType;
+		}else {
+			freshName = filename + OSSConstants.SYMBOL_POINT + fileType;
+		}
 		if (StringUtils.isNotBlank(childFolder) && !StringUtils.equalsIgnoreCase("null", childFolder)) {
-			objectName = childFolder + objectName;
+			freshName = childFolder + freshName;
 		}
 		InputStream in = file.getInputStream();
 		//默认类型，该“application/octet-stream”类型的时候，浏览器访问地址为下载
 		String contentType = file.getContentType();
 		minioClient.putObject(
-				PutObjectArgs.builder().bucket(bucket).object(objectName).stream(
+				PutObjectArgs.builder().bucket(bucket).object(freshName).stream(
 								in, in.available(), -1)
 						.contentType(contentType)
 						.build());
 		in.close();
-		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + objectName;
+		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + freshName;
 		return FilePathResult.builder()
 				.absolutePath(ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath)
 				.relativePath(relativePath)
-				.freshName(objectName)
+				.freshName(freshName)
 				.originalName(originalName)
 				.build();
 	}

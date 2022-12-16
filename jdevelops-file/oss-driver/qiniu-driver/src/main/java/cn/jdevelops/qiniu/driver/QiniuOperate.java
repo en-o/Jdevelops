@@ -3,6 +3,7 @@ package cn.jdevelops.qiniu.driver;
 import cn.jdevelops.file.*;
 import cn.jdevelops.file.bean.*;
 import cn.jdevelops.file.config.OSSConfig;
+import cn.jdevelops.file.util.StrUtil;
 import cn.jdevelops.file.util.UrlUtil;
 import com.google.gson.Gson;
 import com.qiniu.http.Response;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -51,8 +51,14 @@ public class QiniuOperate implements OssOperateAPI {
 
     @Override
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
-        String originalFilename = uploaded.getFile().getOriginalFilename();
-        String updateFile = uploaded.getChildFolder() + originalFilename;
+        String originalName = uploaded.getFile().getOriginalFilename();
+        String freshName;
+        if(StrUtil.notBlank(uploaded.getFileName())){
+            freshName = uploaded.getFileName().trim() + originalName.substring(originalName.lastIndexOf("."));
+        }else {
+            freshName = originalName;
+        }
+        String updateFile = uploaded.getChildFolder() + freshName;
         Response response = this.uploadManager.put(uploaded.getFile().getInputStream(),
                 updateFile,
                 getUploadToken(uploaded.getBucket()),
@@ -60,9 +66,9 @@ public class QiniuOperate implements OssOperateAPI {
                 null);
         Gson gson = new Gson();
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
-        return FilePathResult.builder().freshName(originalFilename)
+        return FilePathResult.builder().freshName(freshName)
                 .absolutePath(updateFile)
-                .originalName(originalFilename)
+                .originalName(originalName)
                 .relativePath(ossConfig.getBrowseUrl()+"/"+updateFile).build();
 
     }

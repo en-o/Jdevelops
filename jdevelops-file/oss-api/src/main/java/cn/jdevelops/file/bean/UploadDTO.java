@@ -19,6 +19,7 @@ public class UploadDTO {
 
 	/**
 	 * 桶名称(最少1个字符，最大63个）
+	 * ps: 七牛云此处必须写空间名
 	 * e.g. tn
 	 */
 	@NotBlank
@@ -36,4 +37,10 @@ public class UploadDTO {
 	 * 文件流
 	 */
 	MultipartFile file;
+
+	/**
+	 * 业务自定义存储文件名,为空则使用系统默认规则
+	 * ps: minio 中文可能会有点的问题
+	 */
+	String fileName;
 }
