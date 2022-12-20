@@ -65,6 +65,16 @@
                 <artifactId>aops-apisign</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-apiversion</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-exception</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
             <!-- jdevelops-aops  end-->
 
             <!-- jdevelops-apis  start-->
@@ -96,12 +106,27 @@
                 <artifactId>beans-entity</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>beans-enum</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
             <!-- jdevelops-beans  end-->
 
             <!-- jdevelops-caches  start-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>beans-enum</artifactId>
+                <artifactId>caches-jdbctemplate</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-redis-idempotent</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-auto-schema</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
@@ -183,6 +208,11 @@
                 <artifactId>utils-time</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-validation</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
             <!-- jdevelops-utils  end-->
 
             <!-- jdevelops-webs  start-->
@@ -194,6 +224,21 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>webs-socket</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-jwt-redis</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-resttemplate</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-springs</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <!-- jdevelops-webs  end-->
