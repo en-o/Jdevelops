@@ -391,6 +391,8 @@
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <doclint>none</doclint>
+                    <show>protected</show>
+                    <failOnError>false</failOnError>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <charset>${project.build.sourceEncoding}</charset>
                     <docencoding>${project.build.sourceEncoding}</docencoding>
@@ -438,6 +440,9 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
