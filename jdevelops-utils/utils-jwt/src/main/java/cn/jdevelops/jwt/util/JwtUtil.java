@@ -1,6 +1,5 @@
 package cn.jdevelops.jwt.util;
 
-import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwt.constant.JwtConstant;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.util.*;
+
+import static cn.jdevelops.enums.result.TokenExceptionCodeEnum.TOKEN_ERROR;
 
 /**
  *  jwt工具
@@ -186,7 +187,7 @@ public class JwtUtil {
             Map<String, Claim> claims = jwt.getClaims();
             return getClaims(claims);
         }catch (Exception e){
-            throw new IllegalArgumentException(ResultCodeEnum.TOKEN_ERROR.getMessage(),e);
+            throw new IllegalArgumentException(TOKEN_ERROR.getMessage(),e);
         }
 
     }
