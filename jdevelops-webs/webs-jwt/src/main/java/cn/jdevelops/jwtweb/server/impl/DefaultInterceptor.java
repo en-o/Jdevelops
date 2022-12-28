@@ -6,8 +6,8 @@ import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
 
 /**
- * @author Tianms
- * @date 2020/4/19 11:25
+ * @author tn
+ * @date 2022-12-28 09:48:22
  */
 @JoinSPI(cover = true)
 public class DefaultInterceptor implements CheckTokenInterceptor {

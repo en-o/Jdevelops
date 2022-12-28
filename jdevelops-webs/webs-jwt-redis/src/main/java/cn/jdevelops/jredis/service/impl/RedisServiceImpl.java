@@ -17,7 +17,8 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.jredis.enums.RedisExceptionEnum.*;
+import static cn.jdevelops.enums.result.UserExceptionEnum.*;
+
 
 /**
  * redis
@@ -48,13 +49,13 @@ public class RedisServiceImpl implements RedisService {
                 storageUserTokenEntity.getUserCode());
         redisTemplate.boundHashOps(loginRedisFolder).put(storageUserTokenEntity.getUserCode(),
                 storageUserTokenEntity);
-       if(Boolean.TRUE.equals(storageUserTokenEntity.getAlwaysOnline())){
-           // 永不过期
-           redisTemplate.persist(loginRedisFolder);
-       }else {
-           // 设置过期时间（秒
-           redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.SECONDS);
-       }
+        if(Boolean.TRUE.equals(storageUserTokenEntity.getAlwaysOnline())){
+            // 永不过期
+            redisTemplate.persist(loginRedisFolder);
+        }else {
+            // 设置过期时间（秒
+            redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.SECONDS);
+        }
     }
 
     @Override
@@ -131,7 +132,7 @@ public class RedisServiceImpl implements RedisService {
                 throw new ExpiredRedisException(EXCESSIVE_ATTEMPTS_ACCOUNT);
             }
             if (((RedisAccount) redisUser).isDisabledAccount()) {
-                throw new ExpiredRedisException(DISABLED_ACCOUNT);
+                throw new ExpiredRedisException(BANNED_ACCOUNT);
             }
         }
     }

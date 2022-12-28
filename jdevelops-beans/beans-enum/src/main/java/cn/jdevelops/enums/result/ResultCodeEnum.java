@@ -10,7 +10,6 @@ import lombok.Getter;
  */
 @Getter
 public enum ResultCodeEnum {
-
     /**
      * 成功
      */
@@ -41,15 +40,6 @@ public enum ResultCodeEnum {
      */
     CHECK_ERROR(10002,"入参校验异常"),
 
-    /**
-     * token 校验失败异常
-     */
-    TOKEN_ERROR(10003,"token校验失败"),
-
-    /**
-     * 访问权限异常
-     */
-    AUTH_ERROR(10004,"访问权限异常"),
 
     /**
      * 系统异常
@@ -66,15 +56,6 @@ public enum ResultCodeEnum {
      */
     SYS_THROTTLING(10007,"系统限流"),
 
-    /**
-     * 系统未授权
-     */
-    SYS_UNAUTHORIZED(10008,"系统未授权"),
-
-    /**
-     * 授权过期
-     */
-    SYS_AUTHORIZED_PAST(10009,"授权过期"),
 
     /**
      * 数据访问异常
@@ -97,7 +78,6 @@ public enum ResultCodeEnum {
      */
     API_SIGN_ERROR(10013,"接口签名不正确"),
 
-
     /**
      * 敏感词汇
      */
@@ -107,7 +87,6 @@ public enum ResultCodeEnum {
      * 参数不正确
      */
     PARAMETER_ERROR(10015,"参数不正确"),
-
 
     /**
      * 数据重复
@@ -119,32 +98,6 @@ public enum ResultCodeEnum {
      * 数据格式检验失败
      */
     VALID_ERROR(2444,"数据格式检验失败"),
-    /**
-     * 用户不存在
-     */
-    USER_EXIST(2445,"用户不存在"),
-
-
-    /**
-     * 用户名或密码有误，请重新输入
-     */
-    USER_LOGIN_REDO(2446,"用户名或密码有误，请重新输入"),
-
-    /**
-     * 密码不一致，请重新输入
-     */
-    PWD_VERIFY(2446,"密码不一致，请重新输入"),
-
-
-    /**
-     * 单点登录失败
-     */
-    CAS_LOGIN_ERROR(2447,"单点登录失败"),
-
-    /**
-     * 数据重复
-     */
-    USER_DISABLED(2448,"您的账户目前是禁用状态，请联系管理员"),
 
     /**
      * 用户不存在

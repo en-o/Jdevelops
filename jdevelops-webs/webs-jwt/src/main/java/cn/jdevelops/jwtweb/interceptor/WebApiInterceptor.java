@@ -1,6 +1,7 @@
 package cn.jdevelops.jwtweb.interceptor;
 
-import cn.jdevelops.exception.exception.BusinessException;
+import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
+import cn.jdevelops.exception.exception.TokenException;
 import cn.jdevelops.result.custom.ExceptionResultWrap;
 import cn.jdevelops.jwt.annotation.ApiMapping;
 import cn.jdevelops.jwt.annotation.NotRefreshToken;
@@ -8,7 +9,6 @@ import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.util.JwtUtil;
 import cn.jdevelops.spi.ExtensionLoader;
 import com.alibaba.fastjson.JSON;
-import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -66,7 +66,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @param method method
      * @param logger logger
      * @return boolean
-     * @throws IOException
+     * @throws IOException Exception
      */
     private boolean check_refresh_token(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -96,7 +96,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
         logger.info("需要验证token,校验结果：{},token:{}", flag,token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(ResultCodeEnum.TOKEN_ERROR.getCode(), "无效的token")));
+            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())));
             return false;
         }
         MDC.put(JwtConstant.TOKEN, token);
@@ -117,7 +117,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
         }
         token = request.getParameter(JwtConstant.TOKEN);
         if(StringUtils.isBlank(token)){
-            throw new BusinessException(ResultCodeEnum.SYS_UNAUTHORIZED);
+            throw new TokenException(TokenExceptionCodeEnum.UNAUTHENTICATED);
         }
         return token;
     }

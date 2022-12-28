@@ -14,10 +14,6 @@ import lombok.Getter;
 @Getter
 public enum UserExceptionEnum {
 
-    /**
-     * 系统未授权
-     */
-    UNAUTHENTICATED(401, "系统未授权"),
 
     /**
      * 登录失效，请重新登录（token不存在）
@@ -29,6 +25,10 @@ public enum UserExceptionEnum {
      */
     USER_EXIST_ERROR(403, "账户或者密码错误，请检查后重试"),
 
+    /**
+     * 用户不存在
+     */
+    USER_EXIST(404,"用户不存在"),
 
     /**
      * 用户密码错误
@@ -64,9 +64,9 @@ public enum UserExceptionEnum {
 
 
     /**
-     * 用户不存在
+     * 密码不一致，请重新输入
      */
-    USER_INEXISTENCE(405, "用户不存在或者请重新登录"),
+    PWD_VERIFY(406,"密码不一致，请重新输入"),
 
     /**
      * 用户正在同步中，请稍后再试或者联系管理员

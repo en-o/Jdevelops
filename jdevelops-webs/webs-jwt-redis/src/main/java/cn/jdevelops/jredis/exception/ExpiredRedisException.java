@@ -1,7 +1,8 @@
 package cn.jdevelops.jredis.exception;
 
+import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
+import cn.jdevelops.enums.result.UserExceptionEnum;
 import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.jredis.enums.RedisExceptionEnum;
 
 /**
  * redis数据失效
@@ -21,7 +22,11 @@ public class ExpiredRedisException extends BusinessException {
         super(message);
     }
 
-    public ExpiredRedisException(RedisExceptionEnum constantEnum) {
+    public ExpiredRedisException(TokenExceptionCodeEnum constantEnum) {
+        super(constantEnum.getCode(), constantEnum.getMessage());
+    }
+
+    public ExpiredRedisException(UserExceptionEnum constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 }
