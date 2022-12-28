@@ -1,6 +1,7 @@
 package cn.jdevelops.exception.handler;
 
 import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ public class ControllerExceptionHandler {
     public Object exceptionHandler(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
+        return ExceptionResultWrap.error(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
 
 
@@ -85,7 +86,7 @@ public class ControllerExceptionHandler {
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(ResultCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
+        return ExceptionResultWrap.error(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
     }
 
 
