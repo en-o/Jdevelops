@@ -76,6 +76,8 @@
         <module>jdevelops-spi</module>
         <!-- 文件下载服务 -->
         <module>jdevelops-file</module>
+        <!-- 延时队列 -->
+        <module>Jdevelops-delay</module>
     </modules>
 
     <properties>
