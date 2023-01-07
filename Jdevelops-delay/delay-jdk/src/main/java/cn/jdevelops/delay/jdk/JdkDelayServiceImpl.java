@@ -1,10 +1,14 @@
 package cn.jdevelops.delay.jdk;
 
 import cn.jdevelops.delay.constant.DelayQueueConstant;
+import cn.jdevelops.delay.core.factory.DelayFactory;
+import cn.jdevelops.delay.core.service.DelayService;
+import cn.jdevelops.delay.task.DelayTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -18,10 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2023-01-05 16:34
  */
 @Service
-public class DelayServiceImpl implements  DelayService {
+public class JdkDelayServiceImpl implements DelayService<DelayTask> {
 
-    private static final Logger logger = LoggerFactory.getLogger(DelayServiceImpl.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(JdkDelayServiceImpl.class);
     /**
      * 线程池
      */
@@ -29,6 +32,9 @@ public class DelayServiceImpl implements  DelayService {
     private final AtomicInteger seq = new AtomicInteger(1);
     private final ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1, r ->
             new Thread(r, NAME + seq.getAndIncrement()));
+
+    @Resource
+    private DelayFactory<DelayTask> delayRunFactory;
 
     @Override
     public void produce(DelayTask delayMessage) {
@@ -43,7 +49,7 @@ public class DelayServiceImpl implements  DelayService {
     }
 
     @Override
-    public void consumeDelay() throws InterruptedException {
+    public void consumeDelay() {
         // IllegalArgumentException 的话 initialDelay = 1， period = 1 直接写死
         // 初始化
         long initialDelay =Math.round(Math.random()*10+10);
@@ -53,12 +59,12 @@ public class DelayServiceImpl implements  DelayService {
         pool.scheduleAtFixedRate(()->{
             try {
                 DelayQueue<DelayTask> queue  = DelayQueueConstant.DELAY_QUEUE;
-                if (queue.size()>0){
+                if (!queue.isEmpty()){
                     DelayTask delayTask = queue.take();
-                    logger.info("定时任务开始执行: getBody:{},channel:{}",delayTask.getBody(),delayTask.getChannel());
+                    delayRunFactory.delayExecute(delayTask);
                 }
-            }catch (Throwable e){
-                logger.error("RemindMessageTask error..",e);
+            }catch (Exception e){
+                logger.error("execute function error..",e);
             }
         }, initialDelay,period, TimeUnit.SECONDS);
     }

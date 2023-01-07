@@ -8,9 +8,8 @@
         <artifactId>jdevelops-delay</artifactId>
         <version>2.0.6</version>
     </parent>
-
-    <artifactId>delay-jdk</artifactId>
     <packaging>jar</packaging>
+    <artifactId>delay-core</artifactId>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -19,9 +18,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>delay-core</artifactId>
-            <version>${jdevelops.last.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <!-- 引用时自己依赖吧，必须要 -->
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

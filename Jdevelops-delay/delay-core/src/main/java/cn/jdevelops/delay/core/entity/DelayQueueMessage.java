@@ -1,25 +1,18 @@
-package cn.jdevelops.delay.jdk;
+package cn.jdevelops.delay.core.entity;
 
-
-import cn.jdevelops.delay.util.Md5Util;
-
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
+import cn.jdevelops.delay.core.util.Md5Util;
 
 /**
- * 延时队列 task
- *  重写 Delayed
- *  优点： 效率高，低延迟
- *  缺点： 宕机丢失（可以存数据库），不利于集群扩展
+ * 延时消息
+ *
  * @author tnnn
  * @version V1.0
- * @date 2023-01-03 15:24
+ * @date 2023-01-07 22:53
  */
-
-public class DelayTask implements Delayed {
+public class DelayQueueMessage {
 
     /**
-     * 消息唯一标识 （body md5）
+     * 消息唯一标识 （body md5（基本不用自己填写）
      */
     private String id;
 
@@ -31,6 +24,7 @@ public class DelayTask implements Delayed {
 
     /**
      * 消息类型： 自定义， e.g. pay,notification,changeStatus
+     * 必填
      */
     private String channel;
 
@@ -42,16 +36,17 @@ public class DelayTask implements Delayed {
 
 
     /**
-     * 延时时间 人看的
+     * 延时时间 人看的 爱填不填
      */
     private String delayTimeStr;
 
     /**
-     * 备注
+     * 备注  爱填不填
      */
     private String desc;
 
-    public DelayTask() {
+
+    public DelayQueueMessage() {
     }
 
     /**
@@ -62,7 +57,7 @@ public class DelayTask implements Delayed {
      * @param delayTimeStr 延时时间 人看的 = 延时时间的字符串时间格式
      * @param desc 备注可为空
      */
-    public DelayTask(String body, String channel, Long delayTime, String delayTimeStr, String desc) {
+    public DelayQueueMessage(String body, String channel, Long delayTime, String delayTimeStr, String desc) {
         this.id =  Md5Util.getSha256StrJava(body);
         this.body = body;
         this.channel = channel;
@@ -71,23 +66,10 @@ public class DelayTask implements Delayed {
         this.desc = desc;
     }
 
-    @Override
-    public long getDelay(TimeUnit unit) {
-        // < 0 便执行
-        return delayTime-System.currentTimeMillis();
-    }
-
-    @Override
-    public int compareTo( Delayed o) {
-        // 实现 比对方法
-        DelayTask delayTask = (DelayTask)o;
-        return delayTime - delayTask.getDelayTime() <= 0 ?-1:1;
-    }
-
 
     @Override
     public String toString() {
-        return "DelayTask{" +
+        return "DelayQueueMessage{" +
                 "id='" + id + '\'' +
                 ", body='" + body + '\'' +
                 ", channel='" + channel + '\'' +

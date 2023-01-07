@@ -1,6 +1,6 @@
 package cn.jdevelops.delay.constant;
 
-import cn.jdevelops.delay.jdk.DelayTask;
+import cn.jdevelops.delay.task.DelayTask;
 
 import java.util.concurrent.DelayQueue;
 

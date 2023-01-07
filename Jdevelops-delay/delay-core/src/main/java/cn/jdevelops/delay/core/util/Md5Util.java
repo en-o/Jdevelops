@@ -1,4 +1,4 @@
-package cn.jdevelops.delay.util;
+package cn.jdevelops.delay.core.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

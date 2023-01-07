@@ -9,9 +9,11 @@
         <version>2.0.6</version>
     </parent>
 
-    <artifactId>Jdevelops-delay</artifactId>
+    <artifactId>jdevelops-delay</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <!-- 延时公共类 -->
+        <module>delay-core</module>
         <!--jdk延时队列-->
         <module>delay-jdk</module>
     </modules>

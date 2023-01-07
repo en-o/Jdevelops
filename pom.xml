@@ -77,7 +77,7 @@
         <!-- 文件下载服务 -->
         <module>jdevelops-file</module>
         <!-- 延时队列 -->
-        <module>Jdevelops-delay</module>
+        <module>jdevelops-delay</module>
     </modules>
 
     <properties>
