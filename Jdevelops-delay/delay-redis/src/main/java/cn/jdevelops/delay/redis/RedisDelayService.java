@@ -54,6 +54,9 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
      */
     private static final String NAME = "RedisDelayMessageTask-thread-";
     private final AtomicInteger seq = new AtomicInteger(1);
+    /**
+     * 参考 <a href="https://tobebetterjavaer.com/thread/ScheduledThreadPoolExecutor.html#schedule">...</a>
+     */
     private final ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1, r ->
             new Thread(r, NAME + seq.getAndIncrement()));
 
@@ -78,11 +81,12 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
     @Override
     public void consumeDelay() {
         // IllegalArgumentException 的话 initialDelay = 1， period = 1 直接写死
-        // 初始化
         long initialDelay =Math.round(Math.random()*10+10);
-        // 周期 周期小于或等于零时会抛异常
-        long period = Math.round(Math.random()*10);
-        logger.info("开始消费延时队列数据...");
+        long periodRound = Math.round(Math.random() * 10);
+        long period = periodRound==0?1:periodRound;
+        logger.info("开始消费redis延时队列数据...");
+        // 在initialDelay时长后第一次执行任务，以后每隔period时长，再次执行任务
+        // 注意，固定速率和固定时延，传入的参数都是Runnable，也就是说这种定时任务是没有返回值的
         pool.scheduleAtFixedRate(()->{
             try {
                 Set<String> set = runLuaScript(DELAY_QUEUE);
