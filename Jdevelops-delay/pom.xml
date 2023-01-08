@@ -16,6 +16,8 @@
         <module>delay-core</module>
         <!--jdk延时队列-->
         <module>delay-jdk</module>
+        <!-- redis实现延时队列 -->
+        <module>delay-redis</module>
     </modules>
 
     <properties>
