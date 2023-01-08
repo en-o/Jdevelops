@@ -41,6 +41,7 @@ public class JdkDelayService implements DelayService<DelayTask> {
 
     @Override
     public void produce(DelayTask delayMessage) {
+        // 无法去重，管他的，执行方法时在sql语句加上添加吧
         DelayQueueConstant.DELAY_QUEUE.put(delayMessage);
     }
 
@@ -48,7 +49,7 @@ public class JdkDelayService implements DelayService<DelayTask> {
     public void produce(List<DelayTask> delayMessage) {
         // 定义一个延时队列
         DelayQueue<DelayTask> queue = DelayQueueConstant.DELAY_QUEUE;
-        // todo 存在且相等的不在加入队列
+        // 无法去重，管他的，执行方法时在sql语句加上添加吧
         delayMessage.forEach(queue::put);
     }
 
