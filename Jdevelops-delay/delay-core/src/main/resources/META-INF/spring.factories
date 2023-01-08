@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.delay.core.factory.DelayFactory
+  cn.jdevelops.delay.core.scan.EnableAutoScanDelayCore
