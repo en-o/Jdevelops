@@ -40,7 +40,7 @@ public  class EnableAutoRedisDelay {
     @ConditionalOnMissingBean(name = "delayService")
     @Bean
     public DelayService<DelayQueueMessage> delayService() {
-        return new RedisDelayServiceImpl();
+        return new RedisDelayService();
     }
 
 }

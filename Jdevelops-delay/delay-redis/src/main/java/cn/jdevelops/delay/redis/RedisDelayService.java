@@ -27,9 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2023-01-05 16:34
  */
 @Service
-public class RedisDelayServiceImpl implements DelayService<DelayQueueMessage> {
+public class RedisDelayService implements DelayService<DelayQueueMessage> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisDelayServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisDelayService.class);
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
