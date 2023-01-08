@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.delay.jdk.JdkDelayServiceImpl
+  cn.jdevelops.delay.jdk.JdkDelayService

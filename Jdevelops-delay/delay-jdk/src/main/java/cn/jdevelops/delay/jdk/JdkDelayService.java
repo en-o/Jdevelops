@@ -16,15 +16,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * jdk延时队列
+ * jdk延时队列执行方法
  * @author tnnn
  * @version V1.0
  * @date 2023-01-05 16:34
  */
 @Service
-public class JdkDelayServiceImpl implements DelayService<DelayTask> {
+public class JdkDelayService implements DelayService<DelayTask> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JdkDelayServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdkDelayService.class);
     /**
      * 线程池
      */
@@ -33,8 +33,11 @@ public class JdkDelayServiceImpl implements DelayService<DelayTask> {
     private final ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1, r ->
             new Thread(r, NAME + seq.getAndIncrement()));
 
+    /**
+     * 执行工厂
+     */
     @Resource
-    private DelayFactory<DelayTask> delayRunFactory;
+    DelayFactory<DelayTask>  delayRunFactory;
 
     @Override
     public void produce(DelayTask delayMessage) {
