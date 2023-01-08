@@ -45,6 +45,7 @@ public class JdkDelayServiceImpl implements DelayService<DelayTask> {
     public void produce(List<DelayTask> delayMessage) {
         // 定义一个延时队列
         DelayQueue<DelayTask> queue = DelayQueueConstant.DELAY_QUEUE;
+        // todo 存在且相等的不在加入队列
         delayMessage.forEach(task ->  queue.put(task));
     }
 
