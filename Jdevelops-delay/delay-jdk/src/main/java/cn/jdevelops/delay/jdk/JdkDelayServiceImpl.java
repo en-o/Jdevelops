@@ -28,7 +28,7 @@ public class JdkDelayServiceImpl implements DelayService<DelayTask> {
     /**
      * 线程池
      */
-    private static final String NAME = "RemindMessageTask-thread-";
+    private static final String NAME = "JdkDelayMessageTask-thread-";
     private final AtomicInteger seq = new AtomicInteger(1);
     private final ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1, r ->
             new Thread(r, NAME + seq.getAndIncrement()));
@@ -46,7 +46,7 @@ public class JdkDelayServiceImpl implements DelayService<DelayTask> {
         // 定义一个延时队列
         DelayQueue<DelayTask> queue = DelayQueueConstant.DELAY_QUEUE;
         // todo 存在且相等的不在加入队列
-        delayMessage.forEach(task ->  queue.put(task));
+        delayMessage.forEach(queue::put);
     }
 
     @Override
