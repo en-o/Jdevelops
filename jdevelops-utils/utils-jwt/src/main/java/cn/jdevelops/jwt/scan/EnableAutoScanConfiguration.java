@@ -15,19 +15,19 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnWebApplication
 public class EnableAutoScanConfiguration {
 
-    @ConditionalOnMissingBean(ContextUtil.class)
+    @ConditionalOnMissingBean(name = "contextUtil")
     @Bean
     public ContextUtil contextUtil(){
         return new ContextUtil();
     }
 
-    @ConditionalOnMissingBean(InterceptorBean.class)
+    @ConditionalOnMissingBean(name = "interceptorBean")
     @Bean
     public InterceptorBean interceptorBean(){
         return new InterceptorBean();
     }
 
-    @ConditionalOnMissingBean(JwtBean.class)
+    @ConditionalOnMissingBean(name = "jwtBean")
     @Bean
     public JwtBean jwtBean(){
         return new JwtBean();
