@@ -5,6 +5,7 @@ import cn.jdevelops.file.bean.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 文件接口类
@@ -23,6 +24,16 @@ public interface OssOperateAPI {
      * @throws Exception exception
      */
     FilePathResult uploadFile(@Valid UploadDTO uploaded) throws Exception;
+
+
+    /**
+     * 上传文件
+     *
+     * @param uploaded params
+     * @return cn.jdevelops.file.FilePathVO
+     * @throws Exception exception
+     */
+    List<FilePathResult> uploadFile(@Valid UploadsDTO uploaded) throws Exception;
 
     /**
      * 文件下载

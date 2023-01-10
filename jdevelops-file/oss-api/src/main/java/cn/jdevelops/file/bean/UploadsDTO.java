@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * 文件上传入参
@@ -14,7 +15,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @ToString
-public class UploadDTO extends UploadFileInfo{
+public class UploadsDTO {
 
 	/**
 	 * 桶名称(最少1个字符，最大63个）
@@ -32,4 +33,8 @@ public class UploadDTO extends UploadFileInfo{
 	 */
 	String childFolder;
 
+	/**
+	 * 多个文件批量上传
+	 */
+	List<UploadFileInfo> files;
 }
