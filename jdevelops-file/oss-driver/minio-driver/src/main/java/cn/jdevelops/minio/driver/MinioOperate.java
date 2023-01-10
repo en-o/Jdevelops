@@ -2,9 +2,13 @@ package cn.jdevelops.minio.driver;
 
 import cn.jdevelops.file.*;
 import cn.jdevelops.file.bean.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * minio
@@ -15,12 +19,31 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MinioOperate implements OssOperateAPI {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MinioOperate.class);
     @Autowired
     private OperateFileUtil operateFileUtil;
 
     @Override
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
         return operateFileUtil.uploadFile(uploaded.getFile(), uploaded.getFileName(), uploaded.getBucket(), uploaded.getChildFolder());
+    }
+
+    @Override
+    public List<FilePathResult> uploadFile(UploadsDTO uploaded) throws Exception {
+        ArrayList<FilePathResult> results = new ArrayList<>();
+        uploaded.getFiles().forEach(file -> {
+            try {
+                UploadDTO uploadDTO = new UploadDTO();
+                uploadDTO.setFile(file.getFile());
+                uploadDTO.setFileName(file.getFileName());
+                uploadDTO.setBucket(uploaded.getBucket());
+                uploadDTO.setChildFolder(uploaded.getChildFolder());
+                results.add(uploadFile(uploadDTO));
+            }catch (Exception e){
+                LOG.error("批量上传有数据报错，可忽略",e);
+            }
+        });
+        return results;
     }
 
 
