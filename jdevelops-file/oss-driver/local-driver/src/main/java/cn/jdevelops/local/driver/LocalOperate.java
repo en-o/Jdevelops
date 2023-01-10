@@ -18,7 +18,9 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static cn.jdevelops.file.util.StrUtil.notBlank;
 
@@ -57,7 +59,7 @@ public class LocalOperate implements OssOperateAPI {
         }else {
             freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
         }
-        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + uploaded.getChildFolder()
+        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR +(Objects.isNull(uploaded.getChildFolder())?"":uploaded.getChildFolder())
                 + OSSConstants.PATH_SEPARATOR +freshName;
         File dest = new File(ossConfig.getLocal()
                 .getUploadDir() + OSSConstants.PATH_SEPARATOR + relativePath);
@@ -78,6 +80,24 @@ public class LocalOperate implements OssOperateAPI {
                 .freshName(freshName)
                 .originalName(originalName)
                 .build();
+    }
+
+    @Override
+    public List<FilePathResult> uploadFile(UploadsDTO uploaded) throws Exception {
+        ArrayList<FilePathResult> results = new ArrayList<>();
+        uploaded.getFiles().forEach(file -> {
+            try {
+                UploadDTO uploadDTO = new UploadDTO();
+                uploadDTO.setFile(file.getFile());
+                uploadDTO.setFileName(file.getFileName());
+                uploadDTO.setBucket(uploaded.getBucket());
+                uploadDTO.setChildFolder(uploaded.getChildFolder());
+                results.add(uploadFile(uploadDTO));
+            }catch (Exception e){
+                LOG.error("批量上传有数据报错，可忽略",e);
+            }
+        });
+        return results;
     }
 
 
