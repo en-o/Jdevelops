@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,6 +72,24 @@ public class QiniuOperate implements OssOperateAPI {
                 .originalName(originalName)
                 .relativePath(ossConfig.getBrowseUrl()+"/"+updateFile).build();
 
+    }
+
+    @Override
+    public List<FilePathResult> uploadFile(UploadsDTO uploaded) throws Exception {
+        ArrayList<FilePathResult> results = new ArrayList<>();
+        uploaded.getFiles().forEach(file -> {
+            try {
+                UploadDTO uploadDTO = new UploadDTO();
+                uploadDTO.setFile(file.getFile());
+                uploadDTO.setFileName(file.getFileName());
+                uploadDTO.setBucket(uploaded.getBucket());
+                uploadDTO.setChildFolder(uploaded.getChildFolder());
+                results.add(uploadFile(uploadDTO));
+            }catch (Exception e){
+                LOG.error("批量上传有数据报错，可忽略",e);
+            }
+        });
+        return results;
     }
 
     @Override
