@@ -127,6 +127,13 @@ public class ControllerExceptionHandler {
         return ExceptionResultWrap.error(e);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public Object handleRuntimeException(RuntimeException e) {
+        log.error(e.getMessage(), e);
+        response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
+        return ExceptionResultWrap.error(e);
+    }
+
 
     @ExceptionHandler(BindException.class)
     public Object bindException(BindException e) {
