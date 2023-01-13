@@ -79,6 +79,20 @@ public class JPageUtil {
                 getSv2S(sortVO));
     }
 
+    /**
+     * 获取分页 Pageable
+     *
+     * @param pageVO 分页
+     * @param sort 排序Sort
+     * @return Pageable
+     */
+    public static Pageable getPageable(PageVO pageVO, Sort sort) {
+        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+        return PageRequest.of(pageVoDef.getPageIndex(),
+                pageVoDef.getPageSize(),
+                sort);
+    }
+
 
     /**
      * 获取分页 Pageable
