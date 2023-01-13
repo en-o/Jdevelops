@@ -38,8 +38,9 @@ public class BeanCopyUtil {
 	}
 
 	/**
-	 * 特殊方法(按常理参数为"",是表示为需要将值置为"",这个方法是针对特殊时候,如前端不想做空不传的判断
 	 * 同上 beanCopy 但是这个可以忽略 value = "" 的key
+	 *
+	 * 特殊方法(按常理参数为"",是表示为需要将值置为"",这个方法是针对特殊时候,如前端传了“”，但是不想数据被置为“”时
 	 */
 	@SuppressWarnings("AlibabaRemoveCommentedCode")
 	public static <T> void beanCopyEmpty(T source, T target) {
