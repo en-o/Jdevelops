@@ -41,9 +41,10 @@ public class J2ServiceImpl<M extends JpaBasicsDao<T, D>, T extends SerializableV
     @Autowired
     private M commonDao;
 
+
     @Override
     public M getJpaBasicsDao() {
-        return this.commonDao;
+        return  commonDao;
     }
 
     @Override

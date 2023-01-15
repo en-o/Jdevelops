@@ -20,10 +20,11 @@ import java.util.List;
 public interface J2Service<T> {
 
     /**
-     * getJpaBasicsDao
-     * @return JpaBasicsDao
+     * 获取 dao
+     * @return dao
+     * @param <M> dao
      */
-    JpaBasicsDao<T,?> getJpaBasicsDao();
+     <M extends JpaBasicsDao<T,?>> M getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体
