@@ -317,6 +317,8 @@ public class OperateFileUtil {
 		//setContentType 设置发送到客户机的响应的内容类型
 		response.setContentType(statObjectResponse.contentType());
 		//设置响应头
+		//设置响应头
+		response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
 		response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(statObjectResponse.object(), "UTF-8"));
 		//文件流
 		InputStream inputStream = getObject(bucket, objectName);

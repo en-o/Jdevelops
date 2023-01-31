@@ -109,6 +109,7 @@ public class QiniuOperate implements OssOperateAPI {
             response.setContentType(UrlUtil.getContentType(downloadRUL) + ";charset=utf-8");
             //setContentType 设置发送到客户机的响应的内容类型
             //设置响应头
+            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
             response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
             //设置文件大小
             response.setHeader("Content-Length", String.valueOf(url.openConnection().getContentLength()));
