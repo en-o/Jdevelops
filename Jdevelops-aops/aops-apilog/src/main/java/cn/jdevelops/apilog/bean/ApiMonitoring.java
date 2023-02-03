@@ -31,7 +31,7 @@ public class ApiMonitoring {
     /** 出参 */
     private String outParams;
 
-    /**接口名*/
+    /**调用时间*/
     private String callTime;
 
     /**

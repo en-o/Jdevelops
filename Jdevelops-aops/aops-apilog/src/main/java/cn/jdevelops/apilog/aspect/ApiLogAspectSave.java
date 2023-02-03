@@ -9,6 +9,7 @@ import cn.jdevelops.apilog.server.ApiLogSave;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -55,6 +56,42 @@ public class ApiLogAspectSave {
      */
     @Pointcut("@annotation(cn.jdevelops.apilog.annotation.ApiLog)")
     public void apiLog() {
+    }
+
+
+    /**
+     * 异常通知
+     */
+    @AfterThrowing(value = "apiLog()", throwing = "ex")
+    public void doAfterThrowing(JoinPoint jp, Exception ex) {
+        //保存日志
+        ApiMonitoring apiLog = new ApiMonitoring();
+        //从切面织入点处通过反射机制获取织入点处的方法
+        MethodSignature signature = (MethodSignature) jp.getSignature();
+        //获取切入点所在的方法
+        Method method = signature.getMethod();
+        /*key*/
+        ApiLog myLog = method.getAnnotation(ApiLog.class);
+        if (myLog != null) {
+            Object apiKey = AopReasolver.newInstance().resolver(jp, myLog.apiKey());
+            apiLog.setApiKey(apiKey+ "");
+        }
+        /*接口名*/
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String requestUri = (request).getRequestURI();
+        apiLog.setApiName(requestUri);
+        /* outParams and  status  */
+        apiLog.setStatus("false");
+        apiLog.setOutParams("接口调用出错");
+        /* callTime 调用时间  */
+        apiLog.setCallTime(DateTime.now().toString(DEFAULT_FORMAT_DATETIME));
+        /* callTime 调用时间  */
+        /*inParams    输入 */
+        apiLog.setInParams("");
+        /*inParams    输入 */
+        apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
+        apiLogSave.saveLog(apiLog);
     }
 
     /**
@@ -119,13 +156,12 @@ public class ApiLogAspectSave {
             String params = JsonUtils.toJson(args);
             apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
         }catch (Exception e){
-            apiLog.setInParams(null);
+            apiLog.setInParams("");
         }
         /*inParams    输入 */
         apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
         apiLogSave.saveLog(apiLog);
     }
-
 
 
 
