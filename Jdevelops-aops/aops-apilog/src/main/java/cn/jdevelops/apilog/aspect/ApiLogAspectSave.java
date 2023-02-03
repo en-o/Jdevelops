@@ -80,7 +80,11 @@ public class ApiLogAspectSave {
                     apiLog.setStatus("true");
                 } else {
                     Map<String, Object> beanToMap = beanToMap(rvt);
-                    apiLog.setStatus(beanToMap.get("success") + "");
+                    if(beanToMap.get("code").equals(200)){
+                        apiLog.setStatus("true");
+                    }else{
+                        apiLog.setStatus("false");
+                    }
                 }
                 apiLog.setOutParams(JsonUtils.toJson(rvt));
 
