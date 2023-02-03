@@ -20,12 +20,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.jdevelops.aops.CommonConstant.DEFAULT_FORMAT_DATETIME;
 
@@ -153,7 +151,14 @@ public class ApiLogAspectSave {
         Object[] args = joinPoint.getArgs();
         //将参数所在的数组转换成json
         try {
-            String params = JsonUtils.toJson(args);
+            List<Object> argObjects = Arrays.stream(args).filter(s -> {
+                if(s instanceof HttpServletRequest
+                        || s instanceof HttpServletResponse){
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
+            String params = JsonUtils.toJson(argObjects);
             apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
         }catch (Exception e){
             apiLog.setInParams("");
