@@ -151,13 +151,8 @@ public class ApiLogAspectSave {
         Object[] args = joinPoint.getArgs();
         //将参数所在的数组转换成json
         try {
-            List<Object> argObjects = Arrays.stream(args).filter(s -> {
-                if(s instanceof HttpServletRequest
-                        || s instanceof HttpServletResponse){
-                    return false;
-                }
-                return true;
-            }).collect(Collectors.toList());
+            List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
+                    && !(s instanceof HttpServletResponse)).collect(Collectors.toList());
             String params = JsonUtils.toJson(argObjects);
             apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
         }catch (Exception e){
