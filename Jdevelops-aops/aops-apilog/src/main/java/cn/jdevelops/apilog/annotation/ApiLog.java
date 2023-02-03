@@ -16,10 +16,17 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ApiLog {
+
     /**
      * 调用方 key
      * @return String
      */
     String apiKey() default "";
+
+    /**
+     * 接口名中文名
+     * @return String
+     */
+    String chineseApi() default "";
 
 }

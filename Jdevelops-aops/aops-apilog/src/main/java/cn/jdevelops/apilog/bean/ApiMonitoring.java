@@ -16,8 +16,11 @@ import lombok.*;
 @ToString
 public class ApiMonitoring {
 
-    /** 接口名 */
+    /** 接口地址 */
     private String apiName;
+
+    /** 接口名 */
+    private String chineseApi;
 
     /** 调用方key */
     private String apiKey;

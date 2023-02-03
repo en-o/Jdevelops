@@ -73,6 +73,7 @@ public class ApiLogAspectSave {
         if (myLog != null) {
             Object apiKey = AopReasolver.newInstance().resolver(jp, myLog.apiKey());
             apiLog.setApiKey(apiKey+ "");
+            apiLog.setChineseApi(myLog.chineseApi());
         }
         /*接口名*/
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -139,6 +140,7 @@ public class ApiLogAspectSave {
             Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
             appKeyError = Objects.nonNull(rvt) ? apiKey + "" : "";
             apiLog.setApiKey(appKeyError);
+            apiLog.setChineseApi(myLog.chineseApi());
         }
 
         /* callTime 调用时间  */
