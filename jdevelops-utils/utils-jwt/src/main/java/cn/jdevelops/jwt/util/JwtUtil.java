@@ -215,6 +215,9 @@ public class JwtUtil {
     public static String getSubject(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
+            if(Objects.isNull(jwt.getSubject())){
+                throw new JWTDecodeException("token是非法的");
+            }
             return jwt.getSubject();
         }catch (JWTDecodeException e){
             e.printStackTrace();
