@@ -2,6 +2,7 @@ package cn.jdevelops.jap.page;
 
 
 import cn.jdevelops.entity.basics.vo.SerializableVO;
+import cn.jdevelops.result.response.PageVO;
 import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +44,17 @@ public class ResourceJpaPage<T> implements Serializable {
 		this.totalPages = rows.getTotalPages();
 		this.total = rows.getTotalElements();
 		this.rows = rows.getContent();
+	}
+
+	/**
+	 * 返回空对象
+	 */
+	public <S extends SerializableVO> ResourceJpaPage( PageVO page) {
+		this.currentPage = page.getPageIndex();
+		this.pageSize = page.getPageSize();
+		this.totalPages = 0;
+		this.total = 0L;
+		this.rows = Collections.emptyList();
 	}
 
 	public <S extends SerializableVO> ResourceJpaPage(Page<S> rows, Class<T> clazz) {
