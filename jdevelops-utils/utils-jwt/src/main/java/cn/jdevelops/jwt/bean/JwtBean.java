@@ -29,7 +29,7 @@ public class JwtBean {
 
 
     /**
-     * 全局
+     * jwt token时间
      * 默认  过期时间为一天 (24*60*60*1000) 单位 毫秒
      */
     private long expireTime = 86400000;
@@ -38,7 +38,7 @@ public class JwtBean {
 
 
     /**
-     * 登录用户
+     * token redis 时间
      * 默认  过期时间为一天 (24*60*60*1000) 单位 毫秒
      *
      */

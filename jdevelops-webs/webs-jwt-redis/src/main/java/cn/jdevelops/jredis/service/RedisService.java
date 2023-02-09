@@ -1,9 +1,9 @@
 package cn.jdevelops.jredis.service;
 
 
+import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.jredis.entity.RedisAccount;
-import cn.jdevelops.jredis.exception.ExpiredRedisException;
+import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public interface RedisService {
      * @param subject 用户唯一值(一般用用户的登录名
      * @throws ExpiredRedisException redis异常
      */
-    void verifyUserStatus(String subject) throws ExpiredRedisException;
+    <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException;
 
 
     /**
@@ -90,7 +90,7 @@ public interface RedisService {
      *
      * @param account 用户
      */
-    <T> void storageUserStatus(RedisAccount<T> account);
+    <RB extends BasicsAccount> void storageUserStatus(RB account);
 
     /**
      * 加载用户的状态
@@ -99,7 +99,7 @@ public interface RedisService {
      * @param subject 用户唯一值(一般用用户的登录名
      * @return RedisAccount
      */
-    <T> RedisAccount<T> loadUserStatus(String subject);
+    <RB extends BasicsAccount> RB loadUserStatus(String subject);
 
 
     /**

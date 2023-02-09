@@ -1,7 +1,10 @@
 package cn.jdevelops.jwt.util;
 
 import cn.jdevelops.jwt.bean.JwtBean;
+import cn.jdevelops.jwt.bean.SignEntity;
+import cn.jdevelops.jwt.bean.SignInit;
 import cn.jdevelops.jwt.constant.JwtConstant;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -15,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
+import java.awt.List;
 import java.util.*;
 
 import static cn.jdevelops.enums.result.TokenExceptionCodeEnum.TOKEN_ERROR;
@@ -33,125 +37,121 @@ public class JwtUtil {
     private static final String JWT_BEAN_STR = "jwtBean";
 
 
+
+    public static SignInit init(){
+        JwtBean jwtBean = ContextUtil.getBean(JwtBean.class);
+        return new SignInit(jwtBean);
+    }
+    public static SignInit init(long expireTime){
+        JwtBean jwtBean = ContextUtil.getBean(JwtBean.class);
+        return new SignInit(jwtBean, expireTime);
+    }
+
+
+
     /**
      * 生成签名
-     * @param loginName 登录名  用户唯一凭证
-     * @return 签名
+     * 最建议使用的sign方法
+     * @param signData SignEntity sign数据
+     * @return token（签名）
      */
-    public static String sign(String loginName){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
-        //过期时间
-        Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-        return JWT.create().withHeader(header)
-                .withClaim(JwtConstant.TOKEN_KEY,loginName)
-                .withSubject(loginName)
-                .withExpiresAt(date)
-                .sign(algorithm);
+    public static String sign(SignEntity signData){
+
+        SignInit init = init();
+        // jwt
+        JWTCreator.Builder builder = JWT.create();
+        //jwt header
+        builder.withHeader(init.getHeader());
+        // 用户自定义字段
+        builder.withClaim(JwtConstant.TOKEN_KEY, signData.getSubject());
+        if (Objects.nonNull(signData.getMap())) {
+            Iterator<String> iterator = signData.getMap().keySet().iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                Object value = signData.getMap().get(key);
+                if(value instanceof Map || value instanceof List){
+                    String mapJson = JSON.toJSONString(value);
+                    builder.withClaim(key, mapJson);
+                }else {
+                    builder.withClaim(key, value+"");
+                }
+            }
+        }
+        // 签发时间
+        builder.withIssuedAt(new Date());
+        // 过期时间
+        builder.withExpiresAt(init.getDate());
+        // 发行人
+        builder.withIssuer(signData.getIssuer());
+        // 主题
+        builder.withSubject(signData.getSubject());
+        // 编号/版本
+        builder.withJWTId(UUID.randomUUID().toString());
+        // 生成token
+        return builder.sign(init.getAlgorithm());
     }
 
     /**
      * 生成签名
-     * @param loginName 登录名  用户唯一凭证
+     * subject= loginName
+     * Claim.loginName = loginName
+     * @param loginName   用户唯一凭证
+     * @return 签名
+     */
+    public static String sign(String loginName){
+        SignInit init = init();
+        return JWT.create().withHeader(init.getHeader())
+                .withClaim(JwtConstant.TOKEN_KEY,loginName)
+                .withSubject(loginName)
+                .withExpiresAt(init.getDate())
+                .sign(init.getAlgorithm());
+    }
+
+    /**
+     * 生成签名
+     * subject= loginName
+     * Claim.loginName = loginName
+     * Claim.remark = remark
+     * @param loginName  用户唯一凭证
      * @param remark 其余数据
      * @return 签名
      */
     public static String sign(String loginName, JSONObject remark){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
-        //过期时间
-        Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
+        SignInit init = init();
         //附带username和userID生成签名
-        return JWT.create().withHeader(header)
+        return JWT.create().withHeader(init.getHeader())
                 .withClaim(JwtConstant.TOKEN_KEY,loginName)
                 .withSubject(loginName)
                 .withClaim(JwtConstant.TOKEN_REMARK, remark==null?"":remark.toJSONString())
-                .withExpiresAt(date)
-                .sign(algorithm);
+                .withExpiresAt(init.getDate())
+                .sign(init.getAlgorithm());
     }
 
 
 
     /**
      * 生成签名 - 接口传过期时间
-     * @param loginName 登录名  用户唯一凭证
+     * subject= loginName
+     * Claim.loginName = loginName
+     * Claim.remark = remark
+     * @param loginName  用户唯一凭证
      * @param remark 其余数据
      * @param expireTime 过期时间/毫秒
      * @return 签名
      */
     public static String sign(String loginName, JSONObject remark, long expireTime){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
-        //过期时间
-        Date date = new Date(expireTime);
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
+        SignInit init = init(expireTime);
         //附带username和userID生成签名
-        return JWT.create().withHeader(header)
+        return JWT.create().withHeader(init.getHeader())
                 .withClaim(JwtConstant.TOKEN_KEY,loginName)
                 .withSubject(loginName)
                 .withClaim(JwtConstant.TOKEN_REMARK,remark==null?"":remark.toJSONString())
-                .withExpiresAt(date)
-                .sign(algorithm);
+                .withExpiresAt(init.getDate())
+                .sign(init.getAlgorithm());
     }
 
 
-    /**
-     * 生成签名
-     * @param loginName 登录名  用户唯一凭证
-     * @param map 其余数据
-     * @return 签名
-     */
-    public static String sign(String loginName, Map<String, Object> map){
-        JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
-        //过期时间
-        Date date = new Date(System.currentTimeMillis() + jwtBean.getExpireTime());
-        //私钥及加密算法
-        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-        //设置头信息
-        HashMap<String, Object> header = new HashMap<>(2);
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-        // jwt
-        JWTCreator.Builder builder = JWT.create();
 
-        //jwt header
-        builder.withHeader(header);
-        // 用户自定义字段
-        builder.withClaim(JwtConstant.TOKEN_KEY,loginName);
-        if(map!=null){
-            Iterator<String> iterator = map.keySet().iterator();
-            while(iterator.hasNext()){
-                String key = iterator.next();
-                builder.withClaim(key,map.get(key)+"");
-            }
-        }
-        // 签发时间
-        builder.withIssuedAt(new Date());
-        // 过期时间
-        builder.withExpiresAt(date);
-        // 发行人
-        builder.withIssuer("jdevelops");
-        // 主题
-        builder.withSubject(loginName);
-        // 编号/版本
-        builder.withJWTId(UUID.randomUUID().toString());
-        // 生成token
-        return builder.sign(algorithm);
-    }
 
 
     /**
@@ -161,16 +161,24 @@ public class JwtUtil {
      */
     public static boolean verity(String token){
         try {
-            JwtBean jwtBean = (JwtBean) ContextUtil.getBean(JWT_BEAN_STR);
-            Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
-            JWTVerifier verifier = JWT.require(algorithm).build();
-            verifier.verify(token);
+            verityForDecodedJWT(token);
             return true;
         }catch (Exception e){
             logger.error("token过期");
             return false;
         }
+    }
 
+    /**
+     * token  验证token是否过期
+     * @param token token
+     * @return DecodedJWT 报错则过期
+     */
+    public static DecodedJWT verityForDecodedJWT(String token){
+        JwtBean jwtBean = ContextUtil.getBean(JwtBean.class);
+        Algorithm algorithm = Algorithm.HMAC256(jwtBean.getTokenSecret());
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        return verifier.verify(token);
     }
 
     /**
@@ -189,20 +197,23 @@ public class JwtUtil {
         }catch (Exception e){
             throw new IllegalArgumentException(TOKEN_ERROR.getMessage(),e);
         }
-
     }
 
     /**
      * 获得Token中的 指定key的值
      *
      * @param token token
-     * @param claim 获取token中的指定key的值  loginName or remark（是 json 需要解析）
+     * @param claim 获取token中的指定key的值 为空默认返回 subject
      * @return java.lang.String
      */
     public static String getClaim(String token, String claim) {
         DecodedJWT jwt = JWT.decode(token);
         // 只能输出String类型，如果是其他类型返回null
-        return jwt.getClaim(claim==null?JwtConstant.TOKEN_KEY:claim).asString();
+        if(claim==null){
+            return jwt.getSubject();
+        }else {
+            return jwt.getClaim(claim).asString();
+        }
     }
 
 
@@ -291,6 +302,17 @@ public class JwtUtil {
             resMap.put(key,claim.as(Object.class));
         }
         return resMap;
+    }
+
+
+    /**
+     *  解析 jwt的 Map<String, Claim>  为 Map<String,Object>
+     * @param token  token
+     * @return Map
+     */
+    public static  Map<String, Claim> getClaims(String token){
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getClaims();
     }
 
 }

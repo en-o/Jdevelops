@@ -1,4 +1,4 @@
-package cn.jdevelops.jredis.exception;
+package cn.jdevelops.jwtweb.exception;
 
 import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
 import cn.jdevelops.enums.result.UserExceptionEnum;

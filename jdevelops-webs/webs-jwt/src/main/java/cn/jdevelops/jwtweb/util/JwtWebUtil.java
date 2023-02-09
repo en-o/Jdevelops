@@ -30,6 +30,35 @@ public class JwtWebUtil {
 
 
     /**
+     *  获取token中的Subject
+     * @param request request
+     * @return String
+     */
+    public static String getTokenSubject(HttpServletRequest request) {
+        String token = JwtWebUtil.getToken(request);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        try {
+            return JwtUtil.getSubject(token);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取token中的 Claim 参数
+     * @param request request
+     * @param claimKey key名
+     * @return userCode
+     */
+    public static String getTokenClaim(HttpServletRequest request,String claimKey){
+        String token = JwtWebUtil.getToken(request);
+        return JwtUtil.getClaim(token,claimKey);
+    }
+
+
+    /**
      * 获取token中的  remark 数据并 转化成 T类型
      * @param request request
      * @param t 返回类型 （颁发时token存储的类型）

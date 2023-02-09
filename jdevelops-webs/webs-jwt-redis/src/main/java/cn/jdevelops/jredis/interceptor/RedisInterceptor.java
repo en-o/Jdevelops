@@ -1,7 +1,7 @@
 package cn.jdevelops.jredis.interceptor;
 
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.jredis.exception.ExpiredRedisException;
+import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jwt.util.ContextUtil;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;

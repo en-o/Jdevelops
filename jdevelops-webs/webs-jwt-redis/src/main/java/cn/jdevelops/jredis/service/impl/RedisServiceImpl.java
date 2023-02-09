@@ -1,9 +1,10 @@
 package cn.jdevelops.jredis.service.impl;
 
 import cn.jdevelops.jredis.constant.RedisKeyConstant;
+import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.jredis.entity.RedisAccount;
-import cn.jdevelops.jredis.exception.ExpiredRedisException;
+import cn.jdevelops.jwtweb.exception.DisabledAccountException;
+import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jredis.util.JwtRedisUtil;
 import cn.jdevelops.jwt.bean.JwtBean;
@@ -121,24 +122,24 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void verifyUserStatus(String subject) throws ExpiredRedisException{
+    public  <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException{
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         Object redisUser = redisTemplate
                 .boundHashOps(userRedisFolder)
                 .get(subject);
 
-        if(!Objects.isNull(redisUser) && redisUser instanceof RedisAccount ){
-            if (((RedisAccount) redisUser).isExcessiveAttempts()) {
-                throw new ExpiredRedisException(EXCESSIVE_ATTEMPTS_ACCOUNT);
+        if(!Objects.isNull(redisUser) && redisUser instanceof BasicsAccount ){
+            if (((RB) redisUser).isExcessiveAttempts()) {
+                throw new DisabledAccountException(EXCESSIVE_ATTEMPTS_ACCOUNT);
             }
-            if (((RedisAccount) redisUser).isDisabledAccount()) {
-                throw new ExpiredRedisException(BANNED_ACCOUNT);
+            if (((RB) redisUser).isDisabledAccount()) {
+                throw new DisabledAccountException(BANNED_ACCOUNT);
             }
         }
     }
 
     @Override
-    public <T> void storageUserStatus(RedisAccount<T> account) {
+    public <RB extends BasicsAccount> void storageUserStatus(RB account) {
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, account.getUserCode());
         redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), account);
         // 永不过期
@@ -146,12 +147,12 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public <T> RedisAccount<T> loadUserStatus(String user) {
+    public <RB extends BasicsAccount> RB loadUserStatus(String user) {
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, user);
         Object redisUser = redisTemplate
                 .boundHashOps(userRedisFolder)
                 .get(user);
-        return Objects.isNull(redisUser)?null:(RedisAccount)redisUser;
+        return Objects.isNull(redisUser)?null: (RB) redisUser;
     }
 
     @Override
