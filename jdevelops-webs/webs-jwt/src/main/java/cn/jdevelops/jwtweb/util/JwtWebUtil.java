@@ -1,12 +1,17 @@
 package cn.jdevelops.jwtweb.util;
 
+import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
+import cn.jdevelops.exception.exception.TokenException;
 import cn.jdevelops.json.GsonUtils;
 import cn.jdevelops.jwt.constant.JwtConstant;
+import cn.jdevelops.jwt.entity.JCookie;
 import cn.jdevelops.jwt.util.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author tn
@@ -16,18 +21,41 @@ import java.util.Map;
 public class JwtWebUtil {
     /**
      * 从 request 获取token
+     * 先从 header 中获取，无则从Parameter中获取
      * @param request request
      * @return token
      */
     public static String getToken(HttpServletRequest request) {
+       return getToken(request,new JCookie(false, JwtConstant.TOKEN));
+    }
+
+
+    /**
+     * 从 request 获取token
+     * 先从 header 中获取，无则从Parameter中获取
+     * @param request request
+     * @param cookie  是否从cookie中获取（顺序为： Header -> Parameter -> Cookies
+     * @return token
+     */
+    public static String getToken(HttpServletRequest request, JCookie cookie) {
         String token = request.getHeader(JwtConstant.TOKEN);
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
         token = request.getParameter(JwtConstant.TOKEN);
+        if(Boolean.TRUE.equals(cookie.getCookie())){
+            Optional<Cookie> findCookie = CookieUtil.findCookie(
+                    cookie.getCookieKey(), request.getCookies()
+            );
+            token = Optional.ofNullable(token).orElse(findCookie.orElseThrow(
+                    () -> new TokenException(TokenExceptionCodeEnum.UNAUTHENTICATED)
+            ).getValue());
+        }
+        if(StringUtils.isBlank(token)){
+            throw new TokenException(TokenExceptionCodeEnum.UNAUTHENTICATED);
+        }
         return token;
     }
-
 
     /**
      *  获取token中的Subject

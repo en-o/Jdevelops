@@ -21,15 +21,15 @@ public interface CheckTokenInterceptor {
 
     /**
      * 刷新token缓存 (默认不刷新
-     * @param userCode 用户唯一编码
+     * @param subject 用户唯一编码
      */
-    default void refreshToken(String userCode){}
+    default void refreshToken(String subject){}
 
 
     /**
      * 检查用户状态(不正常的直接抛异常出去
-     * @param userCode 用户唯一编码
+     * @param subject 用户唯一编码
      * @throws Exception ExpiredRedisException
      */
-    default void checkUserStatus(String userCode) throws Exception{}
+    default void checkUserStatus(String subject) throws Exception{}
 }

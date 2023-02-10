@@ -1,8 +1,8 @@
 package cn.jdevelops.jwt.util;
 
 import cn.jdevelops.jwt.bean.JwtBean;
-import cn.jdevelops.jwt.bean.SignEntity;
-import cn.jdevelops.jwt.bean.SignInit;
+import cn.jdevelops.jwt.entity.SignEntity;
+import cn.jdevelops.jwt.entity.SignInit;
 import cn.jdevelops.jwt.constant.JwtConstant;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -22,6 +22,7 @@ import java.awt.List;
 import java.util.*;
 
 import static cn.jdevelops.enums.result.TokenExceptionCodeEnum.TOKEN_ERROR;
+import static cn.jdevelops.jwt.constant.JwtConstant.JWT_BEAN_STR;
 
 /**
  *  jwt工具
@@ -34,7 +35,7 @@ public class JwtUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    private static final String JWT_BEAN_STR = "jwtBean";
+
 
 
 

@@ -1,4 +1,4 @@
-package cn.jdevelops.jwt.bean;
+package cn.jdevelops.jwt.entity;
 
 import lombok.*;
 

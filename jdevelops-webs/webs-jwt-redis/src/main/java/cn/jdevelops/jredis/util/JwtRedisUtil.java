@@ -1,7 +1,7 @@
 package cn.jdevelops.jredis.util;
 
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.jwt.bean.SignEntity;
+import cn.jdevelops.jwt.entity.SignEntity;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jwt.util.ContextUtil;
 import cn.jdevelops.jwt.util.JwtUtil;

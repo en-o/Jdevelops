@@ -1,5 +1,6 @@
-package cn.jdevelops.jwt.bean;
+package cn.jdevelops.jwt.entity;
 
+import cn.jdevelops.jwt.bean.JwtBean;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import java.util.Date;
@@ -18,7 +19,7 @@ public class SignInit {
     /**
      * jwt 参数
      */
-    private  JwtBean jwtBean;
+    private JwtBean jwtBean;
 
     /**
      * 私钥及加密算法

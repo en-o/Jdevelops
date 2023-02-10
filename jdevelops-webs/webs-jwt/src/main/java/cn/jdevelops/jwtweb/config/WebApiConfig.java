@@ -1,7 +1,7 @@
 package cn.jdevelops.jwtweb.config;
 import cn.jdevelops.jwt.bean.InterceptorBean;
+import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwtweb.interceptor.WebApiInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -25,9 +25,12 @@ public class WebApiConfig implements WebMvcConfigurer {
     @Resource
     private InterceptorBean interceptorBean;
 
+    @Resource
+    private JwtBean jwtBean;
+
     @Bean
     public WebApiInterceptor webApiInterceptor() {
-        return new WebApiInterceptor();
+        return new WebApiInterceptor(jwtBean);
     }
 
 

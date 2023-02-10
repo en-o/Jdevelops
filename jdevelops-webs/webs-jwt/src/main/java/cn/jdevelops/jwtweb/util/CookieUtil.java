@@ -1,6 +1,9 @@
 package cn.jdevelops.jwtweb.util;
 
 import javax.servlet.http.Cookie;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 /**
  * cookie
@@ -17,16 +20,16 @@ public class CookieUtil {
      * @param cookies HttpServletRequest.getCookies())
      * @return  Cookie
      *  */
-    public static Cookie findCookie(String name , Cookie[] cookies){
+    public static Optional<Cookie> findCookie(String name , Cookie[] cookies){
         if (name == null || cookies == null) {
-            return null;
+            return empty();
         }
         for (Cookie cookie : cookies) {
             if (name.equals(cookie.getName())) {
-                return cookie;
+                return Optional.of(cookie);
             }
         }
-        return null;
+        return  empty();
     }
 
 
