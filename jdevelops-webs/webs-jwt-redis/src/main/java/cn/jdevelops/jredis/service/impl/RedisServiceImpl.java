@@ -1,5 +1,6 @@
 package cn.jdevelops.jredis.service.impl;
 
+import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.jredis.constant.RedisKeyConstant;
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
@@ -124,9 +125,14 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public  <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException{
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, subject);
-        Object redisUser = redisTemplate
-                .boundHashOps(userRedisFolder)
-                .get(subject);
+        Object redisUser;
+        try {
+            redisUser = redisTemplate
+                    .boundHashOps(userRedisFolder)
+                    .get(subject);
+        }catch (Exception e){
+            throw new BusinessException("系统异常请联系管理员",e);
+        }
 
         if(!Objects.isNull(redisUser) && redisUser instanceof BasicsAccount ){
             if (((RB) redisUser).isExcessiveAttempts()) {
@@ -149,9 +155,14 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public <RB extends BasicsAccount> RB loadUserStatus(String user) {
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, user);
-        Object redisUser = redisTemplate
-                .boundHashOps(userRedisFolder)
-                .get(user);
+        Object redisUser;
+        try {
+            redisUser = redisTemplate
+                    .boundHashOps(userRedisFolder)
+                    .get(user);
+        }catch (Exception e){
+            throw new BusinessException("系统异常请联系管理员",e);
+        }
         return Objects.isNull(redisUser)?null: (RB) redisUser;
     }
 
