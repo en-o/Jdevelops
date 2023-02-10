@@ -1,6 +1,8 @@
 package cn.jdevelops.jredis.entity.only;
 
+import cn.jdevelops.jwt.util.EncryptionUtil;
 import lombok.*;
+import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 
@@ -31,6 +33,11 @@ public class StorageUserTokenEntity {
     String token;
 
     /**
+     * 短的token,还没开始使用
+     */
+    String shortToken;
+
+    /**
      * 是否永久在线（默认 false
      */
     Boolean alwaysOnline;
@@ -41,4 +48,7 @@ public class StorageUserTokenEntity {
     }
 
 
+    public String getShortToken() {
+        return EncryptionUtil.encrypt2MD5(token);
+    }
 }
