@@ -3,6 +3,7 @@ package cn.jdevelops.jredis.service;
 
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.jredis.entity.role.UserRole;
 import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 
 import java.util.List;
@@ -87,7 +88,7 @@ public interface RedisService {
 
     /**
      * 存储 用户的状态
-     *
+     * 永不过期 改变时也要该redis
      * @param account 用户
      */
     <RB extends BasicsAccount> void storageUserStatus(RB account);
@@ -104,11 +105,31 @@ public interface RedisService {
 
     /**
      * 存放 用户角色
-     *
+     * 永不过期 改变时也要该redis
+     * @see #storageUserRoleInfo
      * @param subject 用户唯一值(一般用用户的登录名
      * @param roles    权限集合
      */
+    @Deprecated
     void storageUserRole(String subject, List<String> roles);
+
+
+    /**
+     * 加载用户角色
+     * @see #loadUserRoleInfo
+     * @param subject 用户唯一值(一般用用户的登录名
+     * @return List (如返回空对象则表示redis中无数据请先自行添加
+     */
+    @Deprecated
+    List<String> loadUserRole(String subject);
+
+    /**
+     * 存放 用户角色
+     * 永不过期 改变时也要该redis
+     * @param subject 用户唯一值(一般用用户的登录名
+     * @param roles    权限集合
+     */
+    <T extends UserRole> void storageUserRoleInfo(String subject, List<T> roles);
 
 
     /**
@@ -117,6 +138,6 @@ public interface RedisService {
      * @param subject 用户唯一值(一般用用户的登录名
      * @return List (如返回空对象则表示redis中无数据请先自行添加
      */
-    List<String> loadUserRole(String subject);
+    <T extends UserRole> List<T> loadUserRoleInfo(String subject);
 
 }

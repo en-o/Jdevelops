@@ -4,6 +4,7 @@ import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.jredis.constant.RedisKeyConstant;
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.jredis.entity.role.UserRole;
 import cn.jdevelops.jwtweb.exception.DisabledAccountException;
 import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
@@ -183,6 +184,26 @@ public class RedisServiceImpl implements RedisService {
             return Collections.emptyList();
         } else {
             return (List<String>) roles;
+        }
+    }
+
+    @Override
+    public <T extends UserRole> void storageUserRoleInfo(String subject, List<T> roles) {
+        // 用户角色存入 redis
+        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
+        redisTemplate.boundHashOps(roleRedisFolder).put(subject, roles);
+        // 永不过期
+        redisTemplate.persist(roleRedisFolder);
+    }
+
+    @Override
+    public <T extends UserRole>  List<T> loadUserRoleInfo(String subject) {
+        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
+        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
+        if (Objects.isNull(roles)) {
+            return Collections.emptyList();
+        } else {
+            return (List<T>) roles;
         }
     }
 

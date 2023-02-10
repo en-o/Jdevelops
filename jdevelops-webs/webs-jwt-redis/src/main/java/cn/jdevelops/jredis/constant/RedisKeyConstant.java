@@ -29,6 +29,10 @@ public interface RedisKeyConstant {
      * redis中 用户角色的文件夹名
      */
     String REDIS_USER_ROLE_FOLDER = "role";
+    /**
+     * redis中 用户角色的文件夹名
+     */
+    String REDIS_USER_ROLE_INFO_FOLDER = "role_info";
 
 
     /**
