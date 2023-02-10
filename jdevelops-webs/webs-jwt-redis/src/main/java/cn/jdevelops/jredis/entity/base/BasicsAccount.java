@@ -1,5 +1,6 @@
 package cn.jdevelops.jredis.entity.base;
 
+
 import java.util.List;
 
 /**
