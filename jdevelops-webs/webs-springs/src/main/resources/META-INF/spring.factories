@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.springs.service.scan.EnableAutoScanConfiguration
+  cn.jdevelops.springs.scan.SwBeanRegister,\
+  cn.jdevelops.springs.scan.SwBeanInject

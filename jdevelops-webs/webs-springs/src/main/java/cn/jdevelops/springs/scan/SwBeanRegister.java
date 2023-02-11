@@ -1,12 +1,13 @@
-package cn.jdevelops.springs.service.scan;
+package cn.jdevelops.springs.scan;
 
-import cn.jdevelops.springs.service.url.UrlService;
+import cn.jdevelops.springs.context.service.JdevelopsContext;
+import cn.jdevelops.springs.context.service.impl.JdevelopsContextForSpring;
 import cn.jdevelops.springs.service.config.InterceptUrl;
+import cn.jdevelops.springs.service.url.UrlService;
 import cn.jdevelops.springs.service.url.impl.UrlServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -16,13 +17,27 @@ import org.springframework.context.annotation.Import;
  */
 @ConditionalOnWebApplication
 @Import(InterceptUrl.class)
-@ComponentScan("cn.jdevelops.springs.service.**")
-public class EnableAutoScanConfiguration {
+public class SwBeanRegister {
 
     @ConditionalOnMissingBean(name = "urlService")
     @Bean
     public UrlService urlService(){
         return new UrlServiceImpl();
     }
+
+
+    /**
+     *
+     * 注入上下文Bean
+     * jdevelopsContext
+     * @return JdevelopsContext
+     */
+    @ConditionalOnMissingBean(name = "jdevelopsContext")
+    @Bean
+    public JdevelopsContext getJdevelopsContext(){
+        return new JdevelopsContextForSpring();
+    }
+
+
 
 }
