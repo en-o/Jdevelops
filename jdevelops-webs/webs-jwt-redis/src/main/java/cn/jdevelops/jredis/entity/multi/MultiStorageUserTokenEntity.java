@@ -13,8 +13,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class MultiStorageUserTokenEntity  extends StorageUserTokenEntity {
 
     /**
@@ -38,18 +36,4 @@ public class MultiStorageUserTokenEntity  extends StorageUserTokenEntity {
 
 
 
-    @Builder(builderMethodName = "childBuilder")
-    public MultiStorageUserTokenEntity(String userCode,
-                                       String token,
-                                       Boolean alwaysOnline,
-                                       String client,
-                                       Long timestamps,
-                                       boolean multiLogin,
-                                       int numMultiLogin) {
-        super(userCode, token, alwaysOnline);
-        this.client = client;
-        this.timestamps = timestamps;
-        this.multiLogin = multiLogin;
-        this.numMultiLogin = numMultiLogin;
-    }
 }

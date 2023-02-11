@@ -1,6 +1,5 @@
 package cn.jdevelops.jredis.util;
 
-import cn.jdevelops.jredis.entity.multi.MultiStorageUserTokenEntity;
 
 import javax.servlet.http.HttpServletRequest;
 
