@@ -2,7 +2,6 @@ package cn.jdevelops.jredis.entity.only;
 
 import cn.jdevelops.jwt.util.EncryptionUtil;
 import lombok.*;
-import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 
