@@ -56,8 +56,8 @@ public class RedisServiceImpl implements RedisService {
             // 永不过期
             redisTemplate.persist(loginRedisFolder);
         }else {
-            // 设置过期时间（秒
-            redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.SECONDS);
+            // 设置过期时间（毫秒
+            redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.MILLISECONDS);
         }
     }
 
@@ -72,8 +72,8 @@ public class RedisServiceImpl implements RedisService {
             if(Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())){
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             }else {
-                // 设置过期时间（秒
-                redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.SECONDS);
+                // 设置过期时间（毫秒
+                redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.MILLISECONDS);
             }
         }
     }
