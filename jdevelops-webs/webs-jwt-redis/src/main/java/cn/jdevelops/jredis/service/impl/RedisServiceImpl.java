@@ -11,6 +11,7 @@ import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jredis.util.JwtRedisUtil;
 import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwt.util.JwtUtil;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -126,20 +127,21 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public  <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException{
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, subject);
-        Object redisUser;
+        String redisUser;
         try {
-            redisUser = redisTemplate
+            redisUser = (String) redisTemplate
                     .boundHashOps(userRedisFolder)
                     .get(subject);
         }catch (Exception e){
             throw new BusinessException("系统异常请联系管理员",e);
         }
 
-        if(!Objects.isNull(redisUser) && redisUser instanceof BasicsAccount ){
-            if (((RB) redisUser).isExcessiveAttempts()) {
+        Object basicsAccount = JSON.parse(redisUser);
+        if(!Objects.isNull(redisUser) && basicsAccount instanceof BasicsAccount ){
+            if (((RB) basicsAccount).isExcessiveAttempts()) {
                 throw new DisabledAccountException(EXCESSIVE_ATTEMPTS_ACCOUNT);
             }
-            if (((RB) redisUser).isDisabledAccount()) {
+            if (((RB) basicsAccount).isDisabledAccount()) {
                 throw new DisabledAccountException(BANNED_ACCOUNT);
             }
         }
@@ -148,7 +150,9 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public <RB extends BasicsAccount> void storageUserStatus(RB account) {
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, account.getUserCode());
-        redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), account);
+        // 处理由于是泛型对象导致其他地方继承后有问题，
+        String accountJson = JSON.toJSONString(account);
+        redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), accountJson);
         // 永不过期
         redisTemplate.persist(userRedisFolder);
     }
@@ -156,16 +160,20 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public <RB extends BasicsAccount> RB loadUserStatus(String user) {
         String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisKeyConstant.REDIS_USER_INFO_FOLDER, user);
-        Object redisUser;
+
+        String redisUser;
         try {
-            redisUser = redisTemplate
+            redisUser = (String) redisTemplate
                     .boundHashOps(userRedisFolder)
                     .get(user);
         }catch (Exception e){
             throw new BusinessException("系统异常请联系管理员",e);
         }
-        return Objects.isNull(redisUser)?null: (RB) redisUser;
+        // 处理由于是泛型对象导致其他地方继承后有问题，
+        RB basicsAccount = (RB) JSON.parse(redisUser);
+        return Objects.isNull(redisUser)?null: basicsAccount;
     }
+
 
     @Override
     public void storageUserRole(String user, List<String> roles) {
