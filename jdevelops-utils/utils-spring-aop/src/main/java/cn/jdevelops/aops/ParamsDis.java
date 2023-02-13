@@ -1,6 +1,5 @@
 package cn.jdevelops.aops;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
@@ -33,27 +32,26 @@ public class ParamsDis {
         String method = request.getMethod();
         String queryString = request.getQueryString();
         Object[] args = pjp.getArgs();
-        String params = "";
+        StringBuilder params = new StringBuilder();
         if (args.length > 0) {
             if (RequestMethod.POST.toString().equals(method)) {
                 for (Object arg : args) {
                     if (arg instanceof MultipartFile) {
-                        params = params.concat("【文件参数】").concat(",");
+                        params.append(params.toString().concat("【文件参数】").concat(","));
                     } else if (arg instanceof MultipartFile[] && arg.getClass().isArray()) {
-                        params = params.concat("【多文件参数】").concat(",");
+                        params.append(params.toString().concat("【多文件参数】").concat(","));
                     } else if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
-                        params = "";
+                        log.info("入参排除：HttpServletRequest，HttpServletResponse");
                     } else {
                         try {
-                            ObjectMapper objectMapper = new ObjectMapper();
-                            params = params.concat(objectMapper.writeValueAsString(arg)).concat(",");
+                            params.append(params.toString().concat(JsonUtils.toJson(arg)).concat(","));
                         } catch (Exception e) {
                             log.warn("入参参数处理异常，就打印了");
                         }
                     }
                 }
             } else if (RequestMethod.GET.toString().equals(method)) {
-                params = decode(queryString);
+                params.append(decode(queryString));
             }
         }
         Logger log = LoggerFactory.getLogger("api");
