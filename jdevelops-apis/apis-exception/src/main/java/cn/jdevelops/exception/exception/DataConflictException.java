@@ -11,4 +11,8 @@ public class DataConflictException extends BusinessException {
     public DataConflictException(String msg) {
         super(msg);
     }
+    public DataConflictException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

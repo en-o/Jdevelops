@@ -19,6 +19,9 @@ public class UserException extends BusinessException {
     public UserException(String message) {
         super(message);
     }
+    public UserException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     public UserException(UserExceptionEnum constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());

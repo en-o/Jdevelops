@@ -1,6 +1,7 @@
 package cn.jdevelops.jredis.service.impl;
 
 import cn.jdevelops.exception.exception.BusinessException;
+import cn.jdevelops.exception.exception.TokenException;
 import cn.jdevelops.jredis.constant.RedisKeyConstant;
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
@@ -133,7 +134,8 @@ public class RedisServiceImpl implements RedisService {
                     .boundHashOps(userRedisFolder)
                     .get(subject);
         }catch (Exception e){
-            throw new BusinessException("系统异常请联系管理员",e);
+            LOG.info("用户状态缓存失效");
+            throw new BusinessException("登录失效请重新登录",e);
         }
 
         Object basicsAccount = JSON.parse(redisUser);
@@ -167,7 +169,8 @@ public class RedisServiceImpl implements RedisService {
                     .boundHashOps(userRedisFolder)
                     .get(user);
         }catch (Exception e){
-            throw new BusinessException("系统异常请联系管理员",e);
+            LOG.info("加载用户状态缓存失败");
+            throw new TokenException("登录失效请重新登录",e);
         }
         // 处理由于是泛型对象导致其他地方继承后有问题，
         RB basicsAccount = (RB) JSON.parse(redisUser);
