@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 分页返回统一工具类
@@ -45,6 +42,22 @@ public class ResourceJpaPage<T> implements Serializable {
 		this.total = rows.getTotalElements();
 		this.rows = rows.getContent();
 	}
+
+	/**
+	 * 返回空对象
+	 */
+	public  ResourceJpaPage(Integer currentPage,
+							Integer pageSize,
+							Integer totalPages,
+							Long total,
+							List<T> rows) {
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.totalPages = totalPages;
+		this.total = total;
+		this.rows = Objects.isNull(rows)?Collections.emptyList():rows;
+	}
+
 
 	/**
 	 * 返回空对象
