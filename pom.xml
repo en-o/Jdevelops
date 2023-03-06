@@ -78,6 +78,8 @@
         <module>jdevelops-file</module>
         <!-- 延时队列 -->
         <module>jdevelops-delay</module>
+        <!-- 定时器 -->
+        <module>jdevelops-quartz</module>
     </modules>
 
     <properties>
