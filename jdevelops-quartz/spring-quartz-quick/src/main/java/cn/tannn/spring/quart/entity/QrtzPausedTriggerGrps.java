@@ -3,7 +3,7 @@ package cn.tannn.spring.quart.entity;
 
 
 /**
- * 存储已暂停的Trigger组的信息
+ *  暂停了的定时器
  *
  * @author tnnn
  * @date  2023-3-6

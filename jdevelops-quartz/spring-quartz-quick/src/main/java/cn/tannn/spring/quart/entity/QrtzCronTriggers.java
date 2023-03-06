@@ -2,7 +2,7 @@ package cn.tannn.spring.quart.entity;
 
 
 /**
- * 存储CronTrigger（生效的定时器），包括Cron表达式和时区信息
+ * 生产中的定时器
  * @author tnnn
  * @date 2023-3-6
  */
