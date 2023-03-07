@@ -1,30 +1,30 @@
 package cn.tannn.spring.quart.entity;
 
+import cn.tannn.spring.quart.entity.key.QrtzJobDetailsUPK;
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
  * 任务详情
+ *
  * @author tnnn
  * @version V1.0
- * @date 2023-3-6
+ * @date 2023-3-7
  */
-//@Entity
-//@Table(name = "qrtz_job_details")
-//@org.hibernate.annotations.Table(appliesTo = "qrtz_job_details", comment = "")
-public class QrtzJobDetailsEntity {
+@Entity
+@Table(name = "qrtz_job_details")
+@Getter
+@Setter
+@ToString
+public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
 
 
-    /** 调度名字 */
-    private  String  schedName ;
+    @EmbeddedId
+    private  QrtzJobDetailsUPK jobDetailsUPK;
 
-
-    /** 任务名字 */
-    private  String  jobName ;
-
-
-    /** 任务分组  */
-    private  String  jobGroup ;
-
-
-    /** 描述 */
+    /** 描述  */
     private  String  description ;
 
 
@@ -36,19 +36,19 @@ public class QrtzJobDetailsEntity {
     private  String  isDurable ;
 
 
-    /** 是否单体  */
+    /** 是否集群 */
     private  String  isNonconcurrent ;
 
 
-    /** 更新时间 */
+    /** 跟新数据 */
     private  String  isUpdateData ;
 
 
-    /** 请求恢复 */
+    /** 需要恢复 */
     private  String  requestsRecovery ;
 
 
-    /** 数据详情  */
+    /** 任务数据 */
     private  byte[]  jobData ;
 
 }

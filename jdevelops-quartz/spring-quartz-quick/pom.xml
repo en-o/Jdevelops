@@ -9,7 +9,6 @@
     </parent>
     <groupId>cn.tannn</groupId>
     <artifactId>spring-quartz-quick</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>spring-quartz-quick</name>
     <description>spring-quartz-quick</description>
     <properties>
@@ -20,20 +19,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+        <!--    jpa 必须用，但是我这里不强行引入    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
