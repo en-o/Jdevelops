@@ -1,6 +1,8 @@
 package cn.jdevelops.spring.quart.entity.key;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

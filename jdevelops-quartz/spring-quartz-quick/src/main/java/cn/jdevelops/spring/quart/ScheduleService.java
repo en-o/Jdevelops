@@ -1,7 +1,6 @@
 package cn.jdevelops.spring.quart;
 
 import cn.jdevelops.spring.quart.dao.bo.JobAndTriggerBO;
-import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
 import cn.jdevelops.spring.quart.exception.TaskException;
 import org.quartz.Job;
 import org.springframework.data.domain.Page;
