@@ -9,6 +9,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 触发器
@@ -80,4 +82,22 @@ public class QrtzTriggersEntity   implements Serializable,Cloneable {
     /** 任务数据 */
     private  byte[]  jobData ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzTriggersEntity that = (QrtzTriggersEntity) o;
+        return Objects.equals(cronTriggersUPK, that.cronTriggersUPK) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup) && Objects.equals(description, that.description) && Objects.equals(nextFireTime, that.nextFireTime) && Objects.equals(prevFireTime, that.prevFireTime) && Objects.equals(priority, that.priority) && Objects.equals(triggerState, that.triggerState) && Objects.equals(triggerType, that.triggerType) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(calendarName, that.calendarName) && Objects.equals(misfireInstr, that.misfireInstr) && Arrays.equals(jobData, that.jobData);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(cronTriggersUPK, jobName, jobGroup, description, nextFireTime, prevFireTime, priority, triggerState, triggerType, startTime, endTime, calendarName, misfireInstr);
+        result = 31 * result + Arrays.hashCode(jobData);
+        return result;
+    }
 }

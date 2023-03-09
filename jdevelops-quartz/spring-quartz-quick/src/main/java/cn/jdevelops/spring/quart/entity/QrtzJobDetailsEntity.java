@@ -9,6 +9,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * 任务详情
@@ -55,4 +57,22 @@ public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
     /** 任务数据 */
     private  byte[]  jobData ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzJobDetailsEntity that = (QrtzJobDetailsEntity) o;
+        return Objects.equals(jobDetailsUPK, that.jobDetailsUPK) && Objects.equals(description, that.description) && Objects.equals(jobClassName, that.jobClassName) && Objects.equals(isDurable, that.isDurable) && Objects.equals(isNonconcurrent, that.isNonconcurrent) && Objects.equals(isUpdateData, that.isUpdateData) && Objects.equals(requestsRecovery, that.requestsRecovery) && Arrays.equals(jobData, that.jobData);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(jobDetailsUPK, description, jobClassName, isDurable, isNonconcurrent, isUpdateData, requestsRecovery);
+        result = 31 * result + Arrays.hashCode(jobData);
+        return result;
+    }
 }

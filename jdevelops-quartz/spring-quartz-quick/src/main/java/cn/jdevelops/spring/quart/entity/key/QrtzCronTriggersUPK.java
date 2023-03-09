@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 存储CronTrigger的 联合主键
@@ -29,4 +30,20 @@ public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
     /** 触发器分组 */
     private  String  triggerGroup ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzCronTriggersUPK that = (QrtzCronTriggersUPK) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(triggerName, that.triggerName) && Objects.equals(triggerGroup, that.triggerGroup);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, triggerName, triggerGroup);
+    }
 }

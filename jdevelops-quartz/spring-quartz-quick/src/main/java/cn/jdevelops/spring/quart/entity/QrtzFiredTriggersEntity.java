@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -77,4 +78,20 @@ public class QrtzFiredTriggersEntity   implements Serializable,Cloneable {
     /** 需要恢复 */
     private  String  requestsRecovery ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzFiredTriggersEntity that = (QrtzFiredTriggersEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(entryId, that.entryId) && Objects.equals(triggerName, that.triggerName) && Objects.equals(triggerGroup, that.triggerGroup) && Objects.equals(instanceName, that.instanceName) && Objects.equals(firedTime, that.firedTime) && Objects.equals(schedTime, that.schedTime) && Objects.equals(priority, that.priority) && Objects.equals(state, that.state) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup) && Objects.equals(isNonconcurrent, that.isNonconcurrent) && Objects.equals(requestsRecovery, that.requestsRecovery);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, entryId, triggerName, triggerGroup, instanceName, firedTime, schedTime, priority, state, jobName, jobGroup, isNonconcurrent, requestsRecovery);
+    }
 }

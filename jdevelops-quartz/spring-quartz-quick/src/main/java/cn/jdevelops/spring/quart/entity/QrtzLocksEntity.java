@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -33,4 +34,20 @@ public class QrtzLocksEntity  implements Serializable,Cloneable{
     @Id
     private  String  lockName ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzLocksEntity that = (QrtzLocksEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(lockName, that.lockName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, lockName);
+    }
 }

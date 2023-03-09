@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 存储 CronTrigger
@@ -33,4 +34,20 @@ public class QrtzCronTriggersEntity   implements Serializable,Cloneable {
     /** 时区  */
     private  String  timeZoneId ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzCronTriggersEntity that = (QrtzCronTriggersEntity) o;
+        return Objects.equals(cronTriggersUPK, that.cronTriggersUPK) && Objects.equals(cronExpression, that.cronExpression) && Objects.equals(timeZoneId, that.timeZoneId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cronTriggersUPK, cronExpression, timeZoneId);
+    }
 }

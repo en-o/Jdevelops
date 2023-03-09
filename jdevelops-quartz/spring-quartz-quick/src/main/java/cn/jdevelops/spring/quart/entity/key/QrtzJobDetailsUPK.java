@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 任务详情联合主键
@@ -28,4 +29,21 @@ public class QrtzJobDetailsUPK implements Serializable,Cloneable  {
 
     /** 任务分组 */
     private  String  jobGroup ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzJobDetailsUPK that = (QrtzJobDetailsUPK) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(jobName, that.jobName) && Objects.equals(jobGroup, that.jobGroup);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, jobName, jobGroup);
+    }
 }

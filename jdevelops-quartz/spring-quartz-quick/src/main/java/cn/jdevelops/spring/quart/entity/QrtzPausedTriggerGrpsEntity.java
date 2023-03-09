@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -33,4 +34,20 @@ public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
     @Id
     private  String  triggerGroup ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzPausedTriggerGrpsEntity that = (QrtzPausedTriggerGrpsEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(triggerGroup, that.triggerGroup);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, triggerGroup);
+    }
 }

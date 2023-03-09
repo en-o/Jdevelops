@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  *
@@ -36,4 +38,22 @@ public class QrtzCalendarsEntity    implements Serializable,Cloneable {
     /** 日程数据 */
     private  byte[]  calendar ;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzCalendarsEntity that = (QrtzCalendarsEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(calendarName, that.calendarName) && Arrays.equals(calendar, that.calendar);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(schedName, calendarName);
+        result = 31 * result + Arrays.hashCode(calendar);
+        return result;
+    }
 }

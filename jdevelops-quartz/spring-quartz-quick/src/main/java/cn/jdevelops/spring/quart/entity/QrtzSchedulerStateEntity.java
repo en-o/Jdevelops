@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -41,4 +42,21 @@ public class QrtzSchedulerStateEntity  implements Serializable,Cloneable{
     /** 检查时间间隔  */
     private  Long  checkinInterval ;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzSchedulerStateEntity that = (QrtzSchedulerStateEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(instanceName, that.instanceName) && Objects.equals(lastCheckinTime, that.lastCheckinTime) && Objects.equals(checkinInterval, that.checkinInterval);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, instanceName, lastCheckinTime, checkinInterval);
+    }
 }

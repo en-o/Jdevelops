@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -50,4 +51,21 @@ public class QrtzSimpleTriggersEntity implements Serializable,Cloneable{
     /** 时间触发 */
     private  Long  timesTriggered ;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        QrtzSimpleTriggersEntity that = (QrtzSimpleTriggersEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(triggerName, that.triggerName) && Objects.equals(triggerGroup, that.triggerGroup) && Objects.equals(repeatCount, that.repeatCount) && Objects.equals(repeatInterval, that.repeatInterval) && Objects.equals(timesTriggered, that.timesTriggered);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedName, triggerName, triggerGroup, repeatCount, repeatInterval, timesTriggered);
+    }
 }
