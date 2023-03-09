@@ -22,13 +22,12 @@ public interface ScheduleService {
     Page<JobAndTriggerBO> getJobAndTriggerDetails(Integer pageNum, Integer pageSize);
 
     /**
-     * 添加任务
+     * 添加任务 （新增的任务在时间到了就会立即开始）
      * @param jobBeanClass  定时任务的bean（ extends QuartzJobBean）
      * @param jName 任务名
      * @param jGroup  任务分组
      * @param tName 触发器名
      * @param tGroup 触发器分组
-     * @param startNow 是否立即开始
      * @param cron 开始时间
      */
     void addScheduleJob(Class<? extends Job> jobBeanClass,
@@ -36,17 +35,15 @@ public interface ScheduleService {
                         String jGroup,
                         String tName,
                         String tGroup,
-                        boolean startNow,
                         String cron);
 
     /**
-     * 指定时间来调度任务
+     * 指定时间来调度任务（新增的任务在时间到了就会立即开始）
      * @param jobBeanClass  定时任务的bean（ extends QuartzJobBean）
      * @param jName 任务名
      * @param jGroup  任务分组
      * @param tName 触发器名
      * @param tGroup 触发器分组
-     * @param startNow 是否立即开始
      * @param startTime 开始时间
      */
     void addScheduleJob(Class<? extends Job> jobBeanClass,
@@ -54,7 +51,6 @@ public interface ScheduleService {
                           String jGroup,
                           String tName,
                           String tGroup,
-                          boolean startNow,
                           Date startTime);
 
     /**

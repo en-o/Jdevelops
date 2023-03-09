@@ -45,7 +45,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                                String jGroup,
                                String tName,
                                String tGroup,
-                               boolean startNow,
                                String cron) {
         try {
             // 构建JobDetail
@@ -59,12 +58,11 @@ public class ScheduleServiceImpl implements ScheduleService {
             CronTrigger trigger = TriggerBuilder.newTrigger()
                     // 指定触发器组名和触发器名
                     .withIdentity(tName, tGroup)
+                    // 设置的开始时间数据
                     .startNow()
                     .withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
-            if(startNow){
-                // 启动调度器
-                scheduler.start();
-            }
+            // 启动调度器
+            scheduler.start();
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e) {
             LOG.error("任务创建失败{}", e.getMessage());
@@ -78,7 +76,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                                String jGroup,
                                String tName,
                                String tGroup,
-                               boolean startNow,
                                Date startTime) {
         //日期转CRON表达式
         Calendar calendar = Calendar.getInstance();
@@ -90,7 +87,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.YEAR));
-        addScheduleJob(jobBeanClass, jName, jGroup, tName, tGroup, startNow, startCron);
+        addScheduleJob(jobBeanClass, jName, jGroup, tName, tGroup, startCron);
     }
 
     @Override
