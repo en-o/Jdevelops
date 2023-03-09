@@ -1,8 +1,8 @@
-package cn.tannn.spring.quart;
+package cn.jdevelops.spring.quart;
 
-import cn.tannn.spring.quart.dao.QrtzJobDetailsDao;
-import cn.tannn.spring.quart.entity.QrtzJobDetailsEntity;
-import cn.tannn.spring.quart.exception.TaskException;
+import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
+import cn.jdevelops.spring.quart.dao.QrtzJobDetailsDao;
+import cn.jdevelops.spring.quart.exception.TaskException;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +34,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Page<QrtzJobDetailsEntity> getJobAndTriggerDetails(Integer pageNum, Integer pageSize) {
-        pageNum = Optional.ofNullable(pageNum).orElse(0);
+        pageNum = Optional.ofNullable(pageNum).orElse(1);
         pageSize = Optional.ofNullable(pageSize).orElse(10);
-        return jobDetailsDao.findAll(PageRequest.of(pageNum + 1, pageSize));
+        return jobDetailsDao.findAll(PageRequest.of(pageNum - 1, pageSize));
     }
 
     @Override
@@ -45,6 +45,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                                String jGroup,
                                String tName,
                                String tGroup,
+                               boolean startNow,
                                String cron) {
         try {
             // 构建JobDetail
@@ -55,13 +56,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 //                    .usingJobData("data", data)
                     .build();
             //创建触发器，指定任务执行时间
-            CronTrigger trigger = TriggerBuilder.newTrigger()
+            TriggerBuilder<CronTrigger> triggerBuild = TriggerBuilder.newTrigger()
                     // 指定触发器组名和触发器名
                     .withIdentity(tName, tGroup)
-                    // 现在开始？
-                    .startNow()
-                    .withSchedule(CronScheduleBuilder.cronSchedule(cron))
-                    .build();
+
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cron));
+            if(startNow){
+                triggerBuild.startNow();
+            }
+            CronTrigger trigger = triggerBuild.build();
             // 启动调度器
             scheduler.start();
             scheduler.scheduleJob(jobDetail, trigger);
@@ -72,7 +75,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void addScheduleJob(Class<? extends Job> jobBeanClass, String jName, String jGroup, String tName, String tGroup, Date startTime) {
+    public void addScheduleJob(Class<? extends Job> jobBeanClass,
+                               String jName,
+                               String jGroup,
+                               String tName,
+                               String tGroup,
+                               boolean startNow,
+                               Date startTime) {
         //日期转CRON表达式
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
@@ -83,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 calendar.get(Calendar.DAY_OF_MONTH),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.YEAR));
-        addScheduleJob(jobBeanClass, jName, jGroup, tName, tGroup, startCron);
+        addScheduleJob(jobBeanClass, jName, jGroup, tName, tGroup, startNow, startCron);
     }
 
     @Override

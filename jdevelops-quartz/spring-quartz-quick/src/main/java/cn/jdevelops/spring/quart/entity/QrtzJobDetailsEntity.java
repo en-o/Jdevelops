@@ -1,6 +1,6 @@
-package cn.tannn.spring.quart.entity;
+package cn.jdevelops.spring.quart.entity;
 
-import cn.tannn.spring.quart.entity.key.QrtzJobDetailsUPK;
+import cn.jdevelops.spring.quart.entity.key.QrtzJobDetailsUPK;
 import lombok.*;
 
 import javax.persistence.*;

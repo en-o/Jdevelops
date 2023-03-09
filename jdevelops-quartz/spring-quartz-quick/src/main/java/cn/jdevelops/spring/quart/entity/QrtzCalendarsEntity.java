@@ -1,4 +1,4 @@
-package cn.tannn.spring.quart.entity;
+package cn.jdevelops.spring.quart.entity;
 
 import lombok.*;
 import javax.persistence.Entity;
@@ -14,20 +14,23 @@ import java.io.Serializable;
  * @date 2023-3-7
  */
 @Entity
-@Table(name = "qrtz_paused_trigger_grps")
+@Table(name = "qrtz_calendars")
 @Getter
 @Setter
 @ToString
-public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
-
+public class QrtzCalendarsEntity    implements Serializable,Cloneable {
 
     /** 调度器名  */
     @Id
     private  String  schedName ;
 
 
-    /** 触发器分组 */
+    /** 日程名  */
     @Id
-    private  String  triggerGroup ;
+    private  String  calendarName ;
+
+
+    /** 日程数据 */
+    private  byte[]  calendar ;
 
 }

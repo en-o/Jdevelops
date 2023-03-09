@@ -1,7 +1,7 @@
-package cn.tannn.spring.quart.dao;
+package cn.jdevelops.spring.quart.dao;
 
-import cn.tannn.spring.quart.entity.QrtzJobDetailsEntity;
-import cn.tannn.spring.quart.entity.key.QrtzJobDetailsUPK;
+import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
+import cn.jdevelops.spring.quart.entity.key.QrtzJobDetailsUPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

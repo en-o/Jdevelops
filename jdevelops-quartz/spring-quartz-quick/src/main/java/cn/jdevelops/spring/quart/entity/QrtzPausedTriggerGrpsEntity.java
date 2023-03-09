@@ -1,4 +1,4 @@
-package cn.tannn.spring.quart.entity;
+package cn.jdevelops.spring.quart.entity;
 
 import lombok.*;
 import javax.persistence.Entity;
@@ -14,11 +14,11 @@ import java.io.Serializable;
  * @date 2023-3-7
  */
 @Entity
-@Table(name = "qrtz_locks")
+@Table(name = "qrtz_paused_trigger_grps")
 @Getter
 @Setter
 @ToString
-public class QrtzLocksEntity  implements Serializable,Cloneable{
+public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
 
 
     /** 调度器名  */
@@ -26,8 +26,8 @@ public class QrtzLocksEntity  implements Serializable,Cloneable{
     private  String  schedName ;
 
 
-    /** 锁名 */
+    /** 触发器分组 */
     @Id
-    private  String  lockName ;
+    private  String  triggerGroup ;
 
 }

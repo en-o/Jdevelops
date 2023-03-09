@@ -1,4 +1,4 @@
-package cn.tannn.spring.quart.entity.key;
+package cn.jdevelops.spring.quart.entity.key;
 
 import lombok.*;
 

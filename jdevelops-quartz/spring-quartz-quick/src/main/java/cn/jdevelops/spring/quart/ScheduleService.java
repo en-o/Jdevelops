@@ -1,7 +1,7 @@
-package cn.tannn.spring.quart;
+package cn.jdevelops.spring.quart;
 
-import cn.tannn.spring.quart.entity.QrtzJobDetailsEntity;
-import cn.tannn.spring.quart.exception.TaskException;
+import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
+import cn.jdevelops.spring.quart.exception.TaskException;
 import org.quartz.Job;
 import org.springframework.data.domain.Page;
 
@@ -28,6 +28,7 @@ public interface ScheduleService {
      * @param jGroup  任务分组
      * @param tName 触发器名
      * @param tGroup 触发器分组
+     * @param startNow 是否立即开始
      * @param cron 开始时间
      */
     void addScheduleJob(Class<? extends Job> jobBeanClass,
@@ -35,6 +36,7 @@ public interface ScheduleService {
                         String jGroup,
                         String tName,
                         String tGroup,
+                        boolean startNow,
                         String cron);
 
     /**
@@ -44,6 +46,7 @@ public interface ScheduleService {
      * @param jGroup  任务分组
      * @param tName 触发器名
      * @param tGroup 触发器分组
+     * @param startNow 是否立即开始
      * @param startTime 开始时间
      */
     void addScheduleJob(Class<? extends Job> jobBeanClass,
@@ -51,6 +54,7 @@ public interface ScheduleService {
                           String jGroup,
                           String tName,
                           String tGroup,
+                          boolean startNow,
                           Date startTime);
 
     /**
