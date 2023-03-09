@@ -24,16 +24,16 @@ public interface QrtzJobDetailsDao extends JpaRepository<QrtzJobDetailsEntity, Q
      * @return JobAndTriggerBO of Page
      */
     @Query("SELECT DISTINCT " +
-            " jd.jobDetailsUPK.jobName , " +
-            " jd.jobDetailsUPK.jobGroup , " +
-            " jd.jobClassName , " +
-            " qt.startTime, " +
-            " qt.triggerType, " +
-            " qt.triggerState, " +
-            " qt.cronTriggersUPK.triggerName , " +
-            " qt.cronTriggersUPK.triggerGroup , " +
-            " ct.cronExpression , " +
-            " ct.timeZoneId  " +
+            " jd.jobDetailsUPK.jobName as jobName, " +
+            " jd.jobDetailsUPK.jobGroup as jobGroup , " +
+            " jd.jobClassName as jobClassName , " +
+            " qt.startTime as startTime, " +
+            " qt.triggerType as triggerType, " +
+            " qt.triggerState as triggerState, " +
+            " qt.cronTriggersUPK.triggerName as triggerName, " +
+            " qt.cronTriggersUPK.triggerGroup as triggerGroup, " +
+            " ct.cronExpression as cronExpression, " +
+            " ct.timeZoneId  as timeZoneId " +
             "FROM " +
             " QrtzJobDetailsEntity jd " +
             "LEFT JOIN QrtzTriggersEntity qt ON qt.cronTriggersUPK.triggerGroup = jd.jobDetailsUPK.jobGroup " +
