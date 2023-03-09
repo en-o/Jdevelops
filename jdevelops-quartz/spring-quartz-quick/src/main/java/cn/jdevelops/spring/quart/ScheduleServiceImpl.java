@@ -1,5 +1,6 @@
 package cn.jdevelops.spring.quart;
 
+import cn.jdevelops.spring.quart.dao.bo.JobAndTriggerBO;
 import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
 import cn.jdevelops.spring.quart.dao.QrtzJobDetailsDao;
 import cn.jdevelops.spring.quart.exception.TaskException;
@@ -33,10 +34,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
-    public Page<QrtzJobDetailsEntity> getJobAndTriggerDetails(Integer pageNum, Integer pageSize) {
+    public Page<JobAndTriggerBO> getJobAndTriggerDetails(Integer pageNum, Integer pageSize) {
         pageNum = Optional.ofNullable(pageNum).orElse(1);
         pageSize = Optional.ofNullable(pageSize).orElse(10);
-        return jobDetailsDao.findAll(PageRequest.of(pageNum - 1, pageSize));
+        return jobDetailsDao.findJobAndTrigger(PageRequest.of(pageNum - 1, pageSize));
     }
 
     @Override
@@ -56,17 +57,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 //                    .usingJobData("data", data)
                     .build();
             //创建触发器，指定任务执行时间
-            TriggerBuilder<CronTrigger> triggerBuild = TriggerBuilder.newTrigger()
+            CronTrigger trigger = TriggerBuilder.newTrigger()
                     // 指定触发器组名和触发器名
                     .withIdentity(tName, tGroup)
-
-                    .withSchedule(CronScheduleBuilder.cronSchedule(cron));
+                    .startNow()
+                    .withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
             if(startNow){
-                triggerBuild.startNow();
+                // 启动调度器
+                scheduler.start();
             }
-            CronTrigger trigger = triggerBuild.build();
-            // 启动调度器
-            scheduler.start();
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e) {
             LOG.error("任务创建失败{}", e.getMessage());

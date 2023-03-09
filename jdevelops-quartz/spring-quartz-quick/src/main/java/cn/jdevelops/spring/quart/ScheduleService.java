@@ -1,5 +1,6 @@
 package cn.jdevelops.spring.quart;
 
+import cn.jdevelops.spring.quart.dao.bo.JobAndTriggerBO;
 import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
 import cn.jdevelops.spring.quart.exception.TaskException;
 import org.quartz.Job;
@@ -17,9 +18,9 @@ public interface ScheduleService {
      * 获取定时任务详情
      * @param pageNum 页码 1开始
      * @param pageSize 每页数量
-     * @return QrtzJobDetailsEntity of Page
+     * @return JobAndTriggerBO of Page
      */
-    Page<QrtzJobDetailsEntity> getJobAndTriggerDetails(Integer pageNum, Integer pageSize);
+    Page<JobAndTriggerBO> getJobAndTriggerDetails(Integer pageNum, Integer pageSize);
 
     /**
      * 添加任务
