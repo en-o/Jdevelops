@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <groupId>cn.jdevelops</groupId>
+    <version>2.0.7</version>
+    <artifactId>jdevelops-dependencies</artifactId>
+    <name>${project.artifactId}</name>
+    <description>基础依赖清单，管理整个项目的依赖版本</description>
+    <url>https://github.com/en-o/Jdevelops</url>
+
+    <!-- 统一依赖版本管理 -->
+    <properties>
+        <jdevelops.last.version>2.0.7</jdevelops.last.version>
+        <!-- 文档  -->
+        <knife4j.version>3.0.3</knife4j.version>
+        <swagger.version>1.6.6</swagger.version>
+
+        <!-- spring -->
+        <spring-core.version>5.3.21</spring-core.version>
+
+        <!-- rpc -->
+        <openfeign.version>3.0.5</openfeign.version>
+
+        <!-- 工具类 -->
+        <lombok.version>1.18.22</lombok.version>
+        <hutool.version>5.8.8</hutool.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <guava.version>31.1-jre</guava.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <dom4j.version>2.1.3</dom4j.version>
+        <image-combiner.version>2.3.3</image-combiner.version>
+
+
+        <!-- 算法 -->
+        <!--哈希算法和加密算法-->
+        <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
+
+        <!--jwt-->
+        <java-jwt.version>4.0.0</java-jwt.version>
+
+        <!--切面-->
+        <aspect.version>1.9.5</aspect.version>
+
+        <!--json-->
+        <fastjson.version>1.2.83</fastjson.version>
+        <jackson.version>2.14.0</jackson.version>
+        <gson.version>2.9.1</gson.version>
+
+        <!-- 时间 -->
+        <joda-time.version>2.10.6</joda-time.version>
+
+        <!-- 数据库 -->
+        <mysql.version>8.0.30</mysql.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
+        <lucene.version>8.11.0</lucene.version>
+        <elasticsearch.version>7.15.0</elasticsearch.version>
+
+        <!-- sdk -->
+        <weixin-java-miniapp.version>4.3.8.B</weixin-java-miniapp.version>
+        <sms.aliyun.version>2.0.8</sms.aliyun.version>
+        <qiniu.version>7.9.5</qiniu.version>
+
+        <!--监控-->
+        <skywalking.version>8.8.0</skywalking.version>
+        <tlog.version>1.3.6</tlog.version>
+        <commons-logging.version>1.2</commons-logging.version>
+
+    </properties>
+
+
+    <!--
+       统一依赖管理
+            - 只是声明依赖，并不实现引入
+
+       管理jar包的版本，让子项目中引用一个依赖而不用显示的列出版本号。
+       Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，
+       然后它就会使用在这个dependencyManagement元素中指定的版本号
+   -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 文档  -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-autoconfigure</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>swagger-models</artifactId>
+                <groupId>io.swagger</groupId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring-core.version}</version>
+            </dependency>
+
+            <!-- rpc -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-openfeign-core</artifactId>
+                <version>${openfeign.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${openfeign.version}</version>
+            </dependency>
+
+            <!-- 工具类 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-crypto</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-http</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.freewayso</groupId>
+                <artifactId>image-combiner</artifactId>
+                <version>${image-combiner.version}</version>
+            </dependency>
+
+            <!-- 算法 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${bcpkix-jdk15on.version}</version>
+            </dependency>
+
+            <!--   jwt     -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
+            <!-- 切面 -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspect.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspect.version}</version>
+            </dependency>
+
+
+            <!--json-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-json</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- 时间 -->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+
+            <!-- 数据库 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-cache</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lucene.version}</version><!--8.8.2会让打包时test不通过-->
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+
+            <!-- sdk -->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java-miniapp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>${sms.aliyun.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+
+
+            <!--监控-->
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-trace</artifactId>
+                <version>${skywalking.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yomahub</groupId>
+                <artifactId>tlog-web-spring-boot-starter</artifactId>
+                <version>${tlog.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+
+
+            <!-- 框架组件 -->
+
+            <!--caches-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-auto-schema</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-jdbctemplate</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-jpa-server</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-jpa-core</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-mybatis-server</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-mybatis-core</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-redis-core</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-redis-idempotent</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>caches-redis-pub</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!--延时队列-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>delay-core</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>delay-jdk</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>delay-redis</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!--doc-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>doc-swagger-cloud</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>doc-swagger-boot</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>docs-core-swagger</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!--file-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>oss-api</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>local-driver</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>minio-driver</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>qiniu-driver</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- 定时器 -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>spring-quartz-quick</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- 搜搜 -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>search-es</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>search-solr</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- spi -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-spi</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- webs -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-jwt</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-jwt-redis</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-resttemplate</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-socket-client</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-socket-core</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>webs-springs</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+
+
+            <!-- 工具组件-->
+
+            <!-- beans -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>beans-enum</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>beans-entity</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>beans-constant</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- apis -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>apis-annotation</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>apis-exception</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>apis-result</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- aop -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-apilog</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-apisign</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-apiversion</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>aops-exception</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- logs -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>logs-cache-p6spy</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+            <!-- utils -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-encryption</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-environment</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-http</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-jwt</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-list</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-map</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-message</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-spring</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-spring-aop</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-string</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-time</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-validation</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+
+
+
+
+            <!-- starters -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-beans</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-boot-web</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-boot-web-jpa</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-jdevelops-web</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>starters-utils</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+</project>

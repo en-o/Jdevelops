@@ -3,7 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>jdevelops</artifactId>
+        <groupId>cn.jdevelops</groupId>
+        <version>2.0.7</version>
+    </parent>
     <packaging>pom</packaging>
+
     <modules>
         <module>utils-string</module>
         <module>utils-http</module>
@@ -18,11 +24,7 @@
         <module>utils-spring-aop</module>
         <module>utils-validation</module>
     </modules>
-    <parent>
-        <artifactId>jdevelops</artifactId>
-        <groupId>cn.jdevelops</groupId>
-        <version>2.0.6</version>
-    </parent>
+
 
     <artifactId>jdevelops-utils</artifactId>
 
@@ -30,13 +32,11 @@
         <dependency>
             <groupId>cn.jdevelops</groupId>
             <artifactId>beans-enum</artifactId>
-            <version>${jdevelops.last.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
             <artifactId>beans-constant</artifactId>
-            <version>${jdevelops.last.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

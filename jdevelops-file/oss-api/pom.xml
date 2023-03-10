@@ -5,17 +5,11 @@
     <parent>
         <artifactId>jdevelops-file</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <packaging>jar</packaging>
     <artifactId>oss-api</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
 
     <dependencies>
         <dependency>
@@ -25,7 +19,6 @@
         <dependency>
             <groupId>com.freewayso</groupId>
             <artifactId>image-combiner</artifactId>
-            <version>${image-combiner.version}</version>
         </dependency>
     </dependencies>
 

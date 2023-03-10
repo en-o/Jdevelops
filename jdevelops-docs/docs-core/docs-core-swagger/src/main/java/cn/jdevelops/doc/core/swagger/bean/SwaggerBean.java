@@ -42,7 +42,7 @@ public class SwaggerBean {
     /**
      * 当前文档的版本
      */
-    private String version="2.0.6";
+    private String version="2.0.7";
 
 
     /**
