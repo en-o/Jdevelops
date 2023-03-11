@@ -1,8 +1,5 @@
 package cn.jdevelops.idempotent.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +12,6 @@ import org.springframework.stereotype.Component;
  */
 @ConfigurationProperties(prefix = "jdevelops.idempotent")
 @Component
-@Getter
-@Setter
-@ToString
 public class IdempotentConfig {
 
     /**
@@ -36,4 +30,38 @@ public class IdempotentConfig {
      * 参数是否加密（加密过后存储的数据会变短减少缓存空间和对比时间（默认是）
      */
     private boolean parameterEncryption = true;
+
+
+    @Override
+    public String toString() {
+        return "IdempotentConfig{" +
+                "expireTime=" + expireTime +
+                ", groupStr='" + groupStr + '\'' +
+                ", parameterEncryption=" + parameterEncryption +
+                '}';
+    }
+
+    public long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(long expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public String getGroupStr() {
+        return groupStr;
+    }
+
+    public void setGroupStr(String groupStr) {
+        this.groupStr = groupStr;
+    }
+
+    public boolean isParameterEncryption() {
+        return parameterEncryption;
+    }
+
+    public void setParameterEncryption(boolean parameterEncryption) {
+        this.parameterEncryption = parameterEncryption;
+    }
 }

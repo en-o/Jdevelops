@@ -4,7 +4,6 @@ package cn.jdevelops.map.core.map;
 import cn.jdevelops.enums.number.NumEnum;
 import cn.jdevelops.enums.string.StringEnum;
 import cn.jdevelops.json.GsonUtils;
-import lombok.SneakyThrows;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -120,7 +120,7 @@ public class MapUtil  {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getStr()) ){
+            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getCode()) ){
                 params = (Map<String, Object>) obj;
             }
         } catch (Exception e) {
@@ -359,9 +359,12 @@ public class MapUtil  {
      * @param value the value
      * @return the string
      */
-    @SneakyThrows
     public static String decodeQueryParam(final String value) {
-        return URLDecoder.decode(value, "UTF-8");
+        try {
+            return URLDecoder.decode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

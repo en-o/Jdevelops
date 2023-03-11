@@ -2,7 +2,6 @@ package cn.jdevelops.encryption.core;
 
 import cn.jdevelops.encryption.util.RemarkUtil;
 import cn.jdevelops.enums.number.NumEnum;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import java.util.Map;
  * @version 1
  * @date 2020/6/9 14:30
  */
-@Slf4j
 public class SignMD5Util {
 
 

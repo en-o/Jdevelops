@@ -1,9 +1,6 @@
 package cn.jdevelops.entity.basics.audit;
 
 import cn.jdevelops.entity.basics.vo.SerializableVO;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -13,9 +10,7 @@ import java.time.LocalDateTime;
  * @version 1
  * @date 2020/5/26 22:12
  */
-@Getter
-@Setter
-@ToString
+
 public class BaseAuditFields<T> extends SerializableVO<T> {
 
     /**
@@ -38,4 +33,46 @@ public class BaseAuditFields<T> extends SerializableVO<T> {
      */
     private String updateUserName;
 
+
+    @Override
+    public String toString() {
+        return "BaseAuditFields{" +
+                "createTime=" + createTime +
+                ", createUserName='" + createUserName + '\'' +
+                ", updateTime=" + updateTime +
+                ", updateUserName='" + updateUserName + '\'' +
+                '}';
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
 }

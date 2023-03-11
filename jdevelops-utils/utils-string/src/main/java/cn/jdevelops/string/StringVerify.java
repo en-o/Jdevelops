@@ -3,8 +3,9 @@ package cn.jdevelops.string;
 import cn.jdevelops.enums.number.NumEnum;
 import cn.jdevelops.enums.sql.SqlStrFilterEnum;
 import cn.jdevelops.enums.string.StringEnum;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +22,9 @@ import static java.util.regex.Pattern.compile;
  * @version 1
  * @date 2020/8/11 22:01
  */
-@Slf4j
 public class StringVerify {
 
-
+	private static final Logger LOG = LoggerFactory.getLogger(StringVerify.class);
 	private static final Map<String, Object> PHONE_REGULAR = new HashMap<>(6);
 	private static final String REGX = "!|！|@|◎|#|＃|(\\$)|￥|%|％|(\\^)|……|(\\&)|※|(\\*)" +
 			"|×|(\\()|（|(\\))|）|_|——|(\\+)|＋|(\\|)|§ ";
@@ -128,34 +128,34 @@ public class StringVerify {
 	 * @return true 表示参数不存在SQL注入风险 / false 表示参数存在SQL注入风险
 	 */
 	public static Boolean sqlStrFilter(String sInput) {
-		if (StringUtils.isBlank(sInput) || StringEnum.NULL_STRING.getStr().equals(sInput)) {
+		if (StringUtils.isBlank(sInput) || StringEnum.NULL_STRING.getCode().equals(sInput)) {
 			return false;
 		}
 		sInput = sInput.toUpperCase();
 
-		if (sInput.contains(SqlStrFilterEnum.DELETE.getStr())
-				|| sInput.contains(SqlStrFilterEnum.ASCII.getStr())
-				|| sInput.contains(SqlStrFilterEnum.UPDATE.getStr())
-				|| sInput.contains(SqlStrFilterEnum.SELECT.getStr())
-				|| sInput.contains(SqlStrFilterEnum.RSQUO.getStr())
-				|| sInput.contains(SqlStrFilterEnum.SUBSTR.getStr())
-				|| sInput.contains(SqlStrFilterEnum.COUNT.getStr())
-				|| sInput.contains(SqlStrFilterEnum.OR.getStr())
-				|| sInput.contains(SqlStrFilterEnum.AND.getStr())
-				|| sInput.contains(SqlStrFilterEnum.DROP.getStr())
-				|| sInput.contains(SqlStrFilterEnum.EXECUTE.getStr())
-				|| sInput.contains(SqlStrFilterEnum.EXEC.getStr())
-				|| sInput.contains(SqlStrFilterEnum.TRUNCATE.getStr())
-				|| sInput.contains(SqlStrFilterEnum.INTO.getStr())
-				|| sInput.contains(SqlStrFilterEnum.DECLARE.getStr())
-				|| sInput.contains(SqlStrFilterEnum.MASTER.getStr())) {
-			log.error("该参数存在SQL注入风险：sInput=" + sInput);
+		if (sInput.contains(SqlStrFilterEnum.DELETE.getCode())
+				|| sInput.contains(SqlStrFilterEnum.ASCII.getCode())
+				|| sInput.contains(SqlStrFilterEnum.UPDATE.getCode())
+				|| sInput.contains(SqlStrFilterEnum.SELECT.getCode())
+				|| sInput.contains(SqlStrFilterEnum.RSQUO.getCode())
+				|| sInput.contains(SqlStrFilterEnum.SUBSTR.getCode())
+				|| sInput.contains(SqlStrFilterEnum.COUNT.getCode())
+				|| sInput.contains(SqlStrFilterEnum.OR.getCode())
+				|| sInput.contains(SqlStrFilterEnum.AND.getCode())
+				|| sInput.contains(SqlStrFilterEnum.DROP.getCode())
+				|| sInput.contains(SqlStrFilterEnum.EXECUTE.getCode())
+				|| sInput.contains(SqlStrFilterEnum.EXEC.getCode())
+				|| sInput.contains(SqlStrFilterEnum.TRUNCATE.getCode())
+				|| sInput.contains(SqlStrFilterEnum.INTO.getCode())
+				|| sInput.contains(SqlStrFilterEnum.DECLARE.getCode())
+				|| sInput.contains(SqlStrFilterEnum.MASTER.getCode())) {
+			LOG.error("该参数存在SQL注入风险：sInput=" + sInput);
 			return false;
 		}
 		if (isIllegalStr(sInput)) {
 			return false;
 		}
-		log.info("通过sql检测");
+		LOG.info("通过sql检测");
 		return true;
 	}
 
@@ -167,13 +167,13 @@ public class StringVerify {
 	 */
 	public static boolean isIllegalStr(String sInput) {
 
-		if (StringUtils.isBlank(sInput) || StringEnum.NULL_STRING.getStr().equals(sInput)) {
+		if (StringUtils.isBlank(sInput) || StringEnum.NULL_STRING.getCode().equals(sInput)) {
 			return false;
 		}
 		sInput = sInput.trim();
 		Pattern compile = compile(REGX, CASE_INSENSITIVE);
 		Matcher matcher = compile.matcher(sInput);
-		log.info("通过字符串检测");
+		LOG.info("通过字符串检测");
 		return matcher.find();
 	}
 
@@ -192,7 +192,7 @@ public class StringVerify {
 	 * @return 返回真假
 	 */
 	public static boolean isNotEmptyString(String string) {
-		return StringUtils.isNotBlank(string) && !StringEnum.NULL_STRING.getStr().equals(string);
+		return StringUtils.isNotBlank(string) && !StringEnum.NULL_STRING.getCode().equals(string);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class StringVerify {
 	 * @return 返回真假
 	 */
 	public static boolean isEmptyString(String string) {
-		return StringUtils.isBlank(string) || StringEnum.NULL_STRING.getStr().equals(string);
+		return StringUtils.isBlank(string) || StringEnum.NULL_STRING.getCode().equals(string);
 	}
 
 
@@ -234,7 +234,8 @@ public class StringVerify {
 				return true;
 			}
 			else {
-				return false;	//如果与正则表达式不匹配，则返回false
+				//如果与正则表达式不匹配，则返回false
+				return false;
 			}
 	}
 

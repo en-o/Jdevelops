@@ -1,16 +1,11 @@
 package cn.jdevelops.enums.number;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * 数字枚举
  * @author tn
  * @version 1
  * @date 2020/12/14 16:55
  */
-@Getter
-@AllArgsConstructor
 public enum NumEnum {
     /** 0 */
     ZERO(0,"0"),
@@ -42,6 +37,19 @@ public enum NumEnum {
     HUNDRED(100,"100"),
 
     ;
-    private Integer num;
-    private String remark;
+    private final Integer num;
+    private final String remark;
+
+    NumEnum(Integer num, String remark) {
+        this.num = num;
+        this.remark = remark;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
 }

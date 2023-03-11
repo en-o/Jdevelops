@@ -1,7 +1,8 @@
 package cn.jdevelops.version.config;
 
 import cn.jdevelops.aops.StringUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,10 @@ import java.util.Optional;
  * @author tnnn
  * <a href="https://www.cnblogs.com/amuge/articles/13821162.html">参考</a>
  */
-@Slf4j
 public class ApiVersionCondition implements RequestCondition<ApiVersionCondition> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ApiVersionCondition.class);
+
     private double apiVersion;
 
     public ApiVersionCondition(double apiVersion) {
@@ -48,7 +51,7 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
                 }
             }
         }catch (Exception e){
-            log.error("判断版本号失败",e);
+            LOG.error("判断版本号失败",e);
             return this;
         }
         return null;

@@ -3,8 +3,7 @@ package cn.jdevelops.entity.basics.vo;
 import cn.jdevelops.map.core.bean.BeanCopier;
 import cn.jdevelops.map.core.bean.BeanCopyUtil;
 import cn.jdevelops.map.core.bean.ColumnUtil;
-import lombok.Getter;
-import lombok.ToString;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,8 +16,7 @@ import java.util.List;
  * @version 1
  * @date 2020/6/28 16:46
  */
-@Getter
-@ToString
+
 public class SerializableVO<T> implements Serializable {
 
     private static final long serialVersionUID = 315654089784739497L;
@@ -138,4 +136,6 @@ public class SerializableVO<T> implements Serializable {
             return (T)clazz;
         }
     }
+
+
 }

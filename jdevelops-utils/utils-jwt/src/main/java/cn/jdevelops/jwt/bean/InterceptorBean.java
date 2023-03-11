@@ -1,8 +1,6 @@
 package cn.jdevelops.jwt.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,6 @@ import java.util.Set;
  */
 @ConfigurationProperties(prefix = "jdevelops.jwt.web.interceptor")
 @Component
-@Getter
-@Setter
-@ToString
 public class InterceptorBean {
 
     /**
@@ -29,4 +24,29 @@ public class InterceptorBean {
      * 拦截 为空拦截所有
      */
     private Set<String> addPathPatterns = new HashSet<>();
+
+
+    @Override
+    public String toString() {
+        return "InterceptorBean{" +
+                "excludePathPatterns=" + excludePathPatterns +
+                ", addPathPatterns=" + addPathPatterns +
+                '}';
+    }
+
+    public Set<String> getExcludePathPatterns() {
+        return excludePathPatterns;
+    }
+
+    public void setExcludePathPatterns(Set<String> excludePathPatterns) {
+        this.excludePathPatterns = excludePathPatterns;
+    }
+
+    public Set<String> getAddPathPatterns() {
+        return addPathPatterns;
+    }
+
+    public void setAddPathPatterns(Set<String> addPathPatterns) {
+        this.addPathPatterns = addPathPatterns;
+    }
 }

@@ -1,6 +1,5 @@
 package cn.jdevelops.enums.result;
 
-import lombok.Getter;
 
 /**
  * 返回值 code message 枚举
@@ -8,7 +7,6 @@ import lombok.Getter;
  * @author tn
  * @date 2019年07月29日 14:16
  */
-@Getter
 public enum ResultCodeEnum {
     /**
      * 成功
@@ -124,4 +122,11 @@ public enum ResultCodeEnum {
         this.message = message;
     }
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

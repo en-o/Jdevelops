@@ -17,17 +17,16 @@
 
 package cn.jdevelops.schema.properties;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 /**
  * Local DataSource configuration.
  * @author tnnn
  */
-@Getter
-@Setter
+
 @Component
 @ConfigurationProperties(prefix = "jdevelops.database")
 public class DataBaseProperties {
@@ -44,6 +43,25 @@ public class DataBaseProperties {
     /**
      *  是否启用 默认true
      */
-    private Boolean initEnable=true;
+    private Boolean initEnable;
 
+
+    public String getInitScript() {
+        return initScript;
+    }
+
+    public void setInitScript(String initScript) {
+        this.initScript = initScript;
+    }
+
+    public Boolean getInitEnable() {
+        if(Objects.isNull(initEnable)){
+            return true;
+        }
+        return initEnable;
+    }
+
+    public void setInitEnable(Boolean initEnable) {
+        this.initEnable = initEnable;
+    }
 }

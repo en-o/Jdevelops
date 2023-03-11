@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * local
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @ToString
 @Accessors(chain = true)
-@Configuration
 public class LocalConfig {
 
     /**

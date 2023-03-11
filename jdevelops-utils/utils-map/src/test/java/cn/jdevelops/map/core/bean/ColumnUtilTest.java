@@ -1,8 +1,7 @@
 package cn.jdevelops.map.core.bean;
 
 import junit.framework.TestCase;
-import lombok.Getter;
-import lombok.Setter;
+
 
 public class ColumnUtilTest extends TestCase {
 
@@ -33,24 +32,93 @@ public class ColumnUtilTest extends TestCase {
         assertEquals(ColumnUtil.getFieldName(BoilerEntity::getCreateTime),"createTime");
     }
 
-    @Getter
-    @Setter
+
     public static class Apply {
         private String age,name;
         @ColumnUtil.TableField(value = "sex")
         private String mySex;
-    }
-    @Getter
-    @Setter
-    public static class Help {
-        private String author,title,myTest;
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getMySex() {
+            return mySex;
+        }
+
+        public void setMySex(String mySex) {
+            this.mySex = mySex;
+        }
     }
 
-    @Getter
-    @Setter
+    public static class Help {
+        private String author,title,myTest;
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(String author) {
+            this.author = author;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getMyTest() {
+            return myTest;
+        }
+
+        public void setMyTest(String myTest) {
+            this.myTest = myTest;
+        }
+    }
+
+
     public static class Apply2 extends Help {
         private String age,name;
         @ColumnUtil.TableField(value = "sex")
         private String mySex;
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getMySex() {
+            return mySex;
+        }
+
+        public void setMySex(String mySex) {
+            this.mySex = mySex;
+        }
     }
 }

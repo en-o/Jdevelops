@@ -1,7 +1,5 @@
 package cn.jdevelops.enums.result;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 公共枚举
@@ -10,8 +8,7 @@ import lombok.Getter;
  * @version V1.0
  * @date 2022-07-22 12:30:44
  **/
-@AllArgsConstructor
-@Getter
+
 public enum UserExceptionEnum {
 
 
@@ -93,4 +90,16 @@ public enum UserExceptionEnum {
     private final String message;
 
 
+    UserExceptionEnum(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

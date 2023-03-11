@@ -1,7 +1,8 @@
 package cn.jdevelops.map.core.bean;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
  * @version 1
  * @date 2020/6/29 9:08
  */
-@Slf4j
 public class BeanCopier {
+    private static final Logger LOG = LoggerFactory.getLogger(BeanCopier.class);
 
     public static void copy(Object source, Object target) {
         BeanUtils.copyProperties(source, target);
@@ -56,7 +57,7 @@ public class BeanCopier {
                             targetField.set(target, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         }
                     } catch (IllegalAccessException var11) {
-                        log.error(var11.getMessage(),var11);
+                        LOG.error(var11.getMessage(),var11);
                     }
                 }
             }
@@ -70,7 +71,7 @@ public class BeanCopier {
             copy(source, t);
             return t;
         } catch (IllegalAccessException | InstantiationException var3) {
-            log.error(var3.getMessage(),var3);
+            LOG.error(var3.getMessage(),var3);
             return null;
         }
     }

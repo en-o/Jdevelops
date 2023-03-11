@@ -2,7 +2,8 @@ package cn.jdevelops.spring.rest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,9 +17,10 @@ import java.util.Map;
 /**
  * @author tnnn
  */
-@Slf4j
 public class RestTemplateUtil {
 	private static final int STATUS_CODE_SUCCESS = 200;
+
+	private static final Logger LOG = LoggerFactory.getLogger(RestTemplateUtil.class);
 
 	/**
 	 * restTemplate 发送post请求
@@ -33,7 +35,7 @@ public class RestTemplateUtil {
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 		HttpEntity<String> requestEntity = new HttpEntity<>(json,headers);
 		ResponseEntity<String> entity = restTemplate.postForEntity(url, requestEntity, String.class);
-		log.info("ResponseEntity="+ JSON.toJSONString(entity));
+		LOG.info("ResponseEntity="+ JSON.toJSONString(entity));
 		return entity;
 	}
 	/**
@@ -45,7 +47,7 @@ public class RestTemplateUtil {
 	 */
 	public static ResponseEntity<String> getRestTemplateGet(RestTemplate restTemplate,String url,String json){
 		ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class,json);
-		log.info("ResponseEntity="+ JSON.toJSONString(entity));
+		LOG.info("ResponseEntity="+ JSON.toJSONString(entity));
 		return entity;
 	}
 
@@ -62,7 +64,7 @@ public class RestTemplateUtil {
 			map.put("code", code+"");
 			map.put("data", obj);
 		}
-		log.info(JSON.toJSONString(map));
+		LOG.info(JSON.toJSONString(map));
 		return map;
 	}
 

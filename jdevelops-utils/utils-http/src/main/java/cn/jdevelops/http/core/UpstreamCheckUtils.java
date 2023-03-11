@@ -42,7 +42,6 @@ public class UpstreamCheckUtils {
      * logger.
      */
     private static final Logger LOG = LoggerFactory.getLogger(UpstreamCheckUtils.class);
-
     /**
      * Check url boolean.
      *

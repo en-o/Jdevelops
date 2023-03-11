@@ -42,7 +42,7 @@ public class CommUtils {
 
     public static boolean isBlank(final CharSequence idFieldName) {
         int strLen;
-        if (idFieldName == null || StringEnum.NULL_STRING.getStr().contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
+        if (idFieldName == null || StringEnum.NULL_STRING.getCode().contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
             return true;
         }
         for (int i = 0; i < strLen; i++) {

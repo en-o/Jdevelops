@@ -1,6 +1,5 @@
 package cn.jdevelops.enums.result;
 
-import lombok.Getter;
 
 /**
  *  token 异常 message
@@ -8,7 +7,6 @@ import lombok.Getter;
  * @author tn
  * @date 2019年07月29日 14:16
  */
-@Getter
 public enum TokenExceptionCodeEnum {
 
     /**
@@ -63,4 +61,11 @@ public enum TokenExceptionCodeEnum {
         this.message = message;
     }
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

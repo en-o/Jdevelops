@@ -1,7 +1,6 @@
 package cn.jdevelops.enums.gb;
 
 
-import lombok.Getter;
 
 /**
  * 政治面貌
@@ -9,7 +8,6 @@ import lombok.Getter;
  * @author tn
  * @date 2021-11-12 12:46
  */
-@Getter
 public enum PoliticsEnum {
     /* 中国共产党党员 */
     GCD("01", "中国共产党党员"),
@@ -89,4 +87,11 @@ public enum PoliticsEnum {
         return null;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

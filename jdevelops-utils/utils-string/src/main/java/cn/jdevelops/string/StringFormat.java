@@ -1,6 +1,8 @@
 package cn.jdevelops.string;
 
-import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -19,9 +21,8 @@ import static java.util.regex.Pattern.compile;
  * @version 1
  * @date 2020/8/11 22:08
  */
-@Slf4j
 public class StringFormat {
-
+    private static final Logger LOG = LoggerFactory.getLogger(StringFormat.class);
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
@@ -193,7 +194,7 @@ public class StringFormat {
      */
     public static void consoleLog(String logs){
         try {
-            log.info(logs);
+            LOG.info(logs);
         }catch (Exception e){
             e.printStackTrace();
         }

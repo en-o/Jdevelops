@@ -1,8 +1,6 @@
 package cn.jdevelops.enums.time;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 时间格式常量
@@ -10,8 +8,7 @@ import lombok.Getter;
  * @author tn
  * @date 2020/4/9 11:02
  */
-@Getter
-@AllArgsConstructor
+
 public enum TimeFormatEnum {
 
 	/**
@@ -218,6 +215,19 @@ public enum TimeFormatEnum {
 	MYSQL_FORMAT_DATETIME_SIMPLE_DAY("%T", "时分秒"),
 	;
 
-	private String format;
-	private String remark;
+	private final String format;
+	private final String remark;
+
+	TimeFormatEnum(String format, String remark) {
+		this.format = format;
+		this.remark = remark;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
 }

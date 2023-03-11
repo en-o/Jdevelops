@@ -1,7 +1,5 @@
 package cn.jdevelops.enums.sql;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 字符串枚举
@@ -9,8 +7,7 @@ import lombok.Getter;
  * @version 1
  * @date 2020/12/14 16:34
  */
-@Getter
-@AllArgsConstructor
+
 public enum SqlStrFilterEnum {
     /** 删除 */
     DELETE("DELETE","删除"),
@@ -46,7 +43,20 @@ public enum SqlStrFilterEnum {
     RSQUO("'","单引号"),
     ;
 
-    private String str;
-    private String remark;
+    private final String code;
+    private final String remark;
 
+
+    SqlStrFilterEnum(String code, String remark) {
+        this.code = code;
+        this.remark = remark;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
 }

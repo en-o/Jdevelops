@@ -1,8 +1,5 @@
 package cn.jdevelops.file.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,9 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @version V1.0
  * @date 2023-01-10 15:50
  */
-@Getter
-@Setter
-@ToString
+
 public class UploadFileInfo {
 
     /**
@@ -28,4 +23,28 @@ public class UploadFileInfo {
      */
     String fileName;
 
+
+    @Override
+    public String toString() {
+        return "UploadFileInfo{" +
+                "file=" + file +
+                ", fileName='" + fileName + '\'' +
+                '}';
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

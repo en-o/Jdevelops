@@ -1,7 +1,5 @@
 package cn.jdevelops.enums.string;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 字符串枚举
@@ -9,8 +7,6 @@ import lombok.Getter;
  * @version 1
  * @date 2020/12/14 17:04
  */
-@Getter
-@AllArgsConstructor
 public enum StringEnum {
 
     /** null串 */
@@ -21,6 +17,19 @@ public enum StringEnum {
     EMPTY_STRING("empty","empty");
 
 
-    private String str;
-    private String remark;
+    private final String code;
+    private final String remark;
+
+    StringEnum(String code, String remark) {
+        this.code = code;
+        this.remark = remark;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
 }

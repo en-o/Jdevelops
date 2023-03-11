@@ -1,8 +1,6 @@
 package cn.jdevelops.doc.core.swagger.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import springfox.documentation.spi.DocumentationType;
@@ -17,9 +15,7 @@ import java.util.Objects;
  */
 @ConfigurationProperties(prefix = "jdevelops.swagger")
 @Component
-@Getter
-@Setter
-@ToString
+
 public class SwaggerBean {
 
     /**
@@ -97,5 +93,102 @@ public class SwaggerBean {
 
     public String getGroupName() {
         return Objects.isNull(groupName)?"Jdevelops接口":groupName;
+    }
+
+    @Override
+    public String toString() {
+        return "SwaggerBean{" +
+                "basePackage='" + basePackage + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                ", contactUrl='" + contactUrl + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", docket='" + docket + '\'' +
+                ", show=" + show +
+                ", groupName='" + groupName + '\'' +
+                ", addHeaderToken=" + addHeaderToken +
+                '}';
+    }
+
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getContactUrl() {
+        return contactUrl;
+    }
+
+    public void setContactUrl(String contactUrl) {
+        this.contactUrl = contactUrl;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
+    public void setDocket(String docket) {
+        this.docket = docket;
+    }
+
+    public Boolean getShow() {
+        return show;
+    }
+
+    public void setShow(Boolean show) {
+        this.show = show;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Boolean getAddHeaderToken() {
+        return addHeaderToken;
+    }
+
+    public void setAddHeaderToken(Boolean addHeaderToken) {
+        this.addHeaderToken = addHeaderToken;
     }
 }

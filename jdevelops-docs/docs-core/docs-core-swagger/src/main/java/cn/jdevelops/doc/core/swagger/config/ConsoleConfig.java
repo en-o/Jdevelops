@@ -1,9 +1,9 @@
 package cn.jdevelops.doc.core.swagger.config;
 
 import cn.jdevelops.doc.core.swagger.bean.SwaggerBean;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,9 +25,9 @@ import static cn.jdevelops.doc.core.swagger.constant.PublicConstant.SPIRIT;
  * @version 1
  * @date 2020/6/18 16:24
  */
-@Slf4j
 public class ConsoleConfig implements ApplicationRunner {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ConsoleConfig.class);
 
 	@Value("${server.port:8080}")
 	private int serverPort;
@@ -51,7 +51,7 @@ public class ConsoleConfig implements ApplicationRunner {
 			if (StringUtils.isNotBlank(groupName)) {
 				groupStr = "?group=" + swaggerBean.getGroupName();
 			}
-			log.info("\n----------------------------------------------------------\n\t" +
+			LOG.info("\n----------------------------------------------------------\n\t" +
 					" swagger 启动. Access URLs:\n\t" +
 					"swagger 启动成功！接口文档地址(cloud没有页面)-HTML: (http://" + getRealIp() + COLON + serverPort + serverName + "/doc.html" + ")\n\t" +
 					"swagger 启动成功！接口文档地址-JSON: (http://" + getRealIp() + COLON + serverPort + serverName + "/v2/api-docs" + groupStr + ")\n\t" +
@@ -101,7 +101,7 @@ public class ConsoleConfig implements ApplicationRunner {
 				break;
 			}
 		} catch (SocketException e) {
-			log.error("获取主机ip地址时出错"
+			LOG.error("获取主机ip地址时出错"
 					+ e.getMessage());
 		}
 		return "127.0.0.1";

@@ -2,7 +2,8 @@ package cn.jdevelops.redis.pub.server.impl;
 
 
 import cn.jdevelops.redis.pub.server.RedisReceiverServer;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 
 /**
@@ -10,9 +11,9 @@ import org.springframework.data.redis.connection.Message;
  * @author tn
  * @date 2020-09-11 10:36
  */
-@Slf4j
 public class RedisReceiverImpl implements RedisReceiverServer<String> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RedisReceiverImpl.class);
     /**
      * 消息接收
      * @param message message
@@ -20,7 +21,7 @@ public class RedisReceiverImpl implements RedisReceiverServer<String> {
      */
     @Override
     public String pubMessage(Message message) {
-        log.info("\n----------------------------------------------------------\n\t" +
+        LOG.info("\n----------------------------------------------------------\n\t" +
                 "redis监听频道 "+new String(message.getChannel())+" 的消息\n\t" +
                 "消息体："+new String(message.getBody()) + "\n" +
                 "----------------------------------------------------------");

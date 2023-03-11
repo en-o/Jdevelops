@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * HttpContextUtils 
+ * HttpContextUtils
  *
  * @author itdragons
  */
@@ -85,13 +85,13 @@ public class HttpContextUtils {
 	 * @return true 是form-data
 	 */
 	public static boolean isMultipartContent(HttpServletRequest request) {
-		if (!HttpEnum.POST.getStr().equalsIgnoreCase(request.getMethod())) {
+		if (!HttpEnum.POST.getCode().equalsIgnoreCase(request.getMethod())) {
 			return false;
 		}
 
 		//获取Content-Type
 		String contentType = request.getContentType();
-		return (contentType != null) && (contentType.toLowerCase().startsWith(HttpEnum.MULTIPART_PATHSEPARATOR.getStr().toLowerCase()));
+		return (contentType != null) && (contentType.toLowerCase().startsWith(HttpEnum.MULTIPART_PATHSEPARATOR.getCode().toLowerCase()));
 
 	}
 }

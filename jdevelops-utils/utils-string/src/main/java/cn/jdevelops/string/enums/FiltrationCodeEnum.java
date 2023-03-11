@@ -1,7 +1,6 @@
 package cn.jdevelops.string.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -9,8 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author l
  */
-@AllArgsConstructor
-@Getter
+
 public enum FiltrationCodeEnum {
 	/**
 	 * 银行卡号
@@ -52,12 +50,12 @@ public enum FiltrationCodeEnum {
 	/**
 	 * 方法
 	 */
-	private String method;
+	private final String method;
 
 	/**
 	 * 方法介绍
 	 */
-	private String methodName;
+	private final String methodName;
 
 	/**
 	 * 获取名称
@@ -76,4 +74,16 @@ public enum FiltrationCodeEnum {
 		return null;
 	}
 
+	FiltrationCodeEnum(String method, String methodName) {
+		this.method = method;
+		this.methodName = methodName;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
 }

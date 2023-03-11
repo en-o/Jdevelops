@@ -3,7 +3,8 @@ package cn.jdevelops.redis.core.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -24,10 +25,11 @@ import java.util.Arrays;
  * @author Tianms
  * @date 2019年07月30日 10:13
  */
-@Slf4j
 @EnableCaching
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RedisConfig extends CachingConfigurerSupport {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RedisConfig.class);
 
     @Resource
     private LettuceConnectionFactory lettuceConnectionFactory;
@@ -68,7 +70,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         // Hash value序列化
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
-        log.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
+        LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
         return redisTemplate;
     }
 

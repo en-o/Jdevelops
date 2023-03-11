@@ -1,7 +1,8 @@
 package cn.jdevelops.http.core;
 
 import cn.jdevelops.enums.number.NumEnum;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -14,9 +15,9 @@ import java.util.Enumeration;
 /**
  * @author 谭宁
  */
-@Slf4j
 public class IpUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(IpUtil.class);
     static final String UNKNOWN = "unKnown";
     static final String LOCALHOST = "localhost";
 
@@ -186,13 +187,13 @@ public class IpUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("获得MAC地址失败", e);
         }
         return macAddress;
     }
 
     /**
-     * ip转换
+     * 域名转ip
      *
      * @param domainName 域名
      * @return String
@@ -202,7 +203,7 @@ public class IpUtil {
         try {
             ip = InetAddress.getByName(domainName).getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            LOG.error("域名转ip失败", e);
             return domainName;
         }
         return ip;

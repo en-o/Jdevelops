@@ -1,15 +1,12 @@
 package cn.jdevelops.enums.http;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * http相关
  * @author tn
  * @date 2020-12-17 14:32
  */
-@Getter
-@AllArgsConstructor
+
 public enum HttpEnum {
 
     /** POST */
@@ -29,6 +26,19 @@ public enum HttpEnum {
     /**  multipart/ */
     MULTIPART_PATHSEPARATOR("MULTIPART/","消息头中的东西 multipart/"),
     ;
-    private String str;
-    private String remark;
+    private final String code;
+    private final String remark;
+
+    HttpEnum(String code, String remark) {
+        this.code = code;
+        this.remark = remark;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
 }

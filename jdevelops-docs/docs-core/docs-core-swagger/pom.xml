@@ -17,11 +17,6 @@
             <artifactId>knife4j-spring-boot-autoconfigure</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>

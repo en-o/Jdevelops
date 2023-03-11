@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,7 +54,6 @@ public class JPageUtil {
         }
     }
 
-    @NotNull
     private static Sort getOrders(Integer orderDesc, String orderBy) {
         if (!Objects.isNull(orderDesc) && 0 == orderDesc) {
             return Sort.by(Sort.Direction.ASC,

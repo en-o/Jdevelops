@@ -23,10 +23,10 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.json.JsonParseException;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
@@ -45,24 +45,22 @@ public class GsonUtils {
     private static String DECODE = "UTF-8";
 
     private static final GsonUtils INSTANCE = new GsonUtils();
-    
+
     /**
      * The constant STRING.
      */
     private static final TypeAdapter<String> STRING = new TypeAdapter<String>() {
         @Override
-        @SneakyThrows
-        public void write(final JsonWriter out, final String value) {
+        public void write(final JsonWriter out, final String value) throws IOException {
             if (StringUtils.isBlank(value)) {
                 out.nullValue();
                 return;
             }
             out.value(value);
         }
-        
+
         @Override
-        @SneakyThrows
-        public String read(final JsonReader reader) {
+        public String read(final JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return "";
@@ -70,14 +68,14 @@ public class GsonUtils {
             return reader.nextString();
         }
     };
-    
+
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(String.class, STRING).create();
-    
+
     private static final Gson GSON_MAP = new GsonBuilder().serializeNulls().registerTypeHierarchyAdapter(new TypeToken<Map<String, Object>>() {
     }.getRawType(), new MapDeserializer<String, Object>()).create();
-    
+
     private static final String DOT = ".";
-    
+
     private static final String E = "e";
 
     /**
@@ -88,7 +86,7 @@ public class GsonUtils {
     public static Gson getGson() {
         return GsonUtils.GSON;
     }
-    
+
     /**
      * Gets instance.
      *
@@ -97,7 +95,7 @@ public class GsonUtils {
     public static GsonUtils getInstance() {
         return INSTANCE;
     }
-    
+
     /**
      * To json string.
      *
@@ -107,7 +105,7 @@ public class GsonUtils {
     public String toJson(final Object object) {
         return GSON.toJson(object);
     }
-    
+
     /**
      * From json t.
      *
@@ -119,7 +117,7 @@ public class GsonUtils {
     public <T> T fromJson(final String json, final Class<T> tClass) {
         return GSON.fromJson(json, tClass);
     }
-    
+
     /**
      * From json t.
      *
@@ -131,7 +129,7 @@ public class GsonUtils {
     public <T> T fromJson(final JsonElement jsonElement, final Class<T> tClass) {
         return GSON.fromJson(jsonElement, tClass);
     }
-    
+
     /**
      * From list list.
      *
@@ -143,7 +141,7 @@ public class GsonUtils {
     public <T> List<T> fromList(final String json, final Class<T> clazz) {
         return GSON.fromJson(json, TypeToken.getParameterized(List.class, clazz).getType());
     }
-    
+
     /**
      * toGetParam.
      *
@@ -168,9 +166,9 @@ public class GsonUtils {
         });
         final String r = stringBuilder.toString();
         return r.substring(0, r.lastIndexOf("&"));
-        
+
     }
-    
+
     /**
      * toMap.
      *
@@ -181,7 +179,7 @@ public class GsonUtils {
         return GSON.fromJson(json, new TypeToken<Map<String, String>>() {
         }.getType());
     }
-    
+
     /**
      * toList Map.
      *
@@ -192,7 +190,7 @@ public class GsonUtils {
         return GSON.fromJson(json, new TypeToken<List<Map<String, Object>>>() {
         }.getType());
     }
-    
+
     /**
      * To object map map.
      *
@@ -203,7 +201,7 @@ public class GsonUtils {
         return GSON_MAP.fromJson(json, new TypeToken<LinkedHashMap<String, Object>>() {
         }.getType());
     }
-    
+
     /**
      * To tree map tree map.
      *
@@ -214,7 +212,7 @@ public class GsonUtils {
         return GSON_MAP.fromJson(json, new TypeToken<ConcurrentSkipListMap<String, Object>>() {
         }.getType());
     }
-    
+
     /**
      * Convert to map map.
      *
@@ -252,27 +250,27 @@ public class GsonUtils {
         }
         return map;
     }
-    
+
     private static class MapDeserializer<T, U> implements JsonDeserializer<Map<T, U>> {
-        
+
         @Override
         public Map<T, U> deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {
             if (!json.isJsonObject()) {
                 return null;
             }
-            
+
             JsonObject jsonObject = json.getAsJsonObject();
             Set<Map.Entry<String, JsonElement>> jsonEntrySet = jsonObject.entrySet();
             Map<T, U> resultMap = new LinkedHashMap<>();
-            
+
             for (Map.Entry<String, JsonElement> entry : jsonEntrySet) {
                 U value = context.deserialize(entry.getValue(), this.getType(entry.getValue()));
                 resultMap.put((T) entry.getKey(), value);
             }
-            
+
             return resultMap;
         }
-    
+
         /**
          * Get JsonElement class type.
          *
@@ -283,7 +281,7 @@ public class GsonUtils {
             if (!element.isJsonPrimitive()) {
                 return element.getClass();
             }
-            
+
             final JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isString()) {
                 return String.class;
@@ -301,5 +299,5 @@ public class GsonUtils {
             }
         }
     }
-    
+
 }

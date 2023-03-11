@@ -20,7 +20,8 @@ import cn.jdevelops.schema.constant.SchemaConstant;
 import cn.jdevelops.schema.properties.DataBaseProperties;
 import cn.jdevelops.schema.util.StringUtil;
 import com.google.common.base.Splitter;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -42,9 +43,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * for execute schema sql file.
  * @author tnnn
  */
-@Slf4j
 @Component
 public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcessor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LocalDataSourceLoader.class);
 
     private static final String PRE_FIX = "file:";
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
@@ -84,12 +86,12 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                 connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
                 jdbcType.set(2);
             } else {
-                log.warn("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
+                LOG.warn("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
                 return;
             }
             this.execute(connection, properties.getUrl().substring(i + 1, j), jdbcType);
         }catch (Exception e){
-            log.warn("自动建库失败,请手动创建",e);
+            LOG.warn("自动建库失败,请手动创建",e);
         }
     }
 
@@ -103,7 +105,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
             switch (jdbcType.get()) {
                 case 1:
                     // 请查看示例 https://gist.github.com/retanoj/5fd369524a18ab68a4fe7ac5e0d121e8
-                    String checkSchema = new StringBuilder().append("select count(*) as isok from pg_catalog.pg_database where datname = '").append(schemaName).append("' ;").toString();
+                    String checkSchema = new StringBuilder().append("select count(*) as isok from pg_cataLOG.pg_database where datname = '").append(schemaName).append("' ;").toString();
                     Statement statement = conn.createStatement();
                     ResultSet resultSet = statement.executeQuery(checkSchema);
                     /*
@@ -120,7 +122,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                         runner.setAutoCommit(true);
                         break;
                     }else {
-                        log.warn("当前库("+schemaName+")已存在，不用在自动创建");
+                        LOG.warn("当前库("+schemaName+")已存在，不用在自动创建");
                         runner.closeConnection();
                         conn.close();
                         return;
@@ -134,7 +136,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                     return;
             }
             Reader fileReader = getResourceAsReaderStr(initScript);
-            log.warn("创建数据库 ==> execute auto schema sql: {}", initScript);
+            LOG.warn("创建数据库 ==> execute auto schema sql: {}", initScript);
             runner.runScript(fileReader);
         } else {
             List<String> initScripts = Splitter.on(";").splitToList(initScript);
@@ -142,11 +144,11 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                 if (sqlScript.startsWith(PRE_FIX)) {
                     String sqlFile = sqlScript.substring(PRE_FIX.length());
                     Reader fileReader = getResourceAsReader(sqlFile);
-                    log.warn("创建数据库 ==> execute auto schema sql: {}", sqlFile);
+                    LOG.warn("创建数据库 ==> execute auto schema sql: {}", sqlFile);
                     runner.runScript(fileReader);
                 } else {
                     Reader fileReader = getResourceAsReader(sqlScript);
-                    log.warn("创建数据库 ==> execute auto schema sql: {}", sqlScript);
+                    LOG.warn("创建数据库 ==> execute auto schema sql: {}", sqlScript);
                     runner.runScript(fileReader);
                 }
             }

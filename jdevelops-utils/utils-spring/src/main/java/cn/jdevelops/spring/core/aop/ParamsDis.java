@@ -2,7 +2,6 @@ package cn.jdevelops.spring.core.aop;
 
 import cn.hutool.core.util.URLUtil;
 import cn.jdevelops.http.core.IpUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,9 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1
  * @date 2020/11/25 11:48
  */
-@Slf4j
 public class ParamsDis {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ParamsDis.class);
     /**
      * 调用日志打印
      *
@@ -41,12 +41,12 @@ public class ParamsDis {
                     } else if (arg instanceof MultipartFile[] && arg.getClass().isArray()) {
                         params.append(params.toString().concat("【多文件参数】").concat(","));
                     } else if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
-                        log.info("入参排除：HttpServletRequest，HttpServletResponse");
+                        LOG.info("入参排除：HttpServletRequest，HttpServletResponse");
                     } else {
                         try {
                             params.append(params.toString().concat(JsonUtils.toJson(arg)).concat(","));
                         } catch (Exception e) {
-                            log.warn("入参参数处理异常，就打印了");
+                            LOG.warn("入参参数处理异常，就打印了");
                         }
                     }
                 }

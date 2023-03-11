@@ -1,7 +1,5 @@
 package cn.jdevelops.message.properties.wx;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationProperties(prefix = "wechat.miniapp")
-@Getter
-@Setter
+
 public class WxMaProperties {
     /**
      * 设置微信小程序的appid
@@ -40,4 +37,43 @@ public class WxMaProperties {
      */
     private String miniProgramState;
 
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getMsgDataFormat() {
+        return msgDataFormat;
+    }
+
+    public void setMsgDataFormat(String msgDataFormat) {
+        this.msgDataFormat = msgDataFormat;
+    }
+
+    public String getMiniProgramState() {
+        return miniProgramState;
+    }
+
+    public void setMiniProgramState(String miniProgramState) {
+        this.miniProgramState = miniProgramState;
+    }
 }

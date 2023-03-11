@@ -1,8 +1,6 @@
 package cn.jdevelops.redis.pub.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,7 @@ import java.util.List;
  */
 @ConfigurationProperties(prefix = "jdevelops.redis.cache.pub")
 @Component
-@Getter
-@Setter
-@ToString
+
 public class ReidsCacheBean {
 
     /**
@@ -26,4 +22,18 @@ public class ReidsCacheBean {
      */
     private List<String> patternTopic;
 
+    @Override
+    public String toString() {
+        return "ReidsCacheBean{" +
+                "patternTopic=" + patternTopic +
+                '}';
+    }
+
+    public List<String> getPatternTopic() {
+        return patternTopic;
+    }
+
+    public void setPatternTopic(List<String> patternTopic) {
+        this.patternTopic = patternTopic;
+    }
 }

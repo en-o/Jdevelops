@@ -2,9 +2,6 @@ package cn.jdevelops.jwt.bean;
 
 import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.entity.JCookie;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
@@ -20,9 +17,6 @@ import java.util.Objects;
 
 @ConfigurationProperties(prefix = "jdevelops.jwt")
 @Component
-@Getter
-@Setter
-@ToString
 public class JwtBean {
 
     /**
@@ -81,5 +75,44 @@ public class JwtBean {
             return JwtConstant.TOKEN;
         }
         return tokenNam;
+    }
+
+    @Override
+    public String toString() {
+        return "JwtBean{" +
+                "tokenSecret='" + tokenSecret + '\'' +
+                ", expireTime=" + expireTime +
+                ", loginExpireTime=" + loginExpireTime +
+                ", cookie=" + cookie +
+                ", tokenNam='" + tokenNam + '\'' +
+                '}';
+    }
+
+    public void setTokenSecret(String tokenSecret) {
+        this.tokenSecret = tokenSecret;
+    }
+
+    public long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(long expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public long getLoginExpireTime() {
+        return loginExpireTime;
+    }
+
+    public void setLoginExpireTime(long loginExpireTime) {
+        this.loginExpireTime = loginExpireTime;
+    }
+
+    public void setCookie(JCookie cookie) {
+        this.cookie = cookie;
+    }
+
+    public void setTokenNam(String tokenNam) {
+        this.tokenNam = tokenNam;
     }
 }

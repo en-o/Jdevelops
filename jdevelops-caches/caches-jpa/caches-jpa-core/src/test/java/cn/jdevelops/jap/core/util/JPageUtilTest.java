@@ -2,7 +2,6 @@ package cn.jdevelops.jap.core.util;
 
 import cn.jdevelops.result.response.SortVO;
 import org.junit.Test;
-import org.springframework.data.domain.Sort;
 
 import static org.junit.Assert.*;
 

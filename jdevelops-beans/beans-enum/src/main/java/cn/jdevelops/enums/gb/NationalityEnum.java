@@ -1,6 +1,5 @@
 package cn.jdevelops.enums.gb;
 
-import lombok.Getter;
 
 /**
  * 民族
@@ -8,7 +7,6 @@ import lombok.Getter;
  * @author tnnn
  * <a href="https://blog.csdn.net/zona_wzq/article/details/103207065">来源</a>
  */
-@Getter
 public enum NationalityEnum {
 
     /* 汉族 */
@@ -231,6 +229,12 @@ public enum NationalityEnum {
         return null;
     }
 
+    public String getCode() {
+        return code;
+    }
 
+    public String getDesc() {
+        return desc;
+    }
 }
 

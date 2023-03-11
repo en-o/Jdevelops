@@ -7,7 +7,8 @@ import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import cn.jdevelops.sms.aliyun.config.SmsConfig;
 import cn.jdevelops.sms.aliyun.service.AliYunService;
-import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -17,8 +18,9 @@ import java.security.SecureRandom;
  * @date 2021/3/11  11:41
  */
 @Service
-@Log4j2
 public class AliYunServiceImpl implements AliYunService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AliYunServiceImpl.class);
     private final Client client;
 
     public AliYunServiceImpl(Client client) {
@@ -35,7 +37,7 @@ public class AliYunServiceImpl implements AliYunService {
                     .setTemplateParam(smsConfig.getTemplateParam());
             SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
             SendSmsResponseBody body = sendSmsResponse.getBody();
-            log.info("短信发送测试{}：", body.getMessage());
+            LOG.info("短信发送测试{}：", body.getMessage());
         } catch (Exception e) {
             return false;
         }

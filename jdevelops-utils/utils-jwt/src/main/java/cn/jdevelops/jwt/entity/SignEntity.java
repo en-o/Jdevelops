@@ -1,8 +1,10 @@
 package cn.jdevelops.jwt.entity;
 
-import lombok.*;
+
+import lombok.Builder;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 用户登录签名办法token的数据
@@ -11,12 +13,7 @@ import java.util.Map;
  * @version V1.0
  * @date 2022-07-28 15:14
  */
-@Getter
-@Setter
-@ToString
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class SignEntity{
 
     /**
@@ -27,8 +24,7 @@ public class SignEntity{
     /**
      * 发行人;无值有默认
      */
-    @Builder.Default
-    String issuer="jdevelops";
+    String issuer;
 
     /**
      * 其他信息数据
@@ -42,6 +38,58 @@ public class SignEntity{
     boolean alwaysOnline;
 
 
+    public SignEntity() {
+    }
 
+    public SignEntity(String subject, String issuer, Map<String, Object> map, boolean alwaysOnline) {
+        this.subject = subject;
+        this.issuer = issuer;
+        this.map = map;
+        this.alwaysOnline = alwaysOnline;
+    }
 
+    @Override
+    public String toString() {
+        return "SignEntity{" +
+                "subject='" + subject + '\'' +
+                ", issuer='" + issuer + '\'' +
+                ", map=" + map +
+                ", alwaysOnline=" + alwaysOnline +
+                '}';
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getIssuer() {
+        if(Objects.isNull(issuer)){
+            return "jdevelops";
+        }
+        return issuer;
+    }
+
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
+
+    public boolean isAlwaysOnline() {
+        return alwaysOnline;
+    }
+
+    public void setAlwaysOnline(boolean alwaysOnline) {
+        this.alwaysOnline = alwaysOnline;
+    }
 }

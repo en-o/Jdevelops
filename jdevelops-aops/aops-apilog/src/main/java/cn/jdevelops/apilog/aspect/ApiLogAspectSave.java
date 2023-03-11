@@ -6,7 +6,6 @@ import cn.jdevelops.aops.JsonUtils;
 import cn.jdevelops.apilog.annotation.ApiLog;
 import cn.jdevelops.apilog.bean.ApiMonitoring;
 import cn.jdevelops.apilog.server.ApiLogSave;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -14,6 +13,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -36,8 +37,9 @@ import static cn.jdevelops.aops.CommonConstant.DEFAULT_FORMAT_DATETIME;
 @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
 @Aspect
 @Component
-@Slf4j
 public class ApiLogAspectSave {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ApiLogAspectSave.class);
 
     @Autowired
     private ApiLogSave apiLogSave;
@@ -125,6 +127,7 @@ public class ApiLogAspectSave {
                 apiLog.setOutParams(JsonUtils.toJson(rvt));
 
             } catch (Exception e) {
+                LOG.error("解析结果失败", e);
                 apiLog.setStatus("false");
                 apiLog.setOutParams("");
             }
@@ -158,6 +161,7 @@ public class ApiLogAspectSave {
             String params = JsonUtils.toJson(argObjects);
             apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
         }catch (Exception e){
+            LOG.error("解析入参失败", e);
             apiLog.setInParams("");
         }
         /*inParams    输入 */

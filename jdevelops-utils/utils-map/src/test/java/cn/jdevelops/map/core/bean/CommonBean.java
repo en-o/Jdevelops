@@ -1,7 +1,5 @@
 package cn.jdevelops.map.core.bean;
 
-import lombok.Getter;
-import lombok.Setter;
 
 
 /**
@@ -9,9 +7,16 @@ import lombok.Setter;
  * @author tn
  * @date 2021-01-21 14:20
  */
-@Getter
-@Setter
+
 public class CommonBean<B> extends JpaAuditFields<B> {
 
     private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

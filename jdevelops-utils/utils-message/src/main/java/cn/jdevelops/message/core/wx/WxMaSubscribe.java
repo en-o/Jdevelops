@@ -4,9 +4,10 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.WxMaSubscribeService;
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.binarywang.wx.miniapp.constant.WxMaConstants;
-import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ import java.util.List;
  * @author tn
  * @date 2021-03-01 10:14
  */
-@Slf4j
 public class WxMaSubscribe {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WxMaSubscribe.class);
 
     private final WxMaService wxMaService;
 
@@ -64,12 +66,12 @@ public class WxMaSubscribe {
             if (e instanceof WxErrorException) {
                 // 当用户没有授权，获取之前的授权已使用。微信会返回错误代码 {"errcode":43101,"errmsg":"user refuse to accept the msg hint: [xxxxxxxxxxx]"}
                 if (((WxErrorException) e).getError().getErrorCode() != 43101) {
-                    log.error("微信小程序发送消息报错：", e);
+                    LOG.error("微信小程序发送消息报错：", e);
                 } else {
-                    log.error("当用户没有授权：", e);
+                    LOG.error("当用户没有授权：", e);
                 }
             } else {
-                log.error("微信小程序发送消息报错：", e);
+                LOG.error("微信小程序发送消息报错：", e);
             }
         }
         return false;

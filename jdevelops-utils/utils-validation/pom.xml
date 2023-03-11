@@ -14,11 +14,7 @@
     <artifactId>utils-validation</artifactId>
     <description>自定义有些常用的hibernate-validator,正则：https://any-rule.vercel.app/</description>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

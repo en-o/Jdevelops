@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,16 +33,19 @@ public class OSSConfig {
 	/**
 	 * local-driver
 	 */
+	@NestedConfigurationProperty
 	private LocalConfig local;
 
 	/**
 	 * minio-driver
 	 */
+	@NestedConfigurationProperty
 	private MinioConfig minio;
 
 	/**
 	 * qiniu-driver
 	 */
+	@NestedConfigurationProperty
 	private QiNiuConfig qiniu;
 
 }
