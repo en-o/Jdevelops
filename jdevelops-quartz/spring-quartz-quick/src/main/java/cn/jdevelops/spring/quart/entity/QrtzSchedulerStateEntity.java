@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,9 +16,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_scheduler_state")
-@Getter
-@Setter
-@ToString
 public class QrtzSchedulerStateEntity  implements Serializable,Cloneable{
 
 
@@ -59,4 +53,47 @@ public class QrtzSchedulerStateEntity  implements Serializable,Cloneable{
     public int hashCode() {
         return Objects.hash(schedName, instanceName, lastCheckinTime, checkinInterval);
     }
+
+    @Override
+    public String toString() {
+        return "QrtzSchedulerStateEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", instanceName='" + instanceName + '\'' +
+                ", lastCheckinTime=" + lastCheckinTime +
+                ", checkinInterval=" + checkinInterval +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
+    }
+
+    public Long getLastCheckinTime() {
+        return lastCheckinTime;
+    }
+
+    public void setLastCheckinTime(Long lastCheckinTime) {
+        this.lastCheckinTime = lastCheckinTime;
+    }
+
+    public Long getCheckinInterval() {
+        return checkinInterval;
+    }
+
+    public void setCheckinInterval(Long checkinInterval) {
+        this.checkinInterval = checkinInterval;
+    }
 }
+

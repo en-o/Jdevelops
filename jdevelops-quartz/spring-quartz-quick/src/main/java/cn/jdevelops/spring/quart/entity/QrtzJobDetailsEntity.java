@@ -1,9 +1,7 @@
 package cn.jdevelops.spring.quart.entity;
 
 import cn.jdevelops.spring.quart.entity.key.QrtzJobDetailsUPK;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -21,9 +19,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_job_details")
-@Getter
-@Setter
-@ToString
 public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
 
 
@@ -74,5 +69,83 @@ public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
         int result = Objects.hash(jobDetailsUPK, description, jobClassName, isDurable, isNonconcurrent, isUpdateData, requestsRecovery);
         result = 31 * result + Arrays.hashCode(jobData);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzJobDetailsEntity{" +
+                "jobDetailsUPK=" + jobDetailsUPK +
+                ", description='" + description + '\'' +
+                ", jobClassName='" + jobClassName + '\'' +
+                ", isDurable='" + isDurable + '\'' +
+                ", isNonconcurrent='" + isNonconcurrent + '\'' +
+                ", isUpdateData='" + isUpdateData + '\'' +
+                ", requestsRecovery='" + requestsRecovery + '\'' +
+                ", jobData=" + Arrays.toString(jobData) +
+                '}';
+    }
+
+    public QrtzJobDetailsUPK getJobDetailsUPK() {
+        return jobDetailsUPK;
+    }
+
+    public void setJobDetailsUPK(QrtzJobDetailsUPK jobDetailsUPK) {
+        this.jobDetailsUPK = jobDetailsUPK;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getJobClassName() {
+        return jobClassName;
+    }
+
+    public void setJobClassName(String jobClassName) {
+        this.jobClassName = jobClassName;
+    }
+
+    public String getIsDurable() {
+        return isDurable;
+    }
+
+    public void setIsDurable(String isDurable) {
+        this.isDurable = isDurable;
+    }
+
+    public String getIsNonconcurrent() {
+        return isNonconcurrent;
+    }
+
+    public void setIsNonconcurrent(String isNonconcurrent) {
+        this.isNonconcurrent = isNonconcurrent;
+    }
+
+    public String getIsUpdateData() {
+        return isUpdateData;
+    }
+
+    public void setIsUpdateData(String isUpdateData) {
+        this.isUpdateData = isUpdateData;
+    }
+
+    public String getRequestsRecovery() {
+        return requestsRecovery;
+    }
+
+    public void setRequestsRecovery(String requestsRecovery) {
+        this.requestsRecovery = requestsRecovery;
+    }
+
+    public byte[] getJobData() {
+        return jobData;
+    }
+
+    public void setJobData(byte[] jobData) {
+        this.jobData = jobData;
     }
 }

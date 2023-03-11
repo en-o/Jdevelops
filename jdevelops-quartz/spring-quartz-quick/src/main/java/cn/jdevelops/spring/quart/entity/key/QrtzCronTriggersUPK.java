@@ -1,9 +1,5 @@
 package cn.jdevelops.spring.quart.entity.key;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,9 +12,6 @@ import java.util.Objects;
  * @date 2023-03-07 11:45
  */
 @Embeddable
-@Getter
-@Setter
-@ToString
 public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
 
     /** 调度器名 */
@@ -45,5 +38,38 @@ public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(schedName, triggerName, triggerGroup);
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzCronTriggersUPK{" +
+                "schedName='" + schedName + '\'' +
+                ", triggerName='" + triggerName + '\'' +
+                ", triggerGroup='" + triggerGroup + '\'' +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getTriggerName() {
+        return triggerName;
+    }
+
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
     }
 }

@@ -1,9 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -20,9 +16,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_blob_triggers")
-@Getter
-@Setter
-@ToString
 public class QrtzBlobTriggersEntity  implements Serializable,Cloneable {
 
 
@@ -59,5 +52,47 @@ public class QrtzBlobTriggersEntity  implements Serializable,Cloneable {
         int result = Objects.hash(schedName, triggerName, triggerGroup);
         result = 31 * result + Arrays.hashCode(blobData);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzBlobTriggersEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", triggerName='" + triggerName + '\'' +
+                ", triggerGroup='" + triggerGroup + '\'' +
+                ", blobData=" + Arrays.toString(blobData) +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getTriggerName() {
+        return triggerName;
+    }
+
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
+    }
+
+    public byte[] getBlobData() {
+        return blobData;
+    }
+
+    public void setBlobData(byte[] blobData) {
+        this.blobData = blobData;
     }
 }

@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,9 +16,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_paused_trigger_grps")
-@Getter
-@Setter
-@ToString
 public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
 
 
@@ -49,5 +43,29 @@ public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(schedName, triggerGroup);
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzPausedTriggerGrpsEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", triggerGroup='" + triggerGroup + '\'' +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
     }
 }

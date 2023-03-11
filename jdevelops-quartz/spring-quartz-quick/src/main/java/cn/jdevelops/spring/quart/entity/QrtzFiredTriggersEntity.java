@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,9 +16,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_fired_triggers")
-@Getter
-@Setter
-@ToString
 public class QrtzFiredTriggersEntity   implements Serializable,Cloneable {
 
 
@@ -93,5 +87,128 @@ public class QrtzFiredTriggersEntity   implements Serializable,Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(schedName, entryId, triggerName, triggerGroup, instanceName, firedTime, schedTime, priority, state, jobName, jobGroup, isNonconcurrent, requestsRecovery);
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzFiredTriggersEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", entryId='" + entryId + '\'' +
+                ", triggerName='" + triggerName + '\'' +
+                ", triggerGroup='" + triggerGroup + '\'' +
+                ", instanceName='" + instanceName + '\'' +
+                ", firedTime=" + firedTime +
+                ", schedTime=" + schedTime +
+                ", priority=" + priority +
+                ", state='" + state + '\'' +
+                ", jobName='" + jobName + '\'' +
+                ", jobGroup='" + jobGroup + '\'' +
+                ", isNonconcurrent='" + isNonconcurrent + '\'' +
+                ", requestsRecovery='" + requestsRecovery + '\'' +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getEntryId() {
+        return entryId;
+    }
+
+    public void setEntryId(String entryId) {
+        this.entryId = entryId;
+    }
+
+    public String getTriggerName() {
+        return triggerName;
+    }
+
+    public void setTriggerName(String triggerName) {
+        this.triggerName = triggerName;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
+    }
+
+    public String getInstanceName() {
+        return instanceName;
+    }
+
+    public void setInstanceName(String instanceName) {
+        this.instanceName = instanceName;
+    }
+
+    public Long getFiredTime() {
+        return firedTime;
+    }
+
+    public void setFiredTime(Long firedTime) {
+        this.firedTime = firedTime;
+    }
+
+    public Long getSchedTime() {
+        return schedTime;
+    }
+
+    public void setSchedTime(Long schedTime) {
+        this.schedTime = schedTime;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+    }
+
+    public String getIsNonconcurrent() {
+        return isNonconcurrent;
+    }
+
+    public void setIsNonconcurrent(String isNonconcurrent) {
+        this.isNonconcurrent = isNonconcurrent;
+    }
+
+    public String getRequestsRecovery() {
+        return requestsRecovery;
+    }
+
+    public void setRequestsRecovery(String requestsRecovery) {
+        this.requestsRecovery = requestsRecovery;
     }
 }

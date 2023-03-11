@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,9 +16,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_locks")
-@Getter
-@Setter
-@ToString
 public class QrtzLocksEntity  implements Serializable,Cloneable{
 
 
@@ -49,5 +43,29 @@ public class QrtzLocksEntity  implements Serializable,Cloneable{
     @Override
     public int hashCode() {
         return Objects.hash(schedName, lockName);
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzLocksEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", lockName='" + lockName + '\'' +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getLockName() {
+        return lockName;
+    }
+
+    public void setLockName(String lockName) {
+        this.lockName = lockName;
     }
 }

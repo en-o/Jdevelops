@@ -1,9 +1,6 @@
 package cn.jdevelops.spring.quart.entity;
 
 import cn.jdevelops.spring.quart.entity.key.QrtzCronTriggersUPK;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -19,9 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_cron_triggers")
-@Getter
-@Setter
-@ToString
+
 public class QrtzCronTriggersEntity   implements Serializable,Cloneable {
 
     @EmbeddedId
@@ -49,5 +44,38 @@ public class QrtzCronTriggersEntity   implements Serializable,Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(cronTriggersUPK, cronExpression, timeZoneId);
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzCronTriggersEntity{" +
+                "cronTriggersUPK=" + cronTriggersUPK +
+                ", cronExpression='" + cronExpression + '\'' +
+                ", timeZoneId='" + timeZoneId + '\'' +
+                '}';
+    }
+
+    public QrtzCronTriggersUPK getCronTriggersUPK() {
+        return cronTriggersUPK;
+    }
+
+    public void setCronTriggersUPK(QrtzCronTriggersUPK cronTriggersUPK) {
+        this.cronTriggersUPK = cronTriggersUPK;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
+
+    public String getTimeZoneId() {
+        return timeZoneId;
+    }
+
+    public void setTimeZoneId(String timeZoneId) {
+        this.timeZoneId = timeZoneId;
     }
 }

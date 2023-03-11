@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity.key;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -16,9 +13,6 @@ import java.util.Objects;
  * @date 2023-03-07 12:04
  */
 @Embeddable
-@Getter
-@Setter
-@ToString
 public class QrtzJobDetailsUPK implements Serializable,Cloneable  {
 
     /** 调度器名 */
@@ -45,5 +39,39 @@ public class QrtzJobDetailsUPK implements Serializable,Cloneable  {
     @Override
     public int hashCode() {
         return Objects.hash(schedName, jobName, jobGroup);
+    }
+
+
+    @Override
+    public String toString() {
+        return "QrtzJobDetailsUPK{" +
+                "schedName='" + schedName + '\'' +
+                ", jobName='" + jobName + '\'' +
+                ", jobGroup='" + jobGroup + '\'' +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
     }
 }

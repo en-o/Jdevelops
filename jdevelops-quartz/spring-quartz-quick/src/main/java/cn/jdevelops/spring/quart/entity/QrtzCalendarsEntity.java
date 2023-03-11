@@ -1,8 +1,5 @@
 package cn.jdevelops.spring.quart.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,9 +17,6 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "qrtz_calendars")
-@Getter
-@Setter
-@ToString
 public class QrtzCalendarsEntity    implements Serializable,Cloneable {
 
     /** 调度器名  */
@@ -55,5 +49,38 @@ public class QrtzCalendarsEntity    implements Serializable,Cloneable {
         int result = Objects.hash(schedName, calendarName);
         result = 31 * result + Arrays.hashCode(calendar);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QrtzCalendarsEntity{" +
+                "schedName='" + schedName + '\'' +
+                ", calendarName='" + calendarName + '\'' +
+                ", calendar=" + Arrays.toString(calendar) +
+                '}';
+    }
+
+    public String getSchedName() {
+        return schedName;
+    }
+
+    public void setSchedName(String schedName) {
+        this.schedName = schedName;
+    }
+
+    public String getCalendarName() {
+        return calendarName;
+    }
+
+    public void setCalendarName(String calendarName) {
+        this.calendarName = calendarName;
+    }
+
+    public byte[] getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(byte[] calendar) {
+        this.calendar = calendar;
     }
 }
