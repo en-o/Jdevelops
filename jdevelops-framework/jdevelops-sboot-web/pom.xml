@@ -22,19 +22,11 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-common-env</artifactId>
         </dependency>
-        <!-- 配置文件-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <!-- 开发时用用就行了 -->
-            <optional>true</optional>
-        </dependency>
         <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <!--建库-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
