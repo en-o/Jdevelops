@@ -3,8 +3,7 @@ package cn.jdevelops.jap.page;
 import cn.jdevelops.enums.result.ResultCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,39 +21,41 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "JPA分页全局结果集",description = "JPA全局返回对象")
+@Schema(name = "JPA分页结果集",description = "JPA分页全局结果集，根据ResultPageVO几乎一样，只是规定的data的对象不同")
 public class ResultJpaPageVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
 
+
     /**
      * 返回结果状态码
      */
-    @ApiModelProperty(value = "返回结果状态码")
+    @Schema(name = "状态码",description = "前端根据状态码处理事件")
     private Integer code;
 
     /**
      * 返回消息
      */
-    @ApiModelProperty(value = "返回消息")
+    @Schema(name = "消息",description = "接口消息")
     private String message;
 
     /**
-     * 数据
+     * Page数据
      */
-    @ApiModelProperty(value = "数据")
+    @Schema(name = "Page数据",description = "数据")
     private ResourceJpaPage<T> data;
+
 
     /**
      * 时间戳
      */
-    @ApiModelProperty(value = "时间戳")
+    @Schema(name = "时间戳",description = "毫秒")
     private Long ts;
 
     /**
      * traceId
      */
-    @ApiModelProperty(value = "skywalking_traceId")
+    @Schema(name = "链路追踪ID",description = "skywalking_traceId")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 

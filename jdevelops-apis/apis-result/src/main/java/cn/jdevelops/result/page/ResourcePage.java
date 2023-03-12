@@ -13,15 +13,29 @@ import java.io.Serializable;
 @Schema(name = "分页返回统一工具类", description = "分页返回统一工具类")
 public class ResourcePage<T> implements Serializable {
 
+	/**
+	 * 页码
+	 */
 	@Schema(name = "页码",description = "当前页")
 	private Integer currentPage;
+	/**
+	 * 数据量
+	 */
 	@Schema(name = "数据量",description = "每页显示条数")
 	private Integer pageSize;
+	/**
+	 * 总页数
+	 */
 	@Schema(name = "总页数",description = "总页数")
 	private Integer totalPages;
-
+	/**
+	 * 总记录数
+	 */
 	@Schema(name = "总记录数",description = "总数据量")
 	private Long total;
+	/**
+	 * 数据"
+	 */
 	@Schema(name = "数据",description = "数据对象")
 	private T rows;
 

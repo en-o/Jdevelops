@@ -4,8 +4,7 @@ package cn.jdevelops.jap.page;
 import cn.jdevelops.entity.basics.vo.SerializableVO;
 import cn.jdevelops.result.response.PageVO;
 import com.alibaba.fastjson.JSON;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
@@ -17,18 +16,33 @@ import java.util.*;
  * @author lxw
  * @date 2019年1月17日
  */
-@ApiModel(value = "JPA分页返回统一工具类", description = "JPA分页返回统一工具类")
+@Schema(name = "JPA分页返回统一工具类", description = "JPA分页返回统一工具类")
 public class ResourceJpaPage<T> implements Serializable {
 
-	@ApiModelProperty("当前页")
+	/**
+	 * 页码
+	 */
+	@Schema(name = "页码",description = "当前页")
 	private Integer currentPage;
-	@ApiModelProperty("每页显示条数")
+	/**
+	 * 数据量
+	 */
+	@Schema(name = "数据量",description = "每页显示条数")
 	private Integer pageSize;
-	@ApiModelProperty("总页数")
+	/**
+	 * 总页数
+	 */
+	@Schema(name = "总页数",description = "总页数")
 	private Integer totalPages;
-	@ApiModelProperty("总记录数")
+	/**
+	 * 总记录数
+	 */
+	@Schema(name = "总记录数",description = "总数据量")
 	private Long total;
-	@ApiModelProperty("数据")
+	/**
+	 * 数据
+	 */
+	@Schema(name = "数据",description = "数据对象")
 	private List<T> rows;
 
 	public ResourceJpaPage() {
