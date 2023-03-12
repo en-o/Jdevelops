@@ -47,8 +47,6 @@
         <module>jdevelops-utils</module>
         <!-- bean模块 -->
         <module>jdevelops-beans</module>
-        <!-- 文档模块 -->
-        <module>jdevelops-docs</module>
         <!-- 日志 -->
         <module>jdevelops-logs</module>
         <!-- 数据模块 -->
@@ -61,8 +59,6 @@
         <module>jdevelops-search</module>
         <!-- web模块 -->
         <module>jdevelops-webs</module>
-        <!-- cloud相关 -->
-        <module>jdevelops-cloud</module>
         <!-- starter  -->
         <module>jdevelops-starters</module>
         <!-- 短信-->
@@ -181,12 +177,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- 配置文件-->
+        <!--  用于生成自定义的 Spring @ConfigurationProperties 配置类的说明-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <!-- 开发时用用就行了 -->
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.github.xiaoymin.knife4j.spring.configuration.Knife4jAutoConfiguration,\
-  cn.jdevelops.doc.core.swagger.config.Springfox26
