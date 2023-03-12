@@ -20,25 +20,25 @@ public class RoutinePageDTO implements Serializable {
     /**
      * 排序字段
      */
-    @Schema(description = "排序字段(实体的有效字段)",example = "id")
+    @Schema(description = "排序字段(实体的有效字段)", defaultValue = "id", example = "id")
     private String orderBy;
 
     /**
      * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    @Schema(description = "排序方式(正序0，反序1)", example = "1")
+    @Schema(description = "排序方式(正序0，反序1)", defaultValue = "1", example = "1")
     private Integer orderDesc;
 
     /**
      * 页码
      */
-    @Schema(description = "页码", example = "1")
+    @Schema(description = "页码", defaultValue = "1", example = "1")
     private Integer pageIndex;
 
     /**
      * 数量
      */
-    @Schema(description = "数量", example = "20")
+    @Schema(description = "数量", defaultValue = "20", example = "20")
     private Integer pageSize;
 
     public RoutinePageDTO(String orderBy, Integer orderDesc, Integer pageIndex, Integer pageSize) {

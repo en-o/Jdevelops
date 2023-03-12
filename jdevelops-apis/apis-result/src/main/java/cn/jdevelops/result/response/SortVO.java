@@ -15,13 +15,13 @@ public class SortVO {
     /**
      * 排序字段
      */
-    @Schema(description = "排序字段（实体的有效字段）",example = "id")
+    @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
     private String orderBy;
 
     /**
      * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    @Schema(description = "排序方式（正序0，反序1）", example = "1")
+    @Schema(description = "排序方式（正序0，反序1）", defaultValue = "1", example = "1")
     private Integer orderDesc;
 
 

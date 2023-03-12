@@ -14,9 +14,9 @@ import java.util.Objects;
  */
 @Schema(description = "分页参数实体")
 public class PageVO {
-    @Schema(description = "页码", example = "1")
+    @Schema(description = "页码", defaultValue = "1", example = "1")
     private Integer pageIndex;
-    @Schema(description = "数量", example = "20")
+    @Schema(description = "数量", defaultValue = "20", example = "20")
     private Integer pageSize;
 
     public PageVO() {
