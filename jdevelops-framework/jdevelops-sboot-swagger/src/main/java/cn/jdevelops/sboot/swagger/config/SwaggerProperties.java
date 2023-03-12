@@ -3,6 +3,8 @@ package cn.jdevelops.sboot.swagger.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Objects;
+
 
 /**
  * swagger配置类
@@ -17,59 +19,55 @@ public class SwaggerProperties {
      * controller接口所在的包(多个包以逗号(或者分号)拼接，eg. package.api;package.controller
      * ps: 注意如果包名前缀一样只需要写一个就行 eg. package.api1;package.api2 ＝ package.api
      */
-    private String basePackage="cn.jdevelops.controller";
+    private String basePackage;
 
 
     /**
      * 网页标题
      */
-    private String title="JdevelopsAPIs";
+    private String title;
 
     /**
      * 当前文档的详细描述
      */
-    private String description="详细描述";
+    private String description;
 
     /**
      * 当前文档的版本
      */
-    private String version="2.0.7";
+    private String version;
 
 
     /**
      * 作者
      */
-    private String author="tan";
+    private String author;
 
     /**
      * url
      */
-    private String url="https://tannn.cn/";
+    private String url;
 
     /**
      * email
      */
-    private String email="1445763190@qq.com";
+    private String email;
 
     /**
      * license
      */
-    private String license="tan";
+    private String license;
 
     /**
      * license-url
      */
-    private String licenseUrl="https://tannn.cn/";
+    private String licenseUrl;
 
     /**
      *  分组
      */
     private String groupName;
 
-    /**
-     *  是否添加全局Header token参数
-     */
-    private Boolean addHeaderToken = true;
 
 
     @Override
@@ -85,11 +83,13 @@ public class SwaggerProperties {
                 ", license='" + license + '\'' +
                 ", licenseUrl='" + licenseUrl + '\'' +
                 ", groupName='" + groupName + '\'' +
-                ", addHeaderToken=" + addHeaderToken +
                 '}';
     }
 
     public String getBasePackage() {
+        if(Objects.isNull(basePackage)){
+            return "cn.jdevelops.controller";
+        }
         return basePackage;
     }
 
@@ -98,6 +98,9 @@ public class SwaggerProperties {
     }
 
     public String getTitle() {
+        if(Objects.isNull(title)){
+            return "JdevelopsAPIs";
+        }
         return title;
     }
 
@@ -106,6 +109,9 @@ public class SwaggerProperties {
     }
 
     public String getDescription() {
+        if(Objects.isNull(description)){
+            return "详细描述";
+        }
         return description;
     }
 
@@ -114,6 +120,9 @@ public class SwaggerProperties {
     }
 
     public String getVersion() {
+        if(Objects.isNull(version)){
+            return "2.0.7";
+        }
         return version;
     }
 
@@ -122,6 +131,9 @@ public class SwaggerProperties {
     }
 
     public String getAuthor() {
+        if(Objects.isNull(author)){
+            return "tan";
+        }
         return author;
     }
 
@@ -130,6 +142,9 @@ public class SwaggerProperties {
     }
 
     public String getUrl() {
+        if(Objects.isNull(url)){
+            return "https://tannn.cn/";
+        }
         return url;
     }
 
@@ -138,6 +153,9 @@ public class SwaggerProperties {
     }
 
     public String getEmail() {
+        if(Objects.isNull(email)){
+            return "1445763190@qq.com";
+        }
         return email;
     }
 
@@ -146,6 +164,9 @@ public class SwaggerProperties {
     }
 
     public String getLicense() {
+        if(Objects.isNull(license)){
+            return "tan";
+        }
         return license;
     }
 
@@ -154,6 +175,9 @@ public class SwaggerProperties {
     }
 
     public String getLicenseUrl() {
+        if(Objects.isNull(licenseUrl)){
+            return "https://tannn.cn/";
+        }
         return licenseUrl;
     }
 
@@ -162,6 +186,9 @@ public class SwaggerProperties {
     }
 
     public String getGroupName() {
+        if(Objects.isNull(groupName)){
+            return "jdevelopsAPI";
+        }
         return groupName;
     }
 
@@ -169,11 +196,5 @@ public class SwaggerProperties {
         this.groupName = groupName;
     }
 
-    public Boolean getAddHeaderToken() {
-        return addHeaderToken;
-    }
 
-    public void setAddHeaderToken(Boolean addHeaderToken) {
-        this.addHeaderToken = addHeaderToken;
-    }
 }
