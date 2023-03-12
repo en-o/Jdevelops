@@ -1,8 +1,6 @@
 package cn.jdevelops.result.page;
 
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
@@ -12,18 +10,19 @@ import java.io.Serializable;
  * @author lxw
  * @date 2019年1月17日
  */
-@ApiModel(value = "分页返回统一工具类", description = "分页返回统一工具类")
+@Schema(name = "分页返回统一工具类", description = "分页返回统一工具类")
 public class ResourcePage<T> implements Serializable {
 
-	@ApiModelProperty("当前页")
+	@Schema(name = "页码",description = "当前页")
 	private Integer currentPage;
-	@ApiModelProperty("每页显示条数")
+	@Schema(name = "数据量",description = "每页显示条数")
 	private Integer pageSize;
-	@ApiModelProperty("总页数")
+	@Schema(name = "总页数",description = "总页数")
 	private Integer totalPages;
-	@ApiModelProperty("总记录数")
+
+	@Schema(name = "总记录数",description = "总数据量")
 	private Long total;
-	@ApiModelProperty("数据")
+	@Schema(name = "数据",description = "数据对象")
 	private T rows;
 
 	public ResourcePage() {

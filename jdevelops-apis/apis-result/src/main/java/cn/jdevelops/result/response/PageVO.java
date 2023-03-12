@@ -1,10 +1,10 @@
 package cn.jdevelops.result.response;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.Objects;
 
 /**
  * 分页排序
@@ -12,14 +12,11 @@ import lombok.ToString;
  * @author lxw
  * @date 2018年5月11日
  */
-@ApiModel("分页下标实体类")
-@ToString
-@Getter
-@Setter
+@Schema(name = "分页VO",description = "分页参数实体")
 public class PageVO {
-    @ApiModelProperty(value = "页码，默认第一页",example = "1")
+    @Schema(name = "页码",description = "默认第一页", example = "1")
     private Integer pageIndex;
-    @ApiModelProperty(value = "一页显示几条,默认20条",example = "20")
+    @Schema(name = "数量",description = "默认20条", example = "20")
     private Integer pageSize;
 
     public PageVO() {
@@ -41,6 +38,36 @@ public class PageVO {
      */
     public PageVO(Integer pageIndex, Integer pageSize) {
         this.pageIndex = pageIndex;
+        this.pageSize = pageSize;
+    }
+
+    @Override
+    public String toString() {
+        return "PageVO{" +
+                "pageIndex=" + pageIndex +
+                ", pageSize=" + pageSize +
+                '}';
+    }
+
+    public Integer getPageIndex() {
+        if(Objects.isNull(pageIndex)){
+            return 1;
+        }
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        if(Objects.isNull(pageSize)){
+            return 20;
+        }
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
 }

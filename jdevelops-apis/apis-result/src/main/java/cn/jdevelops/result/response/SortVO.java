@@ -1,24 +1,27 @@
 package cn.jdevelops.result.response;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Objects;
 
 /**
  * 分页
  * @author tn
  * @date 2020-12-17 14:26
  */
-@ApiModel("分页排序实体类")
-@ToString
-@Getter
-@Setter
+@Schema(name = "排序实体类", description = "排序实体类")
 public class SortVO {
-    @ApiModelProperty("根据那一列排序")
+
+    /**
+     * 排序字段
+     */
+    @Schema(name = "排序字段", description = "实体的有效字段",example = "id")
     private String orderBy;
-    @ApiModelProperty("正序0--Direction.ASC，反序1--Direction.DESC")
+
+    /**
+     * 排序方式
+     */
+    @Schema(name = "排序方式", description = "正序0--Direction.ASC，反序1--Direction.DESC", example = "1")
     private Integer orderDesc;
 
 
@@ -42,5 +45,35 @@ public class SortVO {
     }
 
     public SortVO() {
+    }
+
+    @Override
+    public String toString() {
+        return "SortVO{" +
+                "orderBy='" + orderBy + '\'' +
+                ", orderDesc=" + orderDesc +
+                '}';
+    }
+
+    public String getOrderBy() {
+        if(Objects.isNull(orderBy)){
+            return "id";
+        }
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public Integer getOrderDesc() {
+        if(Objects.isNull(orderDesc)){
+            return 1;
+        }
+        return orderDesc;
+    }
+
+    public void setOrderDesc(Integer orderDesc) {
+        this.orderDesc = orderDesc;
     }
 }
