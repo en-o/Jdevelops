@@ -12,7 +12,7 @@ import cn.jdevelops.result.page.ResourcePage;
 import cn.jdevelops.result.response.PageVO;
 import cn.jdevelops.result.response.SortVO;
 import cn.jdevelops.result.result.ResultVO;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +52,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @date 2020/12/8  15:34
      */
     @PostMapping(value = "saveOrUpdate")
-    @ApiOperation("单个保存或更新")
+    @Operation(summary = "单个保存或更新")
     public ResultVO<R> saveOrUpdate(@RequestBody U u) {
         T t = U.to(u, tClass);
         service.saveOrUpdate(t);
@@ -67,7 +67,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @date 2020/12/8  15:36
      */
-    @ApiOperation("批量保存或更新")
+    @Operation(summary = "批量保存或更新")
     @PostMapping(value = "/batchSaveOrUpdate")
     public ResultVO<String> batchSaveOrUpdate(@RequestBody List<U> list) {
         return ResultVO.resultMsg(service.saveOrUpdateBatch(U.to(list, tClass)), "批量操作");
@@ -81,7 +81,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @date 2020/12/8  15:39
      */
-    @ApiOperation("根据id删除")
+    @Operation(summary = "根据id删除")
     @DeleteMapping("delete")
     public ResultVO<String> delete(@RequestParam("id") Long id) {
         return ResultVO.resultMsg(service.removeById(id), "删除");
@@ -96,7 +96,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @date 2020/12/8  15:39
      */
-    @ApiOperation("根据id查询")
+    @Operation(summary = "根据id查询")
     @GetMapping(value = "/getById")
     public ResultVO<R> getById(@RequestParam("id") Long id) {
             service.getById(id);
@@ -111,7 +111,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @date 2020/12/15  10:42
      */
-    @ApiOperation("根据uuid查询")
+    @Operation(summary = "根据uuid查询")
     @GetMapping(value = "/uuid")
     public ResultVO<R> getById(@RequestParam("uuid") Object uuid) {
         T t = service.getOne(new QueryWrapper<T>().eq("uuid", uuid));
@@ -125,7 +125,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
      * @author lmz
      * @date 2020/12/8  15:39
      */
-    @ApiOperation("查询全部")
+    @Operation(summary = "查询全部")
     @PostMapping(value = "/list")
     public ResultVO<List<R>> getList(@RequestBody S s) {
         T t = S.to(s, tClass);
@@ -142,7 +142,7 @@ public class BaseController<M extends IService<T>, T extends SerializableVO<T>, 
     }
 
 
-    @ApiOperation("条件分页查询")
+    @Operation(summary = "条件分页查询")
     @PostMapping(value = "/queryPage")
     public ResultVO<ResourcePage<List<R>>> queryPage(@RequestBody S s) {
         PageVO pageVO = (PageVO) ObjectUtil.getFieldValue(s, "pageVO");

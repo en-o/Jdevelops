@@ -6,8 +6,8 @@ import cn.jdevelops.springs.service.config.InterceptUrl;
 import cn.jdevelops.springs.service.url.entity.MethodUrl;
 import cn.jdevelops.springs.service.url.entity.Urls;
 import cn.jdevelops.springs.service.util.StringUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,16 +69,16 @@ public class UrlServiceImpl implements UrlService {
             //获取当前方法所在类名
             Class<?> bean = method.getBeanType();
             //使用反射获取当前类注解内容 获取自定义注解
-            Api api = bean.getAnnotation(Api.class);
+            Tag api = bean.getAnnotation(Tag.class);
             if (!Objects.isNull(api)) {
-                builder.grouping(api.tags()[0]);
+                builder.grouping(api.name());
             } else {
                 builder.grouping("请使用@Api说明接口");
             }
             //获取方法上注解以及注解值
-            ApiOperation methodAnnotation = method.getMethodAnnotation(ApiOperation.class);
+            Operation methodAnnotation = method.getMethodAnnotation(Operation.class);
             if (!Objects.isNull(methodAnnotation)) {
-                builder.description(methodAnnotation.value());
+                builder.description(methodAnnotation.description());
             } else {
                 builder.description("请使用@ApiOperation说明接口");
             }

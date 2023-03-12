@@ -1,6 +1,5 @@
-package cn.jdevelops.doc.core.swagger.config;
+package cn.jdevelops.sboot.swagger.config;
 
-import cn.jdevelops.doc.core.swagger.bean.SwaggerBean;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import static cn.jdevelops.doc.core.swagger.constant.PublicConstant.COLON;
-import static cn.jdevelops.doc.core.swagger.constant.PublicConstant.SPIRIT;
+import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.COLON;
+import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SPIRIT;
 
 /**
  * 控制台输出
@@ -37,7 +36,7 @@ public class ConsoleConfig implements ApplicationRunner {
 
 
 	@Resource
-	private SwaggerBean swaggerBean;
+	private SwaggerProperties  swaggerBean;
 
 
 	@Override

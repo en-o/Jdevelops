@@ -1,4 +1,4 @@
-package cn.jdevelops.doc.core.swagger.constant;
+package cn.jdevelops.sboot.swagger.core.constant;
 
 /**
  * 公共常量
@@ -18,6 +18,11 @@ public interface PublicConstant {
      * 分号
      */
     String SPLITOR = ";";
+
+    /**
+     * 逗号
+     */
+    String COMMA = ",";
 
 
     /**

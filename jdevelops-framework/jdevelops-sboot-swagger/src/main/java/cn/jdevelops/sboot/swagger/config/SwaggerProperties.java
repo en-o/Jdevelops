@@ -1,11 +1,8 @@
-package cn.jdevelops.doc.core.swagger.bean;
+package cn.jdevelops.sboot.swagger.config;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import springfox.documentation.spi.DocumentationType;
 
-import java.util.Objects;
 
 /**
  * swagger配置类
@@ -14,12 +11,10 @@ import java.util.Objects;
  * @date 2020/6/19 9:56
  */
 @ConfigurationProperties(prefix = "jdevelops.swagger")
-@Component
-
-public class SwaggerBean {
+public class SwaggerProperties {
 
     /**
-     * controller接口所在的包(多个包以分号拼接，eg. package.api;package.controller
+     * controller接口所在的包(多个包以逗号(或者分号)拼接，eg. package.api;package.controller
      * ps: 注意如果包名前缀一样只需要写一个就行 eg. package.api1;package.api2 ＝ package.api
      */
     private String basePackage="cn.jdevelops.controller";
@@ -42,32 +37,29 @@ public class SwaggerBean {
 
 
     /**
-     *  联络 url
+     * 作者
      */
-    private String contactUrl="https://tannn.cn/";
+    private String author="tan";
 
     /**
-     *  联络人-作者
+     * url
      */
-    private String contactName="tan";
+    private String url="https://tannn.cn/";
 
     /**
-     *  联络邮箱
+     * email
      */
-    private String contactEmail="1445763190@qq.com";
+    private String email="1445763190@qq.com";
 
     /**
-     * swagger Docket  :
-     *     SWAGGER_2
-     *     SWAGGER_12
-     *     OAS_30 (默认)
+     * license
      */
-    private String docket = "OAS_30";
+    private String license="tan";
 
     /**
-     *  true 显示swagger， false 关闭swagger
+     * license-url
      */
-    private Boolean show=true;
+    private String licenseUrl="https://tannn.cn/";
 
     /**
      *  分组
@@ -80,33 +72,18 @@ public class SwaggerBean {
     private Boolean addHeaderToken = true;
 
 
-    public DocumentationType getDocket() {
-        switch (docket){
-            case "SWAGGER_12":
-                return DocumentationType.SWAGGER_12;
-            case "SWAGGER_2":
-                return DocumentationType.SWAGGER_2;
-            default:
-                return DocumentationType.OAS_30;
-        }
-    }
-
-    public String getGroupName() {
-        return Objects.isNull(groupName)?"Jdevelops接口":groupName;
-    }
-
     @Override
     public String toString() {
-        return "SwaggerBean{" +
+        return "SwaggerProperties{" +
                 "basePackage='" + basePackage + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
-                ", contactUrl='" + contactUrl + '\'' +
-                ", contactName='" + contactName + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", docket='" + docket + '\'' +
-                ", show=" + show +
+                ", author='" + author + '\'' +
+                ", url='" + url + '\'' +
+                ", email='" + email + '\'' +
+                ", license='" + license + '\'' +
+                ", licenseUrl='" + licenseUrl + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", addHeaderToken=" + addHeaderToken +
                 '}';
@@ -144,40 +121,48 @@ public class SwaggerBean {
         this.version = version;
     }
 
-    public String getContactUrl() {
-        return contactUrl;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setContactUrl(String contactUrl) {
-        this.contactUrl = contactUrl;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getContactName() {
-        return contactName;
+    public String getUrl() {
+        return url;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getContactEmail() {
-        return contactEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setDocket(String docket) {
-        this.docket = docket;
+    public String getLicense() {
+        return license;
     }
 
-    public Boolean getShow() {
-        return show;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
-    public void setShow(Boolean show) {
-        this.show = show;
+    public String getLicenseUrl() {
+        return licenseUrl;
+    }
+
+    public void setLicenseUrl(String licenseUrl) {
+        this.licenseUrl = licenseUrl;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     public void setGroupName(String groupName) {

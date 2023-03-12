@@ -27,6 +27,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- 文档 -->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-sboot-swagger</artifactId>
+        </dependency>
         <!--建库-->
         <dependency>
             <groupId>cn.jdevelops</groupId>

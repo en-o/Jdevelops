@@ -17,6 +17,44 @@
     </properties>
 
     <dependencies>
+        <!--这三个功能回去会合并到 api-gateway-->
+        <!--接口日志-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>aops-apilog</artifactId>
+        </dependency>
+        <!--接口版本-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>aops-apiversion</artifactId>
+        </dependency>
+        <!--接口验签-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>aops-apisign</artifactId>
+        </dependency>
+        <!--这三个功能回去会合并到 api-gateway-->
+
+        <!--全局异常-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>apis-exception</artifactId>
+        </dependency>
+        <!--自定义的 Spring 组合注解-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>apis-annotation</artifactId>
+        </dependency>
+        <!--方法异常注解-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>aops-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <!--链路追踪-->
         <dependency>
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-toolkit-trace</artifactId>
@@ -26,13 +64,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

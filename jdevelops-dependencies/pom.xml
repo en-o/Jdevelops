@@ -15,9 +15,9 @@
     <properties>
         <jdevelops.last.version>2.0.7</jdevelops.last.version>
         <!-- 文档  -->
-        <knife4j.version>3.0.3</knife4j.version>
-        <swagger.version>1.6.6</swagger.version>
-
+        <knife4j.version>4.0.0</knife4j.version>
+        <swagger.version>2.2.8</swagger.version>
+        <springdoc.version>1.6.14</springdoc.version>
         <!-- spring -->
         <spring-core.version>5.3.21</spring-core.version>
         <spring.boot.version>2.6.9</spring.boot.version>
@@ -110,30 +110,52 @@
             </dependency>
 
             <!-- 文档  -->
+            <!-- 接口文档：使用最新版本的 Swagger 模型 -->
             <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-autoconfigure</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
+                <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
+            <!-- 接口文档：使用最新版本的 Swagger 模型 -->
             <dependency>
+                <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-models</artifactId>
-                <groupId>io.swagger</groupId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <!-- 接口文档 UI：解决 knife4j 引入的 Spring Doc 版本太老 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-common</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webflux-core</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <!-- 接口文档 UI：解决 knife4j 引入的 Spring Doc 版本太老 -->
+            <!-- 接口文档 UI：默认 -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <!-- 接口文档 UI：knife4j -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!-- 接口文档 UI：knife4j【网关】 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <!-- spring -->
@@ -409,22 +431,6 @@
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
-            <!--doc-->
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>doc-swagger-cloud</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>doc-swagger-boot</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>docs-core-swagger</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
 
             <!--file-->
             <dependency>
@@ -666,6 +672,11 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-security</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-swagger</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
