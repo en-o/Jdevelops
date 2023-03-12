@@ -24,7 +24,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "结果集",description = "全局返回对象")
+@Schema(description = "全局返回对象")
 public class ResultVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
@@ -32,31 +32,31 @@ public class ResultVO<T> implements Serializable {
     /**
      * 返回结果状态码
      */
-    @Schema(name = "状态码",description = "前端根据状态码处理事件")
+    @Schema(description = "状态码")
     private Integer code;
 
     /**
      * 返回消息
      */
-    @Schema(name = "消息",description = "接口消息")
+    @Schema(description = "接口消息")
     private String message;
 
     /**
      * 数据
      */
-    @Schema(name = "数据",description = "数据")
+    @Schema(description = "数据")
     private T data;
 
     /**
      * 时间戳
      */
-    @Schema(name = "时间戳",description = "毫秒")
+    @Schema(description = "毫秒")
     private Long ts;
 
     /**
      * traceId
      */
-    @Schema(name = "链路追踪ID",description = "skywalking_traceId")
+    @Schema(description = "链路追踪ID(skywalking_traceId)")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 

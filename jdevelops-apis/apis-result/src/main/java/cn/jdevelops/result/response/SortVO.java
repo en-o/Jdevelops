@@ -9,19 +9,19 @@ import java.util.Objects;
  * @author tn
  * @date 2020-12-17 14:26
  */
-@Schema(name = "排序实体类", description = "排序实体类")
+@Schema(description = "排序实体类")
 public class SortVO {
 
     /**
      * 排序字段
      */
-    @Schema(name = "排序字段", description = "实体的有效字段",example = "id")
+    @Schema(description = "排序字段（实体的有效字段）",example = "id")
     private String orderBy;
 
     /**
-     * 排序方式
+     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    @Schema(name = "排序方式", description = "正序0--Direction.ASC，反序1--Direction.DESC", example = "1")
+    @Schema(description = "排序方式（正序0，反序1）", example = "1")
     private Integer orderDesc;
 
 

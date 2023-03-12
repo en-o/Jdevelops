@@ -22,7 +22,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@Schema(name = "分页结果集", description = "分页全局结果集")
+@Schema(description = "分页全局结果集")
 public class ResultPageVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
@@ -30,31 +30,31 @@ public class ResultPageVO<T> implements Serializable {
     /**
      * 返回结果状态码
      */
-    @Schema(name = "状态码",description = "前端根据状态码处理事件")
+    @Schema(description = "状态码")
     private Integer code;
 
     /**
      * 返回消息
      */
-    @Schema(name = "消息",description = "接口消息")
+    @Schema(description = "接口消息")
     private String message;
 
     /**
      * 数据
      */
-    @Schema(name = "数据",description = "数据")
+    @Schema(description = "数据")
     private ResourcePage<T> data;
 
     /**
      * 时间戳
      */
-    @Schema(name = "时间戳",description = "毫秒")
+    @Schema(description = "时间戳")
     private Long ts;
 
     /**
      * traceId
      */
-    @Schema(name = "链路追踪ID",description = "skywalking_traceId")
+    @Schema(description = "链路追踪ID(skywalking_traceId)")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 

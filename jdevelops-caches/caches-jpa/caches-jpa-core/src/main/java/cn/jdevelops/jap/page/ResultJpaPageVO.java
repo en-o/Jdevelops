@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@Schema(name = "JPA分页结果集",description = "JPA分页全局结果集，根据ResultPageVO几乎一样，只是规定的data的对象不同")
+@Schema(description = "JPA分页全局结果集，根据ResultPageVO几乎一样，只是规定的data的对象不同")
 public class ResultJpaPageVO<T> implements Serializable {
 
     private static final long serialVersionUID = -7719394736046024902L;
@@ -30,32 +30,32 @@ public class ResultJpaPageVO<T> implements Serializable {
     /**
      * 返回结果状态码
      */
-    @Schema(name = "状态码",description = "前端根据状态码处理事件")
+    @Schema(description = "状态码")
     private Integer code;
 
     /**
      * 返回消息
      */
-    @Schema(name = "消息",description = "接口消息")
+    @Schema(description = "接口消息")
     private String message;
 
     /**
      * Page数据
      */
-    @Schema(name = "Page数据",description = "数据")
+    @Schema(description = "数据")
     private ResourceJpaPage<T> data;
 
 
     /**
      * 时间戳
      */
-    @Schema(name = "时间戳",description = "毫秒")
+    @Schema(description = "毫秒")
     private Long ts;
 
     /**
      * traceId
      */
-    @Schema(name = "链路追踪ID",description = "skywalking_traceId")
+    @Schema(description = "链路追踪ID(skywalking_traceId)")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String traceId;
 

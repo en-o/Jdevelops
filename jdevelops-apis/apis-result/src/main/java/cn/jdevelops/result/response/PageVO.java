@@ -12,11 +12,11 @@ import java.util.Objects;
  * @author lxw
  * @date 2018年5月11日
  */
-@Schema(name = "分页VO",description = "分页参数实体")
+@Schema(description = "分页参数实体")
 public class PageVO {
-    @Schema(name = "页码",description = "默认第一页", example = "1")
+    @Schema(description = "页码", example = "1")
     private Integer pageIndex;
-    @Schema(name = "数量",description = "默认20条", example = "20")
+    @Schema(description = "数量", example = "20")
     private Integer pageSize;
 
     public PageVO() {

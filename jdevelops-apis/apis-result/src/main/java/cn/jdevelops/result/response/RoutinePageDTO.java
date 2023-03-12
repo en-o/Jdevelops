@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author tn
  * @date 2021-01-25 13:59
  */
-@Schema(name = "分页参数", description = "公共的分页DTO")
+@Schema(description = "公共分页参数")
 public class RoutinePageDTO implements Serializable {
 
     private static final long serialVersionUID = 1905122041950251207L;
@@ -20,25 +20,25 @@ public class RoutinePageDTO implements Serializable {
     /**
      * 排序字段
      */
-    @Schema(name = "排序字段", description = "实体的有效字段",example = "id")
+    @Schema(description = "排序字段(实体的有效字段)",example = "id")
     private String orderBy;
 
     /**
-     * 排序方式
+     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    @Schema(name = "排序方式", description = "正序0--Direction.ASC，反序1--Direction.DESC", example = "1")
+    @Schema(description = "排序方式(正序0，反序1)", example = "1")
     private Integer orderDesc;
 
     /**
      * 页码
      */
-    @Schema(name = "页码", description = "默认第一页", example = "1")
+    @Schema(description = "页码", example = "1")
     private Integer pageIndex;
 
     /**
      * 数量
      */
-    @Schema(name = "数量", description = "默认20条", example = "20")
+    @Schema(description = "数量", example = "20")
     private Integer pageSize;
 
     public RoutinePageDTO(String orderBy, Integer orderDesc, Integer pageIndex, Integer pageSize) {

@@ -10,33 +10,33 @@ import java.io.Serializable;
  * @author lxw
  * @date 2019年1月17日
  */
-@Schema(name = "分页返回统一工具类", description = "分页返回统一工具类")
+@Schema(description = "分页返回统一工具类")
 public class ResourcePage<T> implements Serializable {
 
 	/**
 	 * 页码
 	 */
-	@Schema(name = "页码",description = "当前页")
+	@Schema(description = "页码")
 	private Integer currentPage;
 	/**
 	 * 数据量
 	 */
-	@Schema(name = "数据量",description = "每页显示条数")
+	@Schema(description = "每页显示条数")
 	private Integer pageSize;
 	/**
 	 * 总页数
 	 */
-	@Schema(name = "总页数",description = "总页数")
+	@Schema(description = "总页数")
 	private Integer totalPages;
 	/**
 	 * 总记录数
 	 */
-	@Schema(name = "总记录数",description = "总数据量")
+	@Schema(description = "总记录数")
 	private Long total;
 	/**
 	 * 数据"
 	 */
-	@Schema(name = "数据",description = "数据对象")
+	@Schema(description = "数据对象")
 	private T rows;
 
 	public ResourcePage() {
