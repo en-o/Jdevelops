@@ -1,10 +1,12 @@
 package cn.jdevelops.sboot.swagger.config;
 
 import cn.jdevelops.sboot.swagger.core.util.RandomUtil;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.Import;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.basePackages;
 
 /***
@@ -52,6 +55,11 @@ public class SwaggerConfig {
         };
     }
 
+    /**
+     * 根据自定一份配置文件设置默认读取的分组
+     * @param swaggerProperties SwaggerProperties
+     * @return GroupedOpenApi
+     */
     @Bean
     public GroupedOpenApi defaultApi(SwaggerProperties swaggerProperties){
         String[] paths = { "/**" };
@@ -62,11 +70,14 @@ public class SwaggerConfig {
     }
 
     /**
-     * new OpenAPI
+     * 根据配置文件初始化 接口文档的信息
      */
     @Bean
     public OpenAPI customOpenAPI(SwaggerProperties swaggerProperties) {
-        return new OpenAPI()
+        Map<String, SecurityScheme> securitySchemas = buildSecuritySchemes(swaggerProperties);
+        OpenAPI openAPI = new OpenAPI()
+                // 添加安全方案
+                .components(new Components().securitySchemes(securitySchemas))
                 .info(new Info()
                         .title(swaggerProperties.getTitle())
                         .version(swaggerProperties.getVersion())
@@ -78,13 +89,34 @@ public class SwaggerConfig {
                         .termsOfService(swaggerProperties.getUrl())
                         .license(new License().name(swaggerProperties.getLicense())
                                 .url(swaggerProperties.getUrl())));
+        /*
+            全局接口都默认使用 apiKey 鉴权方式
+            如果要多个且是否add进行，这里要配合buildSecuritySchemes和 swaggerProperties 来写
+        */
+        securitySchemas.keySet().forEach(key -> openAPI.addSecurityItem(new SecurityRequirement().addList(key)));
+        return openAPI;
     }
 
     /**
-     * 访问安全的API（空了再看，我现在设置没什么用）
+     * OpenAPI 规范中支持的安全方案是
+     * @see <a href="http://www.ballcat.cn/guide/feature/openapi.html#%E5%AE%89%E5%85%A8%E6%96%B9%E6%A1%88">...</a>
+     * HTTP 身份验证
+     * API key （作为 Header 或 查询参数）
+     * OAuth2 的通用流程（implicit, password, application and access code），如RFC6749
+     * OpenID Connect Discovery
+     * 在 java 中的抽象类型对应 io.swagger.v3.oas.models.security.SecurityScheme
      */
-    private Map<String, SecurityScheme> buildSecuritySchemes() {
+    private Map<String, SecurityScheme> buildSecuritySchemes(SwaggerProperties swaggerProperties) {
         Map<String, SecurityScheme> securitySchemes = new HashMap<>();
+            // handle token (API key )
+            SecurityScheme securityScheme = new SecurityScheme()
+                    // 类型
+                    .type(SecurityScheme.Type.APIKEY)
+                    // 请求头的 name
+                    .name(SWAGGER_HEADER_HANDER)
+                    // token 所在位置
+                    .in(SecurityScheme.In.HEADER);
+            securitySchemes.put(SWAGGER_HEADER_HANDER, securityScheme);
         return securitySchemes;
     }
 
