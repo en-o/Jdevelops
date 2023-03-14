@@ -1,15 +1,12 @@
 package cn.jdevelops.sboot.swagger.config;
 
 import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
-import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import cn.jdevelops.sboot.swagger.core.util.RandomUtil;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,8 +16,8 @@ import org.springframework.context.annotation.Import;
 
 import java.util.*;
 
-import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.basePackages;
+import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.buildSecuritySchemes;
 
 /***
  * 创建Swagger配置
@@ -102,27 +99,7 @@ public class SwaggerConfig {
         return openAPI;
     }
 
-    /**
-     *
-     * OpenAPI 规范中支持的安全方案是
-     * @see <a href="http://www.ballcat.cn/guide/feature/openapi.html#%E5%AE%89%E5%85%A8%E6%96%B9%E6%A1%88">...</a>
-     * HTTP 身份验证
-     * API key （作为 Header 或 查询参数）
-     * OAuth2 的通用流程（implicit, password, application and access code），如RFC6749
-     * OpenID Connect Discovery
-     * 在 java 中的抽象类型对应 io.swagger.v3.oas.models.security.SecurityScheme
-     */
-    private BuildSecuritySchemes buildSecuritySchemes(SwaggerProperties swaggerProperties) {
-        List<SecurityRequirement>  securityItem = new ArrayList<>();
-        Map<String, SecurityScheme> securitySchemes = new HashMap<>();
-        swaggerProperties.getSecurityScheme().forEach(swaggerSecurityScheme -> {
-            securitySchemes.put(swaggerSecurityScheme.getScheme().getType().name(), swaggerSecurityScheme.getScheme());
-           if(swaggerSecurityScheme.getSecurity()){
-               securityItem.add(new SecurityRequirement().addList(swaggerSecurityScheme.getScheme().getType().name()));
-           }
-        });
-        return new BuildSecuritySchemes(securityItem,securitySchemes);
-    }
+
 
 
 }
