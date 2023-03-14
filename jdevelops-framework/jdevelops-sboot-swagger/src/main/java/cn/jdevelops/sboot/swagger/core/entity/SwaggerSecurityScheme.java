@@ -3,8 +3,6 @@ package cn.jdevelops.sboot.swagger.core.entity;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
-import java.util.List;
-import java.util.Map;
 
 /**
  * swagger 安全方案

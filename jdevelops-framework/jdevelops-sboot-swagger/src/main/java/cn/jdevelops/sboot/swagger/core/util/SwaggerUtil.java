@@ -97,7 +97,7 @@ public class SwaggerUtil {
     public static BuildSecuritySchemes buildSecuritySchemes(SwaggerProperties swaggerProperties) {
         List<SecurityRequirement> securityItem = new ArrayList<>();
         Map<String, SecurityScheme> securitySchemes = new HashMap<>(10);
-        swaggerProperties.getSecurityScheme().forEach(swaggerSecurityScheme -> {
+        swaggerProperties.getSwaggerSecuritySchemes().forEach(swaggerSecurityScheme -> {
             securitySchemes.put(swaggerSecurityScheme.getScheme().getType().name(), swaggerSecurityScheme.getScheme());
             if(Boolean.TRUE.equals(swaggerSecurityScheme.getSecurity())){
                 securityItem.add(new SecurityRequirement().addList(swaggerSecurityScheme.getScheme().getType().name()));

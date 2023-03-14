@@ -1,6 +1,7 @@
 package cn.jdevelops.sboot.swagger.config;
 
 import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
+import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import cn.jdevelops.sboot.swagger.core.util.RandomUtil;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -27,7 +28,7 @@ import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.buildSecuritySche
  * @date 2023-03-12 18:54:25
  */
 @ConditionalOnWebApplication
-@Import({ConsoleConfig.class,SwaggerProperties.class})
+@Import({ConsoleConfig.class,SwaggerProperties.class, SwaggerSecurityScheme.class})
 @ConditionalOnClass({OpenAPI.class})
 public class SwaggerConfig {
 

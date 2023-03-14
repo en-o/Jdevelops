@@ -77,8 +77,7 @@ public class SwaggerProperties {
      *  OpenAPI 规范的安全方案
      *  默认apikey,且name等于token
      */
-    @NestedConfigurationProperty
-    private List<SwaggerSecurityScheme> securityScheme;
+    private List<SwaggerSecurityScheme> swaggerSecuritySchemes;
 
     /**
      * 是否设置默认的 securityScheme ，true 要设置
@@ -99,7 +98,7 @@ public class SwaggerProperties {
                 ", license='" + license + '\'' +
                 ", licenseUrl='" + licenseUrl + '\'' +
                 ", groupName='" + groupName + '\'' +
-                ", securityScheme=" + securityScheme +
+                ", swaggerSecuritySchemes=" + swaggerSecuritySchemes +
                 ", securitySchemeDefault=" + securitySchemeDefault +
                 '}';
     }
@@ -214,9 +213,9 @@ public class SwaggerProperties {
         this.groupName = groupName;
     }
 
-    public List<SwaggerSecurityScheme> getSecurityScheme() {
+    public List<SwaggerSecurityScheme> getSwaggerSecuritySchemes() {
         // 为空设置默认token
-        if(Objects.isNull(securityScheme) ){
+        if(Objects.isNull(swaggerSecuritySchemes) ){
             if(Boolean.TRUE.equals(getSecuritySchemeDefault())){
                 return Collections.singletonList(new SwaggerSecurityScheme( new SecurityScheme()
                         // 类型
@@ -229,11 +228,11 @@ public class SwaggerProperties {
                 return new ArrayList<>();
             }
         }
-        return securityScheme;
+        return swaggerSecuritySchemes;
     }
 
-    public void setSecurityScheme(List<SwaggerSecurityScheme> securityScheme) {
-        this.securityScheme = securityScheme;
+    public void setSwaggerSecuritySchemes(List<SwaggerSecurityScheme> swaggerSecuritySchemes) {
+        this.swaggerSecuritySchemes = swaggerSecuritySchemes;
     }
 
     public Boolean getSecuritySchemeDefault() {
