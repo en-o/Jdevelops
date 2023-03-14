@@ -1,5 +1,7 @@
 package cn.jdevelops.sboot.swagger.config;
 
+import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
+import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import cn.jdevelops.sboot.swagger.core.util.RandomUtil;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -15,8 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.basePackages;
@@ -62,10 +63,13 @@ public class SwaggerConfig {
      */
     @Bean
     public GroupedOpenApi defaultApi(SwaggerProperties swaggerProperties){
+        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties);
         String[] paths = { "/**" };
         String[] packagedToMatch = basePackages(swaggerProperties.getBasePackage());
         return GroupedOpenApi.builder().group(swaggerProperties.getGroupName())
                 .pathsToMatch(paths)
+                // todo: Authorize 未生效，请求header里未包含参数 - 临时处理方法
+                .addOperationCustomizer((operation, handlerMethod) -> operation.security(buildSecuritySchemes.getSecurityItem()))
                 .packagesToScan(packagedToMatch).build();
     }
 
@@ -74,10 +78,10 @@ public class SwaggerConfig {
      */
     @Bean
     public OpenAPI customOpenAPI(SwaggerProperties swaggerProperties) {
-        Map<String, SecurityScheme> securitySchemas = buildSecuritySchemes(swaggerProperties);
+        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties);
         OpenAPI openAPI = new OpenAPI()
                 // 添加安全方案
-                .components(new Components().securitySchemes(securitySchemas))
+                .components(new Components().securitySchemes(buildSecuritySchemes.getSecuritySchemes()))
                 .info(new Info()
                         .title(swaggerProperties.getTitle())
                         .version(swaggerProperties.getVersion())
@@ -90,14 +94,16 @@ public class SwaggerConfig {
                         .license(new License().name(swaggerProperties.getLicense())
                                 .url(swaggerProperties.getUrl())));
         /*
+            todo： Authorize 未生效，请求header里未包含参数 ：https://gitee.com/xiaoym/knife4j/issues/I6AZLF
             全局接口都默认使用 apiKey 鉴权方式
             如果要多个且是否add进行，这里要配合buildSecuritySchemes和 swaggerProperties 来写
         */
-        securitySchemas.keySet().forEach(key -> openAPI.addSecurityItem(new SecurityRequirement().addList(key)));
+        buildSecuritySchemes.getSecurityItem().forEach(openAPI::addSecurityItem);
         return openAPI;
     }
 
     /**
+     *
      * OpenAPI 规范中支持的安全方案是
      * @see <a href="http://www.ballcat.cn/guide/feature/openapi.html#%E5%AE%89%E5%85%A8%E6%96%B9%E6%A1%88">...</a>
      * HTTP 身份验证
@@ -106,18 +112,16 @@ public class SwaggerConfig {
      * OpenID Connect Discovery
      * 在 java 中的抽象类型对应 io.swagger.v3.oas.models.security.SecurityScheme
      */
-    private Map<String, SecurityScheme> buildSecuritySchemes(SwaggerProperties swaggerProperties) {
+    private BuildSecuritySchemes buildSecuritySchemes(SwaggerProperties swaggerProperties) {
+        List<SecurityRequirement>  securityItem = new ArrayList<>();
         Map<String, SecurityScheme> securitySchemes = new HashMap<>();
-            // handle token (API key )
-            SecurityScheme securityScheme = new SecurityScheme()
-                    // 类型
-                    .type(SecurityScheme.Type.APIKEY)
-                    // 请求头的 name
-                    .name(SWAGGER_HEADER_HANDER)
-                    // token 所在位置
-                    .in(SecurityScheme.In.HEADER);
-            securitySchemes.put(SWAGGER_HEADER_HANDER, securityScheme);
-        return securitySchemes;
+        swaggerProperties.getSecurityScheme().forEach(swaggerSecurityScheme -> {
+            securitySchemes.put(swaggerSecurityScheme.getScheme().getType().name(), swaggerSecurityScheme.getScheme());
+           if(swaggerSecurityScheme.getSecurity()){
+               securityItem.add(new SecurityRequirement().addList(swaggerSecurityScheme.getScheme().getType().name()));
+           }
+        });
+        return new BuildSecuritySchemes(securityItem,securitySchemes);
     }
 
 

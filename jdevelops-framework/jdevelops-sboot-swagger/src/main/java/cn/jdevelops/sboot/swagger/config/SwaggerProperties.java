@@ -1,9 +1,18 @@
 package cn.jdevelops.sboot.swagger.config;
 
 
+import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.http.HttpHeaders;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
+import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 
 
 /**
@@ -68,6 +77,17 @@ public class SwaggerProperties {
      */
     private String groupName;
 
+    /**
+     *  OpenAPI 规范的安全方案
+     *  默认apikey,且name等于token
+     */
+    @NestedConfigurationProperty
+    private List<SwaggerSecurityScheme> securityScheme;
+
+    /**
+     * 是否设置默认的 securityScheme ，true 要设置
+     */
+    private Boolean securitySchemeDefault;
 
 
     @Override
@@ -83,6 +103,8 @@ public class SwaggerProperties {
                 ", license='" + license + '\'' +
                 ", licenseUrl='" + licenseUrl + '\'' +
                 ", groupName='" + groupName + '\'' +
+                ", securityScheme=" + securityScheme +
+                ", securitySchemeDefault=" + securitySchemeDefault +
                 '}';
     }
 
@@ -196,5 +218,33 @@ public class SwaggerProperties {
         this.groupName = groupName;
     }
 
+    public List<SwaggerSecurityScheme> getSecurityScheme() {
+        // 为空设置默认token
+        if(Objects.isNull(securityScheme) && getSecuritySchemeDefault()){
+            SecurityScheme securityScheme = new SecurityScheme()
+                    // 类型
+                    .type(SecurityScheme.Type.APIKEY)
+                    // 请求头的 name
+                    .name(SWAGGER_HEADER_HANDER)
+                    // token 所在位置
+                    .in(SecurityScheme.In.HEADER);
+            return Arrays.asList(new SwaggerSecurityScheme(securityScheme,true));
+        }
+        return securityScheme;
+    }
 
+    public void setSecurityScheme(List<SwaggerSecurityScheme> securityScheme) {
+        this.securityScheme = securityScheme;
+    }
+
+    public Boolean getSecuritySchemeDefault() {
+        if(Objects.isNull(securitySchemeDefault)){
+            return true;
+        }
+        return securitySchemeDefault;
+    }
+
+    public void setSecuritySchemeDefault(Boolean securitySchemeDefault) {
+        this.securitySchemeDefault = securitySchemeDefault;
+    }
 }
