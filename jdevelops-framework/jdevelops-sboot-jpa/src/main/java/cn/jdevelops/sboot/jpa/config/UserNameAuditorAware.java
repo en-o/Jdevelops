@@ -7,15 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /**
+ *
+ *  JPA完成审计功能
  * @author tn
  * @version 1
  * <pre>
- *  @ClassName UserNameAuditorAware
- *  @description   JPA完成审计功能  使用时在自己的像中吧这个复制过去
+ *  description
  *  eg: Application启动类要加注解: @EnableJpaAuditing
  *  监听
- *  @CreatedBy
- *  @LastModifiedBy
+ *  CreatedBy
+ *  LastModifiedBy
  * </pre>
  * 自动注入用户名
  *  其中泛型T可以为String保存用户名，也可以为Long/Integer保存用户ID
