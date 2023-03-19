@@ -1,6 +1,6 @@
 package cn.jdevelops.data.jap.page;
 
-import cn.jdevelops.data.jap.util.ListTo;
+import cn.jdevelops.result.util.ListTo;
 import cn.jdevelops.result.bean.SerializableBean;
 import cn.jdevelops.result.request.PageDTO;
 import cn.jdevelops.result.response.PageResult;

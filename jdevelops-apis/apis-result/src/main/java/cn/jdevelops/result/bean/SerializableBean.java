@@ -5,6 +5,7 @@ package cn.jdevelops.result.bean;
 import cn.jdevelops.map.core.bean.BeanCopier;
 import cn.jdevelops.map.core.bean.BeanCopyUtil;
 import cn.jdevelops.map.core.bean.ColumnUtil;
+import cn.jdevelops.result.util.ListTo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public class SerializableBean<B> implements Serializable {
      * @param clazz 需要转变的类型
      * @return clazz 的类型
      */
-    public B to(Class<B> clazz) {
+    public <R> R to(Class<R> clazz) {
         try {
-            B tag = clazz.newInstance();
+            R tag = clazz.newInstance();
             BeanCopier.copy(this, tag);
             return tag;
         } catch (Exception var3) {
@@ -69,16 +70,9 @@ public class SerializableBean<B> implements Serializable {
      * @param clazz 需要转变的类型
      * @return List<clazz>
      */
-    public static <B, S extends SerializableBean> List<B> to(Collection<S> list, Class<B> clazz) {
+    public static <R, S extends SerializableBean> List<R> to(Collection<S> list, Class<R> clazz) {
         if (list != null && !list.isEmpty()) {
-            List<B> result = new ArrayList(list.size());
-            Iterator var3 = list.iterator();
-            while(var3.hasNext()) {
-                SerializableBean abs = (SerializableBean)var3.next();
-                result.add((B) abs.to(clazz));
-            }
-
-            return result;
+            return ListTo.to(clazz, list);
         } else {
             return new ArrayList();
         }

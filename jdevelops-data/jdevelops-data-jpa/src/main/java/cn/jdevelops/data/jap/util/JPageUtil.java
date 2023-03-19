@@ -5,6 +5,7 @@ import cn.jdevelops.result.request.PageDTO;
 import cn.jdevelops.result.request.SortDTO;
 import cn.jdevelops.result.request.SortPageDTO;
 import cn.jdevelops.result.response.PageResult;
+import cn.jdevelops.result.util.ListTo;
 import cn.jdevelops.result.util.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -13,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 

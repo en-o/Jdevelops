@@ -1,4 +1,4 @@
-package cn.jdevelops.data.jap.util;
+package cn.jdevelops.result.util;
 
 
 import cn.jdevelops.map.core.bean.BeanCopier;
@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class ListTo {
      * @param <K>    泛型
      * @return tClass
      */
-    public static <T, K> List<T> to(Class<T> tClass, List<K> list) {
+    public static <T, K> List<T> to(Class<T> tClass, Collection<K> list) {
         return list.stream().map(entity -> beanTo(tClass, entity)).collect(Collectors.toList());
     }
 
