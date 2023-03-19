@@ -19,10 +19,6 @@
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>beans-entity</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
             <artifactId>beans-enum</artifactId>
         </dependency>
     </dependencies>

@@ -18,8 +18,6 @@
         <module>starters-beans</module>
         <!-- boot-boot-web 基础组件-->
         <module>starters-jdevelops-boot-web</module>
-        <!-- boot-web jpa开发基础组件-->
-        <module>starters-jdevelops-boot-web-jpa</module>
         <!-- boot-web 基础组件-->
         <module>starters-jdevelops-web</module>
     </modules>
