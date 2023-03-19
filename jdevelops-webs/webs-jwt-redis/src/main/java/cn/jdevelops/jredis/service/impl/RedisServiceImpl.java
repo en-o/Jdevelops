@@ -6,6 +6,7 @@ import cn.jdevelops.jredis.constant.RedisKeyConstant;
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.jredis.entity.role.UserRole;
+import cn.jdevelops.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.jwtweb.exception.DisabledAccountException;
 import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.enums.result.UserExceptionEnum.*;
+import static cn.jdevelops.result.emums.UserExceptionEnum.*;
 
 
 /**
@@ -135,7 +136,7 @@ public class RedisServiceImpl implements RedisService {
                     .get(subject);
         }catch (Exception e){
             LOG.info("用户状态缓存失效");
-            throw new BusinessException("登录失效请重新登录",e);
+            throw new BusinessException(JwtMessageConstant.TOKEN_ERROR,e);
         }
 
         Object basicsAccount = JSON.parse(redisUser);
@@ -170,7 +171,7 @@ public class RedisServiceImpl implements RedisService {
                     .get(user);
         }catch (Exception e){
             LOG.info("加载用户状态缓存失败");
-            throw new TokenException("登录失效请重新登录",e);
+            throw new TokenException(JwtMessageConstant.TOKEN_ERROR,e);
         }
         // 处理由于是泛型对象导致其他地方继承后有问题，
         RB basicsAccount = (RB) JSON.parse(redisUser);

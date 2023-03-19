@@ -1,6 +1,6 @@
 package cn.jdevelops.jwtweb.interceptor;
 
-import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
+import cn.jdevelops.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwt.util.JwtUtil;
 import cn.jdevelops.jwtweb.util.JwtWebUtil;
@@ -101,7 +101,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
         logger.info("需要验证token,校验结果：{},token:{}", flag,token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap.error(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())));
+            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap
+                    .result(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())));
             return new CheckVO(false,token);
         }
         // 日志用的 - %X{token}
