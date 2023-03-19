@@ -28,8 +28,8 @@
         <module>jdevelops-sboot-security</module>
         <!-- 接口文档 -->
         <module>jdevelops-sboot-swagger</module>
-        <!--业务-->
-        <module>jdevelops-sboot-biz-login</module>
+        <!--简单的Redis登录-->
+        <module>jdevelops-sboot-redis-login</module>
     </modules>
 
 </project>
