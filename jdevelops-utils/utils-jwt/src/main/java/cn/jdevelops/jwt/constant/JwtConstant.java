@@ -27,4 +27,7 @@ public interface JwtConstant {
      *jwtBean类的 spring容器名
      */
     String JWT_BEAN_STR = "jwtBean";
+
+
+
 }

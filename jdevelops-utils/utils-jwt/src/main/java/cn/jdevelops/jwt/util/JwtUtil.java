@@ -21,8 +21,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import java.awt.List;
 import java.util.*;
 
-import static cn.jdevelops.enums.result.TokenExceptionCodeEnum.TOKEN_ERROR;
 import static cn.jdevelops.jwt.constant.JwtConstant.JWT_BEAN_STR;
+import static cn.jdevelops.jwt.constant.JwtMessageConstant.*;
 
 /**
  *  jwt工具
@@ -32,6 +32,9 @@ import static cn.jdevelops.jwt.constant.JwtConstant.JWT_BEAN_STR;
  */
 
 public class JwtUtil {
+
+
+
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
@@ -165,7 +168,7 @@ public class JwtUtil {
             verityForDecodedJWT(token);
             return true;
         }catch (Exception e){
-            logger.error("token过期");
+            logger.error(TOKEN_EXPIRES);
             return false;
         }
     }
@@ -196,7 +199,7 @@ public class JwtUtil {
             Map<String, Claim> claims = jwt.getClaims();
             return getClaims(claims);
         }catch (Exception e){
-            throw new IllegalArgumentException(TOKEN_ERROR.getMessage(),e);
+            throw new IllegalArgumentException(TOKEN_ERROR,e);
         }
     }
 
@@ -228,12 +231,12 @@ public class JwtUtil {
         try {
             DecodedJWT jwt = JWT.decode(token);
             if(Objects.isNull(jwt.getSubject())){
-                throw new JWTDecodeException("token是非法的");
+                throw new JWTDecodeException(TOKEN_ILLEGAL);
             }
             return jwt.getSubject();
         }catch (JWTDecodeException e){
             e.printStackTrace();
-            throw new JWTDecodeException("token是非法的");
+            throw new JWTDecodeException(TOKEN_ILLEGAL);
         }
     }
 
@@ -257,7 +260,7 @@ public class JwtUtil {
     public static Map<String, Object> parseJwtVerify(String token){
         boolean verity = verity(token);
         if(!verity){
-            throw new JWTVerificationException("token过期");
+            throw new JWTVerificationException(TOKEN_EXPIRES);
         }
         DecodedJWT jwt = JWT.decode(token);
         Map<String, Claim> claims = jwt.getClaims();
