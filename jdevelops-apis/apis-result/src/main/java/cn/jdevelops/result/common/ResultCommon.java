@@ -109,4 +109,14 @@ public class ResultCommon implements Serializable {
     public void setTraceId(String traceId) {
         this.traceId = traceId;
     }
+
+    @Override
+    public String toString() {
+        return "ResultCommon{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", ts=" + ts +
+                ", traceId='" + traceId + '\'' +
+                '}';
+    }
 }

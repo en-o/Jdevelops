@@ -92,5 +92,10 @@ public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
         this.data = data;
     }
 
-
+    @Override
+    public String toString() {
+        return "ResultPageVO{" +
+                "data=" + data +
+                '}';
+    }
 }

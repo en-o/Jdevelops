@@ -193,4 +193,18 @@ public class ResultVO<B> extends ResultCommon {
     }
 
 
+    public B getData() {
+        return data;
+    }
+
+    public void setData(B data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultVO{" +
+                "data=" + data +
+                '}';
+    }
 }
