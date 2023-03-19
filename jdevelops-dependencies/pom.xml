@@ -28,7 +28,7 @@
 
         <!-- 工具类 -->
         <lombok.version>1.18.22</lombok.version>
-        <hutool.version>5.8.11</hutool.version>
+        <hutool.version>5.8.15</hutool.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -367,6 +367,13 @@
 
             <!-- 框架组件 -->
 
+            <!--数据操作-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-data-jpa</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
             <!--caches-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
@@ -378,26 +385,7 @@
                 <artifactId>caches-jdbctemplate</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-jpa-server</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-jpa-core</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-mybatis-server</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-mybatis-core</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>caches-redis-core</artifactId>
@@ -520,11 +508,6 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>beans-enum</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>beans-entity</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
@@ -695,11 +678,6 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>starters-jdevelops-boot-web</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-boot-web-jpa</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
