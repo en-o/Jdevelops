@@ -1,9 +1,10 @@
-package cn.jdevelops.entity.basics.vo;
+package cn.jdevelops.result.bean;
+
+
 
 import cn.jdevelops.map.core.bean.BeanCopier;
 import cn.jdevelops.map.core.bean.BeanCopyUtil;
 import cn.jdevelops.map.core.bean.ColumnUtil;
-
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
  * @date 2020/6/28 16:46
  */
 
-public class SerializableVO<T> implements Serializable {
+public class SerializableBean<B> implements Serializable {
 
     private static final long serialVersionUID = 315654089784739497L;
 
@@ -25,7 +26,7 @@ public class SerializableVO<T> implements Serializable {
      * 浅拷贝 - jpa更新用 mybatis根据情况用
      * @param source  查询出来的数据
      */
-    public void copy(T source) {
+    public void copy(B source) {
         BeanCopyUtil.beanCopy(source, this);
     }
 
@@ -34,7 +35,7 @@ public class SerializableVO<T> implements Serializable {
     /**
      * 获取实体类的字段名称
      */
-    public static <T>  String of(ColumnUtil.SFunction<T, ?> fn){
+    public static <B>  String of(ColumnUtil.SFunction<B, ?> fn){
         return ColumnUtil.getFieldName(fn);
     }
 
@@ -42,7 +43,7 @@ public class SerializableVO<T> implements Serializable {
      * 获取实体类的字段名称
      * @param toLine  是否转驼峰（默认不转） true:驼峰 。 false：正常bean字段
      */
-    public static <T> String of(ColumnUtil.SFunction<T, ?> fn, Boolean toLine){
+    public static <B> String of(ColumnUtil.SFunction<B, ?> fn, Boolean toLine){
         return ColumnUtil.getFieldName(fn,toLine);
     }
 
@@ -52,9 +53,9 @@ public class SerializableVO<T> implements Serializable {
      * @param clazz 需要转变的类型
      * @return clazz 的类型
      */
-    public <T> T to(Class<T> clazz) {
+    public B to(Class<B> clazz) {
         try {
-            T tag = clazz.newInstance();
+            B tag = clazz.newInstance();
             BeanCopier.copy(this, tag);
             return tag;
         } catch (Exception var3) {
@@ -68,13 +69,13 @@ public class SerializableVO<T> implements Serializable {
      * @param clazz 需要转变的类型
      * @return List<clazz>
      */
-    public static <T, S extends SerializableVO> List<T> to(Collection<S> list, Class<T> clazz) {
+    public static <B, S extends SerializableBean> List<B> to(Collection<S> list, Class<B> clazz) {
         if (list != null && !list.isEmpty()) {
-            List<T> result = new ArrayList(list.size());
+            List<B> result = new ArrayList(list.size());
             Iterator var3 = list.iterator();
             while(var3.hasNext()) {
-                SerializableVO abs = (SerializableVO)var3.next();
-                result.add((T) abs.to(clazz));
+                SerializableBean abs = (SerializableBean)var3.next();
+                result.add((B) abs.to(clazz));
             }
 
             return result;
@@ -90,13 +91,13 @@ public class SerializableVO<T> implements Serializable {
      * @param clazz  需要转变的类型
      * @return List<clazz>
      */
-    public static <T, S extends SerializableVO> List<T> to(Iterable<S> iterable, Class<T> clazz) {
+    public static <B, S extends SerializableBean> List<B> to(Iterable<S> iterable, Class<B> clazz) {
         if (iterable !=null) {
             ArrayList result = new ArrayList();
             Iterator var3 = iterable.iterator();
             while(var3.hasNext()) {
-                SerializableVO abs = (SerializableVO)var3.next();
-                result.add((T) abs.to(clazz));
+                SerializableBean abs = (SerializableBean)var3.next();
+                result.add((B) abs.to(clazz));
             }
             return result;
         } else {
@@ -111,12 +112,12 @@ public class SerializableVO<T> implements Serializable {
      * @param clazz 需要转变的类型
      * @return clazz
      */
-    public static <T, S> T to(S object, Class<T> clazz) {
+    public static <B, S> B to(S object, Class<B> clazz) {
         if (object != null) {
-            SerializableVO abs = (SerializableVO)object;
-            return (T) abs.to(clazz);
+            SerializableBean abs = (SerializableBean)object;
+            return (B) abs.to(clazz);
         } else {
-            return (T)clazz;
+            return (B)clazz;
         }
     }
 
@@ -127,13 +128,13 @@ public class SerializableVO<T> implements Serializable {
      * @param clazz  需要返回的
      * @return clazz
      */
-    public static <T, S> T to(Class<S> clazzs, Class<T> clazz) {
+    public static <B, S> B to(Class<S> clazzs, Class<B> clazz) {
         Class<? extends Class> aClass = clazzs.getClass();
         try {
-            SerializableVO abs =(SerializableVO) clazzs.newInstance();
-            return (T)abs.to(clazz);
+            SerializableBean abs =(SerializableBean) clazzs.newInstance();
+            return (B)abs.to(clazz);
         }catch (Exception e){
-            return (T)clazz;
+            return (B)clazz;
         }
     }
 

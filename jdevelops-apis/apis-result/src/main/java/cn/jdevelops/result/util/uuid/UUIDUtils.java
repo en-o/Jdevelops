@@ -17,7 +17,7 @@
  *
  */
 
-package cn.jdevelops.entity.basics.util;
+package cn.jdevelops.result.util.uuid;
 
 import java.security.SecureRandom;
 
