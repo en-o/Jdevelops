@@ -50,7 +50,12 @@ public class BeanCopier {
                             targetField.set(target, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                         } else if (simpleName.equals(LocalDateTime.class.getSimpleName())) {
                             LocalDateTime localDateTime = (LocalDateTime)sourceField.get(source);
-                            targetField.set(target, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                            // 若 Long 设置 毫秒
+                            if(targetField.getType().getSimpleName().equals(Long.class.getSimpleName())){
+                                targetField.set(target, localDateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+                            }else {
+                                targetField.set(target, localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                            }
                         }else if (simpleName.equals(Timestamp.class.getSimpleName())) {
                             Timestamp time = (Timestamp)sourceField.get(source);
                             LocalDateTime localDateTime = time.toLocalDateTime();
