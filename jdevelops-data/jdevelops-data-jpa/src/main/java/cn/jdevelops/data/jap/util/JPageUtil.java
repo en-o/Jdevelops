@@ -1,10 +1,10 @@
 package cn.jdevelops.data.jap.util;
 
-import cn.jdevelops.entity.basics.vo.SerializableVO;
-import cn.jdevelops.result.page.ResourcePage;
-import cn.jdevelops.result.response.PageVO;
-import cn.jdevelops.result.response.RoutinePageDTO;
-import cn.jdevelops.result.response.SortVO;
+import cn.jdevelops.result.bean.SerializableBean;
+import cn.jdevelops.result.request.PageDTO;
+import cn.jdevelops.result.request.SortDTO;
+import cn.jdevelops.result.request.SortPageDTO;
+import cn.jdevelops.result.response.PageResult;
 import cn.jdevelops.result.util.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,14 +29,14 @@ public class JPageUtil {
     /**
      * SortVO  转成 Sort
      *
-     * @param sortVO SortVO
+     * @param page page
      * @return Sort
      */
-    public static Sort getSv2S(SortVO sortVO) {
-        if (sortVO == null) {
+    public static Sort getSv2S(SortDTO page) {
+        if (page == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            return getOrders(sortVO.getOrderDesc(), sortVO.getOrderBy());
+            return getOrders(page.getOrderDesc(), page.getOrderBy());
         }
     }
 
@@ -46,7 +47,7 @@ public class JPageUtil {
      * @param sort sort
      * @return Sort
      */
-    public static Sort getSv2S(RoutinePageDTO sort) {
+    public static Sort getSv2S(SortPageDTO sort) {
         if (StringUtils.isBlank(sort.getOrderBy()) && sort.getOrderDesc() == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
@@ -54,6 +55,7 @@ public class JPageUtil {
         }
     }
 
+    @NotNull
     private static Sort getOrders(Integer orderDesc, String orderBy) {
         if (!Objects.isNull(orderDesc) && 0 == orderDesc) {
             return Sort.by(Sort.Direction.ASC,
@@ -66,26 +68,26 @@ public class JPageUtil {
     /**
      * 获取分页 Pageable
      *
-     * @param pageVO 分页
-     * @param sortVO 排序
+     * @param page 分页
+     * @param sort 排序
      * @return Pageable
      */
-    public static Pageable getPageable(PageVO pageVO, SortVO sortVO) {
-        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+    public static Pageable getPageable(PageDTO page, SortDTO sort) {
+        PageDTO pageVoDef = PageUtil.pageDef(page);
         return PageRequest.of(pageVoDef.getPageIndex(),
                 pageVoDef.getPageSize(),
-                getSv2S(sortVO));
+                getSv2S(sort));
     }
 
     /**
      * 获取分页 Pageable
      *
-     * @param pageVO 分页
+     * @param page 分页
      * @param sort 排序Sort
      * @return Pageable
      */
-    public static Pageable getPageable(PageVO pageVO, Sort sort) {
-        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+    public static Pageable getPageable(PageDTO page, Sort sort) {
+        PageDTO pageVoDef = PageUtil.pageDef(page);
         return PageRequest.of(pageVoDef.getPageIndex(),
                 pageVoDef.getPageSize(),
                 sort);
@@ -94,11 +96,11 @@ public class JPageUtil {
 
     /**
      * 获取分页 Pageable
-     * @param pageVO 分页
+     * @param page 分页
      * @return Pageable
      */
-    public static Pageable getPageable(PageVO pageVO) {
-        PageVO pageVoDef = PageUtil.setNullPageVoDef(pageVO);
+    public static Pageable getPageable(PageDTO page) {
+        PageDTO pageVoDef = PageUtil.pageDef(page);
         return PageRequest.of(pageVoDef.getPageIndex(),
                 pageVoDef.getPageSize());
     }
@@ -107,11 +109,11 @@ public class JPageUtil {
     /**
      * 获取分页 Pageable
      *
-     * @param pageDTO 分页 排序
+     * @param sortPage 分页 排序
      * @return Pageable
      */
-    public static Pageable getPageable(RoutinePageDTO pageDTO) {
-        RoutinePageDTO pageDef = PageUtil.setNullRoutinePageDef(pageDTO);
+    public static Pageable getPageable(SortPageDTO sortPage) {
+        SortPageDTO pageDef = PageUtil.sortPageDef(sortPage);
         return PageRequest.of(pageDef.getPageIndex(),
                 pageDef.getPageSize(),
                 getSv2S(pageDef));
@@ -121,27 +123,18 @@ public class JPageUtil {
     /**
      * page
      */
-    public static <T, S extends SerializableVO> ResourcePage<List<T>> to(Page<S> page, Class<T> clazz) {
+    public static <R, S extends SerializableBean> PageResult<R> to(Page<S> page, Class<R> clazz) {
         if (page != null && !page.isEmpty()) {
             List<S> content = page.getContent();
-
-            List<T> result = new ArrayList(content.size());
-
-            Iterator var3 = content.iterator();
-
-            while (var3.hasNext()) {
-                SerializableVO abs = (SerializableVO) var3.next();
-                result.add((T) abs.to(clazz));
-            }
-
-            return ResourcePage.page(page.getNumber(),
+            List<R> result = ListTo.to(clazz, content);
+            return PageResult.page(page.getNumber(),
                     page.getSize(),
                     page.getTotalPages(),
                     page.getTotalElements(),
                     result);
         } else {
-            return ResourcePage.page(1,
-                    page.getPageable().getPageSize(),
+            return PageResult.page(1,
+                    20,
                     0,
                     0L,
                     null);

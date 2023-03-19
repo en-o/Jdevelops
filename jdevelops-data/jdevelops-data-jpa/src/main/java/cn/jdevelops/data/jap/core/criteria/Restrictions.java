@@ -1,8 +1,7 @@
 package cn.jdevelops.data.jap.core.criteria;
 
-
-
 import cn.jdevelops.data.jap.util.IObjects;
+import cn.jdevelops.map.core.bean.ColumnUtil;
 
 import java.util.Arrays;
 import java.util.Collection;

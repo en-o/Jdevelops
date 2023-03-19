@@ -1,10 +1,10 @@
 package cn.jdevelops.data.jap.dao;
 
-import cn.jdevelops.jap.core.util.JPAUtilExpandCriteria;
-import cn.jdevelops.jap.core.util.JpaUtils;
-import cn.jdevelops.jap.core.util.criteria.Restrictions;
-import cn.jdevelops.jap.exception.JpaException;
-import cn.jdevelops.jpa.server.enums.FieldName;
+import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
+import cn.jdevelops.data.jap.core.criteria.Restrictions;
+import cn.jdevelops.data.jap.enums.FieldName;
+import cn.jdevelops.data.jap.exception.JpaException;
+import cn.jdevelops.data.jap.util.JpaUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -26,7 +26,7 @@ import java.util.List;
  * @date 2020/5/14 15:31
  */
 @NoRepositoryBean
-public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificationExecutor<T> {
+public interface JpaBasicsDao<B, ID> extends JpaRepository<B, ID>, JpaSpecificationExecutor<B> {
 
     /**
      * 根据删除对象
@@ -38,9 +38,9 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      */
     default <U> boolean deleteByUnique(List<U> unique, String selectKey) {
         try {
-            JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
+            JPAUtilExpandCriteria<B> jpaSelect = new JPAUtilExpandCriteria<>();
             jpaSelect.add(Restrictions.in(selectKey, unique, false));
-            List<T> all = findAll(jpaSelect);
+            List<B> all = findAll(jpaSelect);
             deleteAll(all);
             return true;
         } catch (Exception e) {
@@ -55,10 +55,10 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @return Boolean
      * @throws JpaException JpaException
      */
-    default T updateEntity(T t) throws JpaException {
+    default B updateEntity(B t) throws JpaException {
        try {
            /* 跟根据ID获取需要更新的数据的 原始数据 */
-           T oidCamera = findById((D) JpaUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
+           B oidCamera = findById((ID) JpaUtils.getFieldValueByName(FieldName.ID.getFieldName(), t))
                    .orElse(null);
            /*
             *将新数据中非空字段 克隆到原始数据中 实现更新
@@ -86,12 +86,12 @@ public interface JpaBasicsDao<T, D> extends JpaRepository<T, D>, JpaSpecificatio
      * @return Boolean
      * @throws JpaException JpaException
      */
-    default T updateEntity(T t, String selectKey) throws JpaException {
+    default B updateEntity(B t, String selectKey) throws JpaException {
         try {
             /* 跟根据ID获取需要更新的数据的 原始数据 */
-            JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
+            JPAUtilExpandCriteria<B> jpaSelect = new JPAUtilExpandCriteria<>();
             jpaSelect.add(Restrictions.eq(selectKey, JpaUtils.getFieldValueByName(selectKey, t), false));
-            T oidCamera = findOne(jpaSelect).orElseThrow(() -> new JpaException("更新失败，查询数据为空"));
+            B oidCamera = findOne(jpaSelect).orElseThrow(() -> new JpaException("更新失败，查询数据为空"));
             /*
              *将新数据中非空字段 克隆到原始数据中 实现更新
              * <p> oidCamera.copy(scCameraEntity); </p>

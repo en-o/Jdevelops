@@ -10,11 +10,27 @@
     </parent>
 
     <artifactId>jdevelops-sboot-jpa</artifactId>
+    <description>
+        jpa +  mysql
+    </description>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>caches-auto-schema</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

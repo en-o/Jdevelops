@@ -1,9 +1,8 @@
 package cn.jdevelops.data.jap.service;
 
-import cn.jdevelops.jap.exception.JpaException;
-import cn.jdevelops.jap.page.ResourceJpaPage;
-import cn.jdevelops.jap.page.ResultJpaPageVO;
-import cn.jdevelops.jpa.server.dao.JpaBasicsDao;
+import cn.jdevelops.data.jap.dao.JpaBasicsDao;
+import cn.jdevelops.data.jap.exception.JpaException;
+import cn.jdevelops.data.jap.page.JpaPageResult;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import cn.jdevelops.result.request.PageDTO;
 import cn.jdevelops.result.request.SortDTO;
@@ -13,26 +12,28 @@ import java.util.List;
 
 /**
  * jpa公共service
- * @param <T> 实体
+ *
+ * @param <B> 实体
  * @author tn
  * @date 2021-01-22 13:35
  */
-public interface J2Service<T> {
+public interface J2Service<B> {
 
     /**
      * 获取 dao
-     * @return dao
+     *
      * @param <M> dao
+     * @return dao
      */
-     <M extends JpaBasicsDao<T,?>> M getJpaBasicsDao();
+    <M extends JpaBasicsDao<B, ID>, ID> M getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体
      *
-     * @param t 实体
+     * @param bean 实体
      * @return T
      */
-    T saveByBean(T t);
+    B saveByBean(B bean);
 
     /**
      * 保存list
@@ -40,7 +41,7 @@ public interface J2Service<T> {
      * @param bean bean
      * @return Boolean
      */
-    Boolean saveAllByBoolean(List<T> bean);
+    Boolean saveAllByBoolean(List<B> bean);
 
     /**
      * 保存list
@@ -48,169 +49,128 @@ public interface J2Service<T> {
      * @param bean bean
      * @return List
      */
-    List<T> saveAllByBean(List<T> bean);
+    List<B> saveAllByBean(List<B> bean);
 
     /**
      * 保存数据 返回 boolean
      *
-     * @param t t
+     * @param bean bean
      * @return Boolean
      */
-    Boolean saveByBoolean(T t);
-
-    /**
-     * 根据删除对象
-     * ps： 失败会抛异常，如果有需要手动处理请接住他
-     * @param unique 唯一值
-     * @param <U> 唯一值的类型
-     * @param selectKey 唯一值的Key名
-     * @return Boolean
-     */
-    <U> Boolean deleteByUnique(final List<U> unique, String selectKey);
+    Boolean saveByBoolean(B bean);
 
 
     /**
      * 根据删除对象
      * ps： 失败会抛异常，如果有需要手动处理请接住他
-     * @param unique 唯一值
-     * @param <U> 唯一值的类型
+     *
+     * @param unique    唯一值
+     * @param <U>       唯一值的类型
      * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final List<U> unique, ColumnUtil.SFunction<T, ?> selectKey);
-
-    /**
-     * 根据删除对象
-     * ps： 失败会抛异常，如果有需要手动处理请接住他
-     * @param unique 唯一值
-     * @param <U> 唯一值的类型
-     * @param selectKey 唯一值的Key名
-     * @return Boolean
-     */
-    <U> Boolean deleteByUnique(final U unique, String selectKey);
+    <U> Boolean deleteByUnique(final List<U> unique, ColumnUtil.SFunction<B, ?> selectKey);
 
 
     /**
      * 根据删除对象
      * ps： 失败会抛异常，如果有需要手动处理请接住他
-     * @param unique 唯一值
-     * @param <U> 唯一值的类型
+     *
+     * @param unique    唯一值
+     * @param <U>       唯一值的类型
      * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final U unique, ColumnUtil.SFunction<T, ?> selectKey);
+    <U> Boolean deleteByUnique(final U unique, ColumnUtil.SFunction<B, ?> selectKey);
 
 
     /**
      * 更新数据 返回实体
-     * @param t 实体 id一定要有且键名为ID
+     *
+     * @param bean 实体 id一定要有且键名为ID
      * @return Boolean
      */
-    Boolean updateByBean(T t);
+    Boolean updateByBean(B bean);
 
 
     /**
      * 更新数据 返回实体
-     * @param t 实体 id一定要有且键名为ID
+     *
+     * @param bean 实体 id一定要有且键名为ID
      * @return Boolean
      * @throws JpaException Exception
      */
-    T updateByBeanForBean(T t) throws JpaException;
+    B updateByBeanForBean(B bean) throws JpaException;
 
     /**
      * 更新数据
-     * @param bean 实体 (指定的selectKey必须要有值)
+     *
+     * @param bean      实体 (指定的selectKey必须要有值)
      * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException;
+    Boolean updateByBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException;
 
 
     /**
      * 更新数据
-     * @param bean 实体 (指定的selectKey必须要有值)
+     *
+     * @param bean      实体 (指定的selectKey必须要有值)
      * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
      * @return T
      * @throws JpaException Exception
      */
-    T updateByBeanForBean(T bean, ColumnUtil.SFunction<T, ?> selectKey) throws JpaException;
-
-
-    /**
-     * 默认可以不用的实现
-     * 根据 t 中的数据查询 and
-     *
-     * @param t t
-     * @return List<T>
-     */
-    List<T> findByBean(T t);
-
-
-    /**
-     * 复杂查询
-     * @param dto 数据实体的VO TDO BO PO等异形类
-     * @param sort 排序
-     * @return List<T>
-     */
-    <B> List<T> findComplex(B dto, SortDTO sort);
+    B updateByBeanForBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException;
 
     /**
      * 查询所有
      *
      * @return List
      */
-    List<T> findAllBean();
+    List<B> findAllBean();
+
+    /**
+     * 复杂查询
+     *
+     * @param req  数据实体的VO TDO BO PO等异形类
+     * @param sort 排序
+     * @return List<T> 返回数据库实体
+     */
+    <T> List<B> findComplex(T req, SortDTO sort);
+
+    /**
+     * 复杂查询
+     *
+     * @param req  数据实体的VO TDO BO PO等异形类
+     * @return List<T> 返回数据库实体
+     */
+    <T> List<B> findComplex(T req);
 
     /**
      * 分页查询
      *
-     * @param t      查询条件
-     * @param pageVO 分页
-     * @param sortVO 排序
+     * @param req      查询条件
+     * @param page 分页
      * @param clazz  返回实体类型
      * @param <R>    返回实体类型
-     * @param <B>    数据实体的VO TDO BO PO等异形类
-     * @return ResourceJpaPage<List < R>>
+     * @param <T>  数据实体的VO TDO BO PO等异形类
+     * @return ResourceJpaPage<List < VO>>
      */
-    <R,B> ResourceJpaPage<R> findByBean(B t, PageDTO pageVO, SortDTO sortVO, Class<R> clazz);
+    <R, T> JpaPageResult<R> findByBean(T req, PageDTO page, Class<R> clazz);
 
     /**
      * 分页查询
      *
-     * @param t      查询条件
-     * @param pageVO 分页
-     * @param sortVO 排序
-     * @param clazz  返回实体类型
-     * @param <R>    返回实体类型
-     * @param <B>    数据实体的VO TDO BO PO等异形类
-     * @return ResultJpaPageVO<List < R>>
-     */
-    <R,B> ResultJpaPageVO<R> findByBeanForVO(B t, PageDTO pageVO, SortDTO sortVO, Class<R> clazz);
-
-    /**
-     * 分页查询
-     *
-     * @param t       查询条件
-     * @param pageDTO 分页 排序
+     * @param req       查询条件实体
+     * @param sortPage 分页 排序
      * @param clazz   返回实体类型
      * @param <R>     返回实体类型
-     * @param <B>    数据实体的VO TDO BO PO等异形类
+     * @param <T>   数据实体的VO TDO BO PO等异形类
      * @return ResourceJpaPage<List < R>>
      */
-    <R,B>  ResourceJpaPage<R> findByBean(B t, SortPageDTO pageDTO, Class<R> clazz);
+    <R, T> JpaPageResult<R> findByBean(T req, SortPageDTO sortPage, Class<R> clazz);
 
-    /**
-     * 分页查询
-     *
-     * @param t       查询条件
-     * @param pageDTO 分页 排序
-     * @param clazz   返回实体类型
-     * @param <R>     返回实体类型
-     * @param <B>    数据实体的VO TDO BO PO等异形类
-     * @return ResultJpaPageVO<List < R>>
-     */
-    <R,B> ResultJpaPageVO<R> findByBeanForVO(B t, SortPageDTO pageDTO, Class<R> clazz);
 
 
 }

@@ -1,0 +1,3 @@
+cn.jdevelops.sboot.jpa.config.UserNameAuditorAware
+cn.jdevelops.sboot.jpa.core.AuditorNameServiceImpl
+cn.jdevelops.sboot.jpa.config.JpaConfiguration

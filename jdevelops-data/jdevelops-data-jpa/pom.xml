@@ -38,5 +38,9 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>apis-result</artifactId>
+        </dependency>
     </dependencies>
 </project>

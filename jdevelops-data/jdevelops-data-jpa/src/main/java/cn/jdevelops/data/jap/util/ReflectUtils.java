@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.util;
 
 
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author web
  */
 public class ReflectUtils {
+
     public static final String TABLE_NAME = "tableName";
     public static final String CLASS_NAME = "className";
     public static final String FIELD_NAME = "fieldNames";
@@ -169,6 +171,8 @@ public class ReflectUtils {
 
         return map;
     }
+
+
 
 
 }

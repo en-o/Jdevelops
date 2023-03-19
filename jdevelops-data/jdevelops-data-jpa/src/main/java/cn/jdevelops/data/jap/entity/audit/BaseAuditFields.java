@@ -1,6 +1,6 @@
-package cn.jdevelops.entity.basics.audit;
+package cn.jdevelops.data.jap.entity.audit;
 
-import cn.jdevelops.entity.basics.vo.SerializableVO;
+import cn.jdevelops.result.bean.SerializableBean;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * @date 2020/5/26 22:12
  */
 
-public class BaseAuditFields<T> extends SerializableVO<T> {
+public class BaseAuditFields<B> extends SerializableBean<B> {
 
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值

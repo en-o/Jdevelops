@@ -1,8 +1,6 @@
 package cn.jdevelops.data.jap.entity;
 
-import cn.jdevelops.entity.basics.audit.BaseAuditFields;
-import cn.jdevelops.entity.basics.vo.SerializableVO;
-import cn.jdevelops.result.response.JpaPageResult;
+import cn.jdevelops.data.jap.entity.audit.BaseAuditFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,14 +9,10 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * 公共实体INT
@@ -88,32 +82,6 @@ public class JpaAuditFields<T> extends BaseAuditFields<T> {
     @Override
     public String getUpdateUserName() {
         return super.getUpdateUserName();
-    }
-
-    /**
-     * page
-     */
-    public static <T, S extends SerializableVO> JpaPageResult<List<T>> to(Page<S> page, Class<T> clazz) {
-        if (page != null && !page.isEmpty()) {
-            List<S> content = page.getContent();
-
-            List<T> result = new ArrayList(content.size());
-
-            Iterator var3 = content.iterator();
-
-            while(var3.hasNext()) {
-                SerializableVO abs = (SerializableVO)var3.next();
-                result.add((T) abs.to(clazz));
-            }
-
-            return JpaPageResult.page(page.getNumber(),
-                    page.getSize(),
-                    page.getTotalPages(),
-                    page.getTotalElements(),
-                    result);
-        } else {
-            return new JpaPageResult();
-        }
     }
 
 }

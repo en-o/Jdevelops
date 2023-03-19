@@ -1,5 +1,7 @@
 package cn.jdevelops.data.jap.util;
 
+import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
+import cn.jdevelops.map.core.bean.ColumnUtil;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

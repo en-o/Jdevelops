@@ -1,7 +1,5 @@
 package cn.jdevelops.data.jap.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 字段名
@@ -10,27 +8,46 @@ import lombok.Getter;
  * @version 1
  * @date 2021/1/27 0:09
  */
-@Getter
-@AllArgsConstructor
+
 public enum FieldName {
     /**
      * id字段
      */
     ID("id", "唯一id", Integer.class),
-    UUID("uuid", "唯一编码UUID", String.class),
+    IDS("id", "唯一id", String.class),
+    UUID("uuid", "唯一编码UUID", Integer.class),
+    UUIDS("uuid", "唯一编码UUID", String.class),
 
     ;
 
     /**
      * 字段名
      */
-    private String fieldName;
+    private final String fieldName;
     /**
      * 备注
      */
-    private String fieldNameRemark;
+    private final String fieldNameRemark;
     /**
      * 类型
      */
-    private Class aClass;
+    private final Class aClass;
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public String getFieldNameRemark() {
+        return fieldNameRemark;
+    }
+
+    public Class getaClass() {
+        return aClass;
+    }
+
+    FieldName(String fieldName, String fieldNameRemark, Class aClass) {
+        this.fieldName = fieldName;
+        this.fieldNameRemark = fieldNameRemark;
+        this.aClass = aClass;
+    }
 }

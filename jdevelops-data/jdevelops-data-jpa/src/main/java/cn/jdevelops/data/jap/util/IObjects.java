@@ -1,7 +1,6 @@
 package cn.jdevelops.data.jap.util;
 
 
-import cn.jdevelops.enums.string.StringEnum;
 
 /**
  * 对象工具类
@@ -13,6 +12,8 @@ import cn.jdevelops.enums.string.StringEnum;
 public class IObjects {
 
 
+    /** null串 */
+   private final static String NULL_STRING = "null";
     /**
      * 不等于空
      * @param obj obj
@@ -38,7 +39,7 @@ public class IObjects {
      * @return true 空
      */
     public static boolean isaBoolean(Object value) {
-        return isNull(value) || StringEnum.NULL_STRING.getCode().equals(value);
+        return isNull(value) || NULL_STRING.equals(value);
     }
 
 
@@ -50,7 +51,7 @@ public class IObjects {
      */
     public static boolean isBlank(final CharSequence idFieldName) {
         int strLen;
-        if (idFieldName == null || StringEnum.NULL_STRING.getCode().contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
+        if (idFieldName == null || NULL_STRING.contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
