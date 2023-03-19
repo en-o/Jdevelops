@@ -5,7 +5,6 @@ import cn.jdevelops.aops.StringUtil;
 import cn.jdevelops.apisign.bean.ApiSignBean;
 import cn.jdevelops.aops.HttpUtil;
 import cn.jdevelops.apisign.exception.SignException;
-import cn.jdevelops.enums.result.ResultCodeEnum;
 import cn.jdevelops.apisign.annotation.Signature;
 import cn.jdevelops.apisign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 import static cn.jdevelops.aops.CommonConstant.CONTENT_TYPE;
+import static cn.jdevelops.apisign.enums.SginExceptionCodeEnum.API_SIGN_ERROR;
 import static com.alibaba.fastjson.JSON.*;
 
 /**
@@ -47,7 +47,8 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
-                response.getWriter().print(toJSONString(ExceptionResultWrap.error(ResultCodeEnum.API_SIGN_ERROR)));
+                response.getWriter().print(toJSONString(ExceptionResultWrap
+                        .result(API_SIGN_ERROR.getCode(),API_SIGN_ERROR.getMessage())));
                 return false;
             }
         }

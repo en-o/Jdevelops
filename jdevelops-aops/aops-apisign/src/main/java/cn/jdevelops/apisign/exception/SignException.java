@@ -1,6 +1,8 @@
 package cn.jdevelops.apisign.exception;
 
 
+import cn.jdevelops.apisign.enums.SginExceptionCodeEnum;
+
 /**
  * AopException
  *
@@ -23,6 +25,12 @@ public class SignException extends RuntimeException{
         super(message);
         this.msg = message;
         this.code = 500;
+    }
+
+    public SignException(SginExceptionCodeEnum sgin) {
+        super(sgin.getMessage());
+        this.msg = sgin.getMessage();
+        this.code = sgin.getCode();
     }
 
     public SignException(Integer code, String message) {
