@@ -19,11 +19,6 @@ public enum ParamExceptionCodeEnum {
     MESSAGE_NO_READING(10012,"消息不可读"),
 
     /**
-     * 消息不可读
-     */
-    API_SIGN_ERROR(10013,"接口签名不正确"),
-
-    /**
      * 敏感词汇
      */
     SENSITIVE_WORD(10014,"敏感词汇，请重新输入"),
