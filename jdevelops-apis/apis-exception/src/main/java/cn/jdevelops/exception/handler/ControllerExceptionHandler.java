@@ -1,7 +1,8 @@
 package cn.jdevelops.exception.handler;
 
-import cn.jdevelops.enums.result.ResultCodeEnum;
-import cn.jdevelops.enums.result.TokenExceptionCodeEnum;
+import cn.jdevelops.result.emums.ParamExceptionCodeEnum;
+import cn.jdevelops.result.emums.ResultCodeEnum;
+import cn.jdevelops.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +54,7 @@ public class ControllerExceptionHandler {
     public Object handleBusinessException(BusinessException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(e.getCode(), e.getErrorMessage(),null);
+        return ExceptionResultWrap.result(e.getCode(), e.getErrorMessage());
     }
 
 
@@ -70,7 +71,7 @@ public class ControllerExceptionHandler {
     public Object exceptionHandler(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
+        return ExceptionResultWrap.result(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
 
 
@@ -79,14 +80,14 @@ public class ControllerExceptionHandler {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), "暂时无法获取数据");
+        return ExceptionResultWrap.result(ResultCodeEnum.SYS_ERROR.getCode(), "暂时无法获取数据");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
+        return ExceptionResultWrap.result(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
     }
 
 
@@ -98,10 +99,10 @@ public class ControllerExceptionHandler {
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
                 Objects.nonNull(jsonErrorMsg =
                         dealWithJsonExceptionError(e.getLocalizedMessage()))) {
-            return ExceptionResultWrap.error(ResultCodeEnum.JSON_ERROR.getCode(),"请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
+            return ExceptionResultWrap.result(ParamExceptionCodeEnum.JSON_ERROR.getCode(),"请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
 
         }
-        return ExceptionResultWrap.error(ResultCodeEnum.MESSAGE_NO_READING.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
+        return ExceptionResultWrap.result(ParamExceptionCodeEnum.MESSAGE_NO_READING.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
     }
 
 
@@ -117,21 +118,21 @@ public class ControllerExceptionHandler {
             sb.append(";").append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
         });
         String message = sb.length() > 0 ? sb.substring(1) : sb.toString();
-        return ExceptionResultWrap.error(ResultCodeEnum.CHECK_ERROR.getCode(), message);
+        return ExceptionResultWrap.result(ParamExceptionCodeEnum.CHECK_ERROR.getCode(), message);
     }
 
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(e);
+        return ExceptionResultWrap.result(e);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public Object handleRuntimeException(RuntimeException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.error(e);
+        return ExceptionResultWrap.result(e);
     }
 
 
@@ -145,7 +146,7 @@ public class ControllerExceptionHandler {
             resqStr.append("字段:").append(it.getField()).append(" ==》 验证不通过，原因是：").append(it.getDefaultMessage());
             resqStr.append("。  ");
         });
-        return ExceptionResultWrap.error(ResultCodeEnum.SYS_ERROR.getCode(), resqStr.toString());
+        return ExceptionResultWrap.result(ResultCodeEnum.SYS_ERROR.getCode(), resqStr.toString());
     }
 
 

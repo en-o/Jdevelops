@@ -1,10 +1,11 @@
 package cn.jdevelops.result.custom;
 
-import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.result.emums.ResultCodeEnum;
 import cn.jdevelops.result.util.SpringBeanUtils;
 
 /**
- *  result warp.
+ * result warp.
+ *
  * @author tnnn
  */
 public final class ExceptionResultWrap {
@@ -12,52 +13,48 @@ public final class ExceptionResultWrap {
     /**
      * Success object.
      *
-     * @param code    the code
-     * @param message the message
-     * @param object  the object
      * @return the object
      */
-    public static Object success(final int code, final String message, final Object object) {
-        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).success(code, message, object);
-    }
-
-    /**
-     * Error object.
-     *
-     * @param code    the code
-     * @param message the message
-     * @param object  the object
-     * @return the object
-     */
-    public static Object error(final int code, final String message, final Object object) {
-        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(code, message, object);
+    public static Object success() {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).success();
     }
 
 
     /**
      * Error object.
      *
-     * @param code    the code
-     * @param message the message
      * @return the object
      */
-    public static Object error(final int code, final String message) {
-        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(code, message);
+    public static Object error() {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error();
     }
+
 
 
     /**
-     * Error object.
-     *
-     * @param resultCodeEnum    the resultCodeEnum
+     * 自定义 code 和 message
+     * @param code  the code
+     * @param message the message
      * @return the object
      */
-    public static Object error(ResultCodeEnum resultCodeEnum) {
-        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(resultCodeEnum.getCode(), resultCodeEnum.getMessage());
+    public static Object result(Integer code, String message) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(code, message);
     }
 
+    /**
+     * 自定义 code 和 message
+     *
+     * @param resultCodeEnum the resultCodeEnum
+     * @return the object
+     */
+    public static Object result(ResultCodeEnum resultCodeEnum) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(resultCodeEnum.getCode(), resultCodeEnum.getMessage());
+    }
 
-    public static Object error(Exception e) {
-        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(ResultCodeEnum.SYS_ERROR.getCode(), e.getMessage());
+    /**
+     * SYS_ERROR
+     */
+    public static Object result(Exception e) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(ResultCodeEnum.SYS_ERROR.getCode(), e.getMessage());
     }
 }

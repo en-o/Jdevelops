@@ -1,6 +1,7 @@
 package cn.jdevelops.exception.exception;
 
-import cn.jdevelops.enums.result.ResultCodeEnum;
+import cn.jdevelops.result.emums.ParamExceptionCodeEnum;
+import cn.jdevelops.result.emums.ResultCodeEnum;
 
 /**
  * 自定义异常
@@ -46,6 +47,10 @@ public class BusinessException extends RuntimeException {
         this.code = resultCode2Enum.getCode();
     }
 
+    public BusinessException(ParamExceptionCodeEnum resultCode2Enum){
+        super(resultCode2Enum.getMessage());
+        this.code = resultCode2Enum.getCode();
+    }
 
     public int getCode() {
         return this.code;

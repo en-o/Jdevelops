@@ -1,5 +1,7 @@
 package cn.jdevelops.result.custom;
 
+import cn.jdevelops.result.emums.ResultCodeEnum;
+
 /**
  * 全局异常返回类
  * @param <T>
@@ -7,31 +9,35 @@ package cn.jdevelops.result.custom;
  */
 public interface ExceptionResult<T> {
 
+
     /**
-     * Success t.
+     * 自定定义 code 和 message
+     * @param resultCodeEnum the message
+     * @return the t
+     */
+    T result(ResultCodeEnum resultCodeEnum);
+
+    /**
+     * 自定定义 code 和 message
      *
      * @param code    the code
      * @param message the message
-     * @param object  the object
      * @return the t
      */
-    T success(int code, String message, Object object);
+    T result(int code, String message);
+
+
+    /**
+     * success
+     * @return the t
+     */
+    T success();
+
 
     /**
      * Error t.
-     *
-     * @param code    the code
-     * @param message the message
-     * @param object  the object
      * @return the t
      */
-    T error(int code, String message, Object object);
-    /**
-     * Error t.
-     *
-     * @param code    the code
-     * @param message the message
-     * @return the t
-     */
-    T error(int code, String message);
+    T error();
+
 }

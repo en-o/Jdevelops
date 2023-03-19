@@ -1,4 +1,4 @@
-package cn.jdevelops.enums.result;
+package cn.jdevelops.result.emums;
 
 
 /**

@@ -1,7 +1,8 @@
 package cn.jdevelops.result.util;
 
-import cn.jdevelops.result.response.PageVO;
-import cn.jdevelops.result.response.RoutinePageDTO;
+import cn.jdevelops.result.request.PageDTO;
+import cn.jdevelops.result.request.SortDTO;
+import cn.jdevelops.result.request.SortPageDTO;
 
 /**
  * 分页相关
@@ -13,55 +14,43 @@ import cn.jdevelops.result.response.RoutinePageDTO;
 public class PageUtil {
 
     /**
-     * PageVO 参数为空是设置默认值 和 index-1(Page index 从0开始)
+     * 判断 PageVO 是否为空，空就new一个默认的
      *
-     * @param pageVO pageVO
-     * @return PageVO
+     * @param page page
+     * @return PageDTO
      */
-    public static PageVO setNullPageVoDef(PageVO pageVO) {
-        if (pageVO == null) {
-            pageVO = new PageVO();
-            pageVO.setPageIndex(0);
-            pageVO.setPageSize(20);
-        } else {
-            if (pageVO.getPageIndex() == null) {
-                pageVO.setPageIndex(0);
-            } else {
-                pageVO.setPageIndex(pageVO.getPageIndex() - 1);
-            }
-            if (pageVO.getPageSize() == null) {
-                pageVO.setPageSize(20);
-            }
+    public static PageDTO pageDef(PageDTO page) {
+        if (page == null) {
+            return new PageDTO();
         }
+        return page;
+    }
 
-        return pageVO;
+    /**
+     * 判断 SortDTO 是否为空，空就new一个默认的
+     *
+     * @param sort sort
+     * @return PageDTO
+     */
+    public static SortDTO sortDef(SortDTO sort) {
+        if (sort == null) {
+            return new SortDTO();
+        }
+        return sort;
     }
 
 
     /**
-     * PageVO 参数为空是设置默认值 和 index-1(Page index 从0开始)
+     * 判断 SortPageDTO 是否为空，空就new一个默认的
      *
-     * @param pageDTO pageDTO
-     * @return PageVO
+     * @param sortPage SortPageDTO
+     * @return SortPageDTO
      */
-    public static RoutinePageDTO setNullRoutinePageDef(RoutinePageDTO pageDTO) {
-        if (pageDTO == null) {
-            pageDTO = new RoutinePageDTO();
-            pageDTO.setPageIndex(0);
-            pageDTO.setPageSize(20);
-            pageDTO.setOrderBy("id");
-            pageDTO.setOrderDesc(0);
-        } else {
-            if (pageDTO.getPageIndex() == null) {
-                pageDTO.setPageIndex(0);
-            } else {
-                pageDTO.setPageIndex(pageDTO.getPageIndex() - 1);
-            }
-            if (pageDTO.getPageSize() == null) {
-                pageDTO.setPageSize(20);
-            }
+    public static SortPageDTO sortPageDef(SortPageDTO sortPage) {
+        if (sortPage == null) {
+            return new SortPageDTO();
         }
-        return pageDTO;
+        return sortPage;
     }
 
 }

@@ -1,9 +1,10 @@
-package cn.jdevelops.result.response;
+package cn.jdevelops.result.request;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -13,21 +14,32 @@ import java.util.Objects;
  * @date 2018年5月11日
  */
 @Schema(description = "分页参数实体")
-public class PageVO {
+public class PageDTO implements Serializable {
+
+    /**
+     * 页码
+     * 默认1
+     */
     @Schema(description = "页码", defaultValue = "1", example = "1")
     private Integer pageIndex;
+
+    /**
+     * 数量
+     * 默认20
+     */
     @Schema(description = "数量", defaultValue = "20", example = "20")
     private Integer pageSize;
 
-    public PageVO() {
+    public PageDTO() {
     }
 
     /**
      * 默认 pageIndex = 1
      * @param pageSize 一页显示几条
      */
-    public PageVO(Integer pageSize) {
-        this.pageIndex = 1;
+    public PageDTO(Integer pageSize) {
+        // 分页查询在数据库中起始页也为0
+        this.pageIndex = 0;
         this.pageSize = pageSize;
     }
 
@@ -36,8 +48,12 @@ public class PageVO {
      * @param pageIndex 页码
      * @param pageSize 一页显示几条
      */
-    public PageVO(Integer pageIndex, Integer pageSize) {
-        this.pageIndex = pageIndex;
+    public PageDTO(Integer pageIndex, Integer pageSize) {
+        if(pageIndex<1){
+            pageIndex = 1;
+        }
+        // 分页查询在数据库中起始页也为0
+        this.pageIndex = pageIndex-1;
         this.pageSize = pageSize;
     }
 
@@ -50,10 +66,11 @@ public class PageVO {
     }
 
     public Integer getPageIndex() {
-        if(Objects.isNull(pageIndex)){
-            return 1;
+        if(Objects.isNull(pageIndex)||pageIndex<1){
+            // 分页查询在数据库中起始页也为0
+            return 0;
         }
-        return pageIndex;
+        return pageIndex-1;
     }
 
     public void setPageIndex(Integer pageIndex) {

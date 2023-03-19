@@ -1,6 +1,6 @@
 package cn.jdevelops.exception.exception;
 
-import cn.jdevelops.enums.result.UserExceptionEnum;
+import cn.jdevelops.result.emums.UserExceptionEnum;
 
 /**
  * redis数据失效

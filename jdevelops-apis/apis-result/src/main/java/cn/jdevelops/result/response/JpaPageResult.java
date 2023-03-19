@@ -1,17 +1,18 @@
-package cn.jdevelops.result.page;
+package cn.jdevelops.result.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * 分页返回统一工具类
+ * 分页查询返回的指定对象
  *
  * @author lxw
  * @date 2019年1月17日
  */
-@Schema(description = "分页返回统一工具类")
-public class ResourcePage<T> implements Serializable {
+@Schema(description = "分页查询返回的指定对象")
+public class JpaPageResult<B> implements Serializable {
 
 	/**
 	 * 页码
@@ -37,9 +38,9 @@ public class ResourcePage<T> implements Serializable {
 	 * 数据"
 	 */
 	@Schema(description = "数据对象")
-	private T rows;
+	private List<B> rows;
 
-	public ResourcePage() {
+	public JpaPageResult() {
 	}
 
 
@@ -49,15 +50,15 @@ public class ResourcePage<T> implements Serializable {
 	 * @param totalPages 总页数
 	 * @param total      总记录数
 	 * @param rows       数据
-	 * @param <T>        t
+	 * @param <B>        实体
 	 * @return ResourcePage
 	 */
-	public static <T> ResourcePage<T> page(Integer pageIndex,
-										   Integer pageSize,
-										   Integer totalPages,
-										   Long total,
-										   T rows) {
-		ResourcePage<T> tResourcePageUtil = new ResourcePage<>();
+	public static <B> JpaPageResult<B> page(Integer pageIndex,
+											Integer pageSize,
+											Integer totalPages,
+											Long total,
+											List<B> rows) {
+		JpaPageResult<B> tResourcePageUtil = new JpaPageResult<>();
 		tResourcePageUtil.setCurrentPage(pageIndex);
 		tResourcePageUtil.setPageSize(pageSize);
 		tResourcePageUtil.setTotalPages(totalPages);
@@ -74,11 +75,11 @@ public class ResourcePage<T> implements Serializable {
 	 * @param <T>       t
 	 * @return ResourcePage
 	 */
-	public static <T> ResourcePage<T> page(Integer pageIndex,
-										   Integer pageSize,
-										   Long total,
-										   T rows) {
-		ResourcePage<T> tResourcePageUtil = new ResourcePage<>();
+	public static <T> JpaPageResult<T> page(Integer pageIndex,
+											Integer pageSize,
+											Long total,
+											List<T> rows) {
+		JpaPageResult<T> tResourcePageUtil = new JpaPageResult<>();
 		tResourcePageUtil.setCurrentPage(pageIndex);
 		tResourcePageUtil.setPageSize(pageSize);
 		// 计算总页码
@@ -89,8 +90,8 @@ public class ResourcePage<T> implements Serializable {
 		return tResourcePageUtil;
 	}
 
-	public static <T> ResourcePage<T> page(Long total, T rows) {
-		ResourcePage<T> tResourcePageUtil = new ResourcePage<>();
+	public static <T> JpaPageResult<T> page(Long total, List<T> rows) {
+		JpaPageResult<T> tResourcePageUtil = new JpaPageResult<>();
 		tResourcePageUtil.setTotal(total);
 		tResourcePageUtil.setRows(rows);
 		return tResourcePageUtil;
@@ -184,28 +185,13 @@ public class ResourcePage<T> implements Serializable {
 		this.total = total;
 	}
 
-	/**
-	 * 当前页结果集
-	 *
-	 * @return T
-	 * @author lxw
-	 * @date 2019年3月25日
-	 */
-	public T getRows() {
+	public List<B> getRows() {
 		return rows;
 	}
 
-	/**
-	 * 当前页结果集
-	 *
-	 * @param rows rows
-	 * @author lxw
-	 * @date 2019年3月25日
-	 */
-	public void setRows(T rows) {
+	public void setRows(List<B> rows) {
 		this.rows = rows;
 	}
-
 
 	@Override
 	public String toString() {
