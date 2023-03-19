@@ -1,5 +1,6 @@
 package cn.jdevelops.result.request;
 
+import cn.jdevelops.map.core.bean.ColumnUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -38,12 +39,33 @@ public class SortDTO implements Serializable {
     }
 
     /**
-     *  倒序
+     * 默认倒序
+     * @param orderBy 排序字段
+     */
+    public <T> SortDTO(ColumnUtil.SFunction<T, ?> orderBy) {
+        this.orderBy = ColumnUtil.getFieldName(orderBy);
+        this.orderDesc = 1;
+    }
+
+
+    /**
+     *  排序
      * @param orderBy 排序字段
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
      */
     public SortDTO(String orderBy, Integer orderDesc) {
         this.orderBy = orderBy;
+        this.orderDesc = orderDesc;
+    }
+
+
+    /**
+     *  排序
+     * @param orderBy 排序字段
+     * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     */
+    public <T> SortDTO(ColumnUtil.SFunction<T, ?> orderBy, Integer orderDesc) {
+        this.orderBy = ColumnUtil.getFieldName(orderBy);
         this.orderDesc = orderDesc;
     }
 

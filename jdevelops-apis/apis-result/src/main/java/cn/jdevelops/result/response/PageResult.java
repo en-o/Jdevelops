@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2019年1月17日
  */
 @Schema(description = "分页查询返回的指定对象")
-public class JpaPageResult<B> implements Serializable {
+public class PageResult<B> implements Serializable {
 
 	/**
 	 * 页码
@@ -40,9 +40,16 @@ public class JpaPageResult<B> implements Serializable {
 	@Schema(description = "数据对象")
 	private List<B> rows;
 
-	public JpaPageResult() {
+	public PageResult() {
 	}
 
+	public PageResult(Integer currentPage, Integer pageSize, Integer totalPages, Long total, List<B> rows) {
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.totalPages = totalPages;
+		this.total = total;
+		this.rows = rows;
+	}
 
 	/**
 	 * @param pageIndex  当前页
@@ -53,12 +60,12 @@ public class JpaPageResult<B> implements Serializable {
 	 * @param <B>        实体
 	 * @return ResourcePage
 	 */
-	public static <B> JpaPageResult<B> page(Integer pageIndex,
-											Integer pageSize,
-											Integer totalPages,
-											Long total,
-											List<B> rows) {
-		JpaPageResult<B> tResourcePageUtil = new JpaPageResult<>();
+	public static <B> PageResult<B> page(Integer pageIndex,
+										 Integer pageSize,
+										 Integer totalPages,
+										 Long total,
+										 List<B> rows) {
+		PageResult<B> tResourcePageUtil = new PageResult<>();
 		tResourcePageUtil.setCurrentPage(pageIndex);
 		tResourcePageUtil.setPageSize(pageSize);
 		tResourcePageUtil.setTotalPages(totalPages);
@@ -75,11 +82,11 @@ public class JpaPageResult<B> implements Serializable {
 	 * @param <T>       t
 	 * @return ResourcePage
 	 */
-	public static <T> JpaPageResult<T> page(Integer pageIndex,
-											Integer pageSize,
-											Long total,
-											List<T> rows) {
-		JpaPageResult<T> tResourcePageUtil = new JpaPageResult<>();
+	public static <T> PageResult<T> page(Integer pageIndex,
+										 Integer pageSize,
+										 Long total,
+										 List<T> rows) {
+		PageResult<T> tResourcePageUtil = new PageResult<>();
 		tResourcePageUtil.setCurrentPage(pageIndex);
 		tResourcePageUtil.setPageSize(pageSize);
 		// 计算总页码
@@ -90,8 +97,8 @@ public class JpaPageResult<B> implements Serializable {
 		return tResourcePageUtil;
 	}
 
-	public static <T> JpaPageResult<T> page(Long total, List<T> rows) {
-		JpaPageResult<T> tResourcePageUtil = new JpaPageResult<>();
+	public static <T> PageResult<T> page(Long total, List<T> rows) {
+		PageResult<T> tResourcePageUtil = new PageResult<>();
 		tResourcePageUtil.setTotal(total);
 		tResourcePageUtil.setRows(rows);
 		return tResourcePageUtil;

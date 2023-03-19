@@ -139,5 +139,9 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>utils-map</artifactId>
+        </dependency>
     </dependencies>
 </project>
