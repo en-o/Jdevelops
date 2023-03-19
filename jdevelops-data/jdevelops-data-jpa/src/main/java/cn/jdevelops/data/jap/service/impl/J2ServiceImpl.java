@@ -12,6 +12,7 @@ import cn.jdevelops.result.bean.SerializableBean;
 import cn.jdevelops.result.request.PageDTO;
 import cn.jdevelops.result.request.SortDTO;
 import cn.jdevelops.result.request.SortPageDTO;
+import cn.jdevelops.result.util.ListTo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,8 @@ import java.util.List;
  * 预约模块公共service实现
  *
  * @param <ID> 实体的主键类型
- * @param <B> 实体
- * @param <M> 实体的Dao层
+ * @param <B>  实体
+ * @param <M>  实体的Dao层
  * @author tn
  * @version 1
  * @date 2021/1/23 12:03
@@ -124,13 +125,19 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     @Override
     public <T> List<B> findComplex(T req, SortDTO sort) {
         JPAUtilExpandCriteria<B> selectRegionBean = JpaUtils.getSelectBean2(req);
-        return commonDao.findAll(selectRegionBean,JPageUtil.getSv2S(sort));
+        return commonDao.findAll(selectRegionBean, JPageUtil.getSv2S(sort));
     }
 
     @Override
     public <T> List<B> findComplex(T req) {
         JPAUtilExpandCriteria<B> selectRegionBean = JpaUtils.getSelectBean2(req);
         return commonDao.findAll(selectRegionBean);
+    }
+
+    @Override
+    public <T, R> List<R> findComplex(T req, SortDTO sort, Class<R> clazz) {
+        JPAUtilExpandCriteria<B> selectRegionBean = JpaUtils.getSelectBean2(req);
+        return ListTo.to(clazz, commonDao.findAll(selectRegionBean, JPageUtil.getSv2S(sort)));
     }
 
     @Override

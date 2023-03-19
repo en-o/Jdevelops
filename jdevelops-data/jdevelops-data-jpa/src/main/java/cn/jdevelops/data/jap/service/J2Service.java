@@ -148,6 +148,17 @@ public interface J2Service<B> {
     <T> List<B> findComplex(T req);
 
     /**
+     * 复杂查询
+     *
+     * @param req  数据实体的VO TDO BO PO等异形类
+     * @param sort 排序
+     * @param clazz 指定返回对象
+     * @return List<T> 返回数据库实体
+     */
+    <T,R> List<R> findComplex(T req, SortDTO sort, Class<R> clazz);
+
+
+    /**
      * 分页查询
      *
      * @param req      查询条件
