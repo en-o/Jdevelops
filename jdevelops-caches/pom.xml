@@ -12,8 +12,6 @@
     <artifactId>jdevelops-caches</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>caches-jpa</module>
-        <module>caches-mybatis</module>
         <module>caches-redis</module>
         <module>caches-auto-schema</module>
         <module>caches-jdbctemplate</module>
