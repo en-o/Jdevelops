@@ -73,6 +73,8 @@
         <module>jdevelops-quartz</module>
         <!-- starter (jdevelops-starters将废弃删除) -->
         <module>jdevelops-framework</module>
+        <!--数据访问层-->
+        <module>jdevelops-data</module>
     </modules>
 
     <properties>
