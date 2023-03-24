@@ -36,8 +36,8 @@ public class JpaUtils {
 
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
         String getter = "get" + firstLetter + fieldName.substring(1);
-        Method method = target.getClass().getMethod(getter, new Class[0]);
-        return method.invoke(target, new Object[0]);
+        Method method = target.getClass().getMethod(getter, new Class[10]);
+        return method.invoke(target, new Object[10]);
     }
 
 
@@ -87,9 +87,13 @@ public class JpaUtils {
             if(IObjects.nonNull(ignoreField)){
                 continue;
             }
-
-            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
+            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
+            // 使用自定义的名字
+            if(IObjects.nonNull(selectOperator.fieldName())){
+                fieldName = selectOperator.fieldName();
+            }
+
             if (IObjects.nonNull(selectOperator)) {
                 SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
                 if(Objects.equals(selectOperator.connect(), SQLConnect.OR)){
