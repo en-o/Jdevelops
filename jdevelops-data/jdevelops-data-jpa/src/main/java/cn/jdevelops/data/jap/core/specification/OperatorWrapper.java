@@ -24,6 +24,7 @@ public class OperatorWrapper {
     private Object selectValue;
 
 
+
     /**
      * 比较
      * @return selectValue
@@ -72,6 +73,7 @@ public class OperatorWrapper {
         this.specWrapper = specWrapper;
         this.selectValue = selectValue;
     }
+
 
     @Override
     public String toString() {

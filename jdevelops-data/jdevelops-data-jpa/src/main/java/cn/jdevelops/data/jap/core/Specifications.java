@@ -106,8 +106,8 @@ public class Specifications {
                 }
                 // 获取组装条件
                 JpaSelectOperator query = field.getAnnotation(JpaSelectOperator.class);
-                // 空就不查了
-                if(query.ignoreNull()){
+                // 空值就不查了
+                if(query.ignoreNull()&&IObjects.isNull(fieldValue)){
                     continue;
                 }
                 // 默认 eq，且空值也查询
