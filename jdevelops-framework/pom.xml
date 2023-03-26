@@ -24,6 +24,7 @@
         <module>jdevelops-sboot-rpc</module>
         <!--db-->
         <module>jdevelops-sboot-jpa</module>
+        <module>jdevelops-sboot-jdbctemplate</module>
         <!--鉴权-->
         <module>jdevelops-sboot-security</module>
         <!-- 接口文档 -->

@@ -373,6 +373,12 @@
                 <artifactId>jdevelops-data-jpa</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-data-jdbctemplate</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
 
             <!--caches-->
             <dependency>
@@ -380,12 +386,6 @@
                 <artifactId>caches-auto-schema</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-jdbctemplate</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>caches-redis-core</artifactId>
@@ -650,6 +650,11 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-jpa</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-jdbctemplate</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

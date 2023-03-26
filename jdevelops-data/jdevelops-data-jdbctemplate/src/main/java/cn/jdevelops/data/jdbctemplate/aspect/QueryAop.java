@@ -1,7 +1,7 @@
-package cn.jdevelops.jdbctemplate.aspect;
+package cn.jdevelops.data.jdbctemplate.aspect;
 
-import cn.jdevelops.jdbctemplate.annotation.Query;
-import cn.jdevelops.jdbctemplate.util.AnnotationParse;
+import cn.jdevelops.data.jdbctemplate.annotation.Query;
+import cn.jdevelops.data.jdbctemplate.util.AnnotationParse;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
 
 /**
  * 修改方法的返回值
@@ -39,7 +39,7 @@ public class QueryAop {
      *
      * @param pjp pjp
      */
-    @Around(value = "@annotation(cn.jdevelops.jdbctemplate.annotation.Query)")
+    @Around(value = "@annotation(cn.jdevelops.data.jdbctemplate.annotation.Query)")
     public Object doAfterReturning(ProceedingJoinPoint pjp) throws Throwable {
         //执行方法
         Object rvt = pjp.proceed();

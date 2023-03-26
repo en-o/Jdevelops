@@ -16,6 +16,7 @@
     </description>
     <modules>
         <module>jdevelops-data-jpa</module>
+        <module>jdevelops-data-jdbctemplate</module>
     </modules>
 
 </project>

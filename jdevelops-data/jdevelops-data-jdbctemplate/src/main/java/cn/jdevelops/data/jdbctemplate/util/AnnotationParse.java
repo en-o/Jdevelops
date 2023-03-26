@@ -1,4 +1,4 @@
-package cn.jdevelops.jdbctemplate.util;
+package cn.jdevelops.data.jdbctemplate.util;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;

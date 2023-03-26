@@ -1,4 +1,4 @@
-package cn.jdevelops.jdbctemplate.annotation;
+package cn.jdevelops.data.jdbctemplate.annotation;
 
 
 import java.lang.annotation.*;
