@@ -78,14 +78,14 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public <U> Boolean deleteByUnique(List<U> unique, ColumnSFunction<B, ?> selectKey) {
-        String field = ColumnUtil.getFieldName(selectKey);
+    public <U> Boolean deleteByUnique(List<U> unique, ColumnSFunction<B, ?> uniqueKey) {
+        String field = ColumnUtil.getFieldName(uniqueKey);
         return commonDao.deleteByUnique(unique, field);
     }
 
     @Override
-    public <U> Boolean deleteByUnique(U unique, ColumnSFunction<B, ?> selectKey) {
-        String field = ColumnUtil.getFieldName(selectKey);
+    public <U> Boolean deleteByUnique(U unique, ColumnSFunction<B, ?> uniqueKey) {
+        String field = ColumnUtil.getFieldName(uniqueKey);
         return commonDao.deleteByUnique(Collections.singletonList(unique), field);
     }
 
@@ -105,9 +105,9 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public Boolean updateByBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException {
+    public Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException {
         try {
-            String field = ColumnUtil.getFieldName(selectKey);
+            String field = ColumnUtil.getFieldName(uniqueKey);
             commonDao.updateEntity(bean, field);
             return true;
         } catch (Exception e) {
@@ -116,8 +116,8 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public B updateByBeanForBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException {
-        String field = ColumnUtil.getFieldName(selectKey);
+    public B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException {
+        String field = ColumnUtil.getFieldName(uniqueKey);
         return commonDao.updateEntity(bean, field);
     }
 

@@ -67,10 +67,10 @@ public interface J2Service<B> {
      *
      * @param unique    唯一值
      * @param <U>       唯一值的类型
-     * @param selectKey 唯一值的Key名
+     * @param uniqueKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final List<U> unique, ColumnSFunction<B, ?> selectKey);
+    <U> Boolean deleteByUnique(final List<U> unique, ColumnSFunction<B, ?> uniqueKey);
 
 
     /**
@@ -79,10 +79,10 @@ public interface J2Service<B> {
      *
      * @param unique    唯一值
      * @param <U>       唯一值的类型
-     * @param selectKey 唯一值的Key名
+     * @param uniqueKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final U unique, ColumnSFunction<B, ?> selectKey);
+    <U> Boolean deleteByUnique(final U unique, ColumnSFunction<B, ?> uniqueKey);
 
 
     /**
@@ -107,22 +107,22 @@ public interface J2Service<B> {
      * 更新数据
      *
      * @param bean      实体 (指定的selectKey必须要有值)
-     * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
+     * @param uniqueKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException;
+    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
 
 
     /**
      * 更新数据
      *
      * @param bean      实体 (指定的selectKey必须要有值)
-     * @param selectKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
+     * @param uniqueKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
      * @return T
      * @throws JpaException Exception
      */
-    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException;
+    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
 
     /**
      * 查询所有

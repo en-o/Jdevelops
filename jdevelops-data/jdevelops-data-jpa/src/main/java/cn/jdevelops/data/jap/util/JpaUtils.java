@@ -7,9 +7,9 @@ import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.criteria.Restrictions;
 import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
+import cn.jdevelops.data.jap.exception.JpaException;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -30,14 +30,13 @@ public class JpaUtils {
      * @throws Exception Exception
      */
     public static Object getFieldValueByName(String fieldName, Object target) throws Exception {
-        if (IObjects.isBlank(fieldName)) {
-            fieldName = "id";
+        try {
+            Field field = target.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(target);
+        } catch (Exception e) {
+            throw new JpaException("获取字段的值失败", e);
         }
-
-        String firstLetter = fieldName.substring(0, 1).toUpperCase();
-        String getter = "get" + firstLetter + fieldName.substring(1);
-        Method method = target.getClass().getMethod(getter, new Class[10]);
-        return method.invoke(target, new Object[10]);
     }
 
 
