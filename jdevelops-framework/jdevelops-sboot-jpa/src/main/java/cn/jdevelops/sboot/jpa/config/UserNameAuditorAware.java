@@ -1,6 +1,6 @@
 package cn.jdevelops.sboot.jpa.config;
 
-import cn.jdevelops.sboot.jpa.core.AuditorNameService;
+import cn.jdevelops.sboot.jpa.core.auditor.AuditorNameService;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package cn.jdevelops.sboot.jpa.core;
+package cn.jdevelops.sboot.jpa.core.auditor;
 
 import org.springframework.stereotype.Service;
 
