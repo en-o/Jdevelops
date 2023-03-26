@@ -15,8 +15,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.*;
 
-import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.COMMA;
-import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SPLITOR;
 
 /**
  * swagger 的一些公共方法
@@ -29,12 +27,10 @@ public class SwaggerUtil {
     private static final Logger LOG = LoggerFactory.getLogger(SwaggerUtil.class);
 
     /**
-     * 解析  多个以字符分割的basePackage
+     * 解析basePackage
      */
-    public static String[] basePackages(final String basePackage)     {
-        // 循环判断匹配
-        String basePackages = basePackage.replaceAll(COMMA, SPLITOR);
-        return basePackages.split(SPLITOR);
+    public static String[] basePackages(final List<String> basePackage)     {
+        return basePackage.toArray(new String[basePackage.size()]);
     }
 
 

@@ -20,10 +20,9 @@ import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HE
 public class SwaggerProperties {
 
     /**
-     * controller接口所在的包(多个包以逗号(或者分号)拼接，eg. package.api;package.controller
-     * ps: 注意如果包名前缀一样只需要写一个就行 eg. package.api1;package.api2 ＝ package.api
+     * controller接口所在的包(可以设置多个)，eg. cn.jdevelops.controller(默认)
      */
-    private String basePackage;
+    private List<String> basePackage;
 
 
     /**
@@ -102,16 +101,17 @@ public class SwaggerProperties {
                 '}';
     }
 
-    public String getBasePackage() {
+    public List<String> getBasePackage() {
         if(Objects.isNull(basePackage)){
-            return "cn.jdevelops.controller";
+            return Collections.singletonList("cn.jdevelops.controller");
         }
         return basePackage;
     }
 
-    public void setBasePackage(String basePackage) {
+    public void setBasePackage(List<String> basePackage) {
         this.basePackage = basePackage;
     }
+
 
     public String getTitle() {
         if(Objects.isNull(title)){
