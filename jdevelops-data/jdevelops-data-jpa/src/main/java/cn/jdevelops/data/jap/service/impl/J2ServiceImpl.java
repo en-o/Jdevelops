@@ -1,12 +1,14 @@
 package cn.jdevelops.data.jap.service.impl;
 
 import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
+import cn.jdevelops.data.jap.core.Specifications;
 import cn.jdevelops.data.jap.dao.JpaBasicsDao;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.page.JpaPageResult;
 import cn.jdevelops.data.jap.service.J2Service;
 import cn.jdevelops.data.jap.util.JPageUtil;
 import cn.jdevelops.data.jap.util.JpaUtils;
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import cn.jdevelops.result.bean.SerializableBean;
 import cn.jdevelops.result.request.PageDTO;
@@ -17,10 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -74,13 +78,13 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public <U> Boolean deleteByUnique(List<U> unique, ColumnUtil.SFunction<B, ?> selectKey) {
+    public <U> Boolean deleteByUnique(List<U> unique, ColumnSFunction<B, ?> selectKey) {
         String field = ColumnUtil.getFieldName(selectKey);
         return commonDao.deleteByUnique(unique, field);
     }
 
     @Override
-    public <U> Boolean deleteByUnique(U unique, ColumnUtil.SFunction<B, ?> selectKey) {
+    public <U> Boolean deleteByUnique(U unique, ColumnSFunction<B, ?> selectKey) {
         String field = ColumnUtil.getFieldName(selectKey);
         return commonDao.deleteByUnique(Collections.singletonList(unique), field);
     }
@@ -101,7 +105,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public Boolean updateByBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException {
+    public Boolean updateByBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException {
         try {
             String field = ColumnUtil.getFieldName(selectKey);
             commonDao.updateEntity(bean, field);
@@ -112,7 +116,7 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public B updateByBeanForBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException {
+    public B updateByBeanForBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException {
         String field = ColumnUtil.getFieldName(selectKey);
         return commonDao.updateEntity(bean, field);
     }
@@ -120,6 +124,18 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     @Override
     public List<B> findAllBean() {
         return commonDao.findAll();
+    }
+
+    @Override
+    public Optional<B> findBeanOne(ColumnSFunction<B, ?> selectKey, Object value) {
+        Specification<B> where = Specifications.where(e -> e.eq(selectKey, value));
+        return commonDao.findOne(where);
+    }
+
+    @Override
+    public List<B> findBeanList(ColumnSFunction<B, ?> selectKey, Object value) {
+        Specification<B> where = Specifications.where(e -> e.eq(selectKey, value));
+        return commonDao.findAll(where);
     }
 
     @Override

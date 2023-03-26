@@ -89,12 +89,11 @@ public class JpaUtils {
             }
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            // 使用自定义的名字
-            if(IObjects.nonNull(selectOperator.fieldName())){
-                fieldName = selectOperator.fieldName();
-            }
-
             if (IObjects.nonNull(selectOperator)) {
+                // 使用自定义的名字
+                if(!IObjects.isBlank(selectOperator.fieldName())){
+                    fieldName = selectOperator.fieldName();
+                }
                 SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
                 if(Objects.equals(selectOperator.connect(), SQLConnect.OR)){
                     jpaSelect.or(simpleExpression);
@@ -102,6 +101,7 @@ public class JpaUtils {
                     jpaSelect.add(simpleExpression);
                 }
             } else {
+                // 没有注解所有属性都要处理成条件
                 jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
             }
         }

@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.core.criteria;
 
 import cn.jdevelops.data.jap.util.IObjects;
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression eq(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression eq(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -68,7 +69,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression ne(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression ne(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -101,7 +102,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T>  SimpleExpression like(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T>  SimpleExpression like(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -133,7 +134,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T>  SimpleExpression notLike(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T>  SimpleExpression notLike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -167,7 +168,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression llike(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression llike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -201,7 +202,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression rlike(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression rlike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -232,7 +233,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression gt(ColumnUtil.SFunction<T, ?>  fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression gt(ColumnSFunction<T, ?>  fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -262,7 +263,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression lt(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression lt(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -292,7 +293,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression gte(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression gte(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -322,7 +323,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression lte(ColumnUtil.SFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression lte(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
@@ -386,7 +387,7 @@ public class Restrictions {
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
-    public static <T> LogicalExpression in(ColumnUtil.SFunction<T, ?> fieldName, Collection value, boolean ignoreNull) {
+    public static <T> LogicalExpression in(ColumnSFunction<T, ?> fieldName, Collection value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -417,7 +418,7 @@ public class Restrictions {
      * @param fieldName fieldName
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression isNull(ColumnUtil.SFunction<T, ?> fieldName) {
+    public static <T> SimpleExpression isNull(ColumnSFunction<T, ?> fieldName) {
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), ExpandCriterion.Operator.ISNULL);
     }
 
@@ -438,7 +439,7 @@ public class Restrictions {
      * @param fieldName fieldName
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression isNotNull(ColumnUtil.SFunction<T, ?> fieldName) {
+    public static <T> SimpleExpression isNotNull(ColumnSFunction<T, ?> fieldName) {
         return new SimpleExpression(ColumnUtil.getFieldName(fieldName), ExpandCriterion.Operator.ISNOTNULL);
     }
 }

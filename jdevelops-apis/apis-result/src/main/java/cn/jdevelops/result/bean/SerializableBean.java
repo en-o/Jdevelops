@@ -4,6 +4,7 @@ package cn.jdevelops.result.bean;
 
 import cn.jdevelops.map.core.bean.BeanCopier;
 import cn.jdevelops.map.core.bean.BeanCopyUtil;
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import cn.jdevelops.result.util.ListTo;
 
@@ -36,7 +37,7 @@ public class SerializableBean<B> implements Serializable {
     /**
      * 获取实体类的字段名称
      */
-    public static <B>  String of(ColumnUtil.SFunction<B, ?> fn){
+    public static <B>  String of(ColumnSFunction<B, ?> fn){
         return ColumnUtil.getFieldName(fn);
     }
 
@@ -44,7 +45,7 @@ public class SerializableBean<B> implements Serializable {
      * 获取实体类的字段名称
      * @param toLine  是否转驼峰（默认不转） true:驼峰 。 false：正常bean字段
      */
-    public static <B> String of(ColumnUtil.SFunction<B, ?> fn, Boolean toLine){
+    public static <B> String of(ColumnSFunction<B, ?> fn, Boolean toLine){
         return ColumnUtil.getFieldName(fn,toLine);
     }
 

@@ -3,12 +3,13 @@ package cn.jdevelops.data.jap.service;
 import cn.jdevelops.data.jap.dao.JpaBasicsDao;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.page.JpaPageResult;
-import cn.jdevelops.map.core.bean.ColumnUtil;
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.result.request.PageDTO;
 import cn.jdevelops.result.request.SortDTO;
 import cn.jdevelops.result.request.SortPageDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * jpa公共service
@@ -69,7 +70,7 @@ public interface J2Service<B> {
      * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final List<U> unique, ColumnUtil.SFunction<B, ?> selectKey);
+    <U> Boolean deleteByUnique(final List<U> unique, ColumnSFunction<B, ?> selectKey);
 
 
     /**
@@ -81,7 +82,7 @@ public interface J2Service<B> {
      * @param selectKey 唯一值的Key名
      * @return Boolean
      */
-    <U> Boolean deleteByUnique(final U unique, ColumnUtil.SFunction<B, ?> selectKey);
+    <U> Boolean deleteByUnique(final U unique, ColumnSFunction<B, ?> selectKey);
 
 
     /**
@@ -110,7 +111,7 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException;
+    Boolean updateByBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException;
 
 
     /**
@@ -121,7 +122,7 @@ public interface J2Service<B> {
      * @return T
      * @throws JpaException Exception
      */
-    B updateByBeanForBean(B bean, ColumnUtil.SFunction<B, ?> selectKey) throws JpaException;
+    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> selectKey) throws JpaException;
 
     /**
      * 查询所有
@@ -129,6 +130,25 @@ public interface J2Service<B> {
      * @return List
      */
     List<B> findAllBean();
+
+
+    /**
+     * 查询
+     * @param selectKey key
+     * @param value 值
+     * @return B
+     */
+    Optional<B> findBeanOne(ColumnSFunction<B, ?> selectKey, Object value );
+
+    /**
+     * 查询
+     * @param selectKey key
+     * @param value 值
+     * @return B
+     */
+    List<B> findBeanList( ColumnSFunction<B, ?> selectKey, Object value );
+
+
 
     /**
      * 复杂查询

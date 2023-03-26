@@ -3,7 +3,6 @@ package cn.jdevelops.map.core.bean;
 
 import cn.jdevelops.string.StringFormat;
 
-import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,7 +11,6 @@ import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.Function;
 
 /**
  *  我照着spring 的 Sort 写了一个但是觉得不是很好，后面就看看 Function 接口是不是可以做这件事，就看到了这个
@@ -21,14 +19,6 @@ import java.util.function.Function;
  * @author jx
  */
 public class ColumnUtil {
-
-    /**
-     * 使Function获取序列化能力
-     */
-    @FunctionalInterface
-    public interface SFunction<T, R> extends Function<T, R>, Serializable {
-    }
-
     /**
      * 字段名注解, 声明此注解后会直接获取注解值，不会对其进行人任何操作
      */
@@ -46,7 +36,7 @@ public class ColumnUtil {
     /**
      * 获取实体类的字段名称(实体声明的字段名称)
      */
-    public static <T> String getFieldName(SFunction<T, ?> fn) {
+    public static <T> String getFieldName(ColumnSFunction<T, ?> fn) {
         return getFieldName(fn, defaultToLine);
     }
 
@@ -55,7 +45,7 @@ public class ColumnUtil {
      * 获取实体类的字段名称
      * @param toLine  是否转驼峰 true:驼峰 。 false：正常bean字段
      */
-    public static <T> String getFieldName(SFunction<T, ?> fn, Boolean toLine) {
+    public static <T> String getFieldName(ColumnSFunction<T, ?> fn, Boolean toLine) {
         SerializedLambda serializedLambda = getSerializedLambda(fn);
 
         // 从lambda信息取出method、field、class等
@@ -88,7 +78,7 @@ public class ColumnUtil {
     /**
      * 获取实体类的字段名称
      */
-    private static <T> SerializedLambda getSerializedLambda(SFunction<T, ?> fn) {
+    private static <T> SerializedLambda getSerializedLambda(ColumnSFunction<T, ?> fn) {
         // 从function取出序列化方法
         Method writeReplaceMethod;
         try {

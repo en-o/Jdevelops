@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.util;
 
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -89,7 +90,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> eq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
+    public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -121,7 +122,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> notEq(ColumnUtil.SFunction<T, ?> fn, Object value, boolean ignoreNull) {
+    public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -153,7 +154,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> gt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+    public Specification<T> gt(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -185,7 +186,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> ge(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+    public Specification<T> ge(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -217,7 +218,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> lt(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+    public Specification<T> lt(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -250,7 +251,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> le(ColumnUtil.SFunction<T, ?> fn, Integer value, boolean ignoreNull) {
+    public Specification<T> le(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -275,7 +276,7 @@ public final class SpecificationUtil<T> {
      * @param fn 实体字段
      * @return Specification
      */
-    public Specification<T> not(ColumnUtil.SFunction<T, ?> fn) {
+    public Specification<T> not(ColumnSFunction<T, ?> fn) {
         return (root, query, builder) -> builder.not(root.get(ColumnUtil.getFieldName(fn)));
     }
 
@@ -309,7 +310,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> between(ColumnUtil.SFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
+    public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
         if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -345,7 +346,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> like(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+    public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -381,7 +382,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> lLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+    public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -417,7 +418,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> rLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+    public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -449,7 +450,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return Specification
      */
-    public Specification<T> notLike(ColumnUtil.SFunction<T, ?> fn, String value, boolean ignoreNull) {
+    public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
         if (ignoreNull && Objects.isNull(value)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
@@ -473,7 +474,7 @@ public final class SpecificationUtil<T> {
      * @param fn 实体字段
      * @return Specification
      */
-    public Specification<T> isNotNull(ColumnUtil.SFunction<T, ?> fn) {
+    public Specification<T> isNotNull(ColumnSFunction<T, ?> fn) {
         return (root, query, builder) -> builder.isNotNull(root.get(ColumnUtil.getFieldName(fn)));
     }
 
@@ -496,7 +497,7 @@ public final class SpecificationUtil<T> {
      * @param fn 实体字段
      * @return Specification
      */
-    public Specification<T> isNull(ColumnUtil.SFunction<T, ?> fn) {
+    public Specification<T> isNull(ColumnSFunction<T, ?> fn) {
         return (root, query, builder) -> builder.isNull(root.get(ColumnUtil.getFieldName(fn)));
     }
 
@@ -526,7 +527,7 @@ public final class SpecificationUtil<T> {
      * @param desc true desc
      * @return Specification
      */
-    public Specification<T> orderBy(ColumnUtil.SFunction<T, ?> fn, boolean desc) {
+    public Specification<T> orderBy(ColumnSFunction<T, ?> fn, boolean desc) {
 
         return (root, query, builder) -> {
             Predicate restriction = query.orderBy(builder.asc(root.get(ColumnUtil.getFieldName(fn)))).getRestriction();

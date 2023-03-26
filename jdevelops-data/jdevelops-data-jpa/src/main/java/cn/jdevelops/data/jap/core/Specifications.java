@@ -2,7 +2,7 @@ package cn.jdevelops.data.jap.core;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectIgnoreField;
-import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
+import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
 import cn.jdevelops.data.jap.core.specification.OperatorWrapper;
 import cn.jdevelops.data.jap.core.specification.SpecificationWrapper;
 import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
@@ -105,26 +105,35 @@ public class Specifications {
                     continue;
                 }
                 // 获取组装条件
-                JpaSelectOperator query = field.getAnnotation(JpaSelectOperator.class);
-                // 空值就不查了
-                if(query.ignoreNull()&&IObjects.isNull(fieldValue)){
-                    continue;
-                }
-                // 默认 eq，且空值也查询
-                SQLOperatorWrapper operator = IObjects.nonNull(query)? query.operatorWrapper():SQLOperatorWrapper.EQ;
-                // 如果 值等于 list 则 使用 In 操作
-                if(fieldValue instanceof Collection){
-                    operator = SQLOperatorWrapper.IN;
-                }
-                // 构造 OperatorWrapper
-                OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
-                // 自定义字段名
-                if(IObjects.nonNull(query.fieldName())){
-                    wrapper.setSelectKey(query.fieldName());
+                JpaSelectWrapperOperator query = field.getAnnotation(JpaSelectWrapperOperator.class);
+                if (IObjects.nonNull(query)) {
+                    // 空值就不查了
+                    if(query.ignoreNull()&&IObjects.isNull(fieldValue)){
+                        continue;
+                    }
+                    // 默认 eq，且空值也查询
+                    SQLOperatorWrapper operator = IObjects.nonNull(query)? query.operatorWrapper():SQLOperatorWrapper.EQ;
+                    // 如果 值等于 list 则 使用 In 操作
+                    if(fieldValue instanceof Collection){
+                        operator = SQLOperatorWrapper.IN;
+                    }
+                    // 构造 OperatorWrapper
+                    OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
+                    // 自定义字段名
+                    if(!IObjects.isBlank(query.fieldName())){
+                        wrapper.setSelectKey(query.fieldName());
+                    }else {
+                        wrapper.setSelectKey(fieldName);
+                        operator.consumer().accept(wrapper);
+                    }
                 }else {
+                    // 没有注解所有属性都要处理成条件
+                    // 构造 OperatorWrapper
+                    OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
                     wrapper.setSelectKey(fieldName);
-                    operator.consumer().accept(wrapper);
+                    SQLOperatorWrapper.EQ.consumer().accept(wrapper);
                 }
+
             }
             action.accept(e);
         });

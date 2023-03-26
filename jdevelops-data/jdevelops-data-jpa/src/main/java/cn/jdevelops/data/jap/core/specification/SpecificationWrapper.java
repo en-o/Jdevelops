@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
+import cn.jdevelops.map.core.bean.ColumnSFunction;
 import cn.jdevelops.map.core.bean.ColumnUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,7 +92,7 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
-    public SpecificationWrapper<B> isNull(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey) {
+    public SpecificationWrapper<B> isNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey) {
         return valueNotNull ? handle(selectKey, this::isNull) : this;
     }
 
@@ -112,7 +113,7 @@ public class SpecificationWrapper<B> {
     /**
      * 查询空值
      */
-    public SpecificationWrapper<B> isNull(ColumnUtil.SFunction<B, ?> selectKey) {
+    public SpecificationWrapper<B> isNull(ColumnSFunction<B, ?> selectKey) {
         return handle(selectKey, this::isNull);
     }
 
@@ -131,7 +132,7 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
-    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey) {
+    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey) {
         return valueNotNull ? handle(selectKey, this::isNotNull) : this;
     }
 
@@ -153,7 +154,7 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
-    public SpecificationWrapper<B> isNotNull(ColumnUtil.SFunction<B, ?> selectKey) {
+    public SpecificationWrapper<B> isNotNull(ColumnSFunction<B, ?> selectKey) {
         return handle(selectKey, this::isNotNull);
     }
 
@@ -179,14 +180,14 @@ public class SpecificationWrapper<B> {
     /**
      * 等于
      */
-    public SpecificationWrapper<B> eq(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Object value) {
+    public SpecificationWrapper<B> eq(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
         return valueNotNull ? this.eq(selectKey, value) : this;
     }
 
     /**
      * 等于
      */
-    public SpecificationWrapper<B> eq(ColumnUtil.SFunction<B, ?> selectKey, Object value) {
+    public SpecificationWrapper<B> eq(ColumnSFunction<B, ?> selectKey, Object value) {
         return handle(selectKey, e -> this.eq(e, value));
     }
 
@@ -218,7 +219,7 @@ public class SpecificationWrapper<B> {
     /**
      * 不等于
      */
-    public SpecificationWrapper<B> ne(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Object value) {
+    public SpecificationWrapper<B> ne(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
         return valueNotNull ? this.ne(selectKey, value) : this;
     }
 
@@ -232,7 +233,7 @@ public class SpecificationWrapper<B> {
     /**
      * 不等于
      */
-    public SpecificationWrapper<B> ne(ColumnUtil.SFunction<B, ?> selectKey, Object value) {
+    public SpecificationWrapper<B> ne(ColumnSFunction<B, ?> selectKey, Object value) {
         return handle(selectKey, e -> this.ne(e, value));
     }
 
@@ -264,7 +265,7 @@ public class SpecificationWrapper<B> {
     /**
      * 模糊查询的基方法，不要使用因为没有百分号
      */
-    public SpecificationWrapper<B> like(ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> like(ColumnSFunction<B, ?> selectKey, String value) {
         return handle(selectKey, e -> this.like(e, value));
     }
 
@@ -286,7 +287,7 @@ public class SpecificationWrapper<B> {
     /**
      * 右模糊（值为空不查询）
      */
-    public SpecificationWrapper<B> rlike(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> rlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.rlike(selectKey, value) : this;
     }
 
@@ -301,7 +302,7 @@ public class SpecificationWrapper<B> {
     /**
      * 右模糊（value%）
      */
-    public SpecificationWrapper<B> rlike(ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> rlike(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, value + "%");
         return this;
     }
@@ -316,7 +317,7 @@ public class SpecificationWrapper<B> {
     /**
      * 左模糊（值为空不查询）
      */
-    public SpecificationWrapper<B> llike(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> llike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.llike(selectKey, value) : this;
     }
 
@@ -331,7 +332,7 @@ public class SpecificationWrapper<B> {
     /**
      * 左模糊（%value）
      */
-    public SpecificationWrapper<B> llike(ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> llike(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, "%" + value);
         return this;
     }
@@ -346,7 +347,7 @@ public class SpecificationWrapper<B> {
     /**
      * 全模糊（值为空不查询）
      */
-    public SpecificationWrapper<B> likes(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> likes(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.likes(selectKey, value) : this;
     }
 
@@ -361,7 +362,7 @@ public class SpecificationWrapper<B> {
     /**
      * 全模糊（%value%）
      */
-    public SpecificationWrapper<B> likes(ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> likes(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, "%" + value + "%");
         return this;
     }
@@ -377,7 +378,7 @@ public class SpecificationWrapper<B> {
     /**
      * not like
      */
-    public SpecificationWrapper<B> nlike(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> nlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.nlike(selectKey, value) : this;
     }
 
@@ -391,7 +392,7 @@ public class SpecificationWrapper<B> {
     /**
      * not like
      */
-    public SpecificationWrapper<B> nlike(ColumnUtil.SFunction<B, ?> selectKey, String value) {
+    public SpecificationWrapper<B> nlike(ColumnSFunction<B, ?> selectKey, String value) {
         return handle(selectKey, e -> this.nlike(e, value));
     }
 
@@ -416,7 +417,7 @@ public class SpecificationWrapper<B> {
     /**
      * 大于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.ge(selectKey, value) : this;
     }
 
@@ -432,7 +433,7 @@ public class SpecificationWrapper<B> {
     /**
      * 大于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(ColumnSFunction<B, ?> selectKey, Y value) {
         return handle(selectKey, e -> this.ge(e, value));
     }
 
@@ -457,7 +458,7 @@ public class SpecificationWrapper<B> {
     /**
      * 小于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.le(selectKey, value) : this;
     }
 
@@ -473,7 +474,7 @@ public class SpecificationWrapper<B> {
     /**
      * 小于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(ColumnSFunction<B, ?> selectKey, Y value) {
         return handle(selectKey, e -> this.le(e, value));
     }
 
@@ -499,7 +500,7 @@ public class SpecificationWrapper<B> {
     /**
      * 大于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.gt(selectKey, value) : this;
     }
 
@@ -514,7 +515,7 @@ public class SpecificationWrapper<B> {
     /**
      * 大于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(ColumnSFunction<B, ?> selectKey, Y value) {
         return handle(selectKey, e -> this.gt(e, value));
     }
 
@@ -539,7 +540,7 @@ public class SpecificationWrapper<B> {
     /**
      * 小于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.lt(selectKey, value) : this;
     }
 
@@ -554,7 +555,7 @@ public class SpecificationWrapper<B> {
     /**
      * 小于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(ColumnUtil.SFunction<B, ?> selectKey, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(ColumnSFunction<B, ?> selectKey, Y value) {
         return handle(selectKey, e -> this.lt(e, value));
     }
 
@@ -579,7 +580,7 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
-    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Object... value) {
+    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object... value) {
         return valueNotNull ? in(selectKey, value) : this;
     }
 
@@ -593,7 +594,7 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
-    public SpecificationWrapper<B> in(ColumnUtil.SFunction<B, ?> selectKey, Object... value) {
+    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, Object... value) {
         return handle(selectKey, e -> this.in(e, value));
     }
 
@@ -608,7 +609,7 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
-    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Collection<?> value) {
+    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return valueNotNull ? in(selectKey, value) : this;
     }
 
@@ -623,7 +624,7 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
-    public SpecificationWrapper<B> in(ColumnUtil.SFunction<B, ?> selectKey, Collection<?> value) {
+    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return this.in(selectKey, value.toArray());
     }
 
@@ -648,7 +649,7 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
-    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Collection<?> value) {
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return valueNotNull ? notIn(selectKey, value) : this;
     }
 
@@ -662,7 +663,7 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
-    public SpecificationWrapper<B> notIn(ColumnUtil.SFunction<B, ?> selectKey, Collection<?> value) {
+    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return handle(selectKey, e -> this.notIn(e, value.toArray()));
     }
 
@@ -677,7 +678,7 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
-    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnUtil.SFunction<B, ?> selectKey, Object... value) {
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object... value) {
         return valueNotNull ? notIn(selectKey, value) : this;
     }
 
@@ -691,7 +692,7 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
-    public SpecificationWrapper<B> notIn(ColumnUtil.SFunction<B, ?> selectKey, Object... value) {
+    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Object... value) {
         return handle(selectKey, e -> this.notIn(e, value));
     }
 
@@ -717,7 +718,7 @@ public class SpecificationWrapper<B> {
      * 之间 包头包尾[闭区间]
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull,
-                                                                             ColumnUtil.SFunction<B, ?> selectKey, Y start, Y end) {
+                                                                             ColumnSFunction<B, ?> selectKey, Y start, Y end) {
         return valueNotNull ? between(selectKey, start, end) : this;
     }
 
@@ -733,7 +734,7 @@ public class SpecificationWrapper<B> {
     /**
      * 之间 包头包尾[闭区间]
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(ColumnUtil.SFunction<B, ?> selectKey, Y start, Y end) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(ColumnSFunction<B, ?> selectKey, Y start, Y end) {
         return handle(selectKey, e -> this.between(e, start, end));
     }
 
@@ -775,7 +776,7 @@ public class SpecificationWrapper<B> {
     /**
      * 主方法，处理器
      */
-    public SpecificationWrapper<B> handle(ColumnUtil.SFunction<B, ?> selectKey, Consumer<Path> action) {
+    public SpecificationWrapper<B> handle(ColumnSFunction<B, ?> selectKey, Consumer<Path> action) {
         Path<?> path;
         String fieldName = ColumnUtil.getFieldName(selectKey);
         if (fieldName.contains(SEPARATOR)) {

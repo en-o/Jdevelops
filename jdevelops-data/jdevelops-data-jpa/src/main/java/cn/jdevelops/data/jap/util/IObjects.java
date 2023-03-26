@@ -46,16 +46,16 @@ public class IObjects {
 
     /**
      * 字符判空
-     * @param idFieldName CharSequence
+     * @param cs CharSequence
      * @return boolean
      */
-    public static boolean isBlank(final CharSequence idFieldName) {
+    public static boolean isBlank(final CharSequence cs) {
         int strLen;
-        if (idFieldName == null || NULL_STRING.contentEquals(idFieldName) || (strLen = idFieldName.length()) == 0) {
+        if (cs == null || NULL_STRING.contentEquals(cs) || (strLen = cs.length()) == 0) {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(idFieldName.charAt(i))) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
                 return false;
             }
         }
