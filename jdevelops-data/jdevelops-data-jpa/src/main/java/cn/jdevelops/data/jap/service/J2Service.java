@@ -190,6 +190,18 @@ public interface J2Service<B> {
      */
     <R, T> JpaPageResult<R> findByBean(T req, PageDTO page, Class<R> clazz);
 
+
+    /**
+     * 分页查询
+     *
+     * @param req      查询条件
+     * @param page 分页
+     * @param <T>  数据实体的VO TDO BO PO等异形类
+     * @return ResourceJpaPage<List < VO>>
+     */
+    <T> JpaPageResult<B> findByBean(T req, PageDTO page);
+
+
     /**
      * 分页查询
      *
@@ -201,6 +213,17 @@ public interface J2Service<B> {
      * @return ResourceJpaPage<List < R>>
      */
     <R, T> JpaPageResult<R> findByBean(T req, SortPageDTO sortPage, Class<R> clazz);
+
+
+    /**
+     * 分页查询
+     *
+     * @param req       查询条件实体
+     * @param sortPage 分页 排序
+     * @param <T>   数据实体的VO TDO BO PO等异形类
+     * @return ResourceJpaPage<List < R>>
+     */
+    <T> JpaPageResult<B> findByBean(T req, SortPageDTO sortPage);
 
 
 

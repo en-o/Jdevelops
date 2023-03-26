@@ -16,7 +16,7 @@ import java.util.*;
  * @date 2023-03-19 17:24
  */
 @Schema(description = "JPA分页数据实体")
-public class JpaPageResult<R> extends PageResult<R> {
+public class    JpaPageResult<R> extends PageResult<R> {
 
 
     public JpaPageResult(Integer currentPage, Integer pageSize, Integer totalPages, Long total, List<R> rows) {
@@ -70,6 +70,18 @@ public class JpaPageResult<R> extends PageResult<R> {
                 rows.getTotalPages(),
                 rows.getTotalElements(),
                 result);
+    }
+
+    /**
+     * 对象转换
+     * @param rows 数据
+     */
+    public static <R> JpaPageResult<R> toPage(Page<R> rows) {
+        return new JpaPageResult<>(rows.getNumber()+1,
+                rows.getSize(),
+                rows.getTotalPages(),
+                rows.getTotalElements(),
+                rows.getContent());
     }
 
 }
