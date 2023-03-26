@@ -27,19 +27,31 @@ public class JpaUtils {
      * @param fieldName fieldName
      * @param target    目标
      * @return Object
-     * @throws Exception Exception
      */
-    public static Object getFieldValueByName(String fieldName, Object target) throws Exception {
+    public static Object getFieldValueByName(String fieldName, Object target) {
         try {
-            Field field = target.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field.get(target);
+            Object value = null;
+            Class tempClass = target.getClass();
+            // 死循环获取所有 自己和继承
+            while (tempClass != null) {
+                try {
+                    Field field = tempClass.getDeclaredField(fieldName);
+                    field.setAccessible(true);
+                    value = field.get(target);
+                    break;
+                } catch (Exception e) {
+                    //得到父类,然后赋给自己
+                    tempClass = tempClass.getSuperclass();
+                }
+            }
+            if(value == null){
+                throw new JpaException("获取字段的值失败");
+            }
+            return value;
         } catch (Exception e) {
             throw new JpaException("获取字段的值失败", e);
         }
     }
-
-
 
 
     /**
@@ -50,13 +62,14 @@ public class JpaUtils {
      * @param <B>  实参类型
      * @return JPAUtilExpandCriteria
      */
-    public static <T,B> JPAUtilExpandCriteria<T> getSelectBean2(B bean) {
+    public static <T, B> JPAUtilExpandCriteria<T> getSelectBean2(B bean) {
         return getJpaUtilExpandCriteria(bean);
     }
 
     /**
      * 多条件查询 的 默认全员AND
      * PS: 建议使用 getSelectBean2
+     *
      * @param bean 多条件查询
      * @param <T>  多条件查询
      * @return JPAUtilExpandCriteria
@@ -68,12 +81,13 @@ public class JpaUtils {
 
     /**
      * 组装查询条件
+     *
      * @param bean 条件实体
-     * @return  JPAUtilExpandCriteria
-     * @param <T> 返回实体
-     * @param <B> 条件实体
+     * @param <T>  返回实体
+     * @param <B>  条件实体
+     * @return JPAUtilExpandCriteria
      */
-    private static <T,B>  JPAUtilExpandCriteria<T> getJpaUtilExpandCriteria(B bean) {
+    private static <T, B> JPAUtilExpandCriteria<T> getJpaUtilExpandCriteria(B bean) {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         for (Field field : fields) {
@@ -83,20 +97,20 @@ public class JpaUtils {
             }
             // 字段被忽略
             JpaSelectIgnoreField ignoreField = field.getAnnotation(JpaSelectIgnoreField.class);
-            if(IObjects.nonNull(ignoreField)){
+            if (IObjects.nonNull(ignoreField)) {
                 continue;
             }
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             if (IObjects.nonNull(selectOperator)) {
                 // 使用自定义的名字
-                if(!IObjects.isBlank(selectOperator.fieldName())){
+                if (!IObjects.isBlank(selectOperator.fieldName())) {
                     fieldName = selectOperator.fieldName();
                 }
                 SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
-                if(Objects.equals(selectOperator.connect(), SQLConnect.OR)){
+                if (Objects.equals(selectOperator.connect(), SQLConnect.OR)) {
                     jpaSelect.or(simpleExpression);
-                }else {
+                } else {
                     jpaSelect.add(simpleExpression);
                 }
             } else {
@@ -111,8 +125,8 @@ public class JpaUtils {
     /**
      * 根据注解组装  jpa动态查询
      *
-     * @param annotation  JpaSelectOperator 注解
-     * @param fieldName 字段名
+     * @param annotation JpaSelectOperator 注解
+     * @param fieldName  字段名
      * @param fieldValue 字段值
      * @return SimpleExpression
      */
