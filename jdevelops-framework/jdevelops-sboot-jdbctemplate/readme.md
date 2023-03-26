@@ -230,3 +230,41 @@ myObject.myMethod();
 *   注解处理器在处理注解时需要注意异常处理，例如处理可能发生的异常或错误。
 
 总之，使用注解处理器是一个需要注意的过程，需要仔细考虑注解的使用方式、处理规范、性能问题等因素，以确保注解处理器的正确性和可用性。
+
+
+**You:**
+
+java注解处理器怎么在idea中运行
+
+* * *
+
+**ChatGPT:**
+
+在 IDEA 中运行 Java 注解处理器有多种方式，下面介绍其中的两种：
+
+1.  使用 Maven 插件运行
+
+如果你的项目使用了 Maven 构建工具，可以使用 `maven-compiler-plugin` 插件来运行 Java 注解处理器。在项目的 `pom.xml` 文件中添加以下配置：
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.8.1</version>
+      <configuration>
+        <annotationProcessors>
+          <annotationProcessor>com.example.MyAnnotationProcessor</annotationProcessor>
+        </annotationProcessors>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+其中，`com.example.MyAnnotationProcessor` 是你自己的注解处理器类。然后在终端或 IDEA 中执行以下命令即可运行注解处理器：
+
+```shell
+mvn clean compile
+```
