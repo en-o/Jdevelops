@@ -627,7 +627,11 @@
                 <artifactId>utils-validation</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>utils-interceptor</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
 
 
             <!-- starters -->
