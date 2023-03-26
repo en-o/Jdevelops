@@ -37,18 +37,18 @@
             <systemPath>${java.home}/../lib/tools.jar</systemPath>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <annotationProcessors>
-                        <annotationProcessor>cn.jdevelops.sboot.jdbctemplate.core.QueryProcessor</annotationProcessor>
-                    </annotationProcessors>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>${maven-compiler-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <annotationProcessors>-->
+<!--                        <annotationProcessor>cn.jdevelops.sboot.jdbctemplate.core.QueryProcessor</annotationProcessor>-->
+<!--                    </annotationProcessors>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 </project>
