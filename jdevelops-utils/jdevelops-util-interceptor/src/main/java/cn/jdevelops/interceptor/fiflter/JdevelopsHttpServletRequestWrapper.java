@@ -27,8 +27,7 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
 
     /**
      * 重新包装输入流
-     * @return
-     * @throws IOException
+     * @throws IOException IOException
      */
     @Override
     public ServletInputStream getInputStream() throws IOException {
@@ -63,6 +62,7 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
 
     @Override
     public BufferedReader getReader() throws IOException {
+        InputStream bodyStream = new ByteArrayInputStream(body);
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 }
