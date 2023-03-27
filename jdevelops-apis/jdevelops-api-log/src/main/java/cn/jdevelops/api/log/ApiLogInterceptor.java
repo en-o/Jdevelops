@@ -22,6 +22,7 @@ import java.util.Objects;
 @Component
 @Order(1)
 public class ApiLogInterceptor implements ApiBeforeInterceptor {
+    private final static String ERROR_PAGE = "/error";
 
     /**
      * logback-spring.xml中定义 appender api-log 完成自定api文件输出
@@ -34,7 +35,7 @@ public class ApiLogInterceptor implements ApiBeforeInterceptor {
         LoggerEntity loggerEntity = null;
         try {
             // 不拦截这个页面
-            if(request.getRequestURI().contains("/error")){
+            if(request.getRequestURI().contains(ERROR_PAGE)){
                 return true;
             }
             String requestParams = RequestUtil.requestParams(request);
