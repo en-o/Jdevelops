@@ -1,6 +1,5 @@
 package cn.jdevelops.api.log.entity;
 
-import java.util.Objects;
 
 /**
  * 日志输出
@@ -38,10 +37,10 @@ public class LoggerEntity {
     @Override
     public String toString() {
         return "LoggerEntity{" +
-                "请求IP='" + ip + '\'' +
-                ", 请求地址='" + url + '\'' +
-                ", 入参='" + params + '\'' +
-                ", 调用时间(毫秒)=" + callTime +
+                "request IP='" + ip + '\'' +
+                ", request url='" + url + '\'' +
+                ", request params='" + params + '\'' +
+                ", request time (millis cond)=" + callTime +
                 '}';
     }
 }
