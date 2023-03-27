@@ -629,7 +629,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-utils-interceptor</artifactId>
+                <artifactId>jdevelops-util-interceptor</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
@@ -677,7 +677,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-biz-login</artifactId>
+                <artifactId>jdevelops-sboot-redis-login</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
