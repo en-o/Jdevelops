@@ -3,7 +3,6 @@ package cn.jdevelops.interceptor.chain;
 import cn.jdevelops.interceptor.api.ApiFinallyInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +20,11 @@ public class ApiFinallyInterceptorChain {
     /**
      * 拦截器列表
      */
-    @Autowired
-    private List<ApiFinallyInterceptor> interceptors;
+    private final List<ApiFinallyInterceptor> interceptors;
 
+    public ApiFinallyInterceptorChain(List<ApiFinallyInterceptor> interceptors) {
+        this.interceptors = interceptors;
+    }
 
     /**
      * 执行处理

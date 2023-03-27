@@ -1,5 +1,5 @@
-cn.jdevelops.interceptor.core.JdevelopsWebMvcConfig
 cn.jdevelops.interceptor.chain.ApiAfterInterceptorChain
 cn.jdevelops.interceptor.chain.ApiAsyncInterceptorChain
 cn.jdevelops.interceptor.chain.ApiBeforeInterceptorChain
 cn.jdevelops.interceptor.chain.ApiFinallyInterceptorChain
+cn.jdevelops.interceptor.core.JdevelopsWebMvcConfig
