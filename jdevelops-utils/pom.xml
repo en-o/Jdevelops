@@ -23,7 +23,7 @@
         <module>utils-message</module>
         <module>utils-spring-aop</module>
         <module>utils-validation</module>
-        <module>utils-interceptor</module>
+        <module>jdevelops-utils-interceptor</module>
     </modules>
 
 

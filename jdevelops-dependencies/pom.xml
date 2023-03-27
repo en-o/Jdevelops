@@ -629,7 +629,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-interceptor</artifactId>
+                <artifactId>jdevelops-utils-interceptor</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
