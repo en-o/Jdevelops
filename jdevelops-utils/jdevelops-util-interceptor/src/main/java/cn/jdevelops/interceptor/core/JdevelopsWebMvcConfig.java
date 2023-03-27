@@ -5,8 +5,13 @@ import cn.jdevelops.interceptor.chain.ApiAfterInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiAsyncInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiBeforeInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiFinallyInterceptorChain;
+import cn.jdevelops.interceptor.fiflter.JdevelopsDispatcherServlet;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -63,4 +68,11 @@ public class JdevelopsWebMvcConfig implements WebMvcConfigurer {
             }
         });
     }
+
+    @Bean
+    @Qualifier(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
+    public DispatcherServlet dispatcherServlet() {
+        return new JdevelopsDispatcherServlet();
+    }
+
 }
