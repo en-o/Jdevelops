@@ -33,12 +33,17 @@ public class ApiLogInterceptor implements ApiBeforeInterceptor {
         //获取请求参数
         LoggerEntity loggerEntity = null;
         try {
+            // 不拦截这个页面
+            if(request.getRequestURI().contains("/error")){
+                return true;
+            }
             String requestParams = RequestUtil.requestParams(request);
             loggerEntity = new LoggerEntity(IpUtil.getPoxyIpEnhance(request),
                     request.getRequestURL().toString(), requestParams, System.currentTimeMillis());
         }catch (Exception e){
             logger.error("接口日志记录失败", e);
         }
+
         logger.info(Objects.isNull(loggerEntity)? "" : loggerEntity.toString());
         return true;
     }
