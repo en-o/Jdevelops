@@ -15,6 +15,7 @@
         <module>apis-result</module>
         <module>apis-exception</module>
         <module>apis-annotation</module>
+        <module>jdevelops-api-log</module>
     </modules>
 
 
