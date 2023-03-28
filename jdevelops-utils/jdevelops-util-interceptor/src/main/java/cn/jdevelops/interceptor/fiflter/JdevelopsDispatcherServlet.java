@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-* 自定义 DispatcherServlet 来分派 XinHttpServletRequestWrapper
+* 自定义 DispatcherServlet 来分派 JdevelopsHttpServletRequestWrapper
  * @author tan
 */
 public class JdevelopsDispatcherServlet extends DispatcherServlet {
