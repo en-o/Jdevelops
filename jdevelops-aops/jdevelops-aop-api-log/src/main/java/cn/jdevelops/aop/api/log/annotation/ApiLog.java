@@ -1,4 +1,4 @@
-package cn.jdevelops.apilog.annotation;
+package cn.jdevelops.aop.api.log.annotation;
 
 
 import java.lang.annotation.*;
@@ -18,10 +18,10 @@ import java.lang.annotation.*;
 public @interface ApiLog {
 
     /**
-     * 调用方 key
+     * 日志存储需要用的的一些东西，自己设置自己解析
      * @return String
      */
-    String apiKey() default "";
+    String description() default "";
 
     /**
      * 接口名中文名

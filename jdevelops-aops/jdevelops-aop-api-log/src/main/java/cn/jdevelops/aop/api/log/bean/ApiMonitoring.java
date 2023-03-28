@@ -1,4 +1,4 @@
-package cn.jdevelops.apilog.bean;
+package cn.jdevelops.aop.api.log.bean;
 
 
 /**
@@ -16,9 +16,6 @@ public class ApiMonitoring {
     /** 接口名 */
     private String chineseApi;
 
-    /** 调用方key */
-    private String apiKey;
-
     /** 调用状态 /true/false */
     private String status;
 
@@ -28,26 +25,38 @@ public class ApiMonitoring {
     /** 出参 */
     private String outParams;
 
-    /**调用时间*/
-    private String callTime;
+    /**调用时间 毫秒(currentTimeMillis) */
+    private Long callTime;
 
     /**
      * 请求IP
      */
     private String  poxyIp;
 
+    /**
+     * 描述 可以使用表达式取值（#{入参bean.taskName}）
+     */
+    private String description;
+
     public ApiMonitoring() {
     }
 
-    public ApiMonitoring(String apiName, String chineseApi, String apiKey, String status, String inParams, String outParams, String callTime, String poxyIp) {
+    public ApiMonitoring(String apiName,
+                         String chineseApi,
+                         String status,
+                         String inParams,
+                         String outParams,
+                         Long callTime,
+                         String poxyIp,
+                         String description) {
         this.apiName = apiName;
         this.chineseApi = chineseApi;
-        this.apiKey = apiKey;
         this.status = status;
         this.inParams = inParams;
         this.outParams = outParams;
         this.callTime = callTime;
         this.poxyIp = poxyIp;
+        this.description = description;
     }
 
     @Override
@@ -55,12 +64,12 @@ public class ApiMonitoring {
         return "ApiMonitoring{" +
                 "apiName='" + apiName + '\'' +
                 ", chineseApi='" + chineseApi + '\'' +
-                ", apiKey='" + apiKey + '\'' +
                 ", status='" + status + '\'' +
                 ", inParams='" + inParams + '\'' +
                 ", outParams='" + outParams + '\'' +
-                ", callTime='" + callTime + '\'' +
+                ", callTime=" + callTime +
                 ", poxyIp='" + poxyIp + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -80,13 +89,6 @@ public class ApiMonitoring {
         this.chineseApi = chineseApi;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
 
     public String getStatus() {
         return status;
@@ -112,11 +114,11 @@ public class ApiMonitoring {
         this.outParams = outParams;
     }
 
-    public String getCallTime() {
+    public Long getCallTime() {
         return callTime;
     }
 
-    public void setCallTime(String callTime) {
+    public void setCallTime(Long callTime) {
         this.callTime = callTime;
     }
 
@@ -126,5 +128,13 @@ public class ApiMonitoring {
 
     public void setPoxyIp(String poxyIp) {
         this.poxyIp = poxyIp;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

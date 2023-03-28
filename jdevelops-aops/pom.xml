@@ -12,7 +12,7 @@
     <artifactId>jdevelops-aops</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>aops-apilog</module>
+        <module>jdevelops-aop-api-log</module>
         <module>aops-apisign</module>
         <module>aops-apiversion</module>
         <module>aops-exception</module>

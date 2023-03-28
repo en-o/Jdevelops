@@ -1,7 +1,7 @@
-package cn.jdevelops.apilog.server;
+package cn.jdevelops.aop.api.log.server;
 
 
-import cn.jdevelops.apilog.bean.ApiMonitoring;
+import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 
 /**
  * 保存接口日志，需要时重写里面的保存方法即可实现数据自定义存入

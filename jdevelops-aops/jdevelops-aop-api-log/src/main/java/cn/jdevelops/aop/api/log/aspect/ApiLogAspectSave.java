@@ -1,18 +1,17 @@
-package cn.jdevelops.apilog.aspect;
+package cn.jdevelops.aop.api.log.aspect;
 
 import cn.jdevelops.aops.AopReasolver;
 import cn.jdevelops.aops.IpUtil;
 import cn.jdevelops.aops.JsonUtils;
-import cn.jdevelops.apilog.annotation.ApiLog;
-import cn.jdevelops.apilog.bean.ApiMonitoring;
-import cn.jdevelops.apilog.server.ApiLogSave;
+import cn.jdevelops.aop.api.log.annotation.ApiLog;
+import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
+import cn.jdevelops.aop.api.log.server.ApiLogSave;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static cn.jdevelops.aops.CommonConstant.DEFAULT_FORMAT_DATETIME;
 
 /**
  * 接口日志保存
@@ -54,7 +51,7 @@ public class ApiLogAspectSave {
      * 定义切点 @Pointcut
      * 在注解的位置切入代码
      */
-    @Pointcut("@annotation(cn.jdevelops.apilog.annotation.ApiLog)")
+    @Pointcut("@annotation(cn.jdevelops.aop.api.log.annotation.ApiLog)")
     public void apiLog() {
     }
 
@@ -73,8 +70,8 @@ public class ApiLogAspectSave {
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
-            Object apiKey = AopReasolver.newInstance().resolver(jp, myLog.apiKey());
-            apiLog.setApiKey(apiKey+ "");
+            Object description = AopReasolver.newInstance().resolver(jp, myLog.description());
+            apiLog.setDescription(description+ "");
             apiLog.setChineseApi(myLog.chineseApi());
         }
         /*接口名*/
@@ -86,7 +83,7 @@ public class ApiLogAspectSave {
         apiLog.setStatus("false");
         apiLog.setOutParams("接口调用出错");
         /* callTime 调用时间  */
-        apiLog.setCallTime(DateTime.now().toString(DEFAULT_FORMAT_DATETIME));
+        apiLog.setCallTime(System.currentTimeMillis());
         /* callTime 调用时间  */
         /*inParams    输入 */
         apiLog.setInParams("");
@@ -140,14 +137,14 @@ public class ApiLogAspectSave {
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
-            Object apiKey = AopReasolver.newInstance().resolver(joinPoint, myLog.apiKey());
-            appKeyError = Objects.nonNull(rvt) ? apiKey + "" : "";
-            apiLog.setApiKey(appKeyError);
+            Object description = AopReasolver.newInstance().resolver(joinPoint, myLog.description());
+            appKeyError = Objects.nonNull(rvt) ? description + "" : "";
+            apiLog.setDescription(appKeyError);
             apiLog.setChineseApi(myLog.chineseApi());
         }
 
         /* callTime 调用时间  */
-        apiLog.setCallTime(DateTime.now().toString(DEFAULT_FORMAT_DATETIME));
+        apiLog.setCallTime(System.currentTimeMillis());
         /* callTime 调用时间  */
 
 

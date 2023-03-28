@@ -1,7 +1,7 @@
-package cn.jdevelops.apilog.server.impl;
+package cn.jdevelops.aop.api.log.server.impl;
 
-import cn.jdevelops.apilog.bean.ApiMonitoring;
-import cn.jdevelops.apilog.server.ApiLogSave;
+import cn.jdevelops.aop.api.log.server.ApiLogSave;
+import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +15,6 @@ public class ApiLogSaveImpl implements ApiLogSave {
     private static final Logger LOG = LoggerFactory.getLogger(ApiLogSaveImpl.class);
     @Override
     public void saveLog(ApiMonitoring apilog) {
-        LOG.info("api接口调用信息默认输出控制台:"+ apilog.toString());
+        LOG.info("api接口调用信息默认输出控制台:{}",apilog.toString());
     }
 }
