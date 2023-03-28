@@ -144,7 +144,7 @@
         </repository>
     </repositories>
 
-
+    <!-- 强制依赖-->
     <dependencies>
         <!-- 单元测试 start -->
         <dependency>
