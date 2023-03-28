@@ -25,6 +25,11 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
         body = StreamUtils.copyToByteArray(request.getInputStream());
     }
 
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return new BufferedReader(new InputStreamReader(getInputStream()));
+    }
+
     /**
      * 重新包装输入流
      * @throws IOException IOException
@@ -60,9 +65,5 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
         };
     }
 
-    @Override
-    public BufferedReader getReader() throws IOException {
-        new ByteArrayInputStream(body);
-        return new BufferedReader(new InputStreamReader(getInputStream()));
-    }
+
 }
