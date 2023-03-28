@@ -3,8 +3,8 @@ package cn.jdevelops.aop.api.log.scan;
 import cn.jdevelops.aop.api.log.aspect.ApiLogAspectSave;
 import cn.jdevelops.aop.api.log.server.ApiLogSave;
 import cn.jdevelops.aop.api.log.server.impl.ApiLogSaveImpl;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  * @author tn
  * @date 2020-09-27 10:17
  */
-@ConditionalOnWebApplication
+@AutoConfiguration
 @Import({ApiLogAspectSave.class,
 })
 public class EnableAutoScanConfiguration {
