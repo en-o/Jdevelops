@@ -7,8 +7,9 @@ import cn.jdevelops.interceptor.api.ApiBeforeInterceptor;
 import cn.jdevelops.interceptor.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,11 @@ import java.util.Objects;
  *
  * @author tan
  */
-@Component
+@AutoConfiguration
+@ConditionalOnProperty(
+        value="jdevelops.api.log.enabled",
+        havingValue = "true",
+        matchIfMissing = true)
 @Order(1)
 public class ApiLogInterceptor implements ApiBeforeInterceptor {
     private final static String ERROR_PAGE = "/error";
