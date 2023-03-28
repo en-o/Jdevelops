@@ -59,8 +59,6 @@
         <module>jdevelops-search</module>
         <!-- web模块 -->
         <module>jdevelops-webs</module>
-        <!-- starter  -->
-        <module>jdevelops-starters</module>
         <!-- 短信-->
         <module>jdevelops-sms</module>
         <!-- SPI -->
