@@ -5,6 +5,7 @@ import cn.jdevelops.aop.api.log.server.ApiLogSave;
 import cn.jdevelops.aop.api.log.server.impl.ApiLogSaveImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
  * @date 2020-09-27 10:17
  */
 @AutoConfiguration
+@ConditionalOnWebApplication
 @Import({ApiLogAspectSave.class,
 })
 public class EnableAutoScanConfiguration {
