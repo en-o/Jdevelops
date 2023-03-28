@@ -62,7 +62,7 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
 
     @Override
     public BufferedReader getReader() throws IOException {
-        InputStream bodyStream = new ByteArrayInputStream(body);
+        new ByteArrayInputStream(body);
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 }
