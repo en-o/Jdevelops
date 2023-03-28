@@ -10,18 +10,13 @@
     </parent>
     <description>基础依赖</description>
     <artifactId>jdevelops-common-env</artifactId>
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <packaging>pom</packaging>
 
     <dependencies>
-        <!--这三个功能回去会合并到 api-gateway-->
         <!--接口日志-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>aops-apilog</artifactId>
+            <artifactId>jdevelops-aop-api-log</artifactId>
         </dependency>
         <!--接口版本-->
         <dependency>

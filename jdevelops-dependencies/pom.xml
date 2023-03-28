@@ -536,11 +536,16 @@
                 <artifactId>apis-result</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-api-log</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
 
             <!-- aop -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>aops-apilog</artifactId>
+                <artifactId>jdevelops-aop-api-log</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
@@ -680,30 +685,6 @@
                 <artifactId>jdevelops-sboot-redis-login</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-
-
-            <!--准备删除-->
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-beans</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-boot-web</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-web</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-utils</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-
 
         </dependencies>
     </dependencyManagement>
