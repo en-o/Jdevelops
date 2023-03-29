@@ -1,11 +1,11 @@
 package cn.jdevelops.jwtweb.interceptor;
 
-import cn.jdevelops.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.jwt.bean.JwtBean;
 import cn.jdevelops.jwt.util.JwtUtil;
 import cn.jdevelops.jwtweb.util.JwtWebUtil;
 import cn.jdevelops.jwtweb.vo.CheckVO;
-import cn.jdevelops.result.custom.ExceptionResultWrap;
+import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.jwt.annotation.ApiMapping;
 import cn.jdevelops.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.jwt.constant.JwtConstant;

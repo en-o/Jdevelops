@@ -1,2 +1,2 @@
-cn.jdevelops.result.config.SpringExtConfiguration
-cn.jdevelops.result.config.ExceptionConfiguration
+cn.jdevelops.api.result.config.SpringExtConfiguration
+cn.jdevelops.api.result.config.ExceptionConfiguration

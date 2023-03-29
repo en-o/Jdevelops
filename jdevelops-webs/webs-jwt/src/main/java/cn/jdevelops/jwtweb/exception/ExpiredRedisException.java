@@ -1,7 +1,7 @@
 package cn.jdevelops.jwtweb.exception;
 
-import cn.jdevelops.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.result.emums.UserExceptionEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.UserExceptionEnum;
 import cn.jdevelops.exception.exception.BusinessException;
 
 /**

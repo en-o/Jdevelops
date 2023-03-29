@@ -9,7 +9,7 @@ import cn.jdevelops.apisign.annotation.Signature;
 import cn.jdevelops.apisign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
-import cn.jdevelops.result.custom.ExceptionResultWrap;
+import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;

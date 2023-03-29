@@ -1,7 +1,7 @@
 package cn.jdevelops.exception.exception;
 
-import cn.jdevelops.result.emums.ParamExceptionCodeEnum;
-import cn.jdevelops.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.ResultCodeEnum;
 
 /**
  * 自定义异常

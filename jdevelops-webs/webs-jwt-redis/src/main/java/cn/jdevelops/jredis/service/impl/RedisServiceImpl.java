@@ -23,8 +23,6 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.result.emums.UserExceptionEnum.*;
-
 
 /**
  * redis

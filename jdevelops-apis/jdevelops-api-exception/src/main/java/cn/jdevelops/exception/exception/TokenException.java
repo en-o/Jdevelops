@@ -1,7 +1,7 @@
 package cn.jdevelops.exception.exception;
 
 
-import cn.jdevelops.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 
 /**
  * jwt异常
