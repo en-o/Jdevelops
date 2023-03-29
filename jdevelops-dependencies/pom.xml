@@ -523,7 +523,7 @@
             <!-- apis -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>apis-annotation</artifactId>
+                <artifactId>jdevelops-api-annotation</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

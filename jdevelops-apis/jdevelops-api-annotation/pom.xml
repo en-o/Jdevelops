@@ -9,8 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>apis-annotation</artifactId>
-
+    <artifactId>jdevelops-api-annotation</artifactId>
+    <description>
+        一些自定义的组合注解
+    </description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

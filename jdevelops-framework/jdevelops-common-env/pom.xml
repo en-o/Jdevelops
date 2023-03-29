@@ -38,7 +38,7 @@
         <!--自定义的 Spring 组合注解-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-annotation</artifactId>
+            <artifactId>jdevelops-api-annotation</artifactId>
         </dependency>
         <!--方法异常注解-->
         <dependency>
