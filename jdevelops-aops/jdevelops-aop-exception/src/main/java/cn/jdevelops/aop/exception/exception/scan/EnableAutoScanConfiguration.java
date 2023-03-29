@@ -1,6 +1,6 @@
-package cn.jdevelops.api.exception.scan;
+package cn.jdevelops.aop.exception.exception.scan;
 
-import cn.jdevelops.api.exception.aspect.ExceptionAspect;
+import cn.jdevelops.aop.exception.exception.aspect.ExceptionAspect;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Import;
 

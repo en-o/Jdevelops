@@ -43,7 +43,7 @@
         <!--方法异常注解-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>aops-exception</artifactId>
+            <artifactId>jdevelops-aop-exception</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>

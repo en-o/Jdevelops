@@ -1,4 +1,4 @@
-package cn.jdevelops.api.exception.annotation;
+package cn.jdevelops.aop.exception.exception.annotation;
 
 import java.lang.annotation.*;
 

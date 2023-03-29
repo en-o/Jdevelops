@@ -560,7 +560,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>aops-exception</artifactId>
+                <artifactId>jdevelops-aop-exception</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 

@@ -1,4 +1,4 @@
-package cn.jdevelops.api.exception;
+package cn.jdevelops.aop.exception.exception;
 
 
 /**

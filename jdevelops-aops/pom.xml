@@ -14,7 +14,7 @@
     <modules>
         <module>jdevelops-aop-api-log</module>
         <module>aops-apisign</module>
-        <module>aops-exception</module>
+        <module>jdevelops-aop-exception</module>
     </modules>
 
     <dependencies>
