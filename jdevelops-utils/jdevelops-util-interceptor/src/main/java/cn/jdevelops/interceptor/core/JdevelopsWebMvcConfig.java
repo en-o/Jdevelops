@@ -9,12 +9,8 @@ import cn.jdevelops.interceptor.chain.ApiAfterInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiAsyncInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiBeforeInterceptorChain;
 import cn.jdevelops.interceptor.chain.ApiFinallyInterceptorChain;
-import cn.jdevelops.interceptor.fiflter.JdevelopsDispatcherServlet;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -25,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME;
 
 /**
  * 自定义拦截器责任链后 自动注册拦截器到spring
@@ -92,11 +90,5 @@ public class JdevelopsWebMvcConfig implements WebMvcConfigurer {
                 asyncInterceptor.execute(request, response, handler);
             }
         });
-    }
-
-    @Bean
-    @ConditionalOnSingleCandidate
-    public DispatcherServlet dispatcherServlet() {
-        return new JdevelopsDispatcherServlet();
     }
 }

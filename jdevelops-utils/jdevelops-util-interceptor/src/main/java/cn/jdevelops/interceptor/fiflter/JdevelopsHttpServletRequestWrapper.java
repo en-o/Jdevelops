@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
 
 /**
-* 自定义 HttpServletRequestWrapper 来包装输入流
+ * 自定义 HttpServletRequestWrapper 来包装输入流
+ * 解决: request.getInputStream()只能读取一次的问题
+ * 目标: 流可重复读
+ *
  * @author tan
-*/
+ */
 public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     /**
@@ -32,6 +35,7 @@ public class JdevelopsHttpServletRequestWrapper extends HttpServletRequestWrappe
 
     /**
      * 重新包装输入流
+     *
      * @throws IOException IOException
      */
     @Override
