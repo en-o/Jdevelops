@@ -1,4 +1,4 @@
-package cn.jdevelops.annotation.mapping;
+package cn.jdevelops.api.annotation.mapping;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;

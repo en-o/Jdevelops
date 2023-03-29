@@ -1,4 +1,4 @@
-package cn.jdevelops.annotation.application;
+package cn.jdevelops.api.annotation.application;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
