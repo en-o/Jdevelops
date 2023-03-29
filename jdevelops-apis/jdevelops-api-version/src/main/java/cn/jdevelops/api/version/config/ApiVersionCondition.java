@@ -1,6 +1,6 @@
-package cn.jdevelops.version.config;
+package cn.jdevelops.api.version.config;
 
-import cn.jdevelops.aops.StringUtil;
+import cn.jdevelops.api.version.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
@@ -44,7 +44,7 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
             reqVersion = Optional.ofNullable(reqVersion)
                     .orElse(httpServletRequest.getHeader("version"));
             reqVersion = Optional.ofNullable(reqVersion).orElse("1.0");
-            if (StringUtil.isNotBlank(reqVersion)) {
+            if (StrUtil.isNotBlank(reqVersion)) {
                 double version = Double.parseDouble(reqVersion);
                 if (version >= this.apiVersion) {
                     return this;
@@ -62,6 +62,9 @@ public class ApiVersionCondition implements RequestCondition<ApiVersionCondition
     public int compareTo(ApiVersionCondition apiVersionCondition, HttpServletRequest httpServletRequest) {
         return Double.compare(apiVersionCondition.getApiVersion(), this.apiVersion);
     }
+
+
+
 
 
 

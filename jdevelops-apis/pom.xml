@@ -16,6 +16,7 @@
         <module>jdevelops-api-exception</module>
         <module>jdevelops-api-annotation</module>
         <module>jdevelops-api-log</module>
+        <module>jdevelops-api-version</module>
     </modules>
 
 

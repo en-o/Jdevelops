@@ -1,6 +1,6 @@
-package cn.jdevelops.version.config;
+package cn.jdevelops.api.version.config;
 
-import cn.jdevelops.version.handler.CustomRequestMappingHandlerMapping;
+import cn.jdevelops.api.version.handler.CustomRequestMappingHandlerMapping;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 /**

@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.version.config.WebMvcRegistrationsConfig

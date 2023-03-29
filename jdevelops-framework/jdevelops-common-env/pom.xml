@@ -21,7 +21,7 @@
         <!--接口版本-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>aops-apiversion</artifactId>
+            <artifactId>jdevelops-api-version</artifactId>
         </dependency>
         <!--接口验签-->
         <dependency>

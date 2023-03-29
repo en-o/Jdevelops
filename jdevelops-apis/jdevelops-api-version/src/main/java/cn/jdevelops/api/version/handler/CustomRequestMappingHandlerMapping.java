@@ -1,7 +1,7 @@
-package cn.jdevelops.version.handler;
+package cn.jdevelops.api.version.handler;
 
-import cn.jdevelops.version.annotation.ApiVersion;
-import cn.jdevelops.version.config.ApiVersionCondition;
+import cn.jdevelops.api.version.annotation.ApiVersion;
+import cn.jdevelops.api.version.config.ApiVersionCondition;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;

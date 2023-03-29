@@ -1,4 +1,4 @@
-package cn.jdevelops.version.annotation;
+package cn.jdevelops.api.version.annotation;
 
 import org.springframework.web.bind.annotation.Mapping;
 
