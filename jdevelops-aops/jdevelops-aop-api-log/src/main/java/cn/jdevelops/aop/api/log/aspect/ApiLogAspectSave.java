@@ -1,10 +1,10 @@
 package cn.jdevelops.aop.api.log.aspect;
 
+import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 import cn.jdevelops.aops.AopReasolver;
 import cn.jdevelops.aops.IpUtil;
 import cn.jdevelops.aops.JsonUtils;
 import cn.jdevelops.aop.api.log.annotation.ApiLog;
-import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 import cn.jdevelops.aop.api.log.server.ApiLogSave;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -42,9 +42,9 @@ public class ApiLogAspectSave {
     private ApiLogSave apiLogSave;
 
     /**
-     * appkey 异常时用
+     * 表达式 异常时用
      */
-    String appKeyError = "";
+    String expressionError = "";
 
 
     /**
@@ -78,15 +78,18 @@ public class ApiLogAspectSave {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         String requestUri = (request).getRequestURI();
-        apiLog.setApiName(requestUri);
+        apiLog.setApiUrl(requestUri);
+        apiLog.setLogType(2);
+        apiLog.setMethod(request.getMethod());
         /* outParams and  status  */
-        apiLog.setStatus("false");
+        apiLog.setStatus(false);
         apiLog.setOutParams("接口调用出错");
         /* callTime 调用时间  */
         apiLog.setCallTime(System.currentTimeMillis());
         /* callTime 调用时间  */
         /*inParams    输入 */
         apiLog.setInParams("");
+        apiLog.setExpression(expressionError);
         /*inParams    输入 */
         apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
         apiLogSave.saveLog(apiLog);
@@ -104,28 +107,29 @@ public class ApiLogAspectSave {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         String requestUri = (request).getRequestURI();
-        apiLog.setApiName(requestUri);
-
+        apiLog.setApiUrl(requestUri);
+        apiLog.setMethod(request.getMethod());
+        apiLog.setLogType(1);
         /* outParams and  status  */
         if (Objects.nonNull(rvt)) {
             try {
                 if (rvt instanceof String || rvt instanceof Integer) {
-                    apiLog.setStatus("true");
+                    apiLog.setStatus(true);
                 } else if (rvt instanceof List) {
-                    apiLog.setStatus("true");
+                    apiLog.setStatus(true);
                 } else {
                     Map<String, Object> beanToMap = beanToMap(rvt);
                     if(beanToMap.get("code").equals(200)){
-                        apiLog.setStatus("true");
+                        apiLog.setStatus(true);
                     }else{
-                        apiLog.setStatus("false");
+                        apiLog.setStatus(true);
                     }
                 }
                 apiLog.setOutParams(JsonUtils.toJson(rvt));
 
             } catch (Exception e) {
                 LOG.error("解析结果失败", e);
-                apiLog.setStatus("false");
+                apiLog.setStatus(false);
                 apiLog.setOutParams("");
             }
         }
@@ -137,9 +141,10 @@ public class ApiLogAspectSave {
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
-            Object description = AopReasolver.newInstance().resolver(joinPoint, myLog.description());
-            appKeyError = Objects.nonNull(rvt) ? description + "" : "";
-            apiLog.setDescription(appKeyError);
+            Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
+            expressionError = Objects.nonNull(rvt) ? expression + "" : "";
+            apiLog.setDescription(myLog.description());
+            apiLog.setExpression(expressionError);
             apiLog.setChineseApi(myLog.chineseApi());
         }
 

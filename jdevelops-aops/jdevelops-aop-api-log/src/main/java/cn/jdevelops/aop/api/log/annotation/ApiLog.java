@@ -23,6 +23,12 @@ public @interface ApiLog {
      */
     String description() default "";
 
+
+    /**
+     * 表达式，可以用#{参数名} or #{bean.name} 取入参值
+     */
+    String expression() default "";
+
     /**
      * 接口名中文名
      * @return String

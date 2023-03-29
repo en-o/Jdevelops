@@ -1,4 +1,4 @@
-package cn.jdevelops.api.log.config;
+package cn.jdevelops.aop.api.log.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

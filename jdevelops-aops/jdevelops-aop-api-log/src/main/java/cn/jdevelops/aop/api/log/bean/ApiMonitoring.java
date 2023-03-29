@@ -10,14 +10,21 @@ package cn.jdevelops.aop.api.log.bean;
 
 public class ApiMonitoring {
 
-    /** 接口地址 */
-    private String apiName;
+    /**
+     * 接口地址
+     */
+    private String apiUrl;
 
     /** 接口名 */
     private String chineseApi;
 
-    /** 调用状态 /true/false */
-    private String status;
+    /**
+     *  调用异常和成功类型（1：接入日志；2：错误日志）
+     */
+    private Integer logType;
+
+    /** 接口返回的调用状态 /true/false */
+    private boolean status;
 
     /** 入参 */
     private String inParams;
@@ -33,52 +40,55 @@ public class ApiMonitoring {
      */
     private String  poxyIp;
 
+
     /**
      * 描述 可以使用表达式取值（#{入参bean.taskName}）
      */
     private String description;
 
+    /**
+     *  操作的方式
+     */
+    private String method;
+
+    /**
+     * 解析表达式后获取的参数
+     */
+    private String expression;
+
     public ApiMonitoring() {
     }
 
-    public ApiMonitoring(String apiName,
+    public ApiMonitoring(String apiUrl,
                          String chineseApi,
-                         String status,
+                         Integer logType,
+                         boolean status,
                          String inParams,
                          String outParams,
                          Long callTime,
                          String poxyIp,
-                         String description) {
-        this.apiName = apiName;
+                         String description,
+                         String method,
+                         String expression) {
+        this.apiUrl = apiUrl;
         this.chineseApi = chineseApi;
+        this.logType = logType;
         this.status = status;
         this.inParams = inParams;
         this.outParams = outParams;
         this.callTime = callTime;
         this.poxyIp = poxyIp;
         this.description = description;
+        this.method = method;
+        this.expression = expression;
     }
 
-    @Override
-    public String toString() {
-        return "ApiMonitoring{" +
-                "apiName='" + apiName + '\'' +
-                ", chineseApi='" + chineseApi + '\'' +
-                ", status='" + status + '\'' +
-                ", inParams='" + inParams + '\'' +
-                ", outParams='" + outParams + '\'' +
-                ", callTime=" + callTime +
-                ", poxyIp='" + poxyIp + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+    public String getApiUrl() {
+        return apiUrl;
     }
 
-    public String getApiName() {
-        return apiName;
-    }
-
-    public void setApiName(String apiName) {
-        this.apiName = apiName;
+    public void setApiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
     }
 
     public String getChineseApi() {
@@ -89,12 +99,19 @@ public class ApiMonitoring {
         this.chineseApi = chineseApi;
     }
 
+    public Integer getLogType() {
+        return logType;
+    }
 
-    public String getStatus() {
+    public void setLogType(Integer logType) {
+        this.logType = logType;
+    }
+
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -136,5 +153,38 @@ public class ApiMonitoring {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    @Override
+    public String toString() {
+        return "ApiMonitoring{" +
+                "apiUrl='" + apiUrl + '\'' +
+                ", chineseApi='" + chineseApi + '\'' +
+                ", logType=" + logType +
+                ", status=" + status +
+                ", inParams='" + inParams + '\'' +
+                ", outParams='" + outParams + '\'' +
+                ", callTime=" + callTime +
+                ", poxyIp='" + poxyIp + '\'' +
+                ", description='" + description + '\'' +
+                ", method='" + method + '\'' +
+                ", expression='" + expression + '\'' +
+                '}';
     }
 }
