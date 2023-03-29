@@ -1,4 +1,4 @@
-package cn.jdevelops.apisign.bean;
+package cn.jdevelops.api.sign.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @ToString
-public class ApiSignBean {
+public class ApiSignConfig {
 
     /**
      * token私钥

@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>jdevelops-aop-api-log</module>
-        <module>aops-apisign</module>
         <module>jdevelops-aop-exception</module>
     </modules>
 

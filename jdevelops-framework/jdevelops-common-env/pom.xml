@@ -26,7 +26,7 @@
         <!--接口验签-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>aops-apisign</artifactId>
+            <artifactId>jdevelops-api-sign</artifactId>
         </dependency>
         <!--这三个功能回去会合并到 api-gateway-->
 

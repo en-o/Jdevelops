@@ -1,4 +1,4 @@
-package cn.jdevelops.apisign.enums;
+package cn.jdevelops.api.sign.enums;
 
 /**
  * 签名用

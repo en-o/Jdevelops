@@ -1,28 +1,28 @@
-package cn.jdevelops.apisign.config;
+package cn.jdevelops.api.sign.core;
 
 import cn.jdevelops.aops.AopContextUtil;
 import cn.jdevelops.aops.StringUtil;
-import cn.jdevelops.apisign.bean.ApiSignBean;
+import cn.jdevelops.api.sign.config.ApiSignConfig;
+import cn.jdevelops.api.sign.exception.SignException;
 import cn.jdevelops.aops.HttpUtil;
-import cn.jdevelops.apisign.exception.SignException;
-import cn.jdevelops.apisign.annotation.Signature;
-import cn.jdevelops.apisign.enums.SginEnum;
+import cn.jdevelops.api.sign.annotation.Signature;
+import cn.jdevelops.api.sign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
+import cn.jdevelops.interceptor.api.ApiBeforeInterceptor;
 import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 import static cn.jdevelops.aops.CommonConstant.CONTENT_TYPE;
-import static cn.jdevelops.apisign.enums.SginExceptionCodeEnum.API_SIGN_ERROR;
+import static cn.jdevelops.api.sign.enums.SginExceptionCodeEnum.API_SIGN_ERROR;
 import static com.alibaba.fastjson.JSON.*;
 
 /**
@@ -32,23 +32,21 @@ import static com.alibaba.fastjson.JSON.*;
  * @version 1
  * @date 2020/6/9 14:56
  */
+@Component
+@Order(2)
 @Slf4j
-public class SignAppInterceptor extends InterceptorRegistry implements HandlerInterceptor {
-
-
-
+public class SignAppInterceptor implements ApiBeforeInterceptor {
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
             Signature signAnt = ((HandlerMethod) handler).getMethodAnnotation(Signature.class);
-            ApiSignBean apiSignBean = AopContextUtil.getBean(ApiSignBean.class);
+            ApiSignConfig apiSignBean = AopContextUtil.getBean(ApiSignConfig.class);
             //验签
-            if (signAnt != null && !signCheck(request, signAnt.type(),apiSignBean.getSalt())) {
+            if (signAnt != null && !signCheck(request, signAnt.type(), apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
                 response.getWriter().print(toJSONString(ExceptionResultWrap
-                        .result(API_SIGN_ERROR.getCode(),API_SIGN_ERROR.getMessage())));
+                        .result(API_SIGN_ERROR.getCode(), API_SIGN_ERROR.getMessage())));
                 return false;
             }
         }
@@ -60,7 +58,7 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      *
      * @param request req
      * @param enums   SignEnum
-     * @param salt 盐
+     * @param salt    盐
      * @return boolean
      */
     private boolean signCheck(HttpServletRequest request, SginEnum enums, String salt) {
@@ -90,10 +88,10 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      */
     public static String showParamsHeader(HttpServletRequest request) {
         try {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
-                String paramName =  paramNames.nextElement();
+                String paramName = paramNames.nextElement();
                 String[] paramValues = request.getParameterValues(paramName);
                 if (paramValues.length == 1) {
                     String paramValue = paramValues[0];
@@ -125,10 +123,10 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
      */
     public static Object showParams(HttpServletRequest request) {
         try {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
-                String paramName =  paramNames.nextElement();
+                String paramName = paramNames.nextElement();
                 String[] paramValues = request.getParameterValues(paramName);
                 if (paramValues.length == 1) {
                     String paramValue = paramValues[0];
@@ -171,9 +169,6 @@ public class SignAppInterceptor extends InterceptorRegistry implements HandlerIn
         }
         return null;
     }
-
-
-
 
 
 }

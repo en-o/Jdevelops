@@ -546,16 +546,16 @@
                 <artifactId>jdevelops-api-version</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-api-sign</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
 
             <!-- aop -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-aop-api-log</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>aops-apisign</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

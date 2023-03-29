@@ -17,6 +17,7 @@
         <module>jdevelops-api-annotation</module>
         <module>jdevelops-api-log</module>
         <module>jdevelops-api-version</module>
+        <module>jdevelops-api-sign</module>
     </modules>
 
 

@@ -1,7 +1,7 @@
-package cn.jdevelops.apisign.exception;
+package cn.jdevelops.api.sign.exception;
 
 
-import cn.jdevelops.apisign.enums.SginExceptionCodeEnum;
+import cn.jdevelops.api.sign.enums.SginExceptionCodeEnum;
 
 /**
  * AopException

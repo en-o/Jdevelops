@@ -1,7 +1,7 @@
-package cn.jdevelops.apisign.annotation;
+package cn.jdevelops.api.sign.annotation;
 
 
-import cn.jdevelops.apisign.enums.SginEnum;
+import cn.jdevelops.api.sign.enums.SginEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
