@@ -12,7 +12,7 @@
     <artifactId>jdevelops-apis</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>apis-result</module>
+        <module>jdevelops-api-result</module>
         <module>apis-exception</module>
         <module>jdevelops-api-annotation</module>
         <module>jdevelops-api-log</module>

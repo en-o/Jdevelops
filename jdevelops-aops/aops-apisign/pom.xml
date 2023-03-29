@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-result</artifactId>
+            <artifactId>jdevelops-api-result</artifactId>
         </dependency>
     </dependencies>
 
