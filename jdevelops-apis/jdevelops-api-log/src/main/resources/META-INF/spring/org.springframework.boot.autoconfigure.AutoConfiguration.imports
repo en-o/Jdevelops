@@ -1,4 +1,1 @@
-cn.jdevelops.api.log.config.AsyncConfiguration
 cn.jdevelops.api.log.core.GlobalApiLogInterceptor
-cn.jdevelops.api.log.core.CustomApiLogInterceptor
-cn.jdevelops.api.log.server.DefaultApiLogSave
