@@ -1,4 +1,4 @@
-package cn.jdevelops.api.log;
+package cn.jdevelops.api.log.core;
 
 
 import cn.jdevelops.api.log.entity.LoggerEntity;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
- * 接口日志
+ * 全局打印接口日志
  *
  * @author tan
  */
@@ -26,7 +26,7 @@ import java.util.Objects;
         havingValue = "true",
         matchIfMissing = true)
 @Order(1)
-public class ApiLogInterceptor implements ApiBeforeInterceptor {
+public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
     private final static String ERROR_PAGE = "/error";
 
     /**
