@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-exception</artifactId>
+            <artifactId>jdevelops-api-exception</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>

@@ -30,9 +30,9 @@ public class ExceptionConfiguration {
 
 
     /**
-     * apis-exception result.
+     * jdevelops-api-exception result.
      *
-     * @return the apis-exception result
+     * @return the jdevelops-api-exception result
      */
     @Bean
     @ConditionalOnMissingBean(value = ExceptionResult.class, search = SearchStrategy.ALL)

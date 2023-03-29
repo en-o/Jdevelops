@@ -528,7 +528,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>apis-exception</artifactId>
+                <artifactId>jdevelops-api-exception</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

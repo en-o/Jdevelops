@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jdevelops-api-result</module>
-        <module>apis-exception</module>
+        <module>jdevelops-api-exception</module>
         <module>jdevelops-api-annotation</module>
         <module>jdevelops-api-log</module>
     </modules>

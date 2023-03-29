@@ -33,7 +33,7 @@
         <!--全局异常-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>apis-exception</artifactId>
+            <artifactId>jdevelops-api-exception</artifactId>
         </dependency>
         <!--自定义的 Spring 组合注解-->
         <dependency>
