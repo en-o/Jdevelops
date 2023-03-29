@@ -11,8 +11,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -40,14 +43,30 @@ public class DefaultApiLogSave implements ApiLogSave {
                         apiMonitoring.setInParams(RequestUtil.requestParams(request));
                         apiMonitoring.setPoxyIp(IpUtil.getPoxyIpEnhance(request));
                         apiMonitoring.setCallTime(System.currentTimeMillis());
-                        apiMonitoring.setApiUrl(request.getRequestURL().toString());
-                        apiMonitoring.setStatus("");
-                        apiMonitoring.setOutParams("");
+                        apiMonitoring.setApiUrl(request.getRequestURI());
+                        apiMonitoring.setStatus(true);
+                        apiMonitoring.setMethod(request.getMethod());
+                        apiMonitoring.setLogType(ex == null ? 1 : 2);
+                        apiMonitoring.setOutParams(getResponseBody(response));
                         LOG.info("api接口调用信息默认输出控制台:{}", apiMonitoring);
                     }
             );
-        }catch (Exception e){
-            LOG.error("api接口调用信息默认输出控制台:{}", e);
+        } catch (Exception e) {
+            LOG.error("api接口调用信息默认输出控制台:", e);
         }
+    }
+
+
+    private String getResponseBody(HttpServletResponse response) {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ServletOutputStream servletOutputStream = response.getOutputStream()) {
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+            byteArrayOutputStream.writeTo(servletOutputStream);
+            return byteArrayOutputStream.toString(response.getCharacterEncoding());
+        } catch (IOException e) {
+            LOG.error("api接口的出参有问题:", e);
+        }
+        return "";
     }
 }
