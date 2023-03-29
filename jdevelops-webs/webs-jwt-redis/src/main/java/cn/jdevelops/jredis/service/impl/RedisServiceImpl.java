@@ -1,7 +1,7 @@
 package cn.jdevelops.jredis.service.impl;
 
-import cn.jdevelops.exception.exception.BusinessException;
-import cn.jdevelops.exception.exception.TokenException;
+import cn.jdevelops.api.exception.exception.BusinessException;
+import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.jredis.constant.RedisKeyConstant;
 import cn.jdevelops.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static cn.jdevelops.api.result.emums.UserExceptionEnum.*;
 
 
 /**

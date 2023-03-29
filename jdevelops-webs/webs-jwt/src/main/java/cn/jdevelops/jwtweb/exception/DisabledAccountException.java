@@ -2,7 +2,7 @@ package cn.jdevelops.jwtweb.exception;
 
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.result.emums.UserExceptionEnum;
-import cn.jdevelops.exception.exception.BusinessException;
+import cn.jdevelops.api.exception.exception.BusinessException;
 
 /**
  * 用户异常

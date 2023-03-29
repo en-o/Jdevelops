@@ -1,9 +1,9 @@
-package cn.jdevelops.exception.handler;
+package cn.jdevelops.api.exception.handler;
 
+import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
 import cn.jdevelops.api.result.emums.ResultCodeEnum;
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.exception.exception.BusinessException;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

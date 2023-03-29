@@ -1,7 +1,7 @@
-package cn.jdevelops.exception.aspect;
+package cn.jdevelops.api.exception.aspect;
 
-import cn.jdevelops.exception.AopException;
-import cn.jdevelops.exception.annotation.DisposeException;
+import cn.jdevelops.api.exception.AopException;
+import cn.jdevelops.api.exception.annotation.DisposeException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -38,7 +38,7 @@ public class ExceptionAspect {
      * </p>
      *
      */
-    @Pointcut("@within(cn.jdevelops.exception.annotation.DisposeException) || @annotation(cn.jdevelops.exception.annotation.DisposeException)")
+    @Pointcut("@within(cn.jdevelops.api.exception.annotation.DisposeException) || @annotation(cn.jdevelops.api.exception.annotation.DisposeException)")
     public void disposeException() {
     }
 

@@ -1,4 +1,4 @@
-package cn.jdevelops.exception.exception;
+package cn.jdevelops.api.exception.exception;
 
 import cn.jdevelops.api.result.emums.UserExceptionEnum;
 

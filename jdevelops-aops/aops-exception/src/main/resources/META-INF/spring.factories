@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.exception.scan.EnableAutoScanConfiguration
+  cn.jdevelops.api.exception.scan.EnableAutoScanConfiguration
