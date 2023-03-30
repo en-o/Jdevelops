@@ -624,7 +624,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-time</artifactId>
+                <artifactId>jdevelops-util-time</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

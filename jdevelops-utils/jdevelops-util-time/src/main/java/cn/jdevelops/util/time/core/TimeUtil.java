@@ -1,9 +1,9 @@
-package cn.jdevelops.time.core;
+package cn.jdevelops.util.time.core;
 
 
-import cn.jdevelops.constant.time.TimeFormat;
 import cn.jdevelops.enums.number.NumEnum;
-import cn.jdevelops.enums.time.TimeFormatEnum;
+import cn.jdevelops.util.time.enums.TimeFormat;
+import cn.jdevelops.util.time.enums.TimeFormatEnum;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Duration;

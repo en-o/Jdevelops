@@ -1,6 +1,6 @@
-package cn.jdevelops.time.core;
+package cn.jdevelops.util.time.core;
 
-import cn.jdevelops.enums.time.TimeFormatEnum;
+import cn.jdevelops.util.time.enums.TimeFormatEnum;
 import org.joda.time.DateTime;
 
 import java.util.Date;

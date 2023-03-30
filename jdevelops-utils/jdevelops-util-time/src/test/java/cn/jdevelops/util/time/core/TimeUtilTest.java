@@ -1,7 +1,7 @@
-package cn.jdevelops.time.core;
+package cn.jdevelops.util.time.core;
 
-import cn.jdevelops.constant.time.TimeFormat;
-import cn.jdevelops.enums.time.TimeFormatEnum;
+import cn.jdevelops.util.time.enums.TimeFormat;
+import cn.jdevelops.util.time.enums.TimeFormatEnum;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -42,7 +42,7 @@ public class TimeUtilTest {
         String format = TimeUtil.time2DefaultFormat(date);
         assertEquals("2021-05-25 14:42:34",format);
     }
-    
+
 
     @Test
     public void testFindDates() {
