@@ -3,8 +3,8 @@ package cn.jdevelops.api.log.core;
 
 import cn.jdevelops.api.log.entity.LoggerEntity;
 import cn.jdevelops.http.core.IpUtil;
-import cn.jdevelops.interceptor.api.ApiBeforeInterceptor;
-import cn.jdevelops.interceptor.util.RequestUtil;
+import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
+import cn.jdevelops.util.interceptor.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
