@@ -24,6 +24,7 @@
         <module>utils-validation</module>
         <module>jdevelops-util-interceptor</module>
         <module>jdevelops-util-time</module>
+        <module>jdevelops-util-core</module>
     </modules>
 
 
