@@ -1,4 +1,4 @@
-package cn.jdevelops.interceptor.util;
+package cn.jdevelops.util.interceptor.util;
 
 
 import org.springframework.web.method.HandlerMethod;

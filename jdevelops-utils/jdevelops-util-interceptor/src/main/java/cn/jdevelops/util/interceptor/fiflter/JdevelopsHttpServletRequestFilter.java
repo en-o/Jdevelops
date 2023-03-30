@@ -1,6 +1,6 @@
-package cn.jdevelops.interceptor.fiflter;
+package cn.jdevelops.util.interceptor.fiflter;
 
-import cn.jdevelops.interceptor.util.RequestUtil;
+import cn.jdevelops.util.interceptor.util.RequestUtil;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;

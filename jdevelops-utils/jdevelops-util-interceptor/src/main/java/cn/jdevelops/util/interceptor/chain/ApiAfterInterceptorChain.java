@@ -1,6 +1,6 @@
-package cn.jdevelops.interceptor.chain;
+package cn.jdevelops.util.interceptor.chain;
 
-import cn.jdevelops.interceptor.api.ApiAfterInterceptor;
+import cn.jdevelops.util.interceptor.api.ApiAfterInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;

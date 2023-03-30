@@ -1,6 +1,6 @@
-package cn.jdevelops.interceptor.chain;
+package cn.jdevelops.util.interceptor.chain;
 
-import cn.jdevelops.interceptor.api.ApiAsyncInterceptor;
+import cn.jdevelops.util.interceptor.api.ApiFinallyInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,23 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * 异步拦截器责任链
+ * 自定义的接口整个请求处理完毕拦截器责任链
  * - 交给spring管理
  * @author tnnn
  */
-public class ApiAsyncInterceptorChain {
+public class ApiFinallyInterceptorChain {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiFinallyInterceptorChain.class);
 
     /**
      * 拦截器列表
      */
-    private final List<ApiAsyncInterceptor> interceptors;
+    private final List<ApiFinallyInterceptor> interceptors;
 
-    public ApiAsyncInterceptorChain(List<ApiAsyncInterceptor> interceptors) {
+    public ApiFinallyInterceptorChain(List<ApiFinallyInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
-
 
     /**
      * 执行处理
@@ -33,18 +32,21 @@ public class ApiAsyncInterceptorChain {
      * @param request  请求对象
      * @param response 响应对象
      * @param handler  被调用的处理器对象，本质是一个方法对象，对反射中的Method对象进行了再包装，对方法进行封装加强，操作原始对象
+     * @param ex       Exception
      * @throws Exception Exception
      */
     public void execute(HttpServletRequest request,
                         HttpServletResponse response,
-                        Object handler) throws Exception {
+                        Object handler,
+                        Exception ex) throws Exception {
         // 循环执行
-        for (ApiAsyncInterceptor chain : interceptors) {
+        for (ApiFinallyInterceptor chain : interceptors) {
+
             try {
-                chain.async(request, response, handler);
+                chain.finallys(request, response, handler, ex);
             }catch (Exception e){
                 // 错误不干扰
-                logger.error("自定义的异步拦截器异常", e);
+                logger.error("自定义的接口整个请求处理完毕拦截器异常", e);
             }
         }
     }

@@ -1,6 +1,6 @@
-package cn.jdevelops.interceptor.chain;
+package cn.jdevelops.util.interceptor.chain;
 
-import cn.jdevelops.interceptor.api.ApiBeforeInterceptor;
+import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

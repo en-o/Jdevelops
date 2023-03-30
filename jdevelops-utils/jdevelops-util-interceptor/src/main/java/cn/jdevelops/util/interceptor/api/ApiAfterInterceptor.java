@@ -1,4 +1,4 @@
-package cn.jdevelops.interceptor.api;
+package cn.jdevelops.util.interceptor.api;
 
 import org.springframework.web.servlet.ModelAndView;
 

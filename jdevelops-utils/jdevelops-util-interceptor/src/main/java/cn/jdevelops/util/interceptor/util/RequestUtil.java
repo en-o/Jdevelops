@@ -1,4 +1,4 @@
-package cn.jdevelops.interceptor.util;
+package cn.jdevelops.util.interceptor.util;
 
 import com.google.gson.Gson;
 
