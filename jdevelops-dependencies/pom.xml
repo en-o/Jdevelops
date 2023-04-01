@@ -633,6 +633,12 @@
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
+            <!-- 发布订阅 -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-event-simple</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
 
             <!-- starters -->
             <dependency>
