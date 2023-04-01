@@ -1,9 +1,9 @@
 package cn.jdevelops.data.jap.page;
 
-import cn.jdevelops.result.util.ListTo;
-import cn.jdevelops.result.bean.SerializableBean;
-import cn.jdevelops.result.request.PageDTO;
-import cn.jdevelops.result.response.PageResult;
+import cn.jdevelops.api.result.bean.SerializableBean;
+import cn.jdevelops.api.result.request.PageDTO;
+import cn.jdevelops.api.result.response.PageResult;
+import cn.jdevelops.api.result.util.ListTo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;
 

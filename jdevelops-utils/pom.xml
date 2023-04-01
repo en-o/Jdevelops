@@ -15,8 +15,6 @@
         <module>utils-http</module>
         <module>utils-environment</module>
         <module>utils-spring</module>
-        <module>utils-map</module>
-        <module>utils-list</module>
         <module>utils-encryption</module>
         <module>utils-jwt</module>
         <module>utils-message</module>

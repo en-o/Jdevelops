@@ -1,12 +1,13 @@
 package cn.jdevelops.data.jap.util;
 
-import cn.jdevelops.result.bean.SerializableBean;
-import cn.jdevelops.result.request.PageDTO;
-import cn.jdevelops.result.request.SortDTO;
-import cn.jdevelops.result.request.SortPageDTO;
-import cn.jdevelops.result.response.PageResult;
-import cn.jdevelops.result.util.ListTo;
-import cn.jdevelops.result.util.PageUtil;
+
+import cn.jdevelops.api.result.bean.SerializableBean;
+import cn.jdevelops.api.result.request.PageDTO;
+import cn.jdevelops.api.result.request.SortDTO;
+import cn.jdevelops.api.result.request.SortPageDTO;
+import cn.jdevelops.api.result.response.PageResult;
+import cn.jdevelops.api.result.util.ListTo;
+import cn.jdevelops.api.result.util.PageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

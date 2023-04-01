@@ -3,10 +3,10 @@ package cn.jdevelops.api.result.bean;
 
 
 import cn.jdevelops.api.result.util.ListTo;
-import cn.jdevelops.map.core.bean.BeanCopier;
-import cn.jdevelops.map.core.bean.BeanCopyUtil;
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.map.core.bean.ColumnUtil;
+import cn.jdevelops.api.result.util.bean.BeanCopier;
+import cn.jdevelops.api.result.util.bean.BeanCopyUtil;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

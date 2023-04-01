@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.entity.audit;
 
-import cn.jdevelops.result.bean.SerializableBean;
+
+import cn.jdevelops.api.result.bean.SerializableBean;
 
 import java.time.LocalDateTime;
 

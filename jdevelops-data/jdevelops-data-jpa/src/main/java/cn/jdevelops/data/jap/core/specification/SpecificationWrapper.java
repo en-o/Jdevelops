@@ -1,8 +1,8 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.map.core.bean.ColumnUtil;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

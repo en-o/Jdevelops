@@ -1,12 +1,13 @@
 package cn.jdevelops.data.jap.service;
 
+import cn.jdevelops.api.result.request.PageDTO;
+import cn.jdevelops.api.result.request.SortDTO;
+import cn.jdevelops.api.result.request.SortPageDTO;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.data.jap.dao.JpaBasicsDao;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.page.JpaPageResult;
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.result.request.PageDTO;
-import cn.jdevelops.result.request.SortDTO;
-import cn.jdevelops.result.request.SortPageDTO;
+
 
 import java.util.List;
 import java.util.Optional;

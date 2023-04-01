@@ -1,7 +1,7 @@
 package cn.jdevelops.api.result.util;
 
 
-import cn.jdevelops.map.core.bean.BeanCopier;
+import cn.jdevelops.api.result.util.bean.BeanCopier;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

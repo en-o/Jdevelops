@@ -1,7 +1,7 @@
 package cn.jdevelops.api.result.request;
 
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.map.core.bean.ColumnUtil;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package cn.jdevelops.data.jap.util;
 
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.map.core.bean.ColumnUtil;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

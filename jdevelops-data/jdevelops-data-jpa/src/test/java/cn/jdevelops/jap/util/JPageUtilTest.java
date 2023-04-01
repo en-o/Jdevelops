@@ -1,7 +1,7 @@
 package cn.jdevelops.jap.util;
 
+import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.data.jap.util.JPageUtil;
-import cn.jdevelops.result.request.SortDTO;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

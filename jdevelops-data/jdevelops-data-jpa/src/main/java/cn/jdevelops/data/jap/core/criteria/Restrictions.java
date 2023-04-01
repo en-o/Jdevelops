@@ -1,8 +1,8 @@
 package cn.jdevelops.data.jap.core.criteria;
 
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.util.IObjects;
-import cn.jdevelops.map.core.bean.ColumnSFunction;
-import cn.jdevelops.map.core.bean.ColumnUtil;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -233,7 +233,7 @@ public class Restrictions {
      * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
-    public static <T> SimpleExpression gt(ColumnSFunction<T, ?>  fieldName, Object value, boolean ignoreNull) {
+    public static <T> SimpleExpression gt(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
         if (ignoreNull && IObjects.isNull(value)) {
             return null;
         }
