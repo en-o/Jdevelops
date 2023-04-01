@@ -19,7 +19,7 @@
         <module>utils-jwt</module>
         <module>utils-message</module>
         <module>utils-spring-aop</module>
-        <module>utils-validation</module>
+        <module>jdevelops-util-validation</module>
         <module>jdevelops-util-interceptor</module>
         <module>jdevelops-util-time</module>
         <module>jdevelops-util-core</module>
