@@ -1,18 +1,19 @@
 package cn.jdevelops.api.sign.core;
 
-import cn.jdevelops.aops.AopContextUtil;
-import cn.jdevelops.aops.StringUtil;
+import cn.jdevelops.api.result.util.SpringBeanUtils;
 import cn.jdevelops.api.sign.config.ApiSignConfig;
 import cn.jdevelops.api.sign.exception.SignException;
-import cn.jdevelops.aops.HttpUtil;
 import cn.jdevelops.api.sign.annotation.Signature;
 import cn.jdevelops.api.sign.enums.SginEnum;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
+import cn.jdevelops.util.interceptor.util.RequestUtil;
+import cn.jdevelops.util.interceptor.util.StrUtil;
 import com.alibaba.fastjson.parser.Feature;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-import static cn.jdevelops.aops.CommonConstant.CONTENT_TYPE;
+
 import static cn.jdevelops.api.sign.enums.SginExceptionCodeEnum.API_SIGN_ERROR;
 import static com.alibaba.fastjson.JSON.*;
 
@@ -34,14 +35,17 @@ import static com.alibaba.fastjson.JSON.*;
  */
 @Component
 @Order(2)
-@Slf4j
 public class SignAppInterceptor implements ApiBeforeInterceptor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SignAppInterceptor.class);
+    static String CONTENT_TYPE = "text/json;charset=UTF-8";
+
     @Override
     public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
             //签名验证注解
             Signature signAnt = ((HandlerMethod) handler).getMethodAnnotation(Signature.class);
-            ApiSignConfig apiSignBean = AopContextUtil.getBean(ApiSignConfig.class);
+            ApiSignConfig apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignConfig.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(), apiSignBean.getSalt())) {
                 response.setContentType(CONTENT_TYPE);
@@ -64,7 +68,7 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
     private boolean signCheck(HttpServletRequest request, SginEnum enums, String salt) {
         Object map = null;
         String paramsHeader = "";
-        if (StringUtil.isNotBlank(getHeaderSign(request))) {
+        if (StrUtil.isNotBlank(getHeaderSign(request))) {
             paramsHeader = showParamsHeader(request);
         } else {
             map = showParams(request);
@@ -105,12 +109,12 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = parse(HttpUtil.getBodyString(request), Feature.OrderedField).toString();
-                log.info("加密集：" + bodyString);
+                String bodyString = parse(RequestUtil.getBodyString(request), Feature.OrderedField).toString();
+                LOG.debug("加密集：{}", bodyString);
                 return bodyString;
             } else {
                 String jsonString = toJSONString(map);
-                log.info("加密集：" + jsonString);
+                LOG.debug("加密集：{}", jsonString);
                 return jsonString;
             }
         } catch (Exception e) {
@@ -137,13 +141,13 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = HttpUtil.getBodyString(request);
+                String bodyString = RequestUtil.getBodyString(request);
                 //获取json数据
                 LinkedHashMap<String, Object> linkedHashMap = parseObject(bodyString, LinkedHashMap.class);
-                log.info("加密集：" + toJSONString(linkedHashMap));
+                LOG.debug("加密集：{}", toJSONString(linkedHashMap));
                 return linkedHashMap;
             } else {
-                log.info("加密集：" + toJSONString(map));
+                LOG.debug("加密集：{}", toJSONString(map));
                 return map;
             }
         } catch (Exception e) {
@@ -161,11 +165,11 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
         try {
             final String signName = "sign";
             String sign = request.getHeader(signName);
-            if (StringUtil.isNotBlank(sign)) {
+            if (StrUtil.isNotBlank(sign)) {
                 return sign;
             }
         } catch (Exception e) {
-            log.warn("消息头中没有sign");
+            LOG.warn("消息头中没有sign");
         }
         return null;
     }

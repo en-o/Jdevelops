@@ -1,6 +1,6 @@
 package cn.jdevelops.api.sign.util;
 
-import cn.jdevelops.aops.AopContextUtil;
+import cn.jdevelops.api.result.util.SpringBeanUtils;
 import cn.jdevelops.api.sign.config.ApiSignConfig;
 import cn.jdevelops.encryption.core.SignMD5Util;
 import cn.jdevelops.encryption.core.SignShaUtil;
@@ -96,7 +96,7 @@ public class SignUtil {
      * 获取盐
      */
     public static String getSalt() {
-        ApiSignConfig apiSignBean = AopContextUtil.getBean(ApiSignConfig.class);
+        ApiSignConfig apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignConfig.class);
         return apiSignBean.getSalt();
     }
 
