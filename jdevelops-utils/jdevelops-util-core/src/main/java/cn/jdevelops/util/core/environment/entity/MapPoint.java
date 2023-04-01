@@ -1,4 +1,4 @@
-package cn.jdevelops.environment.entity;
+package cn.jdevelops.util.core.environment.entity;
 
 
 import java.util.Objects;

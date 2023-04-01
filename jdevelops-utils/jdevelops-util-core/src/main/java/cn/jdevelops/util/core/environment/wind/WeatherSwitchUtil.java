@@ -1,9 +1,9 @@
-package cn.jdevelops.environment.core.wind;
+package cn.jdevelops.util.core.environment.wind;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Map.*;
+import static java.util.Map.Entry;
 
 /**
  * 风向公共工具类

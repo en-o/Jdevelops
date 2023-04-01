@@ -1,4 +1,4 @@
-package cn.jdevelops.environment.core.map;
+package cn.jdevelops.util.core.environment.map;
 
 import java.util.ArrayList;
 import java.util.List;

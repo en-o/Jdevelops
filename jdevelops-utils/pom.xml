@@ -12,7 +12,6 @@
 
     <modules>
         <module>utils-http</module>
-        <module>utils-environment</module>
         <module>utils-spring</module>
         <module>utils-encryption</module>
         <module>utils-jwt</module>

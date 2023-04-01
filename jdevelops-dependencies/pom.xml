@@ -579,11 +579,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-environment</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
                 <artifactId>utils-http</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>

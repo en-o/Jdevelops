@@ -1,7 +1,8 @@
-package cn.jdevelops.environment.core.map;
+package cn.jdevelops.util.core.environment.map;
 
 
-import cn.jdevelops.environment.entity.MapPoint;
+
+import cn.jdevelops.util.core.environment.entity.MapPoint;
 
 import java.math.BigDecimal;
 
