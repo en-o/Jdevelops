@@ -2,7 +2,6 @@ package cn.jdevelops.jwtweb.util;
 
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.json.GsonUtils;
 import cn.jdevelops.jwt.constant.JwtConstant;
 import cn.jdevelops.jwt.entity.JCookie;
 import cn.jdevelops.jwt.util.JwtUtil;

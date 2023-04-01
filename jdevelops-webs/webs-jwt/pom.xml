@@ -24,6 +24,10 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-spi</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
     </dependencies>
 
 
