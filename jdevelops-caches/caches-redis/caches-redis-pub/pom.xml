@@ -14,10 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-string</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
             <artifactId>caches-redis-core</artifactId>
         </dependency>
     </dependencies>

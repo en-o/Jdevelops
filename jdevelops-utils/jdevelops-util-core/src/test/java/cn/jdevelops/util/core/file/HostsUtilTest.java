@@ -1,4 +1,4 @@
-//package cn.jdevelops.file;
+//package cn.jdevelops.util.core.file;
 //
 //import org.junit.FixMethodOrder;
 //import org.junit.Test;

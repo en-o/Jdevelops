@@ -24,10 +24,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-string</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

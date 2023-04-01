@@ -1,4 +1,4 @@
-package cn.jdevelops.file.files;
+package cn.jdevelops.util.core.file.files;
 
 /**
  *

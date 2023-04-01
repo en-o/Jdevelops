@@ -1,8 +1,7 @@
-package cn.jdevelops.file.files;
+package cn.jdevelops.util.core.file.files;
 
 
-
-import cn.jdevelops.file.FileUtil;
+import cn.jdevelops.util.core.file.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

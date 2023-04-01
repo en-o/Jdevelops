@@ -1,12 +1,12 @@
-package cn.jdevelops.file;
+package cn.jdevelops.util.core.file;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,7 +59,7 @@ public class HostsUtil {
         if(exists(ip, domain)){
             LOG.warn(format+"已存在");
         }else {
-            FileUtil.appendLines(Lists.newArrayList(format), new File(getHostFile()), StandardCharsets.UTF_8);
+            FileUtil.appendLines(Collections.singletonList(format), new File(getHostFile()), StandardCharsets.UTF_8);
             flushdns();
         }
 

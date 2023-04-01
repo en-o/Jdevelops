@@ -1,9 +1,8 @@
-package cn.jdevelops.file;
+package cn.jdevelops.util.core.file;
 
 
-import cn.jdevelops.file.files.FileReader;
-import cn.jdevelops.file.files.FileWriter;
-
+import cn.jdevelops.util.core.file.files.FileReader;
+import cn.jdevelops.util.core.file.files.FileWriter;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
