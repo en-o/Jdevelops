@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.minio.driver.EnableAutoScanConfiguration,cn.jdevelops.minio.driver.MinioOperate
