@@ -12,10 +12,8 @@
     <artifactId>jdevelops-search</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <!-- solr -->
-        <module>search-solr</module>
         <!-- es -->
-        <module>search-es</module>
+        <module>jdevelops-search-es</module>
     </modules>
 
 

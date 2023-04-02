@@ -447,14 +447,10 @@
             <!-- 搜搜 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>search-es</artifactId>
+                <artifactId>jdevelops-search-es</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>search-solr</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
+
 
             <!-- spi -->
             <dependency>
