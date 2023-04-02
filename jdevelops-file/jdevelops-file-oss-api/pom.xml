@@ -9,8 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>oss-api</artifactId>
-
+    <artifactId>jdevelops-file-oss-api</artifactId>
+    <description>
+        文件api
+    </description>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

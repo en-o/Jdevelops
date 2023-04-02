@@ -31,19 +31,19 @@ public class OSSConfig {
 	private String browseUrl;
 
 	/**
-	 * local-driver
+	 * jdevelops-file-oss-driver-local
 	 */
 	@NestedConfigurationProperty
 	private LocalConfig local;
 
 	/**
-	 * minio-driver
+	 * jdevelops-file-oss-driver-minio
 	 */
 	@NestedConfigurationProperty
 	private MinioConfig minio;
 
 	/**
-	 * qiniu-driver
+	 * jdevelops-file-oss-driver-qiniu
 	 */
 	@NestedConfigurationProperty
 	private QiNiuConfig qiniu;

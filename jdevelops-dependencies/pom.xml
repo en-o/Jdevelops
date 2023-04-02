@@ -418,22 +418,22 @@
             <!--file-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>oss-api</artifactId>
+                <artifactId>jdevelops-file-oss-api</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>local-driver</artifactId>
+                <artifactId>jdevelops-file-oss-driver-local</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>minio-driver</artifactId>
+                <artifactId>jdevelops-file-oss-driver-minio</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>qiniu-driver</artifactId>
+                <artifactId>jdevelops-file-oss-driver-qiniu</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 

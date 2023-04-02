@@ -1,9 +1,7 @@
 package cn.jdevelops.file.util;
 
 import com.freewayso.image.combiner.ImageCombiner;
-import com.freewayso.image.combiner.enums.Direction;
 import com.freewayso.image.combiner.enums.OutputFormat;
-import javafx.scene.transform.Rotate;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,10 +19,14 @@ import java.nio.file.Paths;
 public class ImageWatermarkUtil {
 
     private static Color color = Color.red;
-    //透明度（0.0~1.0）
-    private static float alpha = .4f;
-    // 旋转
-    private static int rotate = 45;
+    /**
+     * 透明度（0.0~1.0）
+     */
+    private static final float alpha = .4f;
+    /**
+     * 旋转
+     */
+    private static final int rotate = 45;
 
 
     /**
@@ -90,7 +92,7 @@ public class ImageWatermarkUtil {
 
     /**
      * @param image url 或者文件路径  （http://server-port/imag.png or e://image.png）
-     * @return
+     * @return ImageCombiner
      */
     private static ImageCombiner getImageCombiner(String image) throws Exception {
         ImageCombiner combiner;

@@ -3,15 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>oss-driver</artifactId>
+        <artifactId>jdevelops-file-oss-driver</artifactId>
         <groupId>cn.jdevelops</groupId>
         <version>2.0.7</version>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>minio-driver</artifactId>
+    <artifactId>jdevelops-file-oss-driver-minio</artifactId>
 
+    <description>
+        minio文件操作
+    </description>
     <properties>
-        <java.version>1.8</java.version>
         <minio.version>8.3.7</minio.version>
     </properties>
 

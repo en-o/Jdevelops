@@ -36,7 +36,7 @@ public class UrlUtil {
      * @return true:是URL；false:不是URL
      */
     public static boolean isHttpUrl(String urls) {
-        boolean isurl = false;
+        boolean isurl;
         String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
                 + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";//设置正则表达式
 
