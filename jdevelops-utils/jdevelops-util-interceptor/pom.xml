@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-http</artifactId>
+            <artifactId>jdevelops-util-http</artifactId>
         </dependency>
     </dependencies>
 

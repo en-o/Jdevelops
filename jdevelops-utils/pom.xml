@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>utils-http</module>
+        <module>jdevelops-util-http</module>
         <module>utils-spring</module>
         <module>utils-encryption</module>
         <module>utils-jwt</module>

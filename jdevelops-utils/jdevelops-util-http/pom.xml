@@ -9,7 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>utils-http</artifactId>
+    <artifactId>jdevelops-util-http</artifactId>
+
+    <description>
+        spring
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>

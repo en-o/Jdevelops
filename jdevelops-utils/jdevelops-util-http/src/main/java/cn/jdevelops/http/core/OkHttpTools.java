@@ -17,7 +17,6 @@
 
 package cn.jdevelops.http.core;
 
-import com.google.gson.Gson;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
