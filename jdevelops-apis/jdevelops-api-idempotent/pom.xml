@@ -2,35 +2,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>jdevelops-apis</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops-delay</artifactId>
         <version>2.0.7</version>
     </parent>
-
-    <artifactId>jdevelops-delay-redis</artifactId>
+    <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
+    <artifactId>jdevelops-api-idempotent</artifactId>
     <description>
-        基于redis的延时队列
+        接口幂等
     </description>
 
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-delay-core</artifactId>
+            <artifactId>jdevelops-caches-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <!-- 引用时自己依赖吧，必须要 -->
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-caches-redis</artifactId>
-            <!-- 引用时自己依赖吧，必须要 -->
-            <optional>true</optional>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

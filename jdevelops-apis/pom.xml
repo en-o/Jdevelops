@@ -18,6 +18,7 @@
         <module>jdevelops-api-log</module>
         <module>jdevelops-api-version</module>
         <module>jdevelops-api-sign</module>
+        <module>jdevelops-api-idempotent</module>
     </modules>
 
 

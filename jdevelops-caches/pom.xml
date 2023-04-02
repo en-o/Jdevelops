@@ -12,7 +12,7 @@
     <artifactId>jdevelops-caches</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>caches-redis</module>
+        <module>jdevelops-caches-redis</module>
     </modules>
 
 

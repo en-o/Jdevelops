@@ -3,27 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jdevelops-webs</artifactId>
+        <artifactId>jdevelops-caches</artifactId>
         <groupId>cn.jdevelops</groupId>
         <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>jdevelops-caches-redis</artifactId>
     <packaging>jar</packaging>
-    <artifactId>webs-jwt-redis</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+    <description>
+        redis
+    </description>
 
     <dependencies>
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>webs-jwt</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-caches-redis</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

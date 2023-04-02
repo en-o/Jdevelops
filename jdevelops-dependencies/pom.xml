@@ -392,19 +392,10 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-redis-core</artifactId>
+                <artifactId>jdevelops-caches-redis</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-redis-idempotent</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-redis-pub</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
+
 
             <!--延时队列-->
             <dependency>
@@ -551,6 +542,12 @@
                 <artifactId>jdevelops-api-sign</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-api-idempotent</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
 
             <!-- aop -->
             <dependency>
@@ -627,6 +624,11 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-event-simple</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-event-redis</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
