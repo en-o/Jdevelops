@@ -1,4 +1,4 @@
-package cn.jdevelops.encryption.core;
+package cn.jdevelops.util.encryption.core;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;

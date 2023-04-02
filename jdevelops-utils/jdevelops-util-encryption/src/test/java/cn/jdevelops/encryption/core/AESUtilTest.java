@@ -1,5 +1,6 @@
 package cn.jdevelops.encryption.core;
 
+import cn.jdevelops.util.encryption.core.AESUtil;
 import junit.framework.TestCase;
 import org.mockito.Mock;
 

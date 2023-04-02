@@ -567,7 +567,7 @@
             <!-- utils -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-encryption</artifactId>
+                <artifactId>jdevelops-util-encryption</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

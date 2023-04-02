@@ -1,6 +1,6 @@
-package cn.jdevelops.encryption.core;
+package cn.jdevelops.util.encryption.core;
 
-import cn.jdevelops.encryption.util.RemarkUtil;
+import cn.jdevelops.util.encryption.RemarkUtil;
 import cn.jdevelops.enums.number.NumEnum;
 
 import java.nio.charset.Charset;

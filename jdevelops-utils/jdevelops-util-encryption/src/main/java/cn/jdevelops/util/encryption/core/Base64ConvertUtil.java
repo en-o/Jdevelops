@@ -1,4 +1,4 @@
-package cn.jdevelops.encryption.core;
+package cn.jdevelops.util.encryption.core;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

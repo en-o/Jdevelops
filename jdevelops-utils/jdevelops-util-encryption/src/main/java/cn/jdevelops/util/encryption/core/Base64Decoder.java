@@ -1,12 +1,12 @@
-package cn.jdevelops.encryption.core;
+package cn.jdevelops.util.encryption.core;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import cn.jdevelops.encryption.util.RemarkUtil;
+import cn.jdevelops.util.encryption.RemarkUtil;
 
 /**
  * Base64解码实现
- * 
+ *
  * @author looly
  *
  */
@@ -29,7 +29,7 @@ public class Base64Decoder {
 
 	/**
 	 * base64解码
-	 * 
+	 *
 	 * @param source 被解码的base64字符串
 	 * @return 被加密后的字符串
 	 */
@@ -39,7 +39,7 @@ public class Base64Decoder {
 
 	/**
 	 * base64解码
-	 * 
+	 *
 	 * @param source 被解码的base64字符串
 	 * @param charset 字符集
 	 * @return 被加密后的字符串
@@ -50,7 +50,7 @@ public class Base64Decoder {
 
 	/**
 	 * base64解码
-	 * 
+	 *
 	 * @param source 被解码的base64字符串
 	 * @return 被加密后的字符串
 	 */
@@ -60,7 +60,7 @@ public class Base64Decoder {
 
 	/**
 	 * 解码Base64
-	 * 
+	 *
 	 * @param in 输入
 	 * @return 解码后的bytes
 	 */
@@ -73,7 +73,7 @@ public class Base64Decoder {
 
 	/**
 	 * 解码Base64
-	 * 
+	 *
 	 * @param in 输入
 	 * @param pos 开始位置
 	 * @param length 长度
@@ -121,7 +121,7 @@ public class Base64Decoder {
 	// ----------------------------------------------------------------------------------------------- Private start
 	/**
 	 * 获取下一个有效的byte字符
-	 * 
+	 *
 	 * @param in 输入
 	 * @param pos 当前位置，调用此方法后此位置保持在有效字符的下一个位置
 	 * @param maxPos 最大位置
@@ -145,7 +145,7 @@ public class Base64Decoder {
 
 	/**
 	 * int包装，使之可变
-	 * 
+	 *
 	 * @author looly
 	 *
 	 */

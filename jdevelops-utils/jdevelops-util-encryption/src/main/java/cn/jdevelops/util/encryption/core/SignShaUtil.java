@@ -1,7 +1,7 @@
-package cn.jdevelops.encryption.core;
+package cn.jdevelops.util.encryption.core;
 
 
-import cn.jdevelops.encryption.util.RemarkUtil;
+import cn.jdevelops.util.encryption.RemarkUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package cn.jdevelops.encryption.util;
+package cn.jdevelops.util.encryption;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

@@ -2,8 +2,8 @@ package cn.jdevelops.api.sign.util;
 
 import cn.jdevelops.api.result.util.SpringBeanUtils;
 import cn.jdevelops.api.sign.config.ApiSignConfig;
-import cn.jdevelops.encryption.core.SignMD5Util;
-import cn.jdevelops.encryption.core.SignShaUtil;
+import cn.jdevelops.util.encryption.core.SignMD5Util;
+import cn.jdevelops.util.encryption.core.SignShaUtil;
 
 import java.util.ArrayList;
 import java.util.Map;

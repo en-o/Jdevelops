@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-encryption</artifactId>
+            <artifactId>jdevelops-util-encryption</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

@@ -13,7 +13,7 @@
     <modules>
         <module>jdevelops-util-http</module>
         <module>utils-spring</module>
-        <module>utils-encryption</module>
+        <module>jdevelops-util-encryption</module>
         <module>utils-jwt</module>
         <module>utils-message</module>
         <module>jdevelops-util-aop</module>
