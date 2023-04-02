@@ -387,7 +387,7 @@
             <!--caches-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>caches-auto-schema</artifactId>
+                <artifactId>jdevelops-data-auto-schema</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

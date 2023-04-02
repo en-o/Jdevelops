@@ -15,6 +15,7 @@
         数据访问层
     </description>
     <modules>
+        <module>jdevelops-data-auto-schema</module>
         <module>jdevelops-data-jpa</module>
         <module>jdevelops-data-jdbctemplate</module>
     </modules>
