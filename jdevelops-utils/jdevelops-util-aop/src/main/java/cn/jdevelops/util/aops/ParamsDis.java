@@ -1,4 +1,4 @@
-package cn.jdevelops.aops;
+package cn.jdevelops.util.aops;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;

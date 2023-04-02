@@ -1,4 +1,4 @@
-package cn.jdevelops.aops;
+package cn.jdevelops.util.aops;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;

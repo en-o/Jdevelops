@@ -1,4 +1,4 @@
-package cn.jdevelops.aops;
+package cn.jdevelops.util.aops;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;

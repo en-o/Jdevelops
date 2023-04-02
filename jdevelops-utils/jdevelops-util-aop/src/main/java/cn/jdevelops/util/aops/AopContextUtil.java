@@ -1,4 +1,4 @@
-package cn.jdevelops.aops;
+package cn.jdevelops.util.aops;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;

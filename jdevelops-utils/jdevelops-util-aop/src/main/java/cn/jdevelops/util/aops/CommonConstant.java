@@ -1,4 +1,4 @@
-package cn.jdevelops.aops;
+package cn.jdevelops.util.aops;
 
 /**
  * 公共常量
