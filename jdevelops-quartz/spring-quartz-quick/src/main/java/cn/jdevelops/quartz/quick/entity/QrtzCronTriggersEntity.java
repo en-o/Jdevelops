@@ -1,6 +1,6 @@
-package cn.jdevelops.spring.quart.entity;
+package cn.jdevelops.quartz.quick.entity;
 
-import cn.jdevelops.spring.quart.entity.key.QrtzCronTriggersUPK;
+import cn.jdevelops.quartz.quick.entity.key.QrtzCronTriggersUPK;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

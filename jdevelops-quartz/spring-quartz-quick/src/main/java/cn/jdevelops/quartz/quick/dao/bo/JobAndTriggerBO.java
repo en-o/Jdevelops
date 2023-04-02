@@ -1,4 +1,4 @@
-package cn.jdevelops.spring.quart.dao.bo;
+package cn.jdevelops.quartz.quick.dao.bo;
 
 /**
  * 任务详情（job和trigger）

@@ -1,6 +1,6 @@
-package cn.jdevelops.spring.quart.entity;
+package cn.jdevelops.quartz.quick.entity;
 
-import cn.jdevelops.spring.quart.entity.key.QrtzJobDetailsUPK;
+import cn.jdevelops.quartz.quick.entity.key.QrtzJobDetailsUPK;
 
 
 import javax.persistence.EmbeddedId;
@@ -23,7 +23,7 @@ public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
 
 
     @EmbeddedId
-    private  QrtzJobDetailsUPK jobDetailsUPK;
+    private QrtzJobDetailsUPK jobDetailsUPK;
 
     /** 描述  */
     private  String  description ;

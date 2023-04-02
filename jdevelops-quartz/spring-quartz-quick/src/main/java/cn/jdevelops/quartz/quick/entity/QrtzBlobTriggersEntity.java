@@ -1,4 +1,4 @@
-package cn.jdevelops.spring.quart.entity;
+package cn.jdevelops.quartz.quick.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

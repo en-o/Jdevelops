@@ -1,4 +1,4 @@
-package cn.jdevelops.spring.quart.entity.key;
+package cn.jdevelops.quartz.quick.entity.key;
 
 
 import javax.persistence.Embeddable;

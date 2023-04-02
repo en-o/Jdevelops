@@ -1,4 +1,4 @@
-package cn.jdevelops.spring.quart.entity;
+package cn.jdevelops.quartz.quick.entity;
 
 
 import javax.persistence.Entity;
@@ -15,8 +15,8 @@ import java.util.Objects;
  * @date 2023-3-7
  */
 @Entity
-@Table(name = "qrtz_paused_trigger_grps")
-public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
+@Table(name = "qrtz_locks")
+public class QrtzLocksEntity  implements Serializable,Cloneable{
 
 
     /** 调度器名  */
@@ -24,9 +24,9 @@ public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
     private  String  schedName ;
 
 
-    /** 触发器分组 */
+    /** 锁名 */
     @Id
-    private  String  triggerGroup ;
+    private  String  lockName ;
 
     @Override
     public boolean equals(Object o) {
@@ -36,20 +36,20 @@ public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        QrtzPausedTriggerGrpsEntity that = (QrtzPausedTriggerGrpsEntity) o;
-        return Objects.equals(schedName, that.schedName) && Objects.equals(triggerGroup, that.triggerGroup);
+        QrtzLocksEntity that = (QrtzLocksEntity) o;
+        return Objects.equals(schedName, that.schedName) && Objects.equals(lockName, that.lockName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(schedName, triggerGroup);
+        return Objects.hash(schedName, lockName);
     }
 
     @Override
     public String toString() {
-        return "QrtzPausedTriggerGrpsEntity{" +
+        return "QrtzLocksEntity{" +
                 "schedName='" + schedName + '\'' +
-                ", triggerGroup='" + triggerGroup + '\'' +
+                ", lockName='" + lockName + '\'' +
                 '}';
     }
 
@@ -61,11 +61,11 @@ public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
         this.schedName = schedName;
     }
 
-    public String getTriggerGroup() {
-        return triggerGroup;
+    public String getLockName() {
+        return lockName;
     }
 
-    public void setTriggerGroup(String triggerGroup) {
-        this.triggerGroup = triggerGroup;
+    public void setLockName(String lockName) {
+        this.lockName = lockName;
     }
 }

@@ -1,4 +1,4 @@
-package cn.jdevelops.spring.quart.exception;
+package cn.jdevelops.quartz.quick.exception;
 
 
 /**

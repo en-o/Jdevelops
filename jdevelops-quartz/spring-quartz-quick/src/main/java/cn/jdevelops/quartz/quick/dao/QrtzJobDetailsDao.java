@@ -1,8 +1,8 @@
-package cn.jdevelops.spring.quart.dao;
+package cn.jdevelops.quartz.quick.dao;
 
-import cn.jdevelops.spring.quart.dao.bo.JobAndTriggerBO;
-import cn.jdevelops.spring.quart.entity.QrtzJobDetailsEntity;
-import cn.jdevelops.spring.quart.entity.key.QrtzJobDetailsUPK;
+import cn.jdevelops.quartz.quick.dao.bo.JobAndTriggerBO;
+import cn.jdevelops.quartz.quick.entity.QrtzJobDetailsEntity;
+import cn.jdevelops.quartz.quick.entity.key.QrtzJobDetailsUPK;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

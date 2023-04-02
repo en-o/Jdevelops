@@ -1,7 +1,7 @@
-package cn.jdevelops.spring.quart.dao;
+package cn.jdevelops.quartz.quick.dao;
 
-import cn.jdevelops.spring.quart.entity.QrtzTriggersEntity;
-import cn.jdevelops.spring.quart.entity.key.QrtzCronTriggersUPK;
+import cn.jdevelops.quartz.quick.entity.QrtzTriggersEntity;
+import cn.jdevelops.quartz.quick.entity.key.QrtzCronTriggersUPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

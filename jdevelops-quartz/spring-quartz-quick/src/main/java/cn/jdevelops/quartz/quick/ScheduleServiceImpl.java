@@ -1,8 +1,8 @@
-package cn.jdevelops.spring.quart;
+package cn.jdevelops.quartz.quick;
 
-import cn.jdevelops.spring.quart.dao.QrtzJobDetailsDao;
-import cn.jdevelops.spring.quart.dao.bo.JobAndTriggerBO;
-import cn.jdevelops.spring.quart.exception.TaskException;
+import cn.jdevelops.quartz.quick.dao.QrtzJobDetailsDao;
+import cn.jdevelops.quartz.quick.dao.bo.JobAndTriggerBO;
+import cn.jdevelops.quartz.quick.exception.TaskException;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

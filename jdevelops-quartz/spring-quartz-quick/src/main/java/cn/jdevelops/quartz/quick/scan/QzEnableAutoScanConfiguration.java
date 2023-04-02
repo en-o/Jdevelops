@@ -1,8 +1,8 @@
-package cn.jdevelops.spring.quart.scan;
+package cn.jdevelops.quartz.quick.scan;
 
-import cn.jdevelops.spring.quart.ScheduleService;
-import cn.jdevelops.spring.quart.ScheduleServiceImpl;
-import cn.jdevelops.spring.quart.dao.QrtzJobDetailsDao;
+import cn.jdevelops.quartz.quick.ScheduleServiceImpl;
+import cn.jdevelops.quartz.quick.ScheduleService;
+import cn.jdevelops.quartz.quick.dao.QrtzJobDetailsDao;
 import org.quartz.Scheduler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,13 +16,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date 2020-09-27 10:17
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "cn.jdevelops.spring.quart.dao")
-@EntityScan("cn.jdevelops.spring.quart.entity")
+@EnableJpaRepositories(basePackages = "cn.jdevelops.quartz.quick.dao")
+@EntityScan("cn.jdevelops.quartz.quick.entity")
 public class QzEnableAutoScanConfiguration {
 
 
     @Bean
-    @ConditionalOnMissingBean(name = "scheduleService")
+    @ConditionalOnMissingBean(ScheduleService.class)
     public ScheduleService scheduleService(Scheduler scheduler, QrtzJobDetailsDao jobDetailsDao) {
         return new ScheduleServiceImpl(scheduler, jobDetailsDao);
     }
