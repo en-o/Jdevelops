@@ -409,17 +409,17 @@
             <!--延时队列-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>delay-core</artifactId>
+                <artifactId>jdevelops-delay-core</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>delay-jdk</artifactId>
+                <artifactId>jdevelops-delay-jdk</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>delay-redis</artifactId>
+                <artifactId>jdevelops-delay-redis</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 

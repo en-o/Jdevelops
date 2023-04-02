@@ -5,20 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops</artifactId>
+        <artifactId>jdevelops-delay</artifactId>
         <version>2.0.7</version>
     </parent>
 
-    <artifactId>jdevelops-delay</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <!-- 延时公共类 -->
-        <module>jdevelops-delay-core</module>
-        <!--jdk延时队列-->
-        <module>jdevelops-delay-jdk</module>
-        <!-- redis实现延时队列 -->
-        <module>jdevelops-delay-redis</module>
-    </modules>
+    <artifactId>jdevelops-delay-jdk</artifactId>
+    <packaging>jar</packaging>
 
+    <description>
+        基于jdk的延时队列
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-delay-core</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
