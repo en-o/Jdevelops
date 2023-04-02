@@ -14,7 +14,7 @@
         <module>jdevelops-util-http</module>
         <module>jdevelops-util-spring</module>
         <module>jdevelops-util-encryption</module>
-        <module>utils-jwt</module>
+        <module>jdevelops-util-jwt</module>
         <module>utils-message</module>
         <module>jdevelops-util-aop</module>
         <module>jdevelops-util-validation</module>

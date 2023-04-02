@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-jwt</artifactId>
+            <artifactId>jdevelops-util-jwt</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

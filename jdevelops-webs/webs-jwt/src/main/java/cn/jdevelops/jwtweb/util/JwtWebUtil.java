@@ -2,9 +2,9 @@ package cn.jdevelops.jwtweb.util;
 
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.jwt.constant.JwtConstant;
-import cn.jdevelops.jwt.entity.JCookie;
-import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.constant.JwtConstant;
+import cn.jdevelops.util.jwt.entity.JCookie;
+import cn.jdevelops.util.jwt.util.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;

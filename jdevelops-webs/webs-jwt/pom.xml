@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>utils-jwt</artifactId>
+            <artifactId>jdevelops-util-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>

@@ -1,6 +1,6 @@
 package cn.jdevelops.jredis.entity.only;
 
-import cn.jdevelops.jwt.util.EncryptionUtil;
+import cn.jdevelops.util.jwt.util.EncryptionUtil;
 import lombok.*;
 
 import java.util.Objects;

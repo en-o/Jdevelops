@@ -1,7 +1,7 @@
 package cn.jdevelops.jwtweb.server.impl;
 
 
-import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.util.JwtUtil;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
 

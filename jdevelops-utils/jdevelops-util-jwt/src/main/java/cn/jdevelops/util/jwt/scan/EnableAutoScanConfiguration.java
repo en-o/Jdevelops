@@ -1,7 +1,7 @@
-package cn.jdevelops.jredis.scan;
+package cn.jdevelops.util.jwt.scan;
 
-import cn.jdevelops.jredis.service.RedisService;
-import cn.jdevelops.jredis.service.impl.RedisServiceImpl;
+import cn.jdevelops.util.jwt.bean.InterceptorBean;
+import cn.jdevelops.util.jwt.bean.JwtBean;
 import cn.jdevelops.util.jwt.util.ContextUtil;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -15,17 +15,21 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnWebApplication
 public class EnableAutoScanConfiguration {
 
-    @ConditionalOnMissingBean(name = "redisService")
-    @Bean
-    public RedisService redisService(){
-        return new RedisServiceImpl();
-    }
-
-
     @ConditionalOnMissingBean(name = "contextUtil")
     @Bean
     public ContextUtil contextUtil(){
         return new ContextUtil();
     }
 
+    @ConditionalOnMissingBean(name = "interceptorBean")
+    @Bean
+    public InterceptorBean interceptorBean(){
+        return new InterceptorBean();
+    }
+
+    @ConditionalOnMissingBean(name = "jwtBean")
+    @Bean
+    public JwtBean jwtBean(){
+        return new JwtBean();
+    }
 }

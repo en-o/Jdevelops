@@ -1,7 +1,7 @@
 package cn.jdevelops.websocket.core.config;
 
-import cn.jdevelops.jwt.constant.JwtConstant;
-import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.constant.JwtConstant;
+import cn.jdevelops.util.jwt.util.JwtUtil;
 import cn.jdevelops.websocket.core.constant.CommonConstant;
 import cn.jdevelops.websocket.core.util.SocketUtil;
 import org.springframework.beans.BeansException;

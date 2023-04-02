@@ -577,7 +577,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-jwt</artifactId>
+                <artifactId>jdevelops-util-jwt</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

@@ -1,10 +1,10 @@
 package cn.jdevelops.jredis.util;
 
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.jwt.entity.SignEntity;
+import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.jredis.service.RedisService;
-import cn.jdevelops.jwt.util.ContextUtil;
-import cn.jdevelops.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.util.ContextUtil;
+import cn.jdevelops.util.jwt.util.JwtUtil;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
