@@ -12,8 +12,8 @@
     <artifactId>jdevelops-sms</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>sms-aliyun</module>
-        <module>sms-mail</module>
+        <module>jdevelops-sms-aliyun</module>
+        <module>jdevelops-sms-mail</module>
     </modules>
 
 

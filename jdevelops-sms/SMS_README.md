@@ -7,7 +7,7 @@
 ```maven
     <dependency>
        <groupId>cn.jdevelops</groupId>
-       <artifactId>sms-aliyun</artifactId>
+       <artifactId>jdevelops-sms-aliyun</artifactId>
        <version>2.0.0</version>
     </dependency>
 ```
@@ -82,7 +82,7 @@ class UserApplicationTests {
 ```maven
    <dependency>
        <groupId>cn.jdevelops</groupId>
-       <artifactId>sms-mail</artifactId>
+       <artifactId>jdevelops-sms-mail</artifactId>
        <version>2.0.0</version>
     </dependency>
 ```

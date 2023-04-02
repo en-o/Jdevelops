@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <description>邮箱配置</description>
-    <artifactId>sms-mail</artifactId>
+    <artifactId>jdevelops-sms-mail</artifactId>
 
 <dependencies>
     <!-- Spring Boot 邮件依赖 -->

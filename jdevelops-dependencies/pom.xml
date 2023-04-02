@@ -632,6 +632,19 @@
                 <version>${jdevelops.last.version}</version>
             </dependency>
 
+            <!-- sms -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sms-aliyun</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sms-mail</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
+
+
             <!-- starters -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
@@ -678,6 +691,8 @@
                 <artifactId>jdevelops-sboot-redis-login</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
+
+
 
         </dependencies>
     </dependencyManagement>

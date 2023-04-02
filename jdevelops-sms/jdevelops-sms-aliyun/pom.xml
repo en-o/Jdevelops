@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <description>阿里云短信配置</description>
-    <artifactId>sms-aliyun</artifactId>
+    <artifactId>jdevelops-sms-aliyun</artifactId>
 
     <dependencies>
     <!--    阿里云短信配置-->
