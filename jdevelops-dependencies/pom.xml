@@ -587,7 +587,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-spring</artifactId>
+                <artifactId>jdevelops-util-spring</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

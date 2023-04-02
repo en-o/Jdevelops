@@ -33,8 +33,7 @@ class LazyStreamable<T> implements Streamable<T> {
 	Supplier<? extends Stream<T>> stream;
 
 	/**
-	 * (non-Javadoc)
-	 * @see java.lang.Iterable#iterator()
+	 * java.lang.Iterable#iterator()
 	 */
 	@Override
 	public Iterator<T> iterator() {
@@ -42,8 +41,7 @@ class LazyStreamable<T> implements Streamable<T> {
 	}
 
 	/**
-	 * (non-Javadoc)
-	 * @see org.springframework.data.util.Streamable#stream()
+	 *  org.springframework.data.util.Streamable#stream()
 	 */
 	@Override
 	public Stream<T> stream() {
