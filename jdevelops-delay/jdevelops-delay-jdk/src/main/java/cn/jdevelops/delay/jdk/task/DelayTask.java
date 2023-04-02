@@ -1,4 +1,4 @@
-package cn.jdevelops.delay.task;
+package cn.jdevelops.delay.jdk.task;
 
 import cn.jdevelops.delay.core.entity.DelayQueueMessage;
 
