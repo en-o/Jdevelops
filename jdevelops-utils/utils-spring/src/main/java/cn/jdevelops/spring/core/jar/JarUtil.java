@@ -4,12 +4,11 @@ package cn.jdevelops.spring.core.jar;
 import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.jdevelops.http.core.MacUtil;
+import cn.jdevelops.util.http.MacUtil;
 import cn.jdevelops.spring.constant.JarConstant;
 import cn.jdevelops.spring.core.system.OSinfo;
 import cn.jdevelops.spring.entity.JarAddFile;
 import cn.jdevelops.spring.enums.EPlatform;
-import org.springframework.util.ClassUtils;
 
 import java.io.*;
 import java.util.*;

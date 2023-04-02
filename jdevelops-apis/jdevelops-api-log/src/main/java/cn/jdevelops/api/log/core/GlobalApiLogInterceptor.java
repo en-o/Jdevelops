@@ -2,7 +2,7 @@ package cn.jdevelops.api.log.core;
 
 
 import cn.jdevelops.api.log.entity.LoggerEntity;
-import cn.jdevelops.http.core.IpUtil;
+import cn.jdevelops.util.http.IpUtil;
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
 import cn.jdevelops.util.interceptor.util.RequestUtil;
 import org.slf4j.Logger;

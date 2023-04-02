@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.http.core;
+package cn.jdevelops.util.http;
 
 import cn.jdevelops.constant.Constants;
 import org.apache.commons.lang3.StringUtils;

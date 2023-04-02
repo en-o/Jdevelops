@@ -1,7 +1,7 @@
 package cn.jdevelops.spring.core.aop;
 
 import cn.hutool.core.util.URLUtil;
-import cn.jdevelops.http.core.IpUtil;
+import cn.jdevelops.util.http.IpUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

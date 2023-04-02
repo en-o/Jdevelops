@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.http.core;
+package cn.jdevelops.util.http;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

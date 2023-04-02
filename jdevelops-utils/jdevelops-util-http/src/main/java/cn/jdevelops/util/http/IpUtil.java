@@ -1,4 +1,4 @@
-package cn.jdevelops.http.core;
+package cn.jdevelops.util.http;
 
 import cn.jdevelops.enums.number.NumEnum;
 import org.slf4j.Logger;

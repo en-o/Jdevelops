@@ -1,4 +1,4 @@
-package cn.jdevelops.http.core;
+package cn.jdevelops.util.http;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
