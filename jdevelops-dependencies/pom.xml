@@ -582,11 +582,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-message</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-spring</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
@@ -639,7 +634,11 @@
                 <artifactId>jdevelops-sms-mail</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sms-wechat</artifactId>
+                <version>${jdevelops.last.version}</version>
+            </dependency>
 
             <!-- starters -->
             <dependency>
