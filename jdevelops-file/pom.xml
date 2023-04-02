@@ -12,10 +12,8 @@
     <artifactId>jdevelops-file</artifactId>
 
     <modules>
-        <!-- 文件相关API-->
-        <module>jdevelops-file-oss-api</module>
-        <!-- 文件相关驱动-->
-        <module>jdevelops-file-oss-driver</module>
+        <!-- 文件存储-->
+        <module>jdevelops-file-oss</module>
     </modules>
 
     <properties>

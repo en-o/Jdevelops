@@ -3,29 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jdevelops-file</artifactId>
+        <artifactId>jdevelops-file-oss</artifactId>
         <groupId>cn.jdevelops</groupId>
         <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <artifactId>jdevelops-file-oss-driver</artifactId>
+    <packaging>jar</packaging>
+    <artifactId>jdevelops-file-oss-driver-qiniu</artifactId>
     <description>
-        文件驱动
+        七牛文件操作
     </description>
-    <modules>
-        <!--minio-->
-        <module>jdevelops-file-oss-driver-minio</module>
-        <!--七牛云-->
-        <module>jdevelops-file-oss-driver-qiniu</module>
-        <!--本地-->
-        <module>jdevelops-file-oss-driver-local</module>
-    </modules>
-
     <dependencies>
         <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-file-oss-api</artifactId>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
+
 </project>
