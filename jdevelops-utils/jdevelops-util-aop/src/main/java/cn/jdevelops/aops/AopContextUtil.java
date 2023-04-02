@@ -1,5 +1,6 @@
 package cn.jdevelops.aops;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -9,6 +10,7 @@ import org.springframework.context.ApplicationContextAware;
  * @version 1
  * @date 2020/6/19 15:30
  */
+@ConditionalOnMissingBean
 public class AopContextUtil implements ApplicationContextAware {
 	private static ApplicationContext applicationContext;
 

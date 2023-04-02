@@ -10,7 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>jdevelops-aop-exception</artifactId>
-
+    <description>
+        注解捕捉方法和类异常
+    </description>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

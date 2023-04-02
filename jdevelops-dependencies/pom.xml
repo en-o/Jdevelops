@@ -592,7 +592,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>utils-spring-aop</artifactId>
+                <artifactId>jdevelops-util-aop</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
