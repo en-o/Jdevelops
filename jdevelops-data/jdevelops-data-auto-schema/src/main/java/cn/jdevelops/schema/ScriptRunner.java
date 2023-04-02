@@ -95,7 +95,7 @@ public class ScriptRunner {
         try {
             BufferedReader lineReader = new BufferedReader(reader);
 
-            while((line = lineReader.readLine()) != null) {
+            while ((line = lineReader.readLine()) != null) {
                 script.append(line);
                 script.append(LINE_SEPARATOR);
             }
@@ -116,7 +116,11 @@ public class ScriptRunner {
 
         String line;
         try {
-            for(BufferedReader lineReader = new BufferedReader(reader); (line = lineReader.readLine()) != null; command = this.handleLine(command, line)) {
+            for (BufferedReader lineReader = new BufferedReader(reader);
+                 (line = lineReader.readLine()) != null;
+                 command = this.handleLine(command, line)
+            ) {
+                return;
             }
 
             this.commitConnection();
@@ -187,7 +191,7 @@ public class ScriptRunner {
 
             this.println(trimmedLine);
         } else if (this.commandReadyToExecute(trimmedLine)) {
-            command.append(line.substring(0, line.lastIndexOf(this.delimiter)));
+            command.append(line, 0, line.lastIndexOf(this.delimiter));
             command.append(LINE_SEPARATOR);
             this.println(command);
             this.executeStatement(command.toString());
@@ -248,15 +252,15 @@ public class ScriptRunner {
 
                     int i;
                     String value;
-                    for(i = 0; i < cols; ++i) {
+                    for (i = 0; i < cols; ++i) {
                         value = md.getColumnLabel(i + 1);
                         this.print(value + "\t");
                     }
 
                     this.println("");
 
-                    while(rs.next()) {
-                        for(i = 0; i < cols; ++i) {
+                    while (rs.next()) {
+                        for (i = 0; i < cols; ++i) {
                             value = rs.getString(i + 1);
                             this.print(value + "\t");
                         }
