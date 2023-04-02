@@ -502,12 +502,12 @@
             <!-- beans -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>beans-enum</artifactId>
+                <artifactId>jdevelops-bean-enum</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>beans-constant</artifactId>
+                <artifactId>jdevelops-bean-constant</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
 

@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>beans-enum</artifactId>
+            <artifactId>jdevelops-bean-enum</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.skywalking/apm-toolkit-trace -->
         <!-- skywalking trace工具包 -->

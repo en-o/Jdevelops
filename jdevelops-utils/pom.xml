@@ -29,12 +29,12 @@
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>beans-enum</artifactId>
+            <artifactId>jdevelops-bean-enum</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>beans-constant</artifactId>
+            <artifactId>jdevelops-bean-constant</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

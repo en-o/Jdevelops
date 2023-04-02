@@ -12,8 +12,8 @@
     <artifactId>jdevelops-beans</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>beans-constant</module>
-        <module>beans-enum</module>
+        <module>jdevelops-bean-constant</module>
+        <module>jdevelops-bean-enum</module>
     </modules>
 
 
