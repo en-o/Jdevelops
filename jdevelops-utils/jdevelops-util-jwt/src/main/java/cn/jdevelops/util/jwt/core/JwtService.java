@@ -60,8 +60,7 @@ public class JwtService {
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人
         claims.setAudience(AUDIENCE); //令牌要发送给谁
-        claims.setExpirationTimeMinutesInTheFuture(2);  //   分钟
-//        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());  //   分钟
+        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());  //   分钟
         claims.setGeneratedJwtId(); // 令牌的唯一标识符
         claims.setIssuedAtToNow();  // 何时发行/创建令牌 (now)
 //        claims.setNotBeforeMinutesInThePast(1); //令牌尚未生效的时间 (2 minutes ago)
