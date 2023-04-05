@@ -25,12 +25,10 @@
         <!--db-->
         <module>jdevelops-sboot-jpa</module>
         <module>jdevelops-sboot-jdbctemplate</module>
-        <!--鉴权-->
-        <module>jdevelops-sboot-security</module>
         <!-- 接口文档 -->
         <module>jdevelops-sboot-swagger</module>
-        <!--简单的Redis登录-->
-        <module>jdevelops-sboot-redis-login</module>
+        <!--认证-->
+        <module>jdevelops-sboot-authentication</module>
     </modules>
 
 </project>

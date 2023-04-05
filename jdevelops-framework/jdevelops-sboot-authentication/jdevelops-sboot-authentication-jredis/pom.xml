@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops-framework</artifactId>
+        <artifactId>jdevelops-sboot-authentication</artifactId>
         <version>2.0.7</version>
     </parent>
+    <packaging>jar</packaging>
+    <artifactId>jdevelops-sboot-authentication-jredis</artifactId>
 
-    <artifactId>jdevelops-sboot-redis-login</artifactId>
     <description>
-            jwt + redis 登录
+        jwt+redis认证 redis作为存储，jwt作为令牌，使用jwt的目的是一些基础用户信息可以直接从jwt中获取
     </description>
-
 
 </project>
