@@ -1,6 +1,7 @@
 package cn.jdevelops.util.jwt.util;
 
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/19 15:30
  */
 @Component
-public class ContextUtil implements ApplicationContextAware {
+@ConditionalOnMissingBean(JwtContextUtil.class)
+public class JwtContextUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if(ContextUtil.applicationContext == null) {
-            ContextUtil.applicationContext = applicationContext;
+        if(JwtContextUtil.applicationContext == null) {
+            JwtContextUtil.applicationContext = applicationContext;
         }
     }
 

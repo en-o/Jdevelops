@@ -12,6 +12,7 @@
     <artifactId>jdevelops-util-jwt</artifactId>
     <description>
         jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
+        [jwt](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
     </description>
     <dependencies>
         <!--   jwt     -->

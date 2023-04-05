@@ -1,8 +1,8 @@
 package cn.jdevelops.jwtweb.interceptor;
 
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.util.jwt.bean.JwtBean;
-import cn.jdevelops.util.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.config.JwtConfig;
+import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.jwtweb.util.JwtWebUtil;
 import cn.jdevelops.jwtweb.vo.CheckVO;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
@@ -33,10 +33,10 @@ import java.lang.reflect.Method;
 public class WebApiInterceptor implements HandlerInterceptor {
     private CheckTokenInterceptor checkTokenInterceptor;
 
-    private final JwtBean jwtBean;
+    private final JwtConfig jwtConfig;
 
-    public WebApiInterceptor(JwtBean jwtBean) {
-        this.jwtBean = jwtBean;
+    public WebApiInterceptor(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
         getCheckTokenInterceptor();
     }
 
@@ -95,7 +95,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @throws IOException IOException
      */
     private CheckVO check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws Exception {
-        String  token = JwtWebUtil.getToken(request,jwtBean.getCookie());
+        String  token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
         logger.info("需要验证token,校验结果：{},token:{}", flag,token);
@@ -121,7 +121,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserStatus(String token) throws Exception{
         // 检查用户状态
-        checkTokenInterceptor.checkUserStatus(JwtUtil.getSubject(token));
+        checkTokenInterceptor.checkUserStatus(JwtService.getSubject(token));
     }
 
     /**
@@ -135,7 +135,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             //  此注解表示不刷新缓存
             if(!method.isAnnotationPresent(NotRefreshToken.class)){
                 // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                checkTokenInterceptor.refreshToken(JwtUtil.getSubject(token));
+                checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
             }
         }catch (Exception e){
             log.warn("token缓存刷新失败",e);

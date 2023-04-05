@@ -1,7 +1,7 @@
 package cn.jdevelops.websocket.core.config;
 
 import cn.jdevelops.util.jwt.constant.JwtConstant;
-import cn.jdevelops.util.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.websocket.core.constant.CommonConstant;
 import cn.jdevelops.websocket.core.util.SocketUtil;
 import org.springframework.beans.BeansException;
@@ -60,7 +60,7 @@ public class AuthenticationConfigurator extends ServerEndpointConfig.Configurato
         if(Objects.isNull(token)){
             token = request.getHeader(JwtConstant.TOKEN);
         }
-        boolean verity = JwtUtil.verity(token);
+        boolean verity = JwtService.verity(token);
         // 这一步好像没什么用，记不得以前写来是为什么的了
         if(!verity) {
             String topic = request.getServletPath();

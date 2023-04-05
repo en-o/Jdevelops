@@ -135,7 +135,7 @@ public interface J2Service<B> {
 
     /**
      * 查询
-     * @param selectKey key
+     * @param selectKey secret
      * @param value 值
      * @return B
      */
@@ -143,7 +143,7 @@ public interface J2Service<B> {
 
     /**
      * 查询
-     * @param selectKey key
+     * @param selectKey secret
      * @param value 值
      * @return B
      */

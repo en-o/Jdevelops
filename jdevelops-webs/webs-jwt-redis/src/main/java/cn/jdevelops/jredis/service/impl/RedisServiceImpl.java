@@ -11,8 +11,8 @@ import cn.jdevelops.jwtweb.exception.DisabledAccountException;
 import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
 import cn.jdevelops.jredis.util.JwtRedisUtil;
-import cn.jdevelops.util.jwt.bean.JwtBean;
-import cn.jdevelops.util.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.config.JwtConfig;
+import cn.jdevelops.util.jwt.core.JwtService;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class RedisServiceImpl implements RedisService {
     private  RedisTemplate<String, Object>  redisTemplate;
 
     @Resource
-    private JwtBean jwtBean;
+    private JwtConfig jwtConfig;
 
 
 
@@ -60,7 +60,7 @@ public class RedisServiceImpl implements RedisService {
             redisTemplate.persist(loginRedisFolder);
         }else {
             // 设置过期时间（毫秒
-            redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
         }
     }
 
@@ -76,7 +76,7 @@ public class RedisServiceImpl implements RedisService {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             }else {
                 // 设置过期时间（毫秒
-                redisTemplate.expire(loginRedisFolder, jwtBean.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+                redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
             }
         }
     }
@@ -89,7 +89,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
-        return verifyUserTokenBySubject(JwtUtil.getSubject(token));
+        return verifyUserTokenBySubject(JwtService.getSubject(token));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public StorageUserTokenEntity loadUserTokenInfoByToken(String token) {
-        return loadUserTokenInfoBySubject(JwtUtil.getSubject(token));
+        return loadUserTokenInfoBySubject(JwtService.getSubject(token));
     }
 
     @Override

@@ -4,7 +4,7 @@ import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.entity.JCookie;
-import cn.jdevelops.util.jwt.util.JwtUtil;
+import cn.jdevelops.util.jwt.core.JwtService;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -67,7 +67,7 @@ public class JwtWebUtil {
             return null;
         }
         try {
-            return JwtUtil.getSubject(token);
+            return JwtService.getSubject(token);
         } catch (Exception e) {
             return null;
         }
@@ -76,12 +76,12 @@ public class JwtWebUtil {
     /**
      * 获取token中的 Claim 参数
      * @param request request
-     * @param claimKey key名
+     * @param claimKey secret名
      * @return userCode
      */
     public static String getTokenClaim(HttpServletRequest request,String claimKey){
         String token = JwtWebUtil.getToken(request);
-        return JwtUtil.getClaim(token,claimKey);
+        return JwtService.getClaim(token,claimKey);
     }
 
 
@@ -93,7 +93,7 @@ public class JwtWebUtil {
      */
     public static <T> T getTokenUserInfoByRemark(HttpServletRequest request, Class<T> t ){
         String token = JwtWebUtil.getToken(request);
-        Map<String, Object> loginNames = JwtUtil.parseJwt(token);
+        Map<String, Object> loginNames = JwtService.parseJwt(token);
         String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
         return GsonUtils.getGson().fromJson(remark, t);
     }
@@ -106,7 +106,7 @@ public class JwtWebUtil {
      * @return t
      */
     public static  <T> T  getTokenUserInfoByRemark(String token, Class<T> t ){
-        Map<String, Object> loginNames = JwtUtil.parseJwt(token);
+        Map<String, Object> loginNames = JwtService.parseJwt(token);
         String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
         return GsonUtils.getGson().fromJson(remark, t);
     }

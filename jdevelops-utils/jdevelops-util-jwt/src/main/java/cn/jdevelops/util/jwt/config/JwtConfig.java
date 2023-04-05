@@ -1,4 +1,4 @@
-package cn.jdevelops.util.jwt.bean;
+package cn.jdevelops.util.jwt.config;
 
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.entity.JCookie;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @ConfigurationProperties(prefix = "jdevelops.jwt")
 @Component
-public class JwtBean {
+public class JwtConfig {
 
     /**
      * token私钥
@@ -27,19 +27,17 @@ public class JwtBean {
 
     /**
      * jwt token时间
-     * 默认  过期时间为一天 (24*60*60*1000) 单位 毫秒
+     * 默认  过期时间为一天 (单位:小时)
      */
-    private long expireTime = 86400000;
-
-
+    private long expireTime;
 
 
     /**
      * token redis 时间
-     * 默认  过期时间为一天 (24*60*60*1000) 单位 毫秒
+     * 默认  过期时间为一天 (单位:小时)
      *
      */
-    private long loginExpireTime = 86400000;
+    private long loginExpireTime;
 
     /**
      *  是否开启从cookie中获取token(顺序为： Header -> Parameter -> Cookies)
@@ -49,16 +47,20 @@ public class JwtBean {
     private JCookie cookie;
 
     /**
-     * (暂未启用)
      * token参数的key自定义
      * 默认 token
      */
-    private String  tokenNam;
+    private String tokenName;
+
+    /**
+     * 发行人;无值有默认
+     */
+    private String issuer;
 
 
     public String getTokenSecret() {
         if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
-            return "U0JBUElKV1RkV2FuZzkyNjQ1NAadasdawq1qqwez123w@123";
+            return "jdevelops";
         }
         return tokenSecret;
     }
@@ -70,21 +72,22 @@ public class JwtBean {
         return cookie;
     }
 
-    public String getTokenNam() {
-        if(Objects.isNull(tokenNam)){
+    public String getTokenName() {
+        if(Objects.isNull(tokenName)){
             return JwtConstant.TOKEN;
         }
-        return tokenNam;
+        return tokenName;
     }
 
     @Override
     public String toString() {
-        return "JwtBean{" +
+        return "JwtConfig{" +
                 "tokenSecret='" + tokenSecret + '\'' +
                 ", expireTime=" + expireTime +
                 ", loginExpireTime=" + loginExpireTime +
                 ", cookie=" + cookie +
-                ", tokenNam='" + tokenNam + '\'' +
+                ", tokenName='" + tokenName + '\'' +
+                ", issuer='" + issuer + '\'' +
                 '}';
     }
 
@@ -93,7 +96,11 @@ public class JwtBean {
     }
 
     public long getExpireTime() {
-        return expireTime;
+        if(loginExpireTime<=0){
+            return 24;
+        }else {
+            return expireTime;
+        }
     }
 
     public void setExpireTime(long expireTime) {
@@ -101,7 +108,11 @@ public class JwtBean {
     }
 
     public long getLoginExpireTime() {
-        return loginExpireTime;
+        if(loginExpireTime<=0){
+            return 24;
+        }else {
+            return loginExpireTime;
+        }
     }
 
     public void setLoginExpireTime(long loginExpireTime) {
@@ -112,7 +123,19 @@ public class JwtBean {
         this.cookie = cookie;
     }
 
-    public void setTokenNam(String tokenNam) {
-        this.tokenNam = tokenNam;
+    public void setTokenName(String tokenName) {
+        this.tokenName = tokenName;
     }
+
+    public String getIssuer() {
+        if(Objects.isNull(issuer)){
+            return "jdevelops";
+        }
+        return issuer;
+    }
+
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
+
 }

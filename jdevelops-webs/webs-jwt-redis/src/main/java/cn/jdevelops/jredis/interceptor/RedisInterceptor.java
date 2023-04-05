@@ -3,7 +3,7 @@ package cn.jdevelops.jredis.interceptor;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.jwtweb.exception.ExpiredRedisException;
 import cn.jdevelops.jredis.service.RedisService;
-import cn.jdevelops.util.jwt.util.ContextUtil;
+import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public boolean checkToken(String token) {
-        RedisService redisService = ContextUtil.getBean(RedisService.class);
+        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
         StorageUserTokenEntity storageUserTokenEntity = redisService.verifyUserTokenByToken(token);
         return Objects.nonNull(storageUserTokenEntity) && storageUserTokenEntity.getToken().equalsIgnoreCase(token);
     }
@@ -34,7 +34,7 @@ public class RedisInterceptor implements CheckTokenInterceptor {
     @Override
     public void refreshToken(String subject) {
        try {
-           RedisService redisService = ContextUtil.getBean(RedisService.class);
+           RedisService redisService = JwtContextUtil.getBean(RedisService.class);
            redisService.refreshUserToken(subject);
        }catch (Exception e){
            LOG.warn("token刷新失败:", e);
@@ -43,7 +43,7 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public void checkUserStatus(String subject) throws ExpiredRedisException {
-        RedisService redisService = ContextUtil.getBean(RedisService.class);
+        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
         redisService.verifyUserStatus(subject);
     }
 }

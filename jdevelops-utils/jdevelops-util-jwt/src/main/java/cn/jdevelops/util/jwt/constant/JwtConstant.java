@@ -13,21 +13,5 @@ public interface JwtConstant {
      */
     String TOKEN = "token";
 
-    /**
-     * jwt密钥串中数据的主键
-     */
-    String TOKEN_KEY = "loginName";
-
-    /**
-     * jwt密钥串中数据的备注信息
-     */
-    String TOKEN_REMARK = "remark";
-
-    /**
-     *jwtBean类的 spring容器名
-     */
-    String JWT_BEAN_STR = "jwtBean";
-
-
 
 }

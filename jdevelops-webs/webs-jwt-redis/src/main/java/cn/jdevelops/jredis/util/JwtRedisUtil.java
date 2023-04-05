@@ -3,9 +3,8 @@ package cn.jdevelops.jredis.util;
 import cn.jdevelops.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.jredis.service.RedisService;
-import cn.jdevelops.util.jwt.util.ContextUtil;
-import cn.jdevelops.util.jwt.util.JwtUtil;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import cn.jdevelops.util.jwt.util.JwtContextUtil;
+import cn.jdevelops.util.jwt.core.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,9 +55,9 @@ public class JwtRedisUtil {
      * @return 签名
      */
     public static String sign(SignEntity subject) {
-        RedisService redisService = ContextUtil.getBean(RedisService.class);
+        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
         // 生成token
-        String sign = JwtUtil.sign(subject);
+        String sign = JwtService.sign(subject);
         StorageUserTokenEntity build = StorageUserTokenEntity.builder()
                 .userCode(subject.getSubject())
                 .alwaysOnline(subject.isAlwaysOnline())
@@ -77,8 +76,8 @@ public class JwtRedisUtil {
      */
     public static boolean verity(String token) {
         try {
-            RedisService redisService = ContextUtil.getBean(RedisService.class);
-            DecodedJWT verify = JwtUtil.verityForDecodedJWT(token);
+            RedisService redisService = JwtContextUtil.getBean(RedisService.class);
+            DecodedJWT verify = JwtService.verityForDecodedJWT(token);
             redisService.refreshUserToken(verify.getSubject());
             return true;
         } catch (Exception e) {
