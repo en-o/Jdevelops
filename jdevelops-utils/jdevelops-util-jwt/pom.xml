@@ -11,13 +11,14 @@
     <packaging>jar</packaging>
     <artifactId>jdevelops-util-jwt</artifactId>
     <description>
-        jwt 工具
+        jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
     </description>
     <dependencies>
         <!--   jwt     -->
         <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.9.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

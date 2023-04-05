@@ -1,4 +1,4 @@
-package cn.jdevelops.util.jwt.bean;
+package cn.jdevelops.jwtweb.config;
 
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

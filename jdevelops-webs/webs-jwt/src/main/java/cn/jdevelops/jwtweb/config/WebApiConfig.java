@@ -1,5 +1,4 @@
 package cn.jdevelops.jwtweb.config;
-import cn.jdevelops.util.jwt.bean.InterceptorBean;
 import cn.jdevelops.util.jwt.bean.JwtBean;
 import cn.jdevelops.jwtweb.interceptor.WebApiInterceptor;
 import org.springframework.context.annotation.Bean;
