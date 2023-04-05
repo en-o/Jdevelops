@@ -1,4 +1,4 @@
-package cn.jdevelops.util.jwt.annotation;
+package cn.jdevelops.jwtweb.annotation;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
