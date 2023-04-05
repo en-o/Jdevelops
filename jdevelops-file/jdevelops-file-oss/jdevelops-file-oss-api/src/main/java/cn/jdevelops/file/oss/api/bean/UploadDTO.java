@@ -1,8 +1,5 @@
 package cn.jdevelops.file.oss.api.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,9 +8,7 @@ import javax.validation.constraints.Size;
  * 文件上传入参
  * @author tn
  */
-@Getter
-@Setter
-@ToString
+
 public class UploadDTO extends UploadFileInfo{
 
 	/**
@@ -32,4 +27,30 @@ public class UploadDTO extends UploadFileInfo{
 	 */
 	String childFolder;
 
+
+	public String getBucket() {
+		return bucket;
+	}
+
+	public void setBucket(String bucket) {
+		this.bucket = bucket;
+	}
+
+	public String getChildFolder() {
+		return childFolder;
+	}
+
+	public void setChildFolder(String childFolder) {
+		this.childFolder = childFolder;
+	}
+
+	@Override
+	public String toString() {
+		return "UploadDTO{" +
+				"bucket='" + bucket + '\'' +
+				", childFolder='" + childFolder + '\'' +
+				", file=" + file +
+				", fileName='" + fileName + '\'' +
+				'}';
+	}
 }

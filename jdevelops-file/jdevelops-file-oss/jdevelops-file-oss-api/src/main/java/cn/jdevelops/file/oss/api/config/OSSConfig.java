@@ -1,9 +1,6 @@
 package cn.jdevelops.file.oss.api.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
@@ -17,10 +14,6 @@ import org.springframework.stereotype.Component;
  **/
 @ConfigurationProperties(prefix = "jdevelops.oss")
 @Component
-@Getter
-@Setter
-@ToString
-@Accessors(chain = true)
 @SuppressWarnings("all")
 public class OSSConfig {
 
@@ -48,4 +41,46 @@ public class OSSConfig {
 	@NestedConfigurationProperty
 	private QiNiuConfig qiniu;
 
+
+	public String getBrowseUrl() {
+		return browseUrl;
+	}
+
+	public void setBrowseUrl(String browseUrl) {
+		this.browseUrl = browseUrl;
+	}
+
+	public LocalConfig getLocal() {
+		return local;
+	}
+
+	public void setLocal(LocalConfig local) {
+		this.local = local;
+	}
+
+	public MinioConfig getMinio() {
+		return minio;
+	}
+
+	public void setMinio(MinioConfig minio) {
+		this.minio = minio;
+	}
+
+	public QiNiuConfig getQiniu() {
+		return qiniu;
+	}
+
+	public void setQiniu(QiNiuConfig qiniu) {
+		this.qiniu = qiniu;
+	}
+
+	@Override
+	public String toString() {
+		return "OSSConfig{" +
+				"browseUrl='" + browseUrl + '\'' +
+				", local=" + local +
+				", minio=" + minio +
+				", qiniu=" + qiniu +
+				'}';
+	}
 }

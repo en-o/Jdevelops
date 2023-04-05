@@ -1,9 +1,5 @@
 package cn.jdevelops.file.oss.api.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * minio
@@ -12,10 +8,7 @@ import lombok.experimental.Accessors;
  * @version V1.0
  * @date 2022-05-04 19:05
  */
-@Getter
-@Setter
-@ToString
-@Accessors(chain = true)
+
 public class MinioConfig {
 
     /**
@@ -46,4 +39,54 @@ public class MinioConfig {
     private String secretKey;
 
 
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+
+    public void setUploadUrl(String uploadUrl) {
+        this.uploadUrl = uploadUrl;
+    }
+
+    public Boolean getHttps() {
+        return https;
+    }
+
+    public void setHttps(Boolean https) {
+        this.https = https;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    @Override
+    public String toString() {
+        return "MinioConfig{" +
+                "uploadUrl='" + uploadUrl + '\'' +
+                ", https=" + https +
+                ", port=" + port +
+                ", accessKey='" + accessKey + '\'' +
+                ", secretKey='" + secretKey + '\'' +
+                '}';
+    }
 }

@@ -1,8 +1,5 @@
 package cn.jdevelops.file.oss.api.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -16,9 +13,7 @@ import java.util.List;
  * @version 1
  * @date 2022-04-01 14:28
  */
-@Getter
-@Setter
-@ToString
+
 public class RemoveFileDTO {
 
     /**
@@ -35,4 +30,28 @@ public class RemoveFileDTO {
      */
     @NotEmpty
     List<String> childFolder_FreshName;
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
+    }
+
+    public List<String> getChildFolder_FreshName() {
+        return childFolder_FreshName;
+    }
+
+    public void setChildFolder_FreshName(List<String> childFolder_FreshName) {
+        this.childFolder_FreshName = childFolder_FreshName;
+    }
+
+    @Override
+    public String toString() {
+        return "RemoveFileDTO{" +
+                "bucket='" + bucket + '\'' +
+                ", childFolder_FreshName=" + childFolder_FreshName +
+                '}';
+    }
 }

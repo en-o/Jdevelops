@@ -1,8 +1,5 @@
 package cn.jdevelops.file.oss.api.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -12,9 +9,7 @@ import javax.validation.constraints.Size;
  *
  * @author tn
  */
-@Getter
-@Setter
-@ToString
+
 @SuppressWarnings("all")
 public class DownloadDTO {
 
@@ -34,5 +29,27 @@ public class DownloadDTO {
 	@NotBlank
 	String childFolder_FreshName;
 
+	public String getBucket() {
+		return bucket;
+	}
 
+	public void setBucket(String bucket) {
+		this.bucket = bucket;
+	}
+
+	public String getChildFolder_FreshName() {
+		return childFolder_FreshName;
+	}
+
+	public void setChildFolder_FreshName(String childFolder_FreshName) {
+		this.childFolder_FreshName = childFolder_FreshName;
+	}
+
+	@Override
+	public String toString() {
+		return "DownloadDTO{" +
+				"bucket='" + bucket + '\'' +
+				", childFolder_FreshName='" + childFolder_FreshName + '\'' +
+				'}';
+	}
 }

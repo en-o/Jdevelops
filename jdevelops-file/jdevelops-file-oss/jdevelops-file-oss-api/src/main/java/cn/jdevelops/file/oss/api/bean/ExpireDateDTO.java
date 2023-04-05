@@ -1,8 +1,5 @@
 package cn.jdevelops.file.oss.api.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.*;
 
@@ -13,9 +10,7 @@ import javax.validation.constraints.*;
  * @version 1
  * @date 2022-04-01 14:26
  */
-@Getter
-@Setter
-@ToString
+
 public class ExpireDateDTO {
 
     /**
@@ -33,7 +28,7 @@ public class ExpireDateDTO {
      * minio: 路径/文件名
      */
     @NotBlank
-    String childFolder_FreshName;
+    String childFolderFreshName;
 
     /**
      * 过期时间 失效时间（以秒为单位，最少1秒，最大604800即7天）
@@ -42,4 +37,38 @@ public class ExpireDateDTO {
     @Max(604800)
     @NotNull
     Integer expires;
+
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
+    }
+
+    public String getChildFolderFreshName() {
+        return childFolderFreshName;
+    }
+
+    public void setChildFolderFreshName(String childFolderFreshName) {
+        this.childFolderFreshName = childFolderFreshName;
+    }
+
+    public Integer getExpires() {
+        return expires;
+    }
+
+    public void setExpires(Integer expires) {
+        this.expires = expires;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpireDateDTO{" +
+                "bucket='" + bucket + '\'' +
+                ", childFolderFreshName='" + childFolderFreshName + '\'' +
+                ", expires=" + expires +
+                '}';
+    }
 }

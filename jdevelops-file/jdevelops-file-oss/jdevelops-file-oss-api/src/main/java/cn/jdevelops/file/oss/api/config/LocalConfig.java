@@ -1,9 +1,5 @@
 package cn.jdevelops.file.oss.api.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * local
@@ -12,10 +8,7 @@ import lombok.experimental.Accessors;
  * @version V1.0
  * @date 2022-05-04 19:05
  */
-@Getter
-@Setter
-@ToString
-@Accessors(chain = true)
+
 public class LocalConfig {
 
     /**
@@ -31,4 +24,28 @@ public class LocalConfig {
      */
     private String contextPath;
 
+
+    public String getUploadDir() {
+        return uploadDir;
+    }
+
+    public void setUploadDir(String uploadDir) {
+        this.uploadDir = uploadDir;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalConfig{" +
+                "uploadDir='" + uploadDir + '\'' +
+                ", contextPath='" + contextPath + '\'' +
+                '}';
+    }
 }
