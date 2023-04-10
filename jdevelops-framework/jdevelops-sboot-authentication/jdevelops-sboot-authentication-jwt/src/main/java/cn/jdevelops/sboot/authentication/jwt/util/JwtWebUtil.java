@@ -1,16 +1,20 @@
-package cn.jdevelops.jwtweb.util;
+package cn.jdevelops.sboot.authentication.jwt.util;
 
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.exception.exception.TokenException;
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
-import cn.jdevelops.util.jwt.entity.JCookie;
 import cn.jdevelops.util.jwt.core.JwtService;
+import cn.jdevelops.util.jwt.entity.JCookie;
+import cn.jdevelops.util.jwt.exception.JwtException;
 import org.apache.commons.lang3.StringUtils;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.Optional;
+
+import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
 
 /**
  * @author tn
@@ -61,41 +65,37 @@ public class JwtWebUtil {
      * @param request request
      * @return String
      */
-    public static String getTokenSubject(HttpServletRequest request) {
+    public static String getTokenSubject(HttpServletRequest request) throws MalformedClaimException, JwtException {
         String token = JwtWebUtil.getToken(request);
         if (StringUtils.isBlank(token)) {
-            return null;
+            throw new JwtException(TOKEN_ERROR);
         }
-        try {
-            return JwtService.getSubject(token);
-        } catch (Exception e) {
-            return null;
-        }
+        return JwtService.getSubject(token);
     }
 
     /**
-     * 获取token中的 Claim 参数
+     * 获取token中的 Claim 参数 （过期也能解析）
      * @param request request
      * @param claimKey secret名
      * @return userCode
      */
-    public static String getTokenClaim(HttpServletRequest request,String claimKey){
+    public static Object getTokenClaim(HttpServletRequest request,String claimKey){
         String token = JwtWebUtil.getToken(request);
-        return JwtService.getClaim(token,claimKey);
+        return JwtService.parseJwt(token).getClaimsMap().get(claimKey);
     }
 
 
     /**
-     * 获取token中的  remark 数据并 转化成 T类型
+     * 获取token中的数据并 转化成 T类型
      * @param request request
      * @param t 返回类型 （颁发时token存储的类型）
      * @return t
      */
     public static <T> T getTokenUserInfoByRemark(HttpServletRequest request, Class<T> t ){
         String token = JwtWebUtil.getToken(request);
-        Map<String, Object> loginNames = JwtService.parseJwt(token);
-        String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
-        return GsonUtils.getGson().fromJson(remark, t);
+        JwtClaims jwtClaims = JwtService.parseJwt(token);
+        String rawJson = jwtClaims.getRawJson();
+        return GsonUtils.getGson().fromJson(rawJson, t);
     }
 
 
@@ -106,8 +106,8 @@ public class JwtWebUtil {
      * @return t
      */
     public static  <T> T  getTokenUserInfoByRemark(String token, Class<T> t ){
-        Map<String, Object> loginNames = JwtService.parseJwt(token);
-        String remark = loginNames.get(JwtConstant.TOKEN_REMARK).toString();
-        return GsonUtils.getGson().fromJson(remark, t);
+        JwtClaims jwtClaims = JwtService.parseJwt(token);
+        String rawJson = jwtClaims.getRawJson();
+        return GsonUtils.getGson().fromJson(rawJson, t);
     }
 }

@@ -1,4 +1,4 @@
-package cn.jdevelops.jwtweb.util;
+package cn.jdevelops.sboot.authentication.jwt.util;
 
 import javax.servlet.http.Cookie;
 import java.util.Optional;

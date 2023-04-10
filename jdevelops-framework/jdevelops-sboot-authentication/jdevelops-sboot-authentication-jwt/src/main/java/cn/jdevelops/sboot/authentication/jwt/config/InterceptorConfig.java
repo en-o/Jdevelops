@@ -1,6 +1,7 @@
-package cn.jdevelops.jwtweb.config;
+package cn.jdevelops.sboot.authentication.jwt.config;
 
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,8 @@ import java.util.Set;
  */
 @ConfigurationProperties(prefix = "jdevelops.jwt.web.interceptor")
 @Component
-public class InterceptorBean {
+@ConditionalOnMissingBean(InterceptorConfig.class)
+public class InterceptorConfig {
 
     /**
      * 放行 默认放行swagger，/user/login/**等路径

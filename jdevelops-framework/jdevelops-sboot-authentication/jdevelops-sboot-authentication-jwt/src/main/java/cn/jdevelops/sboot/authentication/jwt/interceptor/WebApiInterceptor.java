@@ -1,17 +1,17 @@
-package cn.jdevelops.jwtweb.interceptor;
+package cn.jdevelops.sboot.authentication.jwt.interceptor;
 
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.util.jwt.config.JwtConfig;
-import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.jwtweb.util.JwtWebUtil;
-import cn.jdevelops.jwtweb.vo.CheckVO;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
-import cn.jdevelops.jwtweb.annotation.ApiMapping;
-import cn.jdevelops.jwtweb.annotation.NotRefreshToken;
-import cn.jdevelops.util.jwt.constant.JwtConstant;
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
+import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
+import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
+import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
+import cn.jdevelops.sboot.authentication.jwt.vo.CheckVO;
 import cn.jdevelops.spi.ExtensionLoader;
+import cn.jdevelops.util.jwt.config.JwtConfig;
+import cn.jdevelops.util.jwt.constant.JwtConstant;
+import cn.jdevelops.util.jwt.core.JwtService;
 import com.alibaba.fastjson.JSON;
-import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

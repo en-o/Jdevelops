@@ -1,9 +1,8 @@
-package cn.jdevelops.jwtweb.server.impl;
+package cn.jdevelops.sboot.authentication.jwt.server.impl;
 
-
-import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.jwtweb.server.CheckTokenInterceptor;
+import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
+import cn.jdevelops.util.jwt.core.JwtService;
 
 /**
  * @author tn
@@ -15,7 +14,7 @@ public class DefaultInterceptor implements CheckTokenInterceptor {
     @Override
     public boolean checkToken(String token) {
         try {
-            return JwtService.verity(token);
+            return JwtService.validateTokenByBoolean(token);
         }catch (Exception e){
             e.printStackTrace();
         }

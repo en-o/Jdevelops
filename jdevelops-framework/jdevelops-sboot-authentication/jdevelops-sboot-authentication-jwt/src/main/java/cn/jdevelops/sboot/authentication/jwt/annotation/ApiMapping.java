@@ -1,4 +1,4 @@
-package cn.jdevelops.jwtweb.annotation;
+package cn.jdevelops.sboot.authentication.jwt.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;

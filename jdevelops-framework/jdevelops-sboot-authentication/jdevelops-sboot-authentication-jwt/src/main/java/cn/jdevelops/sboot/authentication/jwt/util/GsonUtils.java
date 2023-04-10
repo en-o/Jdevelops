@@ -16,7 +16,7 @@
  *
  */
 
-package cn.jdevelops.jwtweb.util;
+package cn.jdevelops.sboot.authentication.jwt.util;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;

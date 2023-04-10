@@ -1,6 +1,4 @@
-package cn.jdevelops.jwtweb.annotation;
-
-import org.springframework.web.bind.annotation.RequestMapping;
+package cn.jdevelops.sboot.authentication.jwt.annotation;
 
 import java.lang.annotation.*;
 

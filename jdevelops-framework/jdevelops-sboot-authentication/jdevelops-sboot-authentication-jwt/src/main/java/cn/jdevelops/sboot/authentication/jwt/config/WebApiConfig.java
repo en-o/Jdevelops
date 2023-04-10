@@ -1,6 +1,8 @@
-package cn.jdevelops.jwtweb.config;
+package cn.jdevelops.sboot.authentication.jwt.config;
+
+import cn.jdevelops.sboot.authentication.jwt.interceptor.WebApiInterceptor;
 import cn.jdevelops.util.jwt.config.JwtConfig;
-import cn.jdevelops.jwtweb.interceptor.WebApiInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,10 +21,11 @@ import java.util.Set;
  * @date 2020/6/18 16:04
  */
 @Configuration
+@ConditionalOnMissingBean(WebApiConfig.class)
 public class WebApiConfig implements WebMvcConfigurer {
 
     @Resource
-    private InterceptorBean interceptorBean;
+    private InterceptorConfig interceptorBean;
 
     @Resource
     private JwtConfig jwtConfig;

@@ -1,4 +1,4 @@
-package cn.jdevelops.jwtweb.vo;
+package cn.jdevelops.sboot.authentication.jwt.vo;
 
 
 /**

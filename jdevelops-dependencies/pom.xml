@@ -462,11 +462,6 @@
             <!-- webs -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>webs-jwt</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
                 <artifactId>webs-jwt-redis</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>

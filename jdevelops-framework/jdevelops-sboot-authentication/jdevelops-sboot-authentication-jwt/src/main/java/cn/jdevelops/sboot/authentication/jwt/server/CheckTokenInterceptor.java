@@ -1,4 +1,4 @@
-package cn.jdevelops.jwtweb.server;
+package cn.jdevelops.sboot.authentication.jwt.server;
 
 
 import cn.jdevelops.spi.SPI;
