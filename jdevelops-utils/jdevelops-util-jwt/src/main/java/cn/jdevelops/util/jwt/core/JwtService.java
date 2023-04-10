@@ -42,8 +42,14 @@ public class JwtService {
 
 
     static {
-        jwtConfig = JwtContextUtil.getBean(JwtConfig.class);
-//        jwtConfig = new JwtConfig(); // 测试用
+        try {
+            jwtConfig = JwtContextUtil.getBean(JwtConfig.class);
+        }catch (NullPointerException e){
+            logger.warn("未配置jwt项目元数据，则开始使用默认配置");
+        }
+        if(Objects.isNull(jwtConfig)){
+            jwtConfig = new JwtConfig(); // 默认
+        }
         secret = new HmacKey(jwtConfig.getTokenSecret().getBytes(StandardCharsets.UTF_8));
     }
 
@@ -213,7 +219,7 @@ public class JwtService {
      * @param token 获取token
      * @return JwtClaims
      */
-    public static JwtClaims parseJwt(String token) throws InvalidJwtException {
+    public static JwtClaims parseJwt(String token) {
         try {
             JwtConsumer jwtConsumer = getJwtConsumer();
             return jwtConsumer.processToClaims(token);
@@ -237,7 +243,7 @@ public class JwtService {
         //在JWS上设置完整保护负载的签名算法
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
         //放松secret长度要求
-        jws.setDoKeyValidation(false);
+//        jws.setDoKeyValidation(false);
         return jws;
     }
 
@@ -261,7 +267,7 @@ public class JwtService {
                 .setExpectedIssuer(jwtConfig.getIssuer()) // whom the JWT needs to have been issued by
                 .setExpectedAudience(AUDIENCE) // to whom the JWT is intended for
                 .setVerificationKey(secret) // verify the signature with the public key
-                .setRelaxVerificationKeyValidation() // 绕过对解密密钥的严格检查。
+//                .setRelaxVerificationKeyValidation() // 绕过对解密密钥的严格检查。
                 .setJwsAlgorithmConstraints( // only allow the expected signature algorithm(s) in the given context
                         AlgorithmConstraints.ConstraintType.PERMIT, AlgorithmIdentifiers.HMAC_SHA256) // which is only RS256 here
                 .build(); // create the JwtConsumer instance

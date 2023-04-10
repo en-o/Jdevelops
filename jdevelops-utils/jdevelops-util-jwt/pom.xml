@@ -13,6 +13,7 @@
     <description>
         jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
         [jwt](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
+        [tokenSecret加密方式 hmacsha256 ](http://www.jsons.cn/allencrypt/)
     </description>
     <dependencies>
         <!--   jwt     -->

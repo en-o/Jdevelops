@@ -32,7 +32,7 @@
 //            put("name", "谭宁");
 //        }};
 //        signEntity.setMap(hashMap);
-//        // eyJhbGciOiJIUzI1NiIsImtpZCI6IjRhYzRiN2Y5LTExYTctNDZhOS1iMGM0LTM5ZmMzMDUyNTY5MSJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA3NzM3MDAsImp0aSI6IjEwN1BlZXVQeEVTQUZiRjFscmliZUEiLCJpYXQiOjE2ODA2ODczMDEsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.Hdqz1K_fmNnt5sNGTr-Ud2NkMH6uILr9Sycjd-5HF7w
+//        // eyJraWQiOiJlZmFkY2Q4Mi1hNDMzLTQ4MDYtOTY0My1mOTMxNGE4OWUxNDQiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODExNzcyMDUsImp0aSI6IjB1VTJzdHJveHpNUGJ4SWVGV2x0aUEiLCJpYXQiOjE2ODEwOTA4MDUsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.P2_NAUlhZhdoVziU1rUb9x0jd31lTtsc5a3AmHrkBoU
 //        System.out.println(JwtService.generateToken(signEntity));
 //    }
 //
@@ -42,7 +42,7 @@
 //     */
 //    @Test
 //    public void generateToken2() throws JoseException {
-//        // eyJhbGciOiJIUzI1NiIsImtpZCI6ImU1MTNiYTAyLWU1Y2MtNDJhMC1hY2E2LTM5ODZjZmJkOTI3MiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA3NzM4MDUsInN1YiI6InRhbiJ9.4PCcoQyhDVjnKqb69o22n22TNZuBJBKsrrXvhgeRqgs
+//        // eyJraWQiOiI2OTNlMTdiOS05MDZjLTRlNDktYWViNy1kNTNkMzRjMjY3MTIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODExNzcyNTAsInN1YiI6InRhbiJ9.1rOBhmOjLh5UqjoWN74qKXb28AyLRQIaIJGqv-VYMBU
 //        System.out.println(JwtService.generateToken("tan"));
 //    }
 //
@@ -61,7 +61,7 @@
 //     */
 //    @Test
 //    public void validateTokenByJwtClaims() throws MalformedClaimException, JwtException {
-//        String token = "eyJraWQiOiIyMjBlOTg3ZS05ZGI0LTQzMDktYjBjMS1mNzgwYmRkMTk1NTIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA3NzQ1MDAsImp0aSI6IkRCRnp3S3BGSjEyNS0yMi1lVWVlWnciLCJpYXQiOjE2ODA2ODgxMDAsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.aQKGWQKmvYZ-rnLWr87a8bMekk_cXb-X3XYkYeao-YQ";
+//        String token = "eyJraWQiOiIxY2MzYTgzYi0wYjc4LTQxYjItYWUyNS01NjUzNDBmNDRiZWIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJzdWIiOiJ0YW4iLCJleHAiOjE2ODExNzcyNTB9.VsIrp3xYTONhv2P55O7wp5n5tWh5vKAWnqaT-64SwKg";
 //        System.out.println(JwtService.validateTokenByJwtClaims(token));
 //    }
 //
@@ -70,7 +70,8 @@
 //     */
 //    @Test
 //    public void refreshToken() throws JoseException, MalformedClaimException, JwtException {
-//        String token = "eyJraWQiOiIyMjBlOTg3ZS05ZGI0LTQzMDktYjBjMS1mNzgwYmRkMTk1NTIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA3NzQ1MDAsImp0aSI6IkRCRnp3S3BGSjEyNS0yMi1lVWVlWnciLCJpYXQiOjE2ODA2ODgxMDAsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.aQKGWQKmvYZ-rnLWr87a8bMekk_cXb-X3XYkYeao-YQ";
+//        String token = "eyJraWQiOiI2OTNlMTdiOS05MDZjLTRlNDktYWViNy1kNTNkMzRjMjY3MTIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODExNzcyNTAsInN1YiI6InRhbiJ9.1rOBhmOjLh5UqjoWN74qKXb28AyLRQIaIJGqv-VYMBU";
+//        // eyJraWQiOiIxY2MzYTgzYi0wYjc4LTQxYjItYWUyNS01NjUzNDBmNDRiZWIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJzdWIiOiJ0YW4iLCJleHAiOjE2ODExNzcyNTB9.VsIrp3xYTONhv2P55O7wp5n5tWh5vKAWnqaT-64SwKg
 //        System.out.println(JwtService.refreshToken(token));
 //    }
 //
@@ -82,7 +83,7 @@
 //     */
 //    @Test
 //    public void getSubject() throws JoseException, MalformedClaimException, JwtException {
-//        String token = "eyJraWQiOiIyMjBlOTg3ZS05ZGI0LTQzMDktYjBjMS1mNzgwYmRkMTk1NTIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA3NzQ1MDAsImp0aSI6IkRCRnp3S3BGSjEyNS0yMi1lVWVlWnciLCJpYXQiOjE2ODA2ODgxMDAsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.aQKGWQKmvYZ-rnLWr87a8bMekk_cXb-X3XYkYeao-YQ";
+//        String token = "eyJraWQiOiIxY2MzYTgzYi0wYjc4LTQxYjItYWUyNS01NjUzNDBmNDRiZWIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJzdWIiOiJ0YW4iLCJleHAiOjE2ODExNzcyNTB9.VsIrp3xYTONhv2P55O7wp5n5tWh5vKAWnqaT-64SwKg";
 //        System.out.println(JwtService.getSubject(token));
 //    }
 //
@@ -92,7 +93,7 @@
 //     */
 //    @Test
 //    public void parseJwt() throws InvalidJwtException {
-//        String token = "eyJraWQiOiI0MmZiZGY3MS0yMTc0LTQ0ZGMtYTExNC0yYzgxYWM4ZWY3NzIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJleHAiOjE2ODA2ODg0MTEsImp0aSI6InVPSlRJR013MW1SaTJoSE8xN0t2YkEiLCJpYXQiOjE2ODA2ODgyOTIsInN1YiI6InRhbiIsIm5hbWUiOiLosK3lroEifQ.c5u7g1FQ8Aq04W_l_Tfxd1cYHWBPe3rjjWMaLR5L2T0";
+//        String token = "eyJraWQiOiIxY2MzYTgzYi0wYjc4LTQxYjItYWUyNS01NjUzNDBmNDRiZWIiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqZGV2ZWxvcHMiLCJhdWQiOiJqZGV2ZWxvcHMiLCJzdWIiOiJ0YW4iLCJleHAiOjE2ODExNzcyNTB9.VsIrp3xYTONhv2P55O7wp5n5tWh5vKAWnqaT-64SwKg";
 //        System.out.println(JwtService.parseJwt(token));
 //    }
 //

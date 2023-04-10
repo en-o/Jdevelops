@@ -21,6 +21,7 @@ public class JwtConfig {
 
     /**
      * token私钥
+     * ps: hmacsha256(你的密钥)
      */
     private String tokenSecret;
 
@@ -60,7 +61,7 @@ public class JwtConfig {
 
     public String getTokenSecret() {
         if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
-            return "jdevelops";
+            return "b30715ff9b4d60c4dff8044acfb33ba091544b2e21825672edc38799f52f1895";
         }
         return tokenSecret;
     }
@@ -79,17 +80,7 @@ public class JwtConfig {
         return tokenName;
     }
 
-    @Override
-    public String toString() {
-        return "JwtConfig{" +
-                "tokenSecret='" + tokenSecret + '\'' +
-                ", expireTime=" + expireTime +
-                ", loginExpireTime=" + loginExpireTime +
-                ", cookie=" + cookie +
-                ", tokenName='" + tokenName + '\'' +
-                ", issuer='" + issuer + '\'' +
-                '}';
-    }
+
 
     public void setTokenSecret(String tokenSecret) {
         this.tokenSecret = tokenSecret;
@@ -136,6 +127,19 @@ public class JwtConfig {
 
     public void setIssuer(String issuer) {
         this.issuer = issuer;
+    }
+
+
+    @Override
+    public String toString() {
+        return "JwtConfig{" +
+                "tokenSecret='" + tokenSecret + '\'' +
+                ", expireTime=" + expireTime +
+                ", loginExpireTime=" + loginExpireTime +
+                ", cookie=" + cookie +
+                ", tokenName='" + tokenName + '\'' +
+                ", issuer='" + issuer + '\'' +
+                '}';
     }
 
 }
