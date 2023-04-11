@@ -4,7 +4,7 @@ package cn.jdevelops.util.jwt.exception;
  * JwtException
  * @author tnnn
  */
-public class JwtException extends Exception{
+public class JwtException extends RuntimeException{
     public JwtException(String message)
     {
         super(message);

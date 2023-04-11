@@ -1,0 +1,1 @@
+defaultInterceptor=cn.jdevelops.sboot.authentication.jredis.interceptor.RedisInterceptor

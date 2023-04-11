@@ -22,8 +22,13 @@ public class ExpiredRedisException extends BusinessException {
         super(message);
     }
 
+
     public ExpiredRedisException(TokenExceptionCodeEnum constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
+    }
+
+    public ExpiredRedisException(UserExceptionEnum constantEnum, Throwable cause) {
+        super(constantEnum.getMessage(), cause, constantEnum.getCode());
     }
 
     public ExpiredRedisException(UserExceptionEnum constantEnum) {

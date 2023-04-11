@@ -1,9 +1,9 @@
 package cn.jdevelops.util.jwt.entity;
 
 
-import lombok.Builder;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 用户登录签名办法token的数据
@@ -12,7 +12,6 @@ import java.util.Map;
  * @version V1.0
  * @date 2022-07-28 15:14
  */
-@Builder
 public class SignEntity{
 
     /**
@@ -25,14 +24,38 @@ public class SignEntity{
      */
     Map<String, Object> map;
 
+    /**
+     * redis用 唯一登录 ，以前的会被挤下线 （默认false）
+     */
+    Boolean alwaysOnline;
 
 
     public SignEntity() {
     }
 
+    public SignEntity(String subject, Map<String, Object> map, Boolean alwaysOnline) {
+        this.subject = subject;
+        this.map = map;
+        this.alwaysOnline = alwaysOnline;
+    }
+
+    public SignEntity(String subject, Boolean alwaysOnline) {
+        this.subject = subject;
+        this.alwaysOnline = alwaysOnline;
+    }
+
+    /**
+     * 默认false
+     */
+    public SignEntity(String subject) {
+        this.subject = subject;
+        this.alwaysOnline = false;
+    }
+
     public SignEntity(String subject, Map<String, Object> map) {
         this.subject = subject;
         this.map = map;
+        this.alwaysOnline = false;
     }
 
     @Override
@@ -40,6 +63,7 @@ public class SignEntity{
         return "SignEntity{" +
                 "subject='" + subject + '\'' +
                 ", map=" + map +
+                ", alwaysOnline=" + alwaysOnline +
                 '}';
     }
 
@@ -60,4 +84,14 @@ public class SignEntity{
         this.map = map;
     }
 
+    public Boolean isAlwaysOnline() {
+        if(Objects.isNull(alwaysOnline)){
+            return false;
+        }
+        return alwaysOnline;
+    }
+
+    public void setAlwaysOnline(Boolean alwaysOnline) {
+        this.alwaysOnline = alwaysOnline;
+    }
 }

@@ -14,7 +14,6 @@
     <modules>
         <module>webs-socket</module>
         <module>webs-springs</module>
-        <module>webs-jwt-redis</module>
         <module>webs-resttemplate</module>
     </modules>
 
