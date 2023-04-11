@@ -1,1 +1,1 @@
-defaultInterceptor=cn.jdevelops.jwtweb.server.impl.DefaultInterceptor
+defaultInterceptor=cn.jdevelops.sboot.authentication.jwt.server.impl.DefaultInterceptor
