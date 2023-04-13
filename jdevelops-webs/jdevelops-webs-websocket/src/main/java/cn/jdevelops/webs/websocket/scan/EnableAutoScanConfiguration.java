@@ -1,9 +1,9 @@
-package cn.jdevelops.websocket.core.scan;
+package cn.jdevelops.webs.websocket.scan;
 
-import cn.jdevelops.websocket.core.config.AuthenticationConfigurator;
-import cn.jdevelops.websocket.core.config.WebSocketConfig;
-import cn.jdevelops.websocket.core.service.CacheService;
-import cn.jdevelops.websocket.core.service.WebSocketServer;
+import cn.jdevelops.webs.websocket.config.AuthenticationConfigurator;
+import cn.jdevelops.webs.websocket.config.WebSocketConfig;
+import cn.jdevelops.webs.websocket.service.CacheService;
+import cn.jdevelops.webs.websocket.service.WebSocketServer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;

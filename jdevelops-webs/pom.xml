@@ -11,10 +11,20 @@
 
     <artifactId>jdevelops-webs</artifactId>
     <packaging>pom</packaging>
+
+    <description>
+        web请求相关
+        http
+        websocket
+        sse
+        等
+    </description>
+
     <modules>
         <module>webs-socket</module>
         <module>webs-springs</module>
         <module>webs-resttemplate</module>
+        <module>jdevelops-webs-websocket</module>
     </modules>
 
     <dependencies>

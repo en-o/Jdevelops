@@ -120,16 +120,20 @@ public class JwtService {
      * @return false 无效token
      * @throws InvalidJwtException InvalidJwtException
      */
-    public static boolean validateTokenByBoolean(String token) throws MalformedClaimException {
+    public static boolean validateTokenByBoolean(String token)  {
         try {
             getJwtConsumer().processToClaims(token);
             return true;
         } catch (InvalidJwtException e) {
-            if (e.hasExpired()){
-                logger.error("JWT expired at {}", e.getJwtContext().getJwtClaims().getExpirationTime());
-            }
-            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
-                logger.error("JWT had wrong audience: {}", e.getJwtContext().getJwtClaims().getAudience());
+            try {
+                if (e.hasExpired()){
+                    logger.error("JWT expired at {}", e.getJwtContext().getJwtClaims().getExpirationTime());
+                }
+                if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
+                    logger.error("JWT had wrong audience: {}", e.getJwtContext().getJwtClaims().getAudience());
+                }
+            } catch (MalformedClaimException ex) {
+                return false;
             }
         }
         return false;

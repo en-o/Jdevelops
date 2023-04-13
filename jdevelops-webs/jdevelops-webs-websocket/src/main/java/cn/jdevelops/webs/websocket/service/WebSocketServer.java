@@ -1,8 +1,8 @@
-package cn.jdevelops.websocket.core.service;
+package cn.jdevelops.webs.websocket.service;
 
-import cn.jdevelops.websocket.core.config.AuthenticationConfigurator;
-import cn.jdevelops.websocket.core.constant.CommonConstant;
-import cn.jdevelops.websocket.core.util.SocketUtil;
+import cn.jdevelops.webs.websocket.CommonConstant;
+import cn.jdevelops.webs.websocket.config.AuthenticationConfigurator;
+import cn.jdevelops.webs.websocket.util.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

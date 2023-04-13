@@ -1,4 +1,4 @@
-package cn.jdevelops.websocket.core.constant;
+package cn.jdevelops.webs.websocket;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,12 +1,13 @@
-package cn.jdevelops.websocket.core.service;
+package cn.jdevelops.webs.websocket.service;
 
-import cn.jdevelops.websocket.core.config.WebSocketConfig;
+import cn.jdevelops.webs.websocket.config.WebSocketConfig;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
 import java.util.*;
 
-import static cn.jdevelops.websocket.core.cache.LocalCache.sessionPools;
+import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
+
 
 /**
  * 缓存服务

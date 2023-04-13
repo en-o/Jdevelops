@@ -1,4 +1,4 @@
-package cn.jdevelops.websocket.core.util;
+package cn.jdevelops.webs.websocket.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.jdevelops.websocket.core.constant.CommonConstant.VERIFY_PATH_NO;
-import static cn.jdevelops.websocket.core.constant.CommonConstant.VERIFY_PATH_YES;
+import static cn.jdevelops.webs.websocket.CommonConstant.VERIFY_PATH_NO;
+import static cn.jdevelops.webs.websocket.CommonConstant.VERIFY_PATH_YES;
 
 /**
  * SocketUtil

@@ -1,4 +1,4 @@
-package cn.jdevelops.websocket.core.config;
+package cn.jdevelops.webs.websocket.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

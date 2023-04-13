@@ -472,7 +472,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>webs-socket-core</artifactId>
+                <artifactId>jdevelops-webs-websocket</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

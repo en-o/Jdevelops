@@ -1,9 +1,9 @@
-package cn.jdevelops.websocket.core.config;
+package cn.jdevelops.webs.websocket.config;
 
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.websocket.core.constant.CommonConstant;
-import cn.jdevelops.websocket.core.util.SocketUtil;
+import cn.jdevelops.webs.websocket.CommonConstant;
+import cn.jdevelops.webs.websocket.util.SocketUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.ServerEndpointConfig;
 import java.util.Objects;
 
-import static cn.jdevelops.websocket.core.cache.LocalCache.sessionPools;
+import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
+
 
 /**
  * 鉴权  默认所有接口鉴权和 注入 (https://www.zhihu.com/question/509998275)
@@ -60,7 +61,8 @@ public class AuthenticationConfigurator extends ServerEndpointConfig.Configurato
         if(Objects.isNull(token)){
             token = request.getHeader(JwtConstant.TOKEN);
         }
-        boolean verity = JwtService.verity(token);
+        // todo 这里要提出来让别人可以在项目里自定义
+        boolean verity = JwtService.validateTokenByBoolean(token);
         // 这一步好像没什么用，记不得以前写来是为什么的了
         if(!verity) {
             String topic = request.getServletPath();
