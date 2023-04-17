@@ -1,7 +1,7 @@
 package cn.jdevelops.sboot.authentication.jredis.interceptor;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.service.RedisService;
+import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
@@ -26,16 +26,16 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public boolean checkToken(String token) {
-        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
-        StorageUserTokenEntity storageUserTokenEntity = redisService.verifyUserTokenByToken(token);
+        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
+        StorageUserTokenEntity storageUserTokenEntity = jwtRedisService.verifyUserTokenByToken(token);
         return Objects.nonNull(storageUserTokenEntity) && storageUserTokenEntity.getToken().equalsIgnoreCase(token);
     }
 
     @Override
     public void refreshToken(String subject) {
        try {
-           RedisService redisService = JwtContextUtil.getBean(RedisService.class);
-           redisService.refreshUserToken(subject);
+           JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
+           jwtRedisService.refreshUserToken(subject);
        }catch (Exception e){
            LOG.warn("token刷新失败:", e);
        }
@@ -43,7 +43,7 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public void checkUserStatus(String subject) throws ExpiredRedisException {
-        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
-        redisService.verifyUserStatus(subject);
+        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
+        jwtRedisService.verifyUserStatus(subject);
     }
 }

@@ -1,7 +1,7 @@
 package cn.jdevelops.sboot.authentication.jredis.util;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.service.RedisService;
+import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.JwtException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
@@ -54,7 +54,7 @@ public class JwtRedisUtil {
      * @return 签名
      */
     public static String sign(SignEntity subject) {
-        RedisService redisService = JwtContextUtil.getBean(RedisService.class);
+        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         // 生成token
         try {
             String sign = JwtService.generateToken(subject);
@@ -63,7 +63,7 @@ public class JwtRedisUtil {
                     .alwaysOnline(subject.isAlwaysOnline())
                     .token(sign)
                     .build();
-            redisService.storageUserToken(build);
+            jwtRedisService.storageUserToken(build);
             return sign;
         } catch (JoseException e) {
             throw new JwtException("登录异常，请重新登录",e);
@@ -79,9 +79,9 @@ public class JwtRedisUtil {
      */
     public static boolean verity(String token) {
         try {
-            RedisService redisService = JwtContextUtil.getBean(RedisService.class);
+            JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
             JwtClaims jwtClaims = JwtService.validateTokenByJwtClaims(token);
-            redisService.refreshUserToken(jwtClaims.getSubject());
+            jwtRedisService.refreshUserToken(jwtClaims.getSubject());
             return true;
         } catch (Exception e) {
             logger.error("token过期");

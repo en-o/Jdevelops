@@ -6,7 +6,7 @@ import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.role.UserRole;
-import cn.jdevelops.sboot.authentication.jredis.service.RedisService;
+import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jredis.util.JwtRedisUtil;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
@@ -38,9 +38,9 @@ import static cn.jdevelops.api.result.emums.UserExceptionEnum.*;
  */
 @Service
 @ConditionalOnMissingBean
-public class RedisServiceImpl implements RedisService {
+public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RedisServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JwtJwtRedisServiceImpl.class);
 
     /**
      * reids

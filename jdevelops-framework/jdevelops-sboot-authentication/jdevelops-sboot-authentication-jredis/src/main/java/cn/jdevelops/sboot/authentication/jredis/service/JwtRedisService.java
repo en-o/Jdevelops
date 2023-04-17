@@ -18,7 +18,7 @@ import java.util.List;
  * @version V1.0
  * @date 2022-07-22 14:06
  */
-public interface RedisService {
+public interface JwtRedisService {
 
     /**
      * 存放 用户TOKEN
