@@ -475,12 +475,6 @@
                 <artifactId>jdevelops-webs-websocket</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>webs-springs</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-
 
 
             <!-- 工具组件-->

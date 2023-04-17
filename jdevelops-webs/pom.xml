@@ -21,7 +21,6 @@
     </description>
 
     <modules>
-        <module>webs-springs</module>
         <module>jdevelops-webs-websocket</module>
         <module>jdevelops-webs-resttemplate</module>
     </modules>
