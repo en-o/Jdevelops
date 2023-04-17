@@ -7,7 +7,7 @@
 ```maven
     <dependency>
        <groupId>cn.jdevelops</groupId>
-       <artifactId>search-es</artifactId>
+       <artifactId>jdevelops-search-es</artifactId>
        <version>2.0.0</version>
     </dependency>
 ```

@@ -5,18 +5,14 @@
     <parent>
         <artifactId>jdevelops</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jdevelops-caches</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>caches-jpa</module>
-        <module>caches-mybatis</module>
-        <module>caches-redis</module>
-        <module>caches-auto-schema</module>
-        <module>caches-jdbctemplate</module>
+        <module>jdevelops-caches-redis</module>
     </modules>
 
 

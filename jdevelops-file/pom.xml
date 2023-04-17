@@ -5,17 +5,15 @@
     <parent>
         <artifactId>jdevelops</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <artifactId>jdevelops-file</artifactId>
 
     <modules>
-        <!-- 文件相关API-->
-        <module>oss-api</module>
-        <!-- 文件相关驱动-->
-        <module>oss-driver</module>
+        <!-- 文件存储-->
+        <module>jdevelops-file-oss</module>
     </modules>
 
     <properties>
@@ -23,12 +21,6 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+
 
 </project>

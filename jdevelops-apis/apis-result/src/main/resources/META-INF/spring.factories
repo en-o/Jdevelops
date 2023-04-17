@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  cn.jdevelops.result.config.SpringExtConfiguration,\
-  cn.jdevelops.result.config.ExceptionConfiguration

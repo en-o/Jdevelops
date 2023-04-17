@@ -1,0 +1,87 @@
+package cn.jdevelops.file.oss.api.bean;
+
+
+
+/**
+ * 文件地址
+ *
+ * @author tn
+ * @date 2021-03-03 14:43
+ */
+
+public class FilePathResult {
+
+	/**
+	 * 相对路径
+	 */
+	private String relativePath;
+
+	/**
+	 * 绝对路径
+	 */
+	private String absolutePath;
+
+	/**
+	 * 原本对象的名称
+	 */
+	private String originalName;
+
+	/**
+	 * 文件服务器中的新文件名
+	 */
+	private String freshName;
+
+
+	public FilePathResult() {
+	}
+
+	public FilePathResult(String relativePath, String absolutePath, String originalName, String freshName) {
+		this.relativePath = relativePath;
+		this.absolutePath = absolutePath;
+		this.originalName = originalName;
+		this.freshName = freshName;
+	}
+
+	public String getRelativePath() {
+		return relativePath;
+	}
+
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
+
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
+	}
+
+	public String getOriginalName() {
+		return originalName;
+	}
+
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
+	}
+
+	public String getFreshName() {
+		return freshName;
+	}
+
+	public void setFreshName(String freshName) {
+		this.freshName = freshName;
+	}
+
+
+	@Override
+	public String toString() {
+		return "FilePathResult{" +
+				"relativePath='" + relativePath + '\'' +
+				", absolutePath='" + absolutePath + '\'' +
+				", originalName='" + originalName + '\'' +
+				", freshName='" + freshName + '\'' +
+				'}';
+	}
+}

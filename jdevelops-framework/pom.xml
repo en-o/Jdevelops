@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.jdevelops</groupId>
+        <artifactId>jdevelops</artifactId>
+        <version>2.0.7</version>
+    </parent>
+
+    <artifactId>jdevelops-framework</artifactId>
+    <packaging>pom</packaging>
+    <description>
+        该包是技术组件，每个子包，代表一个组件 starter
+    </description>
+    <modules>
+        <!-- 公共依赖-->
+        <module>jdevelops-common-env</module>
+        <!-- web -->
+        <module>jdevelops-sboot-web</module>
+        <module>jdevelops-scloud-web</module>
+        <!--rpc-->
+        <module>jdevelops-sboot-rpc</module>
+        <!--db-->
+        <module>jdevelops-sboot-jpa</module>
+        <module>jdevelops-sboot-jdbctemplate</module>
+        <!-- 接口文档 -->
+        <module>jdevelops-sboot-swagger</module>
+        <!--认证-->
+        <module>jdevelops-sboot-authentication</module>
+        <module>jdevelops-sboot-websocket</module>
+    </modules>
+
+</project>

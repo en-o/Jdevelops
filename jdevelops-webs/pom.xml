@@ -5,18 +5,24 @@
     <parent>
         <artifactId>jdevelops</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jdevelops-webs</artifactId>
     <packaging>pom</packaging>
+
+    <description>
+        web请求相关
+        http
+        websocket
+        sse
+        等
+    </description>
+
     <modules>
-        <module>webs-jwt</module>
-        <module>webs-socket</module>
-        <module>webs-springs</module>
-        <module>webs-jwt-redis</module>
-        <module>webs-resttemplate</module>
+        <module>jdevelops-webs-websocket</module>
+        <module>jdevelops-webs-resttemplate</module>
     </modules>
 
     <dependencies>

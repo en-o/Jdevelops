@@ -7,17 +7,10 @@
     <groupId>cn.jdevelops</groupId>
     <artifactId>jdevelops</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.6</version>
+    <version>2.0.7</version>
     <name>jdevelops</name>
     <description>开发用的小组件</description>
     <url>https://github.com/en-o/Jdevelops</url>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.9</version>
-    </parent>
-
 
     <organization>
         <name>tan</name>
@@ -48,12 +41,12 @@
 
     <!--  子模块 -->
     <modules>
+        <!-- 依赖管理 -->
+        <module>jdevelops-dependencies</module>
         <!-- 工具模块 -->
         <module>jdevelops-utils</module>
         <!-- bean模块 -->
         <module>jdevelops-beans</module>
-        <!-- 文档模块 -->
-        <module>jdevelops-docs</module>
         <!-- 日志 -->
         <module>jdevelops-logs</module>
         <!-- 数据模块 -->
@@ -66,10 +59,6 @@
         <module>jdevelops-search</module>
         <!-- web模块 -->
         <module>jdevelops-webs</module>
-        <!-- cloud相关 -->
-        <module>jdevelops-cloud</module>
-        <!-- starter  -->
-        <module>jdevelops-starters</module>
         <!-- 短信-->
         <module>jdevelops-sms</module>
         <!-- SPI -->
@@ -80,250 +69,39 @@
         <module>jdevelops-delay</module>
         <!-- 定时器 -->
         <module>jdevelops-quartz</module>
+        <!-- starter (jdevelops-starters将废弃删除) -->
+        <module>jdevelops-framework</module>
+        <!--数据访问层-->
+        <module>jdevelops-data</module>
+        <!-- 事件发布订阅 -->
+        <module>jdevelops-event</module>
     </modules>
 
     <properties>
-        <argLine>-Dfile.encoding=UTF-8</argLine>
+        <jdevelops.last.version>2.0.7</jdevelops.last.version>
+        <!-- spring  -->
+        <spring.boot.version>2.7.9</spring.boot.version>
+        <!-- jdk -->
         <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jdevelops.last.version>2.0.6</jdevelops.last.version>
-        <knife4j.version>3.0.3</knife4j.version>
-        <spring-core.version>5.3.21</spring-core.version>
-        <spring-cloud.version>2021.0.1</spring-cloud.version>
-        <!--https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E-->
-        <alibaba-cloud.version>2021.0.1.0</alibaba-cloud.version>
-        <springfox.version>3.0.0</springfox.version>
-        <swagger-models.version>1.6.6</swagger-models.version>
-        <swagger.version>2.9.2</swagger.version>
-        <lombok.version>1.18.22</lombok.version>
-        <mysql.version>8.0.30</mysql.version>
-        <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
-        <fastjson.version>1.2.83</fastjson.version>
-        <jackson.version>2.14.0</jackson.version>
-        <joda-time.version>2.10.6</joda-time.version>
-        <guava.version>31.1-jre</guava.version>
-        <hutool.version>5.8.8</hutool.version>
-        <validation.version>2.0.1.Final</validation.version>
-        <gson.version>2.9.1</gson.version>
-        <aspect.version>1.9.5</aspect.version>
-        <java-jwt.version>4.0.0</java-jwt.version>
-        <commons-lang3.version>3.12.0</commons-lang3.version>
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <commons-logging.version>1.2</commons-logging.version>
-        <soul.version>2.2.1</soul.version>
-        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
-        <skipTests>false</skipTests>
-        <sms.aliyun.version>2.0.8</sms.aliyun.version>
-        <elasticsearch.version>7.15.0</elasticsearch.version>
-        <lucene-queryparser.version>8.11.0</lucene-queryparser.version>
-        <skywalking.version>8.8.0</skywalking.version>
-        <tlog.version>1.3.6</tlog.version>
-        <p6spy.version>3.9.1</p6spy.version>
-        <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+        <!-- Maven 相关 -->
+        <encoding.version>UTF-8</encoding.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
+        <lombok.version>1.18.24</lombok.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <project.build.sourceEncoding>${encoding.version}</project.build.sourceEncoding>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <weixin-java-miniapp.version>4.3.8.B</weixin-java-miniapp.version>
-        <openfeign.version>3.0.5</openfeign.version>
-        <bcpkix-jdk15on.version>1.69</bcpkix-jdk15on.version>
-        <okhttp3.version>4.9.3</okhttp3.version>
-        <dom4j.version>2.1.3</dom4j.version>
-        <!--http://dromara.gitee.io/image-combiner/-->
-        <image-combiner.version>2.3.3</image-combiner.version>
+        <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+
+        <!-- 测试 -->
+        <skipTests>false</skipTests>
+
     </properties>
 
-    <!-- 子项目强行依赖   -->
-    <dependencies>
-        <!--   get set sl4j 依赖  -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <!--  配置文件相关  -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--    参数校验    -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- 单元测试 start -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- 单元测试 end -->
-
-
-    </dependencies>
-
-
-    <!--
-        只是声明依赖，并不实现引入
-
-        管理jar包的版本，让子项目中引用一个依赖而不用显示的列出版本号。
-        Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，
-        然后它就会使用在这个dependencyManagement元素中指定的版本号
-    -->
-    <dependencyManagement>
-        <dependencies>
-            <!--springcloud版本管理依赖-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <!-- 依赖的类型 -->
-                <type>pom</type>
-                <!-- 使用import来将 项目（dependencies） 做为依赖模块导入自己项目 -->
-                <scope>import</scope>
-            </dependency>
-
-            <!--springcloud alibaba版本管理依赖-->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${alibaba-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- 数据库依赖 -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
-            </dependency>
-
-            <!-- alibaba json -->
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <!-- jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-
-            <!-- 时间类 - 线程安全 -->
-            <dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>${joda-time.version}</version>
-            </dependency>
-
-            <!-- guava -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-
-            <!-- json -->
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
-            </dependency>
-
-
-            <!-- apache beanutils -->
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
-
-            <!-- apache 常用工具 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-
-            <!-- hutool -->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
-            </dependency>
-
-            <!-- swagger -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-
-            <!--   jwt     -->
-            <dependency>
-                <groupId>com.auth0</groupId>
-                <artifactId>java-jwt</artifactId>
-                <version>${java-jwt.version}</version>
-            </dependency>
-
-            <!-- 切面 -->
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${aspect.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${aspect.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-boot-web</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-boot-web-jpa</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>starters-jdevelops-web</artifactId>
-                <version>${jdevelops.last.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <!--开源地址-->
+    <!-- 开源地址 -->
     <scm>
         <!-- 发布分支 -->
         <tag>master</tag>
@@ -356,7 +134,7 @@
         </repository>-->
     </distributionManagement>
 
-    <!--Maven远程仓库设置 非必要，可以删除-->
+    <!-- Maven远程仓库设置 非必要，可以删除 -->
     <repositories>
         <repository>
             <id>public</id>
@@ -368,7 +146,60 @@
         </repository>
     </repositories>
 
+    <!-- 强制依赖-->
+    <dependencies>
+        <!-- 单元测试 start -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- 单元测试 end -->
+        <!--    参数校验    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!--  用于生成自定义的 Spring @ConfigurationProperties 配置类的说明-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+    </dependencies>
 
+    <!--  依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-dependencies</artifactId>
+                <version>${jdevelops.last.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 打包 -->
     <build>
         <plugins>
             <!-- 将源码一并打包 -->
