@@ -17,12 +17,12 @@ import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
  * @date 2022-12-10 22:25
  */
 @Service
-public class CacheService {
+public class WebScoketCacheService {
 
 
     public final WebSocketConfig webSocketConfig;
 
-    public CacheService(WebSocketConfig webSocketConfig) {
+    public WebScoketCacheService(WebSocketConfig webSocketConfig) {
         this.webSocketConfig = webSocketConfig;
     }
 

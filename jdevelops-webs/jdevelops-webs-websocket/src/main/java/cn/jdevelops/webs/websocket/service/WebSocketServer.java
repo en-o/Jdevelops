@@ -1,10 +1,11 @@
 package cn.jdevelops.webs.websocket.service;
 
 import cn.jdevelops.webs.websocket.CommonConstant;
-import cn.jdevelops.webs.websocket.config.AuthenticationConfigurator;
+import cn.jdevelops.webs.websocket.config.WebSocketAuthenticationConfigurator;
 import cn.jdevelops.webs.websocket.util.SocketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -29,14 +30,15 @@ import java.util.concurrent.locks.ReentrantLock;
  * @date 2020-07-08 12:36
  */
 @Component
-@ServerEndpoint(value = "/socket/{ver}/{name}", configurator = AuthenticationConfigurator.class)
+@ConditionalOnMissingBean(WebSocketServer.class)
+@ServerEndpoint(value = "/socket/{ver}/{name}", configurator = WebSocketAuthenticationConfigurator.class)
 public class WebSocketServer {
 
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
 
-    public final CacheService cacheService;
+    public final WebScoketCacheService cacheService;
 
 
     /**
@@ -44,7 +46,7 @@ public class WebSocketServer {
      */
     private static AtomicInteger online = new AtomicInteger();
 
-    public WebSocketServer(CacheService cacheService) {
+    public WebSocketServer(WebScoketCacheService cacheService) {
         this.cacheService = cacheService;
     }
 

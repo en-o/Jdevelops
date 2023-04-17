@@ -1,5 +1,6 @@
 package cn.jdevelops.webs.websocket.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  */
 
 @ConfigurationProperties(prefix = "jdevelops.websocket")
+@ConditionalOnMissingBean(WebSocketConfig.class)
 @Component
 public class WebSocketConfig {
 

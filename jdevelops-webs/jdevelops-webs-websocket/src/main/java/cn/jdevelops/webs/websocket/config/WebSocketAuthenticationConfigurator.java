@@ -23,14 +23,14 @@ import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
  * @author https://blog.csdn.net/lovo1/article/details/103852900
  * */
 @Component
-public class AuthenticationConfigurator extends ServerEndpointConfig.Configurator implements ApplicationContextAware {
+public class WebSocketAuthenticationConfigurator extends ServerEndpointConfig.Configurator implements ApplicationContextAware {
 
 
     private static ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        AuthenticationConfigurator.applicationContext = applicationContext;
+        WebSocketAuthenticationConfigurator.applicationContext = applicationContext;
     }
 
 
