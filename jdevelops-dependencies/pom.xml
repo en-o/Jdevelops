@@ -467,7 +467,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>webs-socket-client</artifactId>
+                <artifactId>jdevelops-sboot-websocket</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

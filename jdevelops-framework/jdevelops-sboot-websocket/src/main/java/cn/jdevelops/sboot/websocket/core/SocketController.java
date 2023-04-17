@@ -1,6 +1,6 @@
-package cn.jdevelops.websocket.client.controller;
+package cn.jdevelops.sboot.websocket.core;
 
-import cn.jdevelops.websocket.core.service.WebSocketServer;
+import cn.jdevelops.webs.websocket.service.WebSocketServer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
