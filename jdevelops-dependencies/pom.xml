@@ -462,7 +462,7 @@
             <!-- webs -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>webs-resttemplate</artifactId>
+                <artifactId>jdevelops-webs-resttemplate</artifactId>
                 <version>${jdevelops.last.version}</version>
             </dependency>
             <dependency>

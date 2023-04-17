@@ -1,4 +1,4 @@
-package cn.jdevelops.http.resttemplate;
+package cn.jdevelops.webs.resttemplate.handler;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

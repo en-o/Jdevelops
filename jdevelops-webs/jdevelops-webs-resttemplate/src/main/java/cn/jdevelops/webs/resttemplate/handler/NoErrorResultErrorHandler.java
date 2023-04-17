@@ -1,4 +1,4 @@
-package cn.jdevelops.http.resttemplate;
+package cn.jdevelops.webs.resttemplate.handler;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;

@@ -1,6 +1,8 @@
-package cn.jdevelops.http.resttemplate;
+package cn.jdevelops.webs.resttemplate.config;
 
-import cn.jdevelops.http.RestTemplateUtils;
+import cn.jdevelops.webs.resttemplate.core.RestTemplateUtils;
+import cn.jdevelops.webs.resttemplate.handler.MyMappingJackson2HttpMessageConverter;
+import cn.jdevelops.webs.resttemplate.handler.NoErrorResultErrorHandler;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;

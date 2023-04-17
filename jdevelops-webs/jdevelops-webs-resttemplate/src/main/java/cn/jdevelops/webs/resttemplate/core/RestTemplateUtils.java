@@ -1,4 +1,4 @@
-package cn.jdevelops.http;
+package cn.jdevelops.webs.resttemplate.core;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,6 @@ import java.util.Map;
 public class RestTemplateUtils {
 
     private final RestTemplate restTemplate;
-
 
     public RestTemplateUtils(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
