@@ -1,7 +1,6 @@
 package cn.jdevelops.file.oss.api.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
 
 /**
  * 自定义异常
@@ -9,8 +8,6 @@ import lombok.Getter;
  * @author tn
  * @date 2021-01-22 14:15
  */
-@AllArgsConstructor
-@Getter
 public class FileException extends RuntimeException {
 
     public FileException(String message) {
@@ -28,4 +25,8 @@ public class FileException extends RuntimeException {
     protected FileException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
+    public FileException() {
+    }
+
 }

@@ -73,7 +73,7 @@ public class JwtRedisUtil {
 
     /**
      * token  验证token是否过期,
-     * 如果未过期则刷新缓存中的token
+     * 如果未过期(jwt本身过期状态)则刷新缓存中的token
      * @param token token
      * @return true:没过期,且刷新缓存
      */
