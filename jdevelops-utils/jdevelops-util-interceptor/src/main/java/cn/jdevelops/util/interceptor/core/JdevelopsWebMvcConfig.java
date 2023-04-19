@@ -1,14 +1,8 @@
 package cn.jdevelops.util.interceptor.core;
 
 
-import cn.jdevelops.util.interceptor.api.ApiAfterInterceptor;
-import cn.jdevelops.util.interceptor.api.ApiAsyncInterceptor;
-import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
-import cn.jdevelops.util.interceptor.api.ApiFinallyInterceptor;
-import cn.jdevelops.util.interceptor.chain.ApiAfterInterceptorChain;
-import cn.jdevelops.util.interceptor.chain.ApiAsyncInterceptorChain;
-import cn.jdevelops.util.interceptor.chain.ApiBeforeInterceptorChain;
-import cn.jdevelops.util.interceptor.chain.ApiFinallyInterceptorChain;
+import cn.jdevelops.util.interceptor.api.*;
+import cn.jdevelops.util.interceptor.chain.*;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -37,20 +31,25 @@ public class JdevelopsWebMvcConfig implements WebMvcConfigurer {
     private final List<ApiAsyncInterceptor> asyncInterceptors;
     private final List<ApiBeforeInterceptor> beforeInterceptors;
     private final List<ApiFinallyInterceptor> finallyInterceptors;
+    private final List<ApiInterceptor> apiInterceptors;
 
     public JdevelopsWebMvcConfig(List<ApiAfterInterceptor> afterInterceptors,
                                  List<ApiAsyncInterceptor> asyncInterceptors,
                                  List<ApiBeforeInterceptor> beforeInterceptors,
-                                 List<ApiFinallyInterceptor> finallyInterceptors) {
+                                 List<ApiFinallyInterceptor> finallyInterceptors,
+                                 List<ApiInterceptor> apiInterceptors) {
         this.afterInterceptors = Objects.isNull(afterInterceptors)?new ArrayList<>():afterInterceptors;
         this.asyncInterceptors = Objects.isNull(asyncInterceptors)?new ArrayList<>():asyncInterceptors;
         this.beforeInterceptors = Objects.isNull(beforeInterceptors)?new ArrayList<>():beforeInterceptors;
         this.finallyInterceptors = Objects.isNull(finallyInterceptors)?new ArrayList<>():finallyInterceptors;
+        this.apiInterceptors = Objects.isNull(apiInterceptors)?new ArrayList<>():apiInterceptors;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
+
+        // 单步拦截
         registry.addInterceptor(new HandlerInterceptor() {
             @Override
             public boolean preHandle(HttpServletRequest request,
@@ -79,6 +78,10 @@ public class JdevelopsWebMvcConfig implements WebMvcConfigurer {
             }
         });
 
+        // 同步拦截
+        ApiInterceptorChain apiChains = new ApiInterceptorChain(apiInterceptors);
+        apiChains.execute().forEach(registry::addInterceptor);
+        // 异步拦截
         registry.addInterceptor(new AsyncHandlerInterceptor(){
             @Override
             public void afterConcurrentHandlingStarted(HttpServletRequest request,
