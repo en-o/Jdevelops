@@ -61,7 +61,7 @@ public class JwtService {
      * @return token
      * @throws JoseException JoseException
      */
-    public static String generateToken(SignEntity sign) throws JoseException {
+    public static <T extends SignEntity> String generateToken(T  sign) throws JoseException {
         // Create the Claims, which will be the content of the JWT
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人

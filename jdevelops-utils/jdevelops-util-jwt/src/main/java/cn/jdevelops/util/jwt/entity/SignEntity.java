@@ -24,46 +24,26 @@ public class SignEntity{
      */
     Map<String, Object> map;
 
-    /**
-     * redis用 唯一登录 ，以前的会被挤下线 （默认false）
-     */
-    Boolean alwaysOnline;
-
 
     public SignEntity() {
-    }
-
-    public SignEntity(String subject, Map<String, Object> map, Boolean alwaysOnline) {
-        this.subject = subject;
-        this.map = map;
-        this.alwaysOnline = alwaysOnline;
-    }
-
-    public SignEntity(String subject, Boolean alwaysOnline) {
-        this.subject = subject;
-        this.alwaysOnline = alwaysOnline;
-    }
-
-    /**
-     * 默认false
-     */
-    public SignEntity(String subject) {
-        this.subject = subject;
-        this.alwaysOnline = false;
     }
 
     public SignEntity(String subject, Map<String, Object> map) {
         this.subject = subject;
         this.map = map;
-        this.alwaysOnline = false;
     }
+
+    public SignEntity(String subject) {
+        this.subject = subject;
+    }
+
+
 
     @Override
     public String toString() {
         return "SignEntity{" +
                 "subject='" + subject + '\'' +
                 ", map=" + map +
-                ", alwaysOnline=" + alwaysOnline +
                 '}';
     }
 
@@ -84,14 +64,5 @@ public class SignEntity{
         this.map = map;
     }
 
-    public Boolean isAlwaysOnline() {
-        if(Objects.isNull(alwaysOnline)){
-            return false;
-        }
-        return alwaysOnline;
-    }
 
-    public void setAlwaysOnline(Boolean alwaysOnline) {
-        this.alwaysOnline = alwaysOnline;
-    }
 }
