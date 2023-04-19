@@ -1,12 +1,11 @@
 package cn.jdevelops.sboot.authentication.jredis.entity.only;
 
-import cn.jdevelops.util.jwt.util.EncryptionUtil;
 import lombok.*;
 
 import java.util.Objects;
 
 /**
- * 登录用户的token
+ * redis 存储的登录信息
  *
  * @author tnnn
  * @version V1.0
@@ -32,22 +31,14 @@ public class StorageUserTokenEntity {
     String token;
 
     /**
-     * 短的token,还没开始使用
-     */
-    String shortToken;
-
-    /**
      * 是否永久在线（默认 false
      */
     Boolean alwaysOnline;
+
 
 
     public Boolean getAlwaysOnline() {
         return !Objects.isNull(alwaysOnline) && alwaysOnline;
     }
 
-
-    public String getShortToken() {
-        return EncryptionUtil.encrypt2MD5(token);
-    }
 }

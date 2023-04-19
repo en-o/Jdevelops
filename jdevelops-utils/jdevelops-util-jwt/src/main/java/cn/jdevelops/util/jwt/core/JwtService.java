@@ -218,6 +218,20 @@ public class JwtService {
     }
 
 
+
+    /**
+     * 获得Token中的 Subject （过期）
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getSubjectExpires(String token) throws MalformedClaimException, JwtException {
+        // 验证 JWT
+        JwtClaims jwtClaims = parseJwt(token);
+        return jwtClaims.getSubject();
+    }
+
+
     /**
      * 获取 jwt 的内容 - 过期令牌也能解析
      * @param token 获取token
