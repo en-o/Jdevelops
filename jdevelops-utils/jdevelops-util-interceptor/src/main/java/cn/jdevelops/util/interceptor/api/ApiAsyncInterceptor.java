@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 自定义的接口后置拦截器  - 模仿 AsyncHandlerInterceptor
+ * 拦截异步处理请求  - 模仿 AsyncHandlerInterceptor
  * @author tnnn
  */
 public interface ApiAsyncInterceptor {
