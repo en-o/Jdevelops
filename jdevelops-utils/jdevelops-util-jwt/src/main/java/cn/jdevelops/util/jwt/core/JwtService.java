@@ -1,5 +1,6 @@
 package cn.jdevelops.util.jwt.core;
 
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
@@ -225,10 +226,14 @@ public class JwtService {
      * @param token token
      * @return java.lang.String
      */
-    public static String getSubjectExpires(String token) throws MalformedClaimException, LoginException {
-        // 验证 JWT
-        JwtClaims jwtClaims = parseJwt(token);
-        return jwtClaims.getSubject();
+    public static String getSubjectExpires(String token) throws LoginException {
+        try {
+            // 验证 JWT
+            JwtClaims jwtClaims = parseJwt(token);
+            return jwtClaims.getSubject();
+        } catch (MalformedClaimException e) {
+            throw new LoginException(TokenExceptionCodeEnum.TOKEN_ERROR,e);
+        }
     }
 
 

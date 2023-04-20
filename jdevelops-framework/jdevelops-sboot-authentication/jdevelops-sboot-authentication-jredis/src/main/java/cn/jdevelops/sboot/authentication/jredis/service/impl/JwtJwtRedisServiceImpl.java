@@ -119,7 +119,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * 根据用户token加载redis存储的用户登录信息
      */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, LoginException {
+    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws  LoginException {
         return loadUserTokenInfoBySubject(JwtService.getSubjectExpires(token));
     }
 
@@ -149,7 +149,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
                     .get(subject);
         }catch (Exception e){
             LOG.info("用户状态缓存失效");
-            throw new BusinessException(JwtMessageConstant.TOKEN_ERROR,e);
+            throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
         }
 
         Object basicsAccount = JSON.parse(redisUser);
@@ -190,49 +190,6 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         RB basicsAccount = (RB) JSON.parse(redisUser);
         return Objects.isNull(redisUser)?null: basicsAccount;
     }
-
-
-    @Override
-    public void storageUserRole(String user, List<String> roles) {
-        // 用户角色存入 redis
-        String roleRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_FOLDER, user);
-        redisTemplate.boundHashOps(roleRedisFolder).put(user, roles);
-        // 永不过期
-        redisTemplate.persist(roleRedisFolder);
-    }
-
-    @Override
-    public List<String> loadUserRole(String subject) {
-        String roleRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_FOLDER, subject);
-        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
-        if (Objects.isNull(roles)) {
-            return Collections.emptyList();
-        } else {
-            return (List<String>) roles;
-        }
-    }
-
-    @Override
-    public <T extends UserRole> void storageUserRoleInfo(String subject, List<T> roles) {
-        // 用户角色存入 redis
-        String roleRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
-        redisTemplate.boundHashOps(roleRedisFolder).put(subject, roles);
-        // 永不过期
-        redisTemplate.persist(roleRedisFolder);
-    }
-
-    @Override
-    public <T extends UserRole>  List<T> loadUserRoleInfo(String subject) {
-        String roleRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
-        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
-        if (Objects.isNull(roles)) {
-            return Collections.emptyList();
-        } else {
-            return (List<T>) roles;
-        }
-    }
-
-
 
     /**
      * redis简单存储建立文件夹
