@@ -1,5 +1,6 @@
-package cn.jdevelops.sboot.authentication.jwt.util;
+package cn.jdevelops.sboot.authentication.jwt.server;
 
+import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.JwtException;
@@ -13,17 +14,17 @@ import javax.servlet.http.HttpServletRequest;
  * 登录工具
  * @author tan
  */
-public class LoginUtil {
+public interface LoginService  {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginUtil.class);
+      Logger logger = LoggerFactory.getLogger(LoginService.class);
 
     /**
      * 登录
      * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    public static String login(String subject) {
+     default String login(String subject) {
         return login(new SignEntity(subject));
     }
 
@@ -33,7 +34,7 @@ public class LoginUtil {
      * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    public static String login(SignEntity subject) {
+    default String login(SignEntity subject) {
         try {
             return JwtService.generateToken(subject);
         } catch (JoseException e) {
@@ -41,15 +42,13 @@ public class LoginUtil {
         }
     }
 
-
-
     /**
      * 是否登录
      *
      * @param request HttpServletRequest
      * @return true 登录中
      */
-    public static boolean isLogin(HttpServletRequest request) {
+    default boolean isLogin(HttpServletRequest request) {
         return isLogin(request, false);
     }
 
@@ -60,7 +59,7 @@ public class LoginUtil {
      * @param cookie  true 去cookie参数
      * @return true 登录中
      */
-    public static boolean isLogin(HttpServletRequest request, Boolean cookie) {
+    default boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);
             return JwtService.validateTokenByBoolean(token);
@@ -69,5 +68,14 @@ public class LoginUtil {
         }
         return false;
     }
+
+
+    /**
+     * 退出登录
+     * @param request HttpServletRequest
+     */
+    default void loginOut(HttpServletRequest request) {
+    }
+
 
 }

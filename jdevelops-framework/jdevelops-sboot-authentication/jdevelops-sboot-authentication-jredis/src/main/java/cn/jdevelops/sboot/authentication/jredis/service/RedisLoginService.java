@@ -1,12 +1,13 @@
-package cn.jdevelops.sboot.authentication.jredis.util;
+package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
-import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
+import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
+import cn.jdevelops.util.jwt.core.JwtService;
+import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.JwtException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
-import cn.jdevelops.util.jwt.core.JwtService;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,35 +17,30 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 登录工具
- *
- * @author tnnn
- * @version V1.0
- * @date 2022-07-24 02:55
+ * @author tan
  */
-public class LoginUtil {
+public class RedisLoginService implements LoginService {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginUtil.class);
-
-
+    private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
 
 
-    /**
-     * 登录
-     *  - 默认有过期时间
-     * @param subject 用户唯一凭证(一般是登录名
-     * @return 签名
-     */
-    public static String login(String subject) {
+    @Override
+    public String login(String subject) {
         return login(new RedisSignEntity(subject));
     }
 
+    @Override
+    public String login(SignEntity subject) {
+        RedisSignEntity redisSign = new RedisSignEntity(subject);
+        return login(redisSign);
+    }
+
     /**
-     * 登录
-     *  - 信息保存到redis中
-     * @param subject 用户唯一凭证(一般是登录名
+     * 常用
+     * @param subject RedisSignEntity
      * @return 签名
      */
-    public static String login(RedisSignEntity subject) {
+    public String login(RedisSignEntity subject) {
         JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         // 生成token
         try {
@@ -61,25 +57,13 @@ public class LoginUtil {
         }
     }
 
-
-    /**
-     * 是否登录
-     *
-     * @param request HttpServletRequest
-     * @return true 登录中
-     */
-    public static boolean isLogin(HttpServletRequest request) {
+    @Override
+    public boolean isLogin(HttpServletRequest request) {
         return isLogin(request, false);
     }
 
-    /**
-     * 是否登录
-     *
-     * @param request HttpServletRequest
-     * @param cookie  true 去cookie参数
-     * @return true 登录中
-     */
-    public static boolean isLogin(HttpServletRequest request, Boolean cookie) {
+    @Override
+    public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         try {
             String token = JwtWebUtil.getToken(request, cookie);
@@ -91,4 +75,14 @@ public class LoginUtil {
         return false;
     }
 
+    @Override
+    public void loginOut(HttpServletRequest request) {
+        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
+        try {
+            String subject = JwtWebUtil.getTokenSubject(request);
+            jwtRedisService.removeUserToken(subject);
+        } catch (Exception e) {
+            logger.warn("退出失败", e);
+        }
+    }
 }
