@@ -12,7 +12,7 @@ import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson.JSON;
 import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
@@ -96,7 +96,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             return verifyUserTokenBySubject(JwtService.getSubject(token));
         } catch (MalformedClaimException e) {
             throw new ExpiredRedisException(REDIS_NO_USER,e);
-        } catch (JwtException e) {
+        } catch (LoginException e) {
             throw new ExpiredRedisException(REDIS_NO_USER,e);
         }
     }
@@ -119,7 +119,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * 根据用户token加载redis存储的用户登录信息
      */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, JwtException {
+    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, LoginException {
         return loadUserTokenInfoBySubject(JwtService.getSubjectExpires(token));
     }
 

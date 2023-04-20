@@ -6,7 +6,7 @@ import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public class RedisLoginService implements LoginService {
             jwtRedisService.storageUserToken(build);
             return sign;
         } catch (JoseException e) {
-            throw new JwtException("登录异常，请重新登录", e);
+            throw new LoginException("登录异常，请重新登录", e);
         }
     }
 

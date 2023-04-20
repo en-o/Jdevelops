@@ -2,7 +2,7 @@ package cn.jdevelops.sboot.authentication.jredis.entity.sign;
 
 
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -30,7 +30,7 @@ public class RedisSignEntity extends SignEntity {
         if(Objects.isNull(subject)
                 || null == subject.getSubject()
                 || subject.getSubject().length()==0) {
-            throw new JwtException("非法的登录");
+            throw new LoginException("非法的登录");
         }
         this.setSubject(subject.getSubject());
         this.setMap(subject.getMap());

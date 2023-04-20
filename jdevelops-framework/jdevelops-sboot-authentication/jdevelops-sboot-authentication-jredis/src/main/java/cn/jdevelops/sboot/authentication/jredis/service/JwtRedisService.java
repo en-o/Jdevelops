@@ -6,7 +6,7 @@ import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.role.UserRole;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import org.jose4j.jwt.MalformedClaimException;
 
 import java.util.List;
@@ -76,7 +76,7 @@ public interface JwtRedisService {
      * @param token token
      * @return LoginTokenRedis
      */
-    StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, JwtException;
+    StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, LoginException;
 
 
     /**

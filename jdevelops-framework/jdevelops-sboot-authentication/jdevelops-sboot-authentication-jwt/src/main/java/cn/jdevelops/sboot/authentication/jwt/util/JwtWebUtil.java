@@ -5,7 +5,7 @@ import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -80,10 +80,10 @@ public class JwtWebUtil {
      * @param request request
      * @return String
      */
-    public static String getTokenSubject(HttpServletRequest request) throws MalformedClaimException, JwtException {
+    public static String getTokenSubject(HttpServletRequest request) throws MalformedClaimException, LoginException {
         String token = JwtWebUtil.getToken(request);
         if (StringUtils.isBlank(token)) {
-            throw new JwtException(TOKEN_ERROR);
+            throw new LoginException(TOKEN_ERROR);
         }
         return JwtService.getSubject(token);
     }

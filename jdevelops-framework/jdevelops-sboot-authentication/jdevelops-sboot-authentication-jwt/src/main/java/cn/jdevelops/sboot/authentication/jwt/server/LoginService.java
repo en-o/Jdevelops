@@ -3,7 +3,7 @@ package cn.jdevelops.sboot.authentication.jwt.server;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public interface LoginService  {
         try {
             return JwtService.generateToken(subject);
         } catch (JoseException e) {
-            throw new JwtException("登录异常，请重新登录", e);
+            throw new LoginException("登录异常，请重新登录", e);
         }
     }
 

@@ -2,7 +2,7 @@ package cn.jdevelops.util.jwt.core;
 
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import com.alibaba.fastjson.JSON;
 import org.jose4j.jwa.AlgorithmConstraints;
@@ -147,7 +147,7 @@ public class JwtService {
      * @return 有效返回则 JwtClaims
      * @throws InvalidJwtException InvalidJwtException
      */
-    public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, JwtException {
+    public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, LoginException {
         try {
             return getJwtConsumer().processToClaims(token);
         } catch (InvalidJwtException e) {
@@ -157,7 +157,7 @@ public class JwtService {
             if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
                 logger.error("JWT had wrong audience: {}" , e.getJwtContext().getJwtClaims().getAudience());
             }
-            throw new JwtException(TOKEN_ERROR, e);
+            throw new LoginException(TOKEN_ERROR, e);
         }
     }
 
@@ -167,7 +167,7 @@ public class JwtService {
      * @return 新的token
      * @throws JoseException JoseException
      */
-    public static String refreshToken(String token) throws JoseException, MalformedClaimException, JwtException {
+    public static String refreshToken(String token) throws JoseException, MalformedClaimException, LoginException {
         // 验证 JWT
         JwtClaims jwtClaims = validateTokenByJwtClaims(token);
 
@@ -211,7 +211,7 @@ public class JwtService {
      * @param token token
      * @return java.lang.String
      */
-    public static String getSubject(String token) throws MalformedClaimException, JwtException {
+    public static String getSubject(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
         JwtClaims jwtClaims = validateTokenByJwtClaims(token);
         return jwtClaims.getSubject();
@@ -225,7 +225,7 @@ public class JwtService {
      * @param token token
      * @return java.lang.String
      */
-    public static String getSubjectExpires(String token) throws MalformedClaimException, JwtException {
+    public static String getSubjectExpires(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
         JwtClaims jwtClaims = parseJwt(token);
         return jwtClaims.getSubject();
