@@ -47,7 +47,10 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-api-exception</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
