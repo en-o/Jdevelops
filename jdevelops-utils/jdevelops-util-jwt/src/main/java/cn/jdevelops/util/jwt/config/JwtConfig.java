@@ -58,6 +58,11 @@ public class JwtConfig {
      */
     private String issuer;
 
+    /**
+     * 全局刷新token的过期时间。默认true:刷新，false:不刷新
+     */
+    private Boolean callRefreshToken;
+
 
     public String getTokenSecret() {
         if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
@@ -130,6 +135,17 @@ public class JwtConfig {
     }
 
 
+    public Boolean getCallRefreshToken() {
+        if(Objects.isNull(callRefreshToken)){
+            return true;
+        }
+        return callRefreshToken;
+    }
+
+    public void setCallRefreshToken(Boolean callRefreshToken) {
+        this.callRefreshToken = callRefreshToken;
+    }
+
     @Override
     public String toString() {
         return "JwtConfig{" +
@@ -139,7 +155,7 @@ public class JwtConfig {
                 ", cookie=" + cookie +
                 ", tokenName='" + tokenName + '\'' +
                 ", issuer='" + issuer + '\'' +
+                ", callRefreshToken=" + callRefreshToken +
                 '}';
     }
-
 }

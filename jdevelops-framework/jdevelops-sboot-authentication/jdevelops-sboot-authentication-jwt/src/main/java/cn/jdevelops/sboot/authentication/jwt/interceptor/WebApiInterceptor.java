@@ -125,17 +125,18 @@ public class WebApiInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 刷新缓存
+     * 刷新缓存 - redis中才有用
      * @param token token
      * @param method method
      */
     private void refreshToken(String token, Method method) {
         // token缓存刷新
         try {
-            //  此注解表示不刷新缓存
-            if(!method.isAnnotationPresent(NotRefreshToken.class)){
-                // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
+
+            // 全局设置刷新状态 false: 不刷新
+            if(jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))){
+                    // 每次接口进来都要属性 token缓存。刷新方式请自主实现
+                    checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
             }
         }catch (Exception e){
             log.warn("token缓存刷新失败",e);
