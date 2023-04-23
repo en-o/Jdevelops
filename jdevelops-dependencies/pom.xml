@@ -13,7 +13,7 @@
 
     <!-- 统一依赖版本管理 -->
     <properties>
-        <jdevelops.last.version>2.0.7</jdevelops.last.version>
+        <jdevelops.version>2.0.7</jdevelops.version>
         <!-- 文档  -->
         <knife4j.version>4.0.0</knife4j.version>
         <swagger.version>2.2.8</swagger.version>
@@ -375,12 +375,12 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-data-jpa</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-data-jdbctemplate</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -388,12 +388,12 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-data-auto-schema</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-caches-redis</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -401,17 +401,17 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-delay-core</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-delay-jdk</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-delay-redis</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -419,36 +419,36 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-file-oss-api</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-file-oss-driver-local</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-file-oss-driver-minio</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-file-oss-driver-qiniu</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- 定时器 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>spring-quartz-quick</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- 搜搜 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-search-es</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -456,24 +456,24 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-spi</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- webs -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-webs-resttemplate</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-websocket</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-webs-websocket</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -483,49 +483,49 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-bean-enum</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-bean-constant</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- apis -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-annotation</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-exception</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-result</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-log</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-version</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-sign</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-api-idempotent</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
 
@@ -533,149 +533,149 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-aop-api-log</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-aop-exception</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- logs -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>logs-cache-p6spy</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- utils -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-encryption</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-http</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-jwt</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-spring</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-aop</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-time</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-validation</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-interceptor</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-util-core</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- 发布订阅 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-event-simple</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-event-redis</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- sms -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sms-aliyun</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sms-mail</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sms-wechat</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!-- starters -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-common-env</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-rpc</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-web</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-scloud-web</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-jpa</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-jdbctemplate</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-swagger</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
             <!--认证-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-authentication-jwt</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-authentication-jredis</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-authentication-oauth2</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
             </dependency>
 
         </dependencies>
