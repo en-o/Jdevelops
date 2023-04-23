@@ -30,8 +30,8 @@ public class RedisLoginService implements LoginService {
      * 推荐使用
      *
      * 用户主动登录时：
-     *      1. 无登录 直接登录
-     *      2. 登录过，根据 refresh 判断是否维持原状
+     *      1. 无登录 根据数据颁发token
+     *      2. 登录过，根据 refresh 判断token是否维持原状
      * @param request  HttpServletRequest
      * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)
      * @param <RB>  BasicsAccount 用户状态
@@ -104,15 +104,6 @@ public class RedisLoginService implements LoginService {
         } catch (JoseException e) {
             throw new LoginException("登录异常，请重新登录", e);
         }
-    }
-
-    /**
-     * 普通登录 不建议使用
-     * @param subject 用户唯一凭证(一般是登录名
-     */
-    @Override
-    public String login(String subject) {
-        return login(new RedisSignEntity(subject));
     }
 
 

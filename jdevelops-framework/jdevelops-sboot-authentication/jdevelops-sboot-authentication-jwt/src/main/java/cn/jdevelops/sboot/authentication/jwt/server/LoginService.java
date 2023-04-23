@@ -19,14 +19,6 @@ public interface LoginService  {
 
       Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    /**
-     * 登录
-     * @param subject 用户唯一凭证(一般是登录名
-     * @return 签名
-     */
-     default String login(String subject) {
-        return login(new SignEntity(subject));
-    }
 
     /**
      * 登录

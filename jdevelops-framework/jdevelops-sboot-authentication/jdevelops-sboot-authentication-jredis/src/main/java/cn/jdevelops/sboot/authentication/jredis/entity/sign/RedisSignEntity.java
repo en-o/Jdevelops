@@ -2,9 +2,7 @@ package cn.jdevelops.sboot.authentication.jredis.entity.sign;
 
 
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.LoginException;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -21,31 +19,34 @@ public class RedisSignEntity extends SignEntity {
      */
     Boolean alwaysOnline;
 
-    public RedisSignEntity(String subject) {
-        super(subject);
-        this.alwaysOnline = false;
+
+    public RedisSignEntity(String subject,
+                           String loginName,
+                           String userId,
+                           String userName, Boolean alwaysOnline) {
+        super(subject,loginName,userId,userName);
+        this.alwaysOnline = alwaysOnline;
     }
 
     public RedisSignEntity(SignEntity subject) {
-        if(Objects.isNull(subject)
-                || null == subject.getSubject()
-                || subject.getSubject().length()==0) {
-            throw new LoginException("非法的登录");
-        }
-        this.setSubject(subject.getSubject());
-        this.setMap(subject.getMap());
+        super(subject.getSubject(),
+                subject.getLoginName(),
+                subject.getUserId(),
+                subject.getUserName(),
+                subject.getMap());
         this.alwaysOnline = false;
     }
 
-    public RedisSignEntity(String subject, Map<String, Object> map, Boolean alwaysOnline) {
-        super(subject, map);
+    public RedisSignEntity(SignEntity subject, Boolean alwaysOnline) {
+        super(subject.getSubject(),
+                subject.getLoginName(),
+                subject.getUserId(),
+                subject.getUserName(),
+                subject.getMap());
         this.alwaysOnline = alwaysOnline;
     }
 
-    public RedisSignEntity(String subject, Boolean alwaysOnline) {
-        super(subject);
-        this.alwaysOnline = alwaysOnline;
-    }
+
 
     @Override
     public String toString() {
