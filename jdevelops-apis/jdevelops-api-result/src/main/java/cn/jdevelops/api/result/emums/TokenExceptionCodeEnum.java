@@ -3,7 +3,6 @@ package cn.jdevelops.api.result.emums;
 
 /**
  *  token 异常 message
- *  result code 2开头
  * @author tn
  * @date 2019年07月29日 14:16
  */
