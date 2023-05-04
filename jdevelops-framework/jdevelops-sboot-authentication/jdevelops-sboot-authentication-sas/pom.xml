@@ -15,4 +15,13 @@
         Spring Authorization Server
         [spring-security-oauth2-authorization-server:0.4.3-SNAPSHOT](https://docs.spring.io/spring-authorization-server/docs/0.4.3-SNAPSHOT/reference/html/getting-started.html)
     </description>
+
+    <dependencies>
+        <!--https://docs.spring.io/spring-authorization-server/docs/0.4.3-SNAPSHOT/reference/html/getting-started.html-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>0.4.3-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
