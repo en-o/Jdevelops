@@ -16,6 +16,12 @@ public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
     public ResultVO<?> result(int code, String message) {
         return ResultVO.result(code, message);
     }
+
+    @Override
+    public ResultVO<?> result(int code, String message, Object data) {
+        return ResultVO.result(code, message, data);
+    }
+
     @Override
     public ResultVO<?> result(ResultCodeEnum resultCodeEnum) {
         return ResultVO.result(resultCodeEnum);

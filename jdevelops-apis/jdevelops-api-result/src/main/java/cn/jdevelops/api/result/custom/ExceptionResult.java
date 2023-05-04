@@ -28,6 +28,16 @@ public interface ExceptionResult<T> {
 
 
     /**
+     * 自定定义 code 和 message
+     *
+     * @param code    the code
+     * @param message the message
+     * @param data 数据
+     * @return the t
+     */
+    T result(int code, String message, Object data);
+
+    /**
      * success
      * @return the t
      */
