@@ -9,9 +9,10 @@
         <version>2.0.7</version>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>jdevelops-sboot-authentication-oauth2</artifactId>
+    <artifactId>jdevelops-sboot-authentication-sas</artifactId>
 
     <description>
-        oauth2 认证
+        Spring Authorization Server
+        [spring-security-oauth2-authorization-server:0.4.3-SNAPSHOT](https://docs.spring.io/spring-authorization-server/docs/0.4.3-SNAPSHOT/reference/html/getting-started.html)
     </description>
 </project>

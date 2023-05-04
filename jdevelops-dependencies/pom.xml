@@ -674,7 +674,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-oauth2</artifactId>
+                <artifactId>jdevelops-sboot-authentication-sas</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
 
