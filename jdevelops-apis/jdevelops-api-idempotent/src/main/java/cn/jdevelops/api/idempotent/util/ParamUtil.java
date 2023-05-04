@@ -1,7 +1,7 @@
 package cn.jdevelops.api.idempotent.util;
 
 import cn.jdevelops.api.idempotent.exception.IdempotentException;
-import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson2.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,6 @@ import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.alibaba.fastjson.JSON.*;
 
 /**
  * 参数
@@ -57,11 +56,11 @@ public class ParamUtil {
                 if("".equals(requsetStr)){
                     return requsetStr;
                 }
-                String bodyString = parse(requsetStr, Feature.OrderedField).toString();
+                String bodyString = JSON.parse(requsetStr).toString();
                 LOG.debug("参数string：" + requsetStr);
                 return bodyString;
             } else {
-                String jsonString = toJSONString(map);
+                String jsonString =  JSON.toJSONString(map);
                 LOG.debug("参数string：" + jsonString);
                 return jsonString;
             }

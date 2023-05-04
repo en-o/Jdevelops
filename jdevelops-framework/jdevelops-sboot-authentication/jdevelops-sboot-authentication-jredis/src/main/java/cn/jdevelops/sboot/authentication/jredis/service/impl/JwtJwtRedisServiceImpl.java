@@ -1,11 +1,9 @@
 package cn.jdevelops.sboot.authentication.jredis.service.impl;
 
-import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.entity.role.UserRole;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
@@ -13,7 +11,7 @@ import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,9 +92,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
             return verifyUserTokenBySubject(JwtService.getSubject(token));
-        } catch (MalformedClaimException e) {
-            throw new ExpiredRedisException(REDIS_NO_USER,e);
-        } catch (LoginException e) {
+        } catch (MalformedClaimException | LoginException e) {
             throw new ExpiredRedisException(REDIS_NO_USER,e);
         }
     }
