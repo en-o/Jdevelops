@@ -20,6 +20,14 @@ public class RedisSignEntity extends SignEntity {
     Boolean alwaysOnline;
 
 
+    /**
+     * 用户登录签名办法token的数据
+     * @param subject 唯一
+     * @param loginName 登录名
+     * @param userId 用户id
+     * @param userName 用户名
+     * @param alwaysOnline 唯一登录 ，以前的是否会被挤下线 （默认false：不挤）
+     */
     public RedisSignEntity(String subject,
                            String loginName,
                            String userId,
