@@ -8,11 +8,11 @@ import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
-import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 public class RedisLoginService implements LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
+
+    @Resource
+    private JwtRedisService jwtRedisService;
 
 
     /**
@@ -44,7 +47,6 @@ public class RedisLoginService implements LoginService {
                                                             RB account) {
 
         if(null != account){
-            JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
             jwtRedisService.storageUserStatus(account);
         }
         // 请求头里的 token
@@ -77,7 +79,6 @@ public class RedisLoginService implements LoginService {
      */
     public  <RB extends BasicsAccount>  String login(RedisSignEntity subject, RB account) {
         if(null != account){
-            JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
             jwtRedisService.storageUserStatus(account);
         }
         return login(subject);
@@ -90,7 +91,6 @@ public class RedisLoginService implements LoginService {
      * @return 签名
      */
     public String login(RedisSignEntity subject) {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         // 生成token
         try {
             String sign = JwtService.generateToken(subject);
@@ -124,7 +124,6 @@ public class RedisLoginService implements LoginService {
 
     @Override
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         try {
             String token = JwtWebUtil.getToken(request, cookie);
             jwtRedisService.loadUserTokenInfoByToken(token);
@@ -137,7 +136,6 @@ public class RedisLoginService implements LoginService {
 
     @Override
     public void loginOut(HttpServletRequest request) {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
         try {
             String subject = JwtWebUtil.getTokenSubject(request);
             jwtRedisService.removeUserToken(subject);

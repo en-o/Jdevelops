@@ -1,10 +1,6 @@
 package cn.jdevelops.sboot.authentication.jwt.server;
 
-import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
-import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.LoginException;
-import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +22,7 @@ public interface LoginService  {
      * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    default String login(SignEntity subject) {
-        try {
-            return JwtService.generateToken(subject);
-        } catch (JoseException e) {
-            throw new LoginException("登录异常，请重新登录", e);
-        }
-    }
+    String login(SignEntity subject);
 
     /**
      * 是否登录
@@ -40,9 +30,7 @@ public interface LoginService  {
      * @param request HttpServletRequest
      * @return true 登录中
      */
-    default boolean isLogin(HttpServletRequest request) {
-        return isLogin(request, false);
-    }
+     boolean isLogin(HttpServletRequest request);
 
     /**
      * 是否登录
@@ -51,23 +39,14 @@ public interface LoginService  {
      * @param cookie  true 去cookie参数
      * @return true 登录中
      */
-    default boolean isLogin(HttpServletRequest request, Boolean cookie) {
-        try {
-            String token = JwtWebUtil.getToken(request, cookie);
-            return JwtService.validateTokenByBoolean(token);
-        } catch (Exception e) {
-            logger.warn("登录失效", e);
-        }
-        return false;
-    }
+    boolean isLogin(HttpServletRequest request, Boolean cookie);
 
 
     /**
      * 退出登录
      * @param request HttpServletRequest
      */
-    default void loginOut(HttpServletRequest request) {
-    }
+    void loginOut(HttpServletRequest request);
 
 
 }
