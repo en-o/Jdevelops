@@ -1,1 +1,1 @@
-cn.jdevelops.aop.exception.exception.scan.EnableAutoScanConfiguration
+cn.jdevelops.aop.exception.exception.aspect.ExceptionAspect
