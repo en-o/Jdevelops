@@ -214,7 +214,7 @@ public class SwaggerProperties {
 
     public List<SwaggerSecurityScheme> getSwaggerSecuritySchemes() {
         // 为空设置默认token
-        if(Objects.isNull(swaggerSecuritySchemes) ){
+        if(Objects.isNull(swaggerSecuritySchemes)||swaggerSecuritySchemes.isEmpty()){
             if(Boolean.TRUE.equals(getSecuritySchemeDefault())){
                 return Collections.singletonList(new SwaggerSecurityScheme( new SecurityScheme()
                         // 类型
