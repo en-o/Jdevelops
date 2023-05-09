@@ -32,13 +32,13 @@ public class ApiIdempotentInterceptor implements HandlerInterceptor {
         ApiIdempotent methodAnnotation = method.getAnnotation(ApiIdempotent.class);
         if (methodAnnotation != null) {
             // 幂等性校验, 校验通过则放行, 校验失败则抛出异常, 并通过统一异常处理返回友好提示
-           return check(request);
+           return check(request, methodAnnotation);
         }
         return true;
     }
 
-    private boolean check(HttpServletRequest request) {
-        return idempotentService.checkApiRedo(request);
+    private boolean check(HttpServletRequest request, ApiIdempotent methodAnnotation) {
+        return idempotentService.checkApiRedo(request, methodAnnotation);
     }
 
 
