@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Component
 public class ApiLogAspectSave {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ApiLogAspectSave.class);
+    private static final Logger LOG = LoggerFactory.getLogger("APILOG");
 
     @Autowired
     private ApiLogSave apiLogSave;

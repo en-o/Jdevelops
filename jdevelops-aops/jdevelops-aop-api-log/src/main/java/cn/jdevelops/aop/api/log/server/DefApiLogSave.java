@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 /**
  * 保存日志
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 @ConditionalOnMissingBean(ApiLogSave.class)
 @AutoConfiguration
 public class DefApiLogSave implements ApiLogSave {
-    private static final Logger LOG = LoggerFactory.getLogger(DefApiLogSave.class);
+    private static final Logger LOG = LoggerFactory.getLogger("APILOG");
     @Override
     @Async("apiLogAsyncTaskExecutor")
     public void saveLog(ApiMonitoring apilog) {
