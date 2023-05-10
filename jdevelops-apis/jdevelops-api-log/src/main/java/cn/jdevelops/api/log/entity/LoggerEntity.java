@@ -36,11 +36,20 @@ public class LoggerEntity {
 
     @Override
     public String toString() {
-        return "LoggerEntity{" +"\n" +
-                "request IP='" + ip + '\''  +"\n"+
-                ", request url='" + url + '\'' +"\n" +
-                ", request params='" + params + '\'' +"\n" +
-                ", request time (millis cond)=" + callTime +"\n" +
+        return "LoggerEntity{" +
+                "ip='" + ip + '\'' +
+                ", url='" + url + '\'' +
+                ", params='" + params + '\'' +
+                ", callTime=" + callTime +
                 '}';
+    }
+
+    public String ltoString(){
+        return  "\n"+
+                "request IP='" + ip + '\''  +"\n"+
+                "request url='" + url + '\'' +"\n" +
+                "request params='" + params + '\'' +"\n" +
+                "request time (millisecond)=" + callTime +"\n" ;
+
     }
 }

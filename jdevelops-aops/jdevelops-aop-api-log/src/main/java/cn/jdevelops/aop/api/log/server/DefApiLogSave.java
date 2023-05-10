@@ -3,6 +3,7 @@ package cn.jdevelops.aop.api.log.server;
 import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service;
  * @version 1
  * @date 2020/6/16 20:50
  */
-@ConditionalOnMissingBean(name = {"apiLogSave", "defaultApiLogSave"})
-@Service
+@ConditionalOnMissingBean(ApiLogSave.class)
+@AutoConfiguration
 public class DefApiLogSave implements ApiLogSave {
     private static final Logger LOG = LoggerFactory.getLogger(DefApiLogSave.class);
     @Override
