@@ -27,8 +27,9 @@ import java.util.stream.Collectors;
 
 /**
  * 接口日志保存
+ *
  * @author tn
- * @date  2020/6/1 21:04
+ * @date 2020/6/1 21:04
  */
 
 @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
@@ -70,16 +71,16 @@ public class ApiLogAspectSave {
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
         if (myLog != null) {
-            Object description = AopReasolver.newInstance().resolver(jp, myLog.description());
-            apiLog.setDescription(description+ "");
+            apiLog.setDescription(myLog.expression());
             apiLog.setChineseApi(myLog.chineseApi());
+            apiLog.setLogType(myLog.type().getType());
         }
         /*接口名*/
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         String requestUri = (request).getRequestURI();
         apiLog.setApiUrl(requestUri);
-        apiLog.setLogType(2);
+        apiLog.setCallType(2);
         apiLog.setMethod(request.getMethod());
         /* outParams and  status  */
         apiLog.setStatus(false);
@@ -98,7 +99,7 @@ public class ApiLogAspectSave {
     /**
      * 返回通知
      */
-    @AfterReturning(value="apiLog()",returning="rvt")
+    @AfterReturning(value = "apiLog()", returning = "rvt")
     public void saveSysLog(JoinPoint joinPoint, Object rvt) {
         //保存日志
         ApiMonitoring apiLog = new ApiMonitoring();
@@ -109,30 +110,8 @@ public class ApiLogAspectSave {
         String requestUri = (request).getRequestURI();
         apiLog.setApiUrl(requestUri);
         apiLog.setMethod(request.getMethod());
-        apiLog.setLogType(1);
-        /* outParams and  status  */
-        if (Objects.nonNull(rvt)) {
-            try {
-                if (rvt instanceof String || rvt instanceof Integer) {
-                    apiLog.setStatus(true);
-                } else if (rvt instanceof List) {
-                    apiLog.setStatus(true);
-                } else {
-                    Map<String, Object> beanToMap = beanToMap(rvt);
-                    if(beanToMap.get("code").equals(200)){
-                        apiLog.setStatus(true);
-                    }else{
-                        apiLog.setStatus(true);
-                    }
-                }
-                apiLog.setOutParams(JsonUtils.toJson(rvt));
+        apiLog.setCallType(1);
 
-            } catch (Exception e) {
-                LOG.error("解析结果失败", e);
-                apiLog.setStatus(false);
-                apiLog.setOutParams("");
-            }
-        }
 
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -140,13 +119,54 @@ public class ApiLogAspectSave {
         Method method = signature.getMethod();
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
-        if (myLog != null) {
-            Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
-            expressionError = Objects.nonNull(rvt) ? expression + "" : "";
-            apiLog.setDescription(myLog.description());
-            apiLog.setExpression(expressionError);
-            apiLog.setChineseApi(myLog.chineseApi());
+        if(myLog == null || !myLog.enable()){
+            return;
         }
+
+        Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
+        if (null != expression) {
+            expressionError = expression.toString();
+            apiLog.setExpression(expressionError);
+        } else {
+            apiLog.setExpression("");
+        }
+        apiLog.setDescription(myLog.description());
+        apiLog.setChineseApi(myLog.chineseApi());
+        apiLog.setLogType(myLog.type().getType());
+
+
+        /* outParams and  status  */
+        if (Objects.nonNull(rvt)) {
+            try {
+                if (myLog.logResultData()) {
+                    if (rvt instanceof String || rvt instanceof Integer) {
+                        apiLog.setStatus(true);
+                    } else if (rvt instanceof List) {
+                        apiLog.setStatus(true);
+                    } else {
+                        Map<String, Object> beanToMap = beanToMap(rvt);
+                        if (beanToMap.get("code").equals(200)) {
+                            apiLog.setStatus(true);
+                        } else {
+                            apiLog.setStatus(true);
+                        }
+                    }
+                    apiLog.setOutParams(JsonUtils.toJson(rvt));
+                } else {
+                    apiLog.setStatus(true);
+                    apiLog.setOutParams("");
+                }
+
+            } catch (Exception e) {
+                LOG.error("解析结果失败", e);
+                apiLog.setStatus(false);
+                apiLog.setOutParams("");
+            }
+        } else {
+            apiLog.setStatus(true);
+            apiLog.setOutParams("");
+        }
+
 
         /* callTime 调用时间  */
         apiLog.setCallTime(System.currentTimeMillis());
@@ -154,17 +174,20 @@ public class ApiLogAspectSave {
 
 
         /*inParams    输入 */
-        //请求的参数
-        Object[] args = joinPoint.getArgs();
-        //将参数所在的数组转换成json
-        try {
-            List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
-                    && !(s instanceof HttpServletResponse)).collect(Collectors.toList());
-            String params = JsonUtils.toJson(argObjects);
-            apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
-        }catch (Exception e){
-            LOG.error("解析入参失败", e);
-            apiLog.setInParams("");
+
+        if ( myLog.logArgs()) {
+            //请求的参数
+            Object[] args = joinPoint.getArgs();
+            //将参数所在的数组转换成json
+            try {
+                List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
+                        && !(s instanceof HttpServletResponse)).collect(Collectors.toList());
+                String params = JsonUtils.toJson(argObjects);
+                apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
+            } catch (Exception e) {
+                LOG.error("解析入参失败", e);
+                apiLog.setInParams("");
+            }
         }
         /*inParams    输入 */
         apiLog.setPoxyIp(IpUtil.getPoxyIp(request));
@@ -172,11 +195,9 @@ public class ApiLogAspectSave {
     }
 
 
-
-
-
     /**
      * bean转化为map
+     *
      * @param bean bean
      * @return Map
      */

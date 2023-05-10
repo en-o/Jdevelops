@@ -38,38 +38,43 @@ public class AopReasolver {
      */
     public Object resolver(JoinPoint joinPoint, String str) {
 
-        if (StringUtil.isBlank(str)) {
-            return null;
-        }
+        try {
+            if (StringUtil.isBlank(str)) {
+                return null;
+            }
 
-        Object value = null;
-        String substring1 = null;
-        String substring2;
+            Object value = null;
+            String substring1 = null;
+            String substring2;
 
-        if (str.contains("#")) {
-            substring1 = str.substring(0, str.indexOf("#"));
-            substring2 = str.substring(str.indexOf("#"));
-            // 如果name匹配上了#{},则把内容当作变量
-            if (substring2.matches("#\\{\\D*}")) {
-                String newStr = substring2.replaceAll("#\\{", "").replaceAll("}", "");
-                // 复杂类型
-                if (newStr.contains(".")) {
-                    try {
-                        value = complexResolver(joinPoint, newStr);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            if (str.contains("#")) {
+                substring1 = str.substring(0, str.indexOf("#"));
+                substring2 = str.substring(str.indexOf("#"));
+                // 如果name匹配上了#{},则把内容当作变量
+                if (substring2.matches("#\\{\\D*}")) {
+                    String newStr = substring2.replaceAll("#\\{", "").replaceAll("}", "");
+                    // 复杂类型
+                    if (newStr.contains(".")) {
+                        try {
+                            value = complexResolver(joinPoint, newStr);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        value = simpleResolver(joinPoint, newStr);
                     }
-                } else {
-                    value = simpleResolver(joinPoint, newStr);
+                } else { //非变量
+                    value = str;
                 }
-            } else { //非变量
+            } else {
                 value = str;
             }
-        } else {
-            value = str;
-        }
 
-        return StringUtil.isBlank(substring1) ? value : substring1 + value;
+            return StringUtil.isBlank(substring1) ? value : substring1 + value;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
