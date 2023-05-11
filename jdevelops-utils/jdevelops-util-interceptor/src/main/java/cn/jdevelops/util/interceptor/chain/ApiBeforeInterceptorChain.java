@@ -38,17 +38,21 @@ public class ApiBeforeInterceptorChain {
     public boolean execute(HttpServletRequest request,
                            HttpServletResponse response,
                            Object handler) throws Exception {
-
+        boolean result = true;
         // 循环执行
         for (ApiBeforeInterceptor chain : interceptors) {
            try {
-               chain.before(request, response, handler);
+               boolean before = chain.before(request, response, handler);
+               if(!before){
+                   result = false;
+                   break;
+               }
            }catch (Exception e){
                // 错误不干扰
                logger.error("自定义的前置拦截器异常", e);
            }
         }
-        return true;
+        return result;
     }
 
 }
