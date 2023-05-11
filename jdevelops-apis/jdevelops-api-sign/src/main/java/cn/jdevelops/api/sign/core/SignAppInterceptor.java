@@ -39,7 +39,7 @@ import static com.alibaba.fastjson2.JSON.toJSONString;
 public class SignAppInterceptor implements ApiBeforeInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(SignAppInterceptor.class);
-    static String CONTENT_TYPE = "text/json;charset=UTF-8";
+
 
     @Override
     public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -49,9 +49,9 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
             ApiSignConfig apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignConfig.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(), apiSignBean.getSalt())) {
-                response.setContentType(CONTENT_TYPE);
-                response.getWriter().print(toJSONString(ExceptionResultWrap
-                        .result(API_SIGN_ERROR.getCode(), API_SIGN_ERROR.getMessage())));
+                response.setHeader("content-type", "application/json;charset=UTF-8");
+                response.getOutputStream().write(toJSONString(ExceptionResultWrap
+                        .result(API_SIGN_ERROR.getCode(), API_SIGN_ERROR.getMessage())).getBytes("UTF-8"));
                 return false;
             }
         }

@@ -101,8 +101,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
         logger.info("需要验证token,校验结果：{},token:{}", flag,token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(ExceptionResultWrap
-                    .result(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())));
+            response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
+                    .result(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
             return new CheckVO(false,token);
         }
         // 日志用的 - %X{token}
