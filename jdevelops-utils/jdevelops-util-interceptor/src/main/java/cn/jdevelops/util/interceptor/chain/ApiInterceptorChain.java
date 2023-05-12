@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class ApiInterceptorChain {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiInterceptorChain.class);
 
     /**
      * 拦截器列表
