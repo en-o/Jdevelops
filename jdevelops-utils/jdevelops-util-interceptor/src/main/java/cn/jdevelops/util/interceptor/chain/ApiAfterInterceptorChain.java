@@ -42,12 +42,7 @@ public class ApiAfterInterceptorChain {
                         ModelAndView modelAndView) throws Exception {
         // 循环执行
         for (ApiAfterInterceptor chain : interceptors) {
-            try {
-                chain.after(request, response, handler, modelAndView);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的后置拦截器异常", e);
-            }
+            chain.after(request, response, handler, modelAndView);
         }
     }
 

@@ -40,12 +40,7 @@ public class ApiAsyncInterceptorChain {
                         Object handler) throws Exception {
         // 循环执行
         for (ApiAsyncInterceptor chain : interceptors) {
-            try {
-                chain.async(request, response, handler);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的异步拦截器异常", e);
-            }
+            chain.async(request, response, handler);
         }
     }
 

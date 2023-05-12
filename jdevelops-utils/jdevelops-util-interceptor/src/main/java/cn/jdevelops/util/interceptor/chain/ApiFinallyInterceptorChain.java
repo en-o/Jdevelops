@@ -41,13 +41,7 @@ public class ApiFinallyInterceptorChain {
                         Exception ex) throws Exception {
         // 循环执行
         for (ApiFinallyInterceptor chain : interceptors) {
-
-            try {
-                chain.finallys(request, response, handler, ex);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的接口整个请求处理完毕拦截器异常", e);
-            }
+            chain.finallys(request, response, handler, ex);
         }
     }
 

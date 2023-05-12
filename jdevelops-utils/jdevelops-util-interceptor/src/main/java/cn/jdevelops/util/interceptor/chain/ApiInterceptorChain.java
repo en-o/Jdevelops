@@ -36,40 +36,35 @@ public class ApiInterceptorChain {
      *
      * @throws Exception Exception
      */
-    public List<HandlerInterceptor>  execute() {
+    public List<HandlerInterceptor> execute() {
         List<HandlerInterceptor> handlerInterceptors = new ArrayList<>();
         // 循环执行
         for (ApiInterceptor chain : interceptors) {
-            try {
-                handlerInterceptors.add(
-                        new HandlerInterceptor() {
-                            @Override
-                            public boolean preHandle(HttpServletRequest request,
-                                                     HttpServletResponse response,
-                                                     Object handler) throws Exception {
-                                return chain.before(request, response, handler);
-                            }
+            handlerInterceptors.add(
+                    new HandlerInterceptor() {
+                        @Override
+                        public boolean preHandle(HttpServletRequest request,
+                                                 HttpServletResponse response,
+                                                 Object handler) throws Exception {
+                            return chain.before(request, response, handler);
+                        }
 
-                            @Override
-                            public void postHandle(HttpServletRequest request,
-                                                   HttpServletResponse response,
-                                                   Object handler,
-                                                   ModelAndView modelAndView) throws Exception {
-                                chain.after(request, response, handler, modelAndView);
-                            }
+                        @Override
+                        public void postHandle(HttpServletRequest request,
+                                               HttpServletResponse response,
+                                               Object handler,
+                                               ModelAndView modelAndView) throws Exception {
+                            chain.after(request, response, handler, modelAndView);
+                        }
 
-                            @Override
-                            public void afterCompletion(HttpServletRequest request,
-                                                        HttpServletResponse response,
-                                                        Object handler,
-                                                        Exception ex) throws Exception {
-                                chain.finallys(request, response, handler, ex);
-                            }
-                        });
-            } catch (Exception e) {
-                // 错误不干扰
-                logger.error("自定义的拦截器异常", e);
-            }
+                        @Override
+                        public void afterCompletion(HttpServletRequest request,
+                                                    HttpServletResponse response,
+                                                    Object handler,
+                                                    Exception ex) throws Exception {
+                            chain.finallys(request, response, handler, ex);
+                        }
+                    });
         }
         return handlerInterceptors;
     }
