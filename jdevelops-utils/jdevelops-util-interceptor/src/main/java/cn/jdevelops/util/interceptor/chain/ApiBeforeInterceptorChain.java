@@ -1,8 +1,6 @@
 package cn.jdevelops.util.interceptor.chain;
 
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,11 +9,11 @@ import java.util.List;
 /**
  * 前置拦截器责任链
  * - 交给spring管理
+ *
  * @author tnnn
  */
 public class ApiBeforeInterceptorChain {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiBeforeInterceptorChain.class);
 
     /**
      * 拦截器列表
@@ -38,17 +36,16 @@ public class ApiBeforeInterceptorChain {
     public boolean execute(HttpServletRequest request,
                            HttpServletResponse response,
                            Object handler) throws Exception {
-
+        boolean result = true;
         // 循环执行
         for (ApiBeforeInterceptor chain : interceptors) {
-           try {
-               chain.before(request, response, handler);
-           }catch (Exception e){
-               // 错误不干扰
-               logger.error("自定义的前置拦截器异常", e);
-           }
+            boolean before = chain.before(request, response, handler);
+            if (!before) {
+                result = false;
+                break;
+            }
         }
-        return true;
+        return result;
     }
 
 }

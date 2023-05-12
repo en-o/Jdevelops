@@ -1,6 +1,6 @@
 package cn.jdevelops.api.idempotent.config;
 
-import cn.jdevelops.api.idempotent.filter.HttpServletRequestIdempotentFilter;
+import cn.jdevelops.api.idempotent.core.ApiIdempotentInterceptor;
 import cn.jdevelops.api.idempotent.service.IdempotentService;
 import cn.jdevelops.api.idempotent.service.IdempotentServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,29 +16,22 @@ import org.springframework.context.annotation.Bean;
 public class IdempotentScanConfiguration {
 
 
-    @ConditionalOnMissingBean(name = "HttpServletRequestFilter")
-    @Bean
-    public HttpServletRequestIdempotentFilter httpServletRequestIdempotentFilter(){
-        return new HttpServletRequestIdempotentFilter();
-    }
-
     @ConditionalOnMissingBean(IdempotentConfig.class)
     @Bean
     public IdempotentConfig idempotentConfig(){
         return new IdempotentConfig();
     }
 
-    @ConditionalOnMissingBean(name = "idempotentService")
+    @ConditionalOnMissingBean(IdempotentService.class)
     @Bean
     public IdempotentService idempotentService(){
         return new IdempotentServiceImpl();
     }
 
-
-    @ConditionalOnMissingBean(IdempotentMVCConfig.class)
+    @ConditionalOnMissingBean(ApiIdempotentInterceptor.class)
     @Bean
-    public IdempotentMVCConfig idempotentMVCConfig(){
-        return new IdempotentMVCConfig();
+    public ApiIdempotentInterceptor apiIdempotentInterceptor(IdempotentService idempotentService){
+        return new ApiIdempotentInterceptor(idempotentService);
     }
 
 }

@@ -68,13 +68,13 @@ public enum UserExceptionEnum {
     /**
      * 用户正在同步中，请稍后再试或者联系管理员
      */
-    USER_SYNC_LOAING(500, "用户正在同步中，请稍后再试或者联系管理员"),
+    USER_SYNC_LOAING(407, "用户正在同步中，请稍后再试或者联系管理员"),
 
 
     /**
      * 账户已停用
      */
-    DISABLED_ACCOUNT(407, "账户已停用"),
+    DISABLED_ACCOUNT(408, "账户已停用"),
 
 
     ;

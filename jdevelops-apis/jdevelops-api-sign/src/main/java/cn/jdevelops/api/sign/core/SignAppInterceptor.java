@@ -11,7 +11,7 @@ import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
 import cn.jdevelops.util.interceptor.util.RequestUtil;
 import cn.jdevelops.util.interceptor.util.StrUtil;
-import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson2.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -24,7 +24,8 @@ import java.util.*;
 
 
 import static cn.jdevelops.api.sign.enums.SginExceptionCodeEnum.API_SIGN_ERROR;
-import static com.alibaba.fastjson.JSON.*;
+import static com.alibaba.fastjson2.JSON.parseObject;
+import static com.alibaba.fastjson2.JSON.toJSONString;
 
 /**
  * 签名拦截器 使用签名注解需要注册该拦截器到 WebMvcConfigurer 中
@@ -38,7 +39,7 @@ import static com.alibaba.fastjson.JSON.*;
 public class SignAppInterceptor implements ApiBeforeInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(SignAppInterceptor.class);
-    static String CONTENT_TYPE = "text/json;charset=UTF-8";
+
 
     @Override
     public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -48,9 +49,9 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
             ApiSignConfig apiSignBean = SpringBeanUtils.getInstance().getBean(ApiSignConfig.class);
             //验签
             if (signAnt != null && !signCheck(request, signAnt.type(), apiSignBean.getSalt())) {
-                response.setContentType(CONTENT_TYPE);
-                response.getWriter().print(toJSONString(ExceptionResultWrap
-                        .result(API_SIGN_ERROR.getCode(), API_SIGN_ERROR.getMessage())));
+                response.setHeader("content-type", "application/json;charset=UTF-8");
+                response.getOutputStream().write(toJSONString(ExceptionResultWrap
+                        .result(API_SIGN_ERROR.getCode(), API_SIGN_ERROR.getMessage())).getBytes("UTF-8"));
                 return false;
             }
         }
@@ -109,7 +110,7 @@ public class SignAppInterceptor implements ApiBeforeInterceptor {
             }
             if (map.isEmpty()) {
                 //封装request
-                String bodyString = parse(RequestUtil.getBodyString(request), Feature.OrderedField).toString();
+                String bodyString = JSON.parse(RequestUtil.getBodyString(request)).toString();
                 LOG.debug("加密集：{}", bodyString);
                 return bodyString;
             } else {

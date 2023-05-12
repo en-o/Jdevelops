@@ -1,8 +1,6 @@
 package cn.jdevelops.util.interceptor.chain;
 
 import cn.jdevelops.util.interceptor.api.ApiFinallyInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,6 @@ import java.util.List;
  */
 public class ApiFinallyInterceptorChain {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiFinallyInterceptorChain.class);
 
     /**
      * 拦截器列表
@@ -41,13 +38,7 @@ public class ApiFinallyInterceptorChain {
                         Exception ex) throws Exception {
         // 循环执行
         for (ApiFinallyInterceptor chain : interceptors) {
-
-            try {
-                chain.finallys(request, response, handler, ex);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的接口整个请求处理完毕拦截器异常", e);
-            }
+            chain.finallys(request, response, handler, ex);
         }
     }
 

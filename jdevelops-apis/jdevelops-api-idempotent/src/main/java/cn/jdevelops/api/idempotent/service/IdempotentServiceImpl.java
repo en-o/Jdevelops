@@ -1,6 +1,7 @@
 package cn.jdevelops.api.idempotent.service;
 
 
+import cn.jdevelops.api.idempotent.annotation.ApiIdempotent;
 import cn.jdevelops.api.idempotent.config.IdempotentConfig;
 import cn.jdevelops.api.idempotent.util.ParamUtil;
 import cn.jdevelops.api.idempotent.util.ParseSha256;
@@ -61,7 +62,7 @@ public class IdempotentServiceImpl implements IdempotentService {
     }
 
     @Override
-    public boolean checkApiRedo(HttpServletRequest request) {
+    public boolean checkApiRedo(HttpServletRequest request, ApiIdempotent methodAnnotation) {
         // 加密让数据变短
         String paramsHeader = ParamUtil.getRequestParam(request);
         if(idempotentConfig.isParameterEncryption()){
@@ -76,7 +77,7 @@ public class IdempotentServiceImpl implements IdempotentService {
             LOG.info("当前接口在redis中无记录，此处进行新增记录");
             return true;
         } else {
-            throw new IdempotentException("短时间内请勿重复调用！");
+            throw new IdempotentException(methodAnnotation.message());
         }
 
     }

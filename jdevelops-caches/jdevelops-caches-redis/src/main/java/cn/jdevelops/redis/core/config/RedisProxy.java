@@ -65,6 +65,22 @@ public class RedisProxy {
         }
     }
 
+    /**
+     * 指定缓存永不失效
+     *
+     * @param key  键
+     */
+    public boolean expire(String key) {
+        try {
+            // 永不过期
+            redisTemplate.persist(key);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public Set<Object> hsetKeys(String key) {
         try {
             return redisTemplate.opsForHash().keys(key);

@@ -1,5 +1,5 @@
 cn.jdevelops.event.redis.receiver.RedisReceiver
 cn.jdevelops.event.redis.config.RedisCacheListen
-cn.jdevelops.event.redis.config.RedisCacheConfig
+cn.jdevelops.event.redis.config.RedisEventConfig
 cn.jdevelops.event.redis.server.DefaultRedisReceiverServer
 

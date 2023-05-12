@@ -19,9 +19,14 @@ public class ApiMonitoring {
     private String chineseApi;
 
     /**
-     *  调用异常和成功类型（1：接入日志；2：错误日志）
+     *  调用异常和成功类型（1:正常日志；2：错误日志）
      */
-    private Integer logType;
+    private Integer callType;
+
+    /**
+     * 类型
+     */
+    private  Integer logType;
 
     /** 接口返回的调用状态 /true/false */
     private boolean status;
@@ -42,7 +47,7 @@ public class ApiMonitoring {
 
 
     /**
-     * 描述 可以使用表达式取值（#{入参bean.taskName}）
+     * 描述
      */
     private String description;
 
@@ -61,6 +66,7 @@ public class ApiMonitoring {
 
     public ApiMonitoring(String apiUrl,
                          String chineseApi,
+                         Integer callType,
                          Integer logType,
                          boolean status,
                          String inParams,
@@ -72,6 +78,7 @@ public class ApiMonitoring {
                          String expression) {
         this.apiUrl = apiUrl;
         this.chineseApi = chineseApi;
+        this.callType = callType;
         this.logType = logType;
         this.status = status;
         this.inParams = inParams;
@@ -99,12 +106,12 @@ public class ApiMonitoring {
         this.chineseApi = chineseApi;
     }
 
-    public Integer getLogType() {
-        return logType;
+    public Integer getCallType() {
+        return callType;
     }
 
-    public void setLogType(Integer logType) {
-        this.logType = logType;
+    public void setCallType(Integer callType) {
+        this.callType = callType;
     }
 
     public boolean isStatus() {
@@ -171,11 +178,20 @@ public class ApiMonitoring {
         this.expression = expression;
     }
 
+    public Integer getLogType() {
+        return logType;
+    }
+
+    public void setLogType(Integer logType) {
+        this.logType = logType;
+    }
+
     @Override
     public String toString() {
         return "ApiMonitoring{" +
                 "apiUrl='" + apiUrl + '\'' +
                 ", chineseApi='" + chineseApi + '\'' +
+                ", callType=" + callType +
                 ", logType=" + logType +
                 ", status=" + status +
                 ", inParams='" + inParams + '\'' +

@@ -9,7 +9,15 @@ package cn.jdevelops.sboot.authentication.jwt.vo;
  * @date 2023-02-10 11:33
  */
 public class CheckVO {
+
+    /**
+     * token 是否有效
+     */
     Boolean check;
+
+    /**
+     * 被检查的toekn
+     */
     String token;
 
     public CheckVO(Boolean check, String token) {

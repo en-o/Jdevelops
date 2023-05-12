@@ -1,20 +1,17 @@
 package cn.jdevelops.sboot.authentication.jredis.service.impl;
 
-import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.entity.role.UserRole;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
-import cn.jdevelops.sboot.authentication.jredis.util.JwtRedisUtil;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.exception.JwtException;
-import com.alibaba.fastjson.JSON;
+import cn.jdevelops.util.jwt.exception.LoginException;
+import com.alibaba.fastjson2.JSON;
 import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +52,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void storageUserToken(StorageUserTokenEntity storageUserTokenEntity) {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER,
+        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER,
                 storageUserTokenEntity.getUserCode());
         redisTemplate.boundHashOps(loginRedisFolder).put(storageUserTokenEntity.getUserCode(),
                 storageUserTokenEntity);
@@ -70,7 +67,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void refreshUserToken(String subject) {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             LOG.warn("{}用户未登录，不需要刷新", subject);
@@ -87,7 +84,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void removeUserToken(String subject) {
-        String redisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String redisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         redisTemplate.delete(redisFolder);
     }
 
@@ -95,16 +92,14 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
             return verifyUserTokenBySubject(JwtService.getSubject(token));
-        } catch (MalformedClaimException e) {
-            throw new ExpiredRedisException(REDIS_NO_USER,e);
-        } catch (JwtException e) {
+        } catch (MalformedClaimException | LoginException e) {
             throw new ExpiredRedisException(REDIS_NO_USER,e);
         }
     }
 
     @Override
     public StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         // redis 中比对 token 正确性
         StorageUserTokenEntity tokenRedis;
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
@@ -116,17 +111,21 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         return tokenRedis;
     }
 
-
-
-
+    /**
+     * 根据用户token加载redis存储的用户登录信息
+     */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, JwtException {
-        return loadUserTokenInfoBySubject(JwtService.getSubject(token));
+    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws  LoginException {
+        return loadUserTokenInfoBySubject(JwtService.getSubjectExpires(token));
     }
 
+
+    /**
+     * 根据用户ID加载redis存储的用户登录信息
+     */
     @Override
     public StorageUserTokenEntity loadUserTokenInfoBySubject(String subject) {
-        String loginRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
         // redis 中比对 token 正确性
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
@@ -138,7 +137,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public  <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException{
-        String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
+        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
@@ -146,7 +145,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
                     .get(subject);
         }catch (Exception e){
             LOG.info("用户状态缓存失效");
-            throw new BusinessException(JwtMessageConstant.TOKEN_ERROR,e);
+            throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
         }
 
         Object basicsAccount = JSON.parse(redisUser);
@@ -162,7 +161,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public <RB extends BasicsAccount> void storageUserStatus(RB account) {
-        String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, account.getUserCode());
+        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, account.getUserCode());
         // 处理由于是泛型对象导致其他地方继承后有问题，
         String accountJson = JSON.toJSONString(account);
         redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), accountJson);
@@ -172,7 +171,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public <RB extends BasicsAccount> RB loadUserStatus(String user) {
-        String userRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, user);
+        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, user);
 
         String redisUser;
         try {
@@ -188,46 +187,15 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         return Objects.isNull(redisUser)?null: basicsAccount;
     }
 
-
-    @Override
-    public void storageUserRole(String user, List<String> roles) {
-        // 用户角色存入 redis
-        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_FOLDER, user);
-        redisTemplate.boundHashOps(roleRedisFolder).put(user, roles);
-        // 永不过期
-        redisTemplate.persist(roleRedisFolder);
+    /**
+     * redis简单存储建立文件夹
+     *
+     * @param folderName 文件夹名
+     * @param key        key
+     * @return folderName:key
+     */
+    private static String getRedisFolder(String folderName, String key) {
+        return folderName + ":" + key;
     }
-
-    @Override
-    public List<String> loadUserRole(String subject) {
-        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_FOLDER, subject);
-        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
-        if (Objects.isNull(roles)) {
-            return Collections.emptyList();
-        } else {
-            return (List<String>) roles;
-        }
-    }
-
-    @Override
-    public <T extends UserRole> void storageUserRoleInfo(String subject, List<T> roles) {
-        // 用户角色存入 redis
-        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
-        redisTemplate.boundHashOps(roleRedisFolder).put(subject, roles);
-        // 永不过期
-        redisTemplate.persist(roleRedisFolder);
-    }
-
-    @Override
-    public <T extends UserRole>  List<T> loadUserRoleInfo(String subject) {
-        String roleRedisFolder = JwtRedisUtil.getRedisFolder(RedisJwtKeyConstant.REDIS_USER_ROLE_INFO_FOLDER, subject);
-        Object roles = redisTemplate.boundHashOps(roleRedisFolder).get(subject);
-        if (Objects.isNull(roles)) {
-            return Collections.emptyList();
-        } else {
-            return (List<T>) roles;
-        }
-    }
-
 
 }

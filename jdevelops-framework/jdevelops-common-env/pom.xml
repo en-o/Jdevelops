@@ -10,7 +10,7 @@
     </parent>
     <description>基础依赖</description>
     <artifactId>jdevelops-common-env</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!--接口日志-->

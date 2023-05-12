@@ -4,12 +4,9 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.entity.role.UserRole;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
-import cn.jdevelops.util.jwt.exception.JwtException;
-import org.jose4j.jwt.MalformedClaimException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 
-import java.util.List;
 
 /**
  * redis
@@ -75,8 +72,9 @@ public interface JwtRedisService {
      * 获取存储的用户token详情
      * @param token token
      * @return LoginTokenRedis
+     * @throws LoginException LoginException
      */
-    StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws MalformedClaimException, JwtException;
+    StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws  LoginException;
 
 
     /**
@@ -106,41 +104,5 @@ public interface JwtRedisService {
     <RB extends BasicsAccount> RB loadUserStatus(String subject);
 
 
-    /**
-     * 存放 用户角色
-     * 永不过期 改变时也要该redis
-     * @see #storageUserRoleInfo
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @param roles    权限集合
-     */
-    @Deprecated
-    void storageUserRole(String subject, List<String> roles);
-
-
-    /**
-     * 加载用户角色
-     * @see #loadUserRoleInfo
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @return List (如返回空对象则表示redis中无数据请先自行添加
-     */
-    @Deprecated
-    List<String> loadUserRole(String subject);
-
-    /**
-     * 存放 用户角色
-     * 永不过期 改变时也要该redis
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @param roles    权限集合
-     */
-    <T extends UserRole> void storageUserRoleInfo(String subject, List<T> roles);
-
-
-    /**
-     * 加载用户角色
-     *
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @return List (如返回空对象则表示redis中无数据请先自行添加
-     */
-    <T extends UserRole> List<T> loadUserRoleInfo(String subject);
 
 }

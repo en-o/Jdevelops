@@ -89,7 +89,12 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
                 LOG.warn("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
                 return;
             }
-            this.execute(connection, properties.getUrl().substring(i + 1, j), jdbcType);
+
+            String schemaName = properties.getUrl().substring(i + 1, j);
+            LOG.warn("创建数据库 ==> execute auto schema url: {}, username: {}, password: {}, schemaName: {}",
+                    jdbcUrl,properties.getUsername(), properties.getPassword(), schemaName);
+
+            this.execute(connection, schemaName, jdbcType);
         }catch (Exception e){
             LOG.warn("自动建库失败,请手动创建",e);
         }

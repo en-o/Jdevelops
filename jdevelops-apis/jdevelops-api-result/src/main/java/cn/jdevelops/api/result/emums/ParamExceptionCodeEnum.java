@@ -3,15 +3,24 @@ package cn.jdevelops.api.result.emums;
 
 /**
  * 参数异常
- *  参数错误code 20000开始
  * @author tn
  * @date 2019年07月29日 14:16
  */
 public enum ParamExceptionCodeEnum {
+
+    /**
+     * 入参校验异常
+     */
+    CHECK_ERROR(10011,"入参校验异常"),
     /**
      * JSON格式错误
      */
     JSON_ERROR(10011,"JSON格式错误"),
+
+    /**
+     * 数据格式检验失败
+     */
+    VALID_ERROR(10011,"数据格式检验失败"),
 
     /**
      * 消息不可读
@@ -28,15 +37,6 @@ public enum ParamExceptionCodeEnum {
      */
     PARAMETER_ERROR(10015,"参数不正确"),
 
-    /**
-     * 入参校验异常
-     */
-    CHECK_ERROR(10002,"入参校验异常"),
-
-    /**
-     * 数据格式检验失败
-     */
-    VALID_ERROR(2444,"数据格式检验失败"),
 
     ;
 

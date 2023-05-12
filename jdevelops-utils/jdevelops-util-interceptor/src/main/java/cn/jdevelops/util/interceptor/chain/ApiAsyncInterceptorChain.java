@@ -1,8 +1,6 @@
 package cn.jdevelops.util.interceptor.chain;
 
 import cn.jdevelops.util.interceptor.api.ApiAsyncInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +12,6 @@ import java.util.List;
  * @author tnnn
  */
 public class ApiAsyncInterceptorChain {
-
-    private static final Logger logger = LoggerFactory.getLogger(ApiFinallyInterceptorChain.class);
 
     /**
      * 拦截器列表
@@ -40,12 +36,7 @@ public class ApiAsyncInterceptorChain {
                         Object handler) throws Exception {
         // 循环执行
         for (ApiAsyncInterceptor chain : interceptors) {
-            try {
-                chain.async(request, response, handler);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的异步拦截器异常", e);
-            }
+            chain.async(request, response, handler);
         }
     }
 

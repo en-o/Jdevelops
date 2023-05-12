@@ -1,8 +1,6 @@
 package cn.jdevelops.util.interceptor.chain;
 
 import cn.jdevelops.util.interceptor.api.ApiAfterInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +14,6 @@ import java.util.List;
  */
 public class ApiAfterInterceptorChain {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiFinallyInterceptorChain.class);
 
     /**
      * 拦截器列表
@@ -42,12 +39,7 @@ public class ApiAfterInterceptorChain {
                         ModelAndView modelAndView) throws Exception {
         // 循环执行
         for (ApiAfterInterceptor chain : interceptors) {
-            try {
-                chain.after(request, response, handler, modelAndView);
-            }catch (Exception e){
-                // 错误不干扰
-                logger.error("自定义的后置拦截器异常", e);
-            }
+            chain.after(request, response, handler, modelAndView);
         }
     }
 

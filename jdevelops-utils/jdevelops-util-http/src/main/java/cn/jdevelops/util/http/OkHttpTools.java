@@ -59,7 +59,22 @@ public final class OkHttpTools {
     }
 
     /**
-     * Post string.
+     * GET
+     *
+     * @param url  the url
+     * @return the string
+     * @throws IOException the io exception
+     */
+    public String get(final String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        return client.newCall(request).execute().body().string();
+    }
+
+
+    /**
+     * Post jsonStr.
      *
      * @param url  the url
      * @param json the json

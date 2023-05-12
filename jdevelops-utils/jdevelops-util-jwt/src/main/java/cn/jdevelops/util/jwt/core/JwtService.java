@@ -1,10 +1,11 @@
 package cn.jdevelops.util.jwt.core;
 
+import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import cn.jdevelops.util.jwt.exception.JwtException;
+import cn.jdevelops.util.jwt.exception.LoginException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
@@ -36,6 +37,10 @@ public class JwtService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
     private static final String AUDIENCE = "jdevelops";
+    private static final String LOGIN_NAME = "loginName";
+    private static final String USER_ID = "userId";
+    private static final String USER_NAME = "userName";
+
 
     static JwtConfig jwtConfig;
     static Key secret;
@@ -56,12 +61,13 @@ public class JwtService {
 
 
     /**
+     *
      * 生成token
      * @param sign SignEntity
      * @return token
      * @throws JoseException JoseException
      */
-    public static String generateToken(SignEntity sign) throws JoseException {
+    public static <T extends SignEntity> String generateToken(T  sign) throws JoseException {
         // Create the Claims, which will be the content of the JWT
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人
@@ -71,6 +77,9 @@ public class JwtService {
         claims.setIssuedAtToNow();  // 何时发行/创建令牌 (now)
 //        claims.setNotBeforeMinutesInThePast(1); //令牌尚未生效的时间 (2 minutes ago)
         claims.setSubject(sign.getSubject()); // 主体/主体是标记的对象
+        claims.setClaim(LOGIN_NAME, sign.getLoginName());
+        claims.setClaim(USER_ID, sign.getUserId());
+        claims.setClaim(USER_NAME, sign.getUserName());
         if (Objects.nonNull(sign.getMap())) {
             for (String key : sign.getMap().keySet()) {
                 Object value = sign.getMap().get(key);
@@ -97,6 +106,7 @@ public class JwtService {
      * @return token
      * @throws JoseException JoseException
      */
+    @Deprecated
     public static String generateToken(String subject) throws JoseException {
         // 创建 JWT
         JwtClaims claims = new JwtClaims();
@@ -147,7 +157,7 @@ public class JwtService {
      * @return 有效返回则 JwtClaims
      * @throws InvalidJwtException InvalidJwtException
      */
-    public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, JwtException {
+    public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, LoginException {
         try {
             return getJwtConsumer().processToClaims(token);
         } catch (InvalidJwtException e) {
@@ -157,7 +167,7 @@ public class JwtService {
             if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
                 logger.error("JWT had wrong audience: {}" , e.getJwtContext().getJwtClaims().getAudience());
             }
-            throw new JwtException(TOKEN_ERROR, e);
+            throw new LoginException(TOKEN_ERROR, e);
         }
     }
 
@@ -167,7 +177,7 @@ public class JwtService {
      * @return 新的token
      * @throws JoseException JoseException
      */
-    public static String refreshToken(String token) throws JoseException, MalformedClaimException, JwtException {
+    public static String refreshToken(String token) throws JoseException, MalformedClaimException, LoginException {
         // 验证 JWT
         JwtClaims jwtClaims = validateTokenByJwtClaims(token);
 
@@ -211,10 +221,66 @@ public class JwtService {
      * @param token token
      * @return java.lang.String
      */
-    public static String getSubject(String token) throws MalformedClaimException, JwtException {
+    public static String getSubject(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
         JwtClaims jwtClaims = validateTokenByJwtClaims(token);
         return jwtClaims.getSubject();
+    }
+
+
+    /**
+     * 获得Token中的 Subject（过期也解析）
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getSubjectExpires(String token) throws LoginException {
+        try {
+            // 解析 JWT
+            JwtClaims jwtClaims = parseJwt(token);
+            return jwtClaims.getSubject();
+        } catch (MalformedClaimException e) {
+            throw new LoginException(TokenExceptionCodeEnum.TOKEN_ERROR,e);
+        }
+    }
+
+
+
+    /**
+     * 获得Token中的 LOGIN_NAME （过期也解析）
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getLoginNameExpires(String token) {
+        // 解析 JWT
+        JwtClaims jwtClaims = parseJwt(token);
+        return String.valueOf(jwtClaims.getClaimValue(LOGIN_NAME));
+    }
+
+    /**
+     * 获得Token中的 USER_ID （过期也解析）
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getUserIDExpires(String token) {
+        // 解析 JWT
+        JwtClaims jwtClaims = parseJwt(token);
+        return String.valueOf(jwtClaims.getClaimValue(USER_ID));
+    }
+
+
+    /**
+     * 获得Token中的 USER_NAME （过期也解析）
+     *
+     * @param token token
+     * @return java.lang.String
+     */
+    public static String getUserNameExpires(String token) {
+        // 解析 JWT
+        JwtClaims jwtClaims = parseJwt(token);
+        return String.valueOf(jwtClaims.getClaimValue(USER_NAME));
     }
 
 

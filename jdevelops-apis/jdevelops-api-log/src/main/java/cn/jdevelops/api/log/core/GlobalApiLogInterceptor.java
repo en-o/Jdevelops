@@ -1,6 +1,7 @@
 package cn.jdevelops.api.log.core;
 
 
+import cn.jdevelops.api.log.constants.ApiLogConstants;
 import cn.jdevelops.api.log.entity.LoggerEntity;
 import cn.jdevelops.util.http.IpUtil;
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
@@ -27,12 +28,11 @@ import java.util.Objects;
         matchIfMissing = true)
 @Order(1)
 public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
-    private final static String ERROR_PAGE = "/error";
 
     /**
      * logback-spring.xml中定义 appender api-log 完成自定api文件输出
      */
-    private static final Logger logger = LoggerFactory.getLogger("api-log");
+    private static final Logger logger = LoggerFactory.getLogger(ApiLogConstants.LOGGER_NAME);
 
     @Override
     public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -40,7 +40,7 @@ public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
         LoggerEntity loggerEntity = null;
         try {
             // 不拦截这个页面
-            if(request.getRequestURI().contains(ERROR_PAGE)){
+            if(request.getRequestURI().contains(ApiLogConstants.ERROR_PAGE)){
                 return true;
             }
             String requestParams = RequestUtil.requestParams(request);
@@ -49,8 +49,7 @@ public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
         }catch (Exception e){
             logger.error("接口日志记录失败", e);
         }
-
-        logger.info(Objects.isNull(loggerEntity)? "" : loggerEntity.toString());
+        logger.info(Objects.isNull(loggerEntity)? "" : loggerEntity.ltoString());
         return true;
     }
 }

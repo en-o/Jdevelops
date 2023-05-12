@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @date 2022-06-24 13:17
  */
 @Aspect
-@Component
+@AutoConfiguration
 public class ExceptionAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionAspect.class);

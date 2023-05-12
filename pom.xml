@@ -78,7 +78,7 @@
     </modules>
 
     <properties>
-        <jdevelops.last.version>2.0.7</jdevelops.last.version>
+        <jdevelops.version>2.0.7</jdevelops.version>
         <!-- spring  -->
         <spring.boot.version>2.7.9</spring.boot.version>
         <!-- jdk -->
@@ -192,7 +192,7 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-dependencies</artifactId>
-                <version>${jdevelops.last.version}</version>
+                <version>${jdevelops.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

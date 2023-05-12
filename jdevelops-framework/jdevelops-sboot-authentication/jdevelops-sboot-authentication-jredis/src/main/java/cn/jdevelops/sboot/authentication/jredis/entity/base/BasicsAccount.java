@@ -28,20 +28,23 @@ public class BasicsAccount {
     /** 是否被锁定 **/
     private boolean excessiveAttempts;
     /**
-     * 用户角色
+     * 用户角色(json, 有什么就存什么把，id,名称等json)
      */
-    private  List<String> ownRoles;
+    private  String ownRoleJsons;
 
     public BasicsAccount() {
     }
 
-    public BasicsAccount(String userCode, String password, String salt, boolean disabledAccount, boolean excessiveAttempts, List<String> ownRoles) {
+    public BasicsAccount(String userCode,
+                         String password, String salt,
+                         boolean disabledAccount,
+                         boolean excessiveAttempts, String ownRoleJsons) {
         this.userCode = userCode;
         this.password = password;
         this.salt = salt;
         this.disabledAccount = disabledAccount;
         this.excessiveAttempts = excessiveAttempts;
-        this.ownRoles = ownRoles;
+        this.ownRoleJsons = ownRoleJsons;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class BasicsAccount {
                 ", salt='" + salt + '\'' +
                 ", disabledAccount=" + disabledAccount +
                 ", excessiveAttempts=" + excessiveAttempts +
-                ", ownRoles=" + ownRoles +
+                ", ownRoleJsons=" + ownRoleJsons +
                 '}';
     }
 
@@ -96,11 +99,11 @@ public class BasicsAccount {
         this.excessiveAttempts = excessiveAttempts;
     }
 
-    public List<String> getOwnRoles() {
-        return ownRoles;
+    public String getOwnRoleJsons() {
+        return ownRoleJsons;
     }
 
-    public void setOwnRoles(List<String> ownRoles) {
-        this.ownRoles = ownRoles;
+    public void setOwnRoleJsons(String ownRoleJsons) {
+        this.ownRoleJsons = ownRoleJsons;
     }
 }

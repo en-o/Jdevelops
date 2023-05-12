@@ -116,11 +116,8 @@ public class ScriptRunner {
 
         String line;
         try {
-            for (BufferedReader lineReader = new BufferedReader(reader);
-                 (line = lineReader.readLine()) != null;
-                 command = this.handleLine(command, line)
-            ) {
-                return;
+            for(BufferedReader lineReader = new BufferedReader(reader); (line = lineReader.readLine()) != null;
+                command = this.handleLine(command, line)) {
             }
 
             this.commitConnection();

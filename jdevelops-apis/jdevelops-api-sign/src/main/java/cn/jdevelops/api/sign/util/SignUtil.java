@@ -4,11 +4,10 @@ import cn.jdevelops.api.result.util.SpringBeanUtils;
 import cn.jdevelops.api.sign.config.ApiSignConfig;
 import cn.jdevelops.util.encryption.core.SignMD5Util;
 import cn.jdevelops.util.encryption.core.SignShaUtil;
+import com.alibaba.fastjson2.JSON;
 
 import java.util.ArrayList;
 import java.util.Map;
-
-import static com.alibaba.fastjson.JSON.toJSONString;
 
 /**
  * 签名用
@@ -41,7 +40,7 @@ public class SignUtil {
      * @return sign
      */
     public static <T extends Map> String getMd5SignByMap2Json(T maps) {
-        String encrypt1 = SignMD5Util.encrypt(toJSONString(maps), true);
+        String encrypt1 = SignMD5Util.encrypt(JSON.toJSONString(maps), true);
         return getMd5Sign(encrypt1);
     }
 
