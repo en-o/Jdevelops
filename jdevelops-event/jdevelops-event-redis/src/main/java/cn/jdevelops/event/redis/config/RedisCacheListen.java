@@ -30,7 +30,7 @@ public class RedisCacheListen {
     private static final Logger LOG = LoggerFactory.getLogger(RedisCacheListen.class);
 
     @Autowired
-    private RedisCacheConfig reidsCacheBean;
+    private RedisEventConfig reidsCacheBean;
 
 
     @Bean
@@ -58,7 +58,7 @@ public class RedisCacheListen {
      */
     @Bean
     MessageListenerAdapter listenerAdapter(RedisReceiver receiver) {
-        LOG.info("消息适配器1");
+        LOG.info("默认消息适配器");
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 

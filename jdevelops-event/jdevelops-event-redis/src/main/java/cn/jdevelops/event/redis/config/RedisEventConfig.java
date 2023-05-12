@@ -12,10 +12,9 @@ import java.util.List;
  * @version 1
  * @date 2020/7/3 9:19
  */
-@ConfigurationProperties(prefix = "jdevelops.redis.cache.pub")
+@ConfigurationProperties(prefix = "jdevelops.redis.event.pub")
 @Component
-
-public class RedisCacheConfig {
+public class RedisEventConfig {
 
     /**
      * 监听跟发布消息的   频道

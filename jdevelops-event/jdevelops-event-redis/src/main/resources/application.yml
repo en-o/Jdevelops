@@ -1,6 +1,6 @@
 #jdevelops:
 #  redis:
-#    cache:
+#    event:
 #      pub:
 #        pattern-topic:
 #          - test

@@ -3,6 +3,7 @@ package cn.jdevelops.event.redis.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.connection.Message;
 
@@ -11,7 +12,8 @@ import org.springframework.data.redis.connection.Message;
  * @author tn
  * @date 2020-09-11 10:36
  */
-@ConditionalOnMissingBean
+@AutoConfiguration
+@ConditionalOnMissingBean(RedisReceiverServer.class)
 public class DefaultRedisReceiverServer implements RedisReceiverServer<String> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultRedisReceiverServer.class);
