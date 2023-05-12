@@ -21,10 +21,5 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-util-jwt</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 </project>

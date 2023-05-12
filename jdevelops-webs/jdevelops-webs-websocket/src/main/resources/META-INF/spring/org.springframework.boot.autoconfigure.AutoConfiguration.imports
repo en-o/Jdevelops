@@ -1,6 +1,7 @@
 cn.jdevelops.webs.websocket.config.WebSocketConfig
 cn.jdevelops.webs.websocket.config.WebSocketAuthenticationConfigurator
-cn.jdevelops.webs.websocket.service.WebSocketServer
-cn.jdevelops.webs.websocket.service.WebScoketCacheService
+cn.jdevelops.webs.websocket.core.WebSocketServer
+cn.jdevelops.webs.websocket.service.WebSocketCacheService
 org.springframework.web.socket.server.standard.ServerEndpointExporter
+cn.jdevelops.webs.websocket.service.impl.VerifyServiceImpl
 

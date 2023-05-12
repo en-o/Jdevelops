@@ -1,6 +1,6 @@
 package cn.jdevelops.sboot.websocket.core;
 
-import cn.jdevelops.webs.websocket.service.WebSocketServer;
+import cn.jdevelops.webs.websocket.core.WebSocketServer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -41,6 +41,24 @@ public class SocketController {
         return "success";
     }
 
+
+    /**
+     * 给指定用户推送消息 (异步)
+     *
+     * @param userName 用户名
+     * @param message  消息
+     */
+    @GetMapping(value = "/only/async")
+    @Operation(summary = "给指定用户推送消息(异步)")
+    @Parameters({
+            @Parameter(name = "userName", description = "用户名", required = true),
+            @Parameter(name = "message", description = "消息", required = true)
+    })
+    public Object onlyUserAsyncSocket(@RequestParam("userName") String userName, @RequestParam("message") String message) {
+        webSocketServer.sendAsyncInfo(userName, message);
+        return "success";
+    }
+
     /**
      * 给所有用户推送消息
      *
@@ -57,6 +75,23 @@ public class SocketController {
     }
 
 
+
+    /**
+     * 给所有用户推送消息(异步)
+     *
+     * @param message 消息
+     */
+    @Operation(summary = "给所有用户推送消息(异步)")
+    @Parameters({
+            @Parameter(name = "message", description = "消息", required = true)
+    })
+    @GetMapping(value = "/all/async")
+    public Object allUserAsyncSocket(@RequestParam("message") String message) {
+        webSocketServer.onAsyncMessage(message);
+        return "success";
+    }
+
+
     /**
      * 使用 sendInfoByLikeKey 进行模糊匹配用户进行消息发送
      * 匹配  keyPrefix 开头的 websocket 用户 给他们发送消息 （keyPrefix用户1, keyPrefix用户2）
@@ -69,9 +104,29 @@ public class SocketController {
             @Parameter(name = "keyPrefix", description = "用户关键字", required = true),
             @Parameter(name = "message", description = "消息", required = true)
     })
-    @RequestMapping("/sendInfoByLikeKey")
+    @RequestMapping("/prefix")
     public Object sendInfoByLikeKey(@RequestParam("keyPrefix") String keyPrefix, @RequestParam("message") String message) {
         webSocketServer.sendInfoByLikeKey(keyPrefix, message);
+        return "success";
+    }
+
+    /**
+     * (异步)
+     *
+     * 使用 sendInfoByLikeKey 进行模糊匹配用户进行消息发送
+     * 匹配  keyPrefix 开头的 websocket 用户 给他们发送消息 （keyPrefix用户1, keyPrefix用户2）
+     *
+     * @param keyPrefix 主键前缀
+     * @param message   消息
+     */
+    @Operation(summary = "模糊匹配用户进行消息发送(异步)")
+    @Parameters({
+            @Parameter(name = "keyPrefix", description = "用户关键字", required = true),
+            @Parameter(name = "message", description = "消息", required = true)
+    })
+    @RequestMapping("/prefix/async")
+    public Object sendInfoAsyncByLikeKey(@RequestParam("keyPrefix") String keyPrefix, @RequestParam("message") String message) {
+        webSocketServer.sendAsyncInfoByLikeKey(keyPrefix, message);
         return "success";
     }
 
