@@ -2,7 +2,6 @@ package cn.jdevelops.webs.websocket.service.impl;
 
 import cn.jdevelops.webs.websocket.CommonConstant;
 import cn.jdevelops.webs.websocket.service.VerifyService;
-import cn.jdevelops.webs.websocket.util.SocketUtil;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 

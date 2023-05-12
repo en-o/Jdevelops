@@ -5,6 +5,10 @@ import cn.jdevelops.webs.websocket.util.SocketUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 鉴权
+ * @author tan
+ */
 public interface VerifyService {
 
 

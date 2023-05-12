@@ -10,9 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.ServerEndpointConfig;
-import java.util.Objects;
 
-import static cn.jdevelops.webs.websocket.cache.WebSocketSessionLocalCache.sessionPools;
 
 
 /**

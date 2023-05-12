@@ -30,8 +30,6 @@ public class ApiInterceptorChain {
 
     /**
      * 执行处理
-     *
-     * @throws Exception Exception
      */
     public List<HandlerInterceptor> execute() {
         List<HandlerInterceptor> handlerInterceptors = new ArrayList<>();

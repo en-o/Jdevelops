@@ -2,7 +2,6 @@ package cn.jdevelops.webs.websocket.service;
 
 import cn.jdevelops.webs.websocket.config.WebSocketConfig;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.stereotype.Service;
 
 import javax.websocket.Session;
 import java.util.*;
