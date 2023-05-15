@@ -3,6 +3,8 @@ package cn.jdevelops.file.oss.api.bean;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 /**
  * 文件地址
  *
@@ -10,7 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @date 2021-03-03 14:43
  */
 @Schema(description = "文件管理 - 文件VO")
-public class FilePathResult {
+public class FilePathResult implements Serializable {
 
 	/**
 	 * 相对路径

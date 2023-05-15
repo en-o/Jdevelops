@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  * @date 2022-04-01 14:28
  */
 @Schema(description = "文件管理 - 删除文件")
-public class RemoveFileDTO {
+public class RemoveFileDTO implements Serializable {
 
     /**
      * 桶名称(最少1个字符，最大63个）

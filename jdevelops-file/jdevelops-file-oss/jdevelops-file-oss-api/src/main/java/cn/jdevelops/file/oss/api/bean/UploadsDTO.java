@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  * @author tn
  */
 @Schema(description = "文件管理 - 文件上传S")
-public class UploadsDTO {
+public class UploadsDTO implements Serializable {
 
     /**
      * 桶名称(最少1个字符，最大63个）

@@ -4,6 +4,7 @@ package cn.jdevelops.file.oss.api.bean;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 
 /**
  * 有效期文件入参
@@ -13,7 +14,7 @@ import javax.validation.constraints.*;
  * @date 2022-04-01 14:26
  */
 @Schema(description = "文件管理 - 文件有效期")
-public class ExpireDateDTO {
+public class ExpireDateDTO implements Serializable {
 
     /**
      * 桶名称(最少1个字符，最大63个）

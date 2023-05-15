@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * 文件下载入参
@@ -13,7 +14,7 @@ import javax.validation.constraints.Size;
  */
 
 @Schema(description = "文件管理 - 文件下载")
-public class DownloadDTO {
+public class DownloadDTO implements Serializable {
 
 	/**
 	 * 桶名称(最少1个字符，最大63个）
