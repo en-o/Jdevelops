@@ -14,7 +14,7 @@
         minio文件操作
     </description>
     <properties>
-        <minio.version>8.3.7</minio.version>
+        <minio.version>8.5.2</minio.version>
     </properties>
 
     <dependencies>

@@ -10,7 +10,6 @@ import io.minio.messages.Bucket;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -147,7 +146,7 @@ public class OperateFileUtil {
 			freshName = filename + OSSConstants.SYMBOL_POINT + fileType;
 		}
 		String downName;
-		if (StringUtils.isNotBlank(childFolder) && !StringUtils.equalsIgnoreCase("null", childFolder)) {
+		if (StrUtil.notBlank(childFolder) && !"null".equalsIgnoreCase(childFolder)) {
 			downName = childFolder + freshName;
 		}else {
 			downName = freshName;
