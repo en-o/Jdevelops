@@ -35,7 +35,8 @@ public class RemoveFileDTO implements Serializable {
      * 七牛：直接些文件名
      * minio: 路径/文件名
      */
-    @Schema(description = "文件下载(FilePathResult.downPath)", requiredMode = Schema.RequiredMode.REQUIRED, example = "file/1.png")
+    @Schema(description = "文件下载(FilePathResult.downPath)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "文件不能为空")
     List<String> downPath;
 

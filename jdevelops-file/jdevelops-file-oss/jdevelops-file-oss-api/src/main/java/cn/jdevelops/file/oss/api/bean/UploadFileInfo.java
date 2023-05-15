@@ -12,7 +12,6 @@ import java.io.Serializable;
  * @version V1.0
  * @date 2023-01-10 15:50
  */
-@Schema(description = "文件管理 - 上传文件的文件参数")
 public class UploadFileInfo implements Serializable {
 
     /**
