@@ -3,7 +3,6 @@ package cn.jdevelops.file.oss.driver.qiniu;
 import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
-import cn.jdevelops.file.oss.api.constants.OSSConstants;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import cn.jdevelops.file.oss.api.util.UrlUtil;
 import com.google.gson.Gson;
