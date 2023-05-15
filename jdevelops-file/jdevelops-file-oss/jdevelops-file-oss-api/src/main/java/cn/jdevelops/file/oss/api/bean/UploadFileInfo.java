@@ -1,5 +1,6 @@
 package cn.jdevelops.file.oss.api.bean;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -9,18 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
  * @version V1.0
  * @date 2023-01-10 15:50
  */
-
+@Schema(description = "文件管理 - 上传文件的文件参数")
 public class UploadFileInfo {
 
     /**
      * 文件流
      */
+    @Schema(description = "文件流")
     MultipartFile file;
 
     /**
      * 业务自定义存储文件名,为空则使用系统默认规则
      * ps: minio 中文可能会有点的问题
      */
+    @Schema(description = "业务自定义存储文件名,为空则使用系统默认规则( minio 中文可能会有点的问题)")
     String fileName;
 
 

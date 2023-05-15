@@ -130,7 +130,7 @@ public class LocalOperate implements OssOperateAPI {
     public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
         return getBrowserUrl() +
                 OSSConstants.PATH_SEPARATOR +
-                expireDate.getBucket() + OSSConstants.PATH_SEPARATOR + expireDate.getChildFolderFreshName();
+                expireDate.getBucket() + OSSConstants.PATH_SEPARATOR + expireDate.getDownPath();
     }
 
 

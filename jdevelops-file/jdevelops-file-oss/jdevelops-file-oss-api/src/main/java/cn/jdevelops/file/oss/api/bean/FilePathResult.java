@@ -1,6 +1,7 @@
 package cn.jdevelops.file.oss.api.bean;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * 文件地址
@@ -8,7 +9,7 @@ package cn.jdevelops.file.oss.api.bean;
  * @author tn
  * @date 2021-03-03 14:43
  */
-
+@Schema(description = "文件管理 - 文件VO")
 public class FilePathResult {
 
 	/**

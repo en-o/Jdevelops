@@ -55,7 +55,7 @@ public class MinioOperate implements OssOperateAPI {
 
     @Override
     public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
-        return operateFileUtil.getExpiryObjectUrl(expireDate.getBucket(), expireDate.getChildFolderFreshName(), expireDate.getExpires());
+        return operateFileUtil.getExpiryObjectUrl(expireDate.getBucket(), expireDate.getDownPath(), expireDate.getExpires());
     }
 
 

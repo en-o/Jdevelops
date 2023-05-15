@@ -138,7 +138,7 @@ public class QiniuOperate implements OssOperateAPI {
         // key      下载资源在七牛云存储的 key【必须】
         String browseUrl = ossConfig.getBrowseUrl();
         DownloadUrl url = new DownloadUrl(browseUrl.substring(browseUrl.indexOf("//")+1), ossConfig.getQiniu()
-                .getHttps(), expireDate.getChildFolderFreshName());
+                .getHttps(), expireDate.getDownPath());
         // 带有效期
         long expireInSeconds = expireDate.getExpires();
         return url.buildURL(auth, expireInSeconds);
