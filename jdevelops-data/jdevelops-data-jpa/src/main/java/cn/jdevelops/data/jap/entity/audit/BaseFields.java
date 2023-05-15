@@ -4,6 +4,7 @@ package cn.jdevelops.data.jap.entity.audit;
 import cn.jdevelops.api.result.bean.SerializableBean;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 数据表中自动创建时间 公共类
@@ -48,5 +49,22 @@ public class BaseFields<B> extends SerializableBean<B> {
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BaseFields)) {
+            return false;
+        }
+        BaseFields<?> that = (BaseFields<?>) o;
+        return Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(createTime, updateTime);
     }
 }
