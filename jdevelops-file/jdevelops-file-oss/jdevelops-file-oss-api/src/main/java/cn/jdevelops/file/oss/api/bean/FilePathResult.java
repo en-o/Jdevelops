@@ -17,27 +17,32 @@ public class FilePathResult implements Serializable {
 	/**
 	 * 相对路径
 	 */
+	@Schema(description = "相对路径")
 	private String relativePath;
 
 	/**
 	 * 绝对路径
 	 */
+	@Schema(description = "绝对路径")
 	private String absolutePath;
 
 	/**
 	 * 原本对象的名称
 	 */
+	@Schema(description = "原本对象的名称")
 	private String originalName;
 
 	/**
 	 * 文件服务器中的新文件名
 	 */
+	@Schema(description = "文件服务器中的新文件名")
 	private String freshName;
 
 
 	/**
 	 * 文件下载和删除用到的路径
 	 */
+	@Schema(description = "文件下载和删除用到的路径")
 	private String downPath;
 
 
