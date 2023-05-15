@@ -59,8 +59,9 @@ public class LocalOperate implements OssOperateAPI {
         }else {
             freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
         }
-        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR +(Objects.isNull(uploaded.getChildFolder())?"":uploaded.getChildFolder())
-                + OSSConstants.PATH_SEPARATOR +freshName;
+        String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
+        String downPath =  childFolder + freshName;
+        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + downPath;
         File dest = new File(ossConfig.getLocal()
                 .getUploadDir() + OSSConstants.PATH_SEPARATOR + relativePath);
         // 判断文件所在目录是否存在，如果不存在就创建对应的目录
@@ -78,6 +79,7 @@ public class LocalOperate implements OssOperateAPI {
         filePathResult.setAbsolutePath(absolutePath);
         filePathResult.setRelativePath(relativePath);
         filePathResult.setFreshName(freshName);
+        filePathResult.setDownPath(childFolder+freshName);
         filePathResult.setOriginalName(originalName);
         return filePathResult;
     }
@@ -103,7 +105,7 @@ public class LocalOperate implements OssOperateAPI {
 
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
-        String filePath = download.getBucket() + OSSConstants.PATH_SEPARATOR + download.getChildFolder_FreshName();
+        String filePath = download.getBucket() + OSSConstants.PATH_SEPARATOR + download.getDownPath();
         String absolutePath = ossConfig.getLocal()
                 .getUploadDir() + OSSConstants.PATH_SEPARATOR + filePath;
         File file = new File(absolutePath);
@@ -136,7 +138,7 @@ public class LocalOperate implements OssOperateAPI {
     @SuppressWarnings("all")
     public void removeFiles(RemoveFileDTO remove) throws Exception {
         String bucket = remove.getBucket();
-        List<String> childFolder_freshName = remove.getChildFolder_FreshName();
+        List<String> childFolder_freshName = remove.getDownPath();
         for (String it : childFolder_freshName) {
             try {
                 File file = new File(ossConfig.getLocal()

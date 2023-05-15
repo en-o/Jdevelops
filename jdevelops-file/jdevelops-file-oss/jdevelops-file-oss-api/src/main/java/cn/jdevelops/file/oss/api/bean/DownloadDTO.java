@@ -27,7 +27,7 @@ public class DownloadDTO {
 	 * e.g file/1.png
 	 */
 	@NotBlank
-	String childFolder_FreshName;
+	String downPath;
 
 	public String getBucket() {
 		return bucket;
@@ -37,19 +37,19 @@ public class DownloadDTO {
 		this.bucket = bucket;
 	}
 
-	public String getChildFolder_FreshName() {
-		return childFolder_FreshName;
+	public String getDownPath() {
+		return downPath;
 	}
 
-	public void setChildFolder_FreshName(String childFolder_FreshName) {
-		this.childFolder_FreshName = childFolder_FreshName;
+	public void setDownPath(String downPath) {
+		this.downPath = downPath;
 	}
 
 	@Override
 	public String toString() {
 		return "DownloadDTO{" +
 				"bucket='" + bucket + '\'' +
-				", childFolder_FreshName='" + childFolder_FreshName + '\'' +
+				", downPath='" + downPath + '\'' +
 				'}';
 	}
 }

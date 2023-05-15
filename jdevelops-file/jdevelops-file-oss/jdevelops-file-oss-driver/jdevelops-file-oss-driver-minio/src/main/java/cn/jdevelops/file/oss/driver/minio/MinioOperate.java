@@ -49,7 +49,7 @@ public class MinioOperate implements OssOperateAPI {
 
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
-        operateFileUtil.download(response,download.getBucket(),download.getChildFolder_FreshName());
+        operateFileUtil.download(response,download.getBucket(),download.getDownPath());
     }
 
 
@@ -61,6 +61,6 @@ public class MinioOperate implements OssOperateAPI {
 
     @Override
     public void removeFiles(RemoveFileDTO remove) throws Exception {
-        operateFileUtil.removeObjects(remove.getBucket(), remove.getChildFolder_FreshName());
+        operateFileUtil.removeObjects(remove.getBucket(), remove.getDownPath());
     }
 }

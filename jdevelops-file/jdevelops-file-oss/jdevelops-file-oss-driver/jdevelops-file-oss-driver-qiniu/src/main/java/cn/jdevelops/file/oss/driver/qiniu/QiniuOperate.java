@@ -3,6 +3,7 @@ package cn.jdevelops.file.oss.driver.qiniu;
 import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
+import cn.jdevelops.file.oss.api.constants.OSSConstants;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import cn.jdevelops.file.oss.api.util.UrlUtil;
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -59,18 +61,23 @@ public class QiniuOperate implements OssOperateAPI {
         }else {
             freshName = originalName;
         }
-        String updateFile = uploaded.getChildFolder() + freshName;
+        String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
+        String downPath =  childFolder + freshName;
+        String relativePath = uploaded.getBucket() + OSSConstants.PATH_SEPARATOR + downPath;
+
         Response response = this.uploadManager.put(uploaded.getFile().getInputStream(),
-                updateFile,
+                downPath,
                 getUploadToken(uploaded.getBucket()),
                 null,
                 null);
         Gson gson = new Gson();
+        String absolutePath = ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath;
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
         FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(updateFile);
-        filePathResult.setRelativePath(ossConfig.getBrowseUrl()+"/"+updateFile);
+        filePathResult.setAbsolutePath(absolutePath);
+        filePathResult.setRelativePath(relativePath);
         filePathResult.setFreshName(freshName);
+        filePathResult.setDownPath(downPath);
         filePathResult.setOriginalName(originalName);
         return filePathResult;
 
@@ -97,11 +104,11 @@ public class QiniuOperate implements OssOperateAPI {
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
         //构造私有空间的需要生成的下载的链接
-        String  encodeName = URLEncoder.encode(download.getChildFolder_FreshName(),"UTF-8").replaceAll("\\+", "%20");
+        String  encodeName = URLEncoder.encode(download.getDownPath(),"UTF-8").replaceAll("\\+", "%20");
         String urlString = ossConfig.getBrowseUrl()+"/"+encodeName;
         //调用privateDownloadUrl方法生成下载链接,第二个参数可以设置Token的过期时间
         String downloadRUL = auth.privateDownloadUrl(urlString, 3600);
-        String childFolder_freshName = download.getChildFolder_FreshName();
+        String childFolder_freshName = download.getDownPath();
         String fileName = childFolder_freshName.substring(childFolder_freshName.lastIndexOf('/') + 1);
         try {
             URL url = new URL(downloadRUL);
@@ -140,7 +147,7 @@ public class QiniuOperate implements OssOperateAPI {
     @Override
     public void removeFiles(RemoveFileDTO remove) throws Exception {
         try {
-            List<String> childFolder_freshName = remove.getChildFolder_FreshName();
+            List<String> childFolder_freshName = remove.getDownPath();
             for (String file : childFolder_freshName) {
                 try {
                     bucketManager.delete(remove.getBucket(), file);

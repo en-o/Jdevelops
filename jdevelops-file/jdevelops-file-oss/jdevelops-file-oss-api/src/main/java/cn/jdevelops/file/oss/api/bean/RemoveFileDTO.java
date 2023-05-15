@@ -24,12 +24,11 @@ public class RemoveFileDTO {
     @Size(min = 1,max = 63)
     String bucket;
 
-
     /**
-     * 路径/文件名（相对路径+服务器中的新文件名） - 不包括桶级别
+     * 文件下载和删除用到的路径
      */
     @NotEmpty
-    List<String> childFolder_FreshName;
+    List<String> downPath;
 
     public String getBucket() {
         return bucket;
@@ -39,19 +38,19 @@ public class RemoveFileDTO {
         this.bucket = bucket;
     }
 
-    public List<String> getChildFolder_FreshName() {
-        return childFolder_FreshName;
+    public List<String> getDownPath() {
+        return downPath;
     }
 
-    public void setChildFolder_FreshName(List<String> childFolder_FreshName) {
-        this.childFolder_FreshName = childFolder_FreshName;
+    public void setDownPath(List<String> downPath) {
+        this.downPath = downPath;
     }
 
     @Override
     public String toString() {
         return "RemoveFileDTO{" +
                 "bucket='" + bucket + '\'' +
-                ", childFolder_FreshName=" + childFolder_FreshName +
+                ", downPath=" + downPath +
                 '}';
     }
 }

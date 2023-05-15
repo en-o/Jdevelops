@@ -32,6 +32,12 @@ public class FilePathResult {
 	private String freshName;
 
 
+	/**
+	 * 文件下载和删除用到的路径
+	 */
+	private String downPath;
+
+
 	public FilePathResult() {
 	}
 
@@ -74,6 +80,13 @@ public class FilePathResult {
 		this.freshName = freshName;
 	}
 
+	public String getDownPath() {
+		return downPath;
+	}
+
+	public void setDownPath(String downPath) {
+		this.downPath = downPath;
+	}
 
 	@Override
 	public String toString() {
@@ -82,6 +95,7 @@ public class FilePathResult {
 				", absolutePath='" + absolutePath + '\'' +
 				", originalName='" + originalName + '\'' +
 				", freshName='" + freshName + '\'' +
+				", downPath='" + downPath + '\'' +
 				'}';
 	}
 }
