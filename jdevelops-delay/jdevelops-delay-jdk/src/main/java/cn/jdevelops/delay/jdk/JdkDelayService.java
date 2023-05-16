@@ -6,6 +6,8 @@ import cn.jdevelops.delay.core.service.DelayService;
 import cn.jdevelops.delay.jdk.task.DelayTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version V1.0
  * @date 2023-01-05 16:34
  */
-@Service
+@ConditionalOnMissingBean(DelayService.class)
+@AutoConfiguration
 public class JdkDelayService implements DelayService<DelayTask> {
 
     private static final Logger logger = LoggerFactory.getLogger(JdkDelayService.class);
