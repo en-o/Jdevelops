@@ -73,9 +73,7 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
 
     @Override
     public void produce(List<DelayQueueMessage> delayMessage) {
-        delayMessage.forEach(message -> {
-            produce(message);
-        });
+        delayMessage.forEach(this::produce);
     }
 
     @Override
