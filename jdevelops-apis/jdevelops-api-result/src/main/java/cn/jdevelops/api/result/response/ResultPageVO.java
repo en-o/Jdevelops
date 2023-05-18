@@ -2,6 +2,8 @@ package cn.jdevelops.api.result.response;
 
 import cn.jdevelops.api.result.common.ResultCommon;
 import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.exception.ServiceException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
@@ -83,6 +85,16 @@ public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
         this.data = data;
     }
 
+    /**
+     * 判断是否有异常。如果有，则抛出 {@link ServiceException} 异常
+     * 如果没有，则返回 {@link #data} 数据
+     * JsonIgnore避免 jackson 序列化
+     */
+    @JsonIgnore
+    public  P getCheckedData() {
+        checkError();
+        return data;
+    }
 
     public P getData() {
         return data;
