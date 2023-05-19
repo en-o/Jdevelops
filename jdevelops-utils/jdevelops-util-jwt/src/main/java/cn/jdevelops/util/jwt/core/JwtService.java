@@ -264,7 +264,7 @@ public class JwtService {
      * @param token token
      * @return java.lang.String
      */
-    public static String getUserIDExpires(String token) {
+    public static String getUserIdExpires(String token) {
         // 解析 JWT
         JwtClaims jwtClaims = parseJwt(token);
         return String.valueOf(jwtClaims.getClaimValue(USER_ID));
