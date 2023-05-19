@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * 业务逻辑异常 Exception
+ * @author tan
  */
 public final class ServiceException extends RuntimeException {
 
