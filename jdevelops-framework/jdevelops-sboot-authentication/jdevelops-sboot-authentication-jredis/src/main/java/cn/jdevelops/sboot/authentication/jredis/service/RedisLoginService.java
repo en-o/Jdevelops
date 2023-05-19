@@ -39,7 +39,7 @@ public class RedisLoginService implements LoginService {
      *      1. 无登录 根据数据颁发token
      *      2. 登录过，根据 refresh 判断token是否维持原状
      * @param request  HttpServletRequest
-     * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)
+     * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)[必须要带上token才能实现]
      * @param <RB>  BasicsAccount 用户状态
      * @param subject RedisSignEntity
      * @return 签名
