@@ -11,6 +11,7 @@ import cn.jdevelops.util.jwt.exception.LoginException;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author tan
  */
+@ConditionalOnMissingBean(LoginService.class)
 public class RedisLoginService implements LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
@@ -75,6 +77,7 @@ public class RedisLoginService implements LoginService {
      * 登录 主动记录用户状态
      *
      * @param subject RedisSignEntity
+     * @param <RB>  account 用户状态
      * @return 签名
      */
     public  <RB extends BasicsAccount>  String login(RedisSignEntity subject, RB account) {
