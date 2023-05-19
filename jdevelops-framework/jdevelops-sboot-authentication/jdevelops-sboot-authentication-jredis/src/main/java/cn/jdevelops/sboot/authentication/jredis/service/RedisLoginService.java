@@ -61,20 +61,20 @@ public class RedisLoginService implements LoginService {
         }
         // 无token 重新登录
         if(null == token || token.length() == 0) {
-            token = login(subject);
-        }
-        // 验证是否登录过
-        boolean login = isLogin(request);
-
-        // 存在登录, 颁发新的 token
-        if(login && refresh){
             return login(subject);
-        }else if(login){
-            // 继续使用当前token
-           return token;
         }else {
-            // 登录失效，重新登录
-            return login(subject);
+            // 验证是否登录过
+            boolean login = isLogin(request);
+            // 存在登录, 颁发新的 token
+            if(login && refresh){
+                return login(subject);
+            }else if(login){
+                // 继续使用当前token
+                return token;
+            }else {
+                // 登录失效，重新登录
+                return login(subject);
+            }
         }
     }
 

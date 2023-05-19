@@ -62,7 +62,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             redisTemplate.persist(loginRedisFolder);
         }else {
             // 设置过期时间（毫秒
-            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
         }
     }
 
@@ -78,7 +78,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             }else {
                 // 设置过期时间（毫秒
-                redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+                redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
             }
         }
     }
