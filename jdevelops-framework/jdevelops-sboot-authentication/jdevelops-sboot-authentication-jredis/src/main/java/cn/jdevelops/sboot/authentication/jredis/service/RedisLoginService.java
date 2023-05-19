@@ -1,5 +1,6 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
+import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
@@ -52,7 +53,12 @@ public class RedisLoginService implements LoginService {
             jwtRedisService.storageUserStatus(account);
         }
         // 请求头里的 token
-        String token = JwtWebUtil.getToken(request);
+        String token = null;
+        try {
+            token = JwtWebUtil.getToken(request);
+        }catch (TokenException e){
+           logger.warn("用户正在进行登录");
+        }
         // 无token 重新登录
         if(null == token || token.length() == 0) {
             token = login(subject);
