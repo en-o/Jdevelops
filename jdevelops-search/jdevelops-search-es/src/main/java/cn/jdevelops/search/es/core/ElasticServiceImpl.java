@@ -1,6 +1,5 @@
 package cn.jdevelops.search.es.core;
 
-import cn.jdevelops.api.result.response.PageResult;
 import cn.jdevelops.search.es.entity.EsPageResult;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
