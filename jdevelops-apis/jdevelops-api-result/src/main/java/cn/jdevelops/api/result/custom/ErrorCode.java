@@ -5,6 +5,7 @@ import java.util.Objects;
 
 /**
  * 错误码对象
+ * @author web
  */
 
 public class ErrorCode {

@@ -2,7 +2,6 @@ package cn.jdevelops.api.result.common;
 
 import cn.jdevelops.api.result.emums.ResultCodeEnum;
 import cn.jdevelops.api.result.exception.ServiceException;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
 import io.swagger.v3.oas.annotations.media.Schema;
