@@ -1,5 +1,6 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
+import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
@@ -11,6 +12,7 @@ import cn.jdevelops.util.jwt.exception.LoginException;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author tan
  */
+@ConditionalOnMissingBean(LoginService.class)
 public class RedisLoginService implements LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
@@ -36,7 +39,7 @@ public class RedisLoginService implements LoginService {
      *      1. 无登录 根据数据颁发token
      *      2. 登录过，根据 refresh 判断token是否维持原状
      * @param request  HttpServletRequest
-     * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)
+     * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)[必须要带上token才能实现]
      * @param <RB>  BasicsAccount 用户状态
      * @param subject RedisSignEntity
      * @return 签名
@@ -50,23 +53,28 @@ public class RedisLoginService implements LoginService {
             jwtRedisService.storageUserStatus(account);
         }
         // 请求头里的 token
-        String token = JwtWebUtil.getToken(request);
+        String token = null;
+        try {
+            token = JwtWebUtil.getToken(request);
+        }catch (TokenException e){
+           logger.warn("用户正在进行登录");
+        }
         // 无token 重新登录
         if(null == token || token.length() == 0) {
-            token = login(subject);
-        }
-        // 验证是否登录过
-        boolean login = isLogin(request);
-
-        // 存在登录, 颁发新的 token
-        if(login && refresh){
             return login(subject);
-        }else if(login){
-            // 继续使用当前token
-           return token;
         }else {
-            // 登录失效，重新登录
-            return login(subject);
+            // 验证是否登录过
+            boolean login = isLogin(request);
+            // 存在登录, 颁发新的 token
+            if(login && refresh){
+                return login(subject);
+            }else if(login){
+                // 继续使用当前token
+                return token;
+            }else {
+                // 登录失效，重新登录
+                return login(subject);
+            }
         }
     }
 
@@ -75,6 +83,7 @@ public class RedisLoginService implements LoginService {
      * 登录 主动记录用户状态
      *
      * @param subject RedisSignEntity
+     * @param <RB>  account 用户状态
      * @return 签名
      */
     public  <RB extends BasicsAccount>  String login(RedisSignEntity subject, RB account) {

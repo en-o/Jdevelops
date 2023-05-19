@@ -2,6 +2,7 @@ package cn.jdevelops.quartz.quick.entity;
 
 import cn.jdevelops.quartz.quick.entity.key.QrtzCronTriggersUPK;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -74,6 +75,7 @@ public class QrtzTriggersEntity   implements Serializable,Cloneable {
 
 
     /** 任务数据 */
+    @Column(columnDefinition="Blob")
     private  byte[]  jobData ;
 
     @Override

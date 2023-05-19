@@ -49,18 +49,18 @@ public class MinioOperate implements OssOperateAPI {
 
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
-        operateFileUtil.download(response,download.getBucket(),download.getChildFolder_FreshName());
+        operateFileUtil.download(response,download.getBucket(),download.getDownPath());
     }
 
 
     @Override
     public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
-        return operateFileUtil.getExpiryObjectUrl(expireDate.getBucket(), expireDate.getChildFolderFreshName(), expireDate.getExpires());
+        return operateFileUtil.getExpiryObjectUrl(expireDate.getBucket(), expireDate.getDownPath(), expireDate.getExpires());
     }
 
 
     @Override
     public void removeFiles(RemoveFileDTO remove) throws Exception {
-        operateFileUtil.removeObjects(remove.getBucket(), remove.getChildFolder_FreshName());
+        operateFileUtil.removeObjects(remove.getBucket(), remove.getDownPath());
     }
 }

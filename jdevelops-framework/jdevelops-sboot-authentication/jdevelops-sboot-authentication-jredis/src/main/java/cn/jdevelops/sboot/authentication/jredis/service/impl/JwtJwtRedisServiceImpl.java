@@ -7,6 +7,7 @@ import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEnti
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
@@ -17,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -33,8 +33,7 @@ import static cn.jdevelops.api.result.emums.UserExceptionEnum.*;
  * @version V1.0
  * @date 2022-07-22 14:08
  */
-@Service
-@ConditionalOnMissingBean
+@ConditionalOnMissingBean(JwtRedisService.class)
 public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtJwtRedisServiceImpl.class);
@@ -61,7 +60,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             redisTemplate.persist(loginRedisFolder);
         }else {
             // 设置过期时间（毫秒
-            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
         }
     }
 
@@ -77,7 +76,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             }else {
                 // 设置过期时间（毫秒
-                redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.MILLISECONDS);
+                redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
             }
         }
     }

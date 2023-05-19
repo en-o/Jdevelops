@@ -1,6 +1,7 @@
 package cn.jdevelops.quartz.quick.entity;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -30,6 +31,7 @@ public class QrtzCalendarsEntity    implements Serializable,Cloneable {
 
 
     /** 日程数据 */
+    @Column(columnDefinition="Blob")
     private  byte[]  calendar ;
 
     @Override

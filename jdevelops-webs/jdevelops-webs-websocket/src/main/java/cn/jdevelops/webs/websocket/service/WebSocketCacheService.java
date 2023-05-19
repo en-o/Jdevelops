@@ -1,12 +1,12 @@
 package cn.jdevelops.webs.websocket.service;
 
 import cn.jdevelops.webs.websocket.config.WebSocketConfig;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 import javax.websocket.Session;
 import java.util.*;
 
-import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
+import static cn.jdevelops.webs.websocket.cache.WebSocketSessionLocalCache.sessionPools;
 
 
 /**
@@ -16,13 +16,13 @@ import static cn.jdevelops.webs.websocket.cache.LocalCache.sessionPools;
  * @version V1.0
  * @date 2022-12-10 22:25
  */
-@Service
-public class WebScoketCacheService {
+@AutoConfiguration
+public class WebSocketCacheService {
 
 
     public final WebSocketConfig webSocketConfig;
 
-    public WebScoketCacheService(WebSocketConfig webSocketConfig) {
+    public WebSocketCacheService(WebSocketConfig webSocketConfig) {
         this.webSocketConfig = webSocketConfig;
     }
 

@@ -73,9 +73,7 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
 
     @Override
     public void produce(List<DelayQueueMessage> delayMessage) {
-        delayMessage.forEach(message -> {
-            produce(message);
-        });
+        delayMessage.forEach(this::produce);
     }
 
     @Override
@@ -92,7 +90,7 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
                 Set<String> set = runLuaScript(DELAY_QUEUE);
                 if (!CollectionUtils.isEmpty(set)){
                     set.forEach(s -> {
-                        DelayQueueMessage redisDelayMessage = JSON.toJavaObject(JSON.parseObject(s), DelayQueueMessage.class);
+                        DelayQueueMessage redisDelayMessage = JSON.to(DelayQueueMessage.class,JSON.parseObject(s));
                         delayRunFactory.delayExecute(redisDelayMessage);
                     });
                 }

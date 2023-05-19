@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version V1.0
  * @date 2022-12-10 22:22
  */
-public class LocalCache {
+public class WebSocketSessionLocalCache {
 
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象

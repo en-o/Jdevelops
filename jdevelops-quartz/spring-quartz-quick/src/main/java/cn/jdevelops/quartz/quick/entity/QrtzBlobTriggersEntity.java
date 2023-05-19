@@ -1,5 +1,6 @@
 package cn.jdevelops.quartz.quick.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -32,6 +33,7 @@ public class QrtzBlobTriggersEntity  implements Serializable,Cloneable {
     private  String  triggerGroup ;
 
     /** 数据 */
+    @Column(columnDefinition="Blob")
     private  byte[]  blobData ;
 
 

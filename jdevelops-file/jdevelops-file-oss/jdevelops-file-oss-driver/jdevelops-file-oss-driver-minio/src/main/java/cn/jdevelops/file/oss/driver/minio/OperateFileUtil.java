@@ -10,7 +10,6 @@ import io.minio.messages.Bucket;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -146,25 +145,29 @@ public class OperateFileUtil {
 		}else {
 			freshName = filename + OSSConstants.SYMBOL_POINT + fileType;
 		}
-		if (StringUtils.isNotBlank(childFolder) && !StringUtils.equalsIgnoreCase("null", childFolder)) {
-			freshName = childFolder + freshName;
+		String downName;
+		if (StrUtil.notBlank(childFolder) && !"null".equalsIgnoreCase(childFolder)) {
+			downName = childFolder + freshName;
+		}else {
+			downName = freshName;
 		}
 		InputStream in = file.getInputStream();
 		//默认类型，该“application/octet-stream”类型的时候，浏览器访问地址为下载
 		String contentType = file.getContentType();
 		minioClient.putObject(
-				PutObjectArgs.builder().bucket(bucket).object(freshName).stream(
+				PutObjectArgs.builder().bucket(bucket).object(downName).stream(
 								in, in.available(), -1)
 						.contentType(contentType)
 						.build());
 		in.close();
-		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + freshName;
+		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + downName;
 
 
 		FilePathResult filePathResult = new FilePathResult();
 		filePathResult.setAbsolutePath(ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath);
 		filePathResult.setRelativePath(relativePath);
 		filePathResult.setFreshName(freshName);
+		filePathResult.setDownPath(downName);
 		filePathResult.setOriginalName(originalName);
 		return filePathResult;
 

@@ -24,7 +24,7 @@ public  class EnableAutoRedisDelay {
      * 加载lua脚本
      * @return DefaultRedisScript
      */
-    @ConditionalOnMissingBean(name = "delayRedisScript")
+    @ConditionalOnMissingBean(DefaultRedisScript.class)
     @Bean
     public DefaultRedisScript<List> delayRedisScript() {
         DefaultRedisScript<List> defaultRedisScript = new DefaultRedisScript<>();
@@ -37,7 +37,7 @@ public  class EnableAutoRedisDelay {
      * 得到消息之后的执行动作
      * @return DelayService
      */
-    @ConditionalOnMissingBean(name = "delayService")
+    @ConditionalOnMissingBean(DelayService.class)
     @Bean
     public DelayService<DelayQueueMessage> delayService() {
         return new RedisDelayService();

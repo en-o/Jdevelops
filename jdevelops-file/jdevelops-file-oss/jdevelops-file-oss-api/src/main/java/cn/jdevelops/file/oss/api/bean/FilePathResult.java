@@ -1,6 +1,9 @@
 package cn.jdevelops.file.oss.api.bean;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.io.Serializable;
 
 /**
  * 文件地址
@@ -8,28 +11,39 @@ package cn.jdevelops.file.oss.api.bean;
  * @author tn
  * @date 2021-03-03 14:43
  */
-
-public class FilePathResult {
+@Schema(description = "文件管理 - 文件VO")
+public class FilePathResult implements Serializable {
 
 	/**
 	 * 相对路径
 	 */
+	@Schema(description = "相对路径")
 	private String relativePath;
 
 	/**
 	 * 绝对路径
 	 */
+	@Schema(description = "绝对路径")
 	private String absolutePath;
 
 	/**
 	 * 原本对象的名称
 	 */
+	@Schema(description = "原本对象的名称")
 	private String originalName;
 
 	/**
 	 * 文件服务器中的新文件名
 	 */
+	@Schema(description = "文件服务器中的新文件名")
 	private String freshName;
+
+
+	/**
+	 * 文件下载和删除用到的路径
+	 */
+	@Schema(description = "文件下载和删除用到的路径")
+	private String downPath;
 
 
 	public FilePathResult() {
@@ -74,6 +88,13 @@ public class FilePathResult {
 		this.freshName = freshName;
 	}
 
+	public String getDownPath() {
+		return downPath;
+	}
+
+	public void setDownPath(String downPath) {
+		this.downPath = downPath;
+	}
 
 	@Override
 	public String toString() {
@@ -82,6 +103,7 @@ public class FilePathResult {
 				", absolutePath='" + absolutePath + '\'' +
 				", originalName='" + originalName + '\'' +
 				", freshName='" + freshName + '\'' +
+				", downPath='" + downPath + '\'' +
 				'}';
 	}
 }

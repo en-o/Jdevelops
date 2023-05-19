@@ -21,7 +21,7 @@ public class JwtConfig {
 
     /**
      * token私钥
-     * ps: hmacsha256(你的密钥)
+     * ps: hmacsha256(你的密钥)[<a href="http://www.jsons.cn/allencrypt/">...</a>]
      */
     private String tokenSecret;
 
