@@ -651,11 +651,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-jdbctemplate</artifactId>
-                <version>${jdevelops.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-sboot-swagger</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
