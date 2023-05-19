@@ -7,6 +7,7 @@ import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEnti
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
@@ -15,6 +16,7 @@ import com.alibaba.fastjson2.JSON;
 import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -33,8 +35,7 @@ import static cn.jdevelops.api.result.emums.UserExceptionEnum.*;
  * @version V1.0
  * @date 2022-07-22 14:08
  */
-@Service
-@ConditionalOnMissingBean
+@ConditionalOnMissingBean(JwtRedisService.class)
 public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtJwtRedisServiceImpl.class);
