@@ -6,56 +6,56 @@ package cn.jdevelops.search.es.constant;
  * @author lxw
  * @date 2021-06-09 10:59
  */
-public class EsConstant {
-	/**
-	 * AND 并且
-	 */
-	public static final String AND = "AND";
+public interface EsConstant {
+    /**
+     * AND 并且
+     */
+    String AND = "AND";
 
-	/**
-	 * OR  或者
-	 */
-	public static final String OR = "OR";
+    /**
+     * OR  或者
+     */
+    String OR = "OR";
 
-	/**
-	 * NOT  非
-	 */
-	public static final String NOT = "NOT";
+    /**
+     * NOT  非
+     */
+    String NOT = "NOT";
 
-	/**
-	 * EQ EQUAL等于
-	 */
-	public static final String EQ = "EQ";
+    /**
+     * EQ EQUAL等于
+     */
+    String EQ = "EQ";
 
-	/**
-	 * GT GREATER THAN大于
-	 */
-	public static final String GT = "GT";
+    /**
+     * GT GREATER THAN大于
+     */
+    String GT = "GT";
 
-	/**
-	 * GTE  GREATER THAN AND EQUAL 大于等于
-	 */
-	public static final String GTE = "GTE";
+    /**
+     * GTE  GREATER THAN AND EQUAL 大于等于
+     */
+    String GTE = "GTE";
 
-	/**
-	 * LT LESS THAN 小于
-	 */
-	public static final String LT = "LT";
+    /**
+     * LT LESS THAN 小于
+     */
+    String LT = "LT";
 
 
-	/**
-	 * LTE  LESS THAN AND EQUAL 小于等于
-	 */
-	public static final String LTE = "LTE";
+    /**
+     * LTE  LESS THAN AND EQUAL 小于等于
+     */
+    String LTE = "LTE";
 
-	/**
-	 * LIKE 包含
-	 */
-	public static final String LIKE = "LIKE";
+    /**
+     * LIKE 包含
+     */
+    String LIKE = "LIKE";
 
-	/**
-	 * http请求状态码200
-	 */
-	public static final int HTTP_200 = 200;
+    /**
+     * http请求状态码200
+     */
+    int HTTP_200 = 200;
 
 }

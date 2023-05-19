@@ -9,6 +9,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+/**
+ * @author tan
+ */
 public class BeanUtil {
 
     /**
