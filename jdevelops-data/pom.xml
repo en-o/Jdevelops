@@ -18,6 +18,7 @@
         <module>jdevelops-data-auto-schema</module>
         <module>jdevelops-data-jpa</module>
         <module>jdevelops-data-jdbctemplate</module>
+        <module>jdevelops-data-es</module>
     </modules>
 
 </project>
