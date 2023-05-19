@@ -61,7 +61,7 @@
         <p6spy.version>3.9.1</p6spy.version>
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
         <lucene.version>8.11.0</lucene.version>
-        <elasticsearch.version>7.15.0</elasticsearch.version>
+        <elasticsearch.version>8.6.2</elasticsearch.version>
 
         <!-- sdk -->
         <weixin-java-miniapp.version>4.3.8.B</weixin-java-miniapp.version>
@@ -327,11 +327,10 @@
                 <version>${lucene.version}</version><!--8.8.2会让打包时test不通过-->
             </dependency>
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
-
 
             <!-- sdk -->
             <dependency>
