@@ -446,7 +446,7 @@
             <!-- 搜搜 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-search-es</artifactId>
+                <artifactId>jdevelops-data-es</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
 
