@@ -1,2 +1,2 @@
-cn.jdevelops.search.es.config.ElasticSearchConfig
-cn.jdevelops.search.es.core.ElasticServiceImpl
+cn.jdevelops.data.es.config.ElasticSearchConfig
+cn.jdevelops.data.es.core.ElasticServiceImpl

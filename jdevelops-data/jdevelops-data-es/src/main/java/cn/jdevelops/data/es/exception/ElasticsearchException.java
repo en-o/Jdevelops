@@ -1,4 +1,4 @@
-package cn.jdevelops.search.es.exception;
+package cn.jdevelops.data.es.exception;
 
 /**
  * es 异常

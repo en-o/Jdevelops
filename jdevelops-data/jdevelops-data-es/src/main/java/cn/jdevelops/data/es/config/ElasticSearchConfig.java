@@ -1,6 +1,6 @@
-package cn.jdevelops.search.es.config;
+package cn.jdevelops.data.es.config;
 
-import cn.jdevelops.search.es.exception.ElasticsearchException;
+import cn.jdevelops.data.es.exception.ElasticsearchException;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;

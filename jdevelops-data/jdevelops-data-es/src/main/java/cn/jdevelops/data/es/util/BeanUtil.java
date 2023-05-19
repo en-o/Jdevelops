@@ -1,4 +1,4 @@
-package cn.jdevelops.search.es.util;
+package cn.jdevelops.data.es.util;
 
 
 import org.springframework.beans.BeanUtils;

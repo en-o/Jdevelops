@@ -1,4 +1,4 @@
-package cn.jdevelops.search.es.entity;
+package cn.jdevelops.data.es.entity;
 
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.response.PageResult;
