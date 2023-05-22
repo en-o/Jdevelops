@@ -21,6 +21,8 @@
         <module>jdevelops-file-oss-driver-qiniu</module>
         <!--本地-->
         <module>jdevelops-file-oss-driver-local</module>
+        <!--亚马逊 s3-->
+        <module>jdevelops-file-oss-driver-aws3</module>
     </modules>
     <dependencies>
         <dependency>
