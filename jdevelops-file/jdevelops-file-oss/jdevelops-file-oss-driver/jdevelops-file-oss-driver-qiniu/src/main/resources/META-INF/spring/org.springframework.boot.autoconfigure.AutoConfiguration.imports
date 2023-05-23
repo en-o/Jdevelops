@@ -1,2 +1,2 @@
-cn.jdevelops.file.oss.driver.qiniu.EnableAutoScanConfiguration
+cn.jdevelops.file.oss.driver.qiniu.QiNiuClientFactory
 cn.jdevelops.file.oss.driver.qiniu.QiniuOperate

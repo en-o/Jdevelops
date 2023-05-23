@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 自动扫描
+ * 七牛客户端
  * @author tn
  * @date 2020-09-27 10:17
  */
 @Configuration
-public class EnableAutoScanConfiguration {
+public class QiNiuClientFactory {
 
     @ConditionalOnMissingBean(OSSConfig.class)
     @Bean
