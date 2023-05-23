@@ -3,6 +3,7 @@ package cn.jdevelops.file.oss.driver.minio;
 import cn.jdevelops.file.oss.api.bean.FilePathResult;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
 import cn.jdevelops.file.oss.api.constants.OSSConstants;
+import cn.jdevelops.file.oss.api.util.AboutFileUtil;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import io.minio.*;
 import io.minio.http.Method;
@@ -10,6 +11,7 @@ import io.minio.messages.Bucket;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
