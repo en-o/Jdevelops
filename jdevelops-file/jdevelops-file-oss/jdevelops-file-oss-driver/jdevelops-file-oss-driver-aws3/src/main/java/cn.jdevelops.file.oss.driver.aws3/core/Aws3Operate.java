@@ -9,6 +9,7 @@ import cn.jdevelops.file.oss.driver.aws3.config.S3ClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -27,6 +28,8 @@ public class Aws3Operate  implements OssOperateAPI {
 
     @Autowired
     private OSSConfig ossConfig;
+
+    @Autowired
     private S3ClientFactory s3ClientFactory;
 
     @Override
@@ -47,8 +50,8 @@ public class Aws3Operate  implements OssOperateAPI {
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(uploaded.getBucket())
-                // 密钥名称
-                .key(ossConfig.getAws3().getAccessKey())
+                // 文件名称
+                .key(freshName)
                 .build();
 
         s3Client.putObject(objectRequest,
@@ -71,9 +74,9 @@ public class Aws3Operate  implements OssOperateAPI {
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(download.getBucket()+"/"+download.getDownPath())
+                .bucket(download.getBucket())
                 // 密钥名称
-                .key(ossConfig.getAws3().getAccessKey())
+                .key(download.getDownPath())
                 .build();
         s3ClientFactory.s3Client(ossConfig).getObject(getObjectRequest);
     }
@@ -92,8 +95,8 @@ public class Aws3Operate  implements OssOperateAPI {
                 try {
                     DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                             .bucket(remove.getBucket()+"/"+file)
-                            // 密钥名称
-                            .key(ossConfig.getAws3().getAccessKey())
+                            // 文件名
+                            .key(file)
                             .build();
                     s3ClientFactory.s3Client(ossConfig).deleteObject(deleteObjectRequest);
 

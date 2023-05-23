@@ -13,11 +13,15 @@ public class Aws3Config {
 
     /**
      * Access key就像用户ID，可以唯一标识你的账户(密钥名称)
+     * 为空默认 使用 s3.credentialsProvider(DefaultCredentialsProvider.create());
+     * <a href="https://docs.aws.amazon.com/zh_cn/sdk-for-java/latest/developer-guide/credentials-chain.html">...</a>
      */
     private String accessKey;
 
     /**
      * Secret key是你账户的密码。
+     * 为空默认 使用 s3.credentialsProvider(DefaultCredentialsProvider.create());
+     * <a href="https://docs.aws.amazon.com/zh_cn/sdk-for-java/latest/developer-guide/credentials-chain.html">...</a>
      */
     private String secretKey;
 

@@ -9,13 +9,15 @@
 package cn.jdevelops.file.oss.driver.aws3.config;
 
 import cn.jdevelops.file.oss.api.config.OSSConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
 import static software.amazon.awssdk.transfer.s3.SizeConstant.MB;
@@ -92,9 +94,26 @@ public class S3ClientFactory {
      */
     @Bean
     public S3Client s3Client(OSSConfig ossConfig) {
-        return S3Client.builder()
-                .credentialsProvider(DefaultCredentialsProvider.create())
-                .region(Region.of(ossConfig.getAws3().getRegionId()))
-                .build();
+        /**
+         * 默认凭证提供者链由该DefaultCredentialsProvider类实现。
+         * 它会按顺序检查您可以设置默认配置以提供临时证书的每个位置，然后选择您设置的第一个位置。
+         * https://docs.aws.amazon.com/zh_cn/sdk-for-java/latest/developer-guide/credentials-chain.html
+         */
+        S3ClientBuilder s3 = S3Client.builder();
+        if(StringUtils.isNotBlank(ossConfig.getAws3().getAccessKey())
+                && StringUtils.isNotBlank(ossConfig.getAws3().getSecretKey())){
+
+            s3.credentialsProvider(StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create(ossConfig.getAws3().getAccessKey(),
+                            ossConfig.getAws3().getSecretKey())));
+        }else {
+            s3.credentialsProvider(DefaultCredentialsProvider.create());
+        }
+
+
+        s3.region(Region.of(ossConfig.getAws3().getRegionId()));
+
+
+        return s3.build();
     }
 }
