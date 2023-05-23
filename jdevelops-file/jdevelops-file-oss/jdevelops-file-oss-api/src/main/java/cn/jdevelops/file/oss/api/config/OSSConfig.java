@@ -42,6 +42,13 @@ public class OSSConfig {
 	private QiNiuConfig qiniu;
 
 
+	/**
+	 * jdevelops-file-oss-driver-aws3
+	 */
+	@NestedConfigurationProperty
+	private Aws3Config aws3;
+
+
 	public String getBrowseUrl() {
 		return browseUrl;
 	}
@@ -74,6 +81,14 @@ public class OSSConfig {
 		this.qiniu = qiniu;
 	}
 
+	public Aws3Config getAws3() {
+		return aws3;
+	}
+
+	public void setAws3(Aws3Config aws3) {
+		this.aws3 = aws3;
+	}
+
 	@Override
 	public String toString() {
 		return "OSSConfig{" +
@@ -81,6 +96,7 @@ public class OSSConfig {
 				", local=" + local +
 				", minio=" + minio +
 				", qiniu=" + qiniu +
+				", aws3=" + aws3 +
 				'}';
 	}
 }
