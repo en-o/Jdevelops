@@ -29,7 +29,7 @@ public class Aws3Operate  implements OssOperateAPI {
     private OSSConfig ossConfig;
 
     @Autowired
-    private S3ClientFactory s3ClientFactory;
+    private S3Client s3Client;
 
     @Override
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
@@ -44,8 +44,6 @@ public class Aws3Operate  implements OssOperateAPI {
         String downPath =  childFolder + freshName;
         String relativePath =  ossConfig.getBrowseUrl()+"/"+downPath;
 
-
-        S3Client s3Client = s3ClientFactory.s3Client(ossConfig);
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(uploaded.getBucket())
@@ -77,7 +75,7 @@ public class Aws3Operate  implements OssOperateAPI {
                 // 密钥名称
                 .key(download.getDownPath())
                 .build();
-        s3ClientFactory.s3Client(ossConfig).getObject(getObjectRequest);
+        s3Client.getObject(getObjectRequest);
     }
 
     @Override
@@ -97,7 +95,7 @@ public class Aws3Operate  implements OssOperateAPI {
                             // 文件名
                             .key(file)
                             .build();
-                    s3ClientFactory.s3Client(ossConfig).deleteObject(deleteObjectRequest);
+                    s3Client.deleteObject(deleteObjectRequest);
 
                 }catch (Exception e){
                     e.printStackTrace();

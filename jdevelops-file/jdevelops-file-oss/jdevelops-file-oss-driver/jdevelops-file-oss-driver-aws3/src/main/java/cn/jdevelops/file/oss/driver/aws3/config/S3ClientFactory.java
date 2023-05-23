@@ -71,23 +71,6 @@ public class S3ClientFactory {
     }
 
     /**
-     * 不知道干啥的 写上把
-     * The S3 Transfer Manager offers a simple API that allows you to transfer a single object or a set of objects to and
-     * from Amazon S3 with enhanced throughput and reliability. It leverages Amazon S3 multipart upload and
-     * byte-range fetches to perform transfers in parallel. In addition, the S3 Transfer Manager also enables you to
-     * monitor a transfer's progress in real-time, as well as pause the transfer for execution at a later time.
-     *
-     * @return S3TransferManager
-     */
-    @Bean
-    public S3TransferManager createDefaultTm() {
-        // snippet-start:[s3.tm.java2.s3clientfactory.create_default_tm]
-        S3TransferManager transferManager = S3TransferManager.create();
-        // snippet-end:[s3.tm.java2.s3clientfactory.create_default_tm]
-        return transferManager;
-    }
-
-    /**
      * S3客户端
      *
      * @return S3Client
