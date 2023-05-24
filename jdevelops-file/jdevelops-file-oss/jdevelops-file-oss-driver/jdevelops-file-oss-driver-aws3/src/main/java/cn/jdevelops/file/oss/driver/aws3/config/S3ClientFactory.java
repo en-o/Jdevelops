@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.s3.S3ClientBuilder;
  * <p>
  * For more information, see the following documentation topic:
  * <p>
- * https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html
+ * <a href="https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/get-started.html">...</a>
  *
  * @author tan
  */
@@ -45,7 +45,7 @@ public class S3ClientFactory {
      */
     @Bean
     public S3Client s3Client(OSSConfig ossConfig) {
-        /**
+        /*
          * 默认凭证提供者链由该DefaultCredentialsProvider类实现。
          * 它会按顺序检查您可以设置默认配置以提供临时证书的每个位置，然后选择您设置的第一个位置。
          * https://docs.aws.amazon.com/zh_cn/sdk-for-java/latest/developer-guide/credentials-chain.html

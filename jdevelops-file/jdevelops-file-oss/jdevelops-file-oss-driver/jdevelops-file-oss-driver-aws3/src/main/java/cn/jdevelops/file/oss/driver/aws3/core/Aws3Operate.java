@@ -5,7 +5,6 @@ import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
 import cn.jdevelops.file.oss.api.constants.OSSConstants;
 import cn.jdevelops.file.oss.api.util.StrUtil;
-import cn.jdevelops.file.oss.driver.aws3.config.S3ClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
