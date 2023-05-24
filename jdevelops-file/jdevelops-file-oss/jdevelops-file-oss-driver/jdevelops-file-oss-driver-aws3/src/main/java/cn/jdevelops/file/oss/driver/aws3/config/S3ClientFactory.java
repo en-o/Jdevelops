@@ -15,12 +15,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
-import software.amazon.awssdk.transfer.s3.S3TransferManager;
 
-import static software.amazon.awssdk.transfer.s3.SizeConstant.MB;
 
 /**
  * Before running this Java V2 code example, set up your development environment, including your credentials.
@@ -41,38 +38,9 @@ public class S3ClientFactory {
         return new OSSConfig();
     }
 
-
-    /**
-     * 不知道干啥的 写上把
-     * The S3 Transfer Manager offers a simple API that allows you to transfer a single object or a set of objects to and
-     * from Amazon S3 with enhanced throughput and reliability. It leverages Amazon S3 multipart upload and
-     * byte-range fetches to perform transfers in parallel. In addition, the S3 Transfer Manager also enables you to
-     * monitor a transfer's progress in real-time, as well as pause the transfer for execution at a later time.
-     *
-     * @return S3TransferManager
-     */
-    @Bean
-    public S3TransferManager createCustonTm(OSSConfig ossConfig) {
-        // snippet-start:[s3.tm.java2.s3clientfactory.create_custom_tm]
-        S3AsyncClient s3AsyncClient =
-                S3AsyncClient.crtBuilder()
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .region(Region.of(ossConfig.getAws3().getRegionId()))
-                        .targetThroughputInGbps(20.0)
-                        .minimumPartSizeInBytes(8 * MB)
-                        .build();
-
-        S3TransferManager transferManager =
-                S3TransferManager.builder()
-                        .s3Client(s3AsyncClient)
-                        .build();
-        // snippet-end:[s3.tm.java2.s3clientfactory.create_custom_tm]
-        return transferManager;
-    }
-
     /**
      * S3客户端
-     *
+     *  好像还有个异步，后面写吧
      * @return S3Client
      */
     @Bean
