@@ -3,7 +3,6 @@ package cn.jdevelops.file.oss.driver.aws3.core;
 import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
-import cn.jdevelops.file.oss.api.constants.OSSConstants;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,21 +41,21 @@ public class Aws3Operate  implements OssOperateAPI {
         }
         String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
         String downPath =  childFolder + freshName;
-        String relativePath =  ossConfig.getBrowseUrl()+"/"+downPath;
+        String absolutePath =  ossConfig.getBrowseUrl()+"/"+downPath;
 
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(uploaded.getBucket())
                 // 文件名称
-                .key(freshName)
+                .key(downPath)
                 .build();
 
         s3Client.putObject(objectRequest,
-                RequestBody.fromFile(uploaded.getFile().getResource().getFile()));
+                RequestBody.fromBytes(uploaded.getFile().getBytes()));
 
         FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath);
-        filePathResult.setRelativePath(relativePath);
+        filePathResult.setAbsolutePath(absolutePath);
+        filePathResult.setRelativePath("/"+downPath);
         filePathResult.setFreshName(freshName);
         filePathResult.setDownPath(downPath);
         filePathResult.setOriginalName(originalName);
@@ -64,7 +64,20 @@ public class Aws3Operate  implements OssOperateAPI {
 
     @Override
     public List<FilePathResult> uploadFile(UploadsDTO uploaded) throws Exception {
-        return null;
+        ArrayList<FilePathResult> results = new ArrayList<>();
+        uploaded.getFiles().forEach(file -> {
+            try {
+                UploadDTO uploadDTO = new UploadDTO();
+                uploadDTO.setFile(file.getFile());
+                uploadDTO.setFileName(file.getFileName());
+                uploadDTO.setBucket(uploaded.getBucket());
+                uploadDTO.setChildFolder(uploaded.getChildFolder());
+                results.add(uploadFile(uploadDTO));
+            }catch (Exception e){
+                LOG.error("批量上传有数据报错，可忽略",e);
+            }
+        });
+        return results;
     }
 
     @Override
@@ -104,4 +117,5 @@ public class Aws3Operate  implements OssOperateAPI {
             e.printStackTrace();
         }
     }
+
 }
