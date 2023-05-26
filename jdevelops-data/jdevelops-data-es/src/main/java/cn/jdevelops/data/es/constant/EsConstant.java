@@ -1,4 +1,4 @@
-package cn.jdevelops.search.es.constant;
+package cn.jdevelops.data.es.constant;
 
 /**
  * ES常量

@@ -75,4 +75,22 @@ public class StringNumber {
 		}
 		return PATTERN_IS_INTEGER.matcher(str).matches();
 	}
+
+
+	/**
+	 * 统计给定字符在整个字符串中的出现次数
+	 * @param context 字符串
+	 * @param ch 待查询的字符
+	 * @return 次数
+	 */
+	public static int countOccurrences(String context, String ch) {
+		int count = 0;
+		int index = context.indexOf(ch);
+
+		while (index != -1) {
+			count++;
+			index = context.indexOf(ch, index + 1);
+		}
+		return count;
+	}
 }

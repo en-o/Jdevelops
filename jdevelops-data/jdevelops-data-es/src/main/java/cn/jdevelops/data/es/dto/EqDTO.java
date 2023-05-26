@@ -1,4 +1,4 @@
-package cn.jdevelops.search.es.dto;
+package cn.jdevelops.data.es.dto;
 
 import lombok.*;
 

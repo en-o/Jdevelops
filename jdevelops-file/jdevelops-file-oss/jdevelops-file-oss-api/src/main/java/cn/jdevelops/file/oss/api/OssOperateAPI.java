@@ -45,7 +45,7 @@ public interface OssOperateAPI {
     void downloadFile(HttpServletResponse response, @Valid DownloadDTO download) throws Exception;
 
     /**
-     * 获取存在有效期的文件地址
+     * 获取存在有效期的文件地址 (预览)
      *
      * @param expireDate params
      * @return fileUrl

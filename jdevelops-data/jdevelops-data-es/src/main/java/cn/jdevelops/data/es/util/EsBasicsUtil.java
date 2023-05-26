@@ -1,6 +1,6 @@
-package cn.jdevelops.search.es.util;
+package cn.jdevelops.data.es.util;
 
-import cn.jdevelops.search.es.constant.EsConstant;
+import cn.jdevelops.data.es.constant.EsConstant;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;

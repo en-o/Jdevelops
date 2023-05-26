@@ -1,4 +1,4 @@
-package cn.jdevelops.file.oss.driver.minio;
+package cn.jdevelops.file.oss.api.util;
 
 
 import cn.jdevelops.file.oss.api.constants.OSSConstants;

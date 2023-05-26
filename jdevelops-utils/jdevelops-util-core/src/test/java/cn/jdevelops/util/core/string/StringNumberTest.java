@@ -34,4 +34,10 @@ public class StringNumberTest {
         assertFalse(StringNumber.isInteger(" "));
         assertFalse(StringNumber.isInteger(null));
     }
+
+    @Test
+    public void testCountOccurrences() {
+        assertEquals(StringNumber.countOccurrences("x  % {product} {storeName} €1 €2","storeName"),1);
+        assertEquals(StringNumber.countOccurrences("x  % {product} {product} €1 €2","product"),2);
+    }
 }

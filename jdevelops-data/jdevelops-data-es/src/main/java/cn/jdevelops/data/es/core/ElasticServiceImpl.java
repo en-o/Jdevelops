@@ -1,6 +1,6 @@
-package cn.jdevelops.search.es.core;
+package cn.jdevelops.data.es.core;
 
-import cn.jdevelops.search.es.entity.EsPageResult;
+import cn.jdevelops.data.es.entity.EsPageResult;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch._types.Result;

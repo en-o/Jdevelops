@@ -11,21 +11,14 @@ package cn.jdevelops.file.oss.api.config;
 
 public class QiNiuConfig {
 
-    /**
-     * 文件上传地址
-     */
-    private String uploadUrl;
+
 
 
     /**
-     * 是否使用https
+     * 是否使用https[默认false]
      */
     private Boolean https = false;
 
-    /**
-     * 可访问端口 （IP时用）
-     */
-    private Integer port;
 
     /**
      * Access key就像用户ID，可以唯一标识你的账户
@@ -43,13 +36,7 @@ public class QiNiuConfig {
      */
     private String regionId;
 
-    public String getUploadUrl() {
-        return uploadUrl;
-    }
 
-    public void setUploadUrl(String uploadUrl) {
-        this.uploadUrl = uploadUrl;
-    }
 
     public Boolean getHttps() {
         return https;
@@ -59,13 +46,6 @@ public class QiNiuConfig {
         this.https = https;
     }
 
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
 
     public String getAccessKey() {
         return accessKey;
@@ -94,9 +74,7 @@ public class QiNiuConfig {
     @Override
     public String toString() {
         return "QiNiuConfig{" +
-                "uploadUrl='" + uploadUrl + '\'' +
                 ", https=" + https +
-                ", port=" + port +
                 ", accessKey='" + accessKey + '\'' +
                 ", secretKey='" + secretKey + '\'' +
                 ", regionId='" + regionId + '\'' +
