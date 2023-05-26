@@ -17,6 +17,7 @@ import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 
 /**
@@ -36,6 +37,24 @@ public class S3ClientFactory {
     @Bean
     public OSSConfig ossConfig() {
         return new OSSConfig();
+    }
+
+
+    @Bean
+    public S3Presigner getS3Presigner(OSSConfig ossConfig) {
+        S3Presigner.Builder builder = S3Presigner.builder();
+        builder.region(Region.of(ossConfig.getAws3().getRegionId()));
+        if(StringUtils.isNotBlank(ossConfig.getAws3().getAccessKey())
+                && StringUtils.isNotBlank(ossConfig.getAws3().getSecretKey())){
+
+            builder.credentialsProvider(StaticCredentialsProvider.create(
+                    AwsBasicCredentials.create(ossConfig.getAws3().getAccessKey(),
+                            ossConfig.getAws3().getSecretKey())));
+        }else {
+            builder.credentialsProvider(DefaultCredentialsProvider.create());
+        }
+
+        return builder.build();
     }
 
     /**
@@ -60,7 +79,6 @@ public class S3ClientFactory {
         }else {
             s3.credentialsProvider(DefaultCredentialsProvider.create());
         }
-
 
         s3.region(Region.of(ossConfig.getAws3().getRegionId()));
 

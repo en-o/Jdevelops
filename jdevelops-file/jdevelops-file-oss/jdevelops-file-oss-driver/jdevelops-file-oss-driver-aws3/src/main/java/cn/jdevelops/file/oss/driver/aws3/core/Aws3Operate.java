@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +33,9 @@ public class Aws3Operate  implements OssOperateAPI {
 
     @Autowired
     private S3Client s3Client;
+
+    @Autowired
+    private S3Presigner s3Presigner;
 
     @Override
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
@@ -92,7 +99,21 @@ public class Aws3Operate  implements OssOperateAPI {
 
     @Override
     public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
-        return null;
+        GetObjectRequest getObjectRequest =
+                GetObjectRequest.builder()
+                        .bucket(expireDate.getBucket())
+                        .key(expireDate.getDownPath())
+                        .build();
+
+        GetObjectPresignRequest getObjectPresignRequest =  GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofSeconds(expireDate.getExpires()))
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+        PresignedGetObjectRequest presignedGetObjectRequest =
+                s3Presigner.presignGetObject(getObjectPresignRequest);
+
+        return presignedGetObjectRequest.url().toString();
     }
 
     @Override
@@ -103,7 +124,7 @@ public class Aws3Operate  implements OssOperateAPI {
             for (String file : childFolder_freshName) {
                 try {
                     DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                            .bucket(remove.getBucket()+"/"+file)
+                            .bucket(remove.getBucket())
                             // 文件名
                             .key(file)
                             .build();
