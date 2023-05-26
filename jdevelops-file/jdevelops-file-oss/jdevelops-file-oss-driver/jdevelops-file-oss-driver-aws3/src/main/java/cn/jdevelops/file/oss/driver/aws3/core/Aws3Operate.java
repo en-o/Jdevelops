@@ -4,9 +4,12 @@ import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
 import cn.jdevelops.file.oss.api.util.StrUtil;
+import cn.jdevelops.file.oss.api.util.UrlUtil;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -15,6 +18,9 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,12 +95,31 @@ public class Aws3Operate  implements OssOperateAPI {
 
     @Override
     public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
-        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(download.getBucket())
-                // 密钥名称
-                .key(download.getDownPath())
-                .build();
-        s3Client.getObject(getObjectRequest);
+        ExpireDateDTO expireDateDTO = new ExpireDateDTO();
+        expireDateDTO.setBucket(download.getBucket());
+        expireDateDTO.setExpires(100);
+        expireDateDTO.setDownPath(download.getDownPath());
+        String downUrl = expireDateUrl(expireDateDTO);
+        String childFolder_freshName = download.getDownPath();
+        String fileName = childFolder_freshName.substring(childFolder_freshName.lastIndexOf('/') + 1);
+        try {
+            URL url = new URL(downUrl);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            response.reset();//避免空行
+            // 设置response的Header
+            response.setContentType(UrlUtil.getContentType(downUrl) + ";charset=utf-8");
+            //setContentType 设置发送到客户机的响应的内容类型
+            //设置响应头
+            response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
+            //设置文件大小
+            response.setHeader("Content-Length", String.valueOf(url.openConnection().getContentLength()));
+
+            IOUtils.copy(conn.getInputStream(), response.getOutputStream());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
