@@ -44,6 +44,7 @@
 
         <!--jwt-->
         <java-jwt.version>4.0.0</java-jwt.version>
+        <spring-authorization-service.version>0.4.2</spring-authorization-service.version>
 
         <!--切面-->
         <aspect.version>1.9.5</aspect.version>
@@ -256,6 +257,11 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${spring-authorization-service.version}</version>
             </dependency>
 
             <!-- 切面 -->
@@ -671,7 +677,16 @@
                 <artifactId>jdevelops-sboot-authentication-sas</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-authentication-sas-client</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-authentication-sas-server</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
