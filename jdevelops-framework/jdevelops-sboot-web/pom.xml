@@ -37,11 +37,6 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-sboot-swagger</artifactId>
         </dependency>
-        <!--建库-->
-        <dependency>
-            <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-data-auto-schema</artifactId>
-        </dependency>
     </dependencies>
 
 </project>
