@@ -32,6 +32,11 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-sboot-jpa</artifactId>
         </dependency>
+        <!--日志-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-aop-api-log</artifactId>
+        </dependency>
         <!-- 文档 -->
         <dependency>
             <groupId>cn.jdevelops</groupId>
