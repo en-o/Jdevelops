@@ -1,4 +1,4 @@
-package cn.jdevelops.logs.cache.p6spy;
+package cn.jdevelops.logs.p6spy;
 
 import com.p6spy.engine.common.P6Util;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;

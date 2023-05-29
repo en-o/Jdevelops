@@ -12,7 +12,7 @@
     <artifactId>jdevelops-logs</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>logs-cache</module>
+        <module>jdevelops-logs-p6spy</module>
     </modules>
 
 
