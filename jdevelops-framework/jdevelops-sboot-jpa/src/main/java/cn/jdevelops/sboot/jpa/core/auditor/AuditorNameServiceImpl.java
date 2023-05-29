@@ -1,7 +1,6 @@
 package cn.jdevelops.sboot.jpa.core.auditor;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
