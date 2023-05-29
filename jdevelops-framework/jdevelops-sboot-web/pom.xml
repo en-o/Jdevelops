@@ -27,6 +27,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- db -->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-sboot-jpa</artifactId>
+        </dependency>
         <!-- 文档 -->
         <dependency>
             <groupId>cn.jdevelops</groupId>
