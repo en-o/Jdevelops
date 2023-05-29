@@ -35,7 +35,7 @@
         <!--日志-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-aop-api-log</artifactId>
+            <artifactId>jdevelops-api-log</artifactId>
         </dependency>
         <!-- 文档 -->
         <dependency>
