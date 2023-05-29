@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * 重新实现并设置：@Primary
+ * 重新实现
  * 审计字段设置更新和新增的人名
  * @author tnnn
  * @version V1.0
