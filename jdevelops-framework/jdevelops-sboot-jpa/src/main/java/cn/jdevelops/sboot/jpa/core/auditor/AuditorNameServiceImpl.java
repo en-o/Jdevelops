@@ -1,5 +1,6 @@
 package cn.jdevelops.sboot.jpa.core.auditor;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.Optional;
  * @version V1.0
  * @date 2023-03-19 18:46
  */
-@Service
+@ConditionalOnMissingBean(AuditorNameService.class)
 public class AuditorNameServiceImpl implements AuditorNameService {
     @Override
     public Optional<String> settingAuditorName() {
