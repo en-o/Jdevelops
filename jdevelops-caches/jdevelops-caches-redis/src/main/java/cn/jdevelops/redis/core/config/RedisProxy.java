@@ -2,6 +2,7 @@ package cn.jdevelops.redis.core.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
@@ -669,7 +670,7 @@ public class RedisProxy {
      */
     public boolean isConnected() {
         try {
-            String pong = redisTemplate.execute((RedisCallback<String>) connection -> connection.ping());
+            String pong = redisTemplate.execute(RedisConnectionCommands::ping);
             return "PONG".equals(pong);
         } catch (Exception e) {
             LOG.error("redis连接失败 ==========> {}",e.getMessage());

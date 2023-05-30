@@ -11,6 +11,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,8 +19,6 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import javax.annotation.Resource;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
@@ -82,7 +81,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      */
     private boolean isConnected(RedisTemplate<String, Object> redisTemplate) {
         try {
-            String pong = redisTemplate.execute((RedisCallback<String>) connection -> connection.ping());
+            String pong = redisTemplate.execute(RedisConnectionCommands::ping);
             return "PONG".equals(pong);
         } catch (Exception e) {
             LOG.error("redis连接失败 ==========> {}",e.getMessage());
