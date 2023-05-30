@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -31,21 +32,15 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisConfig.class);
 
-    @Resource
-    private LettuceConnectionFactory lettuceConnectionFactory;
-
     @Override
     @Bean
     public KeyGenerator keyGenerator() {
-        return new KeyGenerator() {
-            @Override
-            public Object generate(Object target, Method method, Object... params) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(target.getClass().getSimpleName());
-                sb.append(method.getDeclaringClass().getSimpleName());
-                Arrays.stream(params).map(Object::toString).forEach(sb::append);
-                return sb.toString();
-            }
+        return (target, method, params) -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append(target.getClass().getSimpleName());
+            sb.append(method.getDeclaringClass().getSimpleName());
+            Arrays.stream(params).map(Object::toString).forEach(sb::append);
+            return sb.toString();
         };
     }
 
@@ -70,8 +65,29 @@ public class RedisConfig extends CachingConfigurerSupport {
         // Hash value序列化
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
-        LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
+
+        // PING
+        if(isConnected(redisTemplate)){
+            LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
+        }else {
+            LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
+        }
         return redisTemplate;
+    }
+
+
+    /**
+     * 验证 redis是否连接
+     * @return boolean
+     */
+    private boolean isConnected(RedisTemplate<String, Object> redisTemplate) {
+        try {
+            String pong = redisTemplate.execute((RedisCallback<String>) connection -> connection.ping());
+            return "PONG".equals(pong);
+        } catch (Exception e) {
+            LOG.error("redis连接失败 ==========> {}",e.getMessage());
+            return false;
+        }
     }
 
 }
