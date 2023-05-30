@@ -19,7 +19,7 @@
         <swagger.version>2.2.8</swagger.version>
         <springdoc.version>1.6.14</springdoc.version>
         <!-- spring -->
-        <spring-core.version>5.3.21</spring-core.version>
+        <spring-core.version>5.3.27</spring-core.version>
         <spring.boot.version>2.7.9</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
