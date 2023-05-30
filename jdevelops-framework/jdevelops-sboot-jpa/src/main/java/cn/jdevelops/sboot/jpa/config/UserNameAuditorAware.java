@@ -2,6 +2,7 @@ package cn.jdevelops.sboot.jpa.config;
 
 import cn.jdevelops.sboot.jpa.core.auditor.AuditorNameService;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ import java.util.Optional;
  * @date 2020/5/26 22:29
  */
 @Component
+@EnableJpaAuditing
 public class UserNameAuditorAware implements AuditorAware<String> {
 
 
