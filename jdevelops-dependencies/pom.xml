@@ -543,7 +543,7 @@
             <!-- logs -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>logs-cache-p6spy</artifactId>
+                <artifactId>jdevelops-logs-p6spy</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
 

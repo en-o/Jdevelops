@@ -5,6 +5,7 @@ import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
+import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.JwtClaims;
@@ -32,6 +33,9 @@ public class JwtWebUtil {
     public static String getToken(HttpServletRequest request) {
         return getToken(request, new JCookie(false, JwtConstant.TOKEN));
     }
+
+
+
 
 
     /**
@@ -108,7 +112,7 @@ public class JwtWebUtil {
      * @param t       返回类型 （颁发时token存储的类型）
      * @return t
      */
-    public static <T> T getTokenUserInfoByRemark(HttpServletRequest request, Class<T> t) {
+    public static <T> T getTokenByBean(HttpServletRequest request, Class<T> t) {
         String token = JwtWebUtil.getToken(request);
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
@@ -117,15 +121,24 @@ public class JwtWebUtil {
 
 
     /**
-     * 获取token中的  remark 数据并 转化成 T类型
+     * 获取token中的 数据并 转化成 T类型
      *
      * @param token token
      * @param t     返回类型 （颁发时token存储的类型）
      * @return t
      */
-    public static <T> T getTokenUserInfoByRemark(String token, Class<T> t) {
+    public static <T> T getTokenByBean(String token, Class<T> t) {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
         return GsonUtils.getGson().fromJson(rawJson, t);
+    }
+
+    /**
+     * 解析token参数
+     * @param request request
+     * @return token
+     */
+    public static SignEntity getTokenBySignEntity(HttpServletRequest request) {
+        return getTokenByBean(request,SignEntity.class);
     }
 }
