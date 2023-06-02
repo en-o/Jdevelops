@@ -142,7 +142,7 @@ public class JwtWebUtil {
     }
 
     /**
-     * 解析token参数
+     *  获取token的参数并转化为登录时使用的实体对象
      *
      * @param request request
      * @param ts      SignEntity中map的对象
