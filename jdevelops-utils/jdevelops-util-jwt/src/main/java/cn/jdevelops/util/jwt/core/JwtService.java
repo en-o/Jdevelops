@@ -87,7 +87,13 @@ public class JwtService {
         claims.setClaim(USER_NAME, sign.getUserName());
         claims.setClaim(SUBJECT, sign.getSubject());
         if(null != sign.getMap()){
-            claims.setClaim(DATA_MAP, JSON.toJSONString(sign.getMap()));
+            // 判断是不是一个JAVA bean
+            if(sign.getMap() instanceof String || sign.getMap() instanceof Integer){
+                claims.setClaim(DATA_MAP, sign.getMap());
+            }else {
+                claims.setClaim(DATA_MAP, JSON.toJSONString(sign.getMap()));
+            }
+
         }
         // 签名 JWT
         JsonWebSignature jws = getJsonWebSignature();

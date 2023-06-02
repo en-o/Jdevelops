@@ -34,7 +34,7 @@ public class SignEntity<T>{
     String userName;
 
     /**
-     * 其他信息数据最终会变成{map: jsonObject}
+     * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
      */
     T map;
 

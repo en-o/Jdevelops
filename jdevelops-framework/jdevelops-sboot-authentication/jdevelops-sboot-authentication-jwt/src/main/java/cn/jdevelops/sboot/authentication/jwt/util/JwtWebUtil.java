@@ -15,6 +15,8 @@ import org.jose4j.jwt.MalformedClaimException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
@@ -130,9 +132,13 @@ public class JwtWebUtil {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
         JSONObject jsonObject = JSON.parseObject(rawJson);
-        Object mapValue = jsonObject.get("map");
-        if (null != mapValue) {
-            jsonObject.put("map", JSON.to(ts, mapValue));
+        String mapValue = jsonObject.getString("map");
+        if (null!=mapValue && mapValue.length() > 0) {
+            if(JSON.isValid(mapValue)){
+                jsonObject.put("map", JSON.to(ts, mapValue));
+            }else {
+                jsonObject.put("map", mapValue);
+            }
         }
         return JSON.to(t, jsonObject);
     }
