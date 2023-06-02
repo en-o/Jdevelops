@@ -44,9 +44,9 @@ public class RedisLoginService implements LoginService {
      * @param subject RedisSignEntity
      * @return 签名
      */
-    public  <RB extends BasicsAccount>  String refreshLogin(HttpServletRequest request,
+    public  <RB extends BasicsAccount,T>  String refreshLogin(HttpServletRequest request,
                                                             boolean refresh,
-                                                            RedisSignEntity subject,
+                                                            RedisSignEntity<T> subject,
                                                             RB account) {
 
         if(null != account){
@@ -86,7 +86,7 @@ public class RedisLoginService implements LoginService {
      * @param <RB>  account 用户状态
      * @return 签名
      */
-    public  <RB extends BasicsAccount>  String login(RedisSignEntity subject, RB account) {
+    public  <RB extends BasicsAccount,T>  String login(RedisSignEntity<T> subject, RB account) {
         if(null != account){
             jwtRedisService.storageUserStatus(account);
         }
@@ -99,7 +99,7 @@ public class RedisLoginService implements LoginService {
      * @param subject RedisSignEntity
      * @return 签名
      */
-    public String login(RedisSignEntity subject) {
+    public <T> String login(RedisSignEntity<T> subject) {
         // 生成token
         try {
             String sign = JwtService.generateToken(subject);
@@ -121,8 +121,8 @@ public class RedisLoginService implements LoginService {
      * @param subject 用户唯一凭证(一般是登录名
      */
     @Override
-    public String login(SignEntity subject) {
-        RedisSignEntity redisSign = new RedisSignEntity(subject);
+    public <T> String login(SignEntity<T> subject) {
+        RedisSignEntity<T> redisSign = new RedisSignEntity<>(subject);
         return login(redisSign);
     }
 

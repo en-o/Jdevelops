@@ -12,7 +12,7 @@ import java.util.Objects;
  * @version V1.0
  * @date 2022-07-28 15:14
  */
-public class RedisSignEntity extends SignEntity {
+public class RedisSignEntity<T> extends SignEntity<T> {
 
     /**
      * redis用 唯一登录 ，以前的是否会被挤下线 （默认false：不挤）
@@ -31,12 +31,13 @@ public class RedisSignEntity extends SignEntity {
     public RedisSignEntity(String subject,
                            String loginName,
                            String userId,
-                           String userName, Boolean alwaysOnline) {
+                           String userName,
+                           Boolean alwaysOnline) {
         super(subject,loginName,userId,userName);
         this.alwaysOnline = alwaysOnline;
     }
 
-    public RedisSignEntity(SignEntity subject) {
+    public RedisSignEntity(SignEntity<T> subject) {
         super(subject.getSubject(),
                 subject.getLoginName(),
                 subject.getUserId(),
@@ -45,7 +46,7 @@ public class RedisSignEntity extends SignEntity {
         this.alwaysOnline = false;
     }
 
-    public RedisSignEntity(SignEntity subject, Boolean alwaysOnline) {
+    public RedisSignEntity(SignEntity<T> subject, Boolean alwaysOnline) {
         super(subject.getSubject(),
                 subject.getLoginName(),
                 subject.getUserId(),

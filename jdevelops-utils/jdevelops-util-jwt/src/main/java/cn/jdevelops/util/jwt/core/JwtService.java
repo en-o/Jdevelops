@@ -40,6 +40,8 @@ public class JwtService {
     private static final String LOGIN_NAME = "loginName";
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "userName";
+    private static final String SUBJECT = "subject";
+    private static final String DATA_MAP = "map";
 
 
     static JwtConfig jwtConfig;
@@ -65,9 +67,12 @@ public class JwtService {
      * 生成token
      * @param sign SignEntity
      * @return token
+     * @param <D> SignEntity里的T
+     * @param <T> SignEntity的子类
      * @throws JoseException JoseException
+     *
      */
-    public static <T extends SignEntity> String generateToken(T  sign) throws JoseException {
+    public static <D,T extends SignEntity<D>> String generateToken(T  sign) throws JoseException {
         // Create the Claims, which will be the content of the JWT
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人
@@ -80,16 +85,9 @@ public class JwtService {
         claims.setClaim(LOGIN_NAME, sign.getLoginName());
         claims.setClaim(USER_ID, sign.getUserId());
         claims.setClaim(USER_NAME, sign.getUserName());
-        if (Objects.nonNull(sign.getMap())) {
-            for (String key : sign.getMap().keySet()) {
-                Object value = sign.getMap().get(key);
-                if (value instanceof Map || value instanceof List) {
-                    String mapJson = JSON.toJSONString(value);
-                    claims.setClaim(key, mapJson);
-                } else {
-                    claims.setClaim(key, value + "");
-                }
-            }
+        claims.setClaim(SUBJECT, sign.getSubject());
+        if(null != sign.getMap()){
+            claims.setClaim(DATA_MAP, JSON.toJSONString(sign.getMap()));
         }
         // 签名 JWT
         JsonWebSignature jws = getJsonWebSignature();
@@ -192,17 +190,7 @@ public class JwtService {
         for (Map.Entry<String, Object> entry : jwtClaims.getClaimsMap().entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if (value instanceof String) {
-                newClaims.setClaim(key, (String) value);
-            } else if (value instanceof Boolean) {
-                newClaims.setClaim(key, (Boolean) value);
-            } else if (value instanceof Integer) {
-                newClaims.setClaim(key, (Integer) value);
-            } else if (value instanceof Long) {
-                newClaims.setClaim(key, (Long) value);
-            } else if (value instanceof Double) {
-                newClaims.setClaim(key, (Double) value);
-            }
+            newClaims.setClaim(key, value);
         }
 
         // 签名新的 JWT
