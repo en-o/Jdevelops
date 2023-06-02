@@ -15,8 +15,6 @@ import org.jose4j.jwt.MalformedClaimException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
