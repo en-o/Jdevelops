@@ -2,11 +2,6 @@ package cn.jdevelops.util.jwt.entity;
 
 
 
-import com.alibaba.fastjson2.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
-
 /**
  * 用户登录签名办法token的数据
  *

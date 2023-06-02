@@ -2,10 +2,8 @@ package cn.jdevelops.sboot.authentication.jredis.util;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
-import com.alibaba.fastjson2.TypeReference;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * RsJwtWebUtil
