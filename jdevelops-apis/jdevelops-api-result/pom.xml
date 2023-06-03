@@ -27,6 +27,11 @@
             <artifactId>apm-toolkit-trace</artifactId>
         </dependency>
         <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-logs-logback</artifactId>
+            <version>${jdevelops.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.yomahub</groupId>
             <artifactId>tlog-web-spring-boot-starter</artifactId>
             <exclusions>

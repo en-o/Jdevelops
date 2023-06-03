@@ -16,7 +16,11 @@ import org.springframework.scheduling.annotation.Async;
 @ConditionalOnMissingBean(ApiLogSave.class)
 @AutoConfiguration
 public class DefApiLogSave implements ApiLogSave {
-    private static final Logger LOG = LoggerFactory.getLogger("APILOG");
+
+    private final static String LOGGER_NAME = "APILOG";
+
+    private static final Logger LOG = LoggerFactory.getLogger(LOGGER_NAME);
+
     @Override
     @Async("apiLogAsyncTaskExecutor")
     public void saveLog(ApiMonitoring apilog) {
