@@ -130,12 +130,14 @@ public class JwtWebUtil {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
         JSONObject jsonObject = JSON.parseObject(rawJson);
-        String mapValue = jsonObject.getString("map");
-        if (null!=mapValue && mapValue.length() > 0) {
-            if(JSON.isValid(mapValue)){
-                jsonObject.put("map", JSON.to(ts, mapValue));
-            }else {
-                jsonObject.put("map", mapValue);
+        if(ts != null){
+            String mapValue = jsonObject.getString("map");
+            if (null!=mapValue && mapValue.length() > 0) {
+                if(JSON.isValid(mapValue)){
+                    jsonObject.put("map", JSON.to(ts, mapValue));
+                }else {
+                    jsonObject.put("map", mapValue);
+                }
             }
         }
         return JSON.to(t, jsonObject);
@@ -150,5 +152,14 @@ public class JwtWebUtil {
      */
     public static <T> SignEntity<T> getTokenBySignEntity(HttpServletRequest request, Class<T> ts) {
         return getTokenByBean(request, SignEntity.class, ts);
+    }
+
+    /**
+     *  获取token的参数并转化为登录时使用的实体对象 (不要map里的数据)
+     * @param request request
+     * @return token
+     */
+    public static <T> SignEntity<T> getTokenBySignEntity(HttpServletRequest request) {
+        return getTokenByBean(request, SignEntity.class, null);
     }
 }
