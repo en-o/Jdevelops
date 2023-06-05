@@ -1,10 +1,12 @@
 package cn.jdevelops.data.es.core;
 
-import cn.jdevelops.data.es.entity.EsPageResult;
+import cn.jdevelops.api.result.response.PageResult;
 import co.elastic.clients.elasticsearch._types.Result;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch.core.*;
-import org.springframework.stereotype.Service;
+import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.elasticsearch.core.MgetResponse;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +19,6 @@ import java.util.List;
  * @version 1.0
  * @data 2023/2/10 11:37
  */
-@Service
 public interface ElasticService {
 
     /**
@@ -28,7 +29,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 11:38
      **/
-    public boolean existIndex(String indexName) throws IOException;
+    boolean existIndex(String indexName) throws IOException;
 
     /**
      * 创建索引，仅仅是索引名称，无任何mapping
@@ -38,7 +39,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 11:56
      **/
-    public boolean createIndex(String indexName) throws IOException;
+    boolean createIndex(String indexName) throws IOException;
 
     /**
      * 创建索引，带mapping的json文件流
@@ -56,7 +57,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 12:10
      **/
-    public boolean createIndex(String indexName, InputStream input) throws IOException;
+    boolean createIndex(String indexName, InputStream input) throws IOException;
 
     /**
      * 删除索引结构
@@ -66,7 +67,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 12:03
      **/
-    public boolean deleteIndex(String indexName) throws IOException;
+    boolean deleteIndex(String indexName) throws IOException;
 
     /**
      * 新增文档
@@ -78,7 +79,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/26 18:21
      **/
-    public <T> Result addDocument(String indexName, String id, T t) throws IOException;
+    <T> Result addDocument(String indexName, String id, T t) throws IOException;
 
     /**
      * 修改数据
@@ -90,7 +91,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/25 10:08
      **/
-    public <T> Result updateDocument(String indexName, String id, T t) throws IOException;
+    <T> Result updateDocument(String indexName, String id, T t) throws IOException;
 
     /**
      * 删除单条数据
@@ -101,7 +102,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/14 15:51
      **/
-    public Result deleteById(String indexName, String id) throws IOException;
+    Result deleteById(String indexName, String id) throws IOException;
 
     /**
      * 根据查询条件删除数据
@@ -112,8 +113,19 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/14 15:51
      **/
-    public Long deleteByQuery(String indexName, Query query) throws IOException;
+    Long deleteByQuery(String indexName, Query query) throws IOException;
 
+
+    /**
+     * 批量删除数据
+     *
+     * @param indexName 索引名称
+     * @param ids       ids
+     * @return boolean
+     * @author lxw
+     * @date 2023/4/14 15:45
+     **/
+    boolean deleteByIds(String indexName, List<String> ids) throws IOException;
 
     /**
      * 批量新增、修改数据操作
@@ -125,7 +137,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 18:05
      **/
-    public <T> boolean bulkAddDocument(String indexName, List<T> list, String key) throws Exception;
+    <T> boolean bulkAddDocument(String indexName, List<T> list, String key) throws Exception;
 
     /**
      * 批量操作新增、编辑，组装参数示例：
@@ -149,17 +161,8 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 18:06
      **/
-    public boolean bulkAddDocument(BulkRequest.Builder builder) throws IOException;
-    /**
-     * 批量删除数据
-     *
-     * @param indexName 索引名称
-     * @param ids       ids
-     * @return boolean
-     * @author lxw
-     * @date 2023/4/14 15:45
-     **/
-    public boolean batchDeleteDocument(String indexName, List<String> ids) throws IOException;
+    boolean bulkAddDocument(BulkRequest.Builder builder) throws IOException;
+
 
     /**
      * 验证数据是否存在
@@ -170,8 +173,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 15:21
      **/
-    public boolean existsById(String index, String id) throws IOException;
-
+    boolean existsById(String index, String id) throws IOException;
 
     /**
      * 获取单条数据
@@ -183,7 +185,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 18:32
      **/
-    public <T> T getById(String indexName, String id, Class<T> cc) throws IOException;
+    <T> T getById(String indexName, String id, Class<T> cc) throws IOException;
 
     /**
      * 根据ID批量查询
@@ -200,8 +202,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/25 11:43
      **/
-    public <T> MgetResponse<T> mget(String indexName, List<String> ids, Class<T> cc) throws IOException;
-
+    <T> MgetResponse<T> mget(String indexName, List<String> ids, Class<T> cc) throws IOException;
 
     /**
      * 查询数量
@@ -212,7 +213,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/26 10:59
      **/
-    public long count(String indexName, Query query) throws IOException;
+    long count(String indexName, Query query) throws IOException;
 
     /**
      * 获取所有数据
@@ -223,8 +224,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/2/10 18:32
      **/
-    public <T> List<T> getAll(String indexName, Query query, Class<T> cc) throws IOException;
-
+    <T> List<T> getAll(String indexName, Query query, Class<T> cc) throws IOException;
 
     /**
      * 查询数据,需自己处理结果集
@@ -235,8 +235,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/21 10:28
      **/
-    public <T> SearchResponse<T> search(SearchRequest request, Class<T> tDocumentClass) throws IOException;
-
+    <T> SearchResponse<T> search(SearchRequest request, Class<T> tDocumentClass) throws IOException;
 
     /**
      * 分页查询
@@ -247,8 +246,7 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/23 10:14
      **/
-    public <T> EsPageResult<T> searchPage(SearchRequest request, Class<T> cc);
-
+    <T> PageResult<T> searchPage(SearchRequest request, Class<T> cc);
 
     /**
      * 只返回当前页结果集
@@ -259,7 +257,5 @@ public interface ElasticService {
      * @author lxw
      * @date 2023/4/23 10:14
      **/
-    public <T> List<T> searchList(SearchRequest request, Class<T> cc);
-
-
+    <T> List<T> searchList(SearchRequest request, Class<T> cc);
 }
