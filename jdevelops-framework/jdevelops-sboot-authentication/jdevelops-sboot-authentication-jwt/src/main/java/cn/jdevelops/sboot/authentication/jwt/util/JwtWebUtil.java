@@ -7,6 +7,8 @@ import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -35,15 +37,12 @@ public class JwtWebUtil {
     }
 
 
-
-
-
     /**
      * 从 request 获取token
      * 先从 header 中获取，无则从Parameter中获取,然后选择cookice
      *
      * @param request request
-     * @param cookie cookie true 去cookie参数
+     * @param cookie  cookie true 去cookie参数
      * @return token
      */
     public static String getToken(HttpServletRequest request, Boolean cookie) {
@@ -110,13 +109,12 @@ public class JwtWebUtil {
      *
      * @param request request
      * @param t       返回类型 （颁发时token存储的类型）
+     * @param ts      t中的map对象class
      * @return t
      */
-    public static <T> T getTokenByBean(HttpServletRequest request, Class<T> t) {
+    public static <T, S> T getTokenByBean(HttpServletRequest request, Class<T> t, Class<S> ts) {
         String token = JwtWebUtil.getToken(request);
-        JwtClaims jwtClaims = JwtService.parseJwt(token);
-        String rawJson = jwtClaims.getRawJson();
-        return GsonUtils.getGson().fromJson(rawJson, t);
+        return getTokenByBean(token, t, ts);
     }
 
 
@@ -125,20 +123,32 @@ public class JwtWebUtil {
      *
      * @param token token
      * @param t     返回类型 （颁发时token存储的类型）
+     * @param ts  t中map的对象
      * @return t
      */
-    public static <T> T getTokenByBean(String token, Class<T> t) {
+    public static <T, S> T getTokenByBean(String token, Class<T> t, Class<S> ts) {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
-        return GsonUtils.getGson().fromJson(rawJson, t);
+        JSONObject jsonObject = JSON.parseObject(rawJson);
+        String mapValue = jsonObject.getString("map");
+        if (null!=mapValue && mapValue.length() > 0) {
+            if(JSON.isValid(mapValue)){
+                jsonObject.put("map", JSON.to(ts, mapValue));
+            }else {
+                jsonObject.put("map", mapValue);
+            }
+        }
+        return JSON.to(t, jsonObject);
     }
 
     /**
-     * 解析token参数
+     *  获取token的参数并转化为登录时使用的实体对象
+     *
      * @param request request
+     * @param ts      SignEntity中map的对象
      * @return token
      */
-    public static SignEntity getTokenBySignEntity(HttpServletRequest request) {
-        return getTokenByBean(request,SignEntity.class);
+    public static <T> SignEntity<T> getTokenBySignEntity(HttpServletRequest request, Class<T> ts) {
+        return getTokenByBean(request, SignEntity.class, ts);
     }
 }

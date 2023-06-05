@@ -1,5 +1,8 @@
 package cn.jdevelops.redis.core.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisProxy {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RedisProxy.class);
     public RedisProxy(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
@@ -657,5 +661,20 @@ public class RedisProxy {
         }
         cursor.close();
         return keys;
+    }
+
+
+    /**
+     * 验证 redis是否连接
+     * @return boolean
+     */
+    public boolean isConnected() {
+        try {
+            String pong = redisTemplate.execute(RedisConnectionCommands::ping);
+            return "PONG".equals(pong);
+        } catch (Exception e) {
+            LOG.error("redis连接失败 ==========> {}",e.getMessage());
+            return false;
+        }
     }
 }

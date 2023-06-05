@@ -2,8 +2,6 @@ package cn.jdevelops.util.jwt.entity;
 
 
 
-import java.util.Map;
-
 /**
  * 用户登录签名办法token的数据
  *
@@ -11,7 +9,7 @@ import java.util.Map;
  * @version V1.0
  * @date 2022-07-28 15:14
  */
-public class SignEntity{
+public class SignEntity<T>{
 
     /**
      * 必填： jwt 主题 （唯一凭证(一般是登录名）
@@ -36,9 +34,9 @@ public class SignEntity{
     String userName;
 
     /**
-     * 其他信息数据 value 如果时map list的话会变成json
+     * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
      */
-    Map<String, Object> map;
+    T map;
 
 
     /**
@@ -53,7 +51,7 @@ public class SignEntity{
                       String loginName,
                       String userId,
                       String userName,
-                      Map<String, Object> map) {
+                      T map) {
         this.subject = subject;
         this.loginName = loginName;
         this.userId = userId;
@@ -80,15 +78,6 @@ public class SignEntity{
     }
 
 
-    public Map<String, Object> getMap() {
-        return map;
-    }
-
-    public void setMap(Map<String, Object> map) {
-        this.map = map;
-    }
-
-
     public String getLoginName() {
         return loginName;
     }
@@ -111,6 +100,14 @@ public class SignEntity{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public  T getMap() {
+        return map;
+    }
+
+    public void setMap(T map) {
+        this.map = map;
     }
 
     @Override

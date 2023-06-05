@@ -22,7 +22,7 @@ public interface LoginService  {
      * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    String login(SignEntity subject);
+    <T> String login(SignEntity<T> subject);
 
     /**
      * 是否登录

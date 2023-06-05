@@ -12,11 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 public class RsJwtWebUtil extends JwtWebUtil {
 
     /**
-     * 解析token参数
+     *  获取token的参数并转化为登录时使用的实体对象
      * @param request request
+     * @param ts RedisSignEntity中map对象calss
      * @return token
      */
-    public static RedisSignEntity getTokenByRedisSignEntity(HttpServletRequest request) {
-        return getTokenByBean(request,RedisSignEntity.class);
+    public static <T> RedisSignEntity<T> getTokenByRedisSignEntity(HttpServletRequest request, Class<T> ts) {
+        return getTokenByBean(request,RedisSignEntity.class, ts);
     }
 }

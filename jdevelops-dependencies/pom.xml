@@ -546,6 +546,11 @@
                 <artifactId>jdevelops-logs-p6spy</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-logs-logback</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
 
             <!-- utils -->
             <dependency>
