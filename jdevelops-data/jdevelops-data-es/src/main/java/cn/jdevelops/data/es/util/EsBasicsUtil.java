@@ -1,6 +1,7 @@
 package cn.jdevelops.data.es.util;
 
 import cn.jdevelops.data.es.constant.EsConstant;
+import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -95,7 +96,6 @@ public class EsBasicsUtil {
      * @param nested       索引嵌套结构名称
      * @param term         检索词
      * @param nestedFields 被检索的嵌套字段
-     * @return org.elasticsearch.index.query.BoolQueryBuilder
      */
     public static void setNested(BoolQuery.Builder boolQuery, String nested, String term, List<String> nestedFields) {
         if (isNotBlank(term)) {
@@ -112,6 +112,28 @@ public class EsBasicsUtil {
             }
             boolQuery.must(bs.build()._toQuery());
         }
+    }
+
+    /**
+     * 设置两个字段相等
+     * <p>类似于 sql中的 where 字段1=字段2</p>
+     * <p>特别备注: sourceField、targetField 只能是keyword类型，或者数字，不能是text</p>
+     *
+     * @param boolQuery   boolQuery
+     * @param sourceField 字段1
+     * @param targetField 字段2
+     * @author lxw
+     * @date 2023/6/5 16:55
+     **/
+    public static void setFieldValueEq(BoolQuery.Builder boolQuery, String sourceField, String targetField) {
+        boolQuery.must(ScriptQuery.of(o -> o
+                .script(Script.of(s -> s
+                                .inline(l -> l
+                                        .source("doc['" + sourceField + "'] == doc['" + targetField + "']")
+                                )
+                        )
+                )
+        )._toQuery());
     }
 
     /**
@@ -143,7 +165,7 @@ public class EsBasicsUtil {
     }
 
     /**
-     * 设置返回数据中需要排除字段
+     * 设置返回字段、排除字段
      *
      * @param sourceBuilder 查询条件对象
      * @param includes      需要返回的字段
@@ -310,17 +332,15 @@ public class EsBasicsUtil {
 
     private static boolean isBlank(CharSequence cs) {
         int strLen = length(cs);
-        if (strLen == 0) {
-            return true;
-        } else {
+        if (strLen != 0) {
             for (int i = 0; i < strLen; ++i) {
                 if (!Character.isWhitespace(cs.charAt(i))) {
                     return false;
                 }
             }
 
-            return true;
         }
+        return true;
     }
 
     private static int length(CharSequence cs) {

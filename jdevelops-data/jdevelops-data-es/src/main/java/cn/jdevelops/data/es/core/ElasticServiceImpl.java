@@ -1,5 +1,6 @@
 package cn.jdevelops.data.es.core;
 
+import cn.jdevelops.api.result.response.PageResult;
 import cn.jdevelops.data.es.entity.EsPageResult;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
@@ -200,6 +201,30 @@ public class ElasticServiceImpl implements ElasticService {
 
     }
 
+    /**
+     * 批量删除数据
+     *
+     * @param indexName 索引名称
+     * @param ids       ids
+     * @return boolean
+     * @author lxw
+     * @date 2023/4/14 15:45
+     **/
+    @Override
+    public boolean deleteByIds(String indexName, List<String> ids) throws IOException {
+        // 构建一个批量数据集合
+
+        BulkRequest.Builder br = new BulkRequest.Builder();
+        for (String id : ids) {
+            br.operations(op -> op.delete(
+                    d -> d.index(indexName).id(id)
+            ));
+        }
+        br.refresh(Refresh.True);
+        BulkResponse bulk = client.bulk(br.build());
+        return !bulk.errors();
+    }
+
 
     /**
      * 批量新增、修改数据操作
@@ -255,30 +280,6 @@ public class ElasticServiceImpl implements ElasticService {
     public boolean bulkAddDocument(BulkRequest.Builder builder) throws IOException {
         builder.refresh(Refresh.True);
         BulkResponse bulk = client.bulk(builder.build());
-        return !bulk.errors();
-    }
-
-    /**
-     * 批量删除数据
-     *
-     * @param indexName 索引名称
-     * @param ids       ids
-     * @return boolean
-     * @author lxw
-     * @date 2023/4/14 15:45
-     **/
-    @Override
-    public boolean batchDeleteDocument(String indexName, List<String> ids) throws IOException {
-        // 构建一个批量数据集合
-
-        BulkRequest.Builder br = new BulkRequest.Builder();
-        for (String id : ids) {
-            br.operations(op -> op.delete(
-                    d -> d.index(indexName).id(id)
-            ));
-        }
-        br.refresh(Refresh.True);
-        BulkResponse bulk = client.bulk(br.build());
         return !bulk.errors();
     }
 
@@ -409,7 +410,6 @@ public class ElasticServiceImpl implements ElasticService {
         return list;
     }
 
-
     /**
      * 查询数据,需自己处理结果集
      *
@@ -435,7 +435,7 @@ public class ElasticServiceImpl implements ElasticService {
      * @date 2023/4/23 10:14
      **/
     @Override
-    public <T> EsPageResult<T> searchPage(SearchRequest request, Class<T> cc) {
+    public <T> PageResult<T> searchPage(SearchRequest request, Class<T> cc) {
         List<T> list = new ArrayList<>();
         try {
             SearchResponse<T> search = client.search(request, cc);
@@ -446,12 +446,12 @@ public class ElasticServiceImpl implements ElasticService {
                     list.add(hit.source());
                 }
                 // 转换返回
-                return (EsPageResult<T>) EsPageResult.page(total,list);
+                return EsPageResult.page(total, list);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return (EsPageResult<T>) EsPageResult.page(0L, list);
+        return EsPageResult.page(0L, list);
     }
 
 
