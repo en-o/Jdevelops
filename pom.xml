@@ -7,7 +7,7 @@
     <groupId>cn.jdevelops</groupId>
     <artifactId>jdevelops</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.7</version>
+    <version>${revision}</version>
     <name>jdevelops</name>
     <description>开发用的小组件</description>
     <url>https://github.com/en-o/Jdevelops</url>
@@ -76,7 +76,7 @@
     </modules>
 
     <properties>
-        <jdevelops.version>2.0.7</jdevelops.version>
+        <revision>2.0.7</revision>
         <!-- spring  -->
         <spring.boot.version>2.7.9</spring.boot.version>
         <!-- jdk -->
@@ -93,7 +93,7 @@
         <project.build.sourceEncoding>${encoding.version}</project.build.sourceEncoding>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
-
+        <flatten_maven.version>1.2.5</flatten_maven.version>
         <!-- 测试 -->
         <skipTests>false</skipTests>
 
@@ -190,7 +190,7 @@
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-dependencies</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -200,6 +200,35 @@
     <!-- 打包 -->
     <build>
         <plugins>
+
+            <!-- 发布的POM进行精简 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten_maven.version}</version>
+                <configuration>
+                    <!--插件默认只会处理packaging属性为非pom的，如果要处理packaging为pom的，可将本属性值设置为true -->
+                    <updatePomFile>true</updatePomFile>
+                    <!--插件预定义了若干种压缩模式-->
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- 将源码一并打包 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

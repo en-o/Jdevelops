@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdevelops</artifactId>
         <groupId>cn.jdevelops</groupId>
-        <version>2.0.7</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,6 +20,5 @@
         <module>jdevelops-api-sign</module>
         <module>jdevelops-api-idempotent</module>
     </modules>
-
 
 </project>

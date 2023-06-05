@@ -32,5 +32,8 @@ mvnw
 .mvn
 HELP.md
 
+# plugin
+.flattened-pom.xml
+
 
 
