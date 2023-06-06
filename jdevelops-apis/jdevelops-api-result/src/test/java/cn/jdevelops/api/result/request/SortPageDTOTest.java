@@ -3,9 +3,6 @@ package cn.jdevelops.api.result.request;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
 
 public class SortPageDTOTest extends TestCase {
 
@@ -42,7 +39,7 @@ public class SortPageDTOTest extends TestCase {
 
     public void testSortPageDTO() {
         SortPageDTO sortPageDTO = new SortPageDTO(1, 2, new SortDTO());
-        assertEquals((1 - 1) + "", sortPageDTO.getPageIndex().toString());
+        assertEquals((0) + "", sortPageDTO.getPageIndex().toString());
         assertEquals("2", sortPageDTO.getPageSize().toString());
         assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
