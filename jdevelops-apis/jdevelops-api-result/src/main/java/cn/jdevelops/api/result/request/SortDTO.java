@@ -4,11 +4,15 @@ import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 分页
+ *
  * @author tn
  * @date 2020-12-17 14:26
  */
@@ -16,84 +20,94 @@ import java.util.Objects;
 public class SortDTO implements Serializable {
 
     /**
-     * 排序字段
+     * 排序字段 (可多字段[1-5])
      * 默认id
      */
     @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
-    private String orderBy;
+    @Size(min=1, max=5,message = "排序字段超出了阈值")
+    private String[] orderBy;
 
     /**
-     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
+     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
      * 默认倒叙
      */
     @Schema(description = "排序方式（正序0，反序1）", defaultValue = "1", example = "1")
+    @Max(value = 1,message = "请正确选择排序方式")
+    @Min(value = 0,message = "请正确选择排序方式")
     private Integer orderDesc;
 
 
     /**
      * 默认倒序
+     *
      * @param orderBy 排序字段
      */
-    public SortDTO(String orderBy) {
+    public SortDTO(String... orderBy) {
         this.orderBy = orderBy;
         this.orderDesc = 1;
     }
 
+
     /**
      * 默认倒序
+     *
      * @param orderBy 排序字段
      */
-    public <T> SortDTO(ColumnSFunction<T, ?> orderBy) {
-        this.orderBy = ColumnUtil.getFieldName(orderBy);
+    public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
+        String[] list = new String[10];
+        for (int i = 0; i < orderBy.length; i++) {
+            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
+        }
+        this.orderBy = list;
         this.orderDesc = 1;
     }
 
 
     /**
-     *  排序
-     * @param orderBy 排序字段
+     * 排序
+     *
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     * @param orderBy   排序字段
      */
-    public SortDTO(String orderBy, Integer orderDesc) {
+    public SortDTO(Integer orderDesc, String... orderBy) {
         this.orderBy = orderBy;
         this.orderDesc = orderDesc;
     }
 
 
     /**
-     *  排序
-     * @param orderBy 排序字段
+     * 排序
+     *
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     * @param orderBy   排序字段
      */
-    public <T> SortDTO(ColumnSFunction<T, ?> orderBy, Integer orderDesc) {
-        this.orderBy = ColumnUtil.getFieldName(orderBy);
+    public <T> SortDTO(Integer orderDesc, ColumnSFunction<T, ?>... orderBy) {
+        String[] list = new String[10];
+        for (int i = 0; i < orderBy.length; i++) {
+            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
+        }
+        this.orderBy = list;
         this.orderDesc = orderDesc;
     }
 
     public SortDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "SortVO{" +
-                "orderBy='" + orderBy + '\'' +
-                ", orderDesc=" + orderDesc +
-                '}';
-    }
 
-    public String getOrderBy() {
-        if(Objects.isNull(orderBy)){
-            return "id";
+
+    public String[] getOrderBy() {
+        if (Objects.isNull(orderBy)) {
+            return new String[]{"id"};
         }
         return orderBy;
     }
 
-    public void setOrderBy(String orderBy) {
+    public void setOrderBy(String... orderBy) {
         this.orderBy = orderBy;
     }
 
     public Integer getOrderDesc() {
-        if(Objects.isNull(orderDesc)){
+        if (Objects.isNull(orderDesc)) {
             return 1;
         }
         return orderDesc;
@@ -101,5 +115,15 @@ public class SortDTO implements Serializable {
 
     public void setOrderDesc(Integer orderDesc) {
         this.orderDesc = orderDesc;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "SortDTO{" +
+                "orderBy=" + Arrays.toString(orderBy) +
+                ", orderDesc=" + orderDesc +
+                '}';
     }
 }

@@ -8,7 +8,6 @@ import cn.jdevelops.api.result.request.SortPageDTO;
 import cn.jdevelops.api.result.response.PageResult;
 import cn.jdevelops.api.result.util.ListTo;
 import cn.jdevelops.api.result.util.PageUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,42 +26,70 @@ import java.util.Objects;
  */
 public class JPageUtil {
     /**
-     * SortVO  转成 Sort
+     * SortDTO  转成 Sort
      *
-     * @param page page
+     * @param sort SortDTO
      * @return Sort
      */
-    public static Sort getSv2S(SortDTO page) {
-        if (page == null) {
+    public static Sort getSv2S(SortDTO sort) {
+        if (sort == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            return getOrders(page.getOrderDesc(), page.getOrderBy());
+            String[] orderBy = sort.getOrderBy();
+            if (orderBy.length <= 0) {
+                orderBy = new String[1];
+                orderBy[0] = "id";
+            }
+            return getOrders(sort.getOrderDesc(), orderBy);
         }
     }
 
 
     /**
-     * RoutinePageDTO  转成 Sort
+     * SortDTO  转成 Sort
      *
-     * @param sort sort
+     * @param sort SortDTO
      * @return Sort
      */
-    public static Sort getSv2S(SortPageDTO sort) {
-        if (StringUtils.isBlank(sort.getOrderBy()) && sort.getOrderDesc() == null) {
-            return Sort.by(Sort.Direction.DESC, "id");
-        } else {
-            return getOrders(sort.getOrderDesc(), sort.getOrderBy());
-        }
+    public static Sort getSv2S(List<SortDTO> sort) {
+        return sort.stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
+    }
+
+
+    /**
+     * SortPageDTO  转成 Sort
+     *
+     * @param sorts sort
+     * @return Sort
+     */
+    public static Sort getSv2S(SortPageDTO sorts) {
+        return sorts.getSorts().stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
     }
 
     @NotNull
-    private static Sort getOrders(Integer orderDesc, String orderBy) {
+    private static Sort getOrders(Integer orderDesc, String... orderBy) {
         if (!Objects.isNull(orderDesc) && 0 == orderDesc) {
-            return Sort.by(Sort.Direction.ASC,
-                    StringUtils.isNotBlank(orderBy) ? orderBy : "id");
+            return Sort.by(orderBy).ascending();
         }
-        return Sort.by(Sort.Direction.DESC,
-                StringUtils.isNotBlank(orderBy) ? orderBy : "id");
+        return Sort.by(orderBy).descending();
     }
 
     /**
@@ -96,6 +123,7 @@ public class JPageUtil {
 
     /**
      * 获取分页 Pageable
+     *
      * @param page 分页
      * @return Pageable
      */

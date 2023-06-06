@@ -22,13 +22,13 @@ public class SimpleExpression implements ExpandCriterion {
      */
     private Operator operator;
 
-    protected SimpleExpression(String fieldName, Object value, Operator operator) {
+    public SimpleExpression(String fieldName, Object value, Operator operator) {
         this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
     }
 
-    protected SimpleExpression(String fieldName, Operator operator) {
+    public SimpleExpression(String fieldName, Operator operator) {
         this.fieldName = fieldName;
         this.operator = operator;
     }

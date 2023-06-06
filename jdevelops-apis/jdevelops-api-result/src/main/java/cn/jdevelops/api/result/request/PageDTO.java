@@ -4,6 +4,8 @@ package cn.jdevelops.api.result.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,17 +19,21 @@ import java.util.Objects;
 public class PageDTO implements Serializable {
 
     /**
-     * 页码
+     * 页码 [1-500]
      * 默认1
      */
     @Schema(description = "页码", defaultValue = "1", example = "1")
+    @Max(value = 500,message = "页码超出了阈值")
+    @Min(value = 1,message = "页码超出了阈值")
     private Integer pageIndex;
 
     /**
-     * 数量
+     * 数量 [1-100]
      * 默认20
      */
     @Schema(description = "数量", defaultValue = "20", example = "20")
+    @Max(value = 100,message = "每页数量超出了阈值")
+    @Min(value = 1,message = "每页数量超出了阈值")
     private Integer pageSize;
 
     public PageDTO() {
@@ -52,8 +58,8 @@ public class PageDTO implements Serializable {
         if(pageIndex<1){
             pageIndex = 1;
         }
-        // 分页查询在数据库中起始页也为0
-        this.pageIndex = pageIndex-1;
+        // 分页查询在数据库中起始页也为0 ,get处处理了-1
+        this.pageIndex = pageIndex;
         this.pageSize = pageSize;
     }
 
