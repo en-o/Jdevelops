@@ -4,6 +4,9 @@ import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.*;
 
@@ -17,17 +20,20 @@ import java.util.*;
 public class SortDTO implements Serializable {
 
     /**
-     * 排序字段 (可多字段)
+     * 排序字段 (可多字段[1-5])
      * 默认id
      */
     @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
+    @Size(min=1, max=5,message = "排序字段超出了阈值")
     private String[] orderBy;
 
     /**
-     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
+     * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
      * 默认倒叙
      */
     @Schema(description = "排序方式（正序0，反序1）", defaultValue = "1", example = "1")
+    @Max(value = 1,message = "请正确选择排序方式")
+    @Min(value = 0,message = "请正确选择排序方式")
     private Integer orderDesc;
 
 
