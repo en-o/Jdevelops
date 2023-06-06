@@ -22,7 +22,7 @@ public class SortPageDTOTest extends TestCase {
         SortPageDTO sortPageDTO = new SortPageDTO();
         sortPageDTO.setPageIndex(2);
         sortPageDTO.setPageSize(21);
-        assertEquals((2-1)+"", sortPageDTO.getPageIndex().toString());
+        assertEquals((2 - 1) + "", sortPageDTO.getPageIndex().toString());
         assertEquals("21", sortPageDTO.getPageSize().toString());
         assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
@@ -30,7 +30,7 @@ public class SortPageDTOTest extends TestCase {
 
     public void testGetSortsSorts() {
         SortPageDTO sortPageDTO = new SortPageDTO();
-        sortPageDTO.setSorts(Arrays.asList(new SortDTO(),new SortDTO("name",0)));
+        sortPageDTO.setSorts(Arrays.asList(new SortDTO(), new SortDTO(0, "name")));
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
@@ -41,8 +41,8 @@ public class SortPageDTOTest extends TestCase {
 
 
     public void testSortPageDTO() {
-        SortPageDTO sortPageDTO = new SortPageDTO(1,2, new SortDTO());
-        assertEquals((1-1)+"", sortPageDTO.getPageIndex().toString());
+        SortPageDTO sortPageDTO = new SortPageDTO(1, 2, new SortDTO());
+        assertEquals((1 - 1) + "", sortPageDTO.getPageIndex().toString());
         assertEquals("2", sortPageDTO.getPageSize().toString());
         assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
@@ -59,7 +59,7 @@ public class SortPageDTOTest extends TestCase {
 
 
     public void testSortPageDTO3() {
-        SortPageDTO sortPageDTO = new SortPageDTO(1,2, "name",0);
+        SortPageDTO sortPageDTO = new SortPageDTO(1, 2, 0, "name");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("2", sortPageDTO.getPageSize().toString());
         assertEquals("name", sortPageDTO.getSorts().get(0).getOrderBy());

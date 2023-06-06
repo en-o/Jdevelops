@@ -52,9 +52,9 @@ public class SortPageDTO extends PageDTO {
     }
 
 
-    public SortPageDTO(Integer pageIndex, Integer pageSize, String orderBy, Integer orderDesc) {
+    public SortPageDTO(Integer pageIndex, Integer pageSize, Integer orderDesc, String... orderBy) {
         super(pageIndex, pageSize);
-        this.sorts = Collections.singletonList(new SortDTO(orderBy, orderDesc));
+        this.sorts = Collections.singletonList(new SortDTO(orderDesc,  orderBy));
     }
 
     public SortPageDTO(Integer pageIndex, Integer pageSize, SortDTO sorts) {

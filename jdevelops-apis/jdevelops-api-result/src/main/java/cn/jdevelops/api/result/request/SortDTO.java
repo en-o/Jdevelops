@@ -5,7 +5,7 @@ import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 分页
@@ -16,11 +16,11 @@ import java.util.Objects;
 public class SortDTO implements Serializable {
 
     /**
-     * 排序字段
+     * 排序字段 (可多字段)
      * 默认id
      */
     @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
-    private String orderBy;
+    private List<String> orderBy;
 
     /**
      * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
@@ -34,17 +34,22 @@ public class SortDTO implements Serializable {
      * 默认倒序
      * @param orderBy 排序字段
      */
-    public SortDTO(String orderBy) {
-        this.orderBy = orderBy;
+    public SortDTO(String... orderBy) {
+        this.orderBy = Arrays.asList(orderBy);
         this.orderDesc = 1;
     }
+
 
     /**
      * 默认倒序
      * @param orderBy 排序字段
      */
-    public <T> SortDTO(ColumnSFunction<T, ?> orderBy) {
-        this.orderBy = ColumnUtil.getFieldName(orderBy);
+    public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
+        List<String> list = new ArrayList<>();
+        for (ColumnSFunction<T, ?> tcs : orderBy) {
+            list.add(ColumnUtil.getFieldName(tcs));
+        }
+        this.orderBy = list;
         this.orderDesc = 1;
     }
 
@@ -54,8 +59,8 @@ public class SortDTO implements Serializable {
      * @param orderBy 排序字段
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    public SortDTO(String orderBy, Integer orderDesc) {
-        this.orderBy = orderBy;
+    public SortDTO(Integer orderDesc, String... orderBy) {
+        this.orderBy = Arrays.asList(orderBy);
         this.orderDesc = orderDesc;
     }
 
@@ -65,8 +70,12 @@ public class SortDTO implements Serializable {
      * @param orderBy 排序字段
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
      */
-    public <T> SortDTO(ColumnSFunction<T, ?> orderBy, Integer orderDesc) {
-        this.orderBy = ColumnUtil.getFieldName(orderBy);
+    public <T> SortDTO(ColumnSFunction<T, ?>... orderBy, Integer orderDesc) {
+        List<String> list = new ArrayList<>();
+        for (ColumnSFunction<T, ?> tcs : orderBy) {
+            list.add(ColumnUtil.getFieldName(tcs));
+        }
+        this.orderBy = list;
         this.orderDesc = orderDesc;
     }
 
@@ -81,15 +90,11 @@ public class SortDTO implements Serializable {
                 '}';
     }
 
-    public String getOrderBy() {
+    public List<String> getOrderBy() {
         if(Objects.isNull(orderBy)){
-            return "id";
+            return Collections.singletonList("id");
         }
         return orderBy;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
     }
 
     public Integer getOrderDesc() {
