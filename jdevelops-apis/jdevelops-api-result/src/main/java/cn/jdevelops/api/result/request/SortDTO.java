@@ -21,7 +21,7 @@ public class SortDTO implements Serializable {
      * 默认id
      */
     @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
-    private List<String> orderBy;
+    private String[] orderBy;
 
     /**
      * 排序方式 正序0--Direction.ASC，反序1--Direction.DESC
@@ -37,7 +37,7 @@ public class SortDTO implements Serializable {
      * @param orderBy 排序字段
      */
     public SortDTO(String... orderBy) {
-        this.orderBy = Arrays.asList(orderBy);
+        this.orderBy = orderBy;
         this.orderDesc = 1;
     }
 
@@ -48,9 +48,9 @@ public class SortDTO implements Serializable {
      * @param orderBy 排序字段
      */
     public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
-        List<String> list = new ArrayList<>();
-        for (ColumnSFunction<T, ?> tcs : orderBy) {
-            list.add(ColumnUtil.getFieldName(tcs));
+        String[] list = new String[10];
+        for (int i = 0; i < orderBy.length; i++) {
+            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
         }
         this.orderBy = list;
         this.orderDesc = 1;
@@ -64,7 +64,7 @@ public class SortDTO implements Serializable {
      * @param orderBy   排序字段
      */
     public SortDTO(Integer orderDesc, String... orderBy) {
-        this.orderBy = Arrays.asList(orderBy);
+        this.orderBy = orderBy;
         this.orderDesc = orderDesc;
     }
 
@@ -76,9 +76,9 @@ public class SortDTO implements Serializable {
      * @param orderBy   排序字段
      */
     public <T> SortDTO(Integer orderDesc, ColumnSFunction<T, ?>... orderBy) {
-        List<String> list = new ArrayList<>();
-        for (ColumnSFunction<T, ?> tcs : orderBy) {
-            list.add(ColumnUtil.getFieldName(tcs));
+        String[] list = new String[10];
+        for (int i = 0; i < orderBy.length; i++) {
+            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
         }
         this.orderBy = list;
         this.orderDesc = orderDesc;
@@ -95,11 +95,15 @@ public class SortDTO implements Serializable {
                 '}';
     }
 
-    public List<String> getOrderBy() {
+    public String[] getOrderBy() {
         if (Objects.isNull(orderBy)) {
-            return Collections.singletonList("id");
+            return new String[]{"id"};
         }
         return orderBy;
+    }
+
+    public void setOrderBy(String[] orderBy) {
+        this.orderBy = orderBy;
     }
 
     public Integer getOrderDesc() {

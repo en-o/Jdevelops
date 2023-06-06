@@ -36,7 +36,12 @@ public class JPageUtil {
         if (page == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            return getOrders( page.getOrderBy(),page.getOrderDesc());
+            String[] orderBy = page.getOrderBy();
+            if (orderBy.length <= 0) {
+                orderBy = new String[1];
+                orderBy[0] = "id";
+            }
+            return getOrders(page.getOrderDesc(), orderBy);
         }
     }
 
@@ -48,24 +53,24 @@ public class JPageUtil {
      * @return Sort
      */
     public static Sort getSv2S(SortPageDTO sorts) {
-        Sort sortResult = Sort.by("id");
-        sorts.getSorts().forEach( sort -> {
-            // （正序0，反序1）
-            if(sort.getOrderDesc() == 0 ){
-                 sortResult.and(Sort.by(sort.getOrderBy()).ascending());
-            }
-        });
-        return sortResult;
+        return sorts.getSorts().stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
     }
 
     @NotNull
-    private static Sort getOrders(Integer orderDesc, String orderBy) {
+    private static Sort getOrders(Integer orderDesc, String... orderBy) {
         if (!Objects.isNull(orderDesc) && 0 == orderDesc) {
-            return Sort.by(Sort.Direction.ASC,
-                    StringUtils.isNotBlank(orderBy) ? orderBy : "id");
+            return Sort.by(orderBy).ascending();
         }
-        return Sort.by(Sort.Direction.DESC,
-                StringUtils.isNotBlank(orderBy) ? orderBy : "id");
+        return Sort.by(orderBy).descending();
     }
 
     /**
@@ -99,6 +104,7 @@ public class JPageUtil {
 
     /**
      * 获取分页 Pageable
+     *
      * @param page 分页
      * @return Pageable
      */
