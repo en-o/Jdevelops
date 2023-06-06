@@ -3,8 +3,6 @@ package cn.jdevelops.api.result.util;
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;
-import cn.jdevelops.api.result.util.bean.ColumnUtil;
-import cn.jdevelops.api.result.util.bean.ColumnUtilTest;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
