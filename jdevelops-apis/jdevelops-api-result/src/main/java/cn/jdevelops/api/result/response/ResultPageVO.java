@@ -9,14 +9,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * 分页全局结果集直接放回
- * @param <B>  rows 实体
  * @param <P>  分页实体JpaPageResult
  * @author tn
  * @version 1
  * @date 2020/6/8 17:28
  */
 @Schema(description = "分页全局结果集")
-public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
+public class ResultPageVO<P extends PageResult> extends ResultCommon {
 
     /**
      * 数据
@@ -30,7 +29,7 @@ public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
      * @param data 数据
      * @param message 消息
      */
-    public static <B,P extends PageResult<B>> ResultPageVO<B, P> success(P data, String message) {
+    public static <P extends PageResult> ResultPageVO<P> success(P data, String message) {
         return new ResultPageVO<>(
                 ResultCodeEnum.SUCCESS.getCode(),
                 message,data);
@@ -40,7 +39,7 @@ public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
      * 成功返回
      * @param data 数据
      */
-    public static <B,P extends PageResult<B>> ResultPageVO<B, P> success(P data) {
+    public static <P extends PageResult> ResultPageVO< P> success(P data) {
         return new ResultPageVO<>(
                 ResultCodeEnum.SUCCESS.getCode(),
                 "查询成功",data);
@@ -50,14 +49,14 @@ public class ResultPageVO<B, P extends PageResult<B>> extends ResultCommon {
      * 错误返回
      * @param message 消息
      */
-    public static  <B,P extends PageResult<B>> ResultPageVO<B, P>  fail(String message) {
+    public static  <B,P extends PageResult<B>> ResultPageVO<P>  fail(String message) {
         return new ResultPageVO<>(ResultCodeEnum.FAIL.getCode(),message);
     }
     /**
      * 自定义 code 和 message
      * @param message 消息
      */
-    public static <B,P extends PageResult<B>> ResultPageVO<B, P> result(int code, String message) {
+    public static <B,P extends PageResult<B>> ResultPageVO< P> result(int code, String message) {
         return new ResultPageVO<>(code,message);
     }
 
