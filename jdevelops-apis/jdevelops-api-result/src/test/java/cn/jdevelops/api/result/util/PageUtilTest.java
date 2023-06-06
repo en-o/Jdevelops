@@ -5,7 +5,6 @@ import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
