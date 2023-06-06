@@ -3,6 +3,7 @@ package cn.jdevelops.api.result.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import java.util.List;
 @Schema(description = "公共分页参数")
 public class SortPageDTO extends PageDTO {
 
+
+    @Valid
     List<SortDTO> sorts;
 
     public SortPageDTO() {
