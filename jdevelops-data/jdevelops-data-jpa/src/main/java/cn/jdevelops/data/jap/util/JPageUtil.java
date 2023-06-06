@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 public class JPageUtil {
     /**
-     * SortVO  转成 Sort
+     * SortDTO  转成 Sort
      *
      * @param page page
      * @return Sort
@@ -36,23 +36,26 @@ public class JPageUtil {
         if (page == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            return getOrders(page.getOrderDesc(), page.getOrderBy());
+            return getOrders( page.getOrderBy(),page.getOrderDesc());
         }
     }
 
 
     /**
-     * RoutinePageDTO  转成 Sort
+     * SortPageDTO  转成 Sort
      *
-     * @param sort sort
+     * @param sorts sort
      * @return Sort
      */
-    public static Sort getSv2S(SortPageDTO sort) {
-        if (StringUtils.isBlank(sort.getOrderBy()) && sort.getOrderDesc() == null) {
-            return Sort.by(Sort.Direction.DESC, "id");
-        } else {
-            return getOrders(sort.getOrderDesc(), sort.getOrderBy());
-        }
+    public static Sort getSv2S(SortPageDTO sorts) {
+        Sort sortResult = Sort.by("id");
+        sorts.getSorts().forEach( sort -> {
+            // （正序0，反序1）
+            if(sort.getOrderDesc() == 0 ){
+                 sortResult.and(Sort.by(sort.getOrderBy()).ascending());
+            }
+        });
+        return sortResult;
     }
 
     @NotNull

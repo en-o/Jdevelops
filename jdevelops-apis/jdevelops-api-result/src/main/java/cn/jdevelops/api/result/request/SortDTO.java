@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * 分页
+ *
  * @author tn
  * @date 2020-12-17 14:26
  */
@@ -32,6 +33,7 @@ public class SortDTO implements Serializable {
 
     /**
      * 默认倒序
+     *
      * @param orderBy 排序字段
      */
     public SortDTO(String... orderBy) {
@@ -42,6 +44,7 @@ public class SortDTO implements Serializable {
 
     /**
      * 默认倒序
+     *
      * @param orderBy 排序字段
      */
     public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
@@ -55,9 +58,10 @@ public class SortDTO implements Serializable {
 
 
     /**
-     *  排序
-     * @param orderBy 排序字段
+     * 排序
+     *
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     * @param orderBy   排序字段
      */
     public SortDTO(Integer orderDesc, String... orderBy) {
         this.orderBy = Arrays.asList(orderBy);
@@ -66,11 +70,12 @@ public class SortDTO implements Serializable {
 
 
     /**
-     *  排序
-     * @param orderBy 排序字段
+     * 排序
+     *
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
+     * @param orderBy   排序字段
      */
-    public <T> SortDTO(ColumnSFunction<T, ?>... orderBy, Integer orderDesc) {
+    public <T> SortDTO(Integer orderDesc, ColumnSFunction<T, ?>... orderBy) {
         List<String> list = new ArrayList<>();
         for (ColumnSFunction<T, ?> tcs : orderBy) {
             list.add(ColumnUtil.getFieldName(tcs));
@@ -91,14 +96,14 @@ public class SortDTO implements Serializable {
     }
 
     public List<String> getOrderBy() {
-        if(Objects.isNull(orderBy)){
+        if (Objects.isNull(orderBy)) {
             return Collections.singletonList("id");
         }
         return orderBy;
     }
 
     public Integer getOrderDesc() {
-        if(Objects.isNull(orderDesc)){
+        if (Objects.isNull(orderDesc)) {
             return 1;
         }
         return orderDesc;
