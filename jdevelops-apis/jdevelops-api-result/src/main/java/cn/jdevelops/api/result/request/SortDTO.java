@@ -87,13 +87,7 @@ public class SortDTO implements Serializable {
     public SortDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "SortVO{" +
-                "orderBy='" + orderBy + '\'' +
-                ", orderDesc=" + orderDesc +
-                '}';
-    }
+
 
     public String[] getOrderBy() {
         if (Objects.isNull(orderBy)) {
@@ -102,7 +96,7 @@ public class SortDTO implements Serializable {
         return orderBy;
     }
 
-    public void setOrderBy(String[] orderBy) {
+    public void setOrderBy(String... orderBy) {
         this.orderBy = orderBy;
     }
 
@@ -115,5 +109,15 @@ public class SortDTO implements Serializable {
 
     public void setOrderDesc(Integer orderDesc) {
         this.orderDesc = orderDesc;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "SortDTO{" +
+                "orderBy=" + Arrays.toString(orderBy) +
+                ", orderDesc=" + orderDesc +
+                '}';
     }
 }
