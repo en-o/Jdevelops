@@ -20,40 +20,89 @@ public class SortPageDTO extends PageDTO {
     public SortPageDTO() {
     }
 
+
+
+    /**
+     * 分页排序
+     * @param pageSize 数量
+     */
     public SortPageDTO(Integer pageSize) {
         super(pageSize);
     }
 
+
+    /**
+     * 分页排序
+     * @param pageSize 数量
+     * @param sorts 排序
+     */
     public SortPageDTO(Integer pageSize, List<SortDTO> sorts) {
         super(pageSize);
         this.sorts = sorts;
     }
 
+
+    /**
+     * 分页排序
+     * @param pageSize 数量
+     * @param sorts 排序
+     */
     public SortPageDTO(Integer pageSize, SortDTO sorts) {
         super(pageSize);
         this.sorts = Collections.singletonList(sorts);
     }
 
+
+    /**
+     * 分页排序
+     * @param sorts 排序
+     */
     public SortPageDTO(List<SortDTO> sorts) {
         this.sorts = sorts;
     }
 
 
+    /**
+     * 分页排序
+     * @param pageIndex 页码
+     * @param pageSize 数量
+     */
     public SortPageDTO(Integer pageIndex, Integer pageSize) {
         super(pageIndex, pageSize);
     }
 
+
+    /**
+     * 分页排序
+     * @param pageIndex 页码
+     * @param pageSize 数量
+     * @param sorts 排序
+     */
     public SortPageDTO(Integer pageIndex, Integer pageSize, List<SortDTO> sorts) {
         super(pageIndex, pageSize);
         this.sorts = sorts;
     }
 
 
+    /**
+     * 分页排序
+     * @param pageIndex 页码
+     * @param pageSize 数量
+     * @param orderDesc 排序方式
+     * @param orderBy 排序字段
+     */
     public SortPageDTO(Integer pageIndex, Integer pageSize, Integer orderDesc, String... orderBy) {
         super(pageIndex, pageSize);
         this.sorts = Collections.singletonList(new SortDTO(orderDesc,  orderBy));
     }
 
+
+    /**
+     * 分页排序
+     * @param pageIndex 页码
+     * @param pageSize 数量
+     * @param sorts 排序
+     */
     public SortPageDTO(Integer pageIndex, Integer pageSize, SortDTO sorts) {
         super(pageIndex, pageSize);
         this.sorts = Collections.singletonList(sorts);

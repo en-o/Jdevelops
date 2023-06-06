@@ -28,20 +28,40 @@ public class JPageUtil {
     /**
      * SortDTO  转成 Sort
      *
-     * @param page page
+     * @param sort SortDTO
      * @return Sort
      */
-    public static Sort getSv2S(SortDTO page) {
-        if (page == null) {
+    public static Sort getSv2S(SortDTO sort) {
+        if (sort == null) {
             return Sort.by(Sort.Direction.DESC, "id");
         } else {
-            String[] orderBy = page.getOrderBy();
+            String[] orderBy = sort.getOrderBy();
             if (orderBy.length <= 0) {
                 orderBy = new String[1];
                 orderBy[0] = "id";
             }
-            return getOrders(page.getOrderDesc(), orderBy);
+            return getOrders(sort.getOrderDesc(), orderBy);
         }
+    }
+
+
+    /**
+     * SortDTO  转成 Sort
+     *
+     * @param sort SortDTO
+     * @return Sort
+     */
+    public static Sort getSv2S(List<SortDTO> sort) {
+        return sort.stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
     }
 
 

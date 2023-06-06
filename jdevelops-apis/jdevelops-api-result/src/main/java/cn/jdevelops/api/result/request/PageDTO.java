@@ -58,8 +58,8 @@ public class PageDTO implements Serializable {
         if(pageIndex<1){
             pageIndex = 1;
         }
-        // 分页查询在数据库中起始页也为0
-        this.pageIndex = pageIndex-1;
+        // 分页查询在数据库中起始页也为0 ,get处处理了-1
+        this.pageIndex = pageIndex;
         this.pageSize = pageSize;
     }
 
