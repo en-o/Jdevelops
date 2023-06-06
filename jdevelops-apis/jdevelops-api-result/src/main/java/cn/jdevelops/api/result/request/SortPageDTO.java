@@ -32,6 +32,11 @@ public class SortPageDTO extends PageDTO {
         this.sorts = sorts;
     }
 
+    public SortPageDTO(Integer pageSize, SortDTO sorts) {
+        super(pageSize);
+        this.sorts = Collections.singletonList(sorts);
+    }
+
     public SortPageDTO(List<SortDTO> sorts) {
         this.sorts = sorts;
     }
@@ -44,6 +49,17 @@ public class SortPageDTO extends PageDTO {
     public SortPageDTO(Integer pageIndex, Integer pageSize, List<SortDTO> sorts) {
         super(pageIndex, pageSize);
         this.sorts = sorts;
+    }
+
+
+    public SortPageDTO(Integer pageIndex, Integer pageSize, String orderBy, Integer orderDesc) {
+        super(pageIndex, pageSize);
+        this.sorts = Collections.singletonList(new SortDTO(orderBy, orderDesc));
+    }
+
+    public SortPageDTO(Integer pageIndex, Integer pageSize, SortDTO sorts) {
+        super(pageIndex, pageSize);
+        this.sorts = Collections.singletonList(sorts);
     }
 
 

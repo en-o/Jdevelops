@@ -39,4 +39,32 @@ public class SortPageDTOTest extends TestCase {
         assertEquals("0", sortPageDTO.getSorts().get(1).getOrderDesc().toString());
     }
 
+
+    public void testSortPageDTO() {
+        SortPageDTO sortPageDTO = new SortPageDTO(1,2, new SortDTO());
+        assertEquals((1-1)+"", sortPageDTO.getPageIndex().toString());
+        assertEquals("2", sortPageDTO.getPageSize().toString());
+        assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
+        assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+    }
+
+
+    public void testSortPageDTO2() {
+        SortPageDTO sortPageDTO = new SortPageDTO(2, new SortDTO());
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("2", sortPageDTO.getPageSize().toString());
+        assertEquals("id", sortPageDTO.getSorts().get(0).getOrderBy());
+        assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+    }
+
+
+    public void testSortPageDTO3() {
+        SortPageDTO sortPageDTO = new SortPageDTO(1,2, "name",0);
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("2", sortPageDTO.getPageSize().toString());
+        assertEquals("name", sortPageDTO.getSorts().get(0).getOrderBy());
+        assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+    }
+
+
 }
