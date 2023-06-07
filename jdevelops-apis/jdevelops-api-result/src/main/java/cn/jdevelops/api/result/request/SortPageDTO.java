@@ -4,6 +4,7 @@ package cn.jdevelops.api.result.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,8 +17,12 @@ import java.util.List;
 @Schema(description = "公共分页参数")
 public class SortPageDTO extends PageDTO {
 
-
+    /**
+     * 范围：[1-5]
+     * 排序
+     */
     @Valid
+    @Size(min = 1,max = 5)
     List<SortDTO> sorts;
 
     public SortPageDTO() {
