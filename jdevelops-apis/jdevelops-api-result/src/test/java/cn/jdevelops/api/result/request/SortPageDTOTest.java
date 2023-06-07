@@ -73,4 +73,27 @@ public class SortPageDTOTest extends TestCase {
     }
 
 
+
+    public void testSortPageDef() {
+        SortPageDTO sortPageDTO = new SortPageDTO();
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("20", sortPageDTO.getPageSize().toString());
+        assertEquals("[id]",Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+
+        sortPageDTO = new SortPageDTO().settingDefOrderBy("name");
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("20", sortPageDTO.getPageSize().toString());
+        assertEquals("[name]",Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+
+
+        sortPageDTO = new SortPageDTO().settingDefOrderBy(0, "name");
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("20", sortPageDTO.getPageSize().toString());
+        assertEquals("[name]",Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+    }
+
+
 }

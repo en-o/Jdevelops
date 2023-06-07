@@ -130,6 +130,24 @@ public class SortPageDTO extends PageDTO {
     }
 
 
+    /**
+     * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
+     * @param orderBy 排序字段 （默认排序方式为倒叙）
+     */
+    public SortPageDTO settingDefOrderBy(String... orderBy){
+        this.sorts = Collections.singletonList(new SortDTO(orderBy));
+        return this;
+    }
+
+    /**
+     * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
+     * @param orderDesc   排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy 排序字段
+     */
+    public SortPageDTO settingDefOrderBy(Integer orderDesc, String... orderBy){
+        this.sorts = Collections.singletonList(new SortDTO(orderDesc, orderBy));
+        return this;
+    }
 
 
     @Override
