@@ -7,6 +7,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Arrays;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -22,20 +23,18 @@ public class ValidatorPageSortTest {
     private Validator validator;
     private SortDTO sortDTO;
     private PageDTO pageDTO;
+    private SortPageDTO sortPageDTO;
 
 
     @Before
     public void init() {
         sortDTO = new SortDTO();
         pageDTO = new PageDTO();
+        sortPageDTO = new SortPageDTO();
         // 获取验证器
         // 创建 Validator
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-
-
-
-
 
     }
 
@@ -139,5 +138,38 @@ public class ValidatorPageSortTest {
         violations  = validator.validate(pageDTO);
         assertEquals(1,violations.size());
 
+    }
+
+
+    @Test
+    public void testSortPageDTO() {
+        // 非0表示存在异常
+        Set<ConstraintViolation<SortPageDTO>> violations  = validator.validate(sortPageDTO);
+        assertEquals(0,violations.size());
+
+        sortPageDTO.setPageIndex(1);
+        violations  = validator.validate(sortPageDTO);
+        assertEquals(0,violations.size());
+
+        sortPageDTO.setSorts(Arrays.asList(new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")));
+        violations  = validator.validate(sortPageDTO);
+        assertEquals(0,violations.size());
+
+        sortPageDTO.setPageIndex(600);
+        violations  = validator.validate(sortPageDTO);
+        assertEquals(1,violations.size());
+
+        sortPageDTO.setSorts(Arrays.asList(new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")
+                ,new SortDTO("id")));
+        violations  = validator.validate(sortPageDTO);
+        // 上面有个错了所以这里是2
+        assertEquals(2,violations.size());
     }
 }
