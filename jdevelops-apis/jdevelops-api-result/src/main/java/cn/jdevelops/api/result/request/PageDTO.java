@@ -45,7 +45,7 @@ public class PageDTO implements Serializable {
      */
     public PageDTO(Integer pageSize) {
         // 分页查询在数据库中起始页也为0
-        this.pageIndex = 0;
+        this.pageIndex = 1;
         this.pageSize = pageSize;
     }
 
