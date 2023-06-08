@@ -5,7 +5,9 @@ import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -539,6 +541,38 @@ public final class SpecificationUtil<T> {
             }
             return restriction;
         };
+    }
+
+
+    /**
+     * 判断数据库字段为时间格式的大于(=)小于(=)
+     * ps: 测试过人大金仓(timestamp)和mysql(timestamp)
+     * @param lessThan true <= , false >=
+     * @param key 实体字段
+     * @param value 值 （java.util.Date）
+     *  <p>
+     *               DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+     *                Date vale =  DateTime.parse(value,formatter).toDate();
+     *  </p>
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     */
+    private <D> Specification<T>  selectTimeLessGreater(boolean lessThan,
+                                                    String key,
+                                                    Date value,
+                                                    boolean ignoreNull) {
+        if (ignoreNull && Objects.isNull(value)) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> {
+                Expression<Date> function = builder.function("to_date",
+                        Date.class, root.get(key));
+                if(lessThan){
+                    return builder.lessThanOrEqualTo(function, value);
+                }else {
+                    return builder.greaterThanOrEqualTo(function, value);
+                }
+            };
+        }
     }
 
 
