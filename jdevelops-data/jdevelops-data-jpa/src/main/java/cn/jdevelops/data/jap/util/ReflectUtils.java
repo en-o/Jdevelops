@@ -2,6 +2,8 @@ package cn.jdevelops.data.jap.util;
 
 
 
+import cn.jdevelops.data.jap.exception.JpaException;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -172,7 +174,37 @@ public class ReflectUtils {
         return map;
     }
 
-
+    /**
+     * 根据字段名称获取对象的属性
+     *
+     * @param fieldName fieldName
+     * @param target    目标
+     * @return Object
+     */
+    public static Object getFieldValueByName(String fieldName, Object target) {
+        try {
+            Object value = null;
+            Class tempClass = target.getClass();
+            // 死循环获取所有 自己和继承
+            while (tempClass != null) {
+                try {
+                    Field field = tempClass.getDeclaredField(fieldName);
+                    field.setAccessible(true);
+                    value = field.get(target);
+                    break;
+                } catch (Exception e) {
+                    //得到父类,然后赋给自己
+                    tempClass = tempClass.getSuperclass();
+                }
+            }
+            if(value == null){
+                throw new JpaException("获取字段的值失败");
+            }
+            return value;
+        } catch (Exception e) {
+            throw new JpaException("获取字段的值失败", e);
+        }
+    }
 
 
 }

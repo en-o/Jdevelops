@@ -7,8 +7,6 @@ import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.criteria.Restrictions;
 import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
-import cn.jdevelops.data.jap.exception.JpaException;
-
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -21,37 +19,6 @@ import java.util.Objects;
  */
 public class JpaUtils {
 
-    /**
-     * 根据字段名称获取对象的属性
-     *
-     * @param fieldName fieldName
-     * @param target    目标
-     * @return Object
-     */
-    public static Object getFieldValueByName(String fieldName, Object target) {
-        try {
-            Object value = null;
-            Class tempClass = target.getClass();
-            // 死循环获取所有 自己和继承
-            while (tempClass != null) {
-                try {
-                    Field field = tempClass.getDeclaredField(fieldName);
-                    field.setAccessible(true);
-                    value = field.get(target);
-                    break;
-                } catch (Exception e) {
-                    //得到父类,然后赋给自己
-                    tempClass = tempClass.getSuperclass();
-                }
-            }
-            if(value == null){
-                throw new JpaException("获取字段的值失败");
-            }
-            return value;
-        } catch (Exception e) {
-            throw new JpaException("获取字段的值失败", e);
-        }
-    }
 
 
     /**
