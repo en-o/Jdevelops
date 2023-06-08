@@ -545,39 +545,37 @@ public final class SpecificationUtil<T> {
      * @param annotation JpaSelectOperator 注解
      * @param fieldName  字段名
      * @param fieldValue 字段值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
      * @return SimpleExpression
      */
     public Specification<T> specification(JpaSelectOperator annotation,
                                           String fieldName,
-                                          Object fieldValue,
-                                          boolean ignoreNull) {
+                                          Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
-                return notEq(fieldName, fieldValue, ignoreNull);
+                return notEq(fieldName, fieldValue, annotation.ignoreNull());
             case LIKE:
-                return like(fieldName, String.valueOf(fieldValue), ignoreNull);
+                return like(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
             case NOTLIKE:
-                return notLike(fieldName, String.valueOf(fieldValue), ignoreNull);
+                return notLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
             case LLIKE:
-                return lLike(fieldName, String.valueOf(fieldValue), ignoreNull);
+                return lLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
             case RLIKE:
-                return rLike(fieldName, String.valueOf(fieldValue), ignoreNull);
+                return rLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
             case LT:
-                return lt(fieldName, (Integer) fieldValue, ignoreNull);
+                return lt(fieldName, (Integer) fieldValue, annotation.ignoreNull());
             case GT:
-                return gt(fieldName, (Integer) fieldValue, ignoreNull);
+                return gt(fieldName, (Integer) fieldValue, annotation.ignoreNull());
             case LTE:
-                return le(fieldName, (Integer) fieldValue, ignoreNull);
+                return le(fieldName, (Integer) fieldValue, annotation.ignoreNull());
             case GTE:
-                return ge(fieldName, (Integer) fieldValue, ignoreNull);
+                return ge(fieldName, (Integer) fieldValue, annotation.ignoreNull());
             case ISNULL:
                 return isNull(fieldName);
             case ISNOTNULL:
                 return isNotNull(fieldName);
             case EQ:
             default:
-                return eq(fieldName, fieldValue, ignoreNull);
+                return eq(fieldName, fieldValue, annotation.ignoreNull());
         }
     }
 
