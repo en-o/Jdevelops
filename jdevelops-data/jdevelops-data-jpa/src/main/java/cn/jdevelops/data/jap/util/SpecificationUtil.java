@@ -70,7 +70,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> eq(String key, Object value, boolean ignoreNull) {
@@ -87,7 +87,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
@@ -103,7 +103,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> notEq(String key, Object value, boolean ignoreNull) {
@@ -119,7 +119,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
@@ -135,7 +135,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> gt(String key, Integer value, boolean ignoreNull) {
@@ -151,7 +151,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> gt(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
@@ -167,7 +167,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> ge(String key, Integer value, boolean ignoreNull) {
@@ -183,7 +183,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> ge(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
@@ -199,7 +199,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> lt(String key, Integer value, boolean ignoreNull) {
@@ -215,7 +215,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> lt(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
@@ -231,7 +231,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> le(String key, Integer value, boolean ignoreNull) {
@@ -248,7 +248,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> le(ColumnSFunction<T, ?> fn, Integer value, boolean ignoreNull) {
@@ -288,7 +288,7 @@ public final class SpecificationUtil<T> {
      * @param key        键 (实体字段非数据库字段)
      * @param v1         值1
      * @param v2         值2
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> between(String key, String v1, String v2, boolean ignoreNull) {
@@ -307,7 +307,7 @@ public final class SpecificationUtil<T> {
      * @param fn        实体字段
      * @param v1         值1
      * @param v2         值2
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
@@ -326,7 +326,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> like(String key, String value, boolean ignoreNull) {
@@ -343,7 +343,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
@@ -361,7 +361,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> lLike(String key, String value, boolean ignoreNull) {
@@ -379,7 +379,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
@@ -391,13 +391,16 @@ public final class SpecificationUtil<T> {
     }
 
 
+
+
+
     /**
      * 右模糊
      * %xxx
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> rLike(String key, String value, boolean ignoreNull) {
@@ -415,7 +418,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
@@ -431,7 +434,7 @@ public final class SpecificationUtil<T> {
      *
      * @param key        键 (实体字段非数据库字段)
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> notLike(String key, String value, boolean ignoreNull) {
@@ -447,7 +450,7 @@ public final class SpecificationUtil<T> {
      *
      * @param fn        实体字段
      * @param value      值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return Specification
      */
     public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
