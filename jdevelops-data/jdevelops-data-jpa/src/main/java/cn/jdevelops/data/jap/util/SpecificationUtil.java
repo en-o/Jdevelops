@@ -540,6 +540,15 @@ public final class SpecificationUtil<T> {
 
 
     /**
+     * 获取一个 空的  Specification 对应，用于 else无选择时使用
+     * @return Specification
+     */
+    public Specification<T> specification() {
+       return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+    }
+
+
+    /**
      * 根据注解组装  jpa动态查询
      *
      * @param annotation JpaSelectOperator 注解
