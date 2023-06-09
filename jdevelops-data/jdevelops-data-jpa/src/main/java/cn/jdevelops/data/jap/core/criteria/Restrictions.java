@@ -20,7 +20,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull) {
@@ -36,14 +36,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression eq(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.EQ);
+        return eq(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -51,7 +48,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull) {
@@ -66,14 +63,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression ne(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.NE);
+        return ne(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -82,7 +76,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull) {
@@ -99,14 +93,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T>  SimpleExpression like(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isaBoolean(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LIKE);
+        return like(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -115,7 +106,7 @@ public class Restrictions {
      *
      * @param fieldName  字段名
      * @param value      字段值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull) {
@@ -131,14 +122,11 @@ public class Restrictions {
      *
      * @param fieldName  字段名
      * @param value      字段值
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T>  SimpleExpression notLike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isaBoolean(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.NOTLIKE);
+        return notLike(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -148,7 +136,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull) {
@@ -165,14 +153,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression llike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isaBoolean(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LLIKE);
+        return llike(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
 
@@ -182,7 +167,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull) {
@@ -199,14 +184,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression rlike(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isaBoolean(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.RLIKE);
+        return rlike(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
 
@@ -215,7 +197,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull) {
@@ -230,14 +212,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression gt(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.GT);
+        return gt(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -245,7 +224,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull) {
@@ -260,14 +239,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression lt(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LT);
+        return lt(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -275,7 +251,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
@@ -290,14 +266,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression gte(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.GTE);
+        return gte(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -305,7 +278,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
@@ -320,14 +293,11 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
     public static <T> SimpleExpression lte(ColumnSFunction<T, ?> fieldName, Object value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isNull(value)) {
-            return null;
-        }
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), value, ExpandCriterion.Operator.LTE);
+        return lte(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
     /**
@@ -361,7 +331,7 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
@@ -383,21 +353,12 @@ public class Restrictions {
      *
      * @param fieldName  实体字段名
      * @param value      value
-     * @param ignoreNull true 空值不做查询，false 不忽略空
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
     public static <T> LogicalExpression in(ColumnSFunction<T, ?> fieldName, Collection value, boolean ignoreNull) {
-        if (ignoreNull && IObjects.isaBoolean(value)) {
-            return null;
-        }
-        SimpleExpression[] ses = new SimpleExpression[value.size()];
-        int i = 0;
-        for (Object obj : value) {
-            ses[i] = new SimpleExpression(ColumnUtil.getFieldName(fieldName), obj, ExpandCriterion.Operator.EQ);
-            i++;
-        }
-        return new LogicalExpression(ses, ExpandCriterion.Operator.OR);
+        return in(ColumnUtil.getFieldName(fieldName), value, ignoreNull);
     }
 
 
@@ -419,7 +380,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression isNull(ColumnSFunction<T, ?> fieldName) {
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), ExpandCriterion.Operator.ISNULL);
+        return isNull(ColumnUtil.getFieldName(fieldName));
     }
 
     /**
@@ -440,6 +401,26 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static <T> SimpleExpression isNotNull(ColumnSFunction<T, ?> fieldName) {
-        return new SimpleExpression(ColumnUtil.getFieldName(fieldName), ExpandCriterion.Operator.ISNOTNULL);
+        return isNull(ColumnUtil.getFieldName(fieldName));
     }
+
+
+
+
+
+    /**
+     * 范围查询[x,y]
+     *
+     * @param fieldName  实体字段名
+     * @param value      value {value: 1,2}
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @return SimpleExpression
+     */
+    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull) {
+        if (ignoreNull && IObjects.isNull(value)) {
+            return null;
+        }
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.BETWEEN);
+    }
+
 }

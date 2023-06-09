@@ -1,5 +1,6 @@
 package cn.jdevelops.data.jap.util;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ReflectUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
@@ -8,6 +9,10 @@ import cn.jdevelops.data.jap.core.criteria.Restrictions;
 import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -100,6 +105,17 @@ public class JpaUtils {
     public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
                                                            String fieldName,
                                                            Object fieldValue) {
+
+        if(annotation.sqType().isInstance(Date.class) && fieldValue instanceof String){
+            // 创建 SimpleDateFormat 对象，指定日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                // 将字符串解析为 Date 对象
+                fieldValue = sdf.parse(fieldValue.toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         switch (annotation.operator()) {
             case NE:
                 return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull());
@@ -123,6 +139,9 @@ public class JpaUtils {
                 return Restrictions.isNull(fieldName);
             case ISNOTNULL:
                 return Restrictions.isNotNull(fieldName);
+            case BETWEEN:
+                // 值以逗号隔开
+                return Restrictions.between(fieldName,fieldValue.toString().trim(),annotation.ignoreNull());
             case EQ:
             default:
                 return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull());

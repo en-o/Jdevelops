@@ -40,6 +40,13 @@ public @interface JpaSelectOperator {
      */
     String fieldName() default "";
 
+
+    /**
+     * 字段在sql中的类型，用于时间函数查询时（vo写的string 但数据库是时间类型查询出错的问题，格式只能为ymdmss） 一般时间就写长城 Date.class就行了
+     */
+    Class<?> sqlType() default String.class;
+
+
     /**
      * sql 连接符 (JpaUtils方法用)
      * <pre>

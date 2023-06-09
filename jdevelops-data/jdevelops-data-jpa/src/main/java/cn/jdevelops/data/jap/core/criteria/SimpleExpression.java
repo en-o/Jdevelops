@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.core.criteria;
 
 import javax.persistence.criteria.*;
+import java.util.Date;
 
 /**
  * sql 表达式
@@ -59,6 +60,11 @@ public class SimpleExpression implements ExpandCriterion {
         } else {
             expression = root.get(fieldName);
         }
+        Expression<Date> function = null;
+        if (value instanceof Date) {
+            function = builder.function("to_date",
+                    Date.class, root.get(fieldName));
+        }
 
         switch (operator) {
             case EQ:
@@ -74,17 +80,24 @@ public class SimpleExpression implements ExpandCriterion {
             case RLIKE:
                 return builder.like(expression, value + "%");
             case LT:
-                return builder.lessThan(expression, (Comparable) value);
+                return builder.lessThan(function!=null?function:expression, (Comparable) value);
             case GT:
-                return builder.greaterThan(expression, (Comparable) value);
+                return builder.greaterThan(function!=null?function:expression, (Comparable) value);
             case LTE:
-                return builder.lessThanOrEqualTo(expression, (Comparable) value);
+                return builder.lessThanOrEqualTo(function!=null?function:expression, (Comparable) value);
             case GTE:
-                return builder.greaterThanOrEqualTo(expression, (Comparable) value);
+                return builder.greaterThanOrEqualTo(function!=null?function:expression, (Comparable) value);
             case ISNULL:
                 return builder.isNull(expression);
             case ISNOTNULL:
                 return builder.isNotNull(expression);
+            case BETWEEN:
+                String[] split = value.toString().split(",");
+                if (split.length == 2) {
+                    return builder.between(expression, split[0], split[1]);
+                } else {
+                    return null;
+                }
             default:
                 return null;
         }
