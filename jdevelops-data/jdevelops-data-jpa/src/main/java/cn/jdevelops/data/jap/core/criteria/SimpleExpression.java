@@ -80,13 +80,29 @@ public class SimpleExpression implements ExpandCriterion {
             case RLIKE:
                 return builder.like(expression, value + "%");
             case LT:
-                return builder.lessThan(function!=null?function:expression, (Comparable) value);
+                if (function != null) {
+                    return builder.lessThan(expression, (Date) value);
+                } else {
+                    return builder.lessThan(expression, (Comparable) value);
+                }
             case GT:
-                return builder.greaterThan(function!=null?function:expression, (Comparable) value);
+                if (function != null) {
+                    return builder.greaterThan(expression, (Date) value);
+                } else {
+                    return builder.greaterThan(expression, (Comparable) value);
+                }
             case LTE:
-                return builder.lessThanOrEqualTo(function!=null?function:expression, (Comparable) value);
+                if (function != null) {
+                    return builder.lessThanOrEqualTo(expression, (Date) value);
+                } else {
+                    return builder.lessThanOrEqualTo(expression, (Comparable) value);
+                }
             case GTE:
-                return builder.greaterThanOrEqualTo(function!=null?function:expression, (Comparable) value);
+                if (function != null) {
+                    return builder.greaterThanOrEqualTo(expression, (Date) value);
+                } else {
+                    return builder.greaterThanOrEqualTo(expression, (Comparable) value);
+                }
             case ISNULL:
                 return builder.isNull(expression);
             case ISNOTNULL:
