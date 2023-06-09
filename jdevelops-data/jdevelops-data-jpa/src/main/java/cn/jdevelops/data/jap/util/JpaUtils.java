@@ -104,7 +104,7 @@ public class JpaUtils {
                                                            String fieldName,
                                                            Object fieldValue) {
 
-        if(annotation.sqType().isInstance(Date.class) && fieldValue instanceof String){
+        if(annotation.sqlType().isInstance(Date.class) && fieldValue instanceof String){
             // 创建 SimpleDateFormat 对象，指定日期格式
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
