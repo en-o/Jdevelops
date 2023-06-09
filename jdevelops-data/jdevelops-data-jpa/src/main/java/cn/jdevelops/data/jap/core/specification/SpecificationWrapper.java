@@ -777,15 +777,6 @@ public class SpecificationWrapper<B> {
      * 主方法，处理器
      */
     public SpecificationWrapper<B> handle(ColumnSFunction<B, ?> selectKey, Consumer<Path> action) {
-        Path<?> path;
-        String fieldName = ColumnUtil.getFieldName(selectKey);
-        if (fieldName.contains(SEPARATOR)) {
-            String[] arr = fieldName.split("\\" + SEPARATOR);
-            path = this.leftJoin(arr[0]).get(arr[1]);
-        } else {
-            path = this.root.get(fieldName);
-        }
-        action.accept(path);
-        return this;
+        return handle(ColumnUtil.getFieldName(selectKey),action);
     }
 }
