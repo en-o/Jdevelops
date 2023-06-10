@@ -15,9 +15,10 @@ import java.util.function.Consumer;
 
 /**
  * Specification 包装类
- *  valueNotNull: false不添加值等于空的条件
- *  selectKey: 条件的key
- *  value: 条件的值
+ * valueNotNull: false不添加值等于空的条件
+ * selectKey: 条件的key
+ * value: 条件的值
+ *
  * @author tan
  * @date 2023-03-24 10:59:17
  */
@@ -760,6 +761,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 主方法，处理器
+     *
+     * @param selectKey key
+     * @param action    Consumer<Path>
      */
     public SpecificationWrapper<B> handle(String selectKey, Consumer<Path> action) {
         Path<?> path;
@@ -777,6 +781,6 @@ public class SpecificationWrapper<B> {
      * 主方法，处理器
      */
     public SpecificationWrapper<B> handle(ColumnSFunction<B, ?> selectKey, Consumer<Path> action) {
-        return handle(ColumnUtil.getFieldName(selectKey),action);
+        return handle(ColumnUtil.getFieldName(selectKey), action);
     }
 }

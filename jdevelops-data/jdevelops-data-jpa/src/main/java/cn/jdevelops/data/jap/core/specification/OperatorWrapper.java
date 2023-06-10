@@ -77,24 +77,9 @@ public class OperatorWrapper {
     }
 
     public OperatorWrapper(SpecificationWrapper<?> specWrapper, JpaSelectWrapperOperator query,  String selectKey,  Object selectValue) {
-        // 自定义字段名
-//        wrapper.setSelectKey
-//        ();
-
         if(!IObjects.isBlank(query.fieldName())){
             selectKey  = query.fieldName();
         }
-        // 需要处理时间
-//        if(!query.function().equals(SpecBuilderDateFun.NULL)){
-//            SpecBuilderDateFun function = query.function();
-//            Expression<String> dataTimeKey = specWrapper.getBuilder().function(function.getName()
-//                    , String.class, specWrapper.getRoot().get(selectKey)
-//                    , specWrapper.getBuilder().literal(function.getSqlFormat()));
-//
-//            this.selectKey = dataTimeKey.getAlias();
-//        }else {
-//
-//        }
         this.selectKey = selectKey;
         this.specWrapper = specWrapper;
         this.selectValue = selectValue;

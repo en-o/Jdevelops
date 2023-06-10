@@ -38,10 +38,4 @@ public @interface JpaSelectWrapperOperator {
      */
     String fieldName() default "";
 
-
-    /**
-     * 如果数据库的字段类型是时间格式就需要处理一样要不然会GG
-     */
-    SpecBuilderDateFun function() default SpecBuilderDateFun.NULL;
-
 }
