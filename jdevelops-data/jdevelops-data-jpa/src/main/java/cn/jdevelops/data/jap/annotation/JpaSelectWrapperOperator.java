@@ -2,6 +2,7 @@ package cn.jdevelops.data.jap.annotation;
 
 
 import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
 import java.lang.annotation.*;
 
@@ -36,5 +37,11 @@ public @interface JpaSelectWrapperOperator {
      * 空时默认使用属性字段
      */
     String fieldName() default "";
+
+
+    /**
+     * 如果数据库的字段类型是时间格式就需要处理一样要不然会GG
+     */
+    SpecBuilderDateFun function() default SpecBuilderDateFun.NULL;
 
 }

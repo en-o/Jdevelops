@@ -106,6 +106,7 @@ public class Specifications {
                 }
                 // 获取组装条件
                 JpaSelectWrapperOperator query = field.getAnnotation(JpaSelectWrapperOperator.class);
+
                 if (IObjects.nonNull(query)) {
                     // 空值就不查了
                     if(query.ignoreNull()&&IObjects.isNull(fieldValue)){
@@ -118,20 +119,13 @@ public class Specifications {
                         operator = SQLOperatorWrapper.IN;
                     }
                     // 构造 OperatorWrapper
-                    OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
-                    // 自定义字段名
-                    if(!IObjects.isBlank(query.fieldName())){
-                        wrapper.setSelectKey(query.fieldName());
-                    }else {
-                        wrapper.setSelectKey(fieldName);
-                        operator.consumer().accept(wrapper);
-                    }
+                    OperatorWrapper wrapper = new OperatorWrapper(e, query,fieldName,fieldValue);
+                    operator.consumer().accept(wrapper);
                 }else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
                     // 构造 OperatorWrapper // 空值就不查了
                     if(IObjects.nonNull(fieldValue)){
-                        OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
-                        wrapper.setSelectKey(fieldName);
+                        OperatorWrapper wrapper = new OperatorWrapper(e,fieldName,fieldValue);
                         SQLOperatorWrapper.EQ.consumer().accept(wrapper);
                     }
                 }

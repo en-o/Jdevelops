@@ -1,6 +1,12 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
+import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
+import cn.jdevelops.data.jap.util.IObjects;
+
+import javax.persistence.criteria.Expression;
+
 /**
  * 查询查找包装
  * @author tan
@@ -43,6 +49,7 @@ public class OperatorWrapper {
         this.specWrapper = specWrapper;
     }
 
+
     public String getSelectKey() {
         return selectKey;
     }
@@ -69,7 +76,26 @@ public class OperatorWrapper {
         this.selectValue = selectValue;
     }
 
-    public OperatorWrapper(SpecificationWrapper<?> specWrapper,  Object selectValue) {
+    public OperatorWrapper(SpecificationWrapper<?> specWrapper, JpaSelectWrapperOperator query,  String selectKey,  Object selectValue) {
+        // 自定义字段名
+//        wrapper.setSelectKey
+//        ();
+
+        if(!IObjects.isBlank(query.fieldName())){
+            selectKey  = query.fieldName();
+        }
+        // 需要处理时间
+//        if(!query.function().equals(SpecBuilderDateFun.NULL)){
+//            SpecBuilderDateFun function = query.function();
+//            Expression<String> dataTimeKey = specWrapper.getBuilder().function(function.getName()
+//                    , String.class, specWrapper.getRoot().get(selectKey)
+//                    , specWrapper.getBuilder().literal(function.getSqlFormat()));
+//
+//            this.selectKey = dataTimeKey.getAlias();
+//        }else {
+//
+//        }
+        this.selectKey = selectKey;
         this.specWrapper = specWrapper;
         this.selectValue = selectValue;
     }
@@ -79,7 +105,7 @@ public class OperatorWrapper {
     public String toString() {
         return "OperatorWrapper{" +
                 "specWrapper=" + specWrapper +
-                ", selectKey='" + selectKey + '\'' +
+                ", selectKey=" + selectKey +
                 ", selectValue=" + selectValue +
                 '}';
     }
