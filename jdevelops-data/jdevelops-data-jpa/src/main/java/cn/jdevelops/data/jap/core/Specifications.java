@@ -127,11 +127,13 @@ public class Specifications {
                         operator.consumer().accept(wrapper);
                     }
                 }else {
-                    // 没有注解所有属性都要处理成条件
-                    // 构造 OperatorWrapper
-                    OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
-                    wrapper.setSelectKey(fieldName);
-                    SQLOperatorWrapper.EQ.consumer().accept(wrapper);
+                    // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
+                    // 构造 OperatorWrapper // 空值就不查了
+                    if(IObjects.nonNull(fieldValue)){
+                        OperatorWrapper wrapper = new OperatorWrapper(e,fieldValue);
+                        wrapper.setSelectKey(fieldName);
+                        SQLOperatorWrapper.EQ.consumer().accept(wrapper);
+                    }
                 }
 
             }

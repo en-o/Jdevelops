@@ -40,7 +40,14 @@ public enum SQLOperatorWrapper{
     /* in */
     IN(e -> e.getSpecWrapper().in(e.getSelectKey(), (Collection<?>) e.getSelectValue())),
     /* not in  */
-    NOT_IN(e -> e.getSpecWrapper().notIn(e.getSelectKey(), (Collection<?>) e.getSelectValue()))
+    NOT_IN(e -> e.getSpecWrapper().notIn(e.getSelectKey(), (Collection<?>) e.getSelectValue())),
+
+    /* BETWEEN,值必须是逗号隔开的的字符串  */
+    BETWEEN(e -> {
+        String string = e.getSelectValue().toString();
+        String[] split = string.split(",");
+        e.getSpecWrapper().between(e.getSelectKey(),split[0],split[1]);
+    }),
     ;
 
 
