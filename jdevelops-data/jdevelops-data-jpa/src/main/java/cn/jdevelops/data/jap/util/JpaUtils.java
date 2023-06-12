@@ -1,12 +1,19 @@
 package cn.jdevelops.data.jap.util;
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.criteria.Restrictions;
 import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +28,6 @@ import java.util.Objects;
  * @date 2020/6/28 23:16
  */
 public class JpaUtils {
-
 
 
     /**
@@ -104,7 +110,7 @@ public class JpaUtils {
                                                            String fieldName,
                                                            Object fieldValue) {
 
-        if(annotation.sqlType().isInstance(Date.class) && fieldValue instanceof String){
+        if (annotation.sqlType().isInstance(Date.class) && fieldValue instanceof String) {
             // 创建 SimpleDateFormat 对象，指定日期格式
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
@@ -139,11 +145,53 @@ public class JpaUtils {
                 return Restrictions.isNotNull(fieldName);
             case BETWEEN:
                 // 值以逗号隔开
-                return Restrictions.between(fieldName,fieldValue.toString().trim(),annotation.ignoreNull());
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull());
             case EQ:
             default:
                 return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull());
         }
     }
 
+
+    /**
+     * 处理时间格式的key
+     *
+     * @param function  SpecBuilderDateFun
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B> B
+     */
+    public static  <B>  Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                       Root<B> root,
+                                       CriteriaBuilder builder,
+                                       String selectKey) {
+        return builder
+                .function(function.getName()
+                        , String.class
+                        , root.get(selectKey)
+                        , builder.literal(function.getSqlFormat()));
+    }
+
+
+    /**
+     * 处理时间格式的key
+     *
+     * @param function  SpecBuilderDateFun
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B> B
+     */
+    public static  <B>  Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                                              Root<B> root,
+                                                              CriteriaBuilder builder,
+                                                              ColumnSFunction<B, ?> selectKey) {
+
+        return builder
+                .function(function.getName()
+                        , String.class
+                        , root.get(ColumnUtil.getFieldName(selectKey))
+                        , builder.literal(function.getSqlFormat()));
+    }
 }
