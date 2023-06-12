@@ -2,10 +2,8 @@ package cn.jdevelops.data.jap.core.specification;
 
 
 import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
-import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 import cn.jdevelops.data.jap.util.IObjects;
 
-import javax.persistence.criteria.Expression;
 
 /**
  * 查询查找包装
