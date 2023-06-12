@@ -2,6 +2,7 @@ package cn.jdevelops.data.jap.core.specification;
 
 
 import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
+import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.util.IObjects;
 
 

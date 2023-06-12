@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.annotation;
 
 
+import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
 
 import java.lang.annotation.*;
@@ -36,5 +37,16 @@ public @interface JpaSelectWrapperOperator {
      * 空时默认使用属性字段
      */
     String fieldName() default "";
+
+
+
+    /**
+     * sql 连接符
+     * <pre>
+     *  根据注解内容进行条件拼接，例如： 用的AND 则： where 字段 = 值 and 字段 = 值
+     * </pre>
+     *
+     */
+    SQLConnect connect() default SQLConnect.AND;
 
 }

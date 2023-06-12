@@ -5,6 +5,7 @@ import cn.jdevelops.data.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
 import cn.jdevelops.data.jap.core.specification.OperatorWrapper;
 import cn.jdevelops.data.jap.core.specification.SpecificationWrapper;
+import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
 import cn.jdevelops.data.jap.util.IObjects;
 import org.springframework.data.jpa.domain.Specification;
@@ -108,30 +109,48 @@ public class Specifications {
                 JpaSelectWrapperOperator wrapperOperator = field.getAnnotation(JpaSelectWrapperOperator.class);
 
                 if (IObjects.nonNull(wrapperOperator)) {
+
                     // 空值就不查了
                     if(wrapperOperator.ignoreNull()&&IObjects.isNull(fieldValue)){
                         continue;
                     }
-                    // 默认 eq，且空值也查询
-                    SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator)? wrapperOperator.operatorWrapper():SQLOperatorWrapper.EQ;
-                    // 如果 值等于 list 则 使用 In 操作
-                    if(fieldValue instanceof Collection){
-                        operator = SQLOperatorWrapper.IN;
+
+                    if(wrapperOperator.connect().equals(SQLConnect.AND)){
+                         e.and(and -> {
+                             // 默认 eq，且空值也查询
+                             SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
+                             // 如果 值等于 list 则 使用 In 操作
+                             if (fieldValue instanceof Collection) {
+                                 operator = SQLOperatorWrapper.IN;
+                             }
+                             OperatorWrapper operatorWrapper = new OperatorWrapper(and, wrapperOperator, fieldName, fieldValue);
+                             operator.consumer().accept(operatorWrapper);
+                             action.accept(and);
+                        });
+                    }else {
+                        e.or(or -> {
+                            // 默认 eq，且空值也查询
+                            SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
+                            // 如果 值等于 list 则 使用 In 操作
+                            if (fieldValue instanceof Collection) {
+                                operator = SQLOperatorWrapper.IN;
+                            }
+                            OperatorWrapper operatorWrapper = new OperatorWrapper(or, wrapperOperator, fieldName, fieldValue);
+                            operator.consumer().accept(operatorWrapper);
+                            action.accept(or);
+                        });
                     }
-                    // 构造 OperatorWrapper
-                    OperatorWrapper wrapper = new OperatorWrapper(e, wrapperOperator,fieldName,fieldValue);
-                    operator.consumer().accept(wrapper);
+
                 }else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
                     // 构造 OperatorWrapper // 空值就不查了
                     if(IObjects.nonNull(fieldValue)){
                         OperatorWrapper wrapper = new OperatorWrapper(e,fieldName,fieldValue);
                         SQLOperatorWrapper.EQ.consumer().accept(wrapper);
+                        action.accept(e);
                     }
                 }
-
             }
-            action.accept(e);
         });
     }
 
