@@ -3,6 +3,7 @@ package cn.jdevelops.data.jap.core.specification;
 
 import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.api.result.util.bean.ColumnUtil;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static cn.jdevelops.data.jap.util.JpaUtils.functionTimeFormat;
 
 /**
  * Specification 包装类
@@ -91,17 +94,40 @@ public class SpecificationWrapper<B> {
 
 
     /**
-     * 查询非空值
+     * 查询空值  ColumnSFunction
+     *
+     * @param valueNotNull false: 值为空就不查了
      */
     public SpecificationWrapper<B> isNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey) {
         return valueNotNull ? handle(selectKey, this::isNull) : this;
     }
 
     /**
+     * 查询空值 ColumnSFunction  SpecBuilderDateFun
+     *
+     * @param valueNotNull false: 值为空就不查了
+     */
+    public SpecificationWrapper<B> isNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.isNull(functionTimeFormat(function, root, builder, selectKey))) : this;
+    }
+
+
+    /**
      * 查询空值
+     *
+     * @param valueNotNull false: 值为空就不查了
      */
     public SpecificationWrapper<B> isNull(boolean valueNotNull, String selectKey) {
         return valueNotNull ? handle(selectKey, this::isNull) : this;
+    }
+
+    /**
+     * 查询空值
+     *
+     * @param valueNotNull false: 值为空就不查了
+     */
+    public SpecificationWrapper<B> isNull(boolean valueNotNull, String selectKey, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.isNull(functionTimeFormat(function, root, builder, selectKey))) : this;
     }
 
     /**
@@ -114,9 +140,24 @@ public class SpecificationWrapper<B> {
     /**
      * 查询空值
      */
+    public SpecificationWrapper<B> isNull(String selectKey, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.isNull(functionTimeFormat(function, root, builder, selectKey)));
+    }
+
+    /**
+     * 查询空值
+     */
     public SpecificationWrapper<B> isNull(ColumnSFunction<B, ?> selectKey) {
         return handle(selectKey, this::isNull);
     }
+
+    /**
+     * 查询空值
+     */
+    public SpecificationWrapper<B> isNull(ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.isNull(functionTimeFormat(function, root, builder, selectKey)));
+    }
+
 
     /**
      * 查询空值
@@ -125,7 +166,6 @@ public class SpecificationWrapper<B> {
         predicates.add(builder.isNull(x));
         return this;
     }
-
 
     // ================================== 查询非空值 ==================================
 
@@ -140,10 +180,24 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
+    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.isNotNull(functionTimeFormat(function, root, builder, selectKey))) : this;
+    }
+
+
+    /**
+     * 查询非空值
+     */
     public SpecificationWrapper<B> isNotNull(boolean valueNotNull, String selectKey) {
         return valueNotNull ? handle(selectKey, this::isNotNull) : this;
     }
 
+    /**
+     * 查询非空值
+     */
+    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, String selectKey, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.isNotNull(functionTimeFormat(function, root, builder, selectKey))) : this;
+    }
 
     /**
      * 查询非空值
@@ -155,10 +209,23 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
+    public SpecificationWrapper<B> isNotNull(String selectKey, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.isNotNull(functionTimeFormat(function, root, builder, selectKey)));
+    }
+
+    /**
+     * 查询非空值
+     */
     public SpecificationWrapper<B> isNotNull(ColumnSFunction<B, ?> selectKey) {
         return handle(selectKey, this::isNotNull);
     }
 
+    /**
+     * 查询非空值
+     */
+    public SpecificationWrapper<B> isNotNull(ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.isNotNull(functionTimeFormat(function, root, builder, selectKey)));
+    }
 
     /**
      * 查询非空值
@@ -181,8 +248,22 @@ public class SpecificationWrapper<B> {
     /**
      * 等于
      */
+    public SpecificationWrapper<B> eq(boolean valueNotNull, String selectKey, Object value, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.eq(functionTimeFormat(function, root, builder, selectKey), value)) : this;
+    }
+
+    /**
+     * 等于
+     */
     public SpecificationWrapper<B> eq(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
         return valueNotNull ? this.eq(selectKey, value) : this;
+    }
+
+    /**
+     * 等于
+     */
+    public SpecificationWrapper<B> eq(boolean valueNotNull, ColumnSFunction<B, ?>  selectKey, Object value, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.eq(functionTimeFormat(function, root, builder, selectKey), value)) : this;
     }
 
     /**
@@ -192,12 +273,30 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.eq(e, value));
     }
 
+
+    /**
+     * 等于
+     */
+    public SpecificationWrapper<B> eq( ColumnSFunction<B, ?>  selectKey, Object value, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.eq(functionTimeFormat(function, root, builder, selectKey), value));
+    }
+
+
+
     /**
      * 等于
      */
     public SpecificationWrapper<B> eq(String selectKey, Object value) {
         return handle(selectKey, e -> this.eq(e, value));
     }
+
+    /**
+     * 等于
+     */
+    public SpecificationWrapper<B> eq( String  selectKey, Object value, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.eq(functionTimeFormat(function, root, builder, selectKey), value));
+    }
+
 
     /**
      * 等于
@@ -217,11 +316,27 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? this.ne(selectKey, value) : this;
     }
 
+
+    /**
+     * 不等于
+     */
+    public SpecificationWrapper<B> ne(boolean valueNotNull, String  selectKey, Object value, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.ne(functionTimeFormat(function, root, builder, selectKey), value)) : this;
+    }
+
     /**
      * 不等于
      */
     public SpecificationWrapper<B> ne(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
         return valueNotNull ? this.ne(selectKey, value) : this;
+    }
+
+
+    /**
+     * 不等于
+     */
+    public SpecificationWrapper<B> ne(boolean valueNotNull, ColumnSFunction<B, ?>  selectKey, Object value, SpecBuilderDateFun function) {
+        return valueNotNull ? handle(selectKey, e -> this.ne(functionTimeFormat(function, root, builder, selectKey), value)) : this;
     }
 
     /**
@@ -234,8 +349,22 @@ public class SpecificationWrapper<B> {
     /**
      * 不等于
      */
+    public SpecificationWrapper<B> ne(String selectKey, Object value, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.ne(functionTimeFormat(function, root, builder, selectKey), value));
+    }
+
+    /**
+     * 不等于
+     */
     public SpecificationWrapper<B> ne(ColumnSFunction<B, ?> selectKey, Object value) {
         return handle(selectKey, e -> this.ne(e, value));
+    }
+
+    /**
+     * 不等于
+     */
+    public SpecificationWrapper<B> ne(ColumnSFunction<B, ?> selectKey, Object value, SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.ne(functionTimeFormat(function, root, builder, selectKey), value));
     }
 
     /**
@@ -246,6 +375,7 @@ public class SpecificationWrapper<B> {
         return this;
     }
 
+
     // ================================== 模糊查询 ==================================
 
     /**
@@ -255,6 +385,27 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? this.like(selectKey, value) : this;
     }
 
+    /**
+     * 模糊查询的基方法，不要使用因为没有百分号
+     */
+    public SpecificationWrapper<B> like(boolean valueNotNull, String  selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.like(functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * 模糊查询的基方法，不要使用因为没有百分号
+     */
+    public SpecificationWrapper<B> like(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
+        return valueNotNull ?  handle(selectKey, e -> this.like(e, value)): this;
+    }
+
+
+    /**
+     * 模糊查询的基方法，不要使用因为没有百分号
+     */
+    public SpecificationWrapper<B> like(boolean valueNotNull, ColumnSFunction<B, ?>  selectKey, String value, SpecBuilderDateFun function) {
+        return this.like(functionTimeFormat(function, root, builder, selectKey), value);
+    }
 
     /**
      * 模糊查询的基方法，不要使用因为没有百分号
@@ -263,11 +414,27 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.like(e, value));
     }
 
+
+    /**
+     * 模糊查询的基方法，不要使用因为没有百分号
+     */
+    public SpecificationWrapper<B> like(String  selectKey, String value, SpecBuilderDateFun function) {
+        return this.like(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+
     /**
      * 模糊查询的基方法，不要使用因为没有百分号
      */
     public SpecificationWrapper<B> like(ColumnSFunction<B, ?> selectKey, String value) {
         return handle(selectKey, e -> this.like(e, value));
+    }
+
+    /**
+     * 模糊查询的基方法，不要使用因为没有百分号
+     */
+    public SpecificationWrapper<B> like(ColumnSFunction<B, ?>  selectKey, String value, SpecBuilderDateFun function) {
+        return this.like(functionTimeFormat(function, root, builder, selectKey), value);
     }
 
     /**
@@ -288,8 +455,22 @@ public class SpecificationWrapper<B> {
     /**
      * 右模糊（值为空不查询）
      */
+    public SpecificationWrapper<B> rlike(boolean valueNotNull, String selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.rlike(selectKey, value, function) : this;
+    }
+
+    /**
+     * 右模糊（值为空不查询）
+     */
     public SpecificationWrapper<B> rlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.rlike(selectKey, value) : this;
+    }
+
+    /**
+     * 右模糊（值为空不查询）
+     */
+    public SpecificationWrapper<B> rlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.rlike(selectKey, value, function) : this;
     }
 
     /**
@@ -303,8 +484,25 @@ public class SpecificationWrapper<B> {
     /**
      * 右模糊（value%）
      */
+    public SpecificationWrapper<B> rlike(String selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, value + "%", function);
+        return this;
+    }
+
+
+    /**
+     * 右模糊（value%）
+     */
     public SpecificationWrapper<B> rlike(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, value + "%");
+        return this;
+    }
+
+    /**
+     * 右模糊（value%）
+     */
+    public SpecificationWrapper<B> rlike(ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, value + "%", function);
         return this;
     }
 
@@ -318,9 +516,25 @@ public class SpecificationWrapper<B> {
     /**
      * 左模糊（值为空不查询）
      */
+    public SpecificationWrapper<B> llike(boolean valueNotNull, String selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.llike(selectKey, value, function) : this;
+    }
+
+    /**
+     * 左模糊（值为空不查询）
+     */
     public SpecificationWrapper<B> llike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.llike(selectKey, value) : this;
     }
+
+
+    /**
+     * 左模糊（值为空不查询）
+     */
+    public SpecificationWrapper<B> llike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.llike(selectKey, value, function) : this;
+    }
+
 
     /**
      * 左模糊（%value）
@@ -333,8 +547,24 @@ public class SpecificationWrapper<B> {
     /**
      * 左模糊（%value）
      */
+    public SpecificationWrapper<B> llike(String selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, "%" + value, function);
+        return this;
+    }
+
+    /**
+     * 左模糊（%value）
+     */
     public SpecificationWrapper<B> llike(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, "%" + value);
+        return this;
+    }
+
+    /**
+     * 左模糊（%value）
+     */
+    public SpecificationWrapper<B> llike(ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, "%" + value, function);
         return this;
     }
 
@@ -348,8 +578,21 @@ public class SpecificationWrapper<B> {
     /**
      * 全模糊（值为空不查询）
      */
+    public SpecificationWrapper<B> likes(boolean valueNotNull, String selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.likes(selectKey, value, function) : this;
+    }
+
+    /**
+     * 全模糊（值为空不查询）
+     */
     public SpecificationWrapper<B> likes(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.likes(selectKey, value) : this;
+    }
+    /**
+     * 全模糊（值为空不查询）
+     */
+    public SpecificationWrapper<B> likes(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.likes(selectKey, value,function) : this;
     }
 
     /**
@@ -363,8 +606,24 @@ public class SpecificationWrapper<B> {
     /**
      * 全模糊（%value%）
      */
+    public SpecificationWrapper<B> likes(String selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, "%" + value + "%", function);
+        return this;
+    }
+
+    /**
+     * 全模糊（%value%）
+     */
     public SpecificationWrapper<B> likes(ColumnSFunction<B, ?> selectKey, String value) {
         this.like(selectKey, "%" + value + "%");
+        return this;
+    }
+
+    /**
+     * 全模糊（%value%）
+     */
+    public SpecificationWrapper<B> likes(ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        this.like(selectKey, "%" + value + "%", function);
         return this;
     }
 
@@ -379,9 +638,24 @@ public class SpecificationWrapper<B> {
     /**
      * not like
      */
+    public SpecificationWrapper<B> nlike(boolean valueNotNull, String selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.nlike(selectKey, value,function) : this;
+    }
+
+    /**
+     * not like
+     */
     public SpecificationWrapper<B> nlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
         return valueNotNull ? this.nlike(selectKey, value) : this;
     }
+
+    /**
+     * not like
+     */
+    public SpecificationWrapper<B> nlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.nlike(selectKey, value,function) : this;
+    }
+
 
     /**
      * not like
@@ -390,12 +664,30 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.nlike(e, value));
     }
 
+
+    /**
+     * not like
+     */
+    public SpecificationWrapper<B> nlike(String selectKey, String value,SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.nlike(functionTimeFormat(function, root, builder, selectKey), value));
+    }
+
+
     /**
      * not like
      */
     public SpecificationWrapper<B> nlike(ColumnSFunction<B, ?> selectKey, String value) {
         return handle(selectKey, e -> this.nlike(e, value));
     }
+
+
+    /**
+     * not like
+     */
+    public SpecificationWrapper<B> nlike(ColumnSFunction<B, ?> selectKey, String value,SpecBuilderDateFun function) {
+        return handle(selectKey, e -> this.nlike(functionTimeFormat(function, root, builder, selectKey), value));
+    }
+
 
     /**
      * not like
@@ -418,10 +710,23 @@ public class SpecificationWrapper<B> {
     /**
      * 大于等于
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, String selectKey, Y value,SpecBuilderDateFun function) {
+        return valueNotNull ? this.ge(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * 大于等于
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.ge(selectKey, value) : this;
     }
 
+    /**
+     * 大于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value,SpecBuilderDateFun function) {
+        return valueNotNull ? this.ge(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
 
     /**
      * 大于等于
@@ -430,6 +735,12 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.ge(e, value));
     }
 
+    /**
+     * 大于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(String selectKey, Y value,SpecBuilderDateFun function) {
+        return  this.ge(e -> functionTimeFormat(function, root, builder, selectKey), value);
+    }
 
     /**
      * 大于等于
@@ -441,8 +752,14 @@ public class SpecificationWrapper<B> {
     /**
      * 大于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(ColumnSFunction<B, ?>  selectKey, Y value,SpecBuilderDateFun function) {
+        return  this.ge(e -> functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+    /**
+     * 大于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThanOrEqualTo(path, value));
         return this;
     }
@@ -456,6 +773,14 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? this.le(selectKey, value) : this;
     }
 
+
+    /**
+     * 小于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, String selectKey, Y value,SpecBuilderDateFun function) {
+        return  valueNotNull ? this.le(e -> functionTimeFormat(function, root, builder, selectKey), value): this;
+    }
+
     /**
      * 小于等于
      */
@@ -463,6 +788,12 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? this.le(selectKey, value) : this;
     }
 
+    /**
+     * 小于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, ColumnSFunction<B, ?>  selectKey, Y value,SpecBuilderDateFun function) {
+        return  valueNotNull ? this.le(e -> functionTimeFormat(function, root, builder, selectKey), value): this;
+    }
 
     /**
      * 小于等于
@@ -471,6 +802,12 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.le(e, value));
     }
 
+    /**
+     * 小于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(String  selectKey, Y value,SpecBuilderDateFun function) {
+        return  this.le(e -> functionTimeFormat(function, root, builder, selectKey), value);
+    }
 
     /**
      * 小于等于
@@ -479,12 +816,18 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.le(e, value));
     }
 
+    /**
+     * 小于等于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(ColumnSFunction<B, ?>  selectKey, Y value,SpecBuilderDateFun function) {
+        return  this.le(e -> functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
 
     /**
      * 小于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThanOrEqualTo(path, value));
         return this;
     }
@@ -501,6 +844,13 @@ public class SpecificationWrapper<B> {
     /**
      * 大于
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, String selectKey, Y value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.gt(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * 大于
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.gt(selectKey, value) : this;
     }
@@ -508,8 +858,22 @@ public class SpecificationWrapper<B> {
     /**
      * 大于
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, ColumnSFunction<B, ?>  selectKey, Y value, SpecBuilderDateFun function) {
+        return valueNotNull ? this.gt(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * 大于
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(String selectKey, Y value) {
         return handle(selectKey, e -> this.gt(e, value));
+    }
+
+    /**
+     * 大于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(String  selectKey, Y value, SpecBuilderDateFun function) {
+        return this.gt(e -> functionTimeFormat(function, root, builder, selectKey), value);
     }
 
 
@@ -520,11 +884,18 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.gt(e, value));
     }
 
+
     /**
      * 大于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(ColumnSFunction<B, ?>  selectKey, Y value, SpecBuilderDateFun function) {
+        return this.gt(e -> functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+    /**
+     * 大于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThan(path, value));
         return this;
     }
@@ -541,6 +912,13 @@ public class SpecificationWrapper<B> {
     /**
      * 小于
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, String  selectKey, Y value, SpecBuilderDateFun function) {
+        return valueNotNull ?this.lt(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * 小于
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
         return valueNotNull ? this.lt(selectKey, value) : this;
     }
@@ -548,8 +926,23 @@ public class SpecificationWrapper<B> {
     /**
      * 小于
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value, SpecBuilderDateFun function) {
+        return valueNotNull ?this.lt(e -> functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+
+    /**
+     * 小于
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(String selectKey, Y value) {
         return handle(selectKey, e -> this.lt(e, value));
+    }
+
+    /**
+     * 小于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(String selectKey, Y value, SpecBuilderDateFun function) {
+        return this.lt(e -> functionTimeFormat(function, root, builder, selectKey), value) ;
     }
 
 
@@ -560,11 +953,18 @@ public class SpecificationWrapper<B> {
         return handle(selectKey, e -> this.lt(e, value));
     }
 
+
     /**
      * 小于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt( ColumnSFunction<B, ?> selectKey, Y value, SpecBuilderDateFun function) {
+        return this.lt(e -> functionTimeFormat(function, root, builder, selectKey), value) ;
+    }
+
+    /**
+     * 小于
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThan(path, value));
         return this;
     }
@@ -581,6 +981,14 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
+    public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, SpecBuilderDateFun function, Object... value) {
+        return valueNotNull ? in(functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+
+    /**
+     * in
+     */
     public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object... value) {
         return valueNotNull ? in(selectKey, value) : this;
     }
@@ -588,8 +996,23 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
+    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function, Object... value) {
+        return valueNotNull ? in(functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * in
+     */
     public SpecificationWrapper<B> in(String selectKey, Object... value) {
         return handle(selectKey, e -> this.in(e, value));
+    }
+
+
+    /**
+     * in
+     */
+    public SpecificationWrapper<B> in(String selectKey, SpecBuilderDateFun function, Object... value) {
+        return in(functionTimeFormat(function, root, builder, selectKey), value);
     }
 
     /**
@@ -602,8 +1025,24 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
+    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function, Object... value) {
+        return in(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+    /**
+     * in
+     */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Collection<?> value) {
         return valueNotNull ? in(selectKey, value) : this;
+    }
+
+
+
+    /**
+     * in
+     */
+    public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey,SpecBuilderDateFun function, Collection<?> value ) {
+        return  valueNotNull ? in(functionTimeFormat(function, root, builder, selectKey), value) : this;
     }
 
 
@@ -617,9 +1056,24 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
+    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey,SpecBuilderDateFun function, Collection<?> value ) {
+        return in(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+    /**
+     * in
+     */
     public SpecificationWrapper<B> in(String selectKey, Collection<?> value) {
         return this.in(selectKey, value.toArray());
     }
+
+    /**
+     * in
+     */
+    public SpecificationWrapper<B> in(String selectKey,SpecBuilderDateFun function, Collection<?> value ) {
+        return in(functionTimeFormat(function, root, builder, selectKey), value.toArray());
+    }
+
 
 
     /**
@@ -629,6 +1083,13 @@ public class SpecificationWrapper<B> {
         return this.in(selectKey, value.toArray());
     }
 
+
+    /**
+     * in
+     */
+    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function, Collection<?> value ) {
+        return in(functionTimeFormat(function, root, builder, selectKey), value.toArray());
+    }
 
     /**
      * in
@@ -647,11 +1108,28 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? notIn(selectKey, value) : this;
     }
 
+
+    /**
+     * not in
+     */
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Collection<?> value, SpecBuilderDateFun function) {
+        return valueNotNull ? notIn(functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+
     /**
      * not in
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return valueNotNull ? notIn(selectKey, value) : this;
+    }
+
+
+    /**
+     * not in
+     */
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value, SpecBuilderDateFun function) {
+        return valueNotNull ? notIn(functionTimeFormat(function, root, builder, selectKey), value) : this;
     }
 
     /**
@@ -664,6 +1142,14 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
+    public SpecificationWrapper<B> notIn(String selectKey, Collection<?> value, SpecBuilderDateFun function) {
+        return notIn(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+
+    /**
+     * not in
+     */
     public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Collection<?> value) {
         return handle(selectKey, e -> this.notIn(e, value.toArray()));
     }
@@ -671,8 +1157,23 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
+    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?>  selectKey, Collection<?> value, SpecBuilderDateFun function) {
+        return notIn(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+
+    /**
+     * not in
+     */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Object... value) {
         return valueNotNull ? notIn(selectKey, value) : this;
+    }
+
+    /**
+     * not in
+     */
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, SpecBuilderDateFun function, Object... value) {
+        return valueNotNull ? notIn(functionTimeFormat(function, root, builder, selectKey), value) : this;
     }
 
 
@@ -686,6 +1187,13 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
+    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function, Object... value) {
+        return valueNotNull ? notIn(functionTimeFormat(function, root, builder, selectKey), value) : this;
+    }
+
+    /**
+     * not in
+     */
     public SpecificationWrapper<B> notIn(String selectKey, Object... value) {
         return handle(selectKey, e -> this.notIn(e, value));
     }
@@ -693,8 +1201,22 @@ public class SpecificationWrapper<B> {
     /**
      * not in
      */
+    public SpecificationWrapper<B> notIn(String selectKey, SpecBuilderDateFun function, Object... value) {
+        return notIn(functionTimeFormat(function, root, builder, selectKey), value);
+    }
+
+    /**
+     * not in
+     */
     public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Object... value) {
         return handle(selectKey, e -> this.notIn(e, value));
+    }
+
+    /**
+     * not in
+     */
+    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, SpecBuilderDateFun function, Object... value) {
+        return notIn(functionTimeFormat(function, root, builder, selectKey), value);
     }
 
     /**
@@ -715,6 +1237,16 @@ public class SpecificationWrapper<B> {
         return valueNotNull ? between(selectKey, start, end) : this;
     }
 
+
+    /**
+     * 之间 包头包尾[闭区间]
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull, SpecBuilderDateFun function,
+                                                                             String selectKey, Y start, Y end) {
+        return valueNotNull ? between( e-> functionTimeFormat(function, root, builder, selectKey), start, end) : this;
+    }
+
+
     /**
      * 之间 包头包尾[闭区间]
      */
@@ -727,9 +1259,26 @@ public class SpecificationWrapper<B> {
     /**
      * 之间 包头包尾[闭区间]
      */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull, SpecBuilderDateFun function,
+                                                                             ColumnSFunction<B, ?> selectKey, Y start, Y end) {
+        return valueNotNull ? between( e-> functionTimeFormat(function, root, builder, selectKey), start, end) : this;
+    }
+
+    /**
+     * 之间 包头包尾[闭区间]
+     */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(String selectKey, Y start, Y end) {
         return handle(selectKey, e -> this.between(e, start, end));
     }
+
+    /**
+     * 之间 包头包尾[闭区间]
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(SpecBuilderDateFun function,
+                                                                             String selectKey, Y start, Y end) {
+        return between( e-> functionTimeFormat(function, root, builder, selectKey), start, end);
+    }
+
 
 
     /**
@@ -737,6 +1286,14 @@ public class SpecificationWrapper<B> {
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(ColumnSFunction<B, ?> selectKey, Y start, Y end) {
         return handle(selectKey, e -> this.between(e, start, end));
+    }
+
+    /**
+     * 之间 包头包尾[闭区间]
+     */
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(SpecBuilderDateFun function,
+                                                                             ColumnSFunction<B, ?> selectKey, Y start, Y end) {
+        return between( e-> functionTimeFormat(function, root, builder, selectKey), start, end);
     }
 
 
