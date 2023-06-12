@@ -2,7 +2,6 @@ package cn.jdevelops.data.jap.annotation;
 
 
 import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
-import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
 import java.lang.annotation.*;
 
@@ -28,7 +27,7 @@ public @interface JpaSelectWrapperOperator {
     SQLOperatorWrapper operatorWrapper() default SQLOperatorWrapper.EQ;
 
     /**
-     *  true 空值不做查询，false 不忽略空
+     *  true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      */
     boolean ignoreNull() default true;
 
