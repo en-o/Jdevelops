@@ -105,21 +105,21 @@ public class Specifications {
                     continue;
                 }
                 // 获取组装条件
-                JpaSelectWrapperOperator query = field.getAnnotation(JpaSelectWrapperOperator.class);
+                JpaSelectWrapperOperator wrapperOperator = field.getAnnotation(JpaSelectWrapperOperator.class);
 
-                if (IObjects.nonNull(query)) {
+                if (IObjects.nonNull(wrapperOperator)) {
                     // 空值就不查了
-                    if(query.ignoreNull()&&IObjects.isNull(fieldValue)){
+                    if(wrapperOperator.ignoreNull()&&IObjects.isNull(fieldValue)){
                         continue;
                     }
                     // 默认 eq，且空值也查询
-                    SQLOperatorWrapper operator = IObjects.nonNull(query)? query.operatorWrapper():SQLOperatorWrapper.EQ;
+                    SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator)? wrapperOperator.operatorWrapper():SQLOperatorWrapper.EQ;
                     // 如果 值等于 list 则 使用 In 操作
                     if(fieldValue instanceof Collection){
                         operator = SQLOperatorWrapper.IN;
                     }
                     // 构造 OperatorWrapper
-                    OperatorWrapper wrapper = new OperatorWrapper(e, query,fieldName,fieldValue);
+                    OperatorWrapper wrapper = new OperatorWrapper(e, wrapperOperator,fieldName,fieldValue);
                     operator.consumer().accept(wrapper);
                 }else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
