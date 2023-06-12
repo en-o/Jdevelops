@@ -66,7 +66,8 @@ public class JpaUtils {
     private static <T, B> JPAUtilExpandCriteria<T> getJpaUtilExpandCriteria(B bean) {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
-        for (Field field : fields) {
+        for (int i = 0, fieldsLength = fields.length; i < fieldsLength; i++) {
+            Field field = fields[i];
             String fieldName = field.getName();
             if ("serialVersionUID".equals(fieldName)) {
                 continue;

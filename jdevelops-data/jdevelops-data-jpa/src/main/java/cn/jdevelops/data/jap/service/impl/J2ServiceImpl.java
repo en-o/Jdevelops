@@ -13,6 +13,7 @@ import cn.jdevelops.data.jap.dao.JpaBasicsDao;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.page.JpaPageResult;
 import cn.jdevelops.data.jap.service.J2Service;
+import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JPageUtil;
 import cn.jdevelops.data.jap.util.JpaUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -128,13 +129,13 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
 
     @Override
     public Optional<B> findBeanOne(ColumnSFunction<B, ?> selectKey, Object value) {
-        Specification<B> where = Specifications.where(e -> e.eq(selectKey, value));
+        Specification<B> where = Specifications.where(e -> e.eq(true,ColumnUtil.getFieldName(selectKey), value));
         return commonDao.findOne(where);
     }
 
     @Override
     public List<B> findBeanList(ColumnSFunction<B, ?> selectKey, Object value) {
-        Specification<B> where = Specifications.where(e -> e.eq(selectKey, value));
+        Specification<B> where = Specifications.where(e -> e.eq(IObjects.nonNull(value),ColumnUtil.getFieldName(selectKey), value));
         return commonDao.findAll(where);
     }
 
