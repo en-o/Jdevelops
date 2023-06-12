@@ -36,9 +36,9 @@ public enum SQLOperatorWrapper {
     /* 小于等于 */
     LTE(e -> e.getSpecWrapper().le(true, e.getSelectKey(), e.getCompareValue())),
     /* 等于空值 */
-    ISNULL(e -> e.getSpecWrapper().isNull(true, e.getSelectKey())),
+    ISNULL(e -> e.getSpecWrapper().isNull( e.getSelectKey())),
     /* 空值 */
-    ISNOTNULL(e -> e.getSpecWrapper().isNull(true, e.getSelectKey())),
+    ISNOTNULL(e -> e.getSpecWrapper().isNull(e.getSelectKey())),
     /* in */
     IN(e -> e.getSpecWrapper().in(true, e.getSelectKey(), (Collection<?>) e.getSelectValue())),
     /* not in  */
