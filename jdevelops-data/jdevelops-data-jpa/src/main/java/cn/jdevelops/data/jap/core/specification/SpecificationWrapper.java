@@ -90,8 +90,8 @@ public class SpecificationWrapper<B> {
     /**
      * 查询空值
      */
-    public SpecificationWrapper<B> isNull(boolean valueNotNull, String selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNull) : this;
+    public SpecificationWrapper<B> isNull(String selectKey) {
+        return handle(selectKey, this::isNull);
     }
 
     /**
@@ -108,8 +108,8 @@ public class SpecificationWrapper<B> {
     /**
      * 查询非空值
      */
-    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, String selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNotNull) : this;
+    public SpecificationWrapper<B> isNotNull(String selectKey) {
+        return handle(selectKey, this::isNotNull);
     }
 
     /**
