@@ -1,7 +1,6 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

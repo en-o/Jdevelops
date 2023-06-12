@@ -53,7 +53,7 @@ public enum SQLOperatorWrapper {
     ;
 
 
-    private Consumer<OperatorWrapper> consumer;
+    private final Consumer<OperatorWrapper> consumer;
 
     SQLOperatorWrapper(Consumer<OperatorWrapper> consumer) {
         this.consumer = consumer;
