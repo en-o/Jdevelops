@@ -289,6 +289,33 @@ public final class SpecificationUtil<T> {
 
     /**
      * between
+     * v1 <= key <= v2
+     *
+     * @param key        键 (实体字段非数据库字段)
+     * @param v1v2         值(1,2) 英文逗号隔开
+     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @return Specification
+     */
+    public Specification<T> between(String key, String v1v2, boolean ignoreNull) {
+        String v1;
+        String v2;
+        if(v1v2.contains(",")){
+            String[] split = v1v2.split(",");
+            v1 = split[0];
+            v2 = split[1];
+        } else {
+            v2 = null;
+            v1 = null;
+        }
+        if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
+            return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        } else {
+            return (root, query, builder) -> builder.between(root.get(key), v1, v2);
+        }
+    }
+
+    /**
+     * between
      * v1 <= fn <= v2
      *
      * @param fn        实体字段
@@ -581,6 +608,8 @@ public final class SpecificationUtil<T> {
                 return le(fieldName, (Integer) fieldValue, annotation.ignoreNull());
             case GTE:
                 return ge(fieldName, (Integer) fieldValue, annotation.ignoreNull());
+            case BETWEEN:
+                return between(fieldName, String.valueOf(fieldValue),annotation.ignoreNull());
             case ISNULL:
                 return isNull(fieldName);
             case ISNOTNULL:
