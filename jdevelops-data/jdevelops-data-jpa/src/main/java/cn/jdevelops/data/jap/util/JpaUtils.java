@@ -176,8 +176,11 @@ public class JpaUtils {
 
 
     /**
-     * 处理时间格式的key
-     *
+     * 格式化时间数据的值为字符串
+     *  bean:  LocalDateTime
+     *  sql：  timestamp
+     *  e.g.  mysql： date_format(user0_.create_time, "SQL 的 时间类型")
+     *       pgssql： to_char(user0_.create_time, "SQL 的 时间类型")
      * @param function  SpecBuilderDateFun
      * @param root      Root
      * @param builder   CriteriaBuilder
@@ -194,5 +197,23 @@ public class JpaUtils {
                         , String.class
                         , root.get(ColumnUtil.getFieldName(selectKey))
                         , builder.literal(function.getSqlFormat()));
+    }
+
+
+    /**
+     *  sql  date函数 固定死的
+     *   e.g.   DATE ( user0_.create_time ) =?
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B> B
+     */
+    public static  <B>  Expression<Date> functionTime(Root<B> root,
+                                                              CriteriaBuilder builder,
+                                                              String selectKey) {
+        return builder
+                .function("date"
+                        , Date.class
+                        , root.get(selectKey));
     }
 }
