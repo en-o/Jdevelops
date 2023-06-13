@@ -1,4 +1,4 @@
-package cn.jdevelops.data.jap.entity;
+package cn.jdevelops.data.jap.entity.postgresql;
 
 import cn.jdevelops.data.jap.entity.audit.BaseFields;
 import org.hibernate.annotations.Comment;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 公共实体INT  (mysql)
+ * 公共实体INT  (postgresql)
  * @author tn
  * @version 1
  *
@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Access(AccessType.FIELD)
-public class JpaFields<T> extends BaseFields<T> {
+public class JpaPgFields<T> extends BaseFields<T> {
 
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
@@ -51,7 +51,7 @@ public class JpaFields<T> extends BaseFields<T> {
      * 表示该字段为修改时间字段，@LastModifiedDate在这个实体被update的时候，会自动为其赋值
      */
     @LastModifiedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP")
     @Access(AccessType.PROPERTY)
     @Comment("更新日期")
     @Override

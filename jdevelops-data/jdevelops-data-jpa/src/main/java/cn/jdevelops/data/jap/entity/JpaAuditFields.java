@@ -15,7 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 公共实体INT
+ * 公共实体INT (mysql)
  * @author tn
  * @version 1
  *
