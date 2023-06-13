@@ -1,12 +1,11 @@
 package cn.jdevelops.api.result.request;
 
+import cn.jdevelops.api.result.BeastValidatedTest;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -19,22 +18,17 @@ import static org.junit.Assert.assertEquals;
  * @version V1.0
  * @date 2023-06-06 21:51
  */
-public class ValidatorPageSortTest {
-    private Validator validator;
+public class ValidatorPageSortTest extends BeastValidatedTest {
     private SortDTO sortDTO;
     private PageDTO pageDTO;
     private SortPageDTO sortPageDTO;
 
 
     @Before
-    public void init() {
+    public void initBean() {
         sortDTO = new SortDTO();
         pageDTO = new PageDTO();
         sortPageDTO = new SortPageDTO();
-        // 获取验证器
-        // 创建 Validator
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
 
     }
 
@@ -42,43 +36,49 @@ public class ValidatorPageSortTest {
     @Test
     public void testOrderBySize() {
         // 非0表示存在异常
-        Set<ConstraintViolation<SortDTO>> violations  = validator.validate(sortDTO);
+        // 或者循环拿异常消息
+        Set<ConstraintViolation<SortDTO>> violations  = validate(sortDTO);
         assertEquals(0,violations.size());
 
         sortDTO.setOrderBy("i1","i2","i3","i4","i5");
-        violations  = validator.validate(sortDTO);
+        violations  = validate(sortDTO);
         assertEquals(0,violations.size());
 
-
         sortDTO.setOrderBy("i1","i2","i3","i4","i5","i6");
-        violations  = validator.validate(sortDTO);
-        assertEquals(1,violations.size());
+        violations  = validate(sortDTO);
+        violations.forEach(violation -> {
+            assertEquals("排序字段超出了阈值",violation.getMessage());
+        });
     }
 
 
     @Test
     public void testOrderDesc() {
         // 非0表示存在异常
-        Set<ConstraintViolation<SortDTO>> violations  = validator.validate(sortDTO);
+        Set<ConstraintViolation<SortDTO>> violations  = validate(sortDTO);
         assertEquals(0,violations.size());
 
         sortDTO.setOrderDesc(1);
-        violations  = validator.validate(sortDTO);
+        violations  = validate(sortDTO);
         assertEquals(0,violations.size());
 
 
         sortDTO.setOrderDesc(0);
-        violations  = validator.validate(sortDTO);
+        violations  = validate(sortDTO);
         assertEquals(0,violations.size());
 
 
         sortDTO.setOrderDesc(-1);
-        violations  = validator.validate(sortDTO);
-        assertEquals(1,violations.size());
+        violations  = validate(sortDTO);
+        violations.forEach(violation -> {
+            assertEquals("请正确选择排序方式",violation.getMessage());
+        });
 
         sortDTO.setOrderDesc(2);
-        violations  = validator.validate(sortDTO);
-        assertEquals(1,violations.size());
+        violations  = validate(sortDTO);
+        violations.forEach(violation -> {
+            assertEquals("请正确选择排序方式",violation.getMessage());
+        });
     }
 
 
@@ -86,28 +86,30 @@ public class ValidatorPageSortTest {
     @Test
     public void testPageIndex() {
         // 非0表示存在异常
-        Set<ConstraintViolation<PageDTO>> violations  = validator.validate(pageDTO);
+        Set<ConstraintViolation<PageDTO>> violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
         pageDTO.setPageIndex(500);
-        violations  = validator.validate(pageDTO);
+        violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
 
         pageDTO.setPageIndex(1);
-        violations  = validator.validate(pageDTO);
+        violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
 
         pageDTO.setPageIndex(0);
-        violations  = validator.validate(pageDTO);
-        assertEquals(1,violations.size());
-
+        violations  = validate(pageDTO);
+        violations.forEach(violation -> {
+            assertEquals("页码超出了阈值",violation.getMessage());
+        });
 
         pageDTO.setPageIndex(501);
-        violations  = validator.validate(pageDTO);
-        assertEquals(1,violations.size());
-
+        violations  = validate(pageDTO);
+        violations.forEach(violation -> {
+            assertEquals("页码超出了阈值",violation.getMessage());
+        });
     }
 
 
@@ -116,51 +118,55 @@ public class ValidatorPageSortTest {
     @Test
     public void testPageSize() {
         // 非0表示存在异常
-        Set<ConstraintViolation<PageDTO>> violations  = validator.validate(pageDTO);
+        Set<ConstraintViolation<PageDTO>> violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
         pageDTO.setPageSize(100);
-        violations  = validator.validate(pageDTO);
+        violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
 
         pageDTO.setPageSize(1);
-        violations  = validator.validate(pageDTO);
+        violations  = validate(pageDTO);
         assertEquals(0,violations.size());
 
 
         pageDTO.setPageSize(0);
-        violations  = validator.validate(pageDTO);
-        assertEquals(1,violations.size());
-
+        violations  = validate(pageDTO);
+        violations.forEach(violation -> {
+            assertEquals("每页数量超出了阈值",violation.getMessage());
+        });
 
         pageDTO.setPageSize(101);
-        violations  = validator.validate(pageDTO);
-        assertEquals(1,violations.size());
-
+        violations  = validate(pageDTO);
+        violations.forEach(violation -> {
+            assertEquals("每页数量超出了阈值",violation.getMessage());
+        });
     }
 
 
     @Test
     public void testSortPageDTO() {
         // 非0表示存在异常
-        Set<ConstraintViolation<SortPageDTO>> violations  = validator.validate(sortPageDTO);
+        Set<ConstraintViolation<SortPageDTO>> violations  = validate(sortPageDTO);
         assertEquals(0,violations.size());
 
         sortPageDTO.setPageIndex(1);
-        violations  = validator.validate(sortPageDTO);
+        violations  = validate(sortPageDTO);
         assertEquals(0,violations.size());
 
         sortPageDTO.setSorts(Arrays.asList(new SortDTO("id")
                 ,new SortDTO("id")
                 ,new SortDTO("id")
                 ,new SortDTO("id")));
-        violations  = validator.validate(sortPageDTO);
+        violations  = validate(sortPageDTO);
         assertEquals(0,violations.size());
 
         sortPageDTO.setPageIndex(600);
-        violations  = validator.validate(sortPageDTO);
-        assertEquals(1,violations.size());
+        violations  = validate(sortPageDTO);
+        violations.forEach(violation -> {
+            assertEquals("页码超出了阈值",violation.getMessage());
+        });
 
         sortPageDTO.setSorts(Arrays.asList(new SortDTO("id")
                 ,new SortDTO("id")
@@ -168,8 +174,11 @@ public class ValidatorPageSortTest {
                 ,new SortDTO("id")
                 ,new SortDTO("id")
                 ,new SortDTO("id")));
-        violations  = validator.validate(sortPageDTO);
+        violations  = validate(sortPageDTO);
         // 上面有个错了所以这里是2
         assertEquals(2,violations.size());
+        ArrayList<ConstraintViolation<SortPageDTO>> list = new ArrayList<>(violations);
+        assertEquals("个数必须在1和5之间",list.get(0).getMessage());
+        assertEquals("页码超出了阈值",list.get(1).getMessage());
     }
 }
