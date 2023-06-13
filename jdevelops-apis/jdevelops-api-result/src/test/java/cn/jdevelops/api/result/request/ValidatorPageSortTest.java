@@ -70,15 +70,11 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
 
         sortDTO.setOrderDesc(-1);
         violations  = validate(sortDTO);
-        violations.forEach(violation -> {
-            assertEquals("请正确选择排序方式",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("请正确选择排序方式",violation.getMessage()));
 
         sortDTO.setOrderDesc(2);
         violations  = validate(sortDTO);
-        violations.forEach(violation -> {
-            assertEquals("请正确选择排序方式",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("请正确选择排序方式",violation.getMessage()));
     }
 
 
@@ -101,15 +97,11 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
 
         pageDTO.setPageIndex(0);
         violations  = validate(pageDTO);
-        violations.forEach(violation -> {
-            assertEquals("页码超出了阈值",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
 
         pageDTO.setPageIndex(501);
         violations  = validate(pageDTO);
-        violations.forEach(violation -> {
-            assertEquals("页码超出了阈值",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
     }
 
 
@@ -133,15 +125,11 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
 
         pageDTO.setPageSize(0);
         violations  = validate(pageDTO);
-        violations.forEach(violation -> {
-            assertEquals("每页数量超出了阈值",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("每页数量超出了阈值",violation.getMessage()));
 
         pageDTO.setPageSize(101);
         violations  = validate(pageDTO);
-        violations.forEach(violation -> {
-            assertEquals("每页数量超出了阈值",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("每页数量超出了阈值",violation.getMessage()));
     }
 
 
@@ -164,9 +152,7 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
 
         sortPageDTO.setPageIndex(600);
         violations  = validate(sortPageDTO);
-        violations.forEach(violation -> {
-            assertEquals("页码超出了阈值",violation.getMessage());
-        });
+        violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
 
         sortPageDTO.setSorts(Arrays.asList(new SortDTO("id")
                 ,new SortDTO("id")

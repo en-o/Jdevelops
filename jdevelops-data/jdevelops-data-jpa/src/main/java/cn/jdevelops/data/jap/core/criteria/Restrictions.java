@@ -1,12 +1,8 @@
 package cn.jdevelops.data.jap.core.criteria;
 
-import cn.jdevelops.api.result.util.bean.ColumnSFunction;
-import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 import cn.jdevelops.data.jap.util.IObjects;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;

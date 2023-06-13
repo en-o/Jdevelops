@@ -2,7 +2,6 @@ package cn.jdevelops.api.result;
 
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator;
 
 import javax.validation.*;

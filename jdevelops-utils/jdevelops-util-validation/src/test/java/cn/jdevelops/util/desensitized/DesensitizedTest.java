@@ -1,15 +1,11 @@
 package cn.jdevelops.util.desensitized;
 
 
-import cn.jdevelops.uitl.desensitized.serializer.CoverSerialize;
 import cn.jdevelops.util.model.ValidationResultBean;
-import cn.jdevelops.util.model.ValidationUserBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
-import javax.validation.ConstraintViolation;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,6 +1,5 @@
 package cn.jdevelops.util.validation;
 
-import cn.jdevelops.uitl.validation.util.StrUtil;
 import cn.jdevelops.util.BeastValidatedTest;
 import cn.jdevelops.util.model.ValidationUserBean;
 import org.junit.Test;
@@ -25,14 +24,10 @@ public class ValidationTest extends BeastValidatedTest {
         assertEquals(0, validates.size());
 
         validationUserBean.setIphone("13422381");
-        validates.forEach(validate -> {
-            assertEquals("请输入正确的手机号码格式", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("请输入正确的手机号码格式", validate.getMessage()));
 
         validationUserBean.setIphone("134223811411");
-        validates.forEach(validate -> {
-            assertEquals("请输入正确的手机号码格式", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("请输入正确的手机号码格式", validate.getMessage()));
     }
 
 
@@ -53,9 +48,7 @@ public class ValidationTest extends BeastValidatedTest {
         });
 
         validationUserBean.setIdCard("200330196512016158xa");
-        validates.forEach(validate -> {
-            assertEquals("请输入正确的身份证号", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("请输入正确的身份证号", validate.getMessage()));
     }
 
 
@@ -75,14 +68,10 @@ public class ValidationTest extends BeastValidatedTest {
 
 
         validationUserBean.setCname("贪");
-        validates.forEach(validate -> {
-            assertEquals("请输入正确的中文姓名", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("请输入正确的中文姓名", validate.getMessage()));
 
         validationUserBean.setCname("贪闲贪闲贪闲贪闲贪闲贪闲贪闲贪闲贪");
-        validates.forEach(validate -> {
-            assertEquals("请输入正确的中文姓名", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("请输入正确的中文姓名", validate.getMessage()));
     }
     @Test
     public void dateTimeTest() {
@@ -94,9 +83,7 @@ public class ValidationTest extends BeastValidatedTest {
 
         validationUserBean.setDateTime("2023-06-13");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("时间格式不合法，正确格式为yyyy-MM-dd HH:mm:ss", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("时间格式不合法，正确格式为yyyy-MM-dd HH:mm:ss", validate.getMessage()));
 
     }
 
@@ -115,44 +102,30 @@ public class ValidationTest extends BeastValidatedTest {
 
         validationUserBean.setPassword("aaaaa1");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
         validationUserBean.setPassword("1AAAAA");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
         validationUserBean.setPassword("1Ad*12");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
         validationUserBean.setPassword("!@#$%^");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
         validationUserBean.setPassword("$%^&*?");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
         validationUserBean.setPassword("Ax1$a");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
         validationUserBean.setPassword("Ax1$aa11111111111");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("密码不合法，密码必须有6-16个字符，必须包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符(!@#$%^&*?)", validate.getMessage()));
 
     }
 
@@ -181,29 +154,19 @@ public class ValidationTest extends BeastValidatedTest {
 
         validationUserBean.setAccount("TATATA贪闲_12ATATA");
         validates = validate(validationUserBean);
-        validates.forEach(validate -> {
-            assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage()));
 
 
         validationUserBean.setAccount("TANN");
-        validates.forEach(validate -> {
-            assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage()));
 
         validationUserBean.setAccount("TATATATA_ATATATAA");
-        validates.forEach(validate -> {
-            assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage()));
 
         validationUserBean.setAccount("TATATATA_-2ATATA");
-        validates.forEach(validate -> {
-            assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage()));
 
         validationUserBean.setAccount("TATATATA&#2ATATA");
-        validates.forEach(validate -> {
-            assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage());
-        });
+        validates.forEach(validate -> assertEquals("账号不合法，请输入以字母开头，允许字母数字下划线组合，且不少于5个不大于16个", validate.getMessage()));
     }
 }

@@ -153,7 +153,7 @@ public class Specifications {
                         SQLOperatorWrapper.EQ.consumer().accept(wrapper);
                     }
                 }
-            };
+            }
             action.accept(e);
         });
     }
