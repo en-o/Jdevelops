@@ -3,6 +3,7 @@ package cn.jdevelops.data.jap.annotation;
 
 import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SQLOperator;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
 import java.lang.annotation.*;
 
@@ -42,9 +43,10 @@ public @interface JpaSelectOperator {
 
 
     /**
-     * 字段在sql中的类型，用于时间函数查询时（vo写的string 但数据库是时间类型查询出错的问题，格式只能为ymdmss） 一般时间就写长城 Date.class就行了
+     * 数据库字段是时间格式，实体字段也是时间格式的时候，构建查询会出错，所以这里要用函数格式化下
+     * 默认不用，要用的时候自己按照枚举选择需要使用的格式化条件
      */
-    Class<?> sqlType() default String.class;
+    SpecBuilderDateFun function() default SpecBuilderDateFun.NULL;
 
 
     /**

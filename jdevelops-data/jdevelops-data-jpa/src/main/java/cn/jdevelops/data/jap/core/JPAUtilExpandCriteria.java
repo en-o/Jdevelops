@@ -33,7 +33,7 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
                 predicatesAnd.add(c.toPredicate(root, query,builder));
             }
             // 将所有条件用 and 联合起来
-            if (predicatesAnd.size() > 0) {
+            if (!predicatesAnd.isEmpty()) {
                 predicatesAnd.toArray(new Predicate[predicatesAnd.size()]);
             }
         }
@@ -43,19 +43,19 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
                 predicatesOr.add(c.toPredicate(root, query,builder));
             }
             // 将所有条件用 and 联合起来
-            if (predicatesOr.size() > 0) {
+            if (!predicatesOr.isEmpty()) {
                 predicatesOr.toArray(new Predicate[predicatesOr.size()]);
             }
         }
 
         Predicate predicateAnds = null;
         Predicate predicateOrs = null;
-        /** and */
+        /* and */
         if(predicatesAnd!=null&&!predicatesAnd.isEmpty()) {
             predicateAnds = builder.and(predicatesAnd.toArray(new Predicate[predicatesAnd.size()]));
             predicateAnds = builder.and(predicateAnds);
         }
-        /** or */
+        /* or */
         if(predicatesOr!=null&&!predicatesOr.isEmpty()) {
             predicateOrs = builder.or(predicatesOr.toArray(new Predicate[predicatesOr.size()]));
             predicateOrs = builder.and(predicateOrs);

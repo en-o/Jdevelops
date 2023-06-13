@@ -1,7 +1,10 @@
 package cn.jdevelops.data.jap.core.criteria;
 
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
+import cn.jdevelops.data.jap.util.IObjects;
+import cn.jdevelops.data.jap.util.JpaUtils;
+
 import javax.persistence.criteria.*;
-import java.util.Date;
 
 /**
  * sql 表达式
@@ -10,6 +13,9 @@ import java.util.Date;
  * @author tn
  */
 public class SimpleExpression implements ExpandCriterion {
+
+    private static final String SEPARATOR = ".";
+
     /**
      * 属性名
      */
@@ -23,49 +29,52 @@ public class SimpleExpression implements ExpandCriterion {
      */
     private Operator operator;
 
-    public SimpleExpression(String fieldName, Object value, Operator operator) {
+    /**
+     * true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * 默认不判空
+     */
+    private Boolean ignoreNull;
+
+    /**
+     * 函数处理，
+     */
+    private SpecBuilderDateFun function;
+
+    public SimpleExpression(String fieldName, Object value, Operator operator, Boolean ignoreNull) {
         this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
     }
 
-    public SimpleExpression(String fieldName, Operator operator) {
+    public SimpleExpression(String fieldName, Object value, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
+        this.fieldName = fieldName;
+        this.value = value;
+        this.operator = operator;
+        this.function = function;
+    }
+
+    public SimpleExpression(String fieldName, Operator operator, Boolean ignoreNull) {
         this.fieldName = fieldName;
         this.operator = operator;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public SimpleExpression(String fieldName, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
+        this.fieldName = fieldName;
+        this.operator = operator;
+        this.function = function;
     }
 
-    public Object getValue() {
-        return value;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Predicate toPredicate(Root<?> root, CriteriaQuery<?> query,
                                  CriteriaBuilder builder) {
-        Path expression;
-        if (fieldName.contains(".")) {
-            String[] names = fieldName.split(".");
-            expression = root.get(names[0]);
-            for (int i = 1; i < names.length; i++) {
-                expression = expression.get(names[i]);
-            }
-        } else {
-            expression = root.get(fieldName);
+        // 构建 查询key
+        Expression expression = str2Path(root, builder);
+        if (getIgnoreNull() && IObjects.isaBoolean(value)) {
+            return null;
         }
-        Expression<Date> function = null;
-        if (value instanceof Date) {
-            function = builder.function("to_date",
-                    Date.class, root.get(fieldName));
-        }
-
+        // 构建查询
         switch (operator) {
             case EQ:
                 return builder.equal(expression, value);
@@ -80,29 +89,13 @@ public class SimpleExpression implements ExpandCriterion {
             case RLIKE:
                 return builder.like(expression, value + "%");
             case LT:
-                if (function != null) {
-                    return builder.lessThan(expression, (Date) value);
-                } else {
-                    return builder.lessThan(expression, (Comparable) value);
-                }
+                return builder.lessThan(expression, (Comparable) value);
             case GT:
-                if (function != null) {
-                    return builder.greaterThan(expression, (Date) value);
-                } else {
-                    return builder.greaterThan(expression, (Comparable) value);
-                }
+                return builder.greaterThan(expression, (Comparable) value);
             case LTE:
-                if (function != null) {
-                    return builder.lessThanOrEqualTo(expression, (Date) value);
-                } else {
-                    return builder.lessThanOrEqualTo(expression, (Comparable) value);
-                }
+                return builder.lessThanOrEqualTo(expression, (Comparable) value);
             case GTE:
-                if (function != null) {
-                    return builder.greaterThanOrEqualTo(expression, (Date) value);
-                } else {
-                    return builder.greaterThanOrEqualTo(expression, (Comparable) value);
-                }
+                return builder.greaterThanOrEqualTo(expression, (Comparable) value);
             case ISNULL:
                 return builder.isNull(expression);
             case ISNOTNULL:
@@ -119,4 +112,79 @@ public class SimpleExpression implements ExpandCriterion {
         }
     }
 
+
+    /**
+     * 字符串的key名转jpa要用的对象
+     */
+    public Expression str2Path(Root<?> root, CriteriaBuilder builder) {
+        Path<?> path;
+        if (null != function && !function.equals(SpecBuilderDateFun.NULL)) {
+            return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
+        }
+        if (fieldName.contains(SEPARATOR)) {
+            String[] names = fieldName.split(".");
+            path = root.get(names[0]);
+            for (int i = 1; i < names.length; i++) {
+                path = path.get(names[i]);
+            }
+        } else {
+            path = root.get(fieldName);
+        }
+        return path;
+    }
+
+
+    public Boolean getIgnoreNull() {
+        if (ignoreNull == null) {
+            return false;
+        }
+        return ignoreNull;
+    }
+
+    public void setIgnoreNull(Boolean ignoreNull) {
+        this.ignoreNull = ignoreNull;
+    }
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public Operator getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
+    public SpecBuilderDateFun getFunction() {
+        return function;
+    }
+
+    public void setFunction(SpecBuilderDateFun function) {
+        this.function = function;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleExpression{" +
+                "fieldName='" + fieldName + '\'' +
+                ", value=" + value +
+                ", operator=" + operator +
+                ", ignoreNull=" + ignoreNull +
+                ", function=" + function +
+                '}';
+    }
 }

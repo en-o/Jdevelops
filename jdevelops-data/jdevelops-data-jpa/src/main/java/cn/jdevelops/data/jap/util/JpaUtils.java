@@ -110,46 +110,35 @@ public class JpaUtils {
     public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
                                                            String fieldName,
                                                            Object fieldValue) {
-
-        if (annotation.sqlType().isInstance(Date.class) && fieldValue instanceof String) {
-            // 创建 SimpleDateFormat 对象，指定日期格式
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                // 将字符串解析为 Date 对象
-                fieldValue = sdf.parse(fieldValue.toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
         switch (annotation.operator()) {
             case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case ISNULL:
-                return Restrictions.isNull(fieldName);
+                return Restrictions.isNull(fieldName, annotation.function());
             case ISNOTNULL:
-                return Restrictions.isNotNull(fieldName);
+                return Restrictions.isNotNull(fieldName, annotation.function());
             case BETWEEN:
                 // 值以逗号隔开
-                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull());
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.function());
             case EQ:
             default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
         }
     }
 
@@ -161,12 +150,12 @@ public class JpaUtils {
      * @param root      Root
      * @param builder   CriteriaBuilder
      * @param selectKey String
-     * @param <B> B
+     * @param <B>       B
      */
-    public static  <B>  Expression<String> functionTimeFormat(SpecBuilderDateFun function,
-                                       Root<B> root,
-                                       CriteriaBuilder builder,
-                                       String selectKey) {
+    public static <B> Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                                            Root<B> root,
+                                                            CriteriaBuilder builder,
+                                                            String selectKey) {
         return builder
                 .function(function.getName()
                         , String.class
@@ -177,20 +166,21 @@ public class JpaUtils {
 
     /**
      * 格式化时间数据的值为字符串
-     *  bean:  LocalDateTime
-     *  sql：  timestamp
-     *  e.g.  mysql： date_format(user0_.create_time, "SQL 的 时间类型")
-     *       pgssql： to_char(user0_.create_time, "SQL 的 时间类型")
+     * bean:  LocalDateTime
+     * sql：  timestamp
+     * e.g.  mysql： date_format(user0_.create_time, "SQL 的 时间类型")
+     * pgssql： to_char(user0_.create_time, "SQL 的 时间类型")
+     *
      * @param function  SpecBuilderDateFun
      * @param root      Root
      * @param builder   CriteriaBuilder
      * @param selectKey String
-     * @param <B> B
+     * @param <B>       B
      */
-    public static  <B>  Expression<String> functionTimeFormat(SpecBuilderDateFun function,
-                                                              Root<B> root,
-                                                              CriteriaBuilder builder,
-                                                              ColumnSFunction<B, ?> selectKey) {
+    public static <B> Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                                            Root<B> root,
+                                                            CriteriaBuilder builder,
+                                                            ColumnSFunction<B, ?> selectKey) {
 
         return builder
                 .function(function.getName()
@@ -201,16 +191,17 @@ public class JpaUtils {
 
 
     /**
-     *  sql  date函数 固定死的
-     *   e.g.   DATE ( user0_.create_time ) =?
+     * sql  date函数 固定死的
+     * e.g.   DATE ( user0_.create_time ) =?
+     *
      * @param root      Root
      * @param builder   CriteriaBuilder
      * @param selectKey String
-     * @param <B> B
+     * @param <B>       B
      */
-    public static  <B>  Expression<Date> functionTime(Root<B> root,
-                                                              CriteriaBuilder builder,
-                                                              String selectKey) {
+    public static <B> Expression<Date> functionTime(Root<B> root,
+                                                    CriteriaBuilder builder,
+                                                    String selectKey) {
         return builder
                 .function("date"
                         , Date.class
