@@ -22,16 +22,18 @@ import java.util.function.Consumer;
 
 /**
  * Specification 查询
+ *
  * @author tan
  * @date 2023-03-24 10:59:17
  */
 public class Specifications {
 
     /**
-     *  自定义查询
-     *  默认and连接（where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
+     * 自定义查询
+     * 默认and连接（where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
+     *
      * @param action 查询参数
-     * @param <B>  查询对象
+     * @param <B>    查询对象
      * @return Specification
      */
     public static <B> Specification<B> where(Consumer<SpecificationWrapper<B>> action) {
@@ -39,10 +41,11 @@ public class Specifications {
     }
 
     /**
-     *  自定义查询
+     * 自定义查询
+     *
      * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
-     * @param action Query code
-     * @param <B>  查询对象
+     * @param action    Query code
+     * @param <B>       查询对象
      * @return Specification
      */
     public static <B> Specification<B> where(boolean isConnect, Consumer<SpecificationWrapper<B>> action) {
@@ -51,44 +54,49 @@ public class Specifications {
             action.accept(specification);
             List<Predicate> predicates = specification.getPredicates();
             Predicate[] arr = predicates.toArray(new Predicate[predicates.size()]);
-            return isConnect?builder.and(arr):builder.or(arr);
+            return isConnect ? builder.and(arr) : builder.or(arr);
         };
     }
 
     /**
      * 根据实体自动组装
      * 默认and连接（where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
+     *
      * @param bean 构造的查询对象
+     * @param <R>  返回对象
+     * @param <B>  查询对象
      * @return Specification
-     * @param <R> 返回对象
-     * @param <B> 查询对象
      */
-    public static <R,B> Specification<R> beanWhere(B bean) {
-        return beanWhere(true, bean, e -> {});
+    public static <R, B> Specification<R> beanWhere(B bean) {
+        return beanWhere(true, bean, e -> {
+        });
     }
 
     /**
      * 根据实体自动组装
      * 默认or连接（where x=1 or y=2 or (z=3 and g=4)） (or 为默认，and在action中定义)
+     *
      * @param bean 构造的查询对象
+     * @param <R>  返回对象
+     * @param <B>  查询对象
      * @return Specification
-     * @param <R> 返回对象
-     * @param <B> 查询对象
      */
-    public static <R,B> Specification<R> beanWhereOr(B bean) {
-        return beanWhere(false, bean, e -> {});
+    public static <R, B> Specification<R> beanWhereOr(B bean) {
+        return beanWhere(false, bean, e -> {
+        });
     }
 
     /**
-     *  根据实体自动组装 + 自定义查询
+     * 根据实体自动组装 + 自定义查询
+     *
      * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
-     * @param action 操作
-     * @param bean 构造的查询对象
+     * @param bean      构造的查询对象
+     * @param action    除了bean还能自定义操作
+     * @param <R>       返回对象
+     * @param <B>       查询对象
      * @return Specification
-     * @param <R> 返回对象
-     * @param <B> 查询对象
      */
-    public static <R,B> Specification<R> beanWhere(boolean isConnect ,B bean, Consumer<SpecificationWrapper<R>> action) {
+    public static <R, B> Specification<R> beanWhere(boolean isConnect, B bean, Consumer<SpecificationWrapper<R>> action) {
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         return where(isConnect, e -> {
             for (int i = 0, fieldsLength = fields.length; i < fieldsLength; i++) {
@@ -109,25 +117,22 @@ public class Specifications {
                 JpaSelectWrapperOperator wrapperOperator = field.getAnnotation(JpaSelectWrapperOperator.class);
 
                 if (IObjects.nonNull(wrapperOperator)) {
-
                     // 空值就不查了
-                    if(wrapperOperator.ignoreNull()&&IObjects.isNull(fieldValue)){
+                    if (wrapperOperator.ignoreNull() && IObjects.isNull(fieldValue)) {
                         continue;
                     }
-
-                    if(wrapperOperator.connect().equals(SQLConnect.AND)){
-                         e.and(and -> {
-                             // 默认 eq，且空值也查询
-                             SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
-                             // 如果 值等于 list 则 使用 In 操作
-                             if (fieldValue instanceof Collection) {
-                                 operator = SQLOperatorWrapper.IN;
-                             }
-                             OperatorWrapper operatorWrapper = new OperatorWrapper(and, wrapperOperator, fieldName, fieldValue);
-                             operator.consumer().accept(operatorWrapper);
-                             action.accept(and);
+                    if (wrapperOperator.connect().equals(SQLConnect.AND)) {
+                        e.and(and -> {
+                            // 默认 eq，且空值也查询
+                            SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
+                            // 如果 值等于 list 则 使用 In 操作
+                            if (fieldValue instanceof Collection) {
+                                operator = SQLOperatorWrapper.IN;
+                            }
+                            OperatorWrapper operatorWrapper = new OperatorWrapper(and, wrapperOperator, fieldName, fieldValue);
+                            operator.consumer().accept(operatorWrapper);
                         });
-                    }else {
+                    } else {
                         e.or(or -> {
                             // 默认 eq，且空值也查询
                             SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
@@ -137,20 +142,19 @@ public class Specifications {
                             }
                             OperatorWrapper operatorWrapper = new OperatorWrapper(or, wrapperOperator, fieldName, fieldValue);
                             operator.consumer().accept(operatorWrapper);
-                            action.accept(or);
                         });
                     }
 
-                }else {
+                } else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
                     // 构造 OperatorWrapper // 空值就不查了
-                    if(IObjects.nonNull(fieldValue)){
-                        OperatorWrapper wrapper = new OperatorWrapper(e,fieldName,fieldValue);
+                    if (IObjects.nonNull(fieldValue)) {
+                        OperatorWrapper wrapper = new OperatorWrapper(e, fieldName, fieldValue);
                         SQLOperatorWrapper.EQ.consumer().accept(wrapper);
-                        action.accept(e);
                     }
                 }
-            }
+            };
+            action.accept(e);
         });
     }
 
