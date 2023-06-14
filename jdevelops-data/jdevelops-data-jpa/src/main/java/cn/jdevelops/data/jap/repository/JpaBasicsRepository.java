@@ -1,17 +1,8 @@
 package cn.jdevelops.data.jap.repository;
-import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
-import cn.jdevelops.data.jap.core.criteria.Restrictions;
-import cn.jdevelops.data.jap.enums.FieldName;
-import cn.jdevelops.data.jap.exception.JpaException;
-import cn.jdevelops.data.jap.util.ReflectUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
 
 /**
  * 公共dao层

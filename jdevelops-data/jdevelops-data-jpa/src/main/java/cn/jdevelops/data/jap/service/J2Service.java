@@ -8,7 +8,6 @@ import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.result.JpaPageResult;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
