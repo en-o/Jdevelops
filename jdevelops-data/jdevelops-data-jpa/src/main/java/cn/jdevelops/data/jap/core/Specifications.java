@@ -165,7 +165,7 @@ public class Specifications {
             return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
         }
         if (fieldName.contains(SEPARATOR)) {
-            String[] names = fieldName.split(".");
+            String[] names = fieldName.split("\\" + SEPARATOR);
             path = root.get(names[0]);
             for (int i = 1; i < names.length; i++) {
                 path = path.get(names[i]);
