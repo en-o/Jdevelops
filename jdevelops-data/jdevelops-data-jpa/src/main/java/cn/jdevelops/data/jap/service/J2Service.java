@@ -7,6 +7,8 @@ import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.result.JpaPageResult;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -36,6 +38,24 @@ public interface J2Service<B> {
      * @return T
      */
     B saveByBean(B bean);
+
+
+    /**
+     * 删除
+     * @param unique 数据值
+     * @param selectKey 数据key
+     * @return boolean
+     * @param <U> 数据值的类型
+     */
+    <U> boolean deleteByUnique(List<U> unique, String selectKey);
+
+
+    /**
+     * 自定义条件删除
+     * @param spec Specification
+     * @return long
+     */
+    long delete(Specification<B> spec);
 
     /**
      * 保存list
@@ -102,18 +122,18 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey);
-
+    Boolean updateByBean(B bean, String uniqueKey);
 
     /**
      * 更新数据
      *
      * @param bean      实体 (指定的selectKey必须要有值)
      * @param uniqueKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
-     * @return T
+     * @return Boolean
      * @throws JpaException Exception
      */
-    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey);
+    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey);
+
 
     /**
      * 查询所有
