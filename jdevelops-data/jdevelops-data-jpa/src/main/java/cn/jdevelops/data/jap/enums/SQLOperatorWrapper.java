@@ -14,41 +14,41 @@ import java.util.function.Consumer;
 public enum SQLOperatorWrapper {
 
     /* 等于 */
-    EQ(e -> e.getSpecWrapper().eq(true, e.getSelectKey(), e.getSelectValue())),
+    EQ(e -> e.getSpecWrapper().eq( e.getSelectKey(), e.getSelectValue())),
     /* 不相等 */
-    NE(e -> e.getSpecWrapper().ne(true, e.getSelectKey(), e.getSelectValue())),
+    NE(e -> e.getSpecWrapper().ne( e.getSelectKey(), e.getSelectValue())),
     /*  模糊 必须 string */
-    LIKE(e -> e.getSpecWrapper().likes(true, e.getSelectKey(), (String) e.getSelectValue())),
+    LIKE(e -> e.getSpecWrapper().likes( e.getSelectKey(), (String) e.getSelectValue())),
     /**
      * 不包含(not like) 必须 string
      */
-    NOTLIKE(e -> e.getSpecWrapper().nlike(true, e.getSelectKey(), (String) e.getSelectValue())),
+    NOTLIKE(e -> e.getSpecWrapper().nlike( e.getSelectKey(), (String) e.getSelectValue())),
     /*  左模糊(%value) 必须 string  */
-    LLIKE(e -> e.getSpecWrapper().llike(true, e.getSelectKey(), (String) e.getSelectValue())),
+    LLIKE(e -> e.getSpecWrapper().llike( e.getSelectKey(), (String) e.getSelectValue())),
     /* 右模糊(value%) 必须 string  */
-    RLIKE(e -> e.getSpecWrapper().rlike(true, e.getSelectKey(), (String) e.getSelectValue())),
+    RLIKE(e -> e.getSpecWrapper().rlike( e.getSelectKey(), (String) e.getSelectValue())),
     /* 大于 */
-    GT(e -> e.getSpecWrapper().ge(true, e.getSelectKey(), e.getCompareValue())),
+    GT(e -> e.getSpecWrapper().ge( e.getSelectKey(), e.getCompareValue())),
     /* 小于 */
-    LT(e -> e.getSpecWrapper().lt(true, e.getSelectKey(), e.getCompareValue())),
+    LT(e -> e.getSpecWrapper().lt( e.getSelectKey(), e.getCompareValue())),
     /*大于等于 */
-    GTE(e -> e.getSpecWrapper().ge(true, e.getSelectKey(), e.getCompareValue())),
+    GTE(e -> e.getSpecWrapper().ge(e.getSelectKey(), e.getCompareValue())),
     /* 小于等于 */
-    LTE(e -> e.getSpecWrapper().le(true, e.getSelectKey(), e.getCompareValue())),
+    LTE(e -> e.getSpecWrapper().le(e.getSelectKey(), e.getCompareValue())),
     /* 等于空值 */
     ISNULL(e -> e.getSpecWrapper().isNull( e.getSelectKey())),
     /* 空值 */
     ISNOTNULL(e -> e.getSpecWrapper().isNull(e.getSelectKey())),
     /* in */
-    IN(e -> e.getSpecWrapper().in(true, e.getSelectKey(), (Collection<?>) e.getSelectValue())),
+    IN(e -> e.getSpecWrapper().in(e.getSelectKey(), (Collection<?>) e.getSelectValue())),
     /* not in  */
-    NOT_IN(e -> e.getSpecWrapper().notIn(true, e.getSelectKey(), (Collection<?>) e.getSelectValue())),
+    NOT_IN(e -> e.getSpecWrapper().notIn(e.getSelectKey(), (Collection<?>) e.getSelectValue())),
 
     /* BETWEEN,值必须是逗号隔开的的字符串  */
     BETWEEN(e -> {
         String string = e.getSelectValue().toString();
         String[] split = string.split(",");
-        e.getSpecWrapper().between(true, e.getSelectKey(), split[0], split[1]);
+        e.getSpecWrapper().between( e.getSelectKey(), split[0], split[1]);
     }),
     ;
 

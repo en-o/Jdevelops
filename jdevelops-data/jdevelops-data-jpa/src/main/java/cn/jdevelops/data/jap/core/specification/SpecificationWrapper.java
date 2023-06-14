@@ -183,6 +183,14 @@ public class SpecificationWrapper<B> {
 
 
     /**
+     *左模糊（%value）
+     */
+    public SpecificationWrapper<B> rlike(Expression<String> path, String value) {
+        return this.like(path, value + "%");
+    }
+
+
+    /**
      * 左模糊（%value）
      */
     public SpecificationWrapper<B> llike(boolean valueNotNull, String selectKey, String value) {
@@ -190,10 +198,26 @@ public class SpecificationWrapper<B> {
     }
 
     /**
+     *左模糊（%value）
+     */
+    public SpecificationWrapper<B> llike(Expression<String> path, String value) {
+        return this.like(path, "%" + value);
+    }
+
+
+    /**
      * 全模糊（%value%）
      */
     public SpecificationWrapper<B> likes(boolean valueNotNull, String selectKey, String value) {
-        return like(valueNotNull, selectKey, "%" + value + "%");
+        return this.like(valueNotNull, selectKey, "%" + value + "%");
+    }
+
+
+    /**
+     * 全模糊（%value%）
+     */
+    public SpecificationWrapper<B> likes(Expression<String> path, String value) {
+        return this.like(path, "%" + value + "%");
     }
 
 

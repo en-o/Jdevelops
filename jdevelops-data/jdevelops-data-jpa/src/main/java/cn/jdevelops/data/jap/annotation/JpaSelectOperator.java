@@ -3,6 +3,7 @@ package cn.jdevelops.data.jap.annotation;
 
 import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SQLOperator;
+import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
 import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
 import java.lang.annotation.*;
@@ -28,6 +29,16 @@ public @interface JpaSelectOperator {
      *
      */
     SQLOperator operator() default SQLOperator.EQ;
+
+
+    /**
+     * sql 运算符 (Specifications方法用)
+     * <pre>
+     *  根据注解内容进行条件拼接，例如： 用的EQ 则： where 字段 = 值
+     * </pre>
+     *
+     */
+    SQLOperatorWrapper operatorWrapper() default SQLOperatorWrapper.EQ;
 
 
     /**

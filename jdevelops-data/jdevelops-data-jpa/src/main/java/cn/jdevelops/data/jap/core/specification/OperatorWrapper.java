@@ -1,9 +1,7 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import cn.jdevelops.data.jap.annotation.JpaSelectWrapperOperator;
-import cn.jdevelops.data.jap.enums.SQLConnect;
-import cn.jdevelops.data.jap.util.IObjects;
+import javax.persistence.criteria.Expression;
 
 
 /**
@@ -21,7 +19,7 @@ public class OperatorWrapper {
     /**
      * 添加 key
      */
-    private String selectKey;
+    private Expression selectKey;
 
     /**
      * 添加值
@@ -49,11 +47,11 @@ public class OperatorWrapper {
     }
 
 
-    public String getSelectKey() {
+    public Expression getSelectKey() {
         return selectKey;
     }
 
-    public void setSelectKey(String selectKey) {
+    public void setSelectKey(Expression selectKey) {
         this.selectKey = selectKey;
     }
 
@@ -69,21 +67,11 @@ public class OperatorWrapper {
     public OperatorWrapper() {
     }
 
-    public OperatorWrapper(SpecificationWrapper<?> specWrapper, String selectKey, Object selectValue) {
+    public OperatorWrapper(SpecificationWrapper<?> specWrapper, Expression selectKey, Object selectValue) {
         this.specWrapper = specWrapper;
         this.selectKey = selectKey;
         this.selectValue = selectValue;
     }
-
-    public OperatorWrapper(SpecificationWrapper<?> specWrapper, JpaSelectWrapperOperator query,  String selectKey,  Object selectValue) {
-        if(!IObjects.isBlank(query.fieldName())){
-            selectKey  = query.fieldName();
-        }
-        this.selectKey = selectKey;
-        this.specWrapper = specWrapper;
-        this.selectValue = selectValue;
-    }
-
 
     @Override
     public String toString() {
