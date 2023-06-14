@@ -1,16 +1,11 @@
 package cn.jdevelops.data.jap.repository;
 
 import cn.hutool.core.util.ReflectUtil;
-import cn.jdevelops.api.result.util.bean.BeanCopyUtil;
 import cn.jdevelops.data.jap.exception.JpaException;
-import cn.jdevelops.data.jap.util.IObjects;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -20,7 +15,6 @@ import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 自定义 Base Repository
@@ -30,8 +24,6 @@ import java.util.function.Function;
  * @date 2023-06-14 15:02:09
  * @since 2.0.7
  */
-@Repository
-@Transactional(readOnly = true)
 public class JdevelopsSimpleJpaRepository<B, ID> extends SimpleJpaRepository<B, ID> implements JpaBasicsRepository<B, ID>{
 
     private final EntityManager entityManager;
@@ -44,6 +36,7 @@ public class JdevelopsSimpleJpaRepository<B, ID> extends SimpleJpaRepository<B, 
 
 
     @Override
+    @Transactional
     public <U> boolean deleteByUnique(List<U> unique, String selectKey) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         CriteriaDelete<B> deletes = builder.createCriteriaDelete(getDomainClass());
@@ -54,6 +47,7 @@ public class JdevelopsSimpleJpaRepository<B, ID> extends SimpleJpaRepository<B, 
     }
 
     @Override
+    @Transactional
     public boolean updateEntity(B t) throws JpaException {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(getDomainClass());
@@ -94,6 +88,7 @@ public class JdevelopsSimpleJpaRepository<B, ID> extends SimpleJpaRepository<B, 
     }
 
     @Override
+    @Transactional
     public long delete(Specification<B> spec) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         CriteriaDelete<B> delete = builder.createCriteriaDelete(getDomainClass());
