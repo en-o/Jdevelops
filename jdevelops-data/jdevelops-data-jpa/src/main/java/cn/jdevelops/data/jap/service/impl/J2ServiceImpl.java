@@ -9,9 +9,9 @@ import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.Specifications;
-import cn.jdevelops.data.jap.dao.JpaBasicsDao;
+import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
-import cn.jdevelops.data.jap.page.JpaPageResult;
+import cn.jdevelops.data.jap.result.JpaPageResult;
 import cn.jdevelops.data.jap.service.J2Service;
 import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JPageUtil;
@@ -40,13 +40,13 @@ import java.util.Optional;
  */
 @Slf4j
 @NoRepositoryBean
-public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends SerializableBean<B>, ID> implements J2Service<B> {
+public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends SerializableBean<B>, ID> implements J2Service<B> {
 
     @Autowired
     private M commonDao;
 
     @Override
-    public <M extends JpaBasicsDao<B, ID>, ID> M getJpaBasicsDao() {
+    public <M extends JpaBasicsRepository<B, ID>, ID> M getJpaBasicsDao() {
         return (M) commonDao;
     }
 
@@ -91,18 +91,12 @@ public class J2ServiceImpl<M extends JpaBasicsDao<B, ID>, B extends Serializable
     }
 
     @Override
-    public Boolean updateByBean(B bean) {
+    public Boolean updateByBean(B bean) throws JpaException {
         try {
-            commonDao.updateEntity(bean);
-            return true;
+            return commonDao.updateEntity(bean);
         } catch (Exception e) {
             throw new JpaException("更新出错");
         }
-    }
-
-    @Override
-    public B updateByBeanForBean(B bean) throws JpaException {
-        return commonDao.updateEntity(bean);
     }
 
     @Override

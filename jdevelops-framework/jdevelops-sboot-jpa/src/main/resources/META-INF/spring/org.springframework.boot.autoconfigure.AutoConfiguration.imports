@@ -1,3 +1,3 @@
 cn.jdevelops.sboot.jpa.config.UserNameAuditorAware
 cn.jdevelops.sboot.jpa.core.auditor.AuditorNameServiceImpl
-cn.jdevelops.sboot.jpa.config.JpaConfiguration
+cn.jdevelops.sboot.jpa.config.JpaSbootConfiguration

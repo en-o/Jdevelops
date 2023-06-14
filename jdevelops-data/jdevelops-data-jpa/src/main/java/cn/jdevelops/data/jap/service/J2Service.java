@@ -4,9 +4,9 @@ import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;
 import cn.jdevelops.api.result.util.bean.ColumnSFunction;
-import cn.jdevelops.data.jap.dao.JpaBasicsDao;
+import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
-import cn.jdevelops.data.jap.page.JpaPageResult;
+import cn.jdevelops.data.jap.result.JpaPageResult;
 
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface J2Service<B> {
      * @param <M> dao
      * @return dao
      */
-    <M extends JpaBasicsDao<B, ID>, ID> M getJpaBasicsDao();
+    <M extends JpaBasicsRepository<B, ID>, ID> M getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体
@@ -94,16 +94,6 @@ public interface J2Service<B> {
      */
     Boolean updateByBean(B bean);
 
-
-    /**
-     * 更新数据 返回实体
-     *
-     * @param bean 实体 id一定要有且键名为ID
-     * @return Boolean
-     * @throws JpaException Exception
-     */
-    B updateByBeanForBean(B bean) throws JpaException;
-
     /**
      * 更新数据
      *
@@ -112,7 +102,7 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
+    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey);
 
 
     /**
@@ -123,7 +113,7 @@ public interface J2Service<B> {
      * @return T
      * @throws JpaException Exception
      */
-    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
+    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey);
 
     /**
      * 查询所有

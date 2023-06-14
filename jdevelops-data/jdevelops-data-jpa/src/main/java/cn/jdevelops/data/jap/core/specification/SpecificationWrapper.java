@@ -322,7 +322,7 @@ public class SpecificationWrapper<B> {
      * in
      */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Object... value) {
-        return valueNotNull ? handle(selectKey, e -> this.notIn(e, value)) : this;
+        return valueNotNull ? handle(selectKey, e -> this.in(e, value)) : this;
     }
 
 

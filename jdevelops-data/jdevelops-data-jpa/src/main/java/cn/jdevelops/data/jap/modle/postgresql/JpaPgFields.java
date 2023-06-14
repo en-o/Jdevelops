@@ -1,6 +1,6 @@
-package cn.jdevelops.data.jap.entity.postgresql;
+package cn.jdevelops.data.jap.modle.postgresql;
 
-import cn.jdevelops.data.jap.entity.audit.BaseFields;
+import cn.jdevelops.data.jap.modle.audit.BaseFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

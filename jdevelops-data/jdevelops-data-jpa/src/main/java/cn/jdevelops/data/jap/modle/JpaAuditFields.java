@@ -1,6 +1,6 @@
-package cn.jdevelops.data.jap.entity.postgresql;
+package cn.jdevelops.data.jap.modle;
 
-import cn.jdevelops.data.jap.entity.audit.BaseAuditFields;
+import cn.jdevelops.data.jap.modle.audit.BaseAuditFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -15,7 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 公共实体INT (postgresql)
+ * 公共实体INT
  * @author tn
  * @version 1
  *
@@ -34,13 +34,13 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Access(AccessType.FIELD)
-public class JpaAuditPgFields<T> extends BaseAuditFields<T> {
+public class JpaAuditFields<T> extends BaseAuditFields<T> {
 
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
      */
     @CreatedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "timestamp")
     @Access(AccessType.PROPERTY)
     @Comment("创建日期")
     @Override
@@ -64,7 +64,7 @@ public class JpaAuditPgFields<T> extends BaseAuditFields<T> {
      * 表示该字段为修改时间字段，@LastModifiedDate在这个实体被update的时候，会自动为其赋值
      */
     @LastModifiedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "timestamp")
     @Access(AccessType.PROPERTY)
     @Comment("更新日期")
     @Override

@@ -1,6 +1,6 @@
-package cn.jdevelops.data.jap.entity;
+package cn.jdevelops.data.jap.modle.mysql;
 
-import cn.jdevelops.data.jap.entity.audit.BaseFields;
+import cn.jdevelops.data.jap.modle.audit.BaseFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Access(AccessType.FIELD)
-public class JpaFields<T> extends BaseFields<T> {
+public class JpaMysqlFields<T> extends BaseFields<T> {
 
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值

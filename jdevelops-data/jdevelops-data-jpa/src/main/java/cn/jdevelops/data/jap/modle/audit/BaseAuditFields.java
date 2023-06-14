@@ -1,4 +1,4 @@
-package cn.jdevelops.data.jap.entity.audit;
+package cn.jdevelops.data.jap.modle.audit;
 
 
 import cn.jdevelops.api.result.bean.SerializableBean;

@@ -1,4 +1,4 @@
-package cn.jdevelops.data.jap.page;
+package cn.jdevelops.data.jap.result;
 
 import cn.jdevelops.api.result.bean.SerializableBean;
 import cn.jdevelops.api.result.request.PageDTO;
