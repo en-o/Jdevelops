@@ -27,7 +27,7 @@ public interface J2Service<B> {
      * @param <M> dao
      * @return dao
      */
-    <M extends JpaBasicsRepository<B, ID>, ID> M getJpaBasicsDao();
+    <M extends JpaBasicsRepository<B, ID>, ID>  M getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体

@@ -46,8 +46,8 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     private M commonDao;
 
     @Override
-    public <M extends JpaBasicsRepository<B, ID>, ID> M getJpaBasicsDao() {
-        return (M) commonDao;
+    public M getJpaBasicsDao() {
+        return commonDao;
     }
 
     @Override
