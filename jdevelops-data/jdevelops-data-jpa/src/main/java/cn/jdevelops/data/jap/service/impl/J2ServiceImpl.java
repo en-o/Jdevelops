@@ -35,6 +35,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -157,6 +158,24 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
             Root<B> deleteFrom = update.from(domainClass);
 
             Field[] fields = ReflectUtil.getFields(bean.getClass());
+
+
+            // 获取主键名
+            Metamodel metamodel = entityManager.getMetamodel();
+            EntityType<B> entityType = metamodel.entity(domainClass);
+            SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
+            Predicate condition;
+            String ignoreField ;
+            if (IObjects.isBlank(uniqueKey)) {
+                ignoreField = id.getName();
+                // 根据主键更新
+                condition = criteriaBuilder.equal(deleteFrom.get(id.getName()), ReflectUtil.getFieldValue(bean, id.getName()));
+            } else {
+                // 根据传入的唯一key键
+                ignoreField = uniqueKey;
+                condition = criteriaBuilder.equal(deleteFrom.get(uniqueKey), ReflectUtil.getFieldValue(bean, uniqueKey));
+            }
+
             for (int i = 0; i < fields.length; i++) {
                 Field field = fields[i];
                 // 字段名
@@ -166,25 +185,12 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
                 }
                 // 字段值
                 Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-                if (fieldValue != null) {
+                if (fieldValue != null && !fieldName.equals(ignoreField)) {
                     // 设置更新值
                     update.set(deleteFrom.get(fieldName), fieldValue);
                 }
             }
-            // 获取主键名
-            Metamodel metamodel = entityManager.getMetamodel();
-            EntityType<B> entityType = metamodel.entity(domainClass);
-            SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
-            Predicate condition;
 
-            Object fieldValue = ReflectUtil.getFieldValue(bean, id.getName());
-            if (IObjects.isBlank(uniqueKey)) {
-                // 根据主键更新
-                condition = criteriaBuilder.equal(deleteFrom.get(id.getName()), fieldValue);
-            } else {
-                // 根据传入的唯一key键
-                condition = criteriaBuilder.equal(deleteFrom.get(uniqueKey), fieldValue);
-            }
             // 应用更新的条件
             update.where(condition);
             // 执行更新
