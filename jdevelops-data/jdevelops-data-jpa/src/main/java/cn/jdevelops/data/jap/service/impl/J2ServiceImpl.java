@@ -93,7 +93,8 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     @Override
     public Boolean updateByBean(B bean) throws JpaException {
         try {
-            return commonDao.updateEntity(bean);
+             commonDao.updateEntity(bean);
+             return true;
         } catch (Exception e) {
             throw new JpaException("更新出错");
         }
