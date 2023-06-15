@@ -148,52 +148,49 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean updateByBean(B bean, String uniqueKey) throws JpaException {
-        try {
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(domainClass);
-            Root<B> deleteFrom = update.from(domainClass);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(domainClass);
+        Root<B> deleteFrom = update.from(domainClass);
 
-            Field[] fields = ReflectUtil.getFields(bean.getClass());
+        Field[] fields = ReflectUtil.getFields(bean.getClass());
 
 
-            // 获取主键名
-            Metamodel metamodel = entityManager.getMetamodel();
-            EntityType<B> entityType = metamodel.entity(domainClass);
-            SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
-            Predicate condition;
-            String ignoreField ;
-            if (IObjects.isBlank(uniqueKey)) {
-                ignoreField = id.getName();
-                // 根据主键更新
-                condition = criteriaBuilder.equal(deleteFrom.get(id.getName()), ReflectUtil.getFieldValue(bean, id.getName()));
-            } else {
-                // 根据传入的唯一key键
-                ignoreField = uniqueKey;
-                condition = criteriaBuilder.equal(deleteFrom.get(uniqueKey), ReflectUtil.getFieldValue(bean, uniqueKey));
-            }
-
-            for (int i = 0; i < fields.length; i++) {
-                Field field = fields[i];
-                // 字段名
-                String fieldName = field.getName();
-                if ("serialVersionUID".equals(fieldName)) {
-                    continue;
-                }
-                // 字段值
-                Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-                if (fieldValue != null && !fieldName.equals(ignoreField)) {
-                    // 设置更新值
-                    update.set(deleteFrom.get(fieldName), fieldValue);
-                }
-            }
-
-            // 应用更新的条件
-            update.where(condition);
-            // 执行更新
-            return entityManager.createQuery(update).executeUpdate()>= 0;
-        } catch (Exception e) {
-            throw new JpaException("更新出错", e);
+        // 获取主键名
+        Metamodel metamodel = entityManager.getMetamodel();
+        EntityType<B> entityType = metamodel.entity(domainClass);
+        SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
+        Predicate condition;
+        String ignoreField;
+        if (IObjects.isBlank(uniqueKey)) {
+            ignoreField = id.getName();
+            // 根据主键更新
+            condition = criteriaBuilder.equal(deleteFrom.get(id.getName()), ReflectUtil.getFieldValue(bean, id.getName()));
+        } else {
+            // 根据传入的唯一key键
+            ignoreField = uniqueKey;
+            condition = criteriaBuilder.equal(deleteFrom.get(uniqueKey), ReflectUtil.getFieldValue(bean, uniqueKey));
         }
+
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            // 字段名
+            String fieldName = field.getName();
+            if ("serialVersionUID".equals(fieldName)) {
+                continue;
+            }
+            // 字段值
+            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
+            if (fieldValue != null && !fieldName.equals(ignoreField)) {
+                // 设置更新值
+                update.set(deleteFrom.get(fieldName), fieldValue);
+            }
+        }
+
+        // 应用更新的条件
+        update.where(condition);
+        // 执行更新
+        return entityManager.createQuery(update).executeUpdate() >= 0;
+
     }
 
     @Override
@@ -270,7 +267,6 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
         Page<B> pages = commonDao.findAll(selectRegionBean, pageable);
         return JpaPageResult.toPage(pages);
     }
-
 
 
 }
