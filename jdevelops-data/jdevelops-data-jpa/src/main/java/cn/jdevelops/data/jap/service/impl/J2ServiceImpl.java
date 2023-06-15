@@ -78,7 +78,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public <U> boolean deleteByUnique(List<U> unique, String selectKey) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         CriteriaDelete<B> deletes = builder.createCriteriaDelete(domainClass);
@@ -90,7 +90,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public long delete(Specification<B> spec) {
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         CriteriaDelete<B> delete = builder.createCriteriaDelete(domainClass);
@@ -126,27 +126,27 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public <U> Boolean deleteByUnique(List<U> unique, ColumnSFunction<B, ?> uniqueKey) {
         String field = ColumnUtil.getFieldName(uniqueKey);
         return deleteByUnique(unique, field);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public <U> Boolean deleteByUnique(U unique, ColumnSFunction<B, ?> uniqueKey) {
         String field = ColumnUtil.getFieldName(uniqueKey);
         return deleteByUnique(Collections.singletonList(unique), field);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateByBean(B bean) {
         return updateByBean(bean, "");
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateByBean(B bean, String uniqueKey) throws JpaException {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -197,7 +197,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException {
         String field = ColumnUtil.getFieldName(uniqueKey);
         return updateByBean(bean, field);
