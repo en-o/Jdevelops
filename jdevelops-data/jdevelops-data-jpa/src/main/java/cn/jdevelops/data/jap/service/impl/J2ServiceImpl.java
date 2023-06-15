@@ -8,6 +8,7 @@ import cn.jdevelops.api.result.request.SortPageDTO;
 import cn.jdevelops.api.result.util.ListTo;
 import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.api.result.util.bean.ColumnUtil;
+import cn.jdevelops.data.jap.annotation.JpaUpdate;
 import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.Specifications;
 import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
@@ -141,25 +142,33 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean updateByBean(B bean) {
+    public <T> Boolean updateByBean(T bean) {
         return updateByBean(bean, "");
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean updateByBean(B bean, String uniqueKey) throws JpaException {
+    public <T> Boolean updateByBean(T bean, String uniqueKey) throws JpaException {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(domainClass);
         Root<B> deleteFrom = update.from(domainClass);
 
-        Field[] fields = ReflectUtil.getFields(bean.getClass());
-
+        // 获取字段
+        Field[] fields = ReflectUtil.getFields(bean.getClass(),(field) -> {
+            // 忽略字段
+            if ("serialVersionUID".equals(field.getName())) {
+                return false;
+            }
+            JpaUpdate ignoreField = field.getAnnotation(JpaUpdate.class);
+            return ignoreField == null || !ignoreField.ignore();
+        });
 
         // 获取主键名
         Metamodel metamodel = entityManager.getMetamodel();
         EntityType<B> entityType = metamodel.entity(domainClass);
         SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
         Predicate condition;
+        // 忽略查询字段
         String ignoreField;
         if (IObjects.isBlank(uniqueKey)) {
             ignoreField = id.getName();
@@ -175,9 +184,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
             Field field = fields[i];
             // 字段名
             String fieldName = field.getName();
-            if ("serialVersionUID".equals(fieldName)) {
-                continue;
-            }
+
             // 字段值
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
             if (fieldValue != null && !fieldName.equals(ignoreField)) {
@@ -195,7 +202,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException {
+    public <T> Boolean updateByBean(T bean, ColumnSFunction<T, ?> uniqueKey) throws JpaException {
         String field = ColumnUtil.getFieldName(uniqueKey);
         return updateByBean(bean, field);
     }
@@ -269,4 +276,11 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     }
 
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public Class<B> getDomainClass() {
+        return domainClass;
+    }
 }

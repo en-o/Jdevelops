@@ -111,7 +111,7 @@ public interface J2Service<B> {
      * @param bean 实体 id一定要有且键名为ID
      * @return Boolean
      */
-    Boolean updateByBean(B bean);
+    <T> Boolean updateByBean(T bean);
 
     /**
      * 更新数据
@@ -121,7 +121,7 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, String uniqueKey);
+    <T> Boolean updateByBean(T bean, String uniqueKey);
 
     /**
      * 更新数据
@@ -131,7 +131,7 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey);
+    <T> Boolean updateByBean(T bean, ColumnSFunction<T, ?> uniqueKey);
 
 
     /**
