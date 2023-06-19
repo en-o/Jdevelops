@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021-08-02 09:00
  */
 @Configuration
-public class JpaConfiguration {
+public class JpaSbootConfiguration {
 
 
     /**

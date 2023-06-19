@@ -3,6 +3,8 @@ package cn.jdevelops.data.jap.annotation;
 
 import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SQLOperator;
+import cn.jdevelops.data.jap.enums.SQLOperatorWrapper;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
 import java.lang.annotation.*;
 
@@ -30,6 +32,16 @@ public @interface JpaSelectOperator {
 
 
     /**
+     * sql 运算符 (Specifications方法用)
+     * <pre>
+     *  根据注解内容进行条件拼接，例如： 用的EQ 则： where 字段 = 值
+     * </pre>
+     *
+     */
+    SQLOperatorWrapper operatorWrapper() default SQLOperatorWrapper.EQ;
+
+
+    /**
      *  true 空值不做查询，false 不忽略空
      */
     boolean ignoreNull() default true;
@@ -39,6 +51,14 @@ public @interface JpaSelectOperator {
      * 空时默认使用属性字段
      */
     String fieldName() default "";
+
+
+    /**
+     * 数据库字段是时间格式，实体字段也是时间格式的时候，构建查询会出错，所以这里要用函数格式化下
+     * 默认不用，要用的时候自己按照枚举选择需要使用的格式化条件
+     */
+    SpecBuilderDateFun function() default SpecBuilderDateFun.NULL;
+
 
     /**
      * sql 连接符 (JpaUtils方法用)

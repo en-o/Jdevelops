@@ -107,7 +107,7 @@ public class SortDTO implements Serializable {
     }
 
     public Integer getOrderDesc() {
-        if (Objects.isNull(orderDesc)) {
+        if (Objects.isNull(orderDesc)||orderDesc>2||orderDesc<0) {
             return 1;
         }
         return orderDesc;

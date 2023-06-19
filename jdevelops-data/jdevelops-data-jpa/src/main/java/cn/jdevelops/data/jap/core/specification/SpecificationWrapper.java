@@ -1,8 +1,6 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import cn.jdevelops.api.result.util.bean.ColumnSFunction;
-import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,9 +13,10 @@ import java.util.function.Consumer;
 
 /**
  * Specification 包装类
- *  valueNotNull: false不添加值等于空的条件
- *  selectKey: 条件的key
- *  value: 条件的值
+ * valueNotNull: false不添加值等于空的条件
+ * selectKey: 条件的key
+ * value: 条件的值
+ *
  * @author tan
  * @date 2023-03-24 10:59:17
  */
@@ -88,32 +87,10 @@ public class SpecificationWrapper<B> {
 
     // ================================== 查询空值 ==================================
 
-
-    /**
-     * 查询非空值
-     */
-    public SpecificationWrapper<B> isNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNull) : this;
-    }
-
-    /**
-     * 查询空值
-     */
-    public SpecificationWrapper<B> isNull(boolean valueNotNull, String selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNull) : this;
-    }
-
     /**
      * 查询空值
      */
     public SpecificationWrapper<B> isNull(String selectKey) {
-        return handle(selectKey, this::isNull);
-    }
-
-    /**
-     * 查询空值
-     */
-    public SpecificationWrapper<B> isNull(ColumnSFunction<B, ?> selectKey) {
         return handle(selectKey, this::isNull);
     }
 
@@ -128,36 +105,12 @@ public class SpecificationWrapper<B> {
 
     // ================================== 查询非空值 ==================================
 
-
-    /**
-     * 查询非空值
-     */
-    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, ColumnSFunction<B, ?> selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNotNull) : this;
-    }
-
-    /**
-     * 查询非空值
-     */
-    public SpecificationWrapper<B> isNotNull(boolean valueNotNull, String selectKey) {
-        return valueNotNull ? handle(selectKey, this::isNotNull) : this;
-    }
-
-
     /**
      * 查询非空值
      */
     public SpecificationWrapper<B> isNotNull(String selectKey) {
         return handle(selectKey, this::isNotNull);
     }
-
-    /**
-     * 查询非空值
-     */
-    public SpecificationWrapper<B> isNotNull(ColumnSFunction<B, ?> selectKey) {
-        return handle(selectKey, this::isNotNull);
-    }
-
 
     /**
      * 查询非空值
@@ -174,28 +127,7 @@ public class SpecificationWrapper<B> {
      * 等于
      */
     public SpecificationWrapper<B> eq(boolean valueNotNull, String selectKey, Object value) {
-        return valueNotNull ? this.eq(selectKey, value) : this;
-    }
-
-    /**
-     * 等于
-     */
-    public SpecificationWrapper<B> eq(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
-        return valueNotNull ? this.eq(selectKey, value) : this;
-    }
-
-    /**
-     * 等于
-     */
-    public SpecificationWrapper<B> eq(ColumnSFunction<B, ?> selectKey, Object value) {
-        return handle(selectKey, e -> this.eq(e, value));
-    }
-
-    /**
-     * 等于
-     */
-    public SpecificationWrapper<B> eq(String selectKey, Object value) {
-        return handle(selectKey, e -> this.eq(e, value));
+        return valueNotNull ? handle(selectKey, e -> this.eq(e, value)) : this;
     }
 
     /**
@@ -213,28 +145,7 @@ public class SpecificationWrapper<B> {
      * 不等于
      */
     public SpecificationWrapper<B> ne(boolean valueNotNull, String selectKey, Object value) {
-        return valueNotNull ? this.ne(selectKey, value) : this;
-    }
-
-    /**
-     * 不等于
-     */
-    public SpecificationWrapper<B> ne(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object value) {
-        return valueNotNull ? this.ne(selectKey, value) : this;
-    }
-
-    /**
-     * 不等于
-     */
-    public SpecificationWrapper<B> ne(String selectKey, Object value) {
-        return handle(selectKey, e -> this.ne(e, value));
-    }
-
-    /**
-     * 不等于
-     */
-    public SpecificationWrapper<B> ne(ColumnSFunction<B, ?> selectKey, Object value) {
-        return handle(selectKey, e -> this.ne(e, value));
+        return valueNotNull ? handle(selectKey, e -> this.ne(e, value)) : this;
     }
 
     /**
@@ -251,26 +162,12 @@ public class SpecificationWrapper<B> {
      * 模糊查询的基方法，不要使用因为没有百分号
      */
     public SpecificationWrapper<B> like(boolean valueNotNull, String selectKey, String value) {
-        return valueNotNull ? this.like(selectKey, value) : this;
+        return valueNotNull ? handle(selectKey, e -> this.like(e, value)) : this;
     }
 
 
     /**
-     * 模糊查询的基方法，不要使用因为没有百分号
-     */
-    public SpecificationWrapper<B> like(String selectKey, String value) {
-        return handle(selectKey, e -> this.like(e, value));
-    }
-
-    /**
-     * 模糊查询的基方法，不要使用因为没有百分号
-     */
-    public SpecificationWrapper<B> like(ColumnSFunction<B, ?> selectKey, String value) {
-        return handle(selectKey, e -> this.like(e, value));
-    }
-
-    /**
-     * 模糊查询的基方法，不要使用因为没有百分号
+     * 模糊查询的基方法，不要使用因为没有百分号（value）
      */
     public SpecificationWrapper<B> like(Expression<String> path, String value) {
         predicates.add(builder.like(path, value));
@@ -278,93 +175,49 @@ public class SpecificationWrapper<B> {
     }
 
     /**
-     * 右模糊（值为空不查询）
+     * 右模糊（value%）
      */
     public SpecificationWrapper<B> rlike(boolean valueNotNull, String selectKey, String value) {
-        return valueNotNull ? this.rlike(selectKey, value) : this;
+        return this.like(valueNotNull, selectKey, value + "%");
     }
 
+
     /**
-     * 右模糊（值为空不查询）
+     *左模糊（%value）
      */
-    public SpecificationWrapper<B> rlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
-        return valueNotNull ? this.rlike(selectKey, value) : this;
+    public SpecificationWrapper<B> rlike(Expression<String> path, String value) {
+        return this.like(path, value + "%");
     }
 
-    /**
-     * 右模糊（value%）
-     */
-    public SpecificationWrapper<B> rlike(String selectKey, String value) {
-        this.like(selectKey, value + "%");
-        return this;
-    }
 
     /**
-     * 右模糊（value%）
-     */
-    public SpecificationWrapper<B> rlike(ColumnSFunction<B, ?> selectKey, String value) {
-        this.like(selectKey, value + "%");
-        return this;
-    }
-
-    /**
-     * 左模糊（值为空不查询）
+     * 左模糊（%value）
      */
     public SpecificationWrapper<B> llike(boolean valueNotNull, String selectKey, String value) {
-        return valueNotNull ? this.llike(selectKey, value) : this;
+        return this.like(valueNotNull, selectKey, "%" + value);
     }
 
     /**
-     * 左模糊（值为空不查询）
+     *左模糊（%value）
      */
-    public SpecificationWrapper<B> llike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
-        return valueNotNull ? this.llike(selectKey, value) : this;
+    public SpecificationWrapper<B> llike(Expression<String> path, String value) {
+        return this.like(path, "%" + value);
     }
 
-    /**
-     * 左模糊（%value）
-     */
-    public SpecificationWrapper<B> llike(String selectKey, String value) {
-        this.like(selectKey, "%" + value);
-        return this;
-    }
 
     /**
-     * 左模糊（%value）
-     */
-    public SpecificationWrapper<B> llike(ColumnSFunction<B, ?> selectKey, String value) {
-        this.like(selectKey, "%" + value);
-        return this;
-    }
-
-    /**
-     * 全模糊（值为空不查询）
+     * 全模糊（%value%）
      */
     public SpecificationWrapper<B> likes(boolean valueNotNull, String selectKey, String value) {
-        return valueNotNull ? this.likes(selectKey, value) : this;
+        return this.like(valueNotNull, selectKey, "%" + value + "%");
     }
 
-    /**
-     * 全模糊（值为空不查询）
-     */
-    public SpecificationWrapper<B> likes(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
-        return valueNotNull ? this.likes(selectKey, value) : this;
-    }
 
     /**
      * 全模糊（%value%）
      */
-    public SpecificationWrapper<B> likes(String selectKey, String value) {
-        this.like(selectKey, "%" + value + "%");
-        return this;
-    }
-
-    /**
-     * 全模糊（%value%）
-     */
-    public SpecificationWrapper<B> likes(ColumnSFunction<B, ?> selectKey, String value) {
-        this.like(selectKey, "%" + value + "%");
-        return this;
+    public SpecificationWrapper<B> likes(Expression<String> path, String value) {
+        return this.like(path, "%" + value + "%");
     }
 
 
@@ -372,29 +225,9 @@ public class SpecificationWrapper<B> {
      * not like
      */
     public SpecificationWrapper<B> nlike(boolean valueNotNull, String selectKey, String value) {
-        return valueNotNull ? this.nlike(selectKey, value) : this;
+        return valueNotNull ? handle(selectKey, e -> this.nlike(e, value)) : this;
     }
 
-    /**
-     * not like
-     */
-    public SpecificationWrapper<B> nlike(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, String value) {
-        return valueNotNull ? this.nlike(selectKey, value) : this;
-    }
-
-    /**
-     * not like
-     */
-    public SpecificationWrapper<B> nlike(String selectKey, String value) {
-        return handle(selectKey, e -> this.nlike(e, value));
-    }
-
-    /**
-     * not like
-     */
-    public SpecificationWrapper<B> nlike(ColumnSFunction<B, ?> selectKey, String value) {
-        return handle(selectKey, e -> this.nlike(e, value));
-    }
 
     /**
      * not like
@@ -411,37 +244,13 @@ public class SpecificationWrapper<B> {
      * 大于等于
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, String selectKey, Y value) {
-        return valueNotNull ? this.ge(selectKey, value) : this;
+        return valueNotNull ? handle(selectKey, e -> this.ge(e, value)) : this;
     }
 
     /**
      * 大于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
-        return valueNotNull ? this.ge(selectKey, value) : this;
-    }
-
-
-    /**
-     * 大于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(String selectKey, Y value) {
-        return handle(selectKey, e -> this.ge(e, value));
-    }
-
-
-    /**
-     * 大于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(ColumnSFunction<B, ?> selectKey, Y value) {
-        return handle(selectKey, e -> this.ge(e, value));
-    }
-
-    /**
-     * 大于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThanOrEqualTo(path, value));
         return this;
     }
@@ -452,38 +261,14 @@ public class SpecificationWrapper<B> {
      * 小于等于
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, String selectKey, Y value) {
-        return valueNotNull ? this.le(selectKey, value) : this;
-    }
-
-    /**
-     * 小于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
-        return valueNotNull ? this.le(selectKey, value) : this;
+        return valueNotNull ? handle(selectKey, e -> this.le(e, value)) : this;
     }
 
 
     /**
      * 小于等于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(String selectKey, Y value) {
-        return handle(selectKey, e -> this.le(e, value));
-    }
-
-
-    /**
-     * 小于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(ColumnSFunction<B, ?> selectKey, Y value) {
-        return handle(selectKey, e -> this.le(e, value));
-    }
-
-
-    /**
-     * 小于等于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThanOrEqualTo(path, value));
         return this;
     }
@@ -494,36 +279,14 @@ public class SpecificationWrapper<B> {
      * 大于
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, String selectKey, Y value) {
-        return valueNotNull ? this.gt(selectKey, value) : this;
-    }
-
-    /**
-     * 大于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
-        return valueNotNull ? this.gt(selectKey, value) : this;
-    }
-
-    /**
-     * 大于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(String selectKey, Y value) {
-        return handle(selectKey, e -> this.gt(e, value));
+        return valueNotNull ? handle(selectKey, e -> this.gt(e, value)) : this;
     }
 
 
     /**
      * 大于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(ColumnSFunction<B, ?> selectKey, Y value) {
-        return handle(selectKey, e -> this.gt(e, value));
-    }
-
-    /**
-     * 大于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThan(path, value));
         return this;
     }
@@ -534,36 +297,14 @@ public class SpecificationWrapper<B> {
      * 小于
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, String selectKey, Y value) {
-        return valueNotNull ? this.lt(selectKey, value) : this;
-    }
-
-    /**
-     * 小于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Y value) {
-        return valueNotNull ? this.lt(selectKey, value) : this;
-    }
-
-    /**
-     * 小于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(String selectKey, Y value) {
-        return handle(selectKey, e -> this.lt(e, value));
+        return valueNotNull ? handle(selectKey, e -> this.lt(e, value)) : this;
     }
 
 
     /**
      * 小于
      */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(ColumnSFunction<B, ?> selectKey, Y value) {
-        return handle(selectKey, e -> this.lt(e, value));
-    }
-
-    /**
-     * 小于
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt
-    (Expression<? extends Y> path, Y value) {
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThan(path, value));
         return this;
     }
@@ -573,59 +314,15 @@ public class SpecificationWrapper<B> {
     /**
      * in
      */
-    public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Object... value) {
-        return valueNotNull ? in(selectKey, value) : this;
-    }
-
-    /**
-     * in
-     */
-    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object... value) {
-        return valueNotNull ? in(selectKey, value) : this;
-    }
-
-    /**
-     * in
-     */
-    public SpecificationWrapper<B> in(String selectKey, Object... value) {
-        return handle(selectKey, e -> this.in(e, value));
-    }
-
-    /**
-     * in
-     */
-    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, Object... value) {
-        return handle(selectKey, e -> this.in(e, value));
-    }
-
-    /**
-     * in
-     */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Collection<?> value) {
-        return valueNotNull ? in(selectKey, value) : this;
-    }
-
-
-    /**
-     * in
-     */
-    public SpecificationWrapper<B> in(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value) {
-        return valueNotNull ? in(selectKey, value) : this;
+        return this.in(valueNotNull, selectKey, value.toArray());
     }
 
     /**
      * in
      */
-    public SpecificationWrapper<B> in(String selectKey, Collection<?> value) {
-        return this.in(selectKey, value.toArray());
-    }
-
-
-    /**
-     * in
-     */
-    public SpecificationWrapper<B> in(ColumnSFunction<B, ?> selectKey, Collection<?> value) {
-        return this.in(selectKey, value.toArray());
+    public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Object... value) {
+        return valueNotNull ? handle(selectKey, e -> this.in(e, value)) : this;
     }
 
 
@@ -643,58 +340,16 @@ public class SpecificationWrapper<B> {
      * not in
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Collection<?> value) {
-        return valueNotNull ? notIn(selectKey, value) : this;
-    }
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Collection<?> value) {
-        return valueNotNull ? notIn(selectKey, value) : this;
-    }
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(String selectKey, Collection<?> value) {
-        return handle(selectKey, e -> this.notIn(e, value.toArray()));
-    }
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Collection<?> value) {
-        return handle(selectKey, e -> this.notIn(e, value.toArray()));
+        return this.notIn(valueNotNull, selectKey, value.toArray());
     }
 
     /**
      * not in
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Object... value) {
-        return valueNotNull ? notIn(selectKey, value) : this;
+        return valueNotNull ? handle(selectKey, e -> this.notIn(e, value)) : this;
     }
 
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(boolean valueNotNull, ColumnSFunction<B, ?> selectKey, Object... value) {
-        return valueNotNull ? notIn(selectKey, value) : this;
-    }
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(String selectKey, Object... value) {
-        return handle(selectKey, e -> this.notIn(e, value));
-    }
-
-    /**
-     * not in
-     */
-    public SpecificationWrapper<B> notIn(ColumnSFunction<B, ?> selectKey, Object... value) {
-        return handle(selectKey, e -> this.notIn(e, value));
-    }
 
     /**
      * not in
@@ -711,31 +366,7 @@ public class SpecificationWrapper<B> {
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull,
                                                                              String selectKey, Y start, Y end) {
-        return valueNotNull ? between(selectKey, start, end) : this;
-    }
-
-    /**
-     * 之间 包头包尾[闭区间]
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull,
-                                                                             ColumnSFunction<B, ?> selectKey, Y start, Y end) {
-        return valueNotNull ? between(selectKey, start, end) : this;
-    }
-
-
-    /**
-     * 之间 包头包尾[闭区间]
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(String selectKey, Y start, Y end) {
-        return handle(selectKey, e -> this.between(e, start, end));
-    }
-
-
-    /**
-     * 之间 包头包尾[闭区间]
-     */
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(ColumnSFunction<B, ?> selectKey, Y start, Y end) {
-        return handle(selectKey, e -> this.between(e, start, end));
+        return valueNotNull ? handle(selectKey, e -> this.between(e, start, end)) : this;
     }
 
 
@@ -760,6 +391,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 主方法，处理器
+     *
+     * @param selectKey key
+     * @param action    Consumer<Path>
      */
     public SpecificationWrapper<B> handle(String selectKey, Consumer<Path> action) {
         Path<?> path;
@@ -768,22 +402,6 @@ public class SpecificationWrapper<B> {
             path = this.leftJoin(arr[0]).get(arr[1]);
         } else {
             path = this.root.get(selectKey);
-        }
-        action.accept(path);
-        return this;
-    }
-
-    /**
-     * 主方法，处理器
-     */
-    public SpecificationWrapper<B> handle(ColumnSFunction<B, ?> selectKey, Consumer<Path> action) {
-        Path<?> path;
-        String fieldName = ColumnUtil.getFieldName(selectKey);
-        if (fieldName.contains(SEPARATOR)) {
-            String[] arr = fieldName.split("\\" + SEPARATOR);
-            path = this.leftJoin(arr[0]).get(arr[1]);
-        } else {
-            path = this.root.get(fieldName);
         }
         action.accept(path);
         return this;

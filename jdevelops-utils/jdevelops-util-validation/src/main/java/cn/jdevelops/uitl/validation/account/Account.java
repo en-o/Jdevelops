@@ -12,7 +12,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 验证帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线组合)
+ * 验证帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线组合) 不能使用汉字
  *   空值不处理，如果要处理请使用 @NotBlank 进行处理
  * @author tnnn
  */

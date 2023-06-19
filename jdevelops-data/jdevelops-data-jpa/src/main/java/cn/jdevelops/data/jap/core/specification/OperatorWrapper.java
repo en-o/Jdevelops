@@ -1,6 +1,9 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
+import javax.persistence.criteria.Expression;
+
+
 /**
  * 查询查找包装
  * @author tan
@@ -16,7 +19,7 @@ public class OperatorWrapper {
     /**
      * 添加 key
      */
-    private String selectKey;
+    private Expression selectKey;
 
     /**
      * 添加值
@@ -43,11 +46,12 @@ public class OperatorWrapper {
         this.specWrapper = specWrapper;
     }
 
-    public String getSelectKey() {
+
+    public Expression getSelectKey() {
         return selectKey;
     }
 
-    public void setSelectKey(String selectKey) {
+    public void setSelectKey(Expression selectKey) {
         this.selectKey = selectKey;
     }
 
@@ -63,23 +67,17 @@ public class OperatorWrapper {
     public OperatorWrapper() {
     }
 
-    public OperatorWrapper(SpecificationWrapper<?> specWrapper, String selectKey, Object selectValue) {
+    public OperatorWrapper(SpecificationWrapper<?> specWrapper, Expression selectKey, Object selectValue) {
         this.specWrapper = specWrapper;
         this.selectKey = selectKey;
         this.selectValue = selectValue;
     }
 
-    public OperatorWrapper(SpecificationWrapper<?> specWrapper,  Object selectValue) {
-        this.specWrapper = specWrapper;
-        this.selectValue = selectValue;
-    }
-
-
     @Override
     public String toString() {
         return "OperatorWrapper{" +
                 "specWrapper=" + specWrapper +
-                ", selectKey='" + selectKey + '\'' +
+                ", selectKey=" + selectKey +
                 ", selectValue=" + selectValue +
                 '}';
     }

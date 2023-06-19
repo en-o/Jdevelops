@@ -62,6 +62,10 @@ public interface ExpandCriterion {
 		 * 空值
 		 */
 		ISNOTNULL,
+
+		/* [x,y] */
+		BETWEEN,
+
 		/**
 		 * 并且
 		 */

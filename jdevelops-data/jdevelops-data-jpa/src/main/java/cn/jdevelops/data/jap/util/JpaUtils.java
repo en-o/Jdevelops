@@ -1,15 +1,21 @@
 package cn.jdevelops.data.jap.util;
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.jdevelops.api.result.util.bean.ColumnSFunction;
+import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectIgnoreField;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
 import cn.jdevelops.data.jap.core.JPAUtilExpandCriteria;
 import cn.jdevelops.data.jap.core.criteria.Restrictions;
 import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
-import cn.jdevelops.data.jap.exception.JpaException;
+import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -20,38 +26,6 @@ import java.util.Objects;
  * @date 2020/6/28 23:16
  */
 public class JpaUtils {
-
-    /**
-     * 根据字段名称获取对象的属性
-     *
-     * @param fieldName fieldName
-     * @param target    目标
-     * @return Object
-     */
-    public static Object getFieldValueByName(String fieldName, Object target) {
-        try {
-            Object value = null;
-            Class tempClass = target.getClass();
-            // 死循环获取所有 自己和继承
-            while (tempClass != null) {
-                try {
-                    Field field = tempClass.getDeclaredField(fieldName);
-                    field.setAccessible(true);
-                    value = field.get(target);
-                    break;
-                } catch (Exception e) {
-                    //得到父类,然后赋给自己
-                    tempClass = tempClass.getSuperclass();
-                }
-            }
-            if(value == null){
-                throw new JpaException("获取字段的值失败");
-            }
-            return value;
-        } catch (Exception e) {
-            throw new JpaException("获取字段的值失败", e);
-        }
-    }
 
 
     /**
@@ -90,7 +64,8 @@ public class JpaUtils {
     private static <T, B> JPAUtilExpandCriteria<T> getJpaUtilExpandCriteria(B bean) {
         JPAUtilExpandCriteria<T> jpaSelect = new JPAUtilExpandCriteria<>();
         Field[] fields = ReflectUtil.getFields(bean.getClass());
-        for (Field field : fields) {
+        for (int i = 0, fieldsLength = fields.length; i < fieldsLength; i++) {
+            Field field = fields[i];
             String fieldName = field.getName();
             if ("serialVersionUID".equals(fieldName)) {
                 continue;
@@ -135,31 +110,99 @@ public class JpaUtils {
                                                            Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
             case ISNULL:
-                return Restrictions.isNull(fieldName);
+                return Restrictions.isNull(fieldName, annotation.function());
             case ISNOTNULL:
-                return Restrictions.isNotNull(fieldName);
+                return Restrictions.isNotNull(fieldName, annotation.function());
+            case BETWEEN:
+                // 值以逗号隔开
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.function());
             case EQ:
             default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull());
+                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
         }
     }
 
+
+    /**
+     * 处理时间格式的key
+     *
+     * @param function  SpecBuilderDateFun
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B>       B
+     */
+    public static <B> Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                                            Root<B> root,
+                                                            CriteriaBuilder builder,
+                                                            String selectKey) {
+        return builder
+                .function(function.getName()
+                        , String.class
+                        , root.get(selectKey)
+                        , builder.literal(function.getSqlFormat()));
+    }
+
+
+    /**
+     * 格式化时间数据的值为字符串
+     * bean:  LocalDateTime
+     * sql：  timestamp
+     * e.g.  mysql： date_format(user0_.create_time, "SQL 的 时间类型")
+     * pgssql： to_char(user0_.create_time, "SQL 的 时间类型")
+     *
+     * @param function  SpecBuilderDateFun
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B>       B
+     */
+    public static <B> Expression<String> functionTimeFormat(SpecBuilderDateFun function,
+                                                            Root<B> root,
+                                                            CriteriaBuilder builder,
+                                                            ColumnSFunction<B, ?> selectKey) {
+
+        return builder
+                .function(function.getName()
+                        , String.class
+                        , root.get(ColumnUtil.getFieldName(selectKey))
+                        , builder.literal(function.getSqlFormat()));
+    }
+
+
+    /**
+     * sql  date函数 固定死的
+     * e.g.   DATE ( user0_.create_time ) =?
+     *
+     * @param root      Root
+     * @param builder   CriteriaBuilder
+     * @param selectKey String
+     * @param <B>       B
+     */
+    public static <B> Expression<Date> functionTime(Root<B> root,
+                                                    CriteriaBuilder builder,
+                                                    String selectKey) {
+        return builder
+                .function("date"
+                        , Date.class
+                        , root.get(selectKey));
+    }
 }

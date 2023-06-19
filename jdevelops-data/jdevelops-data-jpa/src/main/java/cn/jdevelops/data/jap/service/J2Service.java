@@ -4,9 +4,10 @@ import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;
 import cn.jdevelops.api.result.util.bean.ColumnSFunction;
-import cn.jdevelops.data.jap.dao.JpaBasicsDao;
+import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
-import cn.jdevelops.data.jap.page.JpaPageResult;
+import cn.jdevelops.data.jap.result.JpaPageResult;
+import org.springframework.data.jpa.domain.Specification;
 
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface J2Service<B> {
      * @param <M> dao
      * @return dao
      */
-    <M extends JpaBasicsDao<B, ID>, ID> M getJpaBasicsDao();
+    <M extends JpaBasicsRepository<B, ID>, ID>  M getJpaBasicsDao();
 
     /**
      * 保存数据 返回实体
@@ -36,6 +37,24 @@ public interface J2Service<B> {
      * @return T
      */
     B saveByBean(B bean);
+
+
+    /**
+     * 删除
+     * @param unique 数据值
+     * @param selectKey 数据key
+     * @return boolean
+     * @param <U> 数据值的类型
+     */
+    <U> boolean deleteByUnique(List<U> unique, String selectKey);
+
+
+    /**
+     * 自定义条件删除
+     * @param spec Specification
+     * @return long
+     */
+    long delete(Specification<B> spec);
 
     /**
      * 保存list
@@ -92,17 +111,7 @@ public interface J2Service<B> {
      * @param bean 实体 id一定要有且键名为ID
      * @return Boolean
      */
-    Boolean updateByBean(B bean);
-
-
-    /**
-     * 更新数据 返回实体
-     *
-     * @param bean 实体 id一定要有且键名为ID
-     * @return Boolean
-     * @throws JpaException Exception
-     */
-    B updateByBeanForBean(B bean) throws JpaException;
+    <T> Boolean updateByBean(T bean);
 
     /**
      * 更新数据
@@ -112,18 +121,18 @@ public interface J2Service<B> {
      * @return Boolean
      * @throws JpaException Exception
      */
-    Boolean updateByBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
-
+    <T> Boolean updateByBean(T bean, String uniqueKey);
 
     /**
      * 更新数据
      *
      * @param bean      实体 (指定的selectKey必须要有值)
      * @param uniqueKey 指定唯一键 (bean中必须要有selectKey的值)，e.g uuid
-     * @return T
+     * @return Boolean
      * @throws JpaException Exception
      */
-    B updateByBeanForBean(B bean, ColumnSFunction<B, ?> uniqueKey) throws JpaException;
+    <T> Boolean updateByBean(T bean, ColumnSFunction<T, ?> uniqueKey);
+
 
     /**
      * 查询所有

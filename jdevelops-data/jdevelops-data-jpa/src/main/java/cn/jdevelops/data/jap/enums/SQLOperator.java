@@ -31,5 +31,8 @@ public enum SQLOperator {
     /* 等于空值 */
     ISNULL,
     /* 空值 */
-    ISNOTNULL
+    ISNOTNULL,
+
+    /* [x,y] */
+    BETWEEN,
 }
