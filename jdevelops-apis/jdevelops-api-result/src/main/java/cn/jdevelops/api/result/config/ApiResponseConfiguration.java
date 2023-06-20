@@ -19,14 +19,20 @@ package cn.jdevelops.api.result.config;
 
 import cn.jdevelops.api.result.custom.DefaultExceptionResult;
 import cn.jdevelops.api.result.custom.ExceptionResult;
+import cn.jdevelops.api.result.handler.ResultHandlerMethodReturnValueHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author shenyu
+ * @author tan
  */
-public class ExceptionConfiguration {
+public class ApiResponseConfiguration {
 
 
     /**
@@ -39,6 +45,16 @@ public class ExceptionConfiguration {
     public ExceptionResult<?> exceptionResult() {
         return new DefaultExceptionResult();
     }
+
+
+
+    public void resetRequestMappingHandlerAdapter(RequestMappingHandlerAdapter requestMappingHandlerAdapter){
+        List<HandlerMethodReturnValueHandler> oldReturnValueHandlers =  requestMappingHandlerAdapter.getReturnValueHandlers();
+        ArrayList<HandlerMethodReturnValueHandler> newReturnValueHandlers = new ArrayList<>(oldReturnValueHandlers);
+        newReturnValueHandlers.add(0, new ResultHandlerMethodReturnValueHandler());
+        requestMappingHandlerAdapter.setReturnValueHandlers(newReturnValueHandlers);
+    }
+
 
 
 }
