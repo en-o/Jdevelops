@@ -34,10 +34,29 @@ public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
     }
 
     @Override
+    public ResultVO<?> success(String message) {
+        return ResultVO.success(message);
+    }
+
+    @Override
+    public ResultVO<?> success(Object data) {
+        return ResultVO.successForData(data);
+    }
+
+    @Override
     public ResultVO<?> error() {
         return ResultVO.fail();
     }
 
+    @Override
+    public ResultVO<?> error(String message) {
+        return ResultVO.fail(message);
+    }
+
+    @Override
+    public ResultVO<?> error(Object data) {
+        return ResultVO.failForData(data);
+    }
 
 
 }

@@ -1,28 +1,9 @@
 package cn.jdevelops.api.result.config;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import cn.jdevelops.api.result.custom.DefaultExceptionResult;
-import cn.jdevelops.api.result.custom.ExceptionResult;
 import cn.jdevelops.api.result.handler.ResultHandlerMethodReturnValueHandler;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -32,22 +13,13 @@ import java.util.List;
 /**
  * @author tan
  */
+@ConditionalOnProperty(
+        value="jdevelops.api.result.enabled",
+        havingValue = "false")
 public class ApiResponseConfiguration {
 
 
-    /**
-     * jdevelops-api-exception result.
-     *
-     * @return the jdevelops-api-exception result
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = ExceptionResult.class, search = SearchStrategy.ALL)
-    public ExceptionResult<?> exceptionResult() {
-        return new DefaultExceptionResult();
-    }
-
-
-
+    @Autowired
     public void resetRequestMappingHandlerAdapter(RequestMappingHandlerAdapter requestMappingHandlerAdapter){
         List<HandlerMethodReturnValueHandler> oldReturnValueHandlers =  requestMappingHandlerAdapter.getReturnValueHandlers();
         ArrayList<HandlerMethodReturnValueHandler> newReturnValueHandlers = new ArrayList<>(oldReturnValueHandlers);

@@ -17,8 +17,12 @@
 
 package cn.jdevelops.api.result.config;
 
+import cn.jdevelops.api.result.custom.DefaultExceptionResult;
+import cn.jdevelops.api.result.custom.ExceptionResult;
 import cn.jdevelops.api.result.util.SpringBeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -29,7 +33,7 @@ import org.springframework.lang.NonNull;
  * The type spring ext configuration.
  * @author shneyu
  */
-public class SpringExtConfiguration {
+public class ApiResultConfiguration {
 
     /**
      * Application context aware application context aware.
@@ -50,5 +54,18 @@ public class SpringExtConfiguration {
         public void setApplicationContext(@NonNull final ApplicationContext applicationContext) throws BeansException {
             SpringBeanUtils.getInstance().setCfgContext((ConfigurableApplicationContext) applicationContext);
         }
+    }
+
+
+
+    /**
+     * jdevelops-api-exception result.
+     *
+     * @return the jdevelops-api-exception result
+     */
+    @Bean
+    @ConditionalOnMissingBean(value = ExceptionResult.class, search = SearchStrategy.ALL)
+    public ExceptionResult<?> exceptionResult() {
+        return new DefaultExceptionResult();
     }
 }

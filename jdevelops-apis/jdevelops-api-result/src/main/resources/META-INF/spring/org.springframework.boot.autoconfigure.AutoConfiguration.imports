@@ -1,2 +1,2 @@
-cn.jdevelops.api.result.config.SpringExtConfiguration
+cn.jdevelops.api.result.config.ApiResultConfiguration
 cn.jdevelops.api.result.config.ApiResponseConfiguration

@@ -10,6 +10,7 @@ import cn.jdevelops.api.result.emums.ResultCodeEnum;
 public interface ExceptionResult<T> {
 
 
+
     /**
      * 自定定义 code 和 message
      * @param resultCodeEnum the message
@@ -45,9 +46,38 @@ public interface ExceptionResult<T> {
 
 
     /**
+     * success
+     * @return the t
+     */
+    T success(String message);
+
+    /**
+     * 自定定义 code 和 message
+     *
+     * @param data 数据
+     * @return the t
+     */
+    T success(Object data);
+
+    /**
      * Error t.
      * @return the t
      */
     T error();
+
+
+    /**
+     * Error t.
+     * @return the t
+     */
+    T error(String message);
+
+    /**
+     * 自定定义 code 和 message
+     *
+     * @param data 数据
+     * @return the t
+     */
+    T error(Object data);
 
 }

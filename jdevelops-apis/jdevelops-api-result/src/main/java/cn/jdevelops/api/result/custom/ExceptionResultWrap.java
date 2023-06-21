@@ -21,12 +21,41 @@ public final class ExceptionResultWrap {
 
 
     /**
+     * Success object.
+     *
+     * @return the object
+     */
+    public static Object success(String message) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).success(message);
+    }
+
+    /**
+     * Success object.
+     *
+     * @return the object
+     */
+    public static Object success(Object data) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).success(data);
+    }
+
+
+    /**
      * Error object.
      *
      * @return the object
      */
     public static Object error() {
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error();
+    }
+
+
+    /**
+     * Error object.
+     *
+     * @return the object
+     */
+    public static Object error(String message) {
+        return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).error(message);
     }
 
 
