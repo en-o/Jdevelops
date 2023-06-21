@@ -1,8 +1,5 @@
 package cn.jdevelops.api.sign.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +12,7 @@ import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "jdevelops.apisign")
 @Component
-@Getter
-@Setter
-@ToString
+
 public class ApiSignConfig {
 
     /**
@@ -25,5 +20,18 @@ public class ApiSignConfig {
      */
     private String salt = "MD5database";
 
+    public String getSalt() {
+        return salt;
+    }
 
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    @Override
+    public String toString() {
+        return "ApiSignConfig{" +
+                "salt='" + salt + '\'' +
+                '}';
+    }
 }

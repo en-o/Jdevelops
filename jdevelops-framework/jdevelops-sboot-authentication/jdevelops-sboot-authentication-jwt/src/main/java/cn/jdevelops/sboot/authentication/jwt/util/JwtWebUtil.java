@@ -1,7 +1,7 @@
 package cn.jdevelops.sboot.authentication.jwt.util;
 
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
@@ -68,11 +68,11 @@ public class JwtWebUtil {
                     cookie.getCookieKey(), request.getCookies()
             );
             token = Optional.ofNullable(token).orElse(findCookie.orElseThrow(
-                    () -> new TokenException(TokenExceptionCodeEnum.UNAUTHENTICATED)
+                    () -> new TokenException(TokenExceptionCode.UNAUTHENTICATED)
             ).getValue());
         }
         if (StringUtils.isBlank(token)) {
-            throw new TokenException(TokenExceptionCodeEnum.UNAUTHENTICATED);
+            throw new TokenException(TokenExceptionCode.UNAUTHENTICATED);
         }
         return token;
     }

@@ -1,6 +1,7 @@
 package cn.jdevelops.api.result.response;
 
 import cn.jdevelops.api.result.common.ResultCommon;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.exception.ServiceException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -145,7 +146,7 @@ public class ResultVO<B> extends ResultCommon {
      * @param <B>        data的类型
      * @return ResultVO
      */
-    public static <B> ResultVO<B> of(ResultCode resultCode) {
+    public static <B> ResultVO<B> of(ExceptionCode resultCode) {
         ResultVO<B> result = new ResultVO<>();
         result.setCode(resultCode.getCode());
         result.setMessage(resultCode.getMessage());
@@ -160,7 +161,7 @@ public class ResultVO<B> extends ResultCommon {
      * @param <B>        data的类型
      * @return ResultVO
      */
-    public static <B> ResultVO<B> of(B body, ResultCode resultCode) {
+    public static <B> ResultVO<B> of(B body, ExceptionCode resultCode) {
         ResultVO<B> result = new ResultVO<>();
         result.setData(body);
         result.setCode(resultCode.getCode());

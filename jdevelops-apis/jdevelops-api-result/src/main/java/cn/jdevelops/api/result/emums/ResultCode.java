@@ -3,60 +3,35 @@ package cn.jdevelops.api.result.emums;
 
 /**
  * 公共的错误code
+ *
  * @author tn
  * @date 2019年07月29日 14:16
  */
-public enum ResultCode {
+public class ResultCode {
+
     /**
      * 成功
      */
-    SUCCESS(200,"成功"),
+    public static final ExceptionCode SUCCESS = new ExceptionCode(200, "成功");
 
     /**
      * 失败
      */
-    ERROR(404,"页面不存在"),
+    public static final ExceptionCode FAIL = new ExceptionCode(500, "失败");
 
     /**
-     * 服务异常
+     * 404
      */
-    FAIL(500,"服务异常"),
+    public static final ExceptionCode ERROR = new ExceptionCode(404, "页面不存在");
 
     /**
      * 系统异常
      */
-    SYS_ERROR(501,"系统异常"),
+    public static final ExceptionCode SYS_ERROR = new ExceptionCode(501, "系统异常");
 
     /**
      * 系统限流
      */
-    SYS_THROTTLING(503,"系统限流"),
+    public static final ExceptionCode SYS_THROTTLING = new ExceptionCode(503, "系统限流");
 
-
-
-
-    ;
-
-
-    /**
-     * code
-     */
-    private final int code;
-    /**
-     * 消息
-     */
-    private final String message;
-
-    ResultCode(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

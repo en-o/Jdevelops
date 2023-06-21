@@ -1,7 +1,7 @@
 package cn.jdevelops.api.result.custom;
 
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
-import cn.jdevelops.api.result.response.ResultVO;
 
 /**
  * 全局返回类接口
@@ -17,7 +17,7 @@ public interface ExceptionResult<T> {
      * @param resultCode the message
      * @return the t
      */
-    T result(ResultCode resultCode);
+    T result(ExceptionCode resultCode);
 
     /**
      * 自定定义 code 和 message
@@ -46,7 +46,7 @@ public interface ExceptionResult<T> {
      * @param data       数据
      * @return the t
      */
-    T result(ResultCode resultCode, Object data);
+    T result(ExceptionCode resultCode, Object data);
 
 
     /**

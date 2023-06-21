@@ -1,9 +1,9 @@
 package cn.jdevelops.api.exception.handler;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
-import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.ParamExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -71,7 +71,7 @@ public class ControllerExceptionHandler {
     public Object exceptionHandler(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.result(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
+        return ExceptionResultWrap.result(TokenExceptionCode.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
 
 
@@ -87,7 +87,7 @@ public class ControllerExceptionHandler {
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.result(TokenExceptionCodeEnum.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
+        return ExceptionResultWrap.result(TokenExceptionCode.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
     }
 
 
@@ -99,10 +99,10 @@ public class ControllerExceptionHandler {
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
                 Objects.nonNull(jsonErrorMsg =
                         dealWithJsonExceptionError(e.getLocalizedMessage()))) {
-            return ExceptionResultWrap.result(ParamExceptionCodeEnum.JSON_ERROR.getCode(),"请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
+            return ExceptionResultWrap.result(ParamExceptionCode.JSON_ERROR.getCode(),"请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
 
         }
-        return ExceptionResultWrap.result(ParamExceptionCodeEnum.MESSAGE_NO_READING.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
+        return ExceptionResultWrap.result(ParamExceptionCode.MESSAGE_NO_READING.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
     }
 
 
@@ -118,7 +118,7 @@ public class ControllerExceptionHandler {
             sb.append(";").append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
         });
         String message = sb.length() > 0 ? sb.substring(1) : sb.toString();
-        return ExceptionResultWrap.result(ParamExceptionCodeEnum.CHECK_ERROR.getCode(), message);
+        return ExceptionResultWrap.result(ParamExceptionCode.CHECK_ERROR.getCode(), message);
     }
 
     @ExceptionHandler(Exception.class)

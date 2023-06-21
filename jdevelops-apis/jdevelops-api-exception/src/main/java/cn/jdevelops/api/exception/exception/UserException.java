@@ -1,6 +1,6 @@
 package cn.jdevelops.api.exception.exception;
 
-import cn.jdevelops.api.result.emums.UserExceptionEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 
 /**
  * redis数据失效
@@ -23,7 +23,7 @@ public class UserException extends BusinessException {
         super(message, cause);
     }
 
-    public UserException(UserExceptionEnum constantEnum) {
+    public UserException(ExceptionCode constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 }

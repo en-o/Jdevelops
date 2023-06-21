@@ -2,7 +2,8 @@ package cn.jdevelops.api.result.exception;
 
 
 
-import cn.jdevelops.api.result.custom.ErrorCode;
+import cn.jdevelops.api.result.emums.ExceptionCode;
+import okhttp3.internal.http2.ErrorCode;
 
 import java.util.Objects;
 
@@ -27,16 +28,16 @@ public final class ServiceException extends RuntimeException {
     public ServiceException() {
     }
 
-    public ServiceException(ErrorCode errorCode) {
-        super(errorCode.getMsg());
+    public ServiceException(ExceptionCode errorCode) {
+        super(errorCode.getMessage());
         this.code = errorCode.getCode();
-        this.message = errorCode.getMsg();
+        this.message = errorCode.getMessage();
     }
 
-    public ServiceException(ErrorCode errorCode, Throwable cause) {
-        super(errorCode.getMsg(),cause);
+    public ServiceException(ExceptionCode errorCode, Throwable cause) {
+        super(errorCode.getMessage(),cause);
         this.code = errorCode.getCode();
-        this.message = errorCode.getMsg();
+        this.message = errorCode.getMessage();
     }
 
     public ServiceException(int code, String message, Throwable cause) {

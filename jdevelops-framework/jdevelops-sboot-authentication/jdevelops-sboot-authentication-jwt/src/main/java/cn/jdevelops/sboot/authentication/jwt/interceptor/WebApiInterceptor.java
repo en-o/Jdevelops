@@ -1,7 +1,7 @@
 package cn.jdevelops.sboot.authentication.jwt.interceptor;
 
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
 import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
@@ -102,7 +102,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
-                    .result(TokenExceptionCodeEnum.TOKEN_ERROR.getCode(), TokenExceptionCodeEnum.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
+                    .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
             return new CheckVO(false,token);
         }
         // 日志用的 - %X{token}

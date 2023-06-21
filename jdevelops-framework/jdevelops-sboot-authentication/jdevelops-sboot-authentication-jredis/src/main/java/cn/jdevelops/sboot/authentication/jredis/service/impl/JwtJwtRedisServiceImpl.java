@@ -7,7 +7,6 @@ import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEnti
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
-import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
@@ -23,7 +22,9 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.api.result.emums.UserExceptionEnum.*;
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_EXPIRED_USER;
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_NO_USER;
+import static cn.jdevelops.api.result.emums.UserException.*;
 
 
 /**

@@ -1,5 +1,6 @@
 package cn.jdevelops.api.result.custom;
 
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.response.ResultVO;
 
@@ -14,7 +15,7 @@ public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
 
 
     @Override
-    public ResultVO<?> result(ResultCode resultCode) {
+    public ResultVO<?> result(ExceptionCode resultCode) {
         return ResultVO.of(resultCode);
     }
 
@@ -29,7 +30,7 @@ public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
     }
 
     @Override
-    public ResultVO<?> result(ResultCode resultCode, Object data) {
+    public ResultVO<?> result(ExceptionCode resultCode, Object data) {
         return ResultVO.of(data, resultCode);
     }
 

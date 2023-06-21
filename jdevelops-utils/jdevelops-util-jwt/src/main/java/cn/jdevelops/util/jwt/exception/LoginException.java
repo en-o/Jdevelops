@@ -1,8 +1,7 @@
 package cn.jdevelops.util.jwt.exception;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.api.result.emums.UserExceptionEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 
 /**
  * JwtException
@@ -23,19 +22,12 @@ public class LoginException extends BusinessException {
     }
 
 
-    public LoginException(TokenExceptionCodeEnum constantEnum) {
+    public LoginException(ExceptionCode constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 
-    public LoginException(TokenExceptionCodeEnum constantEnum, Throwable cause) {
-        super(constantEnum.getMessage(), cause, constantEnum.getCode());
-    }
-
-    public LoginException(UserExceptionEnum constantEnum) {
+    public LoginException(ExceptionCode constantEnum, Throwable cause) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 
-    public LoginException(UserExceptionEnum constantEnum, Throwable cause) {
-        super(constantEnum.getMessage(), cause, constantEnum.getCode());
-    }
 }

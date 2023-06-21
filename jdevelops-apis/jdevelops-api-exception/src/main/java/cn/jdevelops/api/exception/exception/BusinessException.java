@@ -1,6 +1,6 @@
 package cn.jdevelops.api.exception.exception;
 
-import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
 
 /**
@@ -37,20 +37,17 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(ResultCode code, String message) {
+    public BusinessException(ExceptionCode code, String message) {
         super(message);
         this.code = code.getCode();
     }
 
-    public BusinessException(ResultCode resultCode2Enum){
-        super(resultCode2Enum.getMessage());
-        this.code = resultCode2Enum.getCode();
+    public BusinessException(ExceptionCode exceptionCode){
+        super(exceptionCode.getMessage());
+        this.code = exceptionCode.getCode();
     }
 
-    public BusinessException(ParamExceptionCodeEnum resultCode2Enum){
-        super(resultCode2Enum.getMessage());
-        this.code = resultCode2Enum.getCode();
-    }
+
 
     public int getCode() {
         return this.code;

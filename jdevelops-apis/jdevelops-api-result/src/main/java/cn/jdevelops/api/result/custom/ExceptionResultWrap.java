@@ -1,5 +1,6 @@
 package cn.jdevelops.api.result.custom;
 
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.util.SpringBeanUtils;
 
@@ -64,7 +65,7 @@ public final class ExceptionResultWrap {
      * @param resultCode the resultCodeEnum
      * @return the object
      */
-    public static Object result(ResultCode resultCode) {
+    public static Object result(ExceptionCode resultCode) {
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(resultCode.getCode(), resultCode.getMessage());
     }
 
