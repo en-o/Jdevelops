@@ -1,6 +1,7 @@
 package cn.jdevelops.api.result.handler;
 
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public class ResultHandlerMethodReturnValueHandler implements HandlerMethodRetur
 
     private MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 
+
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
         // 指定 接口存在ResponseBody注解和返回的不是ExceptionResultWrap类就要做自定义处理，给与包裹类 handleReturnValue 中的处理逻辑
@@ -33,8 +35,13 @@ public class ResultHandlerMethodReturnValueHandler implements HandlerMethodRetur
 
     @Override
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
+        // 可通过客户端的传递的请求头来切换不同的响应体的内容
         mavContainer.setRequestHandled(true);
+
+        // returnValue =  POJO
         Object apiResponse = ExceptionResultWrap.success(returnValue);
+        HttpServletResponse response = (HttpServletResponse) webRequest.getNativeResponse();
+        response.addHeader("version", "1.0");
         ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
         converter.write(apiResponse, MediaType.APPLICATION_JSON,outputMessage);
     }
