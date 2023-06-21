@@ -1,7 +1,7 @@
 package cn.jdevelops.api.exception.exception;
 
 
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 
 /**
  * jwt异常
@@ -22,7 +22,7 @@ public class TokenException extends BusinessException{
         super(message, cause);
     }
 
-    public TokenException(TokenExceptionCodeEnum constantEnum) {
+    public TokenException(ExceptionCode constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 

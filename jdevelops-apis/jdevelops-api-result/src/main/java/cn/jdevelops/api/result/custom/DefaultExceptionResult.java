@@ -1,6 +1,6 @@
 package cn.jdevelops.api.result.custom;
 
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.response.ResultVO;
 
 /**
@@ -12,19 +12,25 @@ import cn.jdevelops.api.result.response.ResultVO;
  */
 public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
 
+
+    @Override
+    public ResultVO<?> result(ExceptionCode resultCode) {
+        return ResultVO.of(resultCode);
+    }
+
     @Override
     public ResultVO<?> result(int code, String message) {
-        return ResultVO.result(code, message);
+        return ResultVO.of(code, message);
     }
 
     @Override
     public ResultVO<?> result(int code, String message, Object data) {
-        return ResultVO.result(code, message, data);
+        return ResultVO.of(data, code, message);
     }
 
     @Override
-    public ResultVO<?> result(ResultCodeEnum resultCodeEnum) {
-        return ResultVO.result(resultCodeEnum);
+    public ResultVO<?> result(ExceptionCode resultCode, Object data) {
+        return ResultVO.of(data, resultCode);
     }
 
 
@@ -34,10 +40,17 @@ public class DefaultExceptionResult implements ExceptionResult<ResultVO<?>> {
     }
 
     @Override
-    public ResultVO<?> error() {
-        return ResultVO.fail();
+    public ResultVO<?> success(Object data) {
+        return ResultVO.success(data);
     }
 
+    @Override
+    public ResultVO<?> fail(String message) {
+        return ResultVO.failMessage(message);
+    }
 
-
+    @Override
+    public ResultVO<?> fail() {
+        return ResultVO.fail();
+    }
 }

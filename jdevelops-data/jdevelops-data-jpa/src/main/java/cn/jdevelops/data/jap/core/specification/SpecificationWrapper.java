@@ -1,10 +1,6 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,9 +16,7 @@ import java.util.function.Consumer;
  * @author tan
  * @date 2023-03-24 10:59:17
  */
-@Getter
-@Setter
-@NoArgsConstructor
+
 public class SpecificationWrapper<B> {
 
     /**
@@ -405,5 +399,48 @@ public class SpecificationWrapper<B> {
         }
         action.accept(path);
         return this;
+    }
+
+
+    public Root<B> getRoot() {
+        return root;
+    }
+
+    public void setRoot(Root<B> root) {
+        this.root = root;
+    }
+
+    public CriteriaQuery<?> getQuery() {
+        return query;
+    }
+
+    public void setQuery(CriteriaQuery<?> query) {
+        this.query = query;
+    }
+
+    public CriteriaBuilder getBuilder() {
+        return builder;
+    }
+
+    public void setBuilder(CriteriaBuilder builder) {
+        this.builder = builder;
+    }
+
+    public List<Predicate> getPredicates() {
+        return predicates;
+    }
+
+    public void setPredicates(List<Predicate> predicates) {
+        this.predicates = predicates;
+    }
+
+    public SpecificationWrapper() {
+    }
+
+    public SpecificationWrapper(Root<B> root, CriteriaQuery<?> query, CriteriaBuilder builder, List<Predicate> predicates) {
+        this.root = root;
+        this.query = query;
+        this.builder = builder;
+        this.predicates = predicates;
     }
 }

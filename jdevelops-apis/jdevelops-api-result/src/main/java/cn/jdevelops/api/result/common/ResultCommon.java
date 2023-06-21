@@ -1,6 +1,6 @@
 package cn.jdevelops.api.result.common;
 
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.exception.ServiceException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yomahub.tlog.context.TLogContext;
@@ -61,7 +61,7 @@ public class ResultCommon implements Serializable {
      * 自动转换success的返回值：true,false
      */
     public boolean isSuccess() {
-        return this.code == ResultCodeEnum.SUCCESS.getCode();
+        return this.code == ResultCode.SUCCESS.getCode();
     }
 
     public Integer getCode() {
@@ -83,7 +83,6 @@ public class ResultCommon implements Serializable {
     public Long getTs() {
         return  System.currentTimeMillis();
     }
-
 
 
     /**

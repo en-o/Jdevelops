@@ -1,7 +1,8 @@
 package cn.jdevelops.api.result.response;
 
 import cn.jdevelops.api.result.common.ResultCommon;
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
+import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.exception.ServiceException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,11 +31,19 @@ public class ResultVO<B> extends ResultCommon {
         super(code, message);
     }
 
+    public ResultVO(Integer code, String message, String traceId) {
+        super(code, message, traceId);
+    }
+
     public ResultVO(Integer code, String message, B data) {
         super(code, message);
         this.data = data;
     }
 
+    public ResultVO(Integer code, String message, String traceId, B data) {
+        super(code, message, traceId);
+        this.data = data;
+    }
 
     /**
      * 成功默认返回
@@ -42,156 +51,153 @@ public class ResultVO<B> extends ResultCommon {
      * @param <B> 实体
      */
     public static <B> ResultVO<B> success() {
-        ResultCodeEnum success = ResultCodeEnum.SUCCESS;
-        return new ResultVO<>(success.getCode(),
-                success.getMessage());
+        return of(null, ResultCode.SUCCESS);
     }
 
     /**
-     * 成功默认返回
+     * 成功返回
+     *
+     * @param body 数据体
+     * @param <B>  body的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> success(B body) {
+        return of(body, ResultCode.SUCCESS);
+    }
+
+    /**
+     * 成功返回
+     *
+     * @param message 消息
+     * @return ResultVO
+     */
+    public static ResultVO<String> successMessage(String message) {
+        ResultVO<String> result = of("", ResultCode.SUCCESS);
+        result.setMessage(message);
+        return result;
+    }
+
+    /**
+     * 成功返回
+     *
+     * @param message 消息
+     * @param body    数据体
+     * @param <B>     body的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> success(String message, B body) {
+        ResultVO<B> result = of(body, ResultCode.SUCCESS);
+        result.setMessage(message);
+        return result;
+    }
+
+
+
+    /**
+     * 失败返回
      *
      * @param <B> 实体
      */
-    public static <B> ResultVO<B> success(String message) {
-        ResultCodeEnum success = ResultCodeEnum.SUCCESS;
-        return new ResultVO<>(success.getCode(),message);
-    }
-
-    /**
-     * 成功返回
-     *
-     * @param data 数据
-     * @param <B>  实体
-     */
-    public static <B> ResultVO<B> successForData(B data) {
-        ResultCodeEnum success = ResultCodeEnum.SUCCESS;
-        return new ResultVO<>(success.getCode(),
-                success.getMessage(),
-                data);
-    }
-
-    /**
-     * 成功返回
-     *
-     * @param message 消息
-     * @param data    数据
-     * @param <B>     实体
-     */
-    public static <B> ResultVO<B> success(String message, B data) {
-        return new ResultVO<>(ResultCodeEnum.SUCCESS.getCode(),
-                message,
-                data);
-    }
-
-
-    /**
-     * 失败返回
-     * @param <B>     实体
-     */
     public static <B> ResultVO<B> fail() {
-        ResultCodeEnum fail = ResultCodeEnum.FAIL;
-        return new ResultVO<>(fail.getCode(), fail.getMessage());
+        return of(null, ResultCode.FAIL);
     }
 
 
     /**
      * 失败返回
      *
-     * @param message 消息
-     * @param data    数据
-     * @param <B>     实体
+     * @param <B> 实体
      */
-    public static <B> ResultVO<B> fail(String message, B data) {
-        ResultCodeEnum fail = ResultCodeEnum.FAIL;
-        return new ResultVO<>(fail.getCode(), message, data);
+    public static <B> ResultVO<B> fail(B body) {
+        return of(body, ResultCode.FAIL);
+    }
+
+
+    /**
+     * 失败返回
+     *
+     * @param message 失败消息
+     * @return ResultVO
+     */
+    public static ResultVO<String> failMessage(String message) {
+        ResultVO<String> result = of("", ResultCode.FAIL);
+        result.setMessage(message);
+        return result;
     }
 
     /**
      * 失败返回
      *
-     * @param message 消息
-     * @param <B>     实体
+     * @param message 失败消息
+     * @param body    实体数据体
+     * @param <B>     body的类型
+     * @return ResultVO
      */
-    public static <B> ResultVO<B> fail(String message) {
-        ResultCodeEnum fail = ResultCodeEnum.FAIL;
-        return new ResultVO<>(fail.getCode(), message);
+    public static <B> ResultVO<B> fail(String message, B body) {
+        ResultVO<B> result = of(body, ResultCode.FAIL);
+        result.setMessage(message);
+        return result;
     }
 
     /**
-     * 失败返回
+     * 静态的公共方法
      *
-     * @param data 数据
-     * @param <B>  实体
+     * @param resultCode 状态
+     * @param <B>        data的类型
+     * @return ResultVO
      */
-    public static <B> ResultVO<B> failForData(B data) {
-        ResultCodeEnum fail = ResultCodeEnum.FAIL;
-        return new ResultVO<>(fail.getCode(), fail.getMessage(), data);
+    public static <B> ResultVO<B> of(ExceptionCode resultCode) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setCode(resultCode.getCode());
+        result.setMessage(resultCode.getMessage());
+        return result;
     }
 
-
     /**
-     * 自定义 code 和 message
+     * 静态的公共方法
      *
-     * @param code    状态码
-     * @param message 消息
-     * @param data    数据
-     * @param <B>     实体
+     * @param body       数据
+     * @param resultCode 状态
+     * @param <B>        data的类型
+     * @return ResultVO
      */
-    public static <B> ResultVO<B> result(int code, String message, B data) {
-        return new ResultVO<>(code,
-                message,
-                data);
+    public static <B> ResultVO<B> of(B body, ExceptionCode resultCode) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setData(body);
+        result.setCode(resultCode.getCode());
+        result.setMessage(resultCode.getMessage());
+        return result;
     }
 
     /**
-     * 自定义 code 和 message
+     * 静态的公共方法
      *
-     * @param code    状态码
-     * @param message 消息
-     * @param <B>     实体
+     * @param code    状态
+     * @param message 状态
+     * @param <B>     data的类型
+     * @return ResultVO
      */
-    public static <B> ResultVO<B> result(int code, String message) {
-        return new ResultVO<>(code,
-                message);
+    public static <B> ResultVO<B> of(int code, String message) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
     }
-
     /**
-     * 自定义 code 和 message
+     * 静态的公共方法
      *
-     * @param resultCodeEnum ResultCodeEnum
-     * @param <B>     实体
+     * @param body    数据
+     * @param code    状态
+     * @param message 状态
+     * @param <B>     data的类型
+     * @return ResultVO
      */
-    public static <B> ResultVO<B> result(ResultCodeEnum resultCodeEnum) {
-        return new ResultVO<>(resultCodeEnum.getCode(),
-                resultCodeEnum.getMessage());
-    }
-
-
-    /**
-     * @param isOk   返回 (true)success   false(fail)
-     * @param msgStr 返回消息
-     * @return { msgStr+"成功" or msgStr+"失败" }
-     */
-    public static ResultVO<String> resultMsg(boolean isOk, String msgStr) {
-        if (isOk) {
-            return ResultVO.success(msgStr + "成功");
-        } else {
-            return ResultVO.fail(msgStr + "失败");
-        }
-    }
-
-    /**
-     * @param isOk   返回 (true)success   false(fail)
-     * @param obj    对象数据
-     * @param msgStr 返回消息
-     * @return { msgStr+"成功" or msgStr+"失败" }
-     */
-    public static <B> ResultVO<B> resultDataMsgForT(boolean isOk, B obj, String msgStr) {
-        if (isOk) {
-            return ResultVO.success(msgStr + "成功", obj);
-        } else {
-            return ResultVO.fail(msgStr + "失败");
-        }
+    public static <B> ResultVO<B> of(B body, int code, String message) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setData(body);
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
     }
 
 

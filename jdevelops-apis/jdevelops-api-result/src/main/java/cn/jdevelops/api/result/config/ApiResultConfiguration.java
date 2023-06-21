@@ -1,5 +1,3 @@
-package cn.jdevelops.api.result.config;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,16 +15,47 @@ package cn.jdevelops.api.result.config;
  * limitations under the License.
  */
 
+package cn.jdevelops.api.result.config;
+
 import cn.jdevelops.api.result.custom.DefaultExceptionResult;
 import cn.jdevelops.api.result.custom.ExceptionResult;
+import cn.jdevelops.api.result.util.SpringBeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.lang.NonNull;
 
 /**
- * @author shenyu
+ * The type spring ext configuration.
+ * @author shneyu
  */
-public class ExceptionConfiguration {
+public class ApiResultConfiguration {
+
+    /**
+     * Application context aware application context aware.
+     *
+     * @return the application context aware
+     */
+    @Bean
+    public ApplicationContextAware applicationContextAware() {
+        return new JdevelopsApplicationContextAware();
+    }
+
+    /**
+     * The type shenyu application context aware.
+     */
+    public static class JdevelopsApplicationContextAware implements ApplicationContextAware {
+
+        @Override
+        public void setApplicationContext(@NonNull final ApplicationContext applicationContext) throws BeansException {
+            SpringBeanUtils.getInstance().setCfgContext((ConfigurableApplicationContext) applicationContext);
+        }
+    }
+
 
 
     /**
@@ -39,6 +68,4 @@ public class ExceptionConfiguration {
     public ExceptionResult<?> exceptionResult() {
         return new DefaultExceptionResult();
     }
-
-
 }

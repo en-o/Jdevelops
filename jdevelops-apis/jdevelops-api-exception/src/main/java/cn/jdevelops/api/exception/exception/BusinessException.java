@@ -1,7 +1,7 @@
 package cn.jdevelops.api.exception.exception;
 
-import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
+import cn.jdevelops.api.result.emums.ResultCode;
 
 /**
  * 自定义异常
@@ -20,7 +20,7 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(String message) {
         super(message);
-        this.code = ResultCodeEnum.FAIL.getCode();
+        this.code = ResultCode.FAIL.getCode();
     }
 
     public BusinessException(String message, Throwable cause) {
@@ -37,20 +37,17 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(ResultCodeEnum code, String message) {
+    public BusinessException(ExceptionCode code, String message) {
         super(message);
         this.code = code.getCode();
     }
 
-    public BusinessException(ResultCodeEnum resultCode2Enum){
-        super(resultCode2Enum.getMessage());
-        this.code = resultCode2Enum.getCode();
+    public BusinessException(ExceptionCode exceptionCode){
+        super(exceptionCode.getMessage());
+        this.code = exceptionCode.getCode();
     }
 
-    public BusinessException(ParamExceptionCodeEnum resultCode2Enum){
-        super(resultCode2Enum.getMessage());
-        this.code = resultCode2Enum.getCode();
-    }
+
 
     public int getCode() {
         return this.code;

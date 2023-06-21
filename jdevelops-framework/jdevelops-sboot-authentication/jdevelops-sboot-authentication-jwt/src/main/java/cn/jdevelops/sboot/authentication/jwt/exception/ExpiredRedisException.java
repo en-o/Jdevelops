@@ -1,8 +1,7 @@
 package cn.jdevelops.sboot.authentication.jwt.exception;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
-import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
-import cn.jdevelops.api.result.emums.UserExceptionEnum;
+import cn.jdevelops.api.result.emums.ExceptionCode;
 
 /**
  * redis数据失效
@@ -23,15 +22,12 @@ public class ExpiredRedisException extends BusinessException {
     }
 
 
-    public ExpiredRedisException(TokenExceptionCodeEnum constantEnum) {
+    public ExpiredRedisException(ExceptionCode constantEnum) {
         super(constantEnum.getCode(), constantEnum.getMessage());
     }
 
-    public ExpiredRedisException(UserExceptionEnum constantEnum, Throwable cause) {
+    public ExpiredRedisException(ExceptionCode constantEnum, Throwable cause) {
         super(constantEnum.getMessage(), cause, constantEnum.getCode());
     }
 
-    public ExpiredRedisException(UserExceptionEnum constantEnum) {
-        super(constantEnum.getCode(), constantEnum.getMessage());
-    }
 }
