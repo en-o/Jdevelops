@@ -3,7 +3,6 @@ package cn.jdevelops.api.result.exception;
 
 
 import cn.jdevelops.api.result.emums.ExceptionCode;
-import okhttp3.internal.http2.ErrorCode;
 
 import java.util.Objects;
 

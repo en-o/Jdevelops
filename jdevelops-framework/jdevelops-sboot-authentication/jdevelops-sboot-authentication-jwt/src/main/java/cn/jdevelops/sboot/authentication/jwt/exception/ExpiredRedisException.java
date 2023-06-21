@@ -2,8 +2,6 @@ package cn.jdevelops.sboot.authentication.jwt.exception;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.result.emums.ExceptionCode;
-import cn.jdevelops.api.result.emums.TokenExceptionCode;
-import cn.jdevelops.api.result.emums.UserException;
 
 /**
  * redis数据失效

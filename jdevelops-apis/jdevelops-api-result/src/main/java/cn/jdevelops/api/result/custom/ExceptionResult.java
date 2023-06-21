@@ -1,7 +1,6 @@
 package cn.jdevelops.api.result.custom;
 
 import cn.jdevelops.api.result.emums.ExceptionCode;
-import cn.jdevelops.api.result.emums.ResultCode;
 
 /**
  * 全局返回类接口

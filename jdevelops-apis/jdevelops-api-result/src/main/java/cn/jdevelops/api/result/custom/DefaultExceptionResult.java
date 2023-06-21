@@ -1,7 +1,6 @@
 package cn.jdevelops.api.result.custom;
 
 import cn.jdevelops.api.result.emums.ExceptionCode;
-import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.response.ResultVO;
 
 /**
