@@ -6,7 +6,7 @@ package cn.jdevelops.api.result.emums;
  * @author tn
  * @date 2019年07月29日 14:16
  */
-public enum ResultCodeEnum {
+public enum ResultCode {
     /**
      * 成功
      */
@@ -47,7 +47,7 @@ public enum ResultCodeEnum {
      */
     private final String message;
 
-    ResultCodeEnum(int code, String message) {
+    ResultCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

@@ -1,22 +1,23 @@
 package cn.jdevelops.api.result.custom;
 
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ResultCode;
+import cn.jdevelops.api.result.response.ResultVO;
 
 /**
- * 全局异常返回类
+ * 全局返回类接口
+ *
  * @param <T>
  * @author tnnn
  */
 public interface ExceptionResult<T> {
 
-
-
     /**
      * 自定定义 code 和 message
-     * @param resultCodeEnum the message
+     *
+     * @param resultCode the message
      * @return the t
      */
-    T result(ResultCodeEnum resultCodeEnum);
+    T result(ResultCode resultCode);
 
     /**
      * 自定定义 code 和 message
@@ -27,57 +28,56 @@ public interface ExceptionResult<T> {
      */
     T result(int code, String message);
 
-
     /**
      * 自定定义 code 和 message
      *
      * @param code    the code
      * @param message the message
-     * @param data 数据
+     * @param data    数据
      * @return the t
      */
     T result(int code, String message, Object data);
 
+
+    /**
+     * ResultCode
+     *
+     * @param resultCode 状态
+     * @param data       数据
+     * @return the t
+     */
+    T result(ResultCode resultCode, Object data);
+
+
     /**
      * success
-     * @return the t
+     *
+     * @return T
      */
     T success();
 
-
     /**
      * success
-     * @return the t
-     */
-    T success(String message);
-
-    /**
-     * 自定定义 code 和 message
      *
-     * @param data 数据
-     * @return the t
+     * @param data data
+     * @return T
      */
     T success(Object data);
 
-    /**
-     * Error t.
-     * @return the t
-     */
-    T error();
-
 
     /**
-     * Error t.
-     * @return the t
-     */
-    T error(String message);
-
-    /**
-     * 自定定义 code 和 message
+     * fail
      *
-     * @param data 数据
-     * @return the t
+     * @param message message
+     * @return T
      */
-    T error(Object data);
+    T fail(String message);
+
+    /**
+     * fail
+     *
+     * @return T
+     */
+    T fail();
 
 }

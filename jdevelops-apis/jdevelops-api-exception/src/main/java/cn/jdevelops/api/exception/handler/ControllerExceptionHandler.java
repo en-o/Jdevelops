@@ -2,7 +2,7 @@ package cn.jdevelops.api.exception.handler;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.result.emums.ParamExceptionCodeEnum;
-import cn.jdevelops.api.result.emums.ResultCodeEnum;
+import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.emums.TokenExceptionCodeEnum;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +80,7 @@ public class ControllerExceptionHandler {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
-        return ExceptionResultWrap.result(ResultCodeEnum.SYS_ERROR.getCode(), "暂时无法获取数据");
+        return ExceptionResultWrap.result(ResultCode.SYS_ERROR.getCode(), "暂时无法获取数据");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -146,7 +146,7 @@ public class ControllerExceptionHandler {
             resqStr.append("字段:").append(it.getField()).append(" ==》 验证不通过，原因是：").append(it.getDefaultMessage());
             resqStr.append("。  ");
         });
-        return ExceptionResultWrap.result(ResultCodeEnum.SYS_ERROR.getCode(), resqStr.toString());
+        return ExceptionResultWrap.result(ResultCode.SYS_ERROR.getCode(), resqStr.toString());
     }
 
 
