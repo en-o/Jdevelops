@@ -18,7 +18,8 @@ import cn.jdevelops.data.jap.service.J2Service;
 import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JPageUtil;
 import cn.jdevelops.data.jap.util.JpaUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,9 +49,11 @@ import java.util.Optional;
  * @version 1
  * @date 2021/1/23 12:03
  */
-@Slf4j
+
 @Component
 public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends SerializableBean<B>, ID> implements J2Service<B> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(J2ServiceImpl.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -109,7 +112,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
         try {
             commonDao.saveAll(bean);
         } catch (Exception e) {
-            log.error("保存失败", e);
+            LOG.error("保存失败", e);
             return false;
         }
         return true;
