@@ -16,7 +16,7 @@ public class RegexUtil {
      * 正则匹配 (忽略大小写)
      * @param regex  正则表达式
      * @param content 字符串内容
-     * @param flags  Pattern.I|Pattern.M
+     * @param flags  常用：Pattern.CASE_INSENSITIVE @see <a href="https://zq99299.github.io/java-tutorial/essential/regex/pattern.html">...</a>
      * @return 正则为null或者""则不检查，返回true，内容为null返回false
      */
     public static boolean isMatcher(String regex, CharSequence content, int flags) {
