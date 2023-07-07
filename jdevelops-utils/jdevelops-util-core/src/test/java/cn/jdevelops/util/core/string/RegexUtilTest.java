@@ -4,16 +4,24 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class RegexUtilTest extends TestCase {
 
     public void testIsMatcher() {
+        String regex = "\\{([^\\}]*?)\\}";
+        assertTrue(RegexUtil.isMatcher(regex,"{product}{storeName} €10 €20", Pattern.CASE_INSENSITIVE));
+        assertFalse(RegexUtil.isMatcher(regex,"€10 €20", Pattern.CASE_INSENSITIVE));
     }
 
     public void testIsMatcherIgnore() {
+
+        String regex = "\\{([^\\}]*?)\\}";
+        assertTrue(RegexUtil.isMatcherIgnore(regex,"{product}{storeName} €10 €20"));
+        assertFalse(RegexUtil.isMatcherIgnore(regex,"€10 €20"));
     }
 
-    public void extractBracesList() {
+    public void testExtractBracesList() {
         List<Map<String, Integer>> keywords = RegexUtil.extractBracesList("{product}{storeName} €10 €20");
         assertEquals(keywords.toString(),"[{product=1}, {storeName=1}]");
         keywords = RegexUtil.extractBracesList("{product}{storeName} €10 €20","product","storeName");
@@ -26,7 +34,7 @@ public class RegexUtilTest extends TestCase {
         assertEquals(keywords.toString(),"[{aa=3}, {aa=3}, {bb=2}, {bb=2}, {aa=3}]");
     }
 
-    public void extractBracesMap() {
+    public void testExtractBracesMap() {
 
         Map<String, Integer> keywords = RegexUtil.extractBracesMap("{product}{storeName} €10 €20");
         assertEquals(keywords.toString(),"{product=1, storeName=1}");
