@@ -1,5 +1,12 @@
 package cn.jdevelops.util.core.string;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegexUtil {
@@ -45,5 +52,55 @@ public class RegexUtil {
      */
     private static boolean isEmpty(CharSequence str) {
         return str == null || str.length() == 0;
+    }
+
+
+
+
+    /**
+     * 不同之处具体看单元测试
+     *  提取content 中 {} 里的数据并计算出现次数
+     * @param content content
+     * @param ignore 忽略单词
+     * @return  存在且返回  key:关键字，value:出现次数
+     */
+    public static List<Map<String,Integer>> extractBracesList(String content, String... ignore){
+        String regex = "\\{([^\\}]*?)\\}";
+        // 创建Pattern对象
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(content);
+        List<Map<String,Integer>> list = new ArrayList<>();
+        while (matcher.find()){
+            String trim = matcher.group(1).trim();
+            if(!ArrayUtils.contains(ignore, trim)){
+                list.add(new HashMap<String,Integer>(2){{
+                    put(trim,StringNumber.countOccurrences(content,trim));
+                }});
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * 不同之处具体看单元测试
+     * 提取content 中 {} 里的数据并计算出现次数
+     * @param content content
+     * @param ignore 忽略单词
+     * @return  存在且返回  key:关键字，value:出现次数
+     */
+    public static  Map<String,Integer> extractBracesMap(String content, String... ignore){
+        String regex = "\\{([^\\}]*?)\\}";
+        // 创建Pattern对象
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(content);
+        Map<String,Integer> hashMap = new HashMap<>();
+        while (matcher.find()){
+            String trim = matcher.group(1).trim();
+            if(!ArrayUtils.contains(ignore, trim)){
+                hashMap.put(trim,StringNumber.countOccurrences(content,trim));
+            }
+        }
+        return hashMap;
     }
 }
