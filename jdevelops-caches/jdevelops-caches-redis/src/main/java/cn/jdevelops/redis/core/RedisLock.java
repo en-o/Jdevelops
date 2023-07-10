@@ -48,10 +48,9 @@ public class RedisLock {
      *
      * @param redisTemplate redisTemplate
      * @param key key
-     * @param value value
      * @return Boolean
      */
-    public static Boolean unlock(RedisTemplate<String,Object> redisTemplate, String key, String value) {
+    public static Boolean unlock(RedisTemplate<String,Object> redisTemplate, String key) {
         try {
             Object result = redisTemplate.delete(Collections.singletonList(key));
             if (SUCCESS.equals(result)) {

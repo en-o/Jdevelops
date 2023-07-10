@@ -2,7 +2,6 @@ package cn.jdevelops.util.core.list;
 
 import junit.framework.TestCase;
 
-import javax.print.DocFlavor;
 
 public class CollectionUtilTest extends TestCase {
 
