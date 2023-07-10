@@ -13,7 +13,7 @@ public class ThreadUtilsTest extends TestCase {
 //        ThreadUtils.sleep(TimeUnit.MILLISECONDS,1000);
 //        System.out.println(System.currentTimeMillis()-timeMillis);
 //        ThreadUtils.sleep(TimeUnit.SECONDS,2);
-//        System.out.println(System.currentTimeMillis()-timeMillis);
+//        System.out.println(System.curre ntTimeMillis()-timeMillis);
     }
 
     public void testTestSleep() {
