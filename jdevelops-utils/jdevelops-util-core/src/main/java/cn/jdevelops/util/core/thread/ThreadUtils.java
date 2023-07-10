@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * thread utils.
- * @author huangxiaofeng
+ * @author tan
  */
 public class ThreadUtils {
 
