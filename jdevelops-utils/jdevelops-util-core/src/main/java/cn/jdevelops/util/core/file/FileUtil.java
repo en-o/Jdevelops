@@ -3,6 +3,9 @@ package cn.jdevelops.util.core.file;
 
 import cn.jdevelops.util.core.file.files.FileReader;
 import cn.jdevelops.util.core.file.files.FileWriter;
+import cn.jdevelops.util.core.list.CollectionUtil;
+import cn.jdevelops.util.core.thread.ThreadUtils;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -126,7 +129,7 @@ public class FileUtil {
 
 		if (file.isDirectory()) {
 			String[] subFiles = file.list();
-			return isEmpty(subFiles);
+			return CollectionUtil.isEmpty(subFiles);
 		} else if (file.isFile()) {
 			return file.length() <= 0;
 		}
@@ -135,9 +138,40 @@ public class FileUtil {
 	}
 
 
-	public static <T> boolean isEmpty(T[] array) {
-		return array == null || array.length == 0;
+	/**
+	 * 将文件转换成Byte数组
+	 *
+	 * @param pathStr 文档
+	 */
+	public static byte[] fileConvertToByteArray(String pathStr) {
+		File file = new File(pathStr);
+		return fileConvertToByteArray(file);
 	}
+
+
+	/**
+	 * 将文件转换成Byte数组
+	 *
+	 * @param file 文件
+	 */
+	public static byte[] fileConvertToByteArray(File file) {
+		try(FileInputStream fis = new FileInputStream(file);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024)) {
+
+			byte[] b = new byte[1024];
+			int n;
+			while ((n = fis.read(b)) != -1) {
+				bos.write(b, 0, n);
+			}
+			return bos.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new byte[0];
+	}
+
+
+
 
 
 	/**
@@ -262,29 +296,13 @@ public class FileUtil {
 			if (dir.exists()) {
 				return true;
 			}
-			sleep(sleepMillis);
+			ThreadUtils.sleep(sleepMillis);
 		}
 		return dir.exists();
 	}
 
 
-	/**
-	 * 挂起当前线程
-	 *
-	 * @param millis 挂起的毫秒数
-	 * @return 被中断返回false，否则true
-	 * @since 5.3.2
-	 */
-	public static boolean sleep(long millis) {
-		if (millis > 0) {
-			try {
-				Thread.sleep(millis);
-			} catch (InterruptedException e) {
-				return false;
-			}
-		}
-		return true;
-	}
+
 
 
 	/**
