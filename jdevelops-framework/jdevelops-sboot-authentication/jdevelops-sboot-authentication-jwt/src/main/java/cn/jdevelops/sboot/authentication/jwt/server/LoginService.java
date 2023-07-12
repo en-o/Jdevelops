@@ -22,7 +22,7 @@ public interface LoginService  {
      * @param subject 用户唯一凭证(一般是登录名
      * @return 签名
      */
-    <T> String login(SignEntity<T> subject);
+    <T,S extends SignEntity<T>>  String login(S subject);
 
     /**
      * 是否登录
@@ -46,7 +46,13 @@ public interface LoginService  {
      * 退出登录
      * @param request HttpServletRequest
      */
-    void loginOut(HttpServletRequest request);
+    default void loginOut(HttpServletRequest request){}
+
+    /**
+     * 退出登录
+     * @param subject subject
+     */
+    default void loginOut(String subject){}
 
 
 }
