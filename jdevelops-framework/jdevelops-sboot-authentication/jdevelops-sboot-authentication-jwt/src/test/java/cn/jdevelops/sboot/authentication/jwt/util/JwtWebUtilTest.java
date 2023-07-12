@@ -147,12 +147,6 @@ public class JwtWebUtilTest extends TestCase {
                 map.toString());
     }
 
-    public void test1111() {
-        // map int
-        String x = "[\"tan\",\"tan\"]";
-        Arrays.stream(JSON.to(String[].class,x)).forEach(System.out::println);
-    }
-
     public void testGetTokenBySignEntity() {
         // 创建HttpServletRequest的模拟对象
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
