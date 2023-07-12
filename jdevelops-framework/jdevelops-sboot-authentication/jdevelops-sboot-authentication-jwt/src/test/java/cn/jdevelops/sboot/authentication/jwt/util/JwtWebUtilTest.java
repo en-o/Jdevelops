@@ -5,7 +5,9 @@ import cn.jdevelops.util.jwt.entity.SignEntity;
 import com.alibaba.fastjson2.JSON;
 import junit.framework.TestCase;
 import org.jose4j.lang.JoseException;
+import org.mockito.Mockito;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -145,9 +147,58 @@ public class JwtWebUtilTest extends TestCase {
                 map.toString());
     }
 
-    public void test() {
+    public void test1111() {
         // map int
         String x = "[\"tan\",\"tan\"]";
         Arrays.stream(JSON.to(String[].class,x)).forEach(System.out::println);
+    }
+
+    public void testGetTokenBySignEntity() {
+        // 创建HttpServletRequest的模拟对象
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        // 设置模拟请求的上下文和参数
+        Mockito.when(request.getContextPath()).thenReturn("/test");
+        Mockito.when(request.getMethod()).thenReturn("GET");
+        Mockito.when(request.getParameter("token")).thenReturn(signBean);
+
+        SignEntity<JwtWebUtilBean> tokenByBeanListBean =
+                JwtWebUtil.getTokenBySignEntity(request,
+                        JwtWebUtilBean.class);
+        JwtWebUtilBean mapBean = tokenByBeanListBean.getMap();
+        assertEquals("JwtWebUtilBean(name=tan, sex=10)",
+                mapBean.toString());
+    }
+
+
+    public void testGetTokenBySignEntity2() {
+        // 创建HttpServletRequest的模拟对象
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        // 设置模拟请求的上下文和参数
+        Mockito.when(request.getContextPath()).thenReturn("/test");
+        Mockito.when(request.getMethod()).thenReturn("GET");
+        Mockito.when(request.getParameter("token")).thenReturn(signListBeanComplex);
+
+        SignEntity<List<JwtWebUtilBeanComplex>> tokenByBeanListBeanComplex =
+                JwtWebUtil.getTokenBySignEntity(request,
+                        List.class);
+        List<JwtWebUtilBeanComplex> map = tokenByBeanListBeanComplex.getMap();
+        assertEquals("[{\"beans\":[{\"name\":\"tan1\",\"sex\":10},{\"name\":\"ning1\",\"sex\":11}],\"ints\":[1,2],\"name\":\"tan\",\"sex\":10,\"strs\":[\"tan\",\"ning\"]}, {\"beans\":[{\"name\":\"tan2\",\"sex\":11},{\"name\":\"ning2\",\"sex\":12}],\"ints\":[13,23],\"name\":\"ning\",\"sex\":10,\"strs\":[\"tan2\",\"ning2\"]}]",
+                map.toString());
+    }
+
+    public void testGetTokenBySignEntity3() {
+        // 创建HttpServletRequest的模拟对象
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        // 设置模拟请求的上下文和参数
+        Mockito.when(request.getContextPath()).thenReturn("/test");
+        Mockito.when(request.getMethod()).thenReturn("GET");
+        Mockito.when(request.getParameter("token")).thenReturn(signListStr);
+
+        SignEntity<List<String>> str =
+                JwtWebUtil.getTokenBySignEntity(request,
+                        List.class);
+        List<String> map = str.getMap();
+        assertEquals("[tan, ning]",
+                map.toString());
     }
 }
