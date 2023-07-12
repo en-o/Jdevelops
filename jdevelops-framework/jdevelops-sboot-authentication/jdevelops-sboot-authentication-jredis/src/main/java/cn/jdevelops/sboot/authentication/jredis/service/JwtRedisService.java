@@ -4,6 +4,7 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.exception.LoginException;
 
@@ -104,5 +105,12 @@ public interface JwtRedisService {
     <RB extends BasicsAccount> RB loadUserStatus(String subject);
 
 
-
+    /**
+     * 权限验证
+     * @param subject  用户唯一值(一般用用户的登录名
+     * @param annotation 权限注解
+     * @param <RB> RedisAccount
+     * @throws ExpiredRedisException
+     */
+    <RB extends BasicsAccount> void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException;
 }

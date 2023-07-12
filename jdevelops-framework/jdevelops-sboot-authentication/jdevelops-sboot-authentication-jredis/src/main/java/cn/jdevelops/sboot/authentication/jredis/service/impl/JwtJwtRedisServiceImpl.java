@@ -5,8 +5,10 @@ import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
 import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
@@ -22,8 +24,9 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_EXPIRED_USER;
-import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_NO_USER;
+import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_PERMISSION_AUTH_ERROR;
+import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_ROLE_AUTH_ERROR;
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.*;
 import static cn.jdevelops.api.result.emums.UserException.*;
 
 
@@ -185,6 +188,33 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         // 处理由于是泛型对象导致其他地方继承后有问题，
         RB basicsAccount = (RB) JSON.parse(redisUser);
         return Objects.isNull(redisUser)?null: basicsAccount;
+    }
+
+
+    @Override
+    public  <RB extends BasicsAccount> void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException{
+        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
+        String redisUser;
+        try {
+            redisUser = (String) redisTemplate
+                    .boundHashOps(userRedisFolder)
+                    .get(subject);
+        }catch (Exception e){
+            LOG.info("用户信息(权限判断)缓存失效");
+            throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
+        }
+
+        Object basicsAccount = JSON.parse(redisUser);
+        if(!Objects.isNull(redisUser) && basicsAccount instanceof BasicsAccount ){
+            String[] roles = annotation.roles();
+            String[] permissions = annotation.permissions();
+            if ( roles != null && roles.length > 0 &&!((RB) basicsAccount).getRoles().contains(roles)) {
+                throw new PermissionsException(API_ROLE_AUTH_ERROR);
+            }
+            if ( permissions != null && permissions.length > 0 &&!((RB) basicsAccount).getRoles().contains(permissions)) {
+                throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
+            }
+        }
     }
 
     /**

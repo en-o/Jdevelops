@@ -3,6 +3,9 @@ package cn.jdevelops.sboot.authentication.jwt.server;
 
 import cn.jdevelops.spi.SPI;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+
 /**
  * 请各自的服务去实现该接口, 并注入到spring上下文中去
  * @author Tianms
@@ -32,4 +35,12 @@ public interface CheckTokenInterceptor {
      * @throws Exception ExpiredRedisException
      */
     default void checkUserStatus(String subject) throws Exception{}
+
+    /**
+     * 检查用户权限
+     * @param subject 用户唯一编码
+     * @param method 请求接口的权限注解
+     * @throws Exception ExpiredRedisException
+     */
+    default void checkUserPermission(String subject, Method method) throws Exception{}
 }

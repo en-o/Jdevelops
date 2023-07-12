@@ -34,4 +34,17 @@ public class ResultCode {
      */
     public static final ExceptionCode SYS_THROTTLING = new ExceptionCode(503, "系统限流");
 
+
+    /**
+     * 数据重复
+     */
+    public static final ExceptionCode DATA_REPEAT = new ExceptionCode(503, "数据重复");
+
+    /**
+     * 数据不存在
+     */
+    public static final ExceptionCode DATA_NONEXISTENCE = new ExceptionCode(504, "数据不存在");
+
+
+
 }

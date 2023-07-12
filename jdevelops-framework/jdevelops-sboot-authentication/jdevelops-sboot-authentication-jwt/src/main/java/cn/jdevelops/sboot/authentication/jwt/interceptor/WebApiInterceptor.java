@@ -53,23 +53,23 @@ public class WebApiInterceptor implements HandlerInterceptor {
             ApiMapping annotation = method.getAnnotation(ApiMapping.class);
             if (annotation.checkToken()) {
                 return check_refresh_token(request, response, handler, method, logger);
-            }else{
+            } else {
                 return true;
             }
-        }else{
+        } else {
             return check_refresh_token(request, response, handler, method, logger);
         }
     }
 
 
     /**
-     *  验证并刷新token缓存
+     * 验证并刷新token缓存
      *
-     * @param request request
+     * @param request  request
      * @param response response
-     * @param handler handler
-     * @param method method
-     * @param logger logger
+     * @param handler  handler
+     * @param method   method
+     * @param logger   logger
      * @return boolean
      * @throws IOException Exception
      */
@@ -77,8 +77,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                         HttpServletResponse response,
                                         Object handler, Method method,
                                         Logger logger) throws Exception {
-        CheckVO check = check(request, response, handler, logger);
-        if(check.getCheck()){
+        CheckVO check = check(request, response, handler, logger, method);
+        if (check.getCheck()) {
             refreshToken(check.getToken(), method);
         }
         return check.getCheck();
@@ -87,46 +87,66 @@ public class WebApiInterceptor implements HandlerInterceptor {
 
     /**
      * 验证token
-     * @param request request
+     *
+     * @param request  request
      * @param response response
-     * @param handler handler
-     * @param logger logger
+     * @param handler  handler
+     * @param logger   logger
      * @return check
      * @throws IOException IOException
      */
-    private CheckVO check(HttpServletRequest request, HttpServletResponse response, Object handler, Logger logger) throws Exception {
-        String  token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
+    private CheckVO check(HttpServletRequest request,
+                          HttpServletResponse response,
+                          Object handler,
+                          Logger logger,
+                          Method method) throws Exception {
+        String token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
-        logger.info("需要验证token,校验结果：{},token:{}", flag,token);
+        logger.info("需要验证token,校验结果：{},token:{}", flag, token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
                     .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
-            return new CheckVO(false,token);
+            return new CheckVO(false, token);
         }
         // 日志用的 - %X{token}
         MDC.put(JwtConstant.TOKEN, token);
         // 验证用户状态
         checkUserStatus(token);
-        return new CheckVO(true,token);
+        // 验证用户接口权限
+        checkUserPermission(token, method);
+        return new CheckVO(true, token);
     }
-
 
 
     /**
      * 检查用户状态
+     *
      * @param token token
-     * @exception  Exception 用户状态异常
+     * @throws Exception 用户状态异常
      */
-    private void checkUserStatus(String token) throws Exception{
+    private void checkUserStatus(String token) throws Exception {
         // 检查用户状态
         checkTokenInterceptor.checkUserStatus(JwtService.getSubject(token));
     }
 
+
+    /**
+     * 检查用户状态
+     *
+     * @param token token
+     * @throws Exception 用户状态异常
+     */
+    private void checkUserPermission(String token, Method method) throws Exception {
+        // 检查用户状态
+        checkTokenInterceptor.checkUserPermission(JwtService.getSubject(token), method);
+    }
+
     /**
      * 刷新缓存 - redis中才有用
-     * @param token token
+     *
+     * @param token  token
      * @param method method
      */
     private void refreshToken(String token, Method method) {
@@ -134,16 +154,16 @@ public class WebApiInterceptor implements HandlerInterceptor {
         try {
 
             // 全局设置刷新状态 false: 不刷新
-            if(jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))){
-                    // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                    checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
+            if (jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))) {
+                // 每次接口进来都要属性 token缓存。刷新方式请自主实现
+                checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
             }
-        }catch (Exception e){
-            log.warn("token缓存刷新失败",e);
+        } catch (Exception e) {
+            log.warn("token缓存刷新失败", e);
         }
     }
 
-    private  void getCheckTokenInterceptor (){
+    private void getCheckTokenInterceptor() {
         checkTokenInterceptor = ExtensionLoader.getExtensionLoader(CheckTokenInterceptor.class).getJoin("defaultInterceptor");
     }
 

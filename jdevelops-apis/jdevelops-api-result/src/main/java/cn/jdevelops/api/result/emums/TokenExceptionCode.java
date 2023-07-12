@@ -12,12 +12,6 @@ public class TokenExceptionCode {
 
 
     /**
-     * 访问权限异常
-     */
-    public static final ExceptionCode AUTH_ERROR = new ExceptionCode(10004, "访问权限异常");
-
-
-    /**
      * token 校验失败异常
      */
     public static final ExceptionCode TOKEN_ERROR = new ExceptionCode(401, "登录失效，请重新登录");
