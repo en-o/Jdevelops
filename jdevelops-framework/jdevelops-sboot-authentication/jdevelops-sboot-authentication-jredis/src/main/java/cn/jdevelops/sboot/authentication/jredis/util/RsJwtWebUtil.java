@@ -17,7 +17,7 @@ public class RsJwtWebUtil extends JwtWebUtil {
      * @param ts RedisSignEntity中map对象calss
      * @return token
      */
-    public static <T> RedisSignEntity<T> getTokenByRedisSignEntity(HttpServletRequest request, Class<T> ts) {
+    public static <T,S> RedisSignEntity<T> getTokenByRedisSignEntity(HttpServletRequest request, Class<S> ts) {
         return getTokenByBean(request,RedisSignEntity.class, ts);
     }
 
