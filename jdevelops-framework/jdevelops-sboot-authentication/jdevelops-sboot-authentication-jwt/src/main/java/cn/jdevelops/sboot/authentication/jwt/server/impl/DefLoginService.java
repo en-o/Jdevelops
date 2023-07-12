@@ -23,7 +23,7 @@ public class DefLoginService implements LoginService {
 
 
     @Override
-    public String login(SignEntity subject) {
+    public <T, S extends SignEntity<T>> String login(S subject) {
         try {
             return JwtService.generateToken(subject);
         } catch (JoseException e) {
@@ -45,10 +45,5 @@ public class DefLoginService implements LoginService {
             logger.warn("登录失效", e);
         }
         return false;
-    }
-
-    @Override
-    public void loginOut(HttpServletRequest request) {
-
     }
 }

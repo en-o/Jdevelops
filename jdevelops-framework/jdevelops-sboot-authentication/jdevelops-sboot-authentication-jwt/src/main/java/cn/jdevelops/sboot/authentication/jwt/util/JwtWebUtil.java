@@ -150,7 +150,7 @@ public class JwtWebUtil {
      * @param ts      SignEntity中map的对象
      * @return token
      */
-    public static <T> SignEntity<T> getTokenBySignEntity(HttpServletRequest request, Class<T> ts) {
+    public static <T,S> SignEntity<T> getTokenBySignEntity(HttpServletRequest request, Class<S> ts) {
         return getTokenByBean(request, SignEntity.class, ts);
     }
 

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,7 +158,7 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
         Root<B> deleteFrom = update.from(domainClass);
 
         // 获取字段
-        Field[] fields = ReflectUtil.getFields(bean.getClass(),(field) -> {
+        Field[] fields = ReflectUtil.getFields(bean.getClass(), (field) -> {
             // 忽略字段
             if ("serialVersionUID".equals(field.getName())) {
                 return false;
@@ -226,6 +227,12 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     public List<B> findBeanList(ColumnSFunction<B, ?> selectKey, Object value) {
         Specification<B> where = Specifications.where(e -> e.eq(IObjects.nonNull(value), ColumnUtil.getFieldName(selectKey), value));
         return commonDao.findAll(where);
+    }
+
+    @Override
+    public List<B> findBeanList(ColumnSFunction<B, ?> selectKey, Object value, Sort sort) {
+        Specification<B> where = Specifications.where(e -> e.eq(IObjects.nonNull(value), ColumnUtil.getFieldName(selectKey), value));
+        return commonDao.findAll(where, sort);
     }
 
     @Override

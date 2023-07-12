@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * thread utils.
- * @author huangxiaofeng
+ * @author tan
  */
 public class ThreadUtils {
 
@@ -31,11 +31,22 @@ public class ThreadUtils {
      * @param timeUnit the time unit
      * @param time     the time
      */
-    public static void sleep(final TimeUnit timeUnit, final int time) {
+    public static void sleep(final TimeUnit timeUnit, final long time) {
         try {
             timeUnit.sleep(time);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
+        }
+    }
+
+
+    /**
+     * sleep current thread.
+     * @param millis 挂起的毫秒数
+     */
+    public static void sleep(final long millis) {
+        if (millis > 0) {
+            sleep(TimeUnit.MILLISECONDS, millis);
         }
     }
 

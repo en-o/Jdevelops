@@ -126,4 +126,14 @@ public final class UUIDUtils {
     public String generateShortUuid() {
         return String.valueOf(ID_WORKER_UTILS.nextId());
     }
+
+
+    /**
+     * generate short uuid.
+     *
+     * @return short uuid.
+     */
+    public Long generateShortUuidLong() {
+        return ID_WORKER_UTILS.nextId();
+    }
 }

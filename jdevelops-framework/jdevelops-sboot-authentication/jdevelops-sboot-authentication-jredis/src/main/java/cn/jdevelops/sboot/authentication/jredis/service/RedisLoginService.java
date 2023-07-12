@@ -34,44 +34,45 @@ public class RedisLoginService implements LoginService {
 
     /**
      * 推荐使用
-     *
+     * <p>
      * 用户主动登录时：
-     *      1. 无登录 根据数据颁发token
-     *      2. 登录过，根据 refresh 判断token是否维持原状
-     * @param request  HttpServletRequest
+     * 1. 无登录 根据数据颁发token
+     * 2. 登录过，根据 refresh 判断token是否维持原状
+     *
+     * @param request HttpServletRequest
      * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)[必须要带上token才能实现]
-     * @param <RB>  BasicsAccount 用户状态
-     * @param subject RedisSignEntity
+     * @param <RB>    BasicsAccount 用户信息redis元数据@see CheckTokenInterceptor#checkUserStatus(String)
+     * @param subject RedisSignEntity token元数据
      * @return 签名
      */
-    public  <RB extends BasicsAccount,T>  String refreshLogin(HttpServletRequest request,
-                                                            boolean refresh,
-                                                            RedisSignEntity<T> subject,
-                                                            RB account) {
+    public <RB extends BasicsAccount, T> String refreshLogin(HttpServletRequest request,
+                                                             boolean refresh,
+                                                             RedisSignEntity<T> subject,
+                                                             RB account) {
 
-        if(null != account){
+        if (null != account) {
             jwtRedisService.storageUserStatus(account);
         }
         // 请求头里的 token
         String token = null;
         try {
             token = JwtWebUtil.getToken(request);
-        }catch (TokenException e){
-           logger.warn("用户正在进行登录");
+        } catch (TokenException e) {
+            logger.warn("用户正在进行登录");
         }
         // 无token 重新登录
-        if(null == token || token.length() == 0) {
+        if (null == token || token.length() == 0) {
             return login(subject);
-        }else {
+        } else {
             // 验证是否登录过
             boolean login = isLogin(request);
             // 存在登录, 颁发新的 token
-            if(login && refresh){
+            if (login && refresh) {
                 return login(subject);
-            }else if(login){
+            } else if (login) {
                 // 继续使用当前token
                 return token;
-            }else {
+            } else {
                 // 登录失效，重新登录
                 return login(subject);
             }
@@ -80,32 +81,33 @@ public class RedisLoginService implements LoginService {
 
 
     /**
-     * 登录 主动记录用户状态
-     *
+     * 登录
      * @param subject RedisSignEntity
-     * @param <RB>  account 用户状态
+     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
      * @return 签名
      */
-    public  <RB extends BasicsAccount,T>  String login(RedisSignEntity<T> subject, RB account) {
-        if(null != account){
+    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> subject, RB account) {
+        if (null != account) {
             jwtRedisService.storageUserStatus(account);
         }
         return login(subject);
     }
 
     /**
-     * 登录 不主动记录用户状态
-     *
+     * 登录
+     * PS: 不会判断账户状态进行异常拦截 @see CheckTokenInterceptor#checkUserStatus(String)
      * @param subject RedisSignEntity
      * @return 签名
      */
-    public <T> String login(RedisSignEntity<T> subject) {
+    @Override
+    public <T, S extends SignEntity<T>> String login(S subject) {
         // 生成token
         try {
-            String sign = JwtService.generateToken(subject);
+            RedisSignEntity<T> redisSubject = (RedisSignEntity<T>) subject;
+            String sign = JwtService.generateToken(redisSubject);
             StorageUserTokenEntity build = StorageUserTokenEntity.builder()
-                    .userCode(subject.getSubject())
-                    .alwaysOnline(subject.getAlwaysOnline())
+                    .userCode(redisSubject.getSubject())
+                    .alwaysOnline(redisSubject.getAlwaysOnline())
                     .token(sign)
                     .build();
             jwtRedisService.storageUserToken(build);
@@ -113,17 +115,6 @@ public class RedisLoginService implements LoginService {
         } catch (JoseException e) {
             throw new LoginException("登录异常，请重新登录", e);
         }
-    }
-
-
-    /**
-     * 普通登录 不建议使用
-     * @param subject 用户唯一凭证(一般是登录名
-     */
-    @Override
-    public <T> String login(SignEntity<T> subject) {
-        RedisSignEntity<T> redisSign = new RedisSignEntity<>(subject);
-        return login(redisSign);
     }
 
     @Override
@@ -147,6 +138,15 @@ public class RedisLoginService implements LoginService {
     public void loginOut(HttpServletRequest request) {
         try {
             String subject = JwtWebUtil.getTokenSubject(request);
+            jwtRedisService.removeUserToken(subject);
+        } catch (Exception e) {
+            logger.warn("退出失败", e);
+        }
+    }
+
+    @Override
+    public void loginOut(String subject) {
+        try {
             jwtRedisService.removeUserToken(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);

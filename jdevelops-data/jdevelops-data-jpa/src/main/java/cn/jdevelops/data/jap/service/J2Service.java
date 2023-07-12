@@ -7,6 +7,7 @@ import cn.jdevelops.api.result.util.bean.ColumnSFunction;
 import cn.jdevelops.data.jap.repository.JpaBasicsRepository;
 import cn.jdevelops.data.jap.exception.JpaException;
 import cn.jdevelops.data.jap.result.JpaPageResult;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 
@@ -158,6 +159,15 @@ public interface J2Service<B> {
      */
     List<B> findBeanList( ColumnSFunction<B, ?> selectKey, Object value );
 
+
+    /**
+     * 查询
+     * @param selectKey secret
+     * @param value 值
+     * @param sort  org.springframework.data.domain#Sort
+     * @return B
+     */
+    List<B> findBeanList( ColumnSFunction<B, ?> selectKey, Object value, Sort sort );
 
 
     /**
