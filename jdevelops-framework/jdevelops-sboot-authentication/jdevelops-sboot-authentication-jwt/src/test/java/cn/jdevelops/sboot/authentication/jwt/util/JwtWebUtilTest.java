@@ -2,7 +2,6 @@ package cn.jdevelops.sboot.authentication.jwt.util;
 
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import com.alibaba.fastjson2.JSON;
 import junit.framework.TestCase;
 import org.jose4j.lang.JoseException;
 import org.mockito.Mockito;
