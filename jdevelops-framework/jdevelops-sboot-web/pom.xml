@@ -27,6 +27,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- 参数遮掩和校验-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-util-validation</artifactId>
+        </dependency>
+        <!-- http-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-util-http</artifactId>
+        </dependency>
         <!-- db -->
         <dependency>
             <groupId>cn.jdevelops</groupId>
