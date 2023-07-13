@@ -194,42 +194,5 @@ public interface TimeFormat {
 	 */
 	String JDK_FORMAT_DATETIME = "EEE MMM dd HH:mm:ss zzz yyyy";
 
-	/**
-	 * 格式  mysql %Y  年
-	 */
-	String MYSQL_FORMAT_DATETIME_YEAR = "%Y";
-	/**
-	 * 格式  mysql %Y-%m  年月
-	 */
-	String MYSQL_FORMAT_DATETIME_MONTH = "%Y-%m";
-	/**
-	 * 格式  mysql %Y-%m-%d 年月日
-	 */
-	String MYSQL_FORMAT_DATETIME_DAY = "%Y-%m-%d";
-	/**
-	 * 年月日时分秒  mysql %Y-%m-%d %T
-	 */
-	String MYSQL_FORMAT_DATETIME_SECOND = "%Y-%m-%d %T";
-	/**
-	 * 时分秒 mysql %T
-	 */
-	String MYSQL_FORMAT_DATETIME_SIMPLE_DAY = "%T";
 
-	/**
-	 * 获取方法里 所有的 时间格式
-	 *
-	 * @return 所有时间格式
-	 * @throws IllegalAccessException 非法
-	 */
-	static List<String> getAllFormat() throws IllegalAccessException {
-		List<String> list = new ArrayList<>();
-		Field[] fields = TimeFormat.class.getFields();
-		for (Field f : fields) {
-			//获取属性f.getName()
-			//获取属性值f
-			Object value = f.get(TimeFormat.class);
-			list.add(value.toString());
-		}
-		return list;
-	}
 }
