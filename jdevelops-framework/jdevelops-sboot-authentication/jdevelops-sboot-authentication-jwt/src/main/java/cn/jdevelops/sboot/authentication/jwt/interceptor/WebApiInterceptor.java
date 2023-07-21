@@ -103,7 +103,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
         String token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
-        logger.info("需要验证token,校验结果：{},token:{}", flag, token);
+        logger.info("需要验证token,url:{}, 校验结果：{},token:{}", request.getRequestURI(),flag, token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
