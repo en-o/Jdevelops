@@ -3,7 +3,6 @@ package cn.jdevelops.sboot.authentication.jwt.server;
 
 import cn.jdevelops.spi.SPI;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
