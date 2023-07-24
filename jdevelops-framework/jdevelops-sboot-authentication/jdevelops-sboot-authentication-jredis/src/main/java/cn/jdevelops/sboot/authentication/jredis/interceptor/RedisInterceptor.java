@@ -53,7 +53,7 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public void checkUserPermission(String subject, Method method) throws Exception {
-        if (method.isAnnotationPresent(ApiMapping.class)) {
+        if (method.isAnnotationPresent(ApiPermission.class)) {
             ApiPermission annotation = method.getAnnotation(ApiPermission.class);
             JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
             jwtRedisService.verifyUserPermission(subject,annotation);
