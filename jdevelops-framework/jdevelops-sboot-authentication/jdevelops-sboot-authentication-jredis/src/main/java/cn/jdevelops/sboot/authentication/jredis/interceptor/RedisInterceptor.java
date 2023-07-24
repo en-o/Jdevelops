@@ -2,12 +2,10 @@ package cn.jdevelops.sboot.authentication.jredis.interceptor;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
-import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.spi.JoinSPI;
-import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
