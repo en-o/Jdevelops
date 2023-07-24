@@ -2,8 +2,6 @@ package cn.jdevelops.api.exception.handler;
 
 import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.result.emums.ParamExceptionCode;
-import cn.jdevelops.api.result.emums.ResultCode;
-import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +21,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
+
+import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.AUTH_ERROR;
+import static cn.jdevelops.api.result.emums.ResultCode.SYS_ERROR;
 
 /**
  * 全局异常处理
@@ -71,7 +72,7 @@ public class ControllerExceptionHandler {
     public Object exceptionHandler(NoHandlerFoundException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.result(TokenExceptionCode.AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
+        return ExceptionResultWrap.result(AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
     }
 
 
@@ -80,14 +81,14 @@ public class ControllerExceptionHandler {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
-        return ExceptionResultWrap.result(ResultCode.SYS_ERROR.getCode(), "暂时无法获取数据");
+        return ExceptionResultWrap.result(SYS_ERROR.getCode(), "暂时无法获取数据");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        return ExceptionResultWrap.result(TokenExceptionCode.AUTH_ERROR.getCode(), "请求方式不对 - get post ");
+        return ExceptionResultWrap.result(SYS_ERROR.getCode(), "请求方式不对 - get post ");
     }
 
 
@@ -146,7 +147,7 @@ public class ControllerExceptionHandler {
             resqStr.append("字段:").append(it.getField()).append(" ==》 验证不通过，原因是：").append(it.getDefaultMessage());
             resqStr.append("。  ");
         });
-        return ExceptionResultWrap.result(ResultCode.SYS_ERROR.getCode(), resqStr.toString());
+        return ExceptionResultWrap.result(SYS_ERROR.getCode(), resqStr.toString());
     }
 
 
