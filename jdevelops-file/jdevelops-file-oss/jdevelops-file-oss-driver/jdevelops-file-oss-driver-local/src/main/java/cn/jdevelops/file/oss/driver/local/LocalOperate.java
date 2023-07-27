@@ -74,7 +74,7 @@ public class LocalOperate implements OssOperateAPI {
         if(notBlank(contextPath)){
             relativePath = contextPath.substring(0,contextPath.lastIndexOf("/")+1)+relativePath;
         }
-        String absolutePath = getBrowserUrl() + OSSConstants.PATH_SEPARATOR + relativePath;
+        String absolutePath = getBrowserUrl() + relativePath;
         FilePathResult filePathResult = new FilePathResult();
         filePathResult.setAbsolutePath(absolutePath);
         filePathResult.setRelativePath(relativePath);
