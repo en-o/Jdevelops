@@ -72,8 +72,8 @@ public class QiniuOperate implements OssOperateAPI {
         Gson gson = new Gson();
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
         FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(downPath);
-        filePathResult.setRelativePath(relativePath);
+        filePathResult.setAbsolutePath(relativePath);
+        filePathResult.setRelativePath(downPath);
         filePathResult.setFreshName(freshName);
         filePathResult.setDownPath(downPath);
         filePathResult.setOriginalName(originalName);
