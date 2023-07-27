@@ -15,13 +15,13 @@ import java.io.Serializable;
 public class FilePathResult implements Serializable {
 
 	/**
-	 * 相对路径
+	 * 相对路径(访问前缀+桶+文件路径+文件名)
 	 */
 	@Schema(description = "相对路径")
 	private String relativePath;
 
 	/**
-	 * 绝对路径
+	 * 绝对路径(http链接)
 	 */
 	@Schema(description = "绝对路径")
 	private String absolutePath;
