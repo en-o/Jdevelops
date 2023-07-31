@@ -2,7 +2,6 @@ package cn.jdevelops.util.core.number;
 
 import junit.framework.TestCase;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MathUtilTest extends TestCase {
 
