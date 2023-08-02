@@ -28,9 +28,12 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
 
 
         if (criterionsAnd!=null&&!criterionsAnd.isEmpty()) {
-             predicatesAnd = new ArrayList<>();
+            predicatesAnd = new ArrayList<>();
             for(ExpandCriterion c : criterionsAnd){
-                predicatesAnd.add(c.toPredicate(root, query,builder));
+                Predicate predicate = c.toPredicate(root, query, builder);
+                if(null != predicate){
+                    predicatesAnd.add(predicate);
+                }
             }
             // 将所有条件用 and 联合起来
             if (!predicatesAnd.isEmpty()) {
@@ -40,7 +43,10 @@ public class JPAUtilExpandCriteria<T> implements Specification<T>{
         if (criterionsOr!=null&&!criterionsOr.isEmpty()) {
             predicatesOr = new ArrayList<>();
             for(ExpandCriterion c : criterionsOr){
-                predicatesOr.add(c.toPredicate(root, query,builder));
+                Predicate predicate = c.toPredicate(root, query, builder);
+                if(null != predicate){
+                    predicatesOr.add(predicate);
+                }
             }
             // 将所有条件用 and 联合起来
             if (!predicatesOr.isEmpty()) {
