@@ -44,6 +44,7 @@ public class SimpleExpression implements ExpandCriterion {
         this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
+        this.ignoreNull = ignoreNull;
     }
 
     public SimpleExpression(String fieldName, Object value, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
@@ -51,17 +52,20 @@ public class SimpleExpression implements ExpandCriterion {
         this.value = value;
         this.operator = operator;
         this.function = function;
+        this.ignoreNull = ignoreNull;
     }
 
     public SimpleExpression(String fieldName, Operator operator, Boolean ignoreNull) {
         this.fieldName = fieldName;
         this.operator = operator;
+        this.ignoreNull = ignoreNull;
     }
 
     public SimpleExpression(String fieldName, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
         this.fieldName = fieldName;
         this.operator = operator;
         this.function = function;
+        this.ignoreNull = ignoreNull;
     }
 
 
