@@ -8,6 +8,10 @@ package cn.jdevelops.api.idempotent.exception;
  * @date 2022-11-17 15:02
  */
 public class IdempotentException  extends RuntimeException{
+    /**
+     * ResultCode.API_DOUBLE_CALL
+     */
+    public static int IDEMPOTENT_CODE = 602;
     private static final long serialVersionUID = 4129812562603997310L;
 
     private int code;
@@ -20,26 +24,19 @@ public class IdempotentException  extends RuntimeException{
     public IdempotentException(String message) {
         super(message);
         this.msg = message;
-        this.code = 500;
+
+        this.code = IDEMPOTENT_CODE;
     }
 
-    public IdempotentException(Integer code, String message) {
-        super(message);
-        this.code = code;
-        this.msg = message;
-    }
 
     public IdempotentException(String message, Throwable cause) {
         super(message, cause);
         this.msg = message;
-        this.code = 500;
+        // ResultCode.API_DOUBLE_CALL
+        this.code = IDEMPOTENT_CODE;
     }
 
-    public IdempotentException(String message, Throwable cause, int code) {
-        super(message, cause);
-        this.msg = message;
-        this.code = code;
-    }
+
 
     public int getCode() {
         return code;
