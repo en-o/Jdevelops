@@ -15,7 +15,8 @@ public interface IdempotentService {
 
      /**
       * 检查接口重复调用
-      * @param request request
+      * @param request HttpServletRequest
+      * @param response HttpServletResponse
       * @param methodAnnotation 注解里的东西可能要用
       * @return true 无重复调用
       */
