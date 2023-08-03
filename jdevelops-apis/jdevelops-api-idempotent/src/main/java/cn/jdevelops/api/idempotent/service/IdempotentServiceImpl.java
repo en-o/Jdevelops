@@ -79,7 +79,7 @@ public class IdempotentServiceImpl implements IdempotentService {
             return true;
         } else {
             response.setStatus(IdempotentException.IDEMPOTENT_CODE);
-            throw new IdempotentException(methodAnnotation.message());
+            throw IdempotentException.specialMessage(methodAnnotation.message());
         }
 
     }

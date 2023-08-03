@@ -11,6 +11,8 @@ import cn.jdevelops.api.result.util.SpringBeanUtils;
  */
 public final class ExceptionResultWrap {
 
+    public static String SYMBOL  = "<=====>";
+
     /**
      * Success object.
      *
@@ -73,6 +75,17 @@ public final class ExceptionResultWrap {
      * SYS_ERROR
      */
     public static Object result(Exception e) {
+
+        try {
+            String message = e.getMessage();
+            if (message != null  && message.contains(SYMBOL)) {
+                String[] split = message.split(SYMBOL);
+                int code = Integer.parseInt(split[0]);
+                return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(code, split[1]);
+            }
+        }catch (Exception e2){
+            e2.printStackTrace();
+        }
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(ResultCode.SYS_ERROR.getCode(), e.getMessage());
     }
 
