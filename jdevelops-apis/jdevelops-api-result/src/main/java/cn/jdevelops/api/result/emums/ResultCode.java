@@ -52,7 +52,7 @@ public class ResultCode {
     public static final ExceptionCode FILE_NO_EXIST = new ExceptionCode(601,"文件不存在");
 
     /**
-     * 短时间内请勿重复调用
+     *  api接口调用失败
      */
     public static final ExceptionCode API_DOUBLE_CALL = new ExceptionCode(602,"短时间内请勿重复调用");
 
