@@ -78,7 +78,9 @@ public class IdempotentServiceImpl implements IdempotentService {
             LOG.info("当前接口在redis中无记录，此处进行新增记录");
             return true;
         } else {
-            response.setStatus(IdempotentException.IDEMPOTENT_CODE);
+            if(methodAnnotation.responseStatus()){
+                response.setStatus(IdempotentException.IDEMPOTENT_CODE);
+            }
             throw IdempotentException.specialMessage(methodAnnotation.message());
         }
 
