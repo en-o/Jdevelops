@@ -4,6 +4,7 @@ import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
+import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
@@ -39,44 +40,39 @@ public class RedisLoginService implements LoginService {
      * 1. 无登录 根据数据颁发token
      * 2. 登录过，根据 refresh 判断token是否维持原状
      *
-     * @param request HttpServletRequest
      * @param refresh true token刷新, false token重复使用 (用户存在登录时 token时更新还是依旧)[必须要带上token才能实现]
      * @param <RB>    BasicsAccount 用户信息redis元数据@see CheckTokenInterceptor#checkUserStatus(String)
      * @param subject RedisSignEntity token元数据
      * @return 签名
      */
-    public <RB extends BasicsAccount, T> String refreshLogin(HttpServletRequest request,
-                                                             boolean refresh,
+    public <RB extends BasicsAccount, T> String refreshLogin(boolean refresh,
                                                              RedisSignEntity<T> subject,
                                                              RB account) {
 
         if (null != account) {
             jwtRedisService.storageUserStatus(account);
         }
-        // 请求头里的 token
-        String token = null;
+
+        // 判断是否需要重复登录
         try {
-            token = JwtWebUtil.getToken(request);
-        } catch (TokenException e) {
-            logger.warn("用户正在进行登录");
-        }
-        // 无token 重新登录
-        if (null == token || token.length() == 0) {
-            return login(subject);
-        } else {
-            // 验证是否登录过
-            boolean login = isLogin(request);
-            // 存在登录, 颁发新的 token
-            if (login && refresh) {
+            // 查询当前用户是否已经登录
+            StorageUserTokenEntity loginUser = jwtRedisService.verifyUserTokenBySubject(subject.getSubject());
+            // 用户存在登录，判断是否需要重新登录
+            if (refresh) {
+                // 刷新登录
                 return login(subject);
-            } else if (login) {
+            }else {
                 // 继续使用当前token
-                return token;
-            } else {
-                // 登录失效，重新登录
-                return login(subject);
+                return loginUser.getToken();
             }
+        } catch (ExpiredRedisException  | TokenException e) {
+            logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
+        }catch (Exception e) {
+            logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
         }
+        // 执行登录流程
+        return login(subject);
+
     }
 
 

@@ -103,7 +103,6 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     @Override
     public StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException {
         String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
-        // redis 中比对 token 正确性
         StorageUserTokenEntity tokenRedis;
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
