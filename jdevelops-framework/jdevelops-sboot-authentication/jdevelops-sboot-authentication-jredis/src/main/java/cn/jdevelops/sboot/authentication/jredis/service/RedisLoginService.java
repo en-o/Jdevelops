@@ -43,21 +43,18 @@ public class RedisLoginService implements LoginService {
         if (null != account) {
             jwtRedisService.storageUserStatus(account);
         }
-        // 执行登录流程
         return login(subject);
     }
 
     /**
      * 登录
-     * PS: 不会判断账户状态进行异常拦截 @see CheckTokenInterceptor#checkUserStatus(String)
-     * @param subject RedisSignEntity
+     * @param redisSubject RedisSignEntity
+     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
      * @return 签名
      */
-    @Override
-    public <T, S extends SignEntity<T>> String login(S subject) {
+    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> redisSubject) {
         // 生成token
         try {
-            RedisSignEntity<T> redisSubject = (RedisSignEntity<T>) subject;
             // token
             String sign = JwtService.generateToken(redisSubject);
             // 预备登录信息给redis存储
@@ -69,7 +66,7 @@ public class RedisLoginService implements LoginService {
             // 判断是否需要重复登录
             try {
                 // 查询当前用户是否已经登录
-                StorageUserTokenEntity loginUser = jwtRedisService.verifyUserTokenBySubject(subject.getSubject());
+                StorageUserTokenEntity loginUser = jwtRedisService.verifyUserTokenBySubject(redisSubject.getSubject());
                 // 用户存在登录，判断是否需要重新登录
                 if (!redisSubject.getOnlyOnline()) {
                     // 继续使用当前token
@@ -88,6 +85,13 @@ public class RedisLoginService implements LoginService {
         } catch (JoseException e) {
             throw new LoginException("登录异常，请重新登录", e);
         }
+    }
+
+
+    @Override
+    public <T, S extends SignEntity<T>> String login(S subject) {
+        RedisSignEntity<T> redisSign = new RedisSignEntity<>(subject);
+        return login(redisSign);
     }
 
     @Override
