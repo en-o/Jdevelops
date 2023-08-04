@@ -119,6 +119,17 @@ public class RedisLoginService implements LoginService {
     }
 
     @Override
+    public boolean isLogin(String subject) {
+        try {
+            jwtRedisService.loadUserTokenInfoBySubject(subject);
+            return true;
+        } catch (Exception e) {
+            logger.warn("登录失效", e);
+        }
+        return false;
+    }
+
+    @Override
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);

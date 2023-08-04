@@ -35,6 +35,14 @@ public interface LoginService  {
     /**
      * 是否登录
      *
+     * @param subject 一般是用户登录名，主要看你登陆时存的  subject是什么
+     * @return true 登录中
+     */
+    boolean isLogin(String subject);
+
+    /**
+     * 是否登录
+     *
      * @param request HttpServletRequest
      * @param cookie  true 去cookie参数
      * @return true 登录中
