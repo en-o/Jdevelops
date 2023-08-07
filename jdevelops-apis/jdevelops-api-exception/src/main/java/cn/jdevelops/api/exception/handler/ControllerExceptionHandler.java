@@ -27,32 +27,30 @@ import static cn.jdevelops.api.result.emums.ResultCode.SYS_ERROR;
 
 /**
  * 全局异常处理
+ *
  * @author tn
  */
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
-
-    @Resource
-    private HttpServletResponse response;
-
     private static final String JSON_ERROR_INFO = "JSON parse error:";
     private static final String SEMICOLON = ";";
     private static final char BLANK = ' ';
     private static final int CUT_LENGTH = 100;
 
-    private static final String CONTENT_TYPE_HEADER_NAME ="content-type";
+    private static final String CONTENT_TYPE_HEADER_NAME = "content-type";
 
     private static final String APPLICATION_JSON_UTF8_VALUE = "application/json;charset=UTF-8";
 
     /**
      * 处理自定义异常
+     *
      * @param e 异常
      * @return 返回异常信息
      */
     @ExceptionHandler(BusinessException.class)
-    public Object handleBusinessException(BusinessException e) {
+    public Object handleBusinessException(BusinessException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.result(e.getCode(), e.getErrorMessage());
@@ -60,16 +58,17 @@ public class ControllerExceptionHandler {
 
 
     /**
-     *  404 拦截必须在配置文件加这个
+     * 404 拦截必须在配置文件加这个
      * <pre>
      *    spring.mvc.throw-exception-if-no-handler-found=true #出现错误时, 直接抛出异常
      *    spring.resources.add-mappings=false   #不要为我们工程中的资源文件建立映射
      * </pre>
+     *
      * @param e 错误
      * @return 返回错误
      */
     @ExceptionHandler(NoHandlerFoundException.class)
-    public Object exceptionHandler(NoHandlerFoundException e) {
+    public Object exceptionHandler(NoHandlerFoundException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.result(AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
@@ -77,7 +76,7 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler(NullPointerException.class)
-    public Object handleNullPointerException(NullPointerException e) {
+    public Object handleNullPointerException(NullPointerException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         // 空指针异常
@@ -85,7 +84,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.result(SYS_ERROR.getCode(), "请求方式不对 - get post ");
@@ -93,22 +92,22 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler
-    public Object  exceptionHandler(HttpMessageNotReadableException e) {
+    public Object exceptionHandler(HttpMessageNotReadableException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         String jsonErrorMsg;
         if (e.getLocalizedMessage().contains(JSON_ERROR_INFO) &&
                 Objects.nonNull(jsonErrorMsg =
                         dealWithJsonExceptionError(e.getLocalizedMessage()))) {
-            return ExceptionResultWrap.result(ParamExceptionCode.JSON_ERROR.getCode(),"请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
+            return ExceptionResultWrap.result(ParamExceptionCode.JSON_ERROR.getCode(), "请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
 
         }
-        return ExceptionResultWrap.result(ParamExceptionCode.MESSAGE_NO_READING.getCode(),"消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
+        return ExceptionResultWrap.result(ParamExceptionCode.MESSAGE_NO_READING.getCode(), "消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
     }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object exception(MethodArgumentNotValidException e) {
+    public Object exception(MethodArgumentNotValidException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         BindingResult bindingResult = e.getBindingResult();
@@ -123,14 +122,14 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public Object handleException(Exception e) {
+    public Object handleException(Exception e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.result(e);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public Object handleRuntimeException(RuntimeException e) {
+    public Object handleRuntimeException(RuntimeException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         return ExceptionResultWrap.result(e);
@@ -138,7 +137,7 @@ public class ControllerExceptionHandler {
 
 
     @ExceptionHandler(BindException.class)
-    public Object bindException(BindException e) {
+    public Object bindException(BindException e, HttpServletResponse response) {
         log.error(e.getMessage(), e);
         response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         // Valid 数据格式校验异常
@@ -149,7 +148,6 @@ public class ControllerExceptionHandler {
         });
         return ExceptionResultWrap.result(SYS_ERROR.getCode(), resqStr.toString());
     }
-
 
 
     /**
