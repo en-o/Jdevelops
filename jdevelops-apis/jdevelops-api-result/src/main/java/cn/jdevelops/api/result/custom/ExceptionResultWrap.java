@@ -3,6 +3,8 @@ package cn.jdevelops.api.result.custom;
 import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.ResultCode;
 import cn.jdevelops.api.result.util.SpringBeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * result warp.
@@ -11,6 +13,7 @@ import cn.jdevelops.api.result.util.SpringBeanUtils;
  */
 public final class ExceptionResultWrap {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ExceptionResultWrap.class);
     public static String SYMBOL  = "<=====>";
 
     /**
@@ -84,7 +87,7 @@ public final class ExceptionResultWrap {
                 return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(code, split[1]);
             }
         }catch (Exception e2){
-            e2.printStackTrace();
+            LOG.warn("解析"+SYMBOL+"失败",e);
         }
         return SpringBeanUtils.getInstance().getBean(ExceptionResult.class).result(ResultCode.SYS_ERROR.getCode(), e.getMessage());
     }
