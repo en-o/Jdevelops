@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 隐式添加接口包裹类 （当接口为使用 ResultVO时会自动添加)
  * @author tan
  */
 @Configuration
