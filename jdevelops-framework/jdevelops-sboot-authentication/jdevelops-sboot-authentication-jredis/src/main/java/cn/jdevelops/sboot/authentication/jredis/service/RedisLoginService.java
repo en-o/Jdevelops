@@ -70,6 +70,7 @@ public class RedisLoginService implements LoginService {
                 // 用户存在登录，判断是否需要重新登录
                 if (!redisSubject.getOnlyOnline()) {
                     // 继续使用当前token
+                    logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
                     return loginUser.getToken();
                 }
                 // 重新登录
