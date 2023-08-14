@@ -33,6 +33,7 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * @param userId 用户id
      * @param userName 用户名
      * @param alwaysOnline token是否永久在线
+     * @param onlyOnline 以前的是否会被挤下线
      */
     public RedisSignEntity(String subject,
                            String loginName,
@@ -55,6 +56,13 @@ public class RedisSignEntity<T> extends SignEntity<T> {
         this.onlyOnline = false;
     }
 
+
+    /**
+     *
+     * @param subject SignEntity
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline 以前的是否会被挤下线
+     */
     public RedisSignEntity(SignEntity<T> subject, Boolean alwaysOnline, Boolean onlyOnline) {
         super(subject.getSubject(),
                 subject.getLoginName(),
