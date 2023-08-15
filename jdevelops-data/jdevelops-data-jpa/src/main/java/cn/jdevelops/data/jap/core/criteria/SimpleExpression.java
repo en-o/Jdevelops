@@ -75,7 +75,7 @@ public class SimpleExpression implements ExpandCriterion {
                                  CriteriaBuilder builder) {
         // 构建 查询key
         Expression expression = str2Path(root, builder);
-        if (getIgnoreNull() && IObjects.isaBoolean(value)) {
+        if (Boolean.TRUE.equals(getIgnoreNull()) && IObjects.isaBoolean(value)) {
             return null;
         }
         // 构建查询
