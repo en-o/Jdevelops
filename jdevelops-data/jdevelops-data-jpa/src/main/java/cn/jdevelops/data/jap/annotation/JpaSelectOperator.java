@@ -47,6 +47,11 @@ public @interface JpaSelectOperator {
     boolean ignoreNull() default true;
 
     /**
+     * ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     */
+    boolean ignoreNullEnhance() default true;
+
+    /**
      * 自定义查询用的字段名
      * 空时默认使用属性字段
      */

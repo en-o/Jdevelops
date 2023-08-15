@@ -110,33 +110,33 @@ public class JpaUtils {
                                                            Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
             case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case ISNULL:
                 return Restrictions.isNull(fieldName, annotation.function());
             case ISNOTNULL:
                 return Restrictions.isNotNull(fieldName, annotation.function());
             case BETWEEN:
                 // 值以逗号隔开
-                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.function());
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case EQ:
             default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(),  annotation.ignoreNullEnhance(), annotation.function());
         }
     }
 
