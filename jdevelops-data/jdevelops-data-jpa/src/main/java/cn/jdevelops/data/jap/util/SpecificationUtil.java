@@ -260,7 +260,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> not(String key, Collection<?> values, boolean ignoreNull, boolean ignoreNullEnhance) {
-        if (ignoreNull && Objects.isNull(values)) {
+        if (ignoreNull && IObjects.isNull(values, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.not(root.get(key).in(values));
@@ -295,7 +295,7 @@ public final class SpecificationUtil<T> {
      * @return Specification
      */
     public Specification<T> between(String key, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
-        if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
+        if (ignoreNull && (IObjects.isNull(v1, ignoreNullEnhance) || IObjects.isNull(v2, ignoreNullEnhance))) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.between(root.get(key), v1, v2);

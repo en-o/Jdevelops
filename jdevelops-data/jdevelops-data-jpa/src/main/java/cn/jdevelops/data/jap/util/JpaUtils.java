@@ -90,7 +90,7 @@ public class JpaUtils {
                 }
             } else {
                 // 没有注解所有属性都要处理成条件
-                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
+                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true, true));
             }
         }
         return jpaSelect;
