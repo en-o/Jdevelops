@@ -5,7 +5,6 @@ import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JpaUtils;
 
 import javax.persistence.criteria.*;
-import java.util.Objects;
 
 /**
  * sql 表达式

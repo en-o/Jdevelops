@@ -72,12 +72,12 @@ public class JpaUtils {
             }
             // 字段被忽略
             JpaSelectIgnoreField ignoreField = field.getAnnotation(JpaSelectIgnoreField.class);
-            if (IObjects.nonNull(ignoreField)) {
+            if (Objects.nonNull(ignoreField)) {
                 continue;
             }
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            if (IObjects.nonNull(selectOperator)) {
+            if (Objects.nonNull(selectOperator)) {
                 // 使用自定义的名字
                 if (!IObjects.isBlank(selectOperator.fieldName())) {
                     fieldName = selectOperator.fieldName();
