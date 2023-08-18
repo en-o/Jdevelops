@@ -35,13 +35,16 @@ public class ResultHandlerMethodReturnValueHandler implements HandlerMethodRetur
     }
 
     @Override
-    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
-        // 可通过客户端的传递的请求头来切换不同的响应体的内容
-        mavContainer.setRequestHandled(true);
-        // returnValue =  POJO
-        Object apiResponse = ExceptionResultWrap.success(returnValue);
+    public void handleReturnValue(Object returnValue,
+                                  MethodParameter returnType,
+                                  ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest) throws Exception {
         HttpServletResponse response = (HttpServletResponse) webRequest.getNativeResponse();
         if (!Objects.isNull(response)) {
+            // 可通过客户端的传递的请求头来切换不同的响应体的内容
+            mavContainer.setRequestHandled(true);
+            // returnValue =  POJO
+            Object apiResponse = ExceptionResultWrap.success(returnValue);
             response.addHeader("version", "1.0");
             ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
             converter.write(apiResponse, MediaType.APPLICATION_JSON, outputMessage);
