@@ -13,11 +13,13 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * 设置全局默认的返回结构，如果开启就会强行在返回值中加入内置的返回结构
- * @see org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor
+ *
  * @author tan
+ * @see org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor
  */
 public class ResultHandlerMethodReturnValueHandler implements HandlerMethodReturnValueHandler {
 
@@ -36,13 +38,14 @@ public class ResultHandlerMethodReturnValueHandler implements HandlerMethodRetur
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
         // 可通过客户端的传递的请求头来切换不同的响应体的内容
         mavContainer.setRequestHandled(true);
-
         // returnValue =  POJO
         Object apiResponse = ExceptionResultWrap.success(returnValue);
         HttpServletResponse response = (HttpServletResponse) webRequest.getNativeResponse();
-        response.addHeader("version", "1.0");
-        ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
-        converter.write(apiResponse, MediaType.APPLICATION_JSON,outputMessage);
+        if (!Objects.isNull(response)) {
+            response.addHeader("version", "1.0");
+            ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
+            converter.write(apiResponse, MediaType.APPLICATION_JSON, outputMessage);
+        }
     }
 
 
