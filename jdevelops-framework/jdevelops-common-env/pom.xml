@@ -35,6 +35,11 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-api-exception</artifactId>
         </dependency>
+        <!--时间-->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-util-time</artifactId>
+        </dependency>
         <!--自定义的 Spring 组合注解-->
         <dependency>
             <groupId>cn.jdevelops</groupId>
@@ -62,6 +67,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
         </dependency>
+
 
     </dependencies>
 

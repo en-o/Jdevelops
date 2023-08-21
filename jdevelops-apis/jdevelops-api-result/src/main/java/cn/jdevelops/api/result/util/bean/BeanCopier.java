@@ -26,15 +26,40 @@ public class BeanCopier {
 
     public static void copy(Object source, Object target) {
         BeanUtils.copyProperties(source, target);
+        // 源对象
         Field[] sourceDeclaredFields = getAllField(source.getClass());
+        // 目标对象
         Field[] targetDeclaredFields = getAllField(target.getClass());
-        int var5 = sourceDeclaredFields.length;
 
+        int var5 = sourceDeclaredFields.length;
         for(int var6 = 0; var6 < var5; ++var6) {
             Field sourceField = sourceDeclaredFields[var6];
+            // 源字段类型
             String simpleName = sourceField.getType().getSimpleName();
+            // 处理 trim
+            if (simpleName.equals(String.class.getSimpleName())){
+                // 获取目标字段
+                Field targetField = getSameNameField(targetDeclaredFields, sourceField);
+                // 处理 trim
+                if (targetField != null && targetField.getType().isAssignableFrom(String.class)) {
+                    try {
+                        sourceField.setAccessible(true);
+                        targetField.setAccessible(true);
+                        if(sourceField.get(source)==null){
+                            targetField.set(target, null);
+                        }else {
+                            String strData = (String)sourceField.get(source);
+                            targetField.set(target, strData.trim());
+                        }
+                    } catch (IllegalAccessException var11) {
+                        LOG.error(var11.getMessage(),var11);
+                    }
+                }
+            }
+            // 处理时间字段
             if (simpleName.equals(Date.class.getSimpleName()) || simpleName.equals(LocalDateTime.class.getSimpleName())) {
                 Field targetField = getSameNameField(targetDeclaredFields, sourceField);
+                // 接受的字段是字符串但是数据源的字段是时间，则进行时间转换 data -> string
                 if (targetField != null && targetField.getType().isAssignableFrom(String.class)) {
                     try {
                         sourceField.setAccessible(true);

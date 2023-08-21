@@ -17,4 +17,10 @@ public @interface ApiIdempotent {
      * 自定义重复调用返回的消息
      */
     String message() default "短时间内请勿重复调用！";
+
+    /**
+     * 是否将错误code放到 HttpServletResponse 中
+     * @return 默认false不放到HttpServletResponse中
+     */
+    boolean responseStatus() default false;
 }

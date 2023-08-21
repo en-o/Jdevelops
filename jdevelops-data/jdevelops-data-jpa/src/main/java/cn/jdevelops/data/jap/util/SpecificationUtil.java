@@ -64,20 +64,21 @@ public final class SpecificationUtil<T> {
      * @return SpringBeanUtils
      */
     public static <T> SpecificationUtil<T> getInstance() {
-        return (SpecificationUtil<T>)INSTANCE;
+        return (SpecificationUtil<T>) INSTANCE;
     }
 
 
     /**
      * 等于
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> eq(String key, Object value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> eq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.equal(root.get(key), value);
@@ -88,25 +89,27 @@ public final class SpecificationUtil<T> {
     /**
      * 等于
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
-        return  eq(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return eq(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 不相等
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> notEq(String key, Object value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> notEq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notEqual(root.get(key), value);
@@ -116,25 +119,27 @@ public final class SpecificationUtil<T> {
     /**
      * 不相等
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull) {
-        return notEq(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return notEq(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 大于
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> gt(String key, Comparable value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> gt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.greaterThan(root.get(key), value);
@@ -144,25 +149,27 @@ public final class SpecificationUtil<T> {
     /**
      * 大于
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> gt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull) {
-        return gt(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> gt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return gt(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 大于等于
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> ge(String key, Comparable value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> ge(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(key), value);
@@ -172,25 +179,27 @@ public final class SpecificationUtil<T> {
     /**
      * 大于等于
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> ge(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull) {
-        return  ge(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> ge(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return ge(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 小于
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> lt(String key, Comparable value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> lt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.lessThan(root.get(key), value);
@@ -200,25 +209,27 @@ public final class SpecificationUtil<T> {
     /**
      * 小于
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> lt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull) {
-        return lt(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> lt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return lt(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 小于等于
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> le(String key, Comparable value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> le(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(key), value);
@@ -229,24 +240,27 @@ public final class SpecificationUtil<T> {
     /**
      * 小于等于
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> le(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull) {
-        return le(ColumnUtil.getFieldName(fn),value,ignoreNull);
+    public Specification<T> le(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return le(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * not in
-     * @param key        实体字段
-     * @param values      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     *
+     * @param key               实体字段
+     * @param values            值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> not(String key, Collection<?> values, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(values)) {
+    public Specification<T> not(String key, Collection<?> values, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(values, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.not(root.get(key).in(values));
@@ -258,13 +272,14 @@ public final class SpecificationUtil<T> {
     /**
      * not in
      *
-     * @param fn        实体字段
-     * @param values      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param values            值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> not(ColumnSFunction<T, ?> fn, Collection<?> values, boolean ignoreNull) {
-        return not(ColumnUtil.getFieldName(fn),values,ignoreNull);
+    public Specification<T> not(ColumnSFunction<T, ?> fn, Collection<?> values, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return not(ColumnUtil.getFieldName(fn), values, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -272,14 +287,15 @@ public final class SpecificationUtil<T> {
      * between
      * v1 <= key <= v2
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param v1         值1
-     * @param v2         值2
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param v1                值1
+     * @param v2                值2
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> between(String key, String v1, String v2, boolean ignoreNull) {
-        if (ignoreNull && (Objects.isNull(v1) || Objects.isNull(v2))) {
+    public Specification<T> between(String key, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && (IObjects.isNull(v1, ignoreNullEnhance) || IObjects.isNull(v2, ignoreNullEnhance))) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.between(root.get(key), v1, v2);
@@ -291,15 +307,16 @@ public final class SpecificationUtil<T> {
      * between
      * v1 <= key <= v2
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param v1v2         值(1,2) 英文逗号隔开
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param v1v2              值(1,2) 英文逗号隔开
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> between(String key, String v1v2, boolean ignoreNull) {
+    public Specification<T> between(String key, String v1v2, boolean ignoreNull, boolean ignoreNullEnhance) {
         String v1;
         String v2;
-        if(v1v2.contains(",")){
+        if (v1v2.contains(",")) {
             String[] split = v1v2.split(",");
             v1 = split[0];
             v2 = split[1];
@@ -318,29 +335,29 @@ public final class SpecificationUtil<T> {
      * between
      * v1 <= fn <= v2
      *
-     * @param fn        实体字段
-     * @param v1         值1
-     * @param v2         值2
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param v1                值1
+     * @param v2                值2
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull) {
-        return between(ColumnUtil.getFieldName(fn), v1, v2, ignoreNull);
+    public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return between(ColumnUtil.getFieldName(fn), v1, v2, ignoreNull, ignoreNullEnhance);
     }
-
-
 
 
     /**
      * 模糊匹配
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> like(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> like(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), "%" + value + "%");
@@ -351,13 +368,14 @@ public final class SpecificationUtil<T> {
     /**
      * 模糊匹配
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
-        return like(ColumnUtil.getFieldName(fn), value, ignoreNull);
+    public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return like(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -365,13 +383,14 @@ public final class SpecificationUtil<T> {
      * 左模糊
      * %xxx
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> lLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> lLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), "%" + value);
@@ -383,30 +402,29 @@ public final class SpecificationUtil<T> {
      * 左模糊
      * %xxx
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
-        return lLike(ColumnUtil.getFieldName(fn), value, ignoreNull);
+    public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return lLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
-
-
-
 
 
     /**
      * 右模糊
      * %xxx
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> rLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> rLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.like(root.get(key), value + "%");
@@ -418,25 +436,27 @@ public final class SpecificationUtil<T> {
      * 右模糊
      * %xxx
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
-        return rLike(ColumnUtil.getFieldName(fn), value, ignoreNull);
+    public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return rLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 模糊不匹配
      *
-     * @param key        键 (实体字段非数据库字段)
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param key               键 (实体字段非数据库字段)
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> notLike(String key, String value, boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    public Specification<T> notLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> builder.notLike(root.get(key), "%" + value + "%");
@@ -446,17 +466,19 @@ public final class SpecificationUtil<T> {
     /**
      * 模糊不匹配
      *
-     * @param fn        实体字段
-     * @param value      值
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param fn                实体字段
+     * @param value             值
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      * @return Specification
      */
-    public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull) {
-        return notLike(ColumnUtil.getFieldName(fn), value, ignoreNull);
+    public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
+        return notLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * key值非空
+     *
      * @param key 键 (实体字段非数据库字段)
      * @return Specification
      */
@@ -473,7 +495,6 @@ public final class SpecificationUtil<T> {
     public Specification<T> isNotNull(ColumnSFunction<T, ?> fn) {
         return isNotNull(ColumnUtil.getFieldName(fn));
     }
-
 
 
     /**
@@ -519,40 +540,43 @@ public final class SpecificationUtil<T> {
     /**
      * 排序
      *
-     * @param fn  实体字段
+     * @param fn   实体字段
      * @param desc true desc
      * @return Specification
      */
     public Specification<T> orderBy(ColumnSFunction<T, ?> fn, boolean desc) {
-        return orderBy(ColumnUtil.getFieldName(fn),desc);
+        return orderBy(ColumnUtil.getFieldName(fn), desc);
     }
 
 
     /**
      * 判断数据库字段为时间格式的大于(=)小于(=)
      * ps: 测试过人大金仓(timestamp)和mysql(timestamp)
-     * @param lessThan true <= , false >=
-     * @param key 实体字段
-     * @param value 值 （java.util.Date）
-     *  <p>
-     *               DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-     *                Date vale =  DateTime.parse(value,formatter).toDate();
-     *  </p>
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     *
+     * @param lessThan          true <= , false >=
+     * @param key               实体字段
+     * @param value             值 （java.util.Date）
+     *                          <p>
+     *                          DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+     *                          Date vale =  DateTime.parse(value,formatter).toDate();
+     *                          </p>
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
      */
-    private <D> Specification<T>  selectTimeLessGreater(boolean lessThan,
-                                                    String key,
-                                                    Date value,
-                                                    boolean ignoreNull) {
-        if (ignoreNull && Objects.isNull(value)) {
+    private <D> Specification<T> selectTimeLessGreater(boolean lessThan,
+                                                       String key,
+                                                       Date value,
+                                                       boolean ignoreNull,
+                                                       boolean ignoreNullEnhance) {
+        if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         } else {
             return (root, query, builder) -> {
                 Expression<Date> function = builder.function("to_date",
                         Date.class, root.get(key));
-                if(lessThan){
+                if (lessThan) {
                     return builder.lessThanOrEqualTo(function, value);
-                }else {
+                } else {
                     return builder.greaterThanOrEqualTo(function, value);
                 }
             };
@@ -562,19 +586,21 @@ public final class SpecificationUtil<T> {
 
     /**
      * 获取一个 空的  Specification 对应，用于 else无选择时使用
+     *
      * @return Specification
      */
     public Specification<T> specification() {
-       return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
     }
 
 
     /**
      * 自定义Specification
+     *
      * @return Specification
      */
     public Specification<T> specification(Specification<T> spec) {
-         return spec;
+        return spec;
     }
 
 
@@ -591,32 +617,32 @@ public final class SpecificationUtil<T> {
                                           Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
-                return notEq(fieldName, fieldValue, annotation.ignoreNull());
+                return notEq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case LIKE:
-                return like(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
+                return like(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case NOTLIKE:
-                return notLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
+                return notLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case LLIKE:
-                return lLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
+                return lLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case RLIKE:
-                return rLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull());
+                return rLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case LT:
-                return lt(fieldName, (Integer) fieldValue, annotation.ignoreNull());
+                return lt(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case GT:
-                return gt(fieldName, (Integer) fieldValue, annotation.ignoreNull());
+                return gt(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case LTE:
-                return le(fieldName, (Integer) fieldValue, annotation.ignoreNull());
+                return le(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case GTE:
-                return ge(fieldName, (Integer) fieldValue, annotation.ignoreNull());
+                return ge(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case BETWEEN:
-                return between(fieldName, String.valueOf(fieldValue),annotation.ignoreNull());
+                return between(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
             case ISNULL:
                 return isNull(fieldName);
             case ISNOTNULL:
                 return isNotNull(fieldName);
             case EQ:
             default:
-                return eq(fieldName, fieldValue, annotation.ignoreNull());
+                return eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
         }
     }
 

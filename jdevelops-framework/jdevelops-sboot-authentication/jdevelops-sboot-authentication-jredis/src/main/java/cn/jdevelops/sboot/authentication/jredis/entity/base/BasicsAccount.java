@@ -28,9 +28,14 @@ public class BasicsAccount {
     /** 是否被锁定 **/
     private boolean excessiveAttempts;
     /**
-     * 用户角色(json, 有什么就存什么把，id,名称等json)
+     * 用户角色 为空则默认不验证角色权限
      */
-    private  String ownRoleJsons;
+    private  List<String> roles;
+
+    /**
+     * 用户权限 为空则默认不验证角色权限
+     */
+    private  List<String> permissions;
 
     public BasicsAccount() {
     }
@@ -38,13 +43,16 @@ public class BasicsAccount {
     public BasicsAccount(String userCode,
                          String password, String salt,
                          boolean disabledAccount,
-                         boolean excessiveAttempts, String ownRoleJsons) {
+                         boolean excessiveAttempts,
+                         List<String> roles,
+                         List<String> permissions) {
         this.userCode = userCode;
         this.password = password;
         this.salt = salt;
         this.disabledAccount = disabledAccount;
         this.excessiveAttempts = excessiveAttempts;
-        this.ownRoleJsons = ownRoleJsons;
+        this.roles = roles;
+        this.permissions = permissions;
     }
 
     @Override
@@ -55,7 +63,8 @@ public class BasicsAccount {
                 ", salt='" + salt + '\'' +
                 ", disabledAccount=" + disabledAccount +
                 ", excessiveAttempts=" + excessiveAttempts +
-                ", ownRoleJsons=" + ownRoleJsons +
+                ", roles=" + roles +
+                ", permissions=" + permissions +
                 '}';
     }
 
@@ -99,11 +108,19 @@ public class BasicsAccount {
         this.excessiveAttempts = excessiveAttempts;
     }
 
-    public String getOwnRoleJsons() {
-        return ownRoleJsons;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setOwnRoleJsons(String ownRoleJsons) {
-        this.ownRoleJsons = ownRoleJsons;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 }

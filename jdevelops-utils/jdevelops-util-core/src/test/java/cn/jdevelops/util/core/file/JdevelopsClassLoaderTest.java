@@ -1,13 +1,13 @@
-package cn.jdevelops.util.core.file;
-
-import junit.framework.TestCase;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-public class JdevelopsClassLoaderTest extends TestCase {
-
+//package cn.jdevelops.util.core.file;
+//
+//import junit.framework.TestCase;
+//
+//import java.io.IOException;
+//import java.lang.reflect.InvocationTargetException;
+//import java.lang.reflect.Method;
+//
+//public class JdevelopsClassLoaderTest extends TestCase {
+//
 //    public void testClassLoader() throws IOException, InterruptedException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
 //        String javaFilePath = "H:\\test\\dist";
 //        String javaFile = "HelloWorld.java";
@@ -22,9 +22,9 @@ public class JdevelopsClassLoaderTest extends TestCase {
 //        System.out.println("此class的类加载器父类为：" + loadedClass.getClassLoader().getParent());
 //
 //
-//        assertEquals(FunctionUtil.executeDeclaredMethod(FunctionTest.class, "test"), "function");
-//        assertEquals(FunctionUtil.executeDeclaredMethod(FunctionTest.class, "test2", "hi"), "function String => hi");
-//        assertEquals(FunctionUtil.executeDeclaredMethod(FunctionTest.class, "test3", 1), "function Integer => 1");
+//        assertEquals(FunctionUtil.executeDeclaredMethod(loadedClass, "test"), "function");
+//        assertEquals(FunctionUtil.executeDeclaredMethod(loadedClass, "test2", "hi"), "function String => hi");
+//        assertEquals(FunctionUtil.executeDeclaredMethod(loadedClass, "test3", 1), "function Integer => 1");
 //
 //        // 以下是执行main方法
 //        Object o = loadedClass.newInstance();
@@ -37,5 +37,5 @@ public class JdevelopsClassLoaderTest extends TestCase {
 //            }
 //        }
 //    }
-
-}
+//
+//}

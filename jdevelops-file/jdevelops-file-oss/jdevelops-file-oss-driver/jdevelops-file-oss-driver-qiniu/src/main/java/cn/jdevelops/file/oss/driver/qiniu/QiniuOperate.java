@@ -62,7 +62,7 @@ public class QiniuOperate implements OssOperateAPI {
         }
         String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
         String downPath =  childFolder + freshName;
-        String relativePath =  ossConfig.getBrowseUrl()+"/"+downPath;
+        String absolutePath =  ossConfig.getBrowseUrl()+"/"+downPath;
 
         Response response = this.uploadManager.put(uploaded.getFile().getInputStream(),
                 downPath,
@@ -72,8 +72,8 @@ public class QiniuOperate implements OssOperateAPI {
         Gson gson = new Gson();
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
         FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(downPath);
-        filePathResult.setRelativePath(relativePath);
+        filePathResult.setAbsolutePath(absolutePath);
+        filePathResult.setRelativePath(downPath);
         filePathResult.setFreshName(freshName);
         filePathResult.setDownPath(downPath);
         filePathResult.setOriginalName(originalName);

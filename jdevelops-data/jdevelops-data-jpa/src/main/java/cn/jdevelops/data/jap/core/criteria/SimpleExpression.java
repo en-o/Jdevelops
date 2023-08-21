@@ -36,32 +36,60 @@ public class SimpleExpression implements ExpandCriterion {
     private Boolean ignoreNull;
 
     /**
+     * ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     */
+    private Boolean ignoreNullEnhance;
+
+    /**
      * 函数处理，
      */
     private SpecBuilderDateFun function;
 
-    public SimpleExpression(String fieldName, Object value, Operator operator, Boolean ignoreNull) {
+    public SimpleExpression(String fieldName,
+                            Object value,
+                            Operator operator,
+                            Boolean ignoreNull,
+                            Boolean ignoreNullEnhance) {
         this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
+        this.ignoreNull = ignoreNull;
+        this.ignoreNullEnhance = ignoreNullEnhance;
     }
 
-    public SimpleExpression(String fieldName, Object value, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
+    public SimpleExpression(String fieldName,
+                            Object value,
+                            Operator operator,
+                            SpecBuilderDateFun function,
+                            Boolean ignoreNull,
+                            Boolean ignoreNullEnhance) {
         this.fieldName = fieldName;
         this.value = value;
         this.operator = operator;
         this.function = function;
+        this.ignoreNullEnhance = ignoreNullEnhance;
     }
 
-    public SimpleExpression(String fieldName, Operator operator, Boolean ignoreNull) {
+    public SimpleExpression(String fieldName,
+                            Operator operator,
+                            Boolean ignoreNull,
+                            Boolean ignoreNullEnhance) {
         this.fieldName = fieldName;
         this.operator = operator;
+        this.ignoreNull = ignoreNull;
+        this.ignoreNullEnhance = ignoreNullEnhance;
     }
 
-    public SimpleExpression(String fieldName, Operator operator, SpecBuilderDateFun function, Boolean ignoreNull) {
+    public SimpleExpression(String fieldName,
+                            Operator operator,
+                            SpecBuilderDateFun function,
+                            Boolean ignoreNull,
+                            Boolean ignoreNullEnhance) {
         this.fieldName = fieldName;
         this.operator = operator;
         this.function = function;
+        this.ignoreNull = ignoreNull;
+        this.ignoreNullEnhance = ignoreNullEnhance;
     }
 
 
@@ -71,7 +99,7 @@ public class SimpleExpression implements ExpandCriterion {
                                  CriteriaBuilder builder) {
         // 构建 查询key
         Expression expression = str2Path(root, builder);
-        if (getIgnoreNull() && IObjects.isaBoolean(value)) {
+        if (Boolean.TRUE.equals(getIgnoreNull()) && IObjects.isNull(value, getIgnoreNullEnhance())) {
             return null;
         }
         // 构建查询
@@ -145,6 +173,20 @@ public class SimpleExpression implements ExpandCriterion {
         this.ignoreNull = ignoreNull;
     }
 
+    /**
+     * ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     */
+    public Boolean getIgnoreNullEnhance() {
+        if (ignoreNullEnhance == null) {
+            return true;
+        }
+        return ignoreNullEnhance;
+    }
+
+    public void setIgnoreNullEnhance(Boolean ignoreNullEnhance) {
+        this.ignoreNullEnhance = ignoreNullEnhance;
+    }
+
     public String getFieldName() {
         return fieldName;
     }
@@ -184,6 +226,7 @@ public class SimpleExpression implements ExpandCriterion {
                 ", value=" + value +
                 ", operator=" + operator +
                 ", ignoreNull=" + ignoreNull +
+                ", ignoreNullEnhance=" + ignoreNullEnhance +
                 ", function=" + function +
                 '}';
     }

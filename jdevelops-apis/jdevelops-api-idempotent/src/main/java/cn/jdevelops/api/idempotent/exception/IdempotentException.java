@@ -8,6 +8,11 @@ package cn.jdevelops.api.idempotent.exception;
  * @date 2022-11-17 15:02
  */
 public class IdempotentException  extends RuntimeException{
+    /**
+     * ResultCode.API_DOUBLE_CALL
+     */
+    public static int IDEMPOTENT_CODE = 602;
+    public static String SYMBOL  = "<=====>";
     private static final long serialVersionUID = 4129812562603997310L;
 
     private int code;
@@ -20,26 +25,27 @@ public class IdempotentException  extends RuntimeException{
     public IdempotentException(String message) {
         super(message);
         this.msg = message;
-        this.code = 500;
+        this.code = IDEMPOTENT_CODE;
     }
 
-    public IdempotentException(Integer code, String message) {
-        super(message);
-        this.code = code;
-        this.msg = message;
-    }
 
     public IdempotentException(String message, Throwable cause) {
         super(message, cause);
         this.msg = message;
-        this.code = 500;
+        this.code = IDEMPOTENT_CODE;
     }
 
-    public IdempotentException(String message, Throwable cause, int code) {
-        super(message, cause);
-        this.msg = message;
-        this.code = code;
+
+    /**
+     * 特的message
+     *   <ps>用于无法使用BusinessException，当时想自定义失败code的情况（默认是501）</ps>
+     * @param message message
+     * @return code+ ExceptionResultWrap.symbol+message; (eg. 200<=====>你错了)
+     */
+    public static IdempotentException specialMessage(String message){
+        return new IdempotentException(IDEMPOTENT_CODE + SYMBOL + message);
     }
+
 
     public int getCode() {
         return code;

@@ -37,6 +37,12 @@ public class DefLoginService implements LoginService {
     }
 
     @Override
+    public boolean isLogin(String subject) {
+        logger.warn("jwt登录方式无法使用此方法进行登录验证");
+        return false;
+    }
+
+    @Override
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);

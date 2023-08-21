@@ -8,7 +8,6 @@ package cn.jdevelops.api.result.emums;
  * @date 2019年07月29日 14:16
  */
 public class ResultCode {
-
     /**
      * 成功
      */
@@ -33,5 +32,29 @@ public class ResultCode {
      * 系统限流
      */
     public static final ExceptionCode SYS_THROTTLING = new ExceptionCode(503, "系统限流");
+
+
+    /**
+     * 数据重复
+     */
+    public static final ExceptionCode DATA_REPEAT = new ExceptionCode(503, "数据重复");
+
+    /**
+     * 数据不存在
+     */
+    public static final ExceptionCode DATA_NONEXISTENCE = new ExceptionCode(504, "数据不存在");
+
+
+    // -------------------------6 开头------------------------------------------------
+    /**
+     * 文件不存在
+     */
+    public static final ExceptionCode FILE_NO_EXIST = new ExceptionCode(601,"文件不存在");
+
+    /**
+     *  api接口调用失败
+     */
+    public static final ExceptionCode API_DOUBLE_CALL = new ExceptionCode(602,"短时间内请勿重复调用");
+
 
 }

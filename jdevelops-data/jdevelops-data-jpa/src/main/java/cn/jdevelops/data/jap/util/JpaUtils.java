@@ -72,12 +72,12 @@ public class JpaUtils {
             }
             // 字段被忽略
             JpaSelectIgnoreField ignoreField = field.getAnnotation(JpaSelectIgnoreField.class);
-            if (IObjects.nonNull(ignoreField)) {
+            if (Objects.nonNull(ignoreField)) {
                 continue;
             }
             JpaSelectOperator selectOperator = field.getAnnotation(JpaSelectOperator.class);
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            if (IObjects.nonNull(selectOperator)) {
+            if (Objects.nonNull(selectOperator)) {
                 // 使用自定义的名字
                 if (!IObjects.isBlank(selectOperator.fieldName())) {
                     fieldName = selectOperator.fieldName();
@@ -90,7 +90,7 @@ public class JpaUtils {
                 }
             } else {
                 // 没有注解所有属性都要处理成条件
-                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true));
+                jpaSelect.add(Restrictions.eq(fieldName, fieldValue, true, true));
             }
         }
         return jpaSelect;
@@ -110,33 +110,33 @@ public class JpaUtils {
                                                            Object fieldValue) {
         switch (annotation.operator()) {
             case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
             case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case ISNULL:
                 return Restrictions.isNull(fieldName, annotation.function());
             case ISNOTNULL:
                 return Restrictions.isNotNull(fieldName, annotation.function());
             case BETWEEN:
                 // 值以逗号隔开
-                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.function());
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
             case EQ:
             default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.function());
+                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(),  annotation.ignoreNullEnhance(), annotation.function());
         }
     }
 

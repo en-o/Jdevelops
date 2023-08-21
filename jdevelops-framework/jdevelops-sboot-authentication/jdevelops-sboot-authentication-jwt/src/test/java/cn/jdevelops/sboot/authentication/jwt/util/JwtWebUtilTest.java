@@ -2,7 +2,6 @@ package cn.jdevelops.sboot.authentication.jwt.util;
 
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
-import com.alibaba.fastjson2.JSON;
 import junit.framework.TestCase;
 import org.jose4j.lang.JoseException;
 import org.mockito.Mockito;
@@ -145,12 +144,6 @@ public class JwtWebUtilTest extends TestCase {
         List<JwtWebUtilBeanComplex> map = tokenByBeanListBeanComplex.getMap();
         assertEquals("[{\"beans\":[{\"name\":\"tan1\",\"sex\":10},{\"name\":\"ning1\",\"sex\":11}],\"ints\":[1,2],\"name\":\"tan\",\"sex\":10,\"strs\":[\"tan\",\"ning\"]}, {\"beans\":[{\"name\":\"tan2\",\"sex\":11},{\"name\":\"ning2\",\"sex\":12}],\"ints\":[13,23],\"name\":\"ning\",\"sex\":10,\"strs\":[\"tan2\",\"ning2\"]}]",
                 map.toString());
-    }
-
-    public void test1111() {
-        // map int
-        String x = "[\"tan\",\"tan\"]";
-        Arrays.stream(JSON.to(String[].class,x)).forEach(System.out::println);
     }
 
     public void testGetTokenBySignEntity() {

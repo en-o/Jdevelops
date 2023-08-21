@@ -50,8 +50,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull) {
-        return eq(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return eq(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
 
@@ -64,8 +64,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ, function, ignoreNull);
+    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -77,8 +77,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull) {
-        return ne(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return ne(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -90,8 +90,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE, function, ignoreNull);
+    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -103,8 +103,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull) {
-        return like(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return like(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -117,8 +117,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE, function, ignoreNull);
+    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -131,8 +131,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull) {
-        return notLike(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return notLike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -145,8 +145,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NOTLIKE, function, ignoreNull);
+    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NOTLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -159,8 +159,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull) {
-        return llike(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return llike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
 
@@ -174,8 +174,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE, function, ignoreNull);
+    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -188,8 +188,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull) {
-        return rlike(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return rlike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -202,8 +202,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE, function, ignoreNull);
+    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -214,8 +214,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull) {
-        return gt(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return gt(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -227,8 +227,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT, function, ignoreNull);
+    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -240,8 +240,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull) {
-        return lt(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return lt(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -253,8 +253,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT, function, ignoreNull);
+    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -265,8 +265,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull) {
-        return gte(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return gte(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -278,8 +278,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE, function, ignoreNull);
+    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -291,8 +291,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull) {
-        return lte(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return lte(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
@@ -304,8 +304,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE, function, ignoreNull);
+    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -318,8 +318,8 @@ public class Restrictions {
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
-    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull) {
-        return in(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return in(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
 
@@ -333,14 +333,14 @@ public class Restrictions {
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
-    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull, SpecBuilderDateFun function) {
+    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
         SimpleExpression[] ses = new SimpleExpression[value.size()];
         int i = 0;
         for (Object obj : value) {
-            SimpleExpression simpleExpression = new SimpleExpression(fieldName, obj, ExpandCriterion.Operator.EQ, function, ignoreNull);
+            SimpleExpression simpleExpression = new SimpleExpression(fieldName, obj, ExpandCriterion.Operator.EQ, function, ignoreNull, ignoreNullEnhance);
             ses[i] = simpleExpression;
             i++;
         }
@@ -366,7 +366,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL, function, false);
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL, function, false,true);
     }
 
 
@@ -388,7 +388,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNotNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL, function, false);
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL, function, false,true);
     }
 
 
@@ -400,8 +400,8 @@ public class Restrictions {
      * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
      * @return SimpleExpression
      */
-    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull) {
-        return between(fieldName, value, ignoreNull, SpecBuilderDateFun.NULL);
+    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+        return between(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
 
@@ -414,8 +414,8 @@ public class Restrictions {
      * @param function   处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.BETWEEN, function, ignoreNull);
+    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.BETWEEN, function, ignoreNull, ignoreNullEnhance);
     }
 
 

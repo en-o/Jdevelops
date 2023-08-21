@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -62,7 +63,7 @@ public class IdempotentServiceImpl implements IdempotentService {
     }
 
     @Override
-    public boolean checkApiRedo(HttpServletRequest request, ApiIdempotent methodAnnotation) {
+    public boolean checkApiRedo(HttpServletRequest request, HttpServletResponse response, ApiIdempotent methodAnnotation) {
         // 加密让数据变短
         String paramsHeader = ParamUtil.getRequestParam(request);
         if(idempotentConfig.isParameterEncryption()){
@@ -77,7 +78,10 @@ public class IdempotentServiceImpl implements IdempotentService {
             LOG.info("当前接口在redis中无记录，此处进行新增记录");
             return true;
         } else {
-            throw new IdempotentException(methodAnnotation.message());
+            if(methodAnnotation.responseStatus()){
+                response.setStatus(IdempotentException.IDEMPOTENT_CODE);
+            }
+            throw IdempotentException.specialMessage(methodAnnotation.message());
         }
 
     }

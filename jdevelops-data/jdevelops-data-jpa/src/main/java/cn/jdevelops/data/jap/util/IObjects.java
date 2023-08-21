@@ -1,6 +1,7 @@
 package cn.jdevelops.data.jap.util;
 
 
+import java.util.Objects;
 
 /**
  * 对象工具类
@@ -29,7 +30,22 @@ public class IObjects {
      * @return boolean
      */
     public static boolean isNull(Object obj) {
-        return obj == null || obj == "" ;
+        return obj == null || obj == "" || obj ==" ";
+    }
+
+    /**
+     * 等于空
+     * @param obj  obj
+     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @return boolean
+     */
+    public static boolean isNull(Object obj, Boolean ignoreNullEnhance) {
+        if(Boolean.FALSE.equals(ignoreNullEnhance)){
+            return obj == null || obj == "" || obj ==" ";
+        }else {
+            return Objects.isNull(obj);
+        }
+
     }
 
 
