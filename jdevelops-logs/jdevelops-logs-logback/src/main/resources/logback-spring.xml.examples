@@ -158,7 +158,7 @@
     <logger name="com.github.miemiedev.mybatis.paginator" level="INFO" additivity="false" />
     <logger name="io.lettuce.core.protocol" level="INFO" additivity="false" />
     <!-- nacos改变日志级别 -->
-    <logger name="com.alibaba.nacos.client" level="ERROR" additivity="false" />
+    <logger name="com.alibaba.nacos" level="INFO"/>
 
     <springProfile name="dev">
         <root level="debug">
