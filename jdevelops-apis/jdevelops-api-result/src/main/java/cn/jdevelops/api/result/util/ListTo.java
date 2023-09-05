@@ -19,7 +19,14 @@ import java.util.stream.Collectors;
  * @version 1
  * @date 2020/8/12 20:13
  */
-public class ListTo {
+public final class ListTo {
+
+    /**
+     * 工具类不需要实例化
+     */
+    private ListTo() {
+        throw new AssertionError("No cn.jdevelops.api.result.util.ListTo instances for you!");
+    }
 
     /**
      * 复制bean

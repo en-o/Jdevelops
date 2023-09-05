@@ -59,7 +59,12 @@ import java.util.function.Supplier;
  * @since 1.1.2
  */
 public abstract class Assert {
-
+	/**
+	 * 工具类不需要实例化
+	 */
+	private Assert() {
+		throw new AssertionError("No cn.jdevelops.api.result.util.Assert instances for you!");
+	}
 
 
 	/**
