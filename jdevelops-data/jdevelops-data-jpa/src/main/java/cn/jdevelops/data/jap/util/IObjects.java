@@ -36,11 +36,11 @@ public class IObjects {
     /**
      * 等于空
      * @param obj  obj
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return boolean
      */
     public static boolean isNull(Object obj, Boolean ignoreNullEnhance) {
-        if(Boolean.FALSE.equals(ignoreNullEnhance)){
+        if(Boolean.TRUE.equals(ignoreNullEnhance)){
             return obj == null || obj == "" || obj ==" ";
         }else {
             return Objects.isNull(obj);
