@@ -9,7 +9,8 @@ ${AnsiColor.BRIGHT_RED} \____/                                           [__|
 Spring Boot 版本：${spring-boot.version}
 jdevelops   版本：2.0.7
 项目名称 ：${spring.application.name}
+项目端口 ：${server.port}
+项目PID ：${pid}
 运行环境 ：${spring.profiles.active}
 java版本：${java.version}
 by: tn
-
