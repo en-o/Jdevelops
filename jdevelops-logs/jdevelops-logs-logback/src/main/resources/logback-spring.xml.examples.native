@@ -10,8 +10,8 @@
         debug="false" scan="true" scanPeriod="10 second">
 
     <!-- 配置日志输出目录文件夹以及进行重命名 -->
-    <property name="PROJECT" value="demo" />
-    <property name="ROOT" value="logs/${PROJECT}/" />
+    <property name="PROJECT" value="swagger" />
+    <property name="ROOT" value="logs/docstructa/${PROJECT}/" />
     <!-- 配置日志文件大小 -->
     <property name="FILESIZE" value="50MB" />
     <!-- 设置日志保留的时间，单位为天 -->
@@ -21,19 +21,19 @@
 
     <!-- 控制台打印 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+        <encoder charset="utf-8">
             <!-- 格式化日志输出：
              %-5level表示级别从左显示5个字符宽度，%d表示日期，%thread表示线程名，%m表示日志消息，%n是换行符
              %logger{36}表示logger是class的全名，36表示限制最长字符
             -->
-            <pattern>%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%boldMagenta(%X{tl}) |%highlight(%-5level)  |%green(%logger:%line) |%white(%msg%n)</pattern>
+            <pattern>%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level)  |%green(%logger:%line) |%white(%msg%n)</pattern>
         </encoder>
     </appender>
 
-    <!-- ERROR日志输出到文件  （文件大小到达指定尺寸的时候产生一个新文件） -->
+    <!-- ERROR日志输出到文件  -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl} %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <!-- 设置当前日志文档输出的级别，只记录ERROR级别的日志 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -54,8 +54,8 @@
 
     <!-- WARN日志输出到文件 -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
@@ -73,8 +73,8 @@
 
     <!-- INFO日志输出到文件 -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -92,8 +92,8 @@
 
     <!-- DEBUG日志输出到文件 -->
     <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
@@ -112,8 +112,8 @@
 
     <!-- TRACE日志输出到文件 -->
     <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>TRACE</level>
@@ -130,27 +130,24 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
-    <!-- API日志输出到文件 -->
+<!--    &lt;!&ndash; API日志输出到文件 &ndash;&gt;-->
 <!--    <appender name="APILOG" class="cn.jdevelops.logs.logback.rolling.CustomApiLogRollingFileAppenderInput">-->
-    <appender name="APILOG" class="com.example.loggerleveltest.CustomLog">
-        <encoder charset="utf-8" class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
-            <pattern>[%-5level] %X{tl}  %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <!--表示匹配该级别及以上-->
-            <onMatch>ACCEPT</onMatch>
-            <!--表示不匹配该级别以下的-->
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${ROOT}%d/apilog.%i.log.zip</fileNamePattern>
-            <maxHistory>${MAXHISTORY}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILESIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+<!--        <encoder charset="utf-8">-->
+<!--            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>-->
+<!--        </encoder>-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>INFO</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${ROOT}%d/apilog.%i.log.zip</fileNamePattern>-->
+<!--            <maxHistory>${MAXHISTORY}</maxHistory>-->
+<!--            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+<!--                <maxFileSize>${FILESIZE}</maxFileSize>-->
+<!--            </timeBasedFileNamingAndTriggeringPolicy>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
     <!-- 输出sql相关日志，不需要可删除；additivity：是否向上级loger传递打印信息，默认是true-->
     <logger name="org.apache.ibatis" level="INFO" additivity="false" />
@@ -159,18 +156,14 @@
     <logger name="io.lettuce.core.protocol" level="INFO" additivity="false" />
     <!-- nacos改变日志级别 -->
     <logger name="com.alibaba.nacos" level="INFO"/>
-    <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO"/>
+     <!-- nacos改变日志级别 -->
+     <logger name="com.alibaba.nacos" level="INFO"/>
+     <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO"/>
 
 
     <springProfile name="dev">
         <root level="debug">
-            <appender-ref ref="STDOUT" />
-<!--            <appender-ref ref="DEBUG" />-->
-<!--            <appender-ref ref="ERROR" />-->
-<!--            <appender-ref ref="WARN" />-->
-<!--            <appender-ref ref="INFO" />-->
-<!--            <appender-ref ref="TRACE" />-->
-<!--            <appender-ref ref="APILOG" />-->
+            <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
     <!--    非dev环境下-->
@@ -183,7 +176,7 @@
             <appender-ref ref="WARN" />
             <appender-ref ref="INFO" />
             <appender-ref ref="TRACE" />
-            <appender-ref ref="APILOG" />
+<!--            <appender-ref ref="APILOG" />-->
         </root>
     </springProfile>
 

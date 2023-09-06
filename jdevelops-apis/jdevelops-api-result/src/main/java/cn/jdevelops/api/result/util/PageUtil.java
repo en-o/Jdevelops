@@ -1,5 +1,6 @@
 package cn.jdevelops.api.result.util;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;
@@ -11,7 +12,14 @@ import cn.jdevelops.api.result.request.SortPageDTO;
  * @version 1
  * @date 2021/1/26 23:55
  */
-public class PageUtil {
+public final class PageUtil {
+
+    /**
+     * 工具类不需要实例化
+     */
+    private PageUtil() {
+        throw new AssertionError("No cn.jdevelops.api.result.util.PageUtil instances for you!");
+    }
 
     /**
      * 判断 PageVO 是否为空，空就new一个默认的

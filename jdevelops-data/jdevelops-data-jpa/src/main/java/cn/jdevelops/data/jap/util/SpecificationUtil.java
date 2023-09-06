@@ -73,8 +73,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> eq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -91,8 +91,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -104,8 +104,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> notEq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -121,8 +121,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -134,8 +134,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> gt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -151,8 +151,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> gt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -164,8 +164,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> ge(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -181,8 +181,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> ge(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -194,8 +194,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> lt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -211,8 +211,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> lt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -224,8 +224,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> le(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -242,8 +242,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> le(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -255,8 +255,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               实体字段
      * @param values            值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> not(String key, Collection<?> values, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -274,8 +274,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param values            值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> not(ColumnSFunction<T, ?> fn, Collection<?> values, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -290,8 +290,8 @@ public final class SpecificationUtil<T> {
      * @param key               键 (实体字段非数据库字段)
      * @param v1                值1
      * @param v2                值2
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> between(String key, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -309,8 +309,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param v1v2              值(1,2) 英文逗号隔开
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> between(String key, String v1v2, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -338,8 +338,8 @@ public final class SpecificationUtil<T> {
      * @param fn                实体字段
      * @param v1                值1
      * @param v2                值2
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -352,8 +352,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> like(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -370,8 +370,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -385,8 +385,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> lLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -404,8 +404,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -419,8 +419,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> rLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -438,8 +438,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -451,8 +451,8 @@ public final class SpecificationUtil<T> {
      *
      * @param key               键 (实体字段非数据库字段)
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> notLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -468,8 +468,8 @@ public final class SpecificationUtil<T> {
      *
      * @param fn                实体字段
      * @param value             值
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
      */
     public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -560,8 +560,8 @@ public final class SpecificationUtil<T> {
      *                          DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
      *                          Date vale =  DateTime.parse(value,formatter).toDate();
      *                          </p>
-     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      */
     private <D> Specification<T> selectTimeLessGreater(boolean lessThan,
                                                        String key,

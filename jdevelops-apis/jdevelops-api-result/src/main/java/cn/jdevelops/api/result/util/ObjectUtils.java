@@ -11,8 +11,13 @@ import java.util.Optional;
  * @version V1.0
  * @date 2023-06-08 23:57
  */
-public class ObjectUtils {
-
+public final class ObjectUtils {
+    /**
+     * 工具类不需要实例化
+     */
+    private ObjectUtils() {
+        throw new AssertionError("No cn.jdevelops.api.result.util.ObjectUtils instances for you!");
+    }
 
     /**
      * Determine whether the given object is an array:

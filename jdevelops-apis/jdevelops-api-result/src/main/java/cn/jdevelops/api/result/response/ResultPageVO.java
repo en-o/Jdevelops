@@ -28,43 +28,6 @@ public class ResultPageVO<P extends PageResult> extends ResultCommon {
     public ResultPageVO() {
     }
 
-    public ResultPageVO(Integer code, String message) {
-        super(code, message);
-    }
-
-
-    public ResultPageVO(Integer code, String message, P data) {
-        super(code, message);
-        this.data = data;
-    }
-
-
-    /**
-     * 成功返回
-     * @param data 数据
-     */
-    public static <B,P extends PageResult<B>> ResultPageVO< P> success(P data) {
-        return of(data, ResultCode.SUCCESS);
-    }
-
-    /**
-     * 成功返回
-     * @param data 数据
-     */
-    public static <B,P extends PageResult<B>> ResultPageVO< P> success(P data,String message) {
-        ResultPageVO<P> resultPage = of(data, ResultCode.SUCCESS);
-        resultPage.setMessage(message);
-        return resultPage;
-    }
-
-    /**
-     * 错误返回
-     * @param message 消息
-     */
-    public static <B,P extends PageResult<B>> ResultPageVO< P> fail(String message) {
-        return of(null, ResultCode.SUCCESS);
-    }
-
     /**
      * 静态的公共方法
      *
@@ -97,6 +60,35 @@ public class ResultPageVO<P extends PageResult> extends ResultCommon {
         result.setMessage(message);
         return result;
     }
+
+
+    /**
+     * 成功返回
+     * @param data 数据
+     */
+    public static <B,P extends PageResult<B>> ResultPageVO< P> success(P data) {
+        return of(data, ResultCode.SUCCESS);
+    }
+
+    /**
+     * 成功返回
+     * @param data 数据
+     */
+    public static <B,P extends PageResult<B>> ResultPageVO< P> success(P data,String message) {
+        ResultPageVO<P> resultPage = of(data, ResultCode.SUCCESS);
+        resultPage.setMessage(message);
+        return resultPage;
+    }
+
+    /**
+     * 错误返回
+     * @param message 消息
+     */
+    public static <B,P extends PageResult<B>> ResultPageVO< P> fail(String message) {
+        return of(null, ResultCode.SUCCESS);
+    }
+
+
 
 
 

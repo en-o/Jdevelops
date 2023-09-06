@@ -29,14 +29,19 @@ public class SimpleExpression implements ExpandCriterion {
      */
     private Operator operator;
 
+
     /**
-     * true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * 默认不判空
+     * 空值验证 <br/>
+     *
+     * true: 空值不作为查询参数 <br/>
+     * false: 需要查询为空的数据
      */
     private Boolean ignoreNull;
 
     /**
-     * ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * ignoreNull = true 有效  <br/>
+     * true: 值是否为 [null,""," "]  <br/>
+     * false: 值是否为 null
      */
     private Boolean ignoreNullEnhance;
 
@@ -45,17 +50,7 @@ public class SimpleExpression implements ExpandCriterion {
      */
     private SpecBuilderDateFun function;
 
-    public SimpleExpression(String fieldName,
-                            Object value,
-                            Operator operator,
-                            Boolean ignoreNull,
-                            Boolean ignoreNullEnhance) {
-        this.fieldName = fieldName;
-        this.value = value;
-        this.operator = operator;
-        this.ignoreNull = ignoreNull;
-        this.ignoreNullEnhance = ignoreNullEnhance;
-    }
+
 
     public SimpleExpression(String fieldName,
                             Object value,
@@ -67,15 +62,6 @@ public class SimpleExpression implements ExpandCriterion {
         this.value = value;
         this.operator = operator;
         this.function = function;
-        this.ignoreNullEnhance = ignoreNullEnhance;
-    }
-
-    public SimpleExpression(String fieldName,
-                            Operator operator,
-                            Boolean ignoreNull,
-                            Boolean ignoreNullEnhance) {
-        this.fieldName = fieldName;
-        this.operator = operator;
         this.ignoreNull = ignoreNull;
         this.ignoreNullEnhance = ignoreNullEnhance;
     }
@@ -164,7 +150,7 @@ public class SimpleExpression implements ExpandCriterion {
 
     public Boolean getIgnoreNull() {
         if (ignoreNull == null) {
-            return false;
+            return true;
         }
         return ignoreNull;
     }
@@ -174,7 +160,7 @@ public class SimpleExpression implements ExpandCriterion {
     }
 
     /**
-     * ignoreNull = true 是 判断空值是否判断 "" " " (默认true 不判断  "" " ")
+     * ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      */
     public Boolean getIgnoreNullEnhance() {
         if (ignoreNullEnhance == null) {

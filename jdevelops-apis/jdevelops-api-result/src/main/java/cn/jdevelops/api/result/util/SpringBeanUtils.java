@@ -29,7 +29,11 @@ public final class SpringBeanUtils {
 
     private ConfigurableApplicationContext cfgContext;
 
+    /**
+     * 工具类不需要实例化
+     */
     private SpringBeanUtils() {
+        throw new AssertionError("No cn.jdevelops.api.result.util.SpringBeanUtils instances for you!");
     }
 
     /**

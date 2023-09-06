@@ -23,26 +23,68 @@ public class ResultVO<B> extends ResultCommon {
     @Schema(description = "数据")
     private B data;
 
-
     public ResultVO() {
     }
 
-    public ResultVO(Integer code, String message) {
-        super(code, message);
+    /**
+     * 静态的公共方法
+     *
+     * @param resultCode 状态
+     * @param <B>        data的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> of(ExceptionCode resultCode) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setCode(resultCode.getCode());
+        result.setMessage(resultCode.getMessage());
+        return result;
     }
 
-    public ResultVO(Integer code, String message, String traceId) {
-        super(code, message, traceId);
+    /**
+     * 静态的公共方法
+     *
+     * @param body       数据
+     * @param resultCode 状态
+     * @param <B>        data的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> of(B body, ExceptionCode resultCode) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setData(body);
+        result.setCode(resultCode.getCode());
+        result.setMessage(resultCode.getMessage());
+        return result;
     }
 
-    public ResultVO(Integer code, String message, B data) {
-        super(code, message);
-        this.data = data;
+    /**
+     * 静态的公共方法
+     *
+     * @param code    状态
+     * @param message 状态
+     * @param <B>     data的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> of(int code, String message) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
     }
-
-    public ResultVO(Integer code, String message, String traceId, B data) {
-        super(code, message, traceId);
-        this.data = data;
+    /**
+     * 静态的公共方法
+     *
+     * @param body    数据
+     * @param code    状态
+     * @param message 状态
+     * @param <B>     data的类型
+     * @return ResultVO
+     */
+    public static <B> ResultVO<B> of(B body, int code, String message) {
+        ResultVO<B> result = new ResultVO<>();
+        result.setData(body);
+        result.setCode(code);
+        result.setMessage(message);
+        return result;
     }
 
     /**
@@ -139,66 +181,7 @@ public class ResultVO<B> extends ResultCommon {
         return result;
     }
 
-    /**
-     * 静态的公共方法
-     *
-     * @param resultCode 状态
-     * @param <B>        data的类型
-     * @return ResultVO
-     */
-    public static <B> ResultVO<B> of(ExceptionCode resultCode) {
-        ResultVO<B> result = new ResultVO<>();
-        result.setCode(resultCode.getCode());
-        result.setMessage(resultCode.getMessage());
-        return result;
-    }
 
-    /**
-     * 静态的公共方法
-     *
-     * @param body       数据
-     * @param resultCode 状态
-     * @param <B>        data的类型
-     * @return ResultVO
-     */
-    public static <B> ResultVO<B> of(B body, ExceptionCode resultCode) {
-        ResultVO<B> result = new ResultVO<>();
-        result.setData(body);
-        result.setCode(resultCode.getCode());
-        result.setMessage(resultCode.getMessage());
-        return result;
-    }
-
-    /**
-     * 静态的公共方法
-     *
-     * @param code    状态
-     * @param message 状态
-     * @param <B>     data的类型
-     * @return ResultVO
-     */
-    public static <B> ResultVO<B> of(int code, String message) {
-        ResultVO<B> result = new ResultVO<>();
-        result.setCode(code);
-        result.setMessage(message);
-        return result;
-    }
-    /**
-     * 静态的公共方法
-     *
-     * @param body    数据
-     * @param code    状态
-     * @param message 状态
-     * @param <B>     data的类型
-     * @return ResultVO
-     */
-    public static <B> ResultVO<B> of(B body, int code, String message) {
-        ResultVO<B> result = new ResultVO<>();
-        result.setData(body);
-        result.setCode(code);
-        result.setMessage(message);
-        return result;
-    }
 
 
     /**
