@@ -14,7 +14,6 @@ import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
-import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -94,9 +93,9 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     @Override
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
-            return verifyUserTokenBySubject(JwtService.getSubject(token));
-        } catch (MalformedClaimException | LoginException e) {
-            throw new ExpiredRedisException(REDIS_NO_USER,e);
+            return verifyUserTokenBySubject(JwtService.getSubjectExpires(token));
+        } catch (LoginException e) {
+            throw new ExpiredRedisException(UNAUTHENTICATED,e);
         }
     }
 

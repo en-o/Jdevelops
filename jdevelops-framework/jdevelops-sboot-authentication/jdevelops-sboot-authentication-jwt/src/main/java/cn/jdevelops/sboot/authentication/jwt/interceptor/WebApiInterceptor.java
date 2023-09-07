@@ -128,7 +128,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserStatus(String token) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserStatus(JwtService.getSubject(token));
+        checkTokenInterceptor.checkUserStatus(JwtService.getSubjectExpires(token));
     }
 
 
@@ -140,7 +140,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserPermission(String token, Method method) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserPermission(JwtService.getSubject(token), method);
+        checkTokenInterceptor.checkUserPermission(JwtService.getSubjectExpires(token), method);
     }
 
     /**
@@ -156,7 +156,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             // 全局设置刷新状态 false: 不刷新
             if (jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))) {
                 // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                checkTokenInterceptor.refreshToken(JwtService.getSubject(token));
+                checkTokenInterceptor.refreshToken(JwtService.getSubjectExpires(token));
             }
         } catch (Exception e) {
             log.warn("token缓存刷新失败", e);

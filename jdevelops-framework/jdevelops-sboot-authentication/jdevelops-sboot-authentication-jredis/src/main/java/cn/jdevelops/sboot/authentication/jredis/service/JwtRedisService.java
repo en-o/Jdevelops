@@ -52,7 +52,7 @@ public interface JwtRedisService {
     StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
 
     /**
-     * 验证 用户TOKEN是否存在，存在则返回 token
+     * 验证 用户TOKEN是否存在，存在则返回 token的详细信息 {@link StorageUserTokenEntity}
      * 不存在，或者 token 异常就报错
      *
      * @param token toekn
