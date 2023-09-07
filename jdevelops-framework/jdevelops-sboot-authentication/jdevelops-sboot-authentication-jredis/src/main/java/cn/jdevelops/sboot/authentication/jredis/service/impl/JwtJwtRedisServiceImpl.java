@@ -5,6 +5,7 @@ import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
+import cn.jdevelops.sboot.authentication.jredis.util.ListUtil;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
@@ -137,7 +138,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     }
 
     @Override
-    public  <RB extends BasicsAccount> void verifyUserStatus(String subject) throws ExpiredRedisException{
+    public void verifyUserStatus(String subject) throws ExpiredRedisException{
         String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
@@ -148,13 +149,12 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             LOG.info("用户状态缓存失效");
             throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
         }
-
-        Object basicsAccount = JSON.parse(redisUser);
-        if(!Objects.isNull(redisUser) && basicsAccount instanceof BasicsAccount ){
-            if (((RB) basicsAccount).isExcessiveAttempts()) {
+        BasicsAccount basicsAccount = JSON.to(BasicsAccount.class, redisUser);
+        if(!Objects.isNull(redisUser)){
+            if ((basicsAccount).isExcessiveAttempts()) {
                 throw new DisabledAccountException(EXCESSIVE_ATTEMPTS_ACCOUNT);
             }
-            if (((RB) basicsAccount).isDisabledAccount()) {
+            if ((basicsAccount).isDisabledAccount()) {
                 throw new DisabledAccountException(BANNED_ACCOUNT);
             }
         }
@@ -171,7 +171,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     }
 
     @Override
-    public <RB extends BasicsAccount> RB loadUserStatus(String user) {
+    public <RB extends BasicsAccount> RB loadUserStatus(String user, Class<RB> resultBean) {
         String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, user);
 
         String redisUser;
@@ -184,13 +184,13 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             throw new TokenException(JwtMessageConstant.TOKEN_ERROR,e);
         }
         // 处理由于是泛型对象导致其他地方继承后有问题，
-        RB basicsAccount = (RB) JSON.parse(redisUser);
+        RB basicsAccount = JSON.to(resultBean,redisUser);
         return Objects.isNull(redisUser)?null: basicsAccount;
     }
 
 
     @Override
-    public  <RB extends BasicsAccount> void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException{
+    public  void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException{
         String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
@@ -202,14 +202,14 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
         }
 
-        Object basicsAccount = JSON.parse(redisUser);
-        if(!Objects.isNull(redisUser) && basicsAccount instanceof BasicsAccount ){
+        BasicsAccount basicsAccount = JSON.to(BasicsAccount.class,redisUser);
+        if(!Objects.isNull(redisUser)){
             String[] roles = annotation.roles();
             String[] permissions = annotation.permissions();
-            if ( roles != null && roles.length > 0 &&!((RB) basicsAccount).getRoles().contains(roles)) {
+            if ( roles != null && roles.length > 0 && !ListUtil.verifyList(basicsAccount.getRoles(),roles)) {
                 throw new PermissionsException(API_ROLE_AUTH_ERROR);
             }
-            if ( permissions != null && permissions.length > 0 &&!((RB) basicsAccount).getRoles().contains(permissions)) {
+            if ( permissions != null && permissions.length > 0 && !ListUtil.verifyList(basicsAccount.getRoles(),permissions)) {
                 throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
             }
         }
