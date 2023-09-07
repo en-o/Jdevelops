@@ -92,6 +92,20 @@ public class JwtWebUtil {
     }
 
     /**
+     * 获取token中的Subject（过期也能解析）
+     *
+     * @param request request
+     * @return String
+     */
+    public static String getTokenSubjectExpires(HttpServletRequest request) throws LoginException {
+        String token = JwtWebUtil.getToken(request);
+        if (StringUtils.isBlank(token)) {
+            throw new LoginException(TOKEN_ERROR);
+        }
+        return JwtService.getSubjectExpires(token);
+    }
+
+    /**
      * 获取token中的 Claim 参数 （过期也能解析）
      *
      * @param request  request

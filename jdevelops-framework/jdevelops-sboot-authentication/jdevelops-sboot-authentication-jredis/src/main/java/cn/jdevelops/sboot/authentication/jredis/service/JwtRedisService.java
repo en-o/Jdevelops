@@ -100,9 +100,10 @@ public interface JwtRedisService {
      * 有问题则异常
      *
      * @param subject 用户唯一值(一般用用户的登录名
+     * @param resultBean  RB.class
      * @return RedisAccount
      */
-    <RB extends BasicsAccount> RB loadUserStatus(String subject);
+    <RB extends BasicsAccount> RB loadUserStatus(String subject, Class<RB> resultBean);
 
 
     /**
