@@ -94,9 +94,9 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     @Override
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
-            return verifyUserTokenBySubject(JwtService.getSubject(token));
-        } catch (MalformedClaimException | LoginException e) {
-            throw new ExpiredRedisException(REDIS_NO_USER,e);
+            return verifyUserTokenBySubject(JwtService.getSubjectExpires(token));
+        } catch (LoginException e) {
+            throw new ExpiredRedisException(UNAUTHENTICATED,e);
         }
     }
 
