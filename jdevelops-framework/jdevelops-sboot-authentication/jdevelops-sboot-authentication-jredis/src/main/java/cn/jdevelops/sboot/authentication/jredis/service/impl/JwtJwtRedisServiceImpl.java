@@ -14,7 +14,6 @@ import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
-import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
