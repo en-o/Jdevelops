@@ -111,7 +111,7 @@ public interface JwtRedisService {
      * @param subject  用户唯一值(一般用用户的登录名
      * @param annotation 权限注解
      * @param <RB> RedisAccount
-     * @throws ExpiredRedisException
+     * @throws ExpiredRedisException ExpiredRedisException
      */
     <RB extends BasicsAccount> void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException;
 }

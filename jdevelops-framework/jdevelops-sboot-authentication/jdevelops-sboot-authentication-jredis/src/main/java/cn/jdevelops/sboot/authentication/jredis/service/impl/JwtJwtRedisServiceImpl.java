@@ -15,6 +15,8 @@ import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
+import com.google.common.collect.ObjectArrays;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -46,11 +48,10 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * reids
      */
     @Resource
-    private  RedisTemplate<String, Object>  redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
     private JwtConfig jwtConfig;
-
 
 
     @Override
@@ -59,10 +60,10 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
                 storageUserTokenEntity.getUserCode());
         redisTemplate.boundHashOps(loginRedisFolder).put(storageUserTokenEntity.getUserCode(),
                 storageUserTokenEntity);
-        if(Boolean.TRUE.equals(storageUserTokenEntity.getAlwaysOnline())){
+        if (Boolean.TRUE.equals(storageUserTokenEntity.getAlwaysOnline())) {
             // 永不过期
             redisTemplate.persist(loginRedisFolder);
-        }else {
+        } else {
             // 设置过期时间（毫秒
             redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
         }
@@ -74,11 +75,11 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             LOG.warn("{}用户未登录，不需要刷新", subject);
-        }else {
+        } else {
             StorageUserTokenEntity tokenRedis = (StorageUserTokenEntity) loginRedis;
-            if(Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())){
+            if (Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())) {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
-            }else {
+            } else {
                 // 设置过期时间（毫秒
                 redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
             }
@@ -96,7 +97,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         try {
             return verifyUserTokenBySubject(JwtService.getSubjectExpires(token));
         } catch (LoginException e) {
-            throw new ExpiredRedisException(UNAUTHENTICATED,e);
+            throw new ExpiredRedisException(UNAUTHENTICATED, e);
         }
     }
 
@@ -107,7 +108,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             throw new ExpiredRedisException(REDIS_EXPIRED_USER);
-        }else {
+        } else {
             tokenRedis = (StorageUserTokenEntity) loginRedis;
         }
         return tokenRedis;
@@ -117,7 +118,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * 根据用户token加载redis存储的用户登录信息
      */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws  LoginException {
+    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws LoginException {
         return loadUserTokenInfoBySubject(JwtService.getSubjectExpires(token));
     }
 
@@ -132,25 +133,25 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             throw new ExpiredRedisException(REDIS_EXPIRED_USER);
-        }else {
+        } else {
             return (StorageUserTokenEntity) loginRedis;
         }
     }
 
     @Override
-    public void verifyUserStatus(String subject) throws ExpiredRedisException{
+    public void verifyUserStatus(String subject) throws ExpiredRedisException {
         String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
                     .boundHashOps(userRedisFolder)
                     .get(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.info("用户状态缓存失效");
-            throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
+            throw new LoginException(JwtMessageConstant.TOKEN_ERROR, e);
         }
         BasicsAccount basicsAccount = JSON.to(BasicsAccount.class, redisUser);
-        if(!Objects.isNull(redisUser)){
+        if (!Objects.isNull(redisUser)) {
             if ((basicsAccount).isExcessiveAttempts()) {
                 throw new DisabledAccountException(EXCESSIVE_ATTEMPTS_ACCOUNT);
             }
@@ -179,38 +180,42 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
             redisUser = (String) redisTemplate
                     .boundHashOps(userRedisFolder)
                     .get(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.info("加载用户状态缓存失败");
-            throw new TokenException(JwtMessageConstant.TOKEN_ERROR,e);
+            throw new TokenException(JwtMessageConstant.TOKEN_ERROR, e);
         }
         // 处理由于是泛型对象导致其他地方继承后有问题，
-        RB basicsAccount = JSON.to(resultBean,redisUser);
-        return Objects.isNull(redisUser)?null: basicsAccount;
+        RB basicsAccount = JSON.to(resultBean, redisUser);
+        return Objects.isNull(redisUser) ? null : basicsAccount;
     }
 
 
     @Override
-    public  void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException{
+    public void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException {
         String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
                     .boundHashOps(userRedisFolder)
                     .get(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.info("用户信息(权限判断)缓存失效");
-            throw new LoginException(JwtMessageConstant.TOKEN_ERROR,e);
+            throw new LoginException(JwtMessageConstant.TOKEN_ERROR, e);
         }
 
-        BasicsAccount basicsAccount = JSON.to(BasicsAccount.class,redisUser);
-        if(!Objects.isNull(redisUser)){
+        BasicsAccount basicsAccount = JSON.to(BasicsAccount.class, redisUser);
+        if (!Objects.isNull(redisUser)) {
             String[] roles = annotation.roles();
             String[] permissions = annotation.permissions();
-            if ( roles != null && roles.length > 0 && !ListUtil.verifyList(basicsAccount.getRoles(),roles)) {
-                throw new PermissionsException(API_ROLE_AUTH_ERROR);
-            }
-            if ( permissions != null && permissions.length > 0 && !ListUtil.verifyList(basicsAccount.getRoles(),permissions)) {
-                throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
+            if (roles != null && roles.length > 0 ) {
+                if ( permissions != null && permissions.length > 0){
+                    roles = new String[(roles.length + 1)+( permissions.length+1)];
+                    roles = ObjectArrays.concat(roles, permissions, String.class);
+                }
+                if(!ListUtil.verifyList(basicsAccount.getRoles(), roles)){
+                    // API_PERMISSION_AUTH_ERROR
+                    throw new PermissionsException(API_ROLE_AUTH_ERROR);
+                }
             }
         }
     }
