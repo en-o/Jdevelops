@@ -20,6 +20,9 @@ public final class ListUtil {
      */
     public static boolean verifyList(List<String> list, String[] values) {
         for (String value : values) {
+            if(null == value || value.trim().length() == 0){
+                continue;
+            }
            if(list.contains(value)){
                return true;
            }
