@@ -17,13 +17,13 @@ public @interface ApiPermission {
 
     /**
      * 角色 (e.g admin)
-     * ps 参数为空则就会不严重
+     * ps 参数为空则就会不验证 [绝对等于]
      */
     String[] roles()  default {};
 
     /**
      * 权限  (e.g read)
-     * ps 参数为空则就会不严重
+     * ps 参数为空则就会不验证 [绝对等于，目前还没有做url前缀验证]
      */
     String[] permissions()  default {};
 }
