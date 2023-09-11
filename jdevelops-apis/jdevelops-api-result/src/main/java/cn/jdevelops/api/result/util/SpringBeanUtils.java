@@ -33,7 +33,7 @@ public final class SpringBeanUtils {
      * 工具类不需要实例化
      */
     private SpringBeanUtils() {
-        throw new AssertionError("No cn.jdevelops.api.result.util.SpringBeanUtils instances for you!");
+
     }
 
     /**
