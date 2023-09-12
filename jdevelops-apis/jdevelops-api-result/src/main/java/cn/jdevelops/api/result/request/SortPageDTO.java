@@ -146,7 +146,7 @@ public class SortPageDTO extends PageDTO {
 
 
     /**
-     * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
+     *当排序为空是修改默认的排序字段,若不为空在原有的排序基础上追加默认自定义排序
      *
      * @param orderBy 排序字段 （默认排序方式为倒叙）
      */
@@ -161,8 +161,23 @@ public class SortPageDTO extends PageDTO {
         return this;
     }
 
+
     /**
-     * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
+     * 当排序为空是修改默认的排序字段,若不为空则不进行操作
+     *
+     * @param orderBy 排序字段 （默认排序方式为倒叙）
+     */
+    public SortPageDTO optionsNullDefOrderBy(String... orderBy) {
+        if (this.sorts == null) {
+            ArrayList<SortDTO> sortArray = new ArrayList<>();
+            sortArray.add(new SortDTO(orderBy));
+            this.sorts = sortArray;
+        }
+        return this;
+    }
+
+    /**
+     * 当排序为空是修改默认的排序字段,若不为空在原有的排序基础上追加默认自定义排序
      *
      * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
      * @param orderBy   排序字段
@@ -179,6 +194,21 @@ public class SortPageDTO extends PageDTO {
         return this;
     }
 
+
+    /**
+     * 当排序为空是修改默认的排序字段,若不为空则不进行操作
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy   排序字段
+     */
+    public SortPageDTO optionsNullDefOrderBy(Integer orderDesc, String... orderBy) {
+        if (this.sorts == null) {
+            ArrayList<SortDTO> sortArray = new ArrayList<>();
+            sortArray.add(new SortDTO(orderDesc, orderBy));
+            this.sorts = sortArray;
+        }
+        return this;
+    }
 
     @Override
     public String toString() {
