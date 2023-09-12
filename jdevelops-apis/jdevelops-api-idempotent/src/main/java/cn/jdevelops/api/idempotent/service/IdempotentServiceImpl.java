@@ -54,12 +54,19 @@ public class IdempotentServiceImpl implements IdempotentService {
      * @param paramsHeader          参数
      * @param requestUri            请求地址
      * @param idempotentRedisFolder redis文件夹
+     * @param methodAnnotation 接口上的注解
      */
-    public void createApiCall(String paramsHeader, String requestUri, String idempotentRedisFolder) {
+    public void createApiCall(String paramsHeader, String requestUri, String idempotentRedisFolder, ApiIdempotent methodAnnotation) {
         redisTemplate.boundHashOps(idempotentRedisFolder).put(requestUri,
                 paramsHeader);
+        // 默认全局
+        long expireTime = idempotentConfig.getExpireTime();
+        if(methodAnnotation.expireTime() > -1){
+            // 当注解上存在过期时间且大于-1是，则以注解上的时间为准
+            expireTime = methodAnnotation.expireTime();
+        }
         // 设置过期时间（秒
-        redisTemplate.expire(idempotentRedisFolder, idempotentConfig.getExpireTime(), TimeUnit.MILLISECONDS);
+        redisTemplate.expire(idempotentRedisFolder, expireTime, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -70,11 +77,11 @@ public class IdempotentServiceImpl implements IdempotentService {
             paramsHeader = ParseSha256.getSha256StrJava(paramsHeader);
         }
         String requestUri = request.getRequestURI();
-        String idempotentRedisFolder = getRedisFolder(request, idempotentConfig, requestUri);
+        String idempotentRedisFolder = getRedisFolder(request, idempotentConfig.getGroupStr(), requestUri);
         String redisValue = (String) redisTemplate.boundHashOps(idempotentRedisFolder).get(requestUri);
         // 值相等则进行保存
         if (Objects.isNull(redisValue) || !redisValue.equals(paramsHeader)) {
-            createApiCall(paramsHeader, requestUri, idempotentRedisFolder);
+            createApiCall(paramsHeader, requestUri, idempotentRedisFolder, methodAnnotation);
             LOG.info("当前接口在redis中无记录，此处进行新增记录");
             return true;
         } else {
@@ -91,30 +98,32 @@ public class IdempotentServiceImpl implements IdempotentService {
      * redis简单存储建立文件夹
      *
      * @param request          request
-     * @param idempotentConfig 参数配置
+     *  @param groupStr getHeader(groupStr) getParameter(groupStr)
      * @param key              key
      * @return folderName:key
      */
-    private static String getRedisFolder(HttpServletRequest request, IdempotentConfig idempotentConfig, String key) {
-        return REDIS_IDEMPOTENT_FOLDER + ":" + getToken(request, idempotentConfig.getGroupStr()) + ":" + key;
+    private static String getRedisFolder(HttpServletRequest request, String groupStr, String key) {
+        return REDIS_IDEMPOTENT_FOLDER + ":" + catalog(request, groupStr) + ":" + key;
     }
 
 
     /**
-     * 获取token 如果token为空就获取IP
+     * 获取redis存储的目录 （默认用token，其次用IP）
      *
      * @param request  request
      * @param groupStr getHeader(groupStr) getParameter(groupStr)
      * @return String
      */
-    private static String getToken(HttpServletRequest request, String groupStr) {
+    private static String catalog(HttpServletRequest request, String groupStr) {
         String token = request.getHeader(groupStr);
         if (Objects.isNull(token) || "".equals(token)) {
             token = request.getParameter(groupStr);
         }
+        // 给token md5下
         if (Objects.nonNull(token) && !"".equals(token)) {
             return ParseSha256.getSha256StrJava(token);
         }
+        // token 拿不到就用IP
         return getPoxyIpEnhance(request);
     }
 

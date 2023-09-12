@@ -1,5 +1,6 @@
 package cn.jdevelops.api.idempotent.config;
 
+import cn.jdevelops.api.idempotent.annotation.ApiIdempotent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,9 @@ import org.springframework.stereotype.Component;
 public class IdempotentConfig {
 
     /**
-     * 过期时间
-     * 默认  60*1000(1分钟) 单位 毫秒
+     * 全局：过期时间  <br/>
+     * 默认  60*1000(1分钟) 单位 毫秒 <br/>
+     * ps 以{@link  ApiIdempotent#expireTime()}为准，当不存在是才使用配置文件中的配置
      */
     private long expireTime = 60000;
 
