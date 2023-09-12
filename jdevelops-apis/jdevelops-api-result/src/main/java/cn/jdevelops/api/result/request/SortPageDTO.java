@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,16 +22,16 @@ public class SortPageDTO extends PageDTO {
      * 排序
      */
     @Valid
-    @Size(min = 1,max = 5)
+    @Size(min = 1, max = 5)
     List<SortDTO> sorts;
 
     public SortPageDTO() {
     }
 
 
-
     /**
      * 分页排序
+     *
      * @param pageSize 数量
      */
     public SortPageDTO(Integer pageSize) {
@@ -41,8 +41,9 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 分页排序
+     *
      * @param pageSize 数量
-     * @param sorts 排序
+     * @param sorts    排序
      */
     public SortPageDTO(Integer pageSize, List<SortDTO> sorts) {
         super(pageSize);
@@ -52,17 +53,21 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 分页排序
+     *
      * @param pageSize 数量
-     * @param sorts 排序
+     * @param sorts    排序
      */
     public SortPageDTO(Integer pageSize, SortDTO sorts) {
         super(pageSize);
-        this.sorts = Collections.singletonList(sorts);
+        ArrayList<SortDTO> sortArray = new ArrayList<>();
+        sortArray.add(sorts);
+        this.sorts = sortArray;
     }
 
 
     /**
      * 分页排序
+     *
      * @param sorts 排序
      */
     public SortPageDTO(List<SortDTO> sorts) {
@@ -72,8 +77,9 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 分页排序
+     *
      * @param pageIndex 页码
-     * @param pageSize 数量
+     * @param pageSize  数量
      */
     public SortPageDTO(Integer pageIndex, Integer pageSize) {
         super(pageIndex, pageSize);
@@ -82,9 +88,10 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 分页排序
+     *
      * @param pageIndex 页码
-     * @param pageSize 数量
-     * @param sorts 排序
+     * @param pageSize  数量
+     * @param sorts     排序
      */
     public SortPageDTO(Integer pageIndex, Integer pageSize, List<SortDTO> sorts) {
         super(pageIndex, pageSize);
@@ -94,33 +101,41 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 分页排序
+     *
      * @param pageIndex 页码
-     * @param pageSize 数量
+     * @param pageSize  数量
      * @param orderDesc 排序方式
-     * @param orderBy 排序字段
+     * @param orderBy   排序字段
      */
     public SortPageDTO(Integer pageIndex, Integer pageSize, Integer orderDesc, String... orderBy) {
         super(pageIndex, pageSize);
-        this.sorts = Collections.singletonList(new SortDTO(orderDesc,  orderBy));
+        ArrayList<SortDTO> sortArray = new ArrayList<>();
+        sortArray.add(new SortDTO(orderDesc, orderBy));
+        this.sorts = sortArray;
     }
 
 
     /**
      * 分页排序
+     *
      * @param pageIndex 页码
-     * @param pageSize 数量
-     * @param sorts 排序
+     * @param pageSize  数量
+     * @param sorts     排序
      */
     public SortPageDTO(Integer pageIndex, Integer pageSize, SortDTO sorts) {
         super(pageIndex, pageSize);
-        this.sorts = Collections.singletonList(sorts);
+        ArrayList<SortDTO> sortArray = new ArrayList<>();
+        sortArray.add(sorts);
+        this.sorts = sortArray;
     }
 
 
     public List<SortDTO> getSorts() {
-        if(null == sorts || sorts.isEmpty()){
-            return Collections.singletonList(new SortDTO());
-        }else {
+        if (null == sorts || sorts.isEmpty()) {
+            ArrayList<SortDTO> sortArray = new ArrayList<>();
+            sortArray.add(new SortDTO());
+            return sortArray;
+        } else {
             return sorts;
         }
     }
@@ -132,20 +147,35 @@ public class SortPageDTO extends PageDTO {
 
     /**
      * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
+     *
      * @param orderBy 排序字段 （默认排序方式为倒叙）
      */
-    public SortPageDTO optionsDefOrderBy(String... orderBy){
-        this.sorts = Collections.singletonList(new SortDTO(orderBy));
+    public SortPageDTO optionsDefOrderBy(String... orderBy) {
+        if (this.sorts == null) {
+            ArrayList<SortDTO> sortArray = new ArrayList<>();
+            sortArray.add(new SortDTO(orderBy));
+            this.sorts = sortArray;
+        } else {
+            this.sorts.add(new SortDTO(orderBy));
+        }
         return this;
     }
 
     /**
      * 默认的 排序是ID，当表字段中没有ID时可以用这个改默认排序字段
-     * @param orderDesc   排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
-     * @param orderBy 排序字段
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy   排序字段
      */
-    public SortPageDTO optionsDefOrderBy(Integer orderDesc, String... orderBy){
-        this.sorts = Collections.singletonList(new SortDTO(orderDesc, orderBy));
+    public SortPageDTO optionsDefOrderBy(Integer orderDesc, String... orderBy) {
+        if (this.sorts == null) {
+            ArrayList<SortDTO> sortArray = new ArrayList<>();
+            sortArray.add(new SortDTO(orderDesc, orderBy));
+            this.sorts = sortArray;
+        } else {
+            this.sorts.add(new SortDTO(orderDesc, orderBy));
+        }
+
         return this;
     }
 
