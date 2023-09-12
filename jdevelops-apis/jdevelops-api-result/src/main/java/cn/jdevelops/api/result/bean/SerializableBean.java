@@ -107,6 +107,20 @@ public class SerializableBean<B> implements Serializable {
      * @param clazz 需要转变的类型
      * @return clazz
      */
+    public static <B, S> B to2(S object, Class<B> clazz) {
+        if (object != null) {
+            return BeanCopier.copy(object, clazz);
+        } else {
+            return (B)clazz;
+        }
+    }
+
+    /**
+     * bean转换
+     * @param object 原数据
+     * @param clazz 需要转变的类型
+     * @return clazz
+     */
     public static <B, S> B to(S object, Class<B> clazz) {
         if (object != null) {
             SerializableBean abs = (SerializableBean)object;
