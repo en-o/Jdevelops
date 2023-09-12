@@ -26,6 +26,13 @@ public @interface ApiIdempotent {
      */
     boolean responseStatus() default false;
 
+
+    /**
+     * 幂等判断是否需要接口参数记录
+     * @return 默认true 需要记录参数
+     */
+    boolean paramsHeader() default true;
+
     /**
      * 局部：过期时间 [单位 毫秒] <br/>
      * ps： -1表示使用全局的配置参数 {@link IdempotentConfig#getExpireTime()}

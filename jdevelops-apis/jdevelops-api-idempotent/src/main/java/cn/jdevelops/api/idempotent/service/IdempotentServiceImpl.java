@@ -72,9 +72,12 @@ public class IdempotentServiceImpl implements IdempotentService {
     @Override
     public boolean checkApiRedo(HttpServletRequest request, HttpServletResponse response, ApiIdempotent methodAnnotation) {
         // 加密让数据变短
-        String paramsHeader = ParamUtil.getRequestParam(request);
-        if(idempotentConfig.isParameterEncryption()){
-            paramsHeader = ParseSha256.getSha256StrJava(paramsHeader);
+        String paramsHeader = "";
+        if(methodAnnotation.paramsHeader()){
+            paramsHeader = ParamUtil.getRequestParam(request);
+            if(idempotentConfig.isParameterEncryption()){
+                paramsHeader = ParseSha256.getSha256StrJava(paramsHeader);
+            }
         }
         String requestUri = request.getRequestURI();
         String idempotentRedisFolder = getRedisFolder(request, idempotentConfig.getGroupStr(), requestUri);
