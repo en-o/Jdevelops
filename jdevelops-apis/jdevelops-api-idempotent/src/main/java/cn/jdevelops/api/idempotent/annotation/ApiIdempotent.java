@@ -27,7 +27,7 @@ public @interface ApiIdempotent {
     boolean responseStatus() default false;
 
     /**
-     * 局部：过期时间 <br/>
+     * 局部：过期时间 [单位 毫秒] <br/>
      * ps： -1表示使用全局的配置参数 {@link IdempotentConfig#getExpireTime()}
      */
     long expireTime() default -1;
