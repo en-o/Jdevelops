@@ -80,6 +80,7 @@ public final class ExceptionResultWrap {
     public static Object result(Exception e) {
 
         try {
+            // @see https://www.yuque.com/tanning/yg9ipo/lvsmwtdzfi3i8egs#qQSv6
             String message = e.getMessage();
             if (message != null  && message.contains(SYMBOL)) {
                 String[] split = message.split(SYMBOL);
