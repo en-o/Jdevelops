@@ -18,6 +18,7 @@ import java.sql.SQLException;
 
 /**
  * 将数据源配置构建实际的数据源
+ *
  * @author tan
  */
 public class DynamicDataSourceUtil {
@@ -51,10 +52,10 @@ public class DynamicDataSourceUtil {
             //获取多数据源配置
             DynamicDatasourceEntity dbSource = DataSourceCachePool.getCacheDynamicDataSourceModel(dbName);
             HikariDataSource dataSource = getJdbcDataSource(dbSource);
-            if(dataSource!=null && !dataSource.isClosed()){
+            if (dataSource != null && !dataSource.isClosed()) {
                 DataSourceCachePool.putCacheBasicDataSource(dbName, dataSource);
-            }else{
-                throw DynamicDataSourceException.specialMessage("动态数据源连接失败,数据源可能被移除，dbName："+dbName);
+            } else {
+                throw DynamicDataSourceException.specialMessage("动态数据源连接失败,数据源可能被移除，dbName：" + dbName);
             }
             logger.info("--------getDbSourceBydbName------------------创建DB数据库连接-------------------");
             return dataSource;
@@ -68,7 +69,7 @@ public class DynamicDataSourceUtil {
      * @return HikariDataSource
      */
     private static HikariDataSource getJdbcDataSource(final DynamicDatasourceEntity dbSource) {
-        if (dbSource == null){
+        if (dbSource == null) {
             return null;
         }
         return DataSourceBuilder.create(dbSource.getClass().getClassLoader())
@@ -82,18 +83,23 @@ public class DynamicDataSourceUtil {
 
     /**
      * 关闭数据库连接
+     *
      * @param dbName 数据源名
      */
     public static void closeDbName(final String dbName) {
         HikariDataSource dataSource = getDbSourceByDbName(dbName);
         try {
             if (dataSource != null && !dataSource.isClosed()) {
-                dataSource.getConnection().commit();
+                try {
+                    dataSource.getConnection().commit();
+                } catch (Exception e) {
+                    logger.warn("commit失败:{}", e.getMessage());
+                }
                 dataSource.getConnection().close();
                 dataSource.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warn("closeDbName失败:{}", e.getMessage(), e);
         }
     }
 
@@ -105,9 +111,10 @@ public class DynamicDataSourceUtil {
 
     /**
      * 获取连接
-     * @param url url
-     * @param username username
-     * @param password password
+     *
+     * @param url        url
+     * @param username   username
+     * @param password   password
      * @param driverName driverName
      * @return Connection
      */
@@ -117,18 +124,19 @@ public class DynamicDataSourceUtil {
             Class.forName(driverName);
             conn = DriverManager.getConnection(url, username, password);
         } catch (Exception e) {
-            throw DynamicDataSourceException.specialMessage("无法连接，问题："+e.getMessage(), e);
+            throw DynamicDataSourceException.specialMessage("无法连接，问题：" + e.getMessage(), e);
         }
         return conn;
     }
 
     /**
      * 关闭数据库连接
+     *
      * @param conn Connection
      */
     public static void closeConnection(Connection conn) {
         try {
-            if(conn!=null){
+            if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
