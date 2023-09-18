@@ -128,8 +128,8 @@ public class DynamicDatasourceService {
             throw DynamicDataSourceException.specialMessage(503, "数据源《"+datasourceEntity.getDatasourceName()+"》已存在");
         }
 
-        String password = ObjectUtils.decryptAES(datasourceEntity.getDatasourcePassword(), dynamicDataSourceProperties.getSalt());
-        String username = ObjectUtils.decryptAES(datasourceEntity.getDatasourceUsername(), dynamicDataSourceProperties.getSalt());
+        String password = ObjectUtils.encryptAES(datasourceEntity.getDatasourcePassword(), dynamicDataSourceProperties.getSalt());
+        String username = ObjectUtils.encryptAES(datasourceEntity.getDatasourceUsername(), dynamicDataSourceProperties.getSalt());
         // 2. 插入数据源数据
         jdbcTemplate.update("insert into dy_datasource(" +
                 "datasource_name," +

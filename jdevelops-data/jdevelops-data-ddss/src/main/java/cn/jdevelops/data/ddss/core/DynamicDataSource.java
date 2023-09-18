@@ -14,7 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author tn
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
-    // 存放多数据源
+    /**
+     * 存放多数据源
+     */
     public static Map<Object, Object> targetDataSources = new ConcurrentHashMap<>(40);
 
     @Override
