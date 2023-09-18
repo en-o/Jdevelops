@@ -6,7 +6,7 @@
 
 CREATE TABLE "dy_datasource" (
     "datasource_name" character varying(50 char) NULL,
-	"datasource_url" character varying(200 char) NULL,
+	"datasource_url" TEXT NULL,
 	"datasource_username" character varying(50 char) NULL,
 	"datasource_password" character varying(64 char) NULL,
 	"remark" character varying(200 char) NULL,
