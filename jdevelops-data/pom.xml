@@ -19,6 +19,7 @@
         <module>jdevelops-data-jpa</module>
         <module>jdevelops-data-jdbctemplate</module>
         <module>jdevelops-data-es</module>
+        <module>jdevelops-data-ddss</module>
     </modules>
 
 </project>
