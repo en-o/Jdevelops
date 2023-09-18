@@ -30,7 +30,7 @@ public class DynamicDataSourceProperties {
     }
 
     public String getTableName() {
-        if(tableName == null ||  0 == salt.length() ){
+        if(tableName == null ||  0 == tableName.length() ){
             return "dy_datasource";
         }
         return tableName;

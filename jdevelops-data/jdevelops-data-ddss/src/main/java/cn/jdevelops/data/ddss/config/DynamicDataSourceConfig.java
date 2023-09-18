@@ -1,6 +1,6 @@
 package cn.jdevelops.data.ddss.config;
 
-import cn.jdevelops.data.ddss.config.properties.DynamicDataSourceProperties;
+
 import cn.jdevelops.data.ddss.core.DynamicDataSource;
 import cn.jdevelops.data.ddss.service.DynamicDatasourceService;
 import cn.jdevelops.data.ddss.util.DynamicSpringBeanUtil;
@@ -23,15 +23,6 @@ import javax.sql.DataSource;
  */
 @AutoConfiguration
 public class DynamicDataSourceConfig {
-    /**
-     * 获取默认数据库的配置
-     * @return DataSourceProperties
-     */
-    @Bean
-    @ConditionalOnMissingBean(DynamicDataSourceProperties.class)
-    public DynamicDataSourceProperties dynamicDataSourceProperties() {
-        return new DynamicDataSourceProperties();
-    }
 
     /**
      * get dynamic metadata
