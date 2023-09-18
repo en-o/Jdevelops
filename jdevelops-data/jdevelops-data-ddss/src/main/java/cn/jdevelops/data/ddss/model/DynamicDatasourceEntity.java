@@ -1,6 +1,11 @@
 package cn.jdevelops.data.ddss.model;
 
 
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * 数据源元信息
  *
@@ -8,12 +13,7 @@ package cn.jdevelops.data.ddss.model;
  * @date 2023/9/15 12:00
  */
 
-public class DynamicDatasourceEntity {
-
-    /**
-     * id
-     */
-    Integer id;
+public class DynamicDatasourceEntity implements RowMapper<DynamicDatasourceEntity> {
 
     /**
      * 数据源名称
@@ -52,18 +52,24 @@ public class DynamicDatasourceEntity {
     Integer enable;
 
 
+    @Override
+    public DynamicDatasourceEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+        DynamicDatasourceEntity datasourceEntity = new DynamicDatasourceEntity();
+        datasourceEntity.setDatasourceName(rs.getString("datasource_name"));
+        datasourceEntity.setDatasourceUrl(rs.getString("datasource_url"));
+        datasourceEntity.setDatasourceUsername(rs.getString("datasource_username"));
+        datasourceEntity.setDatasourcePassword(rs.getString("datasource_password"));
+        datasourceEntity.setDriverClassName(rs.getString("driver_class_name"));
+        datasourceEntity.setEnable(rs.getInt("enable"));
+        datasourceEntity.setRemark(rs.getString("remark"));
+        return datasourceEntity;
+    }
+
+
     public boolean isEnable() {
         return enable==1;
     }
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getDatasourceName() {
         return datasourceName;
@@ -124,8 +130,7 @@ public class DynamicDatasourceEntity {
     @Override
     public String toString() {
         return "DyDatasourceEntity{" +
-                "id=" + id +
-                ", datasourceName='" + datasourceName + '\'' +
+                "datasourceName='" + datasourceName + '\'' +
                 ", datasourceUrl='" + datasourceUrl + '\'' +
                 ", datasourceUsername='" + datasourceUsername + '\'' +
                 ", datasourcePassword='" + datasourcePassword + '\'' +

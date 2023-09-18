@@ -53,6 +53,16 @@ public class DynamicDataSourceException extends RuntimeException {
     public static DynamicDataSourceException specialMessage(String message, Throwable cause) {
         return new DynamicDataSourceException(IDEMPOTENT_CODE + SYMBOL + message, cause);
     }
+    /**
+     * 特的message
+     * <ps>用于无法使用BusinessException，当时想自定义失败code的情况（默认是501）</ps>
+     *
+     * @param message message
+     * @return code+ ExceptionResultWrap.symbol+message; (eg. 200<=====>你错了)
+     */
+    public static DynamicDataSourceException specialMessage(int code, String message) {
+        return new DynamicDataSourceException(code, code + SYMBOL + message);
+    }
 
     /**
      * 特的message
@@ -62,7 +72,7 @@ public class DynamicDataSourceException extends RuntimeException {
      * @return code+ ExceptionResultWrap.symbol+message; (eg. 200<=====>你错了)
      */
     public static DynamicDataSourceException specialMessage(int code, String message, Throwable cause) {
-        return new DynamicDataSourceException(IDEMPOTENT_CODE + SYMBOL + message, cause, code);
+        return new DynamicDataSourceException(code + SYMBOL + message, cause, code);
     }
 
 

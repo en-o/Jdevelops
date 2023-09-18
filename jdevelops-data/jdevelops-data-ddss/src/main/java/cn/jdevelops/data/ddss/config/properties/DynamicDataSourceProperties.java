@@ -11,16 +11,23 @@ import java.util.Map;
  *
  * @author tan
  */
-@ConfigurationProperties(prefix = "dynamic")
+@ConfigurationProperties(prefix = "jdevelops.dynamic")
 public class DynamicDataSourceProperties {
-    private Map<String, DataSourceProperties> datasource = new LinkedHashMap<>();
+    /**
+     *  数据库加密盐(16位) <br/>
+     *  如果不满足16或者则会使用默认
+     */
+    String salt;
 
-    public Map<String, DataSourceProperties> getDatasource() {
-        return datasource;
+    public String getSalt() {
+        if(salt == null || 16 != salt.length() ){
+            return "salt1231212qadqw";
+        }
+        return salt;
     }
 
-    public void setDatasource(Map<String, DataSourceProperties> datasource) {
-        this.datasource = datasource;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }
 

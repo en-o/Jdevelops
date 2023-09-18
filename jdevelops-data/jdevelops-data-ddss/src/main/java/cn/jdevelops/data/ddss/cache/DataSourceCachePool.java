@@ -1,10 +1,12 @@
 package cn.jdevelops.data.ddss.cache;
 
 
+import cn.jdevelops.data.ddss.config.properties.DynamicDataSourceProperties;
 import cn.jdevelops.data.ddss.exception.DynamicDataSourceException;
 import cn.jdevelops.data.ddss.model.DynamicDatasourceEntity;
 import cn.jdevelops.data.ddss.service.DynamicDatasourceService;
 import cn.jdevelops.data.ddss.util.DynamicSpringBeanUtil;
+import cn.jdevelops.data.ddss.util.ObjectUtils;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.util.HashMap;
@@ -32,7 +34,13 @@ public class DataSourceCachePool {
             // todo 这里可以加个redis缓存，不用每次都查询库
             DynamicDatasourceService dynamicDatasourceService = DynamicSpringBeanUtil.getBean(DynamicDatasourceService.class);
             DynamicDatasourceEntity dbSource = dynamicDatasourceService.findDyDatasourceEntity(dbName);
-            // todo 如果存储的密码是加密的这里可以解密后重新set密码
+            // 存储的数据库账户密码是加密过后的，这里进行了解密处理
+
+            DynamicDataSourceProperties properties = DynamicSpringBeanUtil.getBean(DynamicDataSourceProperties.class);
+            String password = ObjectUtils.decryptAES(dbSource.getDatasourcePassword(), properties.getSalt());
+            dbSource.setDatasourcePassword(password);
+            String username = ObjectUtils.decryptAES(dbSource.getDatasourceUsername(), properties.getSalt());
+            dbSource.setDatasourceUsername(username);
             return dbSource;
         }catch (Exception e){
             throw DynamicDataSourceException.specialMessage("数据源====《"+dbName+"》 可能已被移除无法在对其进行操作");
