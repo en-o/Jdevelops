@@ -3,9 +3,9 @@
 // (powered by Fernflower decompiler)
 //
 
-package cn.jdevelops.schema;
+package cn.jdevelops.data.schema;
 
-import cn.jdevelops.schema.exception.RuntimeSqlException;
+import cn.jdevelops.data.schema.exception.RuntimeSqlException;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;

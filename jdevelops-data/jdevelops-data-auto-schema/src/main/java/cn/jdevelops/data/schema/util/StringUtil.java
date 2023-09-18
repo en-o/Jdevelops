@@ -1,4 +1,4 @@
-package cn.jdevelops.schema.util;
+package cn.jdevelops.data.schema.util;
 
 /**
  * 公共类

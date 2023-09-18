@@ -1,7 +1,7 @@
-package cn.jdevelops.schema.scan;
+package cn.jdevelops.data.schema.scan;
 
-import cn.jdevelops.schema.LocalDataSourceLoader;
-import cn.jdevelops.schema.properties.DataBaseProperties;
+import cn.jdevelops.data.schema.properties.DataBaseProperties;
+import cn.jdevelops.data.schema.LocalDataSourceLoader;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

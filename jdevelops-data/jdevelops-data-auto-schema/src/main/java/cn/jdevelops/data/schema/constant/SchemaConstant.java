@@ -1,4 +1,4 @@
-package cn.jdevelops.schema.constant;
+package cn.jdevelops.data.schema.constant;
 
 /**
  * 常量

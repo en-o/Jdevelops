@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.schema.properties;
+package cn.jdevelops.data.schema.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

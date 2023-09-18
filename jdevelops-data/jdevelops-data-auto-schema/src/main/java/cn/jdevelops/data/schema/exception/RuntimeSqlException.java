@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package cn.jdevelops.schema.exception;
+package cn.jdevelops.data.schema.exception;
 
 /**
  * @author tnnn

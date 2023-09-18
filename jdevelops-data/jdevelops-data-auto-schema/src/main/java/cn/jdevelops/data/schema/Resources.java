@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package cn.jdevelops.schema;
+package cn.jdevelops.data.schema;
 
 import java.io.*;
 import java.net.URL;

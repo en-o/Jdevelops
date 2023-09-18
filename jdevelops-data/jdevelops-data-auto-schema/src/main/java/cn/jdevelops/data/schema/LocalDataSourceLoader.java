@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package cn.jdevelops.schema;
-import cn.jdevelops.schema.constant.SchemaConstant;
-import cn.jdevelops.schema.properties.DataBaseProperties;
-import cn.jdevelops.schema.util.StringUtil;
+package cn.jdevelops.data.schema;
+import cn.jdevelops.data.schema.constant.SchemaConstant;
+import cn.jdevelops.data.schema.properties.DataBaseProperties;
+import cn.jdevelops.data.schema.util.StringUtil;
 import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
