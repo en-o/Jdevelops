@@ -16,6 +16,8 @@ public class DynamicDataSourceProperties {
      */
     String salt;
 
+    String tableName;
+
     public String getSalt() {
         if(salt == null || 16 != salt.length() ){
             return "salt1231212qadqw";
@@ -25,6 +27,17 @@ public class DynamicDataSourceProperties {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getTableName() {
+        if(tableName == null ||  0 == salt.length() ){
+            return "dy_datasource";
+        }
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }
 

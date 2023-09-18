@@ -40,7 +40,7 @@ public class DynamicDatasourceService {
      */
     public List<DynamicDatasourceEntity> findEnable() {
         // 查询 enable = 1 的数据
-        return jdbcTemplate.query("select * from dy_datasource where enable = 1 ", new DynamicDatasourceEntity());
+        return jdbcTemplate.query("select * from "+dynamicDataSourceProperties.getTableName()+" where enable = 1 ", new DynamicDatasourceEntity());
     }
 
 
@@ -53,7 +53,7 @@ public class DynamicDatasourceService {
     public DynamicDatasourceEntity findEnable(String dbName) {
         // 查询 enable = 1 and  datasource_name = dbName 的数据
         try {
-            String sql = "select * from dy_datasource where enable = 1 and datasource_name = ?";
+            String sql = "select * from "+dynamicDataSourceProperties.getTableName()+" where enable = 1 and datasource_name = ?";
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return datasourceEntity;
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class DynamicDatasourceService {
      */
     public DynamicDatasourceEntity findDyDatasourceEntity(String dbName) {
         try {
-            String sql = "select * from dy_datasource where datasource_name = ?";
+            String sql = "select * from "+dynamicDataSourceProperties.getTableName()+" where datasource_name = ?";
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return datasourceEntity;
         }catch (EmptyResultDataAccessException e){
@@ -89,7 +89,7 @@ public class DynamicDatasourceService {
      */
     public boolean verifyExist(String dbName) {
         try {
-            String sql = "select * from dy_datasource where datasource_name = ?";
+            String sql = "select * from "+dynamicDataSourceProperties.getTableName()+" where datasource_name = ?";
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return ObjectUtils.isNotBlank(datasourceEntity.getDatasourceName());
         }catch (EmptyResultDataAccessException e){
@@ -102,7 +102,7 @@ public class DynamicDatasourceService {
      * 查询所有数据源
      */
     public List<DynamicDatasourceEntity> findAll() {
-        return jdbcTemplate.query("select * from dy_datasource ", new DynamicDatasourceEntity());
+        return jdbcTemplate.query("select * from " + dynamicDataSourceProperties.getTableName(), new DynamicDatasourceEntity());
     }
 
 
@@ -111,7 +111,7 @@ public class DynamicDatasourceService {
      */
     public void delete(String datasourceName) {
         // 根据数据源名称删除数据源
-        jdbcTemplate.update("delete from dy_datasource where datasource_name = ? ", new Object[]{datasourceName});
+        jdbcTemplate.update("delete from "+dynamicDataSourceProperties.getTableName()+" where datasource_name = ? ", new Object[]{datasourceName});
         // 刷新项目中的数据源连接
         DynamicDataSource.refreshDataSource(datasourceName);
     }
@@ -131,8 +131,8 @@ public class DynamicDatasourceService {
         String password = ObjectUtils.encryptAES(datasourceEntity.getDatasourcePassword(), dynamicDataSourceProperties.getSalt());
         String username = ObjectUtils.encryptAES(datasourceEntity.getDatasourceUsername(), dynamicDataSourceProperties.getSalt());
         // 2. 插入数据源数据
-        jdbcTemplate.update("insert into dy_datasource(" +
-                "datasource_name," +
+        jdbcTemplate.update("insert into "+dynamicDataSourceProperties.getTableName()+
+                "(datasource_name," +
                 "datasource_url," +
                 "datasource_username," +
                 "datasource_password," +
