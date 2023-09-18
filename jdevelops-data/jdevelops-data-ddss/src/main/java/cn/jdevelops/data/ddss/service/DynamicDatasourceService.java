@@ -85,7 +85,7 @@ public class DynamicDatasourceService {
      * 判断数据源是否存在
      *
      * @param dbName 数据源名 {@link DynamicDatasourceEntity#getDatasourceName()}
-     * @return DyDatasourceEntity
+     * @return true 存在
      */
     public boolean verifyExist(String dbName) {
         try {
@@ -93,8 +93,7 @@ public class DynamicDatasourceService {
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return ObjectUtils.isNotBlank(datasourceEntity.getDatasourceName());
         }catch (EmptyResultDataAccessException e){
-            LOG.warn("查询不到数据");
-
+            LOG.warn("不存在数据源");
         }
         return false;
     }
@@ -125,8 +124,7 @@ public class DynamicDatasourceService {
      */
     public void add(AddDynamicDatasource datasourceEntity) throws InvalidKeyException {
         // 1. 检验重复
-        DynamicDatasourceEntity dyDatasourceEntity = findDyDatasourceEntity(datasourceEntity.getDatasourceName());
-        if(dyDatasourceEntity!=null&& ObjectUtils.isNotBlank(dyDatasourceEntity.getDatasourceName())){
+        if(verifyExist(datasourceEntity.getDatasourceName())){
             throw DynamicDataSourceException.specialMessage(503, "数据源《"+datasourceEntity.getDatasourceName()+"》已存在");
         }
 
