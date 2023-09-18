@@ -25,7 +25,7 @@ public class DataSourceCachePool {
     /**
      * 获取多数据源缓存
      * @param dbName 数据源
-     * @return
+     * @return 元数据
      */
     public static DynamicDatasourceEntity getCacheDynamicDataSourceModel(String dbName) {
         try {
@@ -47,7 +47,7 @@ public class DataSourceCachePool {
      * put 数据源缓存
      *
      * @param dbName 数据源名
-     * @param db
+     * @param db  HikariDataSource
      */
     public static void putCacheBasicDataSource(String dbName, HikariDataSource db) {
         dbSources.put(dbName, db);

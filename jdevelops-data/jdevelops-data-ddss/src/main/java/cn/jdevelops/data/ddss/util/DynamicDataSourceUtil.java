@@ -38,8 +38,8 @@ public class DynamicDataSourceUtil {
     /**
      * 通过 dbName ,获取数据源
      *
-     * @param dbName
-     * @return
+     * @param dbName 数据源名
+     * @return HikariDataSource
      */
     public static HikariDataSource getDbSourceByDbName(final String dbName) {
         //先判断缓存中是否存在数据库链接
@@ -64,8 +64,8 @@ public class DynamicDataSourceUtil {
     /**
      * 获取数据源【最底层方法，不要随便调用】
      *
-     * @param dbSource
-     * @return
+     * @param dbSource 数据源元信息
+     * @return HikariDataSource
      */
     private static HikariDataSource getJdbcDataSource(final DynamicDatasourceEntity dbSource) {
         if (dbSource == null){
@@ -83,7 +83,6 @@ public class DynamicDataSourceUtil {
     /**
      * 关闭数据库连接
      * @param dbName 数据源名
-     * @return
      */
     public static void closeDbName(final String dbName) {
         HikariDataSource dataSource = getDbSourceByDbName(dbName);

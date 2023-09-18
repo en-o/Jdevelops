@@ -1,5 +1,6 @@
 package cn.jdevelops.data.ddss.service;
 
+import cn.jdevelops.data.ddss.core.DynamicDataSource;
 import cn.jdevelops.data.ddss.model.AddDynamicDatasource;
 import cn.jdevelops.data.ddss.model.DynamicDatasourceEntity;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,8 @@ public class DynamicDatasourceService {
      */
     public void delete(String datasourceName) {
         // 根据数据源名称删除数据源
+        // 刷新项目中的数据源连接
+        DynamicDataSource.refreshDataSource(datasourceName);
     }
 
 
@@ -74,5 +77,7 @@ public class DynamicDatasourceService {
     public void add(AddDynamicDatasource datasourceEntity) {
         // 1. 检验重复
         // 2. 插入数据源数据
+        // 3. 使得新增的数据源生效
+        DynamicDataSource.setDataSource(datasourceEntity.getDatasourceName());
     }
 }
