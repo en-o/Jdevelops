@@ -1,1 +1,2 @@
 cn.jdevelops.data.ddss.config.DynamicDataSourceConfig
+cn.jdevelops.data.ddss.core.DynamicDataSourceAspect
