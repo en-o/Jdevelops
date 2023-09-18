@@ -9,6 +9,7 @@ import cn.jdevelops.data.ddss.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -73,10 +74,29 @@ public class DynamicDatasourceService {
             String sql = "select * from dy_datasource where datasource_name = ?";
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return datasourceEntity;
-        }catch (Exception e){
-            e.printStackTrace();
+        }catch (EmptyResultDataAccessException e){
+            LOG.warn("查询不到数据");
         }
         return null;
+    }
+
+
+    /**
+     * 判断数据源是否存在
+     *
+     * @param dbName 数据源名 {@link DynamicDatasourceEntity#getDatasourceName()}
+     * @return DyDatasourceEntity
+     */
+    public boolean verifyExist(String dbName) {
+        try {
+            String sql = "select * from dy_datasource where datasource_name = ?";
+            DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
+            return ObjectUtils.isNotBlank(datasourceEntity.getDatasourceName());
+        }catch (EmptyResultDataAccessException e){
+            LOG.warn("查询不到数据");
+
+        }
+        return false;
     }
 
     /**
@@ -120,7 +140,7 @@ public class DynamicDatasourceService {
                 "datasource_password," +
                 "remark," +
                 "driver_class_name," +
-                "enable) values (?,?,?,?,?,?,?,?)", preparedStatement -> {
+                "enable) values (?,?,?,?,?,?,?)", preparedStatement -> {
             preparedStatement.setString(1, datasourceEntity.getDatasourceName());
             preparedStatement.setString(2, datasourceEntity.getDatasourceUrl());
             preparedStatement.setString(3, username);
