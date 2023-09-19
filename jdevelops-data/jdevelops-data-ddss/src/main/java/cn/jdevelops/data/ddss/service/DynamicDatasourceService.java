@@ -75,7 +75,7 @@ public class DynamicDatasourceService {
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return datasourceEntity;
         }catch (EmptyResultDataAccessException e){
-            LOG.warn("查询不到数据");
+            LOG.warn("查询不到数据:"+dbName);
         }
         return null;
     }
@@ -93,7 +93,7 @@ public class DynamicDatasourceService {
             DynamicDatasourceEntity datasourceEntity = jdbcTemplate.queryForObject(sql, new DynamicDatasourceEntity(), new Object[]{dbName});
             return ObjectUtils.isNotBlank(datasourceEntity.getDatasourceName());
         }catch (EmptyResultDataAccessException e){
-            LOG.warn("不存在数据源");
+            LOG.warn("不存在数据源:"+dbName);
         }
         return false;
     }
