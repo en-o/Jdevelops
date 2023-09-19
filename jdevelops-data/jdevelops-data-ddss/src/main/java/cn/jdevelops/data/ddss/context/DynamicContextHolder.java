@@ -36,9 +36,7 @@ public class DynamicContextHolder {
     public static void poll() {
         Deque<String> deque = CONTEXT_HOLDER.get();
         deque.poll();
-        if (deque.isEmpty()) {
-            CONTEXT_HOLDER.remove();
-        }
+        CONTEXT_HOLDER.remove();
     }
 
 
