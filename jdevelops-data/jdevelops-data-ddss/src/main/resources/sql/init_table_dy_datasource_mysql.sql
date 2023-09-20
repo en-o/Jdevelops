@@ -1,4 +1,4 @@
-CREATE TABLE `test`.`Untitled`  (
+CREATE TABLE `test`.`dy_datasource`  (
         `datasource_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源名称',
         `datasource_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源url',
         `datasource_username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据源帐号(密文)',
