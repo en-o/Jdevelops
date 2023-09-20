@@ -25,17 +25,16 @@ public class DataSourceCachePool {
 
 
     /**
-     * 获取多数据源缓存
+     * 获取多数据源[DB中查询]
      * @param dbName 数据源
      * @return 元数据
      */
-    public static DynamicDatasourceEntity getCacheDynamicDataSourceModel(String dbName) {
+    public static DynamicDatasourceEntity getDynamicDataSourceModelByDB(String dbName) {
         try {
-            // todo 这里可以加个redis缓存，不用每次都查询库
+            // 查询数据库中的 数据源元信息
             DynamicDatasourceService dynamicDatasourceService = DynamicSpringBeanUtil.getBean(DynamicDatasourceService.class);
             DynamicDatasourceEntity dbSource = dynamicDatasourceService.findDyDatasourceEntity(dbName);
             // 存储的数据库账户密码是加密过后的，这里进行了解密处理
-
             DynamicDataSourceProperties properties = DynamicSpringBeanUtil.getBean(DynamicDataSourceProperties.class);
             String password = ObjectUtils.decryptAES(dbSource.getDatasourcePassword(), properties.getSalt());
             dbSource.setDatasourcePassword(password);

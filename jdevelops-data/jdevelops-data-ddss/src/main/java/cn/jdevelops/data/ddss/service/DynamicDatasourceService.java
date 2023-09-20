@@ -147,7 +147,7 @@ public class DynamicDatasourceService {
             preparedStatement.setString(6, datasourceEntity.getDriverClassName());
             preparedStatement.setInt(7, 1);
         });
-        // 3. 使得新增的数据源生效
+        // 3. 使得新增的数据源生效 [添加源的时候就将他加入不用在 aop拦截的再去查库了，其实影响好像也不大]
         DynamicDataSource.setDataSource(datasourceEntity.getDatasourceName());
     }
 }

@@ -78,9 +78,9 @@ public class DynamicDataSourceConfig {
     @Bean
     @Primary
     @DependsOn({"defaultDataSource"})
-    public DynamicDataSource dynamicDataSource(DataSource defaultDataSource) {
+    public DynamicDataSource dynamicDataSource(HikariDataSource defaultDataSource) {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        //设置targetDataSources(通过数据库配置获取，首次创建没有数据源)
+        //设置targetDataSources(通过数据库配置获取，首次创建没有数据源,通过后续的 {@link DynamicDataSource#setDataSource})进行动态加载源
         dynamicDataSource.setTargetDataSources(DynamicDataSource.targetDataSources);
         //默认数据源
         dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);

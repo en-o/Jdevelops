@@ -50,9 +50,11 @@ public class DynamicDataSourceUtil {
             return cacheDbSource;
         } else {
             //获取多数据源配置
-            DynamicDatasourceEntity dbSource = DataSourceCachePool.getCacheDynamicDataSourceModel(dbName);
+            DynamicDatasourceEntity dbSource = DataSourceCachePool.getDynamicDataSourceModelByDB(dbName);
+            // 根据元信息构造  HikariDataSource
             HikariDataSource dataSource = getJdbcDataSource(dbSource);
             if (dataSource != null && !dataSource.isClosed()) {
+                // 缓存起来就不用每次查库了 [47行]
                 DataSourceCachePool.putCacheBasicDataSource(dbName, dataSource);
             } else {
                 throw DynamicDataSourceException.specialMessage("动态数据源连接失败,数据源可能被移除，dbName：" + dbName);
