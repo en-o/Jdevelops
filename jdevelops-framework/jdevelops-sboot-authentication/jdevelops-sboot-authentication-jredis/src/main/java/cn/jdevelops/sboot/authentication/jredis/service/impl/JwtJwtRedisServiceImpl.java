@@ -16,7 +16,6 @@ import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.ObjectArrays;
-import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,7 +25,6 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_PERMISSION_AUTH_ERROR;
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_ROLE_AUTH_ERROR;
 import static cn.jdevelops.api.result.emums.TokenExceptionCode.*;
 import static cn.jdevelops.api.result.emums.UserException.*;

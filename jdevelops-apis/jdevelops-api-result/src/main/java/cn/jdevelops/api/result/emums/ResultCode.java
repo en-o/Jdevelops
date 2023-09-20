@@ -57,4 +57,10 @@ public class ResultCode {
     public static final ExceptionCode API_DOUBLE_CALL = new ExceptionCode(602,"短时间内请勿重复调用");
 
 
+
+    /**
+     *  动态数据源切换错误
+     */
+    public static final ExceptionCode DYNAMIC_DATASOURCE_SELECT = new ExceptionCode(603,"动态数据源切换错误");
+
 }

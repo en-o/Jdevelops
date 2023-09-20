@@ -1,5 +1,7 @@
 package cn.jdevelops.api.idempotent.annotation;
 
+import cn.jdevelops.api.idempotent.config.IdempotentConfig;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,4 +25,18 @@ public @interface ApiIdempotent {
      * @return 默认false不放到HttpServletResponse中
      */
     boolean responseStatus() default false;
+
+
+    /**
+     * 幂等判断是否需要接口参数记录
+     * @return 默认true 需要记录参数
+     */
+    boolean paramsHeader() default true;
+
+    /**
+     * 局部：过期时间 [单位 毫秒] <br/>
+     * ps： -1表示使用全局的配置参数 {@link IdempotentConfig#getExpireTime()}
+     */
+    long expireTime() default -1;
+
 }
