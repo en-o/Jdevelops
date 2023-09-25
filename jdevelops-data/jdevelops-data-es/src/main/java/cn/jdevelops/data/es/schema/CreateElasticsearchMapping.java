@@ -58,7 +58,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
             provider.addIncludeFilter(new AnnotationTypeFilter(EsIndex.class));
             ElasticProperties elasticProperties = applicationContext.getBean(ElasticProperties.class);
-            if(null == elasticProperties.getBasePackage() || elasticProperties.getBasePackage().length()== 0){
+            if (null == elasticProperties.getBasePackage() || elasticProperties.getBasePackage().length() == 0) {
                 log.warn("创建 mappings 没有设置package，所有不进行创建");
                 return;
             }
@@ -82,41 +82,42 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                     if (!creatEsIndexDsl.isEmpty() && indexName != null) {
                         JSONObject mappingsJson = new JSONObject();
                         mappingsJson.put("mappings", creatEsIndexDsl);
-                        log.debug("正在创建索引[" + indexName + "]mappings ======================>" + mappingsJson);
+
                         if (esIndex.ddlAuto().equals(EsDdlAuto.CREATE)) {
                             log.debug("开始创建索引[" + indexName + "]先删后建");
                             elasticService.deleteIndex(indexName);
                         } else if (esIndex.ddlAuto().equals(EsDdlAuto.VALIDATE)) {
-                            if(elasticService.existIndex(indexName)){
+                            if (elasticService.existIndex(indexName)) {
                                 log.debug("开始创建索引[" + indexName + "]存在无需创建");
                                 continue;
                             }
                         } else if (esIndex.ddlAuto().equals(EsDdlAuto.UPDATE)) {
                             GetMappingResponse getMappingResponse = elasticService.showIndexMapping(indexName);
-                            if(getMappingResponse == null){
+                            if (getMappingResponse == null) {
                                 continue;
-                            }else {
+                            } else {
                                 IndexMappingRecord mappingRecord = getMappingResponse.get(indexName);
-                                if(mappingRecord == null){
+                                if (mappingRecord == null) {
                                     continue;
-                                }else {
+                                } else {
                                     Map<String, Property> properties = mappingRecord.mappings().properties();
                                     DynamicMapping dynamic = mappingRecord.mappings().dynamic();
-                                    if(dynamic != null && properties !=null && !properties.isEmpty()){
+                                    if (dynamic != null && properties != null && !properties.isEmpty()) {
                                         // 一模一样
-                                        if(dynamic.jsonValue().equals(creatEsIndexDsl.getString("dynamic"))
-                                                && BeanUtil.compareDSL(creatEsIndexDsl.getJSONObject("properties"),properties)){
+                                        if (dynamic.jsonValue().equals(creatEsIndexDsl.getString("dynamic"))
+                                                && BeanUtil.compareDSL(creatEsIndexDsl.getJSONObject("properties"), properties)) {
                                             continue;
-                                        }else {
+                                        } else {
                                             log.debug("开始创建索引[" + indexName + "]原有的mappings发生变化，正在进行重写构建");
                                             elasticService.deleteIndex(indexName);
                                         }
-                                    }else {
+                                    } else {
                                         continue;
                                     }
                                 }
                             }
                         }
+                        log.debug("正在创建索引[" + indexName + "]mappings ======================>" + mappingsJson);
                         elasticService.createIndexNoVerify(indexName,
                                 new ByteArrayInputStream(mappingsJson.toJSONString().getBytes()));
                     }
@@ -182,10 +183,10 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
      * @param name                      es mapping 中 properties中 的 key[字段名]
      */
     private static void assemblyPropertiesInfo(JSONObject creatEsIndexDslProperties, EsField esField, String name) {
-        if(esField == null){
+        if (esField == null) {
             JSONObject fieldJson = JSONObject.of("type", EsType.keyword.name().toLowerCase());
             creatEsIndexDslProperties.put(name, fieldJson);
-        }else {
+        } else {
             JSONObject fieldJson = JSONObject.of("type", esField.basic().type().name().toLowerCase());
             analyzerEsField(esField.basic(), fieldJson);
             if (esField.fields().length > 0) {
