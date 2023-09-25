@@ -91,11 +91,10 @@ public class BeanUtil {
                     return false;
                 }
             }
-        } catch (ClassCastException unused) {
-            return false;
-        } catch (NullPointerException unused) {
+        } catch (ClassCastException | NullPointerException unused) {
             return false;
         }
+
 
         return true;
     }
