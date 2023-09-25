@@ -23,5 +23,5 @@ public enum EsDdlAuto {
     /**
      * 只验证索引名重复，重复提醒，不重复才创建（推荐）
      */
-    VALIDATE;
+    VALIDATE
 }

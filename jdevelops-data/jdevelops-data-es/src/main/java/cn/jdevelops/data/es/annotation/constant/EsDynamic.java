@@ -20,5 +20,4 @@ public enum EsDynamic {
      * 静态模式
      */
     FALSE,
-    ;
 }
