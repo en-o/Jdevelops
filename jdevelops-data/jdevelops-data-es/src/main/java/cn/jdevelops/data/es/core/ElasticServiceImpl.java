@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +36,17 @@ public class ElasticServiceImpl implements ElasticService {
 
     @Resource
     private ElasticsearchClient client;
+
+    @Override
+    public GetMappingResponse showIndexMapping(String indexName) throws IOException {
+      try {
+          // { indexName:{mappings:{}}}
+          return client.indices().getMapping(id -> id.index(indexName));
+      }catch (Exception e){
+          logger.warn("no such index! =====> "+indexName);
+      }
+      return null;
+    }
 
     /**
      * 验证索引是否存在
@@ -96,6 +108,16 @@ public class ElasticServiceImpl implements ElasticService {
         return created;
     }
 
+    @Override
+    public boolean createIndexNoVerify(String indexName, InputStream input) throws IOException {
+        try {
+            return  Boolean.TRUE.equals(client.indices().create(c -> c.index(indexName).withJson(input)).acknowledged());
+        }catch (Exception e){
+            logger.error("Error creating index",e);
+        }
+        return false;
+    }
+
     /**
      * 删除索引结构
      *
@@ -107,12 +129,10 @@ public class ElasticServiceImpl implements ElasticService {
     @Override
     public boolean deleteIndex(String indexName) throws IOException {
         if (!existIndex(indexName)) {
-            logger.error("Index is not exits!");
+            logger.warn("Index is not exits!");
             return false;
         }
-        boolean deleted = client.indices().delete(d -> d.index(indexName)).acknowledged();
-        logger.info("索引删除结果：" + deleted);
-        return deleted;
+        return client.indices().delete(d -> d.index(indexName)).acknowledged();
     }
 
     /**

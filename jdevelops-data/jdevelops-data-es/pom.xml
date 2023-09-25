@@ -11,6 +11,9 @@
     <packaging>jar</packaging>
     <description>
         elasticsearch
+        api参考：https://juejin.cn/post/7216679822096908347#heading-5
+        官方参考：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/getting-started-java.html
+        官方参考rest-apis：https://www.elastic.co/guide/en/elasticsearch/reference/8.10/rest-apis.html
     </description>
     <dependencies>
 
