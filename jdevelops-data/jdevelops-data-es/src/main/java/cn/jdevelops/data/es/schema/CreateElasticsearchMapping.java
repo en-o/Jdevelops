@@ -184,6 +184,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
      */
     private static void assemblyPropertiesInfo(JSONObject creatEsIndexDslProperties, EsField esField, String name) {
         if (esField == null) {
+            // 没有注解的字段给予默认值
             JSONObject fieldJson = JSONObject.of("type", EsType.keyword.name().toLowerCase());
             creatEsIndexDslProperties.put(name, fieldJson);
         } else {
