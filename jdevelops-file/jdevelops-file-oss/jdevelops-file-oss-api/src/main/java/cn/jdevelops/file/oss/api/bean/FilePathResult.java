@@ -49,11 +49,12 @@ public class FilePathResult implements Serializable {
 	public FilePathResult() {
 	}
 
-	public FilePathResult(String relativePath, String absolutePath, String originalName, String freshName) {
+	public FilePathResult(String relativePath, String absolutePath, String originalName, String freshName, String downPath) {
 		this.relativePath = relativePath;
 		this.absolutePath = absolutePath;
 		this.originalName = originalName;
 		this.freshName = freshName;
+		this.downPath = downPath;
 	}
 
 	public String getRelativePath() {
