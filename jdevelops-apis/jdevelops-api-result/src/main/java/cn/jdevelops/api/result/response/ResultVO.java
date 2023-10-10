@@ -113,8 +113,8 @@ public class ResultVO<B> extends ResultCommon {
      * @param message 消息
      * @return ResultVO
      */
-    public static ResultVO<String> successMessage(String message) {
-        ResultVO<String> result = of("", ResultCode.SUCCESS);
+    public  static <B> ResultVO<B> successMessage(String message) {
+        ResultVO<B> result = of(null, ResultCode.SUCCESS);
         result.setMessage(message);
         return result;
     }
@@ -161,8 +161,8 @@ public class ResultVO<B> extends ResultCommon {
      * @param message 失败消息
      * @return ResultVO
      */
-    public static ResultVO<String> failMessage(String message) {
-        ResultVO<String> result = of("", ResultCode.FAIL);
+    public static <B> ResultVO<B> failMessage(String message) {
+        ResultVO<B> result = of(null, ResultCode.FAIL);
         result.setMessage(message);
         return result;
     }
