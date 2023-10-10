@@ -1,13 +1,13 @@
 package cn.jdevelops.api.result.exception;
 
 
-
 import cn.jdevelops.api.result.emums.ExceptionCode;
 
 import java.util.Objects;
 
 /**
  * 业务逻辑异常 Exception
+ *
  * @author tan
  */
 public final class ServiceException extends RuntimeException {
@@ -34,17 +34,20 @@ public final class ServiceException extends RuntimeException {
     }
 
     public ServiceException(ExceptionCode errorCode, Throwable cause) {
-        super(errorCode.getMessage(),cause);
+        super(errorCode.getMessage(), cause);
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
     }
 
     public ServiceException(int code, String message, Throwable cause) {
         super(message, cause);
+        this.message = message;
         this.code = code;
     }
+
     public ServiceException(int code, String message) {
         super(message);
+        this.message = message;
         this.code = code;
     }
 
