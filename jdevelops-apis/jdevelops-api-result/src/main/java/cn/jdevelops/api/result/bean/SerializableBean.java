@@ -111,7 +111,7 @@ public class SerializableBean<B> implements Serializable {
         if (object != null) {
             return BeanCopier.copy(object, clazz);
         } else {
-            return (B)clazz;
+            return null;
         }
     }
 
@@ -126,7 +126,7 @@ public class SerializableBean<B> implements Serializable {
             SerializableBean abs = (SerializableBean)object;
             return (B) abs.to(clazz);
         } else {
-            return (B)clazz;
+            return null;
         }
     }
 
