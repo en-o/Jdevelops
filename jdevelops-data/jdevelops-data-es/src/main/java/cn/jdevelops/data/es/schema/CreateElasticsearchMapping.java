@@ -95,10 +95,12 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                             log.debug("开始更新索引[" + indexName + "]检查索引结构一致性");
                             GetMappingResponse getMappingResponse = elasticService.showIndexMapping(indexName);
                             if (getMappingResponse == null) {
+                                log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
                                 continue;
                             } else {
                                 IndexMappingRecord mappingRecord = getMappingResponse.get(indexName);
                                 if (mappingRecord == null) {
+                                    log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
                                     continue;
                                 } else {
                                     Map<String, Property> properties = mappingRecord.mappings().properties();
@@ -107,9 +109,10 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                                         // 一模一样
                                         if (dynamic.jsonValue().equals(creatEsIndexDsl.getString("dynamic"))
                                                 && BeanUtil.compareDSL(creatEsIndexDsl.getJSONObject("properties"), properties)) {
+                                            log.debug("开始更新索引[" + indexName + "]检查索引结构无变化");
                                             continue;
                                         } else {
-                                            log.debug("开始创建索引[" + indexName + "]原有的mappings发生变化，正在进行重写构建");
+                                            log.debug("开始更新索引[" + indexName + "]原有的mappings发生变化，正在进行重写构建");
                                             elasticService.deleteIndex(indexName);
                                         }
                                     } else {
