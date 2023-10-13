@@ -75,7 +75,7 @@ public class SerializableBean<B> implements Serializable {
         if (list != null && !list.isEmpty()) {
             return ListTo.to(clazz, list);
         } else {
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 
@@ -96,7 +96,7 @@ public class SerializableBean<B> implements Serializable {
             }
             return result;
         } else {
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 
@@ -143,7 +143,7 @@ public class SerializableBean<B> implements Serializable {
             SerializableBean abs =(SerializableBean) clazzs.newInstance();
             return (B)abs.to(clazz);
         }catch (Exception e){
-            return (B)clazz;
+            return null;
         }
     }
 
