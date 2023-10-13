@@ -92,6 +92,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                                 continue;
                             }
                         } else if (esIndex.ddlAuto().equals(EsDdlAuto.UPDATE)) {
+                            log.debug("开始更新索引[" + indexName + "]检查索引结构一致性");
                             GetMappingResponse getMappingResponse = elasticService.showIndexMapping(indexName);
                             if (getMappingResponse == null) {
                                 continue;
