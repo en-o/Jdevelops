@@ -17,7 +17,7 @@ public enum EsDdlAuto {
      */
     CREATE,
     /**
-     * 比对mapping 一样就不创建，不一样就重新创建（性能不好）[key一样，value没有验证]
+     * 比对mapping 一样就不创建，不一样就重新创建（性能不好）[key一样，value没有验证,所以只会判断字段是否发生了变化而不会判断类型的变化]
      */
     UPDATE,
     /**
