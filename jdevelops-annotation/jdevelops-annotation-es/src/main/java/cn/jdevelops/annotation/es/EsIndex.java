@@ -1,8 +1,8 @@
-package cn.jdevelops.data.es.annotation;
+package cn.jdevelops.annotation.es;
 
 
-import cn.jdevelops.data.es.annotation.constant.EsDdlAuto;
-import cn.jdevelops.data.es.annotation.constant.EsDynamic;
+import cn.jdevelops.annotation.es.constant.EsDdlAuto;
+import cn.jdevelops.annotation.es.constant.EsDynamic;
 
 import java.lang.annotation.*;
 

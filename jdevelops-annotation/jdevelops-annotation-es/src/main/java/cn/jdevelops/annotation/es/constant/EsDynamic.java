@@ -1,4 +1,4 @@
-package cn.jdevelops.data.es.annotation.constant;
+package cn.jdevelops.annotation.es.constant;
 
 /**
  * ES dynamic

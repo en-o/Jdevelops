@@ -1,8 +1,8 @@
-package cn.jdevelops.data.es.annotation;
+package cn.jdevelops.annotation.es;
 
 
-import cn.jdevelops.data.es.annotation.basic.EsFieldBasic;
-import cn.jdevelops.data.es.annotation.basic.EsFieldMultiType;
+import cn.jdevelops.annotation.es.basic.EsFieldBasic;
+import cn.jdevelops.annotation.es.basic.EsFieldMultiType;
 
 import java.lang.annotation.*;
 

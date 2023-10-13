@@ -1,4 +1,4 @@
-package cn.jdevelops.data.es.annotation;
+package cn.jdevelops.annotation.es;
 
 
 

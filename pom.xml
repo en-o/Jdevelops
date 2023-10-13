@@ -73,6 +73,8 @@
         <module>jdevelops-data</module>
         <!-- 事件发布订阅 -->
         <module>jdevelops-event</module>
+        <!-- 注解组件 -->
+        <module>jdevelops-annotation</module>
     </modules>
 
     <properties>

@@ -1,8 +1,8 @@
-package cn.jdevelops.data.es.annotation.basic;
+package cn.jdevelops.annotation.es.basic;
 
 
-import cn.jdevelops.data.es.annotation.constant.EsType;
-import cn.jdevelops.data.es.annotation.constant.EsTypeDataFormat;
+import cn.jdevelops.annotation.es.constant.EsType;
+import cn.jdevelops.annotation.es.constant.EsTypeDataFormat;
 
 import java.lang.annotation.*;
 

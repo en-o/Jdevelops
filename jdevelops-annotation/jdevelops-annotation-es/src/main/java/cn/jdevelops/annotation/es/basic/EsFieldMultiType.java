@@ -1,4 +1,4 @@
-package cn.jdevelops.data.es.annotation.basic;
+package cn.jdevelops.annotation.es.basic;
 
 import java.lang.annotation.*;
 
