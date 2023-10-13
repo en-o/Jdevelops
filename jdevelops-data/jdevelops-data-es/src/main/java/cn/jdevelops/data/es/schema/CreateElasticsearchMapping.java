@@ -96,12 +96,10 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                             GetMappingResponse getMappingResponse = elasticService.showIndexMapping(indexName);
                             if (getMappingResponse == null) {
                                 log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
-                                continue;
                             } else {
                                 IndexMappingRecord mappingRecord = getMappingResponse.get(indexName);
                                 if (mappingRecord == null) {
                                     log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
-                                    continue;
                                 } else {
                                     Map<String, Property> properties = mappingRecord.mappings().properties();
                                     DynamicMapping dynamic = mappingRecord.mappings().dynamic();
@@ -116,6 +114,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                                             elasticService.deleteIndex(indexName);
                                         }
                                     } else {
+                                        log.debug("开始更新索引[" + indexName + "]检测结构失败，将不做任何操作请主动检查索引结构");
                                         continue;
                                     }
                                 }
