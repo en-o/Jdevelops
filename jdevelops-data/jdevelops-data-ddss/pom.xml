@@ -28,6 +28,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
+        <!-- 核心注解 -->
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-annotation-ddss</artifactId>
+        </dependency>
         <!--sqlserver-->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>

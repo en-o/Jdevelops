@@ -5,15 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops</artifactId>
+        <artifactId>jdevelops-annotation</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>jdevelops-annotation</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>jdevelops-annotation-es</module>
-        <module>jdevelops-annotation-ddss</module>
-    </modules>
+
+    <artifactId>jdevelops-annotation-ddss</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

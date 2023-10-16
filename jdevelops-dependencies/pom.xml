@@ -689,6 +689,11 @@
                 <artifactId>jdevelops-annotation-es</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-annotation-ddss</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
 
         </dependencies>

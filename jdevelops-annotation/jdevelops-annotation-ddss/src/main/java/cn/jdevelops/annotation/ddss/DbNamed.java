@@ -1,4 +1,4 @@
-package cn.jdevelops.data.ddss.annotation;
+package cn.jdevelops.annotation.ddss;
 
 import java.lang.annotation.*;
 
