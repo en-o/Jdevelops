@@ -1,6 +1,8 @@
 package cn.jdevelops.data.es.util;
 
+import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.data.es.constant.EsConstant;
+import cn.jdevelops.data.es.dto.SortDTO;
 import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -182,8 +184,9 @@ public class EsBasicsUtil {
         }
     }
 
+
     /**
-     * 设置分页
+     * 设置分页 （传入正常的前端 pageIndex 从1开始）
      *
      * @param builder   查询对象
      * @param startPage 起始页
@@ -202,6 +205,43 @@ public class EsBasicsUtil {
         builder.from(startIndex);
         builder.size(pageSize);
         builder.trackTotalHits(t -> t.enabled(true));
+    }
+
+    /**
+     * 设置分页 (PageDTO.getPageIndex() 已经处理了一些判断)
+     *
+     * @param builder   查询对象
+     * @param page PageDTO
+     * @author lxw
+     * @date 2021/5/11 16:28
+     */
+    public static void setPage(SearchRequest.Builder builder, PageDTO page) {
+        //设置分页参数
+        int startIndex = page.getPageIndex() * page.getPageSize();
+        builder.from(startIndex);
+        builder.size(page.getPageSize());
+        builder.trackTotalHits(t -> t.enabled(true));
+    }
+
+    /**
+     * 设置排序
+     *
+     * @param builder   查询对象
+     * @param sort   SortDTO
+     * @author lxw
+     * @date 2023/2/16 9:57
+     **/
+    public static void setOrder(SearchRequest.Builder builder, SortDTO sort) {
+        if (isNotBlank(sort.getOrderBy())) {
+            SortOrder asc = SortOrder.Asc;
+            if (sort.getOrderDesc() == 1) {
+                asc = SortOrder.Desc;
+            }
+            SortOrder finalAsc = asc;
+            builder.sort(sortOptionsBuilder -> sortOptionsBuilder
+                    .field(fieldSortBuilder -> fieldSortBuilder
+                            .field(sort.getOrderBy()).order(finalAsc)));
+        }
     }
 
 
