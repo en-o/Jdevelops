@@ -71,12 +71,23 @@ public class PageDTO implements Serializable {
                 '}';
     }
 
+
+    /**
+     * 分页查询要用的正确index
+     */
     public Integer getPageIndex() {
         if(Objects.isNull(pageIndex)||pageIndex<1){
             // 分页查询在数据库中起始页也为0
             return 0;
         }
         return pageIndex-1;
+    }
+
+    /**
+     * 真实的 pageIndex
+     */
+    public Integer getRealPageIndex() {
+        return pageIndex;
     }
 
     public void setPageIndex(Integer pageIndex) {
