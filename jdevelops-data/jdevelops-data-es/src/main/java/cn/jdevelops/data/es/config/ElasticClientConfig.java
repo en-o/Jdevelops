@@ -24,9 +24,9 @@ import org.springframework.util.StringUtils;
  * @author tan
  */
 @AutoConfiguration
-public class ElasticSearchConfig {
+public class ElasticClientConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticSearchConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticClientConfig.class);
 
     @Value("${spring.elasticsearch.uris}")
     private String hosts;

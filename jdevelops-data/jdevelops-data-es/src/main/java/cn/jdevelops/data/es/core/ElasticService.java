@@ -7,6 +7,7 @@ import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.MgetResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,14 @@ import java.util.List;
  * @data 2023/2/10 11:37
  */
 public interface ElasticService {
+
+    /**
+     * 查看索引
+     * @param indexName  索引名称
+     * @return GetMappingResponse 没有所有的时候会返回空
+     * @throws IOException IOException
+     */
+    GetMappingResponse showIndexMapping(String indexName) throws IOException;
 
     /**
      * 验证索引是否存在
@@ -58,6 +67,27 @@ public interface ElasticService {
      * @date 2023/2/10 12:10
      **/
     boolean createIndex(String indexName, InputStream input) throws IOException;
+
+
+    /**
+     * 创建索引，带mapping的json文件流[不进行重复判断，交给调用方自己判断]
+     * <pre>
+     *  获取mapping的json文件流示例：
+     *  {@code
+     *      ClassPathResource classPathResource = new ClassPathResource("esmapping/test8.json");
+     *      InputStream input = classPathResource.getInputStream();
+     *  }
+     * </pre>
+     *
+     * @param indexName 索引名称
+     * @param input     mapping的json文件流
+     * @return boolean
+     * @author lxw
+     * @date 2023/2/10 12:10
+     **/
+    boolean createIndexNoVerify(String indexName, InputStream input) throws IOException;
+
+
 
     /**
      * 删除索引结构

@@ -4,6 +4,7 @@ import cn.jdevelops.api.exception.config.ExceptionConfig;
 import cn.jdevelops.api.exception.exception.BusinessException;
 import cn.jdevelops.api.result.emums.ParamExceptionCode;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
+import cn.jdevelops.api.result.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,17 @@ public class ControllerExceptionHandler {
     }
 
 
+    /**
+     * 处理自定义异常
+     *
+     * @param e 异常
+     * @return 返回异常信息
+     */
+    @ExceptionHandler(ServiceException.class)
+    public Object handleBusinessException(ServiceException e, HttpServletResponse response) {
+        responseConfig(response, e, e.getCode());
+        return ExceptionResultWrap.result(e.getCode(), e.getMessage());
+    }
     /**
      * 404 拦截必须在配置文件加这个
      * <pre>

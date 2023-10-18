@@ -381,14 +381,24 @@
                 <artifactId>jdevelops-data-jdbctemplate</artifactId>
                 <version>${revision}</version>
             </dependency>
-
-
-            <!--caches-->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-data-ddss</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 搜搜 -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-data-es</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-data-auto-schema</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+            <!--caches-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-caches-redis</artifactId>
@@ -443,12 +453,7 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 搜搜 -->
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-data-es</artifactId>
-                <version>${revision}</version>
-            </dependency>
+
 
 
             <!-- spi -->
@@ -676,6 +681,20 @@
                 <artifactId>jdevelops-sboot-authentication-sas</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+
+            <!-- 注解 -->
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-annotation-es</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-annotation-ddss</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

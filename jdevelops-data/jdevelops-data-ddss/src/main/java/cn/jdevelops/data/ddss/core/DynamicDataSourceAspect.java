@@ -1,8 +1,8 @@
 package cn.jdevelops.data.ddss.core;
 
-import cn.jdevelops.data.ddss.annotation.DbName;
-import cn.jdevelops.data.ddss.annotation.DbNamed;
-import cn.jdevelops.data.ddss.annotation.DyDS;
+import cn.jdevelops.annotation.ddss.DbName;
+import cn.jdevelops.annotation.ddss.DbNamed;
+import cn.jdevelops.annotation.ddss.DyDS;
 import cn.jdevelops.data.ddss.context.DynamicContextHolder;
 import cn.jdevelops.data.ddss.exception.DynamicDataSourceException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -37,8 +37,8 @@ public class DynamicDataSourceAspect {
      * @annotation(匹配有指定注解的方法,注解作用在方法上面) <br/>
      * @within(拦截包中任意方法，不包含子包中的方法)
      */
-    @Pointcut("@annotation(cn.jdevelops.data.ddss.annotation.DyDS) " +
-            "|| @within(cn.jdevelops.data.ddss.annotation.DyDS)")
+    @Pointcut("@annotation(cn.jdevelops.annotation.ddss.DyDS) " +
+            "|| @within(cn.jdevelops.annotation.ddss.DyDS)")
     public void dataSourcePointCut() {
 
     }
