@@ -224,6 +224,13 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
     }
 
     @Override
+    public Optional<B> findBeanOne(String selectKey, Object value) {
+        Specification<B> where = Specifications.where(e -> e.eq(true, selectKey, value));
+        return commonDao.findOne(where);
+    }
+
+
+    @Override
     public List<B> findBeanList(ColumnSFunction<B, ?> selectKey, Object value) {
         Specification<B> where = Specifications.where(e -> e.eq(IObjects.nonNull(value), ColumnUtil.getFieldName(selectKey), value));
         return commonDao.findAll(where);
