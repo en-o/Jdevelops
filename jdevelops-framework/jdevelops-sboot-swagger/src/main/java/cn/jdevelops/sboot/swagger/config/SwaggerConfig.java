@@ -34,6 +34,14 @@ public class SwaggerConfig {
 
     /**
      * 根据@Tag 上的排序，写入x-order
+     * <p>
+     *     Tag(
+     *      name = "用户基础信息管理",
+     *      description = "用户基础信息管理-必须写",
+     *      extensions = {
+     *         Extension(properties = {ExtensionProperty(name = "x-order", value = "100", parseValue = true)})}
+     *      )
+     * </p>
      * @return the global open api customizer
      */
     @Bean
@@ -41,9 +49,12 @@ public class SwaggerConfig {
         return openApi -> {
             if (openApi.getTags()!=null){
                 openApi.getTags().forEach(tag -> {
-                    Map<String,Object> map=new HashMap<>(10);
-                    map.put("x-order", RandomUtil.randomInt(0,100));
-                    tag.setExtensions(map);
+                    Map<String, Object> extensions = tag.getExtensions();
+                    if(extensions == null || extensions.isEmpty()){
+                        extensions =new HashMap<>(10);
+                        extensions.put("x-order", RandomUtil.randomInt(0,100));
+                    }
+                    tag.setExtensions(extensions);
                 });
             }
             if(openApi.getPaths()!=null){
