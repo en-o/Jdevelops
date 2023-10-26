@@ -86,7 +86,7 @@ public class PageDTO implements Serializable {
     /**
      * 真实的 pageIndex
      */
-    public Integer getRealPageIndex() {
+    public Integer realPageIndex() {
         return pageIndex;
     }
 
