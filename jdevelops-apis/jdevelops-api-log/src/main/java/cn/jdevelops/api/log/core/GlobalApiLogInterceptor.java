@@ -45,7 +45,7 @@ public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
             }
             String requestParams = RequestUtil.requestParams(request);
             loggerEntity = new LoggerEntity(IpUtil.getPoxyIpEnhance(request),
-                    request.getRequestURL().toString(), requestParams, System.currentTimeMillis());
+                    request.getRequestURL().toString(),request.getMethod(), requestParams, System.currentTimeMillis());
         }catch (Exception e){
             logger.error("接口日志记录失败", e);
         }
