@@ -1,6 +1,11 @@
 package cn.jdevelops.util.jwt.entity;
 
 
+import cn.jdevelops.util.jwt.constant.PlatformConstant;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 用户登录签名办法token的数据
@@ -23,7 +28,7 @@ public class SignEntity<T>{
 
 
     /**
-     * 用户ID
+     * 用户ID/NO
      */
     String userId;
 
@@ -32,6 +37,11 @@ public class SignEntity<T>{
      * 用户名
      */
     String userName;
+
+    /**
+     * 平台
+     */
+    List<PlatformConstant> platform;
 
     /**
      * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
@@ -56,9 +66,62 @@ public class SignEntity<T>{
         this.loginName = loginName;
         this.userId = userId;
         this.userName = userName;
+        this.platform = Collections.singletonList(PlatformConstant.COMMON);;
         this.map = map;
     }
 
+    /**
+     *
+     * @param subject 必填： jwt 主题 （唯一凭证(一般是登录名）
+     * @param loginName 登录名
+     * @param userId 用户ID
+     * @param userName 用户名
+     * @param platform jwt所所使用的平台
+     * @param map 其他信息数据 value 如果时map list的话会变成json
+     */
+    public SignEntity(String subject,
+                      String loginName,
+                      String userId,
+                      String userName,
+                      List<PlatformConstant> platform,
+                      T map) {
+        this.subject = subject;
+        this.loginName = loginName;
+        this.userId = userId;
+        this.userName = userName;
+        this.platform = platform;
+        this.map = map;
+    }
+
+
+    /**
+     *
+     * @param subject 必填： jwt 主题 （唯一凭证(一般是登录名）
+     * @param loginName 登录名
+     * @param userId 用户ID
+     * @param userName 用户名
+     * @param platform jwt所所使用的平台
+     */
+    public SignEntity(String subject,
+                      String loginName,
+                      String userId,
+                      String userName,
+                      List<PlatformConstant> platform) {
+        this.subject = subject;
+        this.loginName = loginName;
+        this.userId = userId;
+        this.userName = userName;
+        this.platform = platform;
+    }
+
+
+    /**
+     *
+     * @param subject 必填： jwt 主题 （唯一凭证(一般是登录名）
+     * @param loginName 登录名
+     * @param userId 用户ID
+     * @param userName 用户名
+     */
     public SignEntity(String subject,
                       String loginName,
                       String userId,
@@ -67,6 +130,7 @@ public class SignEntity<T>{
         this.loginName = loginName;
         this.userId = userId;
         this.userName = userName;
+        this.platform = Collections.singletonList(PlatformConstant.COMMON);
     }
 
     public String getSubject() {
@@ -110,6 +174,14 @@ public class SignEntity<T>{
         this.map = map;
     }
 
+    public List<PlatformConstant> getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(List<PlatformConstant> platform) {
+        this.platform = platform;
+    }
+
     @Override
     public String toString() {
         return "SignEntity{" +
@@ -117,6 +189,7 @@ public class SignEntity<T>{
                 ", loginName='" + loginName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", platform=" + platform +
                 ", map=" + map +
                 '}';
     }

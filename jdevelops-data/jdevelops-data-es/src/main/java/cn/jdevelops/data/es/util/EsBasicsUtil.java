@@ -3,6 +3,7 @@ package cn.jdevelops.data.es.util;
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.data.es.constant.EsConstant;
 import cn.jdevelops.data.es.dto.SortDTO;
+import cn.jdevelops.data.es.exception.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -202,6 +203,67 @@ public class EsBasicsUtil {
         }
         //设置分页参数
         int startIndex = startPage * pageSize;
+        builder.from(startIndex);
+        builder.size(pageSize);
+        builder.trackTotalHits(t -> t.enabled(true));
+    }
+
+    /**
+     * fix: Result window is too large, from + size must be less than or equal to: [10000] but was [10010]. See the scroll api for a more efficient way to request large data sets.
+     * This limit can be set by changing the [index.max_result_window] index level setting.
+     *  设置分页 （传入正常的前端 pageIndex 从1开始）
+     *
+     * @param builder   查询对象
+     * @param startPage 起始页
+     * @param pageSize  每页大小
+     * @author lxw
+     * @date 2021/5/11 16:28
+     */
+    public static void setPageWindowIsTooLarge(SearchRequest.Builder builder, Integer startPage, Integer pageSize) {
+        if (startPage > 0) {
+            startPage = startPage - 1;
+        } else {
+            startPage = 0;
+        }
+        //设置分页参数
+        int startIndex = startPage * pageSize;
+        if((startIndex+pageSize) > 10000){
+            pageSize = 10000-startIndex;
+            if(pageSize < 0 ){
+                pageSize = 0;
+            }
+        }
+        if(startIndex > 10000 || (startIndex+pageSize) > 10000){
+            throw new ElasticsearchException("查询数据不允许超过1万条");
+        }
+        builder.from(startIndex);
+        builder.size(pageSize);
+        builder.trackTotalHits(t -> t.enabled(true));
+    }
+
+    /**
+     * fix: Result window is too large, from + size must be less than or equal to: [10000] but was [10010]. See the scroll api for a more efficient way to request large data sets.
+     * This limit can be set by changing the [index.max_result_window] index level setting.
+     * 设置分页 (PageDTO.getPageIndex() 已经处理了一些判断)
+     *
+     * @param builder   查询对象
+     * @param page PageDTO
+     * @author lxw
+     * @date 2021/5/11 16:28
+     */
+    public static void setPageWindowIsTooLarge(SearchRequest.Builder builder, PageDTO page) {
+        //设置分页参数
+        int startIndex = page.getPageIndex() * page.getPageSize();
+        Integer pageSize = page.getPageSize();
+        if((startIndex+pageSize) > 10000){
+            pageSize = 10000-startIndex;
+            if(pageSize < 0 ){
+                pageSize = 0;
+            }
+        }
+        if(startIndex > 10000 || (startIndex+pageSize) > 10000){
+            throw new ElasticsearchException("查询数据不允许超过1万条");
+        }
         builder.from(startIndex);
         builder.size(pageSize);
         builder.trackTotalHits(t -> t.enabled(true));

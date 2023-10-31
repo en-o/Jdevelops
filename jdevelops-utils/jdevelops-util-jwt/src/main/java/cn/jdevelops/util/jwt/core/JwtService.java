@@ -2,6 +2,7 @@ package cn.jdevelops.util.jwt.core;
 
 import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.util.jwt.config.JwtConfig;
+import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
@@ -41,6 +42,7 @@ public class JwtService {
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "userName";
     private static final String SUBJECT = "subject";
+    private static final String PLATFORM = "platform";
     private static final String DATA_MAP = "map";
 
 
@@ -85,6 +87,7 @@ public class JwtService {
         claims.setClaim(LOGIN_NAME, sign.getLoginName());
         claims.setClaim(USER_ID, sign.getUserId());
         claims.setClaim(USER_NAME, sign.getUserName());
+        claims.setClaim(PLATFORM, sign.getPlatform());
         claims.setClaim(SUBJECT, sign.getSubject());
         if(null != sign.getMap()){
             // 判断是不是一个JAVA bean
@@ -132,7 +135,6 @@ public class JwtService {
      * 验证token
      * @param token token
      * @return false 无效token
-     * @throws InvalidJwtException InvalidJwtException
      */
     public static boolean validateTokenByBoolean(String token)  {
         try {
@@ -159,7 +161,8 @@ public class JwtService {
      * 验证token
      * @param token token
      * @return 有效返回则 JwtClaims
-     * @throws InvalidJwtException InvalidJwtException
+     * @throws MalformedClaimException InvalidJwtException
+     * @throws LoginException LoginException
      */
     public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, LoginException {
         try {
@@ -180,6 +183,8 @@ public class JwtService {
      * @param token token
      * @return 新的token
      * @throws JoseException JoseException
+     * @throws MalformedClaimException MalformedClaimException
+     * @throws LoginException LoginException
      */
     public static String refreshToken(String token) throws JoseException, MalformedClaimException, LoginException {
         // 验证 JWT
@@ -214,6 +219,9 @@ public class JwtService {
      *
      * @param token token
      * @return java.lang.String
+     * @throws MalformedClaimException MalformedClaimException
+     * @throws LoginException LoginException
+     *
      */
     public static String getSubject(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
@@ -227,6 +235,7 @@ public class JwtService {
      *
      * @param token token
      * @return java.lang.String
+     * @throws LoginException LoginException
      */
     public static String getSubjectExpires(String token) throws LoginException {
         try {
@@ -277,6 +286,18 @@ public class JwtService {
         return String.valueOf(jwtClaims.getClaimValue(USER_NAME));
     }
 
+
+    /**
+     * 获得Token中的 PLATFORM （过期也解析）
+     *
+     * @param token token
+     * @return PlatformConstant
+     */
+    public static List<PlatformConstant> getPlatformConstantExpires(String token) {
+        // 解析 JWT
+        JwtClaims jwtClaims = parseJwt(token);
+        return (List<PlatformConstant>) jwtClaims.getClaimValue(PLATFORM);
+    }
 
     /**
      * 获取 jwt 的内容 - 过期令牌也能解析

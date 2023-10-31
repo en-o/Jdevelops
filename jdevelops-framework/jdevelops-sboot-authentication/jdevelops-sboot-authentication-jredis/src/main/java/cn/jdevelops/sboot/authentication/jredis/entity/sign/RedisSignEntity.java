@@ -1,8 +1,10 @@
 package cn.jdevelops.sboot.authentication.jredis.entity.sign;
 
 
+import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,12 +30,13 @@ public class RedisSignEntity<T> extends SignEntity<T> {
 
     /**
      * 用户登录签名办法token的数据
-     * @param subject 唯一
-     * @param loginName 登录名
-     * @param userId 用户id
-     * @param userName 用户名
+     *
+     * @param subject      唯一
+     * @param loginName    登录名
+     * @param userId       用户id
+     * @param userName     用户名
      * @param alwaysOnline token是否永久在线
-     * @param onlyOnline 以前的是否会被挤下线
+     * @param onlyOnline   以前的是否会被挤下线
      */
     public RedisSignEntity(String subject,
                            String loginName,
@@ -41,16 +44,41 @@ public class RedisSignEntity<T> extends SignEntity<T> {
                            String userName,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
-        super(subject,loginName,userId,userName);
+        super(subject, loginName, userId, userName);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
     }
+
+    /**
+     * 用户登录签名办法token的数据
+     *
+     * @param subject      唯一
+     * @param loginName    登录名
+     * @param userId       用户id
+     * @param userName     用户名
+     * @param platform     jwt所所使用的平台
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline   以前的是否会被挤下线
+     */
+    public RedisSignEntity(String subject,
+                           String loginName,
+                           String userId,
+                           String userName,
+                           List<PlatformConstant> platform,
+                           Boolean alwaysOnline,
+                           Boolean onlyOnline) {
+        super(subject, loginName, userId, userName, platform);
+        this.alwaysOnline = alwaysOnline;
+        this.onlyOnline = onlyOnline;
+    }
+
 
     public RedisSignEntity(SignEntity<T> subject) {
         super(subject.getSubject(),
                 subject.getLoginName(),
                 subject.getUserId(),
                 subject.getUserName(),
+                subject.getPlatform(),
                 subject.getMap());
         this.alwaysOnline = false;
         this.onlyOnline = false;
@@ -58,16 +86,16 @@ public class RedisSignEntity<T> extends SignEntity<T> {
 
 
     /**
-     *
-     * @param subject SignEntity
+     * @param subject      SignEntity
      * @param alwaysOnline token是否永久在线
-     * @param onlyOnline 以前的是否会被挤下线
+     * @param onlyOnline   以前的是否会被挤下线
      */
     public RedisSignEntity(SignEntity<T> subject, Boolean alwaysOnline, Boolean onlyOnline) {
         super(subject.getSubject(),
                 subject.getLoginName(),
                 subject.getUserId(),
                 subject.getUserName(),
+                subject.getPlatform(),
                 subject.getMap());
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
@@ -83,7 +111,7 @@ public class RedisSignEntity<T> extends SignEntity<T> {
     }
 
     public Boolean getOnlyOnline() {
-        if(Objects.isNull(onlyOnline)){
+        if (Objects.isNull(onlyOnline)) {
             return false;
         }
         return onlyOnline;
@@ -94,7 +122,7 @@ public class RedisSignEntity<T> extends SignEntity<T> {
     }
 
     public Boolean getAlwaysOnline() {
-        if(Objects.isNull(alwaysOnline)){
+        if (Objects.isNull(alwaysOnline)) {
             return false;
         }
         return alwaysOnline;

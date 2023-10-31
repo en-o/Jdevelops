@@ -1,5 +1,6 @@
 package cn.jdevelops.sboot.authentication.jwt.annotation;
 
+import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,8 +46,16 @@ public @interface ApiMapping {
     @AliasFor(annotation = RequestMapping.class)
     RequestMethod[] method() default {RequestMethod.GET};
 
+
     boolean enable() default true;
 
+    /**
+     * false 拦截接口，true 放行接口
+     */
     boolean checkToken() default true;
 
+    /**
+     * 接口所属的前端
+     */
+    PlatformConstant[] platform() default {PlatformConstant.COMMON};
 }

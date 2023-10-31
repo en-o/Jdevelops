@@ -151,6 +151,18 @@ public interface J2Service<B> {
      */
     Optional<B> findBeanOne(ColumnSFunction<B, ?> selectKey, Object value );
 
+
+
+    /**
+     * 查询
+     * @param selectKey secret
+     * @param value 值
+     * @return B
+     */
+    Optional<B> findBeanOne(String selectKey, Object value );
+
+
+
     /**
      * 查询
      * @param selectKey secret

@@ -3,6 +3,8 @@ package cn.jdevelops.sboot.authentication.jwt.interceptor;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPlatform;
 import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
@@ -10,7 +12,11 @@ import cn.jdevelops.sboot.authentication.jwt.vo.CheckVO;
 import cn.jdevelops.spi.ExtensionLoader;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
+import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
+import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
+import cn.jdevelops.util.jwt.exception.LoginException;
+import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -23,6 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.List;
+
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.UNAUTHENTICATED_PLATFORM;
 
 
 /**
@@ -112,11 +121,45 @@ public class WebApiInterceptor implements HandlerInterceptor {
         }
         // 日志用的 - %X{token}
         MDC.put(JwtConstant.TOKEN, token);
+        // 验证接口是否允许被调用
+        if(jwtConfig.getVerifyPlatform()){
+            checkApiPlatform(token,method);
+        }
         // 验证用户状态
         checkUserStatus(token);
         // 验证用户接口权限
-        checkUserPermission(token, method);
+        if(jwtConfig.getVerifyPermission()){
+            checkUserPermission(token, method);
+        }
         return new CheckVO(true, token);
+    }
+
+
+    /**
+     * 检查用户状态
+     *
+     * @param token token
+     * @param method method
+     * @throws Exception 接口异常
+     */
+    private void checkApiPlatform(String token, Method method) {
+        if (method.isAnnotationPresent(ApiPlatform.class)) {
+            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
+            if(!jwtListExistAnnotation(platformConstants,method)){
+                throw new LoginException(UNAUTHENTICATED_PLATFORM);
+            }
+        }
+
+    }
+
+    private boolean jwtListExistAnnotation(List<PlatformConstant> platformConstants , Method method){
+        ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
+        for (PlatformConstant annotationPlatform : annotation.platform()) {
+            if(platformConstants.contains(annotationPlatform.name())){
+                return true;
+            }
+        }
+        return false;
     }
 
 
