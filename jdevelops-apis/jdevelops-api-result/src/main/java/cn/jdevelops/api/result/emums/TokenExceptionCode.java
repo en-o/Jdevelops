@@ -33,6 +33,11 @@ public class TokenExceptionCode {
     public static final ExceptionCode UNAUTHENTICATED = new ExceptionCode(403, "系统未授权,禁止访问");
 
     /**
+     * 系统未授权 - jwt分端判断
+     */
+    public static final ExceptionCode UNAUTHENTICATED_PLATFORM = new ExceptionCode(403, "非法令牌访问未授权系统");
+
+    /**
      * 授权过期
      */
     public static final ExceptionCode SYS_AUTHORIZED_PAST = new ExceptionCode(402, "授权过期");
