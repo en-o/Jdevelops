@@ -132,7 +132,6 @@ public class JwtService {
      * 验证token
      * @param token token
      * @return false 无效token
-     * @throws InvalidJwtException InvalidJwtException
      */
     public static boolean validateTokenByBoolean(String token)  {
         try {
@@ -159,7 +158,8 @@ public class JwtService {
      * 验证token
      * @param token token
      * @return 有效返回则 JwtClaims
-     * @throws InvalidJwtException InvalidJwtException
+     * @throws MalformedClaimException InvalidJwtException
+     * @throws LoginException LoginException
      */
     public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, LoginException {
         try {
@@ -180,6 +180,8 @@ public class JwtService {
      * @param token token
      * @return 新的token
      * @throws JoseException JoseException
+     * @throws MalformedClaimException MalformedClaimException
+     * @throws LoginException LoginException
      */
     public static String refreshToken(String token) throws JoseException, MalformedClaimException, LoginException {
         // 验证 JWT
@@ -214,6 +216,9 @@ public class JwtService {
      *
      * @param token token
      * @return java.lang.String
+     * @throws MalformedClaimException MalformedClaimException
+     * @throws LoginException LoginException
+     *
      */
     public static String getSubject(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
@@ -227,6 +232,7 @@ public class JwtService {
      *
      * @param token token
      * @return java.lang.String
+     * @throws LoginException LoginException
      */
     public static String getSubjectExpires(String token) throws LoginException {
         try {
