@@ -63,6 +63,16 @@ public class JwtConfig {
      */
     private Boolean callRefreshToken;
 
+    /**
+     * 是否开启  ApiPermission 注解 [默认false]
+     */
+    private Boolean verifyPermission;
+
+    /**
+     * 是否开启  ApiPlatform 注解 [默认false]
+     */
+    private Boolean verifyPlatform;
+
 
     public String getTokenSecret() {
         if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
@@ -146,6 +156,28 @@ public class JwtConfig {
         this.callRefreshToken = callRefreshToken;
     }
 
+    public Boolean getVerifyPermission() {
+        if(Objects.isNull(verifyPermission)){
+            return false;
+        }
+        return verifyPermission;
+    }
+
+    public void setVerifyPermission(Boolean verifyPermission) {
+        this.verifyPermission = verifyPermission;
+    }
+
+    public Boolean getVerifyPlatform() {
+        if(Objects.isNull(verifyPlatform)){
+            return false;
+        }
+        return verifyPlatform;
+    }
+
+    public void setVerifyPlatform(Boolean verifyPlatform) {
+        this.verifyPlatform = verifyPlatform;
+    }
+
     @Override
     public String toString() {
         return "JwtConfig{" +
@@ -156,6 +188,8 @@ public class JwtConfig {
                 ", tokenName='" + tokenName + '\'' +
                 ", issuer='" + issuer + '\'' +
                 ", callRefreshToken=" + callRefreshToken +
+                ", verifyPermission=" + verifyPermission +
+                ", verifyPlatform=" + verifyPlatform +
                 '}';
     }
 }

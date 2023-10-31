@@ -122,11 +122,15 @@ public class WebApiInterceptor implements HandlerInterceptor {
         // 日志用的 - %X{token}
         MDC.put(JwtConstant.TOKEN, token);
         // 验证接口是否允许被调用
-        checkApiPlatform(token,method);
+        if(jwtConfig.getVerifyPlatform()){
+            checkApiPlatform(token,method);
+        }
         // 验证用户状态
         checkUserStatus(token);
         // 验证用户接口权限
-        checkUserPermission(token, method);
+        if(jwtConfig.getVerifyPermission()){
+            checkUserPermission(token, method);
+        }
         return new CheckVO(true, token);
     }
 
