@@ -63,13 +63,13 @@ public class JwtWebUtil {
             return token;
         }
         token = request.getParameter(JwtConstant.TOKEN);
-        if (Boolean.TRUE.equals(cookie.getCookie())) {
+        if (Boolean.TRUE.equals(cookie.getCookie()) && StringUtils.isBlank(token)) {
             Optional<Cookie> findCookie = CookieUtil.findCookie(
                     cookie.getCookieKey(), request.getCookies()
             );
-            token = Optional.ofNullable(token).orElse(findCookie.orElseThrow(
+            token = findCookie.orElseThrow(
                     () -> new TokenException(TokenExceptionCode.UNAUTHENTICATED)
-            ).getValue());
+            ).getValue();
         }
         if (StringUtils.isBlank(token)) {
             throw new TokenException(TokenExceptionCode.UNAUTHENTICATED);
