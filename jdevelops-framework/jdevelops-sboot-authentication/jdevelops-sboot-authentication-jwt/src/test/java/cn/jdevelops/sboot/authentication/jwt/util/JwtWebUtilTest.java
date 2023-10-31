@@ -70,21 +70,21 @@ public class JwtWebUtilTest extends TestCase {
     public void testGetTokenByBeanMapBean() {
         // map bean
         SignEntity<JwtWebUtilBean> tokenByBean = JwtWebUtil.getTokenByBean(signBean, SignEntity.class, JwtWebUtilBean.class);
-        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=COMMON, map=JwtWebUtilBean(name=tan, sex=10)}",
+        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=[COMMON], map=JwtWebUtilBean(name=tan, sex=10)}",
                 tokenByBean.toString());
     }
 
 
     public void testGetTokenByBeanMapNull() {
         // map null
-        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=COMMON, map=null}",
+        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=[COMMON], map=null}",
                 JwtWebUtil.getTokenByBean(signNull, SignEntity.class, null).toString());
     }
 
     public void testGetTokenByBeanMapStr() {
         // map str
         SignEntity<String> tokenByBeanStr = JwtWebUtil.getTokenByBean(signStr, SignEntity.class, String.class);
-        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=COMMON, map=tan}",
+        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=[COMMON], map=tan}",
                 tokenByBeanStr.toString());
         assertEquals("tan",
                 tokenByBeanStr.getMap());
@@ -93,7 +93,7 @@ public class JwtWebUtilTest extends TestCase {
     public void testGetTokenByBeanMapInt() {
         // map int
         SignEntity<Integer> tokenByBeanInt = JwtWebUtil.getTokenByBean(signInt, SignEntity.class, Integer.class);
-        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=COMMON, map=1}",
+        assertEquals("SignEntity{subject='tan', loginName='tan', userId='tan', userName='tan', platform=[COMMON], map=1}",
                 tokenByBeanInt.toString());
         Integer map = tokenByBeanInt.getMap();
         assertEquals(1, (int) map);

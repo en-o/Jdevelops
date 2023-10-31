@@ -4,6 +4,7 @@ package cn.jdevelops.sboot.authentication.jredis.entity.sign;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -63,7 +64,7 @@ public class RedisSignEntity<T> extends SignEntity<T> {
                            String loginName,
                            String userId,
                            String userName,
-                           PlatformConstant platform,
+                           List<PlatformConstant> platform,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
         super(subject, loginName, userId, userName, platform);

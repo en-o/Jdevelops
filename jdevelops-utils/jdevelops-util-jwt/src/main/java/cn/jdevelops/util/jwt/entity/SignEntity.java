@@ -3,6 +3,10 @@ package cn.jdevelops.util.jwt.entity;
 
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 用户登录签名办法token的数据
  *
@@ -37,7 +41,7 @@ public class SignEntity<T>{
     /**
      * 平台
      */
-    PlatformConstant platform;
+    List<PlatformConstant> platform;
 
     /**
      * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
@@ -62,7 +66,7 @@ public class SignEntity<T>{
         this.loginName = loginName;
         this.userId = userId;
         this.userName = userName;
-        this.platform = PlatformConstant.COMMON;
+        this.platform = Collections.singletonList(PlatformConstant.COMMON);;
         this.map = map;
     }
 
@@ -79,7 +83,7 @@ public class SignEntity<T>{
                       String loginName,
                       String userId,
                       String userName,
-                      PlatformConstant platform,
+                      List<PlatformConstant> platform,
                       T map) {
         this.subject = subject;
         this.loginName = loginName;
@@ -102,7 +106,7 @@ public class SignEntity<T>{
                       String loginName,
                       String userId,
                       String userName,
-                      PlatformConstant platform) {
+                      List<PlatformConstant> platform) {
         this.subject = subject;
         this.loginName = loginName;
         this.userId = userId;
@@ -126,7 +130,7 @@ public class SignEntity<T>{
         this.loginName = loginName;
         this.userId = userId;
         this.userName = userName;
-        this.platform = PlatformConstant.COMMON;
+        this.platform = Collections.singletonList(PlatformConstant.COMMON);
     }
 
     public String getSubject() {
@@ -170,15 +174,13 @@ public class SignEntity<T>{
         this.map = map;
     }
 
-    public PlatformConstant getPlatform() {
+    public List<PlatformConstant> getPlatform() {
         return platform;
     }
 
-    public void setPlatform(PlatformConstant platform) {
+    public void setPlatform(List<PlatformConstant> platform) {
         this.platform = platform;
     }
-
-
 
     @Override
     public String toString() {
