@@ -154,9 +154,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
 
     private boolean jwtListExistAnnotation(List<PlatformConstant> platformConstants , Method method){
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
-
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if(platformConstants.contains(annotationPlatform)){
+            if(platformConstants.contains(annotationPlatform.name())){
                 return true;
             }
         }
