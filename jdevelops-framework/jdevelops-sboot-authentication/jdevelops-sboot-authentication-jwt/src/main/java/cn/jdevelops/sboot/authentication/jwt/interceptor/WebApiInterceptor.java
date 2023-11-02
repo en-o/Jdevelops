@@ -55,18 +55,22 @@ public class WebApiInterceptor implements HandlerInterceptor {
             return true;
         }
 
+
         HandlerMethod handlerMethod = (HandlerMethod) handler;
+        // 获取处理器方法所属的类
+        Class<?> controllerClass = handlerMethod.getBeanType();
+
         Method method = handlerMethod.getMethod();
         Logger logger = LoggerFactory.getLogger(handlerMethod.getBeanType());
         if (method.isAnnotationPresent(ApiMapping.class)) {
             ApiMapping annotation = method.getAnnotation(ApiMapping.class);
             if (annotation.checkToken()) {
-                return check_refresh_token(request, response, handler, method, logger);
+                return check_refresh_token(request, response, handler, method, logger, controllerClass);
             } else {
                 return true;
             }
         } else {
-            return check_refresh_token(request, response, handler, method, logger);
+            return check_refresh_token(request, response, handler, method, logger, controllerClass);
         }
     }
 
@@ -74,19 +78,21 @@ public class WebApiInterceptor implements HandlerInterceptor {
     /**
      * 验证并刷新token缓存
      *
-     * @param request  request
-     * @param response response
-     * @param handler  handler
-     * @param method   method
-     * @param logger   logger
+     * @param request         request
+     * @param response        response
+     * @param handler         handler
+     * @param method          method
+     * @param logger          logger
+     * @param controllerClass 处理器方法所属的类
      * @return boolean
      * @throws IOException Exception
      */
     private boolean check_refresh_token(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Object handler, Method method,
-                                        Logger logger) throws Exception {
-        CheckVO check = check(request, response, handler, logger, method);
+                                        Logger logger,
+                                        Class<?> controllerClass) throws Exception {
+        CheckVO check = check(request, response, handler, logger, method, controllerClass);
         if (check.getCheck()) {
             refreshToken(check.getToken(), method);
         }
@@ -101,6 +107,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @param response response
      * @param handler  handler
      * @param logger   logger
+     * @param controllerClass 处理器方法所属的类
      * @return check
      * @throws IOException IOException
      */
@@ -108,11 +115,12 @@ public class WebApiInterceptor implements HandlerInterceptor {
                           HttpServletResponse response,
                           Object handler,
                           Logger logger,
-                          Method method) throws Exception {
+                          Method method,
+                          Class<?> controllerClass) throws Exception {
         String token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
-        logger.info("需要验证token,url:{}, 校验结果：{},token:{}", request.getRequestURI(),flag, token);
+        logger.info("需要验证token,url:{}, 校验结果：{},token:{}", request.getRequestURI(), flag, token);
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
@@ -122,46 +130,70 @@ public class WebApiInterceptor implements HandlerInterceptor {
         // 日志用的 - %X{token}
         MDC.put(JwtConstant.TOKEN, token);
         // 验证接口是否允许被调用
-        if(jwtConfig.getVerifyPlatform()){
-            checkApiPlatform(token,method);
+        if (jwtConfig.getVerifyPlatform()) {
+            checkApiPlatform(token, method, controllerClass);
         }
         // 验证用户状态
         checkUserStatus(token);
         // 验证用户接口权限
-        if(jwtConfig.getVerifyPermission()){
+        if (jwtConfig.getVerifyPermission()) {
             checkUserPermission(token, method);
         }
         return new CheckVO(true, token);
     }
 
+// =================== 检查接口的使用范围是否能跟token中的返回对应上 ==================================
 
     /**
-     * 检查用户状态
+     * 检查接口的使用范围是否能跟token中的返回对应上
      *
-     * @param token token
+     * @param token  token
      * @param method method
-     * @throws Exception 接口异常
+     * @param controllerClass 处理器方法所属的类
      */
-    private void checkApiPlatform(String token, Method method) {
+    private void checkApiPlatform(String token,
+                                  Method method,
+                                  Class<?> controllerClass) {
         if (method.isAnnotationPresent(ApiPlatform.class)) {
             List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
-            if(!jwtListExistAnnotation(platformConstants,method)){
+            if (!jwtListExistAnnotationMethod(platformConstants, method)) {
+                throw new LoginException(UNAUTHENTICATED_PLATFORM);
+            }
+        }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)){
+            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
+            if (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass)) {
                 throw new LoginException(UNAUTHENTICATED_PLATFORM);
             }
         }
 
     }
 
-    private boolean jwtListExistAnnotation(List<PlatformConstant> platformConstants , Method method){
+    private boolean jwtListExistAnnotationMethod(List<PlatformConstant> platformConstants,
+                                           Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if(platformConstants.contains(annotationPlatform.name())){
+            if (platformConstants.contains(annotationPlatform.name())) {
                 return true;
             }
         }
         return false;
     }
 
+    private boolean jwtListExistAnnotationMethodClasses(List<PlatformConstant> platformConstants,
+                                                        Class<?> controllerClass) {
+        ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
+        for (PlatformConstant annotationPlatform : annotation.platform()) {
+            if (platformConstants.contains(annotationPlatform.name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+// =================== 检查接口的使用范围是否能跟token中的返回对应上 ==================================
+
+
+// =================== 检查用户状态 ==================================
 
     /**
      * 检查用户状态
@@ -174,9 +206,11 @@ public class WebApiInterceptor implements HandlerInterceptor {
         checkTokenInterceptor.checkUserStatus(JwtService.getSubjectExpires(token));
     }
 
+// =================== 检查token中的role是否跟接口的role匹配 ==================================
+
 
     /**
-     * 检查用户状态
+     * 检查token中的role是否跟接口的role匹配
      *
      * @param token token
      * @throws Exception 用户状态异常
@@ -185,6 +219,9 @@ public class WebApiInterceptor implements HandlerInterceptor {
         // 检查用户状态
         checkTokenInterceptor.checkUserPermission(JwtService.getSubjectExpires(token), method);
     }
+
+    // =================== 检查token中的role是否跟接口的role匹配 ==================================
+
 
     /**
      * 刷新缓存 - redis中才有用

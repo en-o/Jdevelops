@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/10/31 12:18
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
