@@ -1,9 +1,9 @@
 package cn.jdevelops.sboot.authentication.jredis.service.impl;
 
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKeyConstant;
+import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKey;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jredis.util.ListUtil;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
@@ -53,12 +53,12 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
 
     @Override
-    public void storageUserToken(StorageUserTokenEntity storageUserTokenEntity) {
-        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER,
-                storageUserTokenEntity.getUserCode());
-        redisTemplate.boundHashOps(loginRedisFolder).put(storageUserTokenEntity.getUserCode(),
-                storageUserTokenEntity);
-        if (Boolean.TRUE.equals(storageUserTokenEntity.getAlwaysOnline())) {
+    public void storageUserToken(StorageToken storageToken) {
+        String loginRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER,
+                storageToken.getUserCode());
+        redisTemplate.boundHashOps(loginRedisFolder).put(storageToken.getUserCode(),
+                storageToken);
+        if (Boolean.TRUE.equals(storageToken.getAlwaysOnline())) {
             // 永不过期
             redisTemplate.persist(loginRedisFolder);
         } else {
@@ -69,12 +69,12 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void refreshUserToken(String subject) {
-        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String loginRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             LOG.warn("{}用户未登录，不需要刷新", subject);
         } else {
-            StorageUserTokenEntity tokenRedis = (StorageUserTokenEntity) loginRedis;
+            StorageToken tokenRedis = (StorageToken) loginRedis;
             if (Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())) {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             } else {
@@ -86,7 +86,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void removeUserToken(String subject) {
-        String redisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+        String redisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
         redisTemplate.delete(redisFolder);
     }
 
@@ -94,7 +94,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     public void removeUserToken(List<String> subject) {
         Set<String> keys = new HashSet<>();
         for (String key : subject) {
-            String redisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, key);
+            String redisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, key);
             keys.add(redisFolder);
         }
        if(!keys.isEmpty()){
@@ -103,7 +103,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     }
 
     @Override
-    public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
+    public StorageToken verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
             return verifyUserTokenBySubject(JwtService.getSubjectExpires(token));
         } catch (LoginException e) {
@@ -112,14 +112,14 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     }
 
     @Override
-    public StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException {
-        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
-        StorageUserTokenEntity tokenRedis;
+    public StorageToken verifyUserTokenBySubject(String subject) throws ExpiredRedisException {
+        String loginRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
+        StorageToken tokenRedis;
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             throw new ExpiredRedisException(REDIS_EXPIRED_USER);
         } else {
-            tokenRedis = (StorageUserTokenEntity) loginRedis;
+            tokenRedis = (StorageToken) loginRedis;
         }
         return tokenRedis;
     }
@@ -128,8 +128,8 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * 根据用户token加载redis存储的用户登录信息
      */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws LoginException {
-        return loadUserTokenInfoBySubject(JwtService.getSubjectExpires(token));
+    public StorageToken loadUserStorageTokenByToken(String token) throws LoginException {
+        return loadUserStorageTokenBySubject(JwtService.getSubjectExpires(token));
     }
 
 
@@ -137,20 +137,20 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
      * 根据用户ID加载redis存储的用户登录信息
      */
     @Override
-    public StorageUserTokenEntity loadUserTokenInfoBySubject(String subject) {
-        String loginRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, subject);
+    public StorageToken loadUserStorageTokenBySubject(String subject) {
+        String loginRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
         // redis 中比对 token 正确性
         Object loginRedis = redisTemplate.boundHashOps(loginRedisFolder).get(subject);
         if (Objects.isNull(loginRedis)) {
             throw new ExpiredRedisException(REDIS_EXPIRED_USER);
         } else {
-            return (StorageUserTokenEntity) loginRedis;
+            return (StorageToken) loginRedis;
         }
     }
 
     @Override
     public void verifyUserStatus(String subject) throws ExpiredRedisException {
-        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
+        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
@@ -173,7 +173,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public <RB extends BasicsAccount> void storageUserStatus(RB account) {
-        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, account.getUserCode());
+        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, account.getUserCode());
         // 处理由于是泛型对象导致其他地方继承后有问题，
         String accountJson = JSON.toJSONString(account);
         redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), accountJson);
@@ -183,7 +183,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public <RB extends BasicsAccount> RB loadUserStatus(String user, Class<RB> resultBean) {
-        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, user);
+        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, user);
 
         String redisUser;
         try {
@@ -202,7 +202,7 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public void verifyUserPermission(String subject, ApiPermission annotation) throws ExpiredRedisException {
-        String userRedisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_INFO_FOLDER, subject);
+        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate

@@ -6,26 +6,26 @@ package cn.jdevelops.sboot.authentication.jredis.constant;
  * @version V1.0
  * @date 2022-07-21 09:37
  */
-public interface RedisJwtKeyConstant {
+public interface RedisJwtKey {
 
     /**
-     * redis中 登录用户的文件夹名
+     * token 存储文件夹
      */
     String REDIS_USER_LOGIN_FOLDER = "login";
 
     /**
-     * redis中 用户状态
+     * 用户状态 存储文件夹
      */
     String REDIS_USER_INFO_FOLDER = "user_status";
 
     /**
-     * redis中 用户角色的文件夹名
+     * 用户角色code集 存储文件夹 （list）
      */
-    String REDIS_USER_ROLE_FOLDER = "role";
+    String REDIS_USER_ROLE_FOLDER = "user_roles";
     /**
-     * redis中 用户角色的文件夹名
+     * 用户角色集 存储文件夹 （list）
      */
-    String REDIS_USER_ROLE_INFO_FOLDER = "role_info";
+    String REDIS_USER_ROLE_INFO_FOLDER = "user_role_info";
 
 
 }

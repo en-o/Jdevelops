@@ -1,6 +1,6 @@
 package cn.jdevelops.sboot.authentication.jredis.interceptor;
 
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
@@ -29,8 +29,8 @@ public class RedisInterceptor implements CheckTokenInterceptor {
     @Override
     public boolean checkToken(String token) {
         JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-        StorageUserTokenEntity storageUserTokenEntity = jwtRedisService.verifyUserTokenByToken(token);
-        return Objects.nonNull(storageUserTokenEntity) && storageUserTokenEntity.getToken().equalsIgnoreCase(token);
+        StorageToken storageToken = jwtRedisService.verifyUserTokenByToken(token);
+        return Objects.nonNull(storageToken) && storageToken.getToken().equalsIgnoreCase(token);
     }
 
     @Override

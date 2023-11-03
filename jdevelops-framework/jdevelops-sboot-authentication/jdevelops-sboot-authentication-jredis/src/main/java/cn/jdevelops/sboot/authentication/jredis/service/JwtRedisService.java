@@ -3,7 +3,7 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 
 
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.exception.LoginException;
@@ -23,9 +23,9 @@ public interface JwtRedisService {
     /**
      * 存放 用户TOKEN
      *
-     * @param storageUserTokenEntity 存储用户登录token
+     * @param storageToken 存储用户登录token
      */
-    void storageUserToken(StorageUserTokenEntity storageUserTokenEntity);
+    void storageUserToken(StorageToken storageToken);
 
     /**
      * 刷新用户token
@@ -57,17 +57,17 @@ public interface JwtRedisService {
      * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    StorageUserTokenEntity verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
+    StorageToken verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
 
     /**
-     * 验证 用户TOKEN是否存在，存在则返回 token的详细信息 {@link StorageUserTokenEntity}
+     * 验证 用户TOKEN是否存在，存在则返回 token的详细信息 {@link StorageToken}
      * 不存在，或者 token 异常就报错
      *
      * @param token toekn
      * @return LoginTokenRedis
      * @throws ExpiredRedisException redis异常
      */
-    StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException;
+    StorageToken verifyUserTokenByToken(String token) throws ExpiredRedisException;
 
 
     /**
@@ -75,7 +75,7 @@ public interface JwtRedisService {
      * @param subject 用户唯一值(一般用用户的登录名
      * @return LoginTokenRedis
      */
-    StorageUserTokenEntity loadUserTokenInfoBySubject(String subject) ;
+    StorageToken loadUserStorageTokenBySubject(String subject) ;
 
     /**
      * 获取存储的用户token详情
@@ -83,7 +83,7 @@ public interface JwtRedisService {
      * @return LoginTokenRedis
      * @throws LoginException LoginException
      */
-    StorageUserTokenEntity loadUserTokenInfoByToken(String token) throws  LoginException;
+    StorageToken loadUserStorageTokenByToken(String token) throws  LoginException;
 
 
     /**

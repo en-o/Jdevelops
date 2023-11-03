@@ -2,7 +2,7 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
@@ -59,7 +59,7 @@ public class RedisLoginService implements LoginService {
             // token
             String sign = JwtService.generateToken(redisSubject);
             // 预备登录信息给redis存储
-            StorageUserTokenEntity build = StorageUserTokenEntity.builder()
+            StorageToken build = StorageToken.builder()
                     .userCode(redisSubject.getSubject())
                     .alwaysOnline(redisSubject.getAlwaysOnline())
                     .token(sign)
@@ -67,7 +67,7 @@ public class RedisLoginService implements LoginService {
             // 判断是否需要重复登录
             try {
                 // 查询当前用户是否已经登录
-                StorageUserTokenEntity loginUser = jwtRedisService.verifyUserTokenBySubject(redisSubject.getSubject());
+                StorageToken loginUser = jwtRedisService.verifyUserTokenBySubject(redisSubject.getSubject());
                 // 用户存在登录，判断是否需要重新登录
                 if (!redisSubject.getOnlyOnline()) {
                     // 继续使用当前token
@@ -104,7 +104,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public boolean isLogin(String subject) {
         try {
-            jwtRedisService.loadUserTokenInfoBySubject(subject);
+            jwtRedisService.loadUserStorageTokenBySubject(subject);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);
@@ -116,7 +116,7 @@ public class RedisLoginService implements LoginService {
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);
-            jwtRedisService.loadUserTokenInfoByToken(token);
+            jwtRedisService.loadUserStorageTokenByToken(token);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);

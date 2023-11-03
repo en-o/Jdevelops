@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.Objects;
 
 /**
- * redis 存储的登录信息
+ *  redis 存储的 token 数据
  *
  * @author tnnn
  * @version V1.0
@@ -17,13 +17,12 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StorageUserTokenEntity {
+public class StorageToken {
 
     /**
-     * 用户唯一编码，建议登录名
-     * = subject
+     * subject  用户唯一编码，建议登录名
      */
-    String userCode;
+    String subject;
 
     /**
      * token

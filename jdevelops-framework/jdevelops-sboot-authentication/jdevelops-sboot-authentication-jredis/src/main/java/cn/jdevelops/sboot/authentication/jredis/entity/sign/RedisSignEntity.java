@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 用户登录签名办法token的数据
+ * 申请token需要的数据内容
  *
  * @author tnnn
  * @version V1.0
