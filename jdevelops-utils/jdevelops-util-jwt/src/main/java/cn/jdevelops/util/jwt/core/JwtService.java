@@ -3,10 +3,12 @@ package cn.jdevelops.util.jwt.core;
 import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
+import cn.jdevelops.util.jwt.entity.LoginJwtExtendInfo;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
@@ -38,9 +40,6 @@ public class JwtService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
     private static final String AUDIENCE = "jdevelops";
-    private static final String LOGIN_NAME = "loginName";
-    private static final String USER_ID = "userId";
-    private static final String USER_NAME = "userName";
     private static final String SUBJECT = "subject";
     private static final String PLATFORM = "platform";
     private static final String DATA_MAP = "map";
@@ -84,9 +83,6 @@ public class JwtService {
         claims.setIssuedAtToNow();  // 何时发行/创建令牌 (now)
 //        claims.setNotBeforeMinutesInThePast(1); //令牌尚未生效的时间 (2 minutes ago)
         claims.setSubject(sign.getSubject()); // 主体/主体是标记的对象
-        claims.setClaim(LOGIN_NAME, sign.getLoginName());
-        claims.setClaim(USER_ID, sign.getUserId());
-        claims.setClaim(USER_NAME, sign.getUserName());
         claims.setClaim(PLATFORM, sign.getPlatform());
         claims.setClaim(SUBJECT, sign.getSubject());
         if(null != sign.getMap()){
@@ -247,45 +243,66 @@ public class JwtService {
         }
     }
 
-
-
     /**
-     * 获得Token中的 LOGIN_NAME （过期也解析）
+     * 获得Token中的 map 为 LoginJwtExtendInfo 用了这个对象的才能使用哈 （过期也解析）
+     *  ps: getTokenByBean
      *
      * @param token token
-     * @return java.lang.String
+     * @return PlatformConstant
      */
-    public static String getLoginNameExpires(String token) {
-        // 解析 JWT
-        JwtClaims jwtClaims = parseJwt(token);
-        return String.valueOf(jwtClaims.getClaimValue(LOGIN_NAME));
-    }
-
-    /**
-     * 获得Token中的 USER_ID （过期也解析）
-     *
-     * @param token token
-     * @return java.lang.String
-     */
-    public static String getUserIdExpires(String token) {
-        // 解析 JWT
-        JwtClaims jwtClaims = parseJwt(token);
-        return String.valueOf(jwtClaims.getClaimValue(USER_ID));
+    public static LoginJwtExtendInfo getLoginJwtExtendInfoExpires(String token) {
+        return  getTokenMapByBean(token, LoginJwtExtendInfo.class);
     }
 
 
     /**
-     * 获得Token中的 USER_NAME （过期也解析）
+     * 获取token中 map的数据 并可以转换成指定对象
      *
      * @param token token
-     * @return java.lang.String
+     * @param ts  token中map的对象
+     * @return t  (空返回null)
      */
-    public static String getUserNameExpires(String token) {
-        // 解析 JWT
-        JwtClaims jwtClaims = parseJwt(token);
-        return String.valueOf(jwtClaims.getClaimValue(USER_NAME));
+    public static <S> S getTokenMapByBean(String token, Class<S> ts) {
+        JwtClaims jwtClaims = JwtService.parseJwt(token);
+        String rawJson = jwtClaims.getRawJson();
+        JSONObject jsonObject = JSON.parseObject(rawJson);
+        if(ts != null){
+            String mapValue = jsonObject.getString("map");
+            if (null!=mapValue && !mapValue.isEmpty()) {
+                if(JSON.isValid(mapValue)){
+                    return JSON.to(ts, mapValue);
+                }else {
+                    return (S) mapValue;
+                }
+            }
+        }
+        return null;
     }
 
+    /**
+     * 获取token中的 数据并 转化成 T类型
+     *
+     * @param token token
+     * @param t   返回类型 （颁发时token存储的类型， SignEntity 和他的子类）
+     * @param ts  t中map的对象
+     * @return t
+     */
+    public static <T, S> T getTokenByBean(String token, Class<T> t, Class<S> ts) {
+        JwtClaims jwtClaims = JwtService.parseJwt(token);
+        String rawJson = jwtClaims.getRawJson();
+        JSONObject jsonObject = JSON.parseObject(rawJson);
+        if(ts != null){
+            String mapValue = jsonObject.getString("map");
+            if (null!=mapValue && mapValue.length() > 0) {
+                if(JSON.isValid(mapValue)){
+                    jsonObject.put("map", JSON.to(ts, mapValue));
+                }else {
+                    jsonObject.put("map", mapValue);
+                }
+            }
+        }
+        return JSON.to(t, jsonObject);
+    }
 
     /**
      * 获得Token中的 PLATFORM （过期也解析）

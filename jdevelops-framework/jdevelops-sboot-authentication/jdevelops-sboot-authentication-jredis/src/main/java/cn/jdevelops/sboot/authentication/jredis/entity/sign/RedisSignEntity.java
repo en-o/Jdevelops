@@ -32,19 +32,13 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * 用户登录签名办法token的数据
      *
      * @param subject      唯一
-     * @param loginName    登录名
-     * @param userId       用户id
-     * @param userName     用户名
      * @param alwaysOnline token是否永久在线
      * @param onlyOnline   以前的是否会被挤下线
      */
     public RedisSignEntity(String subject,
-                           String loginName,
-                           String userId,
-                           String userName,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
-        super(subject, loginName, userId, userName);
+        super(subject);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
     }
@@ -53,21 +47,15 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * 用户登录签名办法token的数据
      *
      * @param subject      唯一
-     * @param loginName    登录名
-     * @param userId       用户id
-     * @param userName     用户名
      * @param platform     jwt所所使用的平台
      * @param alwaysOnline token是否永久在线
      * @param onlyOnline   以前的是否会被挤下线
      */
     public RedisSignEntity(String subject,
-                           String loginName,
-                           String userId,
-                           String userName,
                            List<PlatformConstant> platform,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
-        super(subject, loginName, userId, userName, platform);
+        super(subject, platform);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
     }
@@ -75,9 +63,6 @@ public class RedisSignEntity<T> extends SignEntity<T> {
 
     public RedisSignEntity(SignEntity<T> subject) {
         super(subject.getSubject(),
-                subject.getLoginName(),
-                subject.getUserId(),
-                subject.getUserName(),
                 subject.getPlatform(),
                 subject.getMap());
         this.alwaysOnline = false;
@@ -92,9 +77,6 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      */
     public RedisSignEntity(SignEntity<T> subject, Boolean alwaysOnline, Boolean onlyOnline) {
         super(subject.getSubject(),
-                subject.getLoginName(),
-                subject.getUserId(),
-                subject.getUserName(),
                 subject.getPlatform(),
                 subject.getMap());
         this.alwaysOnline = alwaysOnline;
