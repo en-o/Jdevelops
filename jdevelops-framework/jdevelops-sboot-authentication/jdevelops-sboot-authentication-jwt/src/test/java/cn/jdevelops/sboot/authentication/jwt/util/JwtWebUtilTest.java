@@ -1,7 +1,6 @@
 package cn.jdevelops.sboot.authentication.jwt.util;
 
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.entity.LoginJwtExtendInfo;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import junit.framework.TestCase;
 import org.jose4j.lang.JoseException;
