@@ -6,6 +6,7 @@ import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPlatform;
 import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
+import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.sboot.authentication.jwt.vo.CheckVO;
@@ -157,12 +158,12 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (method.isAnnotationPresent(ApiPlatform.class)) {
             List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
             if (!jwtListExistAnnotationMethod(platformConstants, method)) {
-                throw new LoginException(UNAUTHENTICATED_PLATFORM);
+                throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
             }
         }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)){
             List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
             if (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass)) {
-                throw new LoginException(UNAUTHENTICATED_PLATFORM);
+                throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
             }
         }
 
