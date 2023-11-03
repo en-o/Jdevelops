@@ -1,7 +1,7 @@
 package cn.jdevelops.util.jwt.constant;
 
 /**
- * 平台
+ * 谁生成的jwt [前端系统平台]
  *
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/10/31 9:32
