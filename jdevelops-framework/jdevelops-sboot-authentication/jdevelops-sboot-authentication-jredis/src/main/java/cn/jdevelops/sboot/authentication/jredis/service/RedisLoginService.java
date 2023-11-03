@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -135,6 +136,15 @@ public class RedisLoginService implements LoginService {
 
     @Override
     public void loginOut(String subject) {
+        try {
+            jwtRedisService.removeUserToken(subject);
+        } catch (Exception e) {
+            logger.warn("退出失败", e);
+        }
+    }
+
+    @Override
+    public void loginOut(List<String> subject) {
         try {
             jwtRedisService.removeUserToken(subject);
         } catch (Exception e) {

@@ -8,6 +8,8 @@ import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.exception.LoginException;
 
+import java.util.List;
+
 
 /**
  * redis
@@ -40,6 +42,12 @@ public interface JwtRedisService {
      */
     void removeUserToken(String subject);
 
+    /**
+     * 删除 用户TOKEN
+     *
+     * @param subject 用户唯一值(一般用用户的登录名
+     */
+    void removeUserToken(List<String> subject);
 
     /**
      * 验证 用户TOKEN是否存在，存在则返回 token

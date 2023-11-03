@@ -91,6 +91,18 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     }
 
     @Override
+    public void removeUserToken(List<String> subject) {
+        Set<String> keys = new HashSet<>();
+        for (String key : subject) {
+            String redisFolder = getRedisFolder(RedisJwtKeyConstant.REDIS_USER_LOGIN_FOLDER, key);
+            keys.add(redisFolder);
+        }
+       if(!keys.isEmpty()){
+           redisTemplate.delete(keys);
+       }
+    }
+
+    @Override
     public StorageUserTokenEntity verifyUserTokenByToken(String token) throws ExpiredRedisException {
         try {
             return verifyUserTokenBySubject(JwtService.getSubjectExpires(token));
