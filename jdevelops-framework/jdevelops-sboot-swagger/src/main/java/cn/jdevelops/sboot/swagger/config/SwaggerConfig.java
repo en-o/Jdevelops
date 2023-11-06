@@ -76,6 +76,7 @@ public class SwaggerConfig {
         String[] paths = { "/**" };
         String[] packagedToMatch = basePackages(swaggerProperties.getBasePackage());
         return GroupedOpenApi.builder().group(swaggerProperties.getGroupName())
+                .displayName(swaggerProperties.getDisplayName())
                 .pathsToMatch(paths)
                 // todo: Authorize 未生效，请求header里未包含参数 - 临时处理方法
                 .addOperationCustomizer((operation, handlerMethod) -> operation.security(buildSecuritySchemes.getSecurityItem()))
