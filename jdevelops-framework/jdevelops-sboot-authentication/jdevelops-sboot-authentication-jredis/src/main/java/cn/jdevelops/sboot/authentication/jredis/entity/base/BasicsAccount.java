@@ -13,8 +13,8 @@ import java.util.List;
 public class BasicsAccount {
 
 
-    /** 用户唯一编码(一般都用用户的登录名 **/
-    private String userCode;
+    /** token.subject[用户唯一编码，建议登录名] **/
+    private String subject;
 
     /** 用户密码 **/
     private String password;
@@ -40,13 +40,13 @@ public class BasicsAccount {
     public BasicsAccount() {
     }
 
-    public BasicsAccount(String userCode,
+    public BasicsAccount(String subject,
                          String password, String salt,
                          boolean disabledAccount,
                          boolean excessiveAttempts,
                          List<String> roles,
                          List<String> permissions) {
-        this.userCode = userCode;
+        this.subject = subject;
         this.password = password;
         this.salt = salt;
         this.disabledAccount = disabledAccount;
@@ -58,7 +58,7 @@ public class BasicsAccount {
     @Override
     public String toString() {
         return "BasicsAccount{" +
-                "userCode='" + userCode + '\'' +
+                "userCode='" + subject + '\'' +
                 ", password='" + password + '\'' +
                 ", salt='" + salt + '\'' +
                 ", disabledAccount=" + disabledAccount +
@@ -68,12 +68,12 @@ public class BasicsAccount {
                 '}';
     }
 
-    public String getUserCode() {
-        return userCode;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getPassword() {

@@ -20,7 +20,7 @@ import java.util.Objects;
 public class StorageToken {
 
     /**
-     * subject  用户唯一编码，建议登录名
+     * subject  token.subject[用户唯一编码，建议登录名]
      */
     String subject;
 

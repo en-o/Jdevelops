@@ -9,8 +9,7 @@ package cn.jdevelops.sboot.authentication.jredis.entity.role;
  */
 public class UserRole {
     /**
-     * 用户唯一编码，建议登录名
-     * = subject
+     * token.subject[用户唯一编码，建议登录名]
      */
     String userCode;
 

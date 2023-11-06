@@ -55,8 +55,8 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
     @Override
     public void storageUserToken(StorageToken storageToken) {
         String loginRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER,
-                storageToken.getUserCode());
-        redisTemplate.boundHashOps(loginRedisFolder).put(storageToken.getUserCode(),
+                storageToken.getSubject());
+        redisTemplate.boundHashOps(loginRedisFolder).put(storageToken.getSubject(),
                 storageToken);
         if (Boolean.TRUE.equals(storageToken.getAlwaysOnline())) {
             // 永不过期
@@ -173,10 +173,10 @@ public class JwtJwtRedisServiceImpl implements JwtRedisService {
 
     @Override
     public <RB extends BasicsAccount> void storageUserStatus(RB account) {
-        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, account.getUserCode());
+        String userRedisFolder = getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, account.getSubject());
         // 处理由于是泛型对象导致其他地方继承后有问题，
         String accountJson = JSON.toJSONString(account);
-        redisTemplate.boundHashOps(userRedisFolder).put(account.getUserCode(), accountJson);
+        redisTemplate.boundHashOps(userRedisFolder).put(account.getSubject(), accountJson);
         // 永不过期
         redisTemplate.persist(userRedisFolder);
     }

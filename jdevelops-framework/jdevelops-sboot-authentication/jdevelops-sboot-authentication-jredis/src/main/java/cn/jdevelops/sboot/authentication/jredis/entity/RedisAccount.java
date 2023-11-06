@@ -28,7 +28,7 @@ public class RedisAccount<T> extends BasicsAccount {
     }
 
     /**
-     * @param userCode          用户唯一编码
+     * @param subject         token.subject[用户唯一编码，建议登录名]
      * @param password          用户密码
      * @param salt              加密的盐
      * @param disabledAccount   是否被禁用
@@ -36,18 +36,18 @@ public class RedisAccount<T> extends BasicsAccount {
      * @param roles             角色
      * @param permissions       权限
      */
-    public RedisAccount(String userCode,
+    public RedisAccount(String subject,
                         String password,
                         String salt,
                         boolean disabledAccount,
                         boolean excessiveAttempts,
                         List<String> roles,
                         List<String> permissions) {
-        super(userCode, password, salt, disabledAccount, excessiveAttempts, roles, permissions);
+        super(subject, password, salt, disabledAccount, excessiveAttempts, roles, permissions);
     }
 
     /**
-     * @param userCode          用户唯一编码
+     * @param subject         token.subject[用户唯一编码，建议登录名]
      * @param password          用户密码
      * @param salt              加密的盐
      * @param disabledAccount   是否被禁用
@@ -56,7 +56,7 @@ public class RedisAccount<T> extends BasicsAccount {
      * @param permissions       权限
      * @param userInfo          userInfo
      */
-    public RedisAccount(String userCode,
+    public RedisAccount(String subject,
                         String password,
                         String salt,
                         boolean disabledAccount,
@@ -64,7 +64,7 @@ public class RedisAccount<T> extends BasicsAccount {
                         List<String> roles,
                         List<String> permissions,
                         T userInfo) {
-        super(userCode, password, salt, disabledAccount, excessiveAttempts, roles, permissions);
+        super(subject, password, salt, disabledAccount, excessiveAttempts, roles, permissions);
         this.userInfo = userInfo;
     }
 
