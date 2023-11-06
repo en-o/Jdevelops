@@ -5,6 +5,7 @@ import cn.jdevelops.data.es.entity.EsPageResult;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch._types.Result;
+import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.*;
@@ -499,6 +500,23 @@ public class ElasticServiceImpl implements ElasticService {
             logger.error(e.getMessage(), e);
         }
         return list;
+    }
+
+    @Override
+    public Long updateFieldValue(String indexName, Query query, String field, Object value) throws IOException {
+        // 设置更新脚本，用于更新字段值
+        String script = "ctx._source['" + field + "'] = '" + value + "'";
+
+        UpdateByQueryRequest request = UpdateByQueryRequest.of(u -> u
+                .index(indexName)
+                .query(query)
+                .script(
+                        Script.of(c -> c.inline(xx -> xx.source(script)))
+
+                )
+        );
+        UpdateByQueryResponse response = client.updateByQuery(request);
+        return response.updated();
     }
 
 
