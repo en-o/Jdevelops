@@ -34,10 +34,16 @@ public class StorageToken {
      */
     Boolean alwaysOnline;
 
-
+    /**
+     * redis用 唯一登录 ，以前的是否会被挤下线 （默认false：不挤）
+     */
+    Boolean onlyOnline;
 
     public Boolean getAlwaysOnline() {
         return !Objects.isNull(alwaysOnline) && alwaysOnline;
     }
 
+    public Boolean getOnlyOnline() {
+        return !Objects.isNull(alwaysOnline) && alwaysOnline;
+    }
 }

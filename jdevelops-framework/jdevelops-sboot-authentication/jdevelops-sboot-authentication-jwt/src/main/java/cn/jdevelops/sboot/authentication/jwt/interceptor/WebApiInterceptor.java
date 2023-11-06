@@ -3,21 +3,17 @@ package cn.jdevelops.sboot.authentication.jwt.interceptor;
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
-import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPlatform;
 import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
-import cn.jdevelops.sboot.authentication.jwt.vo.CheckVO;
+import cn.jdevelops.sboot.authentication.jwt.vo.CheckToken;
 import cn.jdevelops.spi.ExtensionLoader;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
-import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.exception.LoginException;
-import cn.jdevelops.util.jwt.util.JwtContextUtil;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -93,7 +89,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                         Object handler, Method method,
                                         Logger logger,
                                         Class<?> controllerClass) throws Exception {
-        CheckVO check = check(request, response, handler, logger, method, controllerClass);
+        CheckToken check = check(request, response, handler, logger, method, controllerClass);
         if (check.getCheck()) {
             refreshToken(check.getToken(), method);
         }
@@ -112,12 +108,12 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @return check
      * @throws IOException IOException
      */
-    private CheckVO check(HttpServletRequest request,
-                          HttpServletResponse response,
-                          Object handler,
-                          Logger logger,
-                          Method method,
-                          Class<?> controllerClass) throws Exception {
+    private CheckToken check(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler,
+                             Logger logger,
+                             Method method,
+                             Class<?> controllerClass) throws Exception {
         String token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
@@ -126,7 +122,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
                     .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
-            return new CheckVO(false, token);
+            return new CheckToken(false, token);
         }
         // 日志用的 - %X{token}
         MDC.put(JwtConstant.TOKEN, token);
@@ -140,7 +136,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (jwtConfig.getVerifyPermission()) {
             checkUserPermission(token, method);
         }
-        return new CheckVO(true, token);
+        return new CheckToken(true, token);
     }
 
 // =================== 检查接口的使用范围是否能跟token中的返回对应上 ==================================

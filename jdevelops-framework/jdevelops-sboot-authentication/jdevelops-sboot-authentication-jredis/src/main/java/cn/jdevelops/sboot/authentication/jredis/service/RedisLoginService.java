@@ -60,7 +60,8 @@ public class RedisLoginService implements LoginService {
             String sign = JwtService.generateToken(redisSubject);
             // 预备登录信息给redis存储
             StorageToken build = StorageToken.builder()
-                    .userCode(redisSubject.getSubject())
+                    .subject(redisSubject.getSubject())
+                    .onlyOnline(redisSubject.getOnlyOnline())
                     .alwaysOnline(redisSubject.getAlwaysOnline())
                     .token(sign)
                     .build();
