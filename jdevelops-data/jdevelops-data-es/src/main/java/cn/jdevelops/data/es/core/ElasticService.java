@@ -288,4 +288,16 @@ public interface ElasticService {
      * @date 2023/4/23 10:14
      **/
     <T> List<T> searchList(SearchRequest request, Class<T> cc);
+
+
+    /**
+     * 更新字段的值
+     * @param indexName 索引
+     * @param query query [e.g TermQuery.of(t -> t.field("no").value("no"))._toQuery();]
+     * @param field 字段
+     * @param value 值
+     * @return 更新成功的数量
+     * @throws IOException IOException
+     */
+     Long  updateFieldValue(String indexName, Query query, String field, Object value) throws IOException;
 }
