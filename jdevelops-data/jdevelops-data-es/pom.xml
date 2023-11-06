@@ -16,7 +16,11 @@
         官方参考rest-apis：https://www.elastic.co/guide/en/elasticsearch/reference/8.10/rest-apis.html
     </description>
     <dependencies>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version> <!-- 用可用的最新版本替换 -->
+        </dependency>
         <!--elasticsearch-->
         <dependency>
             <groupId>co.elastic.clients</groupId>
