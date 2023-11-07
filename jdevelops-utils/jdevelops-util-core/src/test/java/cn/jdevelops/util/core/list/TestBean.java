@@ -22,6 +22,15 @@ public class TestBean {
         return Objects.equals(sex, myBean.sex);
     }
 
+
+    @Override
+    public int hashCode() {
+        int result = sex;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
+
+
     public TestBean() {
     }
 

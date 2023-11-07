@@ -81,6 +81,30 @@ public class CollectionUtilTest extends TestCase {
         assertEquals(reIntersection.toString(),"[4, 12]");
     }
 
+
+    public void testIntersectionSet() {
+        Set<String> c1 = new HashSet<>();
+        Set<String> c2 = new HashSet<>();
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c1.add("12");
+        c1.add("23");
+        c1.add("4");
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c2.add("3");
+        c2.add("5");
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c2.add("4");
+        c2.add("12");
+        //  c1 跟 c2 的交集为 4，12
+        Collection<?> intersection = CollectionUtil.intersection(c1, c2);
+        assertEquals(intersection.toString(),"[12, 4]");
+        // 测试 前后数据量反转测试
+        Collection<?> reIntersection = CollectionUtil.intersection(c2, c1);
+        // set 是有序的
+        assertEquals(reIntersection.toString(),"[12, 4]");
+    }
+
+
     /**
      * bean的话必须重写 equals
      * @see TestBean#equals(Object)
@@ -88,6 +112,33 @@ public class CollectionUtilTest extends TestCase {
     public void testIntersectionBean() {
         ArrayList<TestBean> c1 = new ArrayList<>();
         ArrayList<TestBean> c2 = new ArrayList<>();
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c1.add(new TestBean("tan",1));
+        c1.add(new TestBean("ning",2));
+        c1.add(new TestBean("tanning",3));
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c2.add(new TestBean("ning",4));
+        c2.add(new TestBean("admin",1));
+        assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
+        c2.add(new TestBean("ning",2));
+        c2.add(new TestBean("tan",1));
+        //  c1 跟 c2 的交集为 tan:1，ning:2
+        Collection<?> intersection = CollectionUtil.intersection(c1, c2);
+        assertEquals(intersection.toString(),"[TestBean{name='tan', sex=1}, TestBean{name='ning', sex=2}]");
+        // 测试 前后数据量反转测试
+        Collection<?> reIntersection = CollectionUtil.intersection(c2, c1);
+        // 顺序
+        assertEquals(reIntersection.toString(),"[TestBean{name='ning', sex=2}, TestBean{name='tan', sex=1}]");
+    }
+
+    /**
+     * bean的话必须重写 equals
+     * @see TestBean#equals(Object)
+     * @see TestBean#hashCode()
+     */
+    public void testIntersectionBeanSet() {
+        Set<TestBean> c1 = new HashSet<>();
+        Set<TestBean> c2 = new HashSet<>();
         assertEquals(CollectionUtil.intersection(c1,c2).size(),0);
         c1.add(new TestBean("tan",1));
         c1.add(new TestBean("ning",2));
