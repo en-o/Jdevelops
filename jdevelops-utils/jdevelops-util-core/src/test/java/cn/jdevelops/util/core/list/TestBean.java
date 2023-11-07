@@ -19,7 +19,7 @@ public class TestBean {
         if (obj == null || getClass() != obj.getClass()) return false;
         TestBean myBean = (TestBean) obj;
         if (!Objects.equals(name, myBean.name)) return false;
-        return sex != null ? sex.equals(myBean.sex) : myBean.sex == null;
+        return Objects.equals(sex, myBean.sex);
     }
 
     public TestBean() {
