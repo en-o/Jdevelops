@@ -1,13 +1,11 @@
 package cn.jdevelops.util.core.list;
 
 import cn.hutool.core.util.ObjectUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.awt.*;
-import java.util.AbstractCollection;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -98,35 +96,35 @@ public class CollectionUtil {
     }
 
 
-//    /**
-//     * 取并集  (list 需要重写 equals， set 需要重写 hash)
-//     * <pre>
-//     *     union([1,2,3,4],[4,5]) -》 [1,2,3,4,5]
-//     *     union([1,2,3,4],[]) -》 [1,2,3,4]
-//     *     union([],[4,5]) -》 [4,5]
-//     * </pre>
-//     * @param c1 list
-//     * @param c2 list
-//     * @return 交集 list [空返回空对象]
-//     */
-//    public static Collection<?> union(Collection<?> c1, Collection<?> c2){
-//        if(isEmpty(c1) && isEmpty(c2)){
-//            return Collections.emptyList();
-//        }else if(isEmpty(c2)){
-//            return c1;
-//        }else if(isEmpty(c1)){
-//            return c2;
-//        }
-//        // 为了不改变传入的值，因为 rm 会造成原来的数据值被改变
-//        Collection<?> temp1 = ObjectUtils.clone(c1);
-//        Collection<?> temp2 = ObjectUtils.clone(c2);
-//        // 删除成功表示，有交集. 不管删除删除成功，都会去掉交集 然后相加就是并集了（A+B-AB）
-//        temp1.removeAll(temp2);
-//        // 使用 Java 8+ Stream 合并两个 Collection
-//        Collection<?> combinedCollection = Stream.of(temp1, temp2)
-//                .flatMap(Collection::stream)
-//                .collect(Collectors.toList());
-//        return combinedCollection;
-//    }
+    /**
+     * 取并集  (list 需要重写 equals， set 需要重写 hash)
+     * <pre>
+     *     union([1,2,3,4],[4,5]) -》 [1,2,3,4,5]
+     *     union([1,2,3,4],[]) -》 [1,2,3,4]
+     *     union([],[4,5]) -》 [4,5]
+     * </pre>
+     * @param c1 list
+     * @param c2 list
+     * @return 交集 list [空返回空对象]
+     */
+    public static Collection<?> union(Collection<?> c1, Collection<?> c2){
+        if(isEmpty(c1) && isEmpty(c2)){
+            return Collections.emptyList();
+        }else if(isEmpty(c2)){
+            return c1;
+        }else if(isEmpty(c1)){
+            return c2;
+        }
+        // 为了不改变传入的值，因为 rm 会造成原来的数据值被改变
+        Collection<?> temp1 = ObjectUtils.clone(c1);
+        Collection<?> temp2 = ObjectUtils.clone(c2);
+        // 删除成功表示，有交集. 不管删除删除成功，都会去掉交集 然后相加就是并集了（A+B-AB）
+        temp1.removeAll(temp2);
+        // 使用 Java 8+ Stream 合并两个 Collection
+        Collection<?> combinedCollection = Stream.of(temp1, temp2)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return combinedCollection;
+    }
 
 }
