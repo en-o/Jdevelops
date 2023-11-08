@@ -15,9 +15,9 @@
     <properties>
         <revision>2.0.7</revision>
         <!-- 文档  -->
-        <knife4j.version>4.0.0</knife4j.version>
+        <knife4j.version>4.3.0</knife4j.version>
         <swagger.version>2.2.8</swagger.version>
-        <springdoc.version>1.6.14</springdoc.version>
+        <springdoc.version>1.7.0</springdoc.version>
         <!-- spring -->
         <spring-core.version>5.3.27</spring-core.version>
         <spring.boot.version>2.7.15</spring.boot.version>
