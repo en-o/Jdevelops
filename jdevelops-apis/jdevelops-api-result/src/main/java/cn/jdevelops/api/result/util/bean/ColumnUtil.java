@@ -104,7 +104,12 @@ public class ColumnUtil {
     }
 
 
-
+    /**
+     * 父类字段
+     * @param aClass aClass
+     * @param fieldName 字段名
+     * @return 父类字段
+     */
     private static Field superclass(Class<?> aClass,String fieldName){
         try {
             return aClass.getSuperclass().getDeclaredField(fieldName);
