@@ -196,6 +196,20 @@ public class ResultVO<B> extends ResultCommon {
     }
 
 
+    /**
+     * ResultVO resultMsg
+     * @param result 业务查询返回的 true,false
+     * @param message message+result(成功，失败)
+     * @return ResultVO
+     */
+    public static ResultVO<String> resultMsg(boolean result, String message) {
+        if(result){
+            return ResultVO.successMessage(message+"成功");
+        }
+        return ResultVO.failMessage(message+"失败");
+    }
+
+
     public B getData() {
         return data;
     }

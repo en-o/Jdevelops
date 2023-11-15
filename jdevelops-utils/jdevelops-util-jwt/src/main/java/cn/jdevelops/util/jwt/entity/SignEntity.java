@@ -3,7 +3,6 @@ package cn.jdevelops.util.jwt.entity;
 
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

@@ -72,6 +72,11 @@ public class SwaggerProperties {
     private String groupName;
 
     /**
+     *  分组名
+     */
+    private String displayName;
+
+    /**
      *  OpenAPI 规范的安全方案
      *  默认apikey,且name等于token
      */
@@ -86,7 +91,7 @@ public class SwaggerProperties {
     @Override
     public String toString() {
         return "SwaggerProperties{" +
-                "basePackage='" + basePackage + '\'' +
+                "basePackage=" + basePackage +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
@@ -96,6 +101,7 @@ public class SwaggerProperties {
                 ", license='" + license + '\'' +
                 ", licenseUrl='" + licenseUrl + '\'' +
                 ", groupName='" + groupName + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", swaggerSecuritySchemes=" + swaggerSecuritySchemes +
                 ", securitySchemeDefault=" + securitySchemeDefault +
                 '}';
@@ -210,6 +216,17 @@ public class SwaggerProperties {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public String getDisplayName() {
+        if(Objects.isNull(displayName)){
+            return "默认接口组";
+        }
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public List<SwaggerSecurityScheme> getSwaggerSecuritySchemes() {
