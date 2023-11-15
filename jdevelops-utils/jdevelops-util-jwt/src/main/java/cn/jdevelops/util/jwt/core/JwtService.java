@@ -66,14 +66,14 @@ public class JwtService {
     /**
      *
      * 生成token
-     * @param sign SignEntity
-     * @return token
-     * @param <D> SignEntity里的T
-     * @param <T> SignEntity的子类
-     * @throws JoseException JoseException
      *
+     * @param sign SignEntity
+     * @param <D>  SignEntity里的T
+     * @param <T>  SignEntity的子类
+     * @return token
+     * @throws JoseException JoseException
      */
-    public static <D,T extends SignEntity<D>> String generateToken(T  sign) throws JoseException {
+    public static <D, T extends SignEntity<D>> String generateToken(T sign) throws JoseException {
         // Create the Claims, which will be the content of the JWT
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人
@@ -105,6 +105,7 @@ public class JwtService {
 
     /**
      * 生成token
+     *
      * @param subject subject
      * @return token
      * @throws JoseException JoseException
@@ -129,46 +130,37 @@ public class JwtService {
 
     /**
      * 验证token
+     *
      * @param token token
      * @return false 无效token
      */
-    public static boolean validateTokenByBoolean(String token)  {
+    public static boolean validateTokenByBoolean(String token) {
         try {
-            getJwtConsumer().processToClaims(token);
+            validateTokenByJwtClaims(token);
             return true;
-        } catch (InvalidJwtException e) {
-            try {
-                if (e.hasExpired()){
-                    logger.error("JWT expired at {}", e.getJwtContext().getJwtClaims().getExpirationTime());
-                }
-                if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
-                    logger.error("JWT had wrong audience: {}", e.getJwtContext().getJwtClaims().getAudience());
-                }
-            } catch (MalformedClaimException ex) {
-                return false;
-            }
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
-
 
 
     /**
      * 验证token
+     *
      * @param token token
      * @return 有效返回则 JwtClaims
      * @throws MalformedClaimException InvalidJwtException
-     * @throws LoginException LoginException
+     * @throws LoginException          LoginException
      */
     public static JwtClaims validateTokenByJwtClaims(String token) throws MalformedClaimException, LoginException {
         try {
             return getJwtConsumer().processToClaims(token);
         } catch (InvalidJwtException e) {
-            if (e.hasExpired()){
+            if (e.hasExpired()) {
                 logger.error("JWT expired at {}", e.getJwtContext().getJwtClaims().getExpirationTime());
             }
-            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)){
-                logger.error("JWT had wrong audience: {}" , e.getJwtContext().getJwtClaims().getAudience());
+            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)) {
+                logger.error("JWT had wrong audience: {}", e.getJwtContext().getJwtClaims().getAudience());
             }
             throw new LoginException(TOKEN_ERROR, e);
         }
@@ -176,11 +168,12 @@ public class JwtService {
 
     /**
      * 刷新token
+     *
      * @param token token
      * @return 新的token
-     * @throws JoseException JoseException
+     * @throws JoseException           JoseException
      * @throws MalformedClaimException MalformedClaimException
-     * @throws LoginException LoginException
+     * @throws LoginException          LoginException
      */
     public static String refreshToken(String token) throws JoseException, MalformedClaimException, LoginException {
         // 验证 JWT
@@ -209,15 +202,13 @@ public class JwtService {
     }
 
 
-
     /**
      * 获得Token中的 Subject （非过期）
      *
      * @param token token
      * @return java.lang.String
      * @throws MalformedClaimException MalformedClaimException
-     * @throws LoginException LoginException
-     *
+     * @throws LoginException          LoginException
      */
     public static String getSubject(String token) throws MalformedClaimException, LoginException {
         // 验证 JWT
@@ -239,7 +230,9 @@ public class JwtService {
             JwtClaims jwtClaims = parseJwt(token);
             return jwtClaims.getSubject();
         } catch (MalformedClaimException e) {
-            throw new LoginException(TokenExceptionCode.TOKEN_ERROR,e);
+            throw new LoginException(TokenExceptionCode.TOKEN_ERROR, e);
+        } catch (NullPointerException nullPointerException) {
+            throw new LoginException(TokenExceptionCode.UNAUTHENTICATED_PLATFORM, nullPointerException);
         }
     }
 
@@ -278,6 +271,7 @@ public class JwtService {
         }
         return null;
     }
+
 
     /**
      * 获取token中的 数据并 转化成 T类型
@@ -318,6 +312,7 @@ public class JwtService {
 
     /**
      * 获取 jwt 的内容 - 过期令牌也能解析
+     *
      * @param token 获取token
      * @return JwtClaims
      */
@@ -325,17 +320,22 @@ public class JwtService {
         try {
             JwtConsumer jwtConsumer = getJwtConsumer();
             return jwtConsumer.processToClaims(token);
-        }catch (InvalidJwtException e){
-            return e.getJwtContext().getJwtClaims();
+        } catch (InvalidJwtException e) {
+            // 无效token 分两种，一种是token失效，一个是token非法
+            JwtClaims jwtClaims = e.getJwtContext().getJwtClaims();
+            // 非法
+            if (jwtClaims == null) {
+                throw new LoginException(TokenExceptionCode.UNAUTHENTICATED_PLATFORM, e);
+            }
+            return jwtClaims;
         }
     }
 
 
-
     /**
-     *  A JWT is a JWS and/or a JWE with JSON claims as the payload.
+     * A JWT is a JWS and/or a JWE with JSON claims as the payload.
      */
-    private static JsonWebSignature getJsonWebSignature(){
+    private static JsonWebSignature getJsonWebSignature() {
         //创建一个新的JsonWebSignature
         JsonWebSignature jws = new JsonWebSignature();
         //在JWS上设置签名密钥
@@ -352,9 +352,10 @@ public class JwtService {
 
     /**
      * 处理和验证
+     *
      * @return JwtConsumer
      */
-    private static JwtConsumer getJwtConsumer(){
+    private static JwtConsumer getJwtConsumer() {
         // Use JwtConsumerBuilder to construct an appropriate JwtConsumer, which will
         // be used to validate and process the JWT.
         // The specific validation requirements for a JWT are context dependent, however,
