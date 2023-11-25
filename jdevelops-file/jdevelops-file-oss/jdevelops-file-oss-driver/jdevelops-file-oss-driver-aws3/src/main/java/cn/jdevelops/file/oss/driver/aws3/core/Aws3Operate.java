@@ -10,7 +10,6 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -30,9 +29,10 @@ import java.util.Objects;
 /**
  * aws s3 文件操作
  * <a href="https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javav2/example_code/s3/src/main/java/com/example/s3/S3ObjectOperations.java">...</a>
+ *
  * @author tan
  */
-public class Aws3Operate  implements OssOperateAPI {
+public class Aws3Operate implements OssOperateAPI {
     private static final Logger LOG = LoggerFactory.getLogger(Aws3Operate.class);
 
     @Autowired
@@ -50,14 +50,14 @@ public class Aws3Operate  implements OssOperateAPI {
         String freshName;
         // 文件类型后缀 如 jpg png
         String suffix = AboutFileUtil.getFileSuffix(originalName);
-        if(StrUtil.notBlank(uploaded.getFileName())){
+        if (StrUtil.notBlank(uploaded.getFileName())) {
             freshName = uploaded.getFileName().trim() + suffix;
-        }else {
+        } else {
             freshName = originalName;
         }
         String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
-        String downPath =  childFolder + freshName;
-        String absolutePath =  ossConfig.getBrowseUrl()+"/"+downPath;
+        String downPath = childFolder + freshName;
+        String absolutePath = ossConfig.getBrowseUrl() + "/" + downPath;
 
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
@@ -69,7 +69,7 @@ public class Aws3Operate  implements OssOperateAPI {
         s3Client.putObject(objectRequest,
                 RequestBody.fromBytes(uploaded.getFile().getBytes()));
 
-        return new FilePathResult("/"+downPath,
+        return new FilePathResult("/" + downPath,
                 absolutePath,
                 originalName,
                 freshName,
@@ -77,11 +77,11 @@ public class Aws3Operate  implements OssOperateAPI {
                 uploaded.getBucket(),
                 suffix,
                 uploaded.getFile().getContentType()
-                );
+        );
     }
 
     @Override
-    public List<FilePathResult> uploadFile(UploadsDTO uploaded) throws Exception {
+    public List<FilePathResult> uploadFile(UploadsDTO uploaded) {
         ArrayList<FilePathResult> results = new ArrayList<>();
         uploaded.getFiles().forEach(file -> {
             try {
@@ -91,8 +91,8 @@ public class Aws3Operate  implements OssOperateAPI {
                 uploadDTO.setBucket(uploaded.getBucket());
                 uploadDTO.setChildFolder(uploaded.getChildFolder());
                 results.add(uploadFile(uploadDTO));
-            }catch (Exception e){
-                LOG.error("批量上传有数据报错，可忽略",e);
+            } catch (Exception e) {
+                LOG.error("批量上传有数据报错，可忽略", e);
             }
         });
         return results;
@@ -109,7 +109,7 @@ public class Aws3Operate  implements OssOperateAPI {
         String fileName = childFolder_freshName.substring(childFolder_freshName.lastIndexOf('/') + 1);
         try {
             URL url = new URL(downUrl);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             response.reset();//避免空行
             // 设置response的Header
             response.setContentType(UrlUtil.getContentType(downUrl) + ";charset=utf-8");
@@ -128,14 +128,14 @@ public class Aws3Operate  implements OssOperateAPI {
     }
 
     @Override
-    public String expireDateUrl(ExpireDateDTO expireDate) throws Exception {
+    public String expireDateUrl(ExpireDateDTO expireDate) {
         GetObjectRequest getObjectRequest =
                 GetObjectRequest.builder()
                         .bucket(expireDate.getBucket())
                         .key(expireDate.getDownPath())
                         .build();
 
-        GetObjectPresignRequest getObjectPresignRequest =  GetObjectPresignRequest.builder()
+        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofSeconds(expireDate.getExpires()))
                 .getObjectRequest(getObjectRequest)
                 .build();
@@ -147,25 +147,20 @@ public class Aws3Operate  implements OssOperateAPI {
     }
 
     @Override
-    public void removeFiles(RemoveFileDTO remove) throws Exception {
+    public void removeFiles(RemoveFileDTO remove) {
+        List<String> childFolder_freshName = remove.getDownPath();
+        for (String file : childFolder_freshName) {
+            try {
+                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                        .bucket(remove.getBucket())
+                        // 文件名
+                        .key(file)
+                        .build();
+                s3Client.deleteObject(deleteObjectRequest);
 
-        try {
-            List<String> childFolder_freshName = remove.getDownPath();
-            for (String file : childFolder_freshName) {
-                try {
-                    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                            .bucket(remove.getBucket())
-                            // 文件名
-                            .key(file)
-                            .build();
-                    s3Client.deleteObject(deleteObjectRequest);
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                LOG.error(file + "删除失败", e);
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 

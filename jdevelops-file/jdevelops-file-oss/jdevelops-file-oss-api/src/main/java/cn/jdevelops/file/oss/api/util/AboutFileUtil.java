@@ -144,8 +144,8 @@ public class AboutFileUtil {
 	 */
 	public static String getFileSizeUnit(long fileSize) {
 		//size不能为0？
-		double temp = 0.0;
-		String size = "";
+		double temp;
+		String size;
 		temp = (double) fileSize / OSSConstants.NUM_1024;
 		if (temp >= OSSConstants.NUM_1024) {
 			temp = temp / OSSConstants.NUM_1024;
