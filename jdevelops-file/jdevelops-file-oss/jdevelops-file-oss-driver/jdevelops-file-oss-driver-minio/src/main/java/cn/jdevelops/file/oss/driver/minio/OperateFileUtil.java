@@ -138,13 +138,13 @@ public class OperateFileUtil {
 		// 文件原名称
 		String originalName = file.getOriginalFilename();
 		// 文件类型后缀 如 jpg png
-		String fileType = AboutFileUtil.getFileSuffix(originalName);
+		String suffix = AboutFileUtil.getFileSuffix(originalName);
 		// 文件上传之后的新文件名称
 		String freshName;
 		if(StrUtil.notBlank(fileName)){
-			freshName = fileName.trim() + OSSConstants.SYMBOL_POINT + fileType;
+			freshName = fileName.trim() + OSSConstants.SYMBOL_POINT + suffix;
 		}else {
-			freshName = filename + OSSConstants.SYMBOL_POINT + fileType;
+			freshName = filename + OSSConstants.SYMBOL_POINT + suffix;
 		}
 		String downName;
 		if (StrUtil.notBlank(childFolder) && !"null".equalsIgnoreCase(childFolder)) {
@@ -163,14 +163,17 @@ public class OperateFileUtil {
 		in.close();
 		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + downName;
 
+		return new FilePathResult(relativePath,
+				ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath,
+				originalName,
+				freshName,
+				downName,
+				bucket,
+				suffix,
+				file.getContentType()
+		);
 
-		FilePathResult filePathResult = new FilePathResult();
-		filePathResult.setAbsolutePath(ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath);
-		filePathResult.setRelativePath(relativePath);
-		filePathResult.setFreshName(freshName);
-		filePathResult.setDownPath(downName);
-		filePathResult.setOriginalName(originalName);
-		return filePathResult;
+
 
 
 	}
@@ -200,12 +203,15 @@ public class OperateFileUtil {
 						.build());
 		basis.close();
 		String relativePath = bucket + OSSConstants.PATH_SEPARATOR + objectName;
-		FilePathResult filePathResult = new FilePathResult();
-		filePathResult.setAbsolutePath(ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath);
-		filePathResult.setRelativePath(relativePath);
-		filePathResult.setFreshName(objectName);
-		filePathResult.setOriginalName(objectName);
-		return filePathResult;
+		return new FilePathResult(relativePath,
+				ossConfig.getBrowseUrl() + OSSConstants.PATH_SEPARATOR + relativePath,
+				objectName,
+				objectName,
+				objectName,
+				bucket,
+				"json",
+				"application/json"
+		);
 	}
 
 	/**

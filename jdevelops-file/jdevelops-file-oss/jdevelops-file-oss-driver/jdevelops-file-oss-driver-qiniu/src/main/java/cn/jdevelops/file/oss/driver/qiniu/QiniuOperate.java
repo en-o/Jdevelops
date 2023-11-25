@@ -3,6 +3,7 @@ package cn.jdevelops.file.oss.driver.qiniu;
 import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
+import cn.jdevelops.file.oss.api.util.AboutFileUtil;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import cn.jdevelops.file.oss.api.util.UrlUtil;
 import com.google.gson.Gson;
@@ -55,8 +56,10 @@ public class QiniuOperate implements OssOperateAPI {
     public FilePathResult uploadFile(UploadDTO uploaded) throws Exception {
         String originalName = uploaded.getFile().getOriginalFilename();
         String freshName;
+        // 文件类型后缀 如 jpg png
+        String suffix = AboutFileUtil.getFileSuffix(originalName);
         if(StrUtil.notBlank(uploaded.getFileName())){
-            freshName = uploaded.getFileName().trim() + originalName.substring(originalName.lastIndexOf("."));
+            freshName = uploaded.getFileName().trim() + suffix;
         }else {
             freshName = originalName;
         }
@@ -71,13 +74,15 @@ public class QiniuOperate implements OssOperateAPI {
                 null);
         Gson gson = new Gson();
         DefaultPutRet defaultPutRet = gson.fromJson(response.bodyString(), DefaultPutRet.class);
-        FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(absolutePath);
-        filePathResult.setRelativePath(downPath);
-        filePathResult.setFreshName(freshName);
-        filePathResult.setDownPath(downPath);
-        filePathResult.setOriginalName(originalName);
-        return filePathResult;
+        return new FilePathResult(downPath,
+                absolutePath,
+                originalName,
+                freshName,
+                downPath,
+                uploaded.getBucket(),
+                suffix,
+                uploaded.getFile().getContentType()
+        );
 
     }
 

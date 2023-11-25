@@ -69,28 +69,16 @@ public class AboutFileUtil {
 			OSSConstants.FILE_SUFFIX_AMR,
 			OSSConstants.FILE_SUFFIX_AAC,
 			OSSConstants.FILE_SUFFIX_FLAC};
-	public static String[] ALL_FILE = new String[1];
+	public static String[] ALL_FILE;
 
 	static {
+		ALL_FILE = new String[IMG_FILE.length+DOC_FILE.length+VIDEO_FILE.length+MUSIC_FILE.length];
 		ALL_FILE = ArrayUtils.addAll(ALL_FILE, IMG_FILE);
 		ALL_FILE = ArrayUtils.addAll(ALL_FILE, DOC_FILE);
 		ALL_FILE = ArrayUtils.addAll(ALL_FILE, VIDEO_FILE);
 		ALL_FILE = ArrayUtils.addAll(ALL_FILE, MUSIC_FILE);
 	}
 
-	/**
-	 * 判断一个文件是否存在，不存在就创建它 Method execute,只能建最后面那个目录
-	 *
-	 * @param path 文件
-	 */
-	public static void creatFile(String path) {
-		File file = new File(path);
-		if (file.isDirectory()) {
-			LOG.error("该目录不存在");
-		} else {
-			file.mkdir();
-		}
-	}
 
 	/**
 	 * 从文件名中得到其后缀名
@@ -99,10 +87,8 @@ public class AboutFileUtil {
 	 * @return 后缀名
 	 */
 	public static String getFileSuffix(String filename) {
-		String suffix;
-		suffix = filename.substring(
+		return filename.substring(
 				filename.lastIndexOf(OSSConstants.SYMBOL_POINT) + 1);
-		return suffix;
 	}
 
 	/**
@@ -112,9 +98,10 @@ public class AboutFileUtil {
 	 * @return 合法返回true，不合法返回false
 	 */
 	public static boolean isSafe(String suffix) {
+		if(suffix == null){ return false;}
 		suffix = suffix.toLowerCase();
 		for (String s : ALL_FILE) {
-			if (s.equals(suffix)) {
+			if (suffix.equals(s)) {
 				return true;
 			}
 		}
@@ -128,22 +115,34 @@ public class AboutFileUtil {
 	 * @return 合法返回true，不合法返回false
 	 */
 	public static boolean isPic(String suffix) {
+		if(suffix == null){ return false;}
 		suffix = suffix.toLowerCase();
 		for (String s : IMG_FILE) {
-			if (s.equals(suffix)) {
+			if (suffix.equals(s)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+
 	/**
-	 * 计算文件大小，将long类型转换为String类型
+	 *  获取文件大小
 	 *
-	 * @param fileSize 文件大小
+	 * @param file File
 	 * @return String
 	 */
-	public static String getFileStringSize(long fileSize) {
+	public static String getFileSizeUnit(File file){
+		return getFileSizeUnit(file.length());
+	}
+
+	/**
+	 *  文件大小添加单位
+	 *
+	 * @param fileSize 文件大小 [最小KB]
+	 * @return String
+	 */
+	public static String getFileSizeUnit(long fileSize) {
 		//size不能为0？
 		double temp = 0.0;
 		String size = "";
