@@ -139,7 +139,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Throwable throwable) {
-        throwable.printStackTrace();
+        logger.error("websocket发生错误", throwable);
     }
 
     /**

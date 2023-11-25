@@ -15,7 +15,7 @@ public class CommUtil {
         try {
             LOG.info("api接口调用信息默认输出控制台:"+ JSON.toJSONString(logs));
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("api接口调用信息默认输出控制台:", e);
         }
     }
 

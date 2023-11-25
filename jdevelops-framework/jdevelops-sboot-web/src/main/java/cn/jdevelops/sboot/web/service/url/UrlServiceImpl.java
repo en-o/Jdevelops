@@ -8,6 +8,8 @@ import cn.jdevelops.sboot.web.util.StringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,8 @@ import static cn.jdevelops.sboot.web.util.UrlUtil.noRecordUrl;
 @Service
 @Slf4j
 public class UrlServiceImpl implements UrlService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UrlServiceImpl.class);
 
     @Autowired
     WebApplicationContext applicationContext;
@@ -114,7 +118,7 @@ public class UrlServiceImpl implements UrlService {
 
                 urls.add(build);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("getUrls失败", e);
             }
         }
         return urls;

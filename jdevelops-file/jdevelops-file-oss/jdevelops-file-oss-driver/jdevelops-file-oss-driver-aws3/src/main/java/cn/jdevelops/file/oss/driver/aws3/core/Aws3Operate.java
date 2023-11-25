@@ -123,7 +123,7 @@ public class Aws3Operate implements OssOperateAPI {
             IOUtils.copy(conn.getInputStream(), response.getOutputStream());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("文件下载失败", e);
         }
     }
 

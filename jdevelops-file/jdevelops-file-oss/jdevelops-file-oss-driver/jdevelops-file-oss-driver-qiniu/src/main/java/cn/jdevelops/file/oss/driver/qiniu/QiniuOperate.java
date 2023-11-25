@@ -129,7 +129,7 @@ public class QiniuOperate implements OssOperateAPI {
             IOUtils.copy(conn.getInputStream(), response.getOutputStream());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.debug("下载文件失败", e);
         }
 
     }
@@ -149,17 +149,13 @@ public class QiniuOperate implements OssOperateAPI {
 
     @Override
     public void removeFiles(RemoveFileDTO remove) throws Exception {
-        try {
-            List<String> childFolder_freshName = remove.getDownPath();
-            for (String file : childFolder_freshName) {
-                try {
-                    bucketManager.delete(remove.getBucket(), file);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        List<String> childFolder_freshName = remove.getDownPath();
+        for (String file : childFolder_freshName) {
+            try {
+                bucketManager.delete(remove.getBucket(), file);
+            }catch (Exception e){
+                LOG.debug("删除文件失败", e);
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 

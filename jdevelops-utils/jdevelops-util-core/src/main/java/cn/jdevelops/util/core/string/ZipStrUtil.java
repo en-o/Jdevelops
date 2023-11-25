@@ -1,5 +1,8 @@
 package cn.jdevelops.util.core.string;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +16,7 @@ import java.util.zip.GZIPOutputStream;
  * @author 来源于网络
  */
 public class ZipStrUtil {
+  private static final Logger LOG = LoggerFactory.getLogger(ZipStrUtil.class);
 
   /**
    * 恢复字符串
@@ -39,10 +43,10 @@ public class ZipStrUtil {
         }
         return out.toString();
       } catch (IOException e) {
-        e.printStackTrace();
+        LOG.error("恢复字符串失败", e);
       }
     }catch (Exception e){
-        e.printStackTrace();
+      LOG.error("恢复字符串失败", e);
     }
      return  compressedStr;
   }
@@ -67,7 +71,7 @@ public class ZipStrUtil {
             ) {
       gzip.write(primStr.getBytes(StandardCharsets.UTF_8));
     } catch (IOException e) {
-      e.printStackTrace();
+        LOG.error("压缩字符串失败", e);
       return primStr;
     }
       Base64.Encoder encoder = Base64.getEncoder();

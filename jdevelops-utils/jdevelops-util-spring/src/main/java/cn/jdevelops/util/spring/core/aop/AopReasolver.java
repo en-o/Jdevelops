@@ -4,6 +4,8 @@ package cn.jdevelops.util.spring.core.aop;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -14,6 +16,8 @@ import java.lang.reflect.Method;
  * @date 2020/4/22 10:35
  */
 public class AopReasolver {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AopReasolver.class);
 
     private static AopReasolver resolver ;
 
@@ -55,11 +59,7 @@ public class AopReasolver {
                 String newStr = substring2.replaceAll("#\\{", "").replaceAll("}", "");
                 // 复杂类型
                 if (newStr.contains(".")) {
-                    try {
-                        value = complexResolver(joinPoint, newStr);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    value = complexResolver(joinPoint, newStr);
                 } else {
                     value = simpleResolver(joinPoint, newStr);
                 }
@@ -74,22 +74,32 @@ public class AopReasolver {
     }
 
 
-    private Object complexResolver(JoinPoint joinPoint, String str) throws Exception {
+    /**
+     * 获取 #{xxx.xx}的值
+     * @param joinPoint JoinPoint
+     * @param str 需要至的字段名
+     * @return #{xxx.xx}的值（从方法参数中来
+     */
+    private Object complexResolver(JoinPoint joinPoint, String str) {
 
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        try {
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
-        String[] names = methodSignature.getParameterNames();
-        Object[] args = joinPoint.getArgs();
-        String[] stars = str.split("\\.");
-        for (int i = 0; i < names.length; i++) {
-            if (stars[0].equals(names[i])) {
-                Object obj = args[i];
-                Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]),  new  Class[ 0 ]);
-                Object value = dmethod.invoke(args[i]);
-                return getValue(value, 1, stars);
+            String[] names = methodSignature.getParameterNames();
+            Object[] args = joinPoint.getArgs();
+            String[] stars = str.split("\\.");
+            for (int i = 0; i < names.length; i++) {
+                if (stars[0].equals(names[i])) {
+                    Object obj = args[i];
+                    Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]),  new  Class[ 0 ]);
+                    Object value = dmethod.invoke(args[i]);
+                    return getValue(value, 1, stars);
+                }
             }
-        }
 
+        }catch (Exception e){
+            LOG.error("获取 #{xxx.xx}的值失败", e);
+        }
         return null;
 
     }
@@ -106,7 +116,7 @@ public class AopReasolver {
             return obj;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("getValue失败", e);
             return null;
         }
 

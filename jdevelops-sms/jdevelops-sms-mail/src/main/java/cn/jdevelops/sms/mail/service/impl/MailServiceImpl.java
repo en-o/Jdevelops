@@ -1,6 +1,8 @@
 package cn.jdevelops.sms.mail.service.impl;
 
 import cn.jdevelops.sms.mail.service.MailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,6 +32,8 @@ import java.util.Objects;
  */
 @Service
 public class MailServiceImpl implements MailService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 
     private final JavaMailSender mailSender;
 
@@ -110,7 +114,7 @@ public class MailServiceImpl implements MailService {
                 mimeMultipart.addBodyPart(bodyPart);
                 mailSender.send(message);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                LOG.error("sendUrlResourceMail失败", e);;
             }
         }
 

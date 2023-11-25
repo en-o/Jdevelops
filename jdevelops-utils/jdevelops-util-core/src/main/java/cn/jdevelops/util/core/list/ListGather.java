@@ -1,5 +1,8 @@
 package cn.jdevelops.util.core.list;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -13,6 +16,7 @@ import static java.util.Collections.max;
  */
 public class ListGather {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ListGather.class);
 
     /**
      * 获取 String/Integer 集合 中的最大值最小值
@@ -42,7 +46,7 @@ public class ListGather {
                };
                return (T) max((List<Integer>)listStr, cmp);
            }catch (Exception e1){
-               e.printStackTrace();
+               LOG.error("获取 String/Integer 集合 中的最大值最小值失败", e);
            }
         }
         return null;
@@ -128,7 +132,7 @@ public class ListGather {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("实体对象转成Map失败", e);
         }
         return map;
     }

@@ -1,5 +1,8 @@
 package cn.jdevelops.util.encryption;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -16,6 +19,8 @@ import java.util.Map;
  * @date 2020/12/15 13:48
  */
 public class RemarkUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RemarkUtil.class);
     public static String str(byte[] data, Charset charset) {
         if (data == null) {
             return null;
@@ -103,7 +108,7 @@ public class RemarkUtil {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("将Bean -- Map", e);
         }
         return map;
 

@@ -130,7 +130,7 @@ public class LocalOperate implements OssOperateAPI {
             response.setHeader("Content-Length", String.valueOf(file.length()));
             IOUtils.copy(in, response.getOutputStream());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.debug("下载文件失败", e);
         }
     }
 

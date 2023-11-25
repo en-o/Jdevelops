@@ -1,8 +1,9 @@
 package cn.jdevelops.data.jap.util;
 
 
-
 import cn.jdevelops.data.jap.exception.JpaException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -14,9 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 反射工具
+ *
  * @author web
  */
 public class ReflectUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ReflectUtils.class);
 
     public static final String TABLE_NAME = "tableName";
     public static final String CLASS_NAME = "className";
@@ -26,7 +30,7 @@ public class ReflectUtils {
     /**
      * * 获取属性名数组
      *
-     * @param clazz  clazz
+     * @param clazz clazz
      * @return String[]
      */
     public static String[] getPropertiesName(Class<?> clazz) {
@@ -62,7 +66,7 @@ public class ReflectUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("通过反射设置属性的值失败", e);
         }
     }
 
@@ -80,6 +84,7 @@ public class ReflectUtils {
             Method method = clazz.getClass().getMethod(getter, new Class[]{});
             return method.invoke(clazz, new Object[]{});
         } catch (Exception e) {
+            LOG.error("根据主键名称获取实体类主键属性值", e);
             return null;
         }
     }
@@ -197,7 +202,7 @@ public class ReflectUtils {
                     tempClass = tempClass.getSuperclass();
                 }
             }
-            if(value == null){
+            if (value == null) {
                 throw new JpaException("获取字段的值失败");
             }
             return value;

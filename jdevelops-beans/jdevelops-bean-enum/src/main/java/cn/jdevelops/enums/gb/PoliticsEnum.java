@@ -70,19 +70,14 @@ public enum PoliticsEnum {
     }
 
     public static String getDescByCode(String code) {
-        try {
-            if (CommonUtil.isBlank(code)) {
-                return null;
+        if (CommonUtil.isBlank(code)) {
+            return null;
+        }
+        PoliticsEnum[] nationalityEnums = values();
+        for (PoliticsEnum politicsEnum : nationalityEnums) {
+            if (politicsEnum.getCode().contains(code)) {
+                return politicsEnum.getDesc();
             }
-            PoliticsEnum[] nationalityEnums = values();
-            for (int i = 0; i < nationalityEnums.length; i++) {
-                PoliticsEnum politicsEnum = nationalityEnums[i];
-                if (politicsEnum.getCode().contains(code)) {
-                    return politicsEnum.getDesc();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }

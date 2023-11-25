@@ -3,6 +3,8 @@ package cn.jdevelops.util.core.list;
 
 
 import cn.jdevelops.util.core.number.NumberUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.Map;
  * @date 2020/8/12 19:23
  */
 public class ListBook {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ListBook.class);
 
     /**
      * 中图分类中测试成功
@@ -76,7 +80,7 @@ public class ListBook {
 
             return  allList;
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("中图分类中测试成功失败", e);
         }
         return new ArrayList<>();
     }

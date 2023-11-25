@@ -83,13 +83,13 @@ public class HostsUtil {
                 Runtime.getRuntime().exec("/etc/init.d/nscd restart");
                 return true;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.debug("执行nscd命令失败", e);
             }
             try {
                 Runtime.getRuntime().exec("ipconfig /flushdns");
                 return true;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.debug("执行flushdns命令失败", e);
                 return false;
             }
         }

@@ -1,5 +1,8 @@
 package cn.jdevelops.file.oss.api.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.util.regex.Matcher;
@@ -14,6 +17,8 @@ import java.util.regex.Pattern;
  */
 public class UrlUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UrlUtil.class);
+
     /**
      * getContentType
      * 该方式支持本地文件，也支持http/https远程文件
@@ -25,7 +30,7 @@ public class UrlUtil {
         try {
             contentType = new MimetypesFileTypeMap().getContentType(new File(fileUrl));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("getContentType失败", e);
         }
         return contentType;
     }

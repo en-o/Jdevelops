@@ -94,7 +94,7 @@ public class StringFormat {
             }
             return sb.toString();
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("给字符串指定位置插入数据失败", e);
         }
         return str;
     }
@@ -194,7 +194,7 @@ public class StringFormat {
         try {
             LOG.info(logs);
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("打印日志失败", e);
         }
     }
 

@@ -1,5 +1,7 @@
 package cn.jdevelops.api.result.util.bean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -20,6 +22,8 @@ import java.lang.reflect.Modifier;
  */
 public class BeanUtil {
 
+
+    private static final Logger LOG = LoggerFactory.getLogger(BeanUtil.class);
 
     /**
      * 功能 : 只复制source对象的非空属性到target对象上
@@ -104,7 +108,7 @@ public class BeanUtil {
                 }
                 fields[i].setAccessible(false);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("合并对象失败", e);
             }
         }
     }

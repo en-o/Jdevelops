@@ -1,6 +1,8 @@
 package cn.jdevelops.util.interceptor.util;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import java.util.Map;
  * @author tan
  */
 public class RequestUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestUtil.class);
 
 
     /**
@@ -66,20 +70,20 @@ public class RequestUtil {
                 sb.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.debug("读取流失败", e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.debug("关闭流失败", e);
                 }
             }
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.debug("关闭流失败", e);
                 }
             }
         }
@@ -103,7 +107,7 @@ public class RequestUtil {
             }
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.debug("获取 @RequestBody 相关参数失败", e);
         }
         return StrUtil.isNull(param)?"":param.toString();
     }

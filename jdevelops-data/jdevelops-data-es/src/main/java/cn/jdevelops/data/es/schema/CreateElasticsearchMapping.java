@@ -132,7 +132,6 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("创建索引失败,请手动完成创建 ======================>", e);
         }
     }

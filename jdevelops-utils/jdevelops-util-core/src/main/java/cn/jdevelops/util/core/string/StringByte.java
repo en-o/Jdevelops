@@ -1,5 +1,8 @@
 package cn.jdevelops.util.core.string;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -9,6 +12,8 @@ import java.nio.charset.StandardCharsets;
  * @date 2020/8/11 22:10
  */
 public class StringByte {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StringByte.class);
 
     /**
      *   Hex字符串转byte
@@ -91,13 +96,13 @@ public class StringByte {
             try {
                 baKeyword[i] = (byte) (0xff & Integer.parseInt(s.substring(i * 2, i * 2 + 2), 16));
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("16进制转换成为string类型字符串失败", e);
             }
         }
         try {
             s = new String(baKeyword, StandardCharsets.UTF_8);
         } catch (Exception e1) {
-            e1.printStackTrace();
+            LOG.error("16进制转换成为string类型字符串失败", e1);
         }
         return s;
     }

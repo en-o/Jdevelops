@@ -40,7 +40,6 @@ public class SignShaUtil {
             }
             return new String(buf);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             log.error("SHA1加密异常:",e);
         }
         return str;
