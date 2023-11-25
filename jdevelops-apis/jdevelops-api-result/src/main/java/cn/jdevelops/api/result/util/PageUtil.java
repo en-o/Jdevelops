@@ -1,6 +1,5 @@
 package cn.jdevelops.api.result.util;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.api.result.request.SortPageDTO;

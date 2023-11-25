@@ -9,7 +9,6 @@ import org.springframework.boot.ApplicationRunner;
 
 import javax.annotation.Resource;
 
-
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.COLON;
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SPIRIT;
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.getRealIp;

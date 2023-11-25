@@ -1,10 +1,6 @@
 package cn.jdevelops.util.core.thread;
 
 import junit.framework.TestCase;
-import org.junit.Rule;
-import org.junit.rules.Timeout;
-
-import java.util.concurrent.TimeUnit;
 
 public class ThreadUtilsTest extends TestCase {
 

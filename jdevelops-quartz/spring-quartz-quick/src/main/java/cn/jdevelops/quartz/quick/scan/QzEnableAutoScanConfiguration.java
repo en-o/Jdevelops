@@ -1,7 +1,7 @@
 package cn.jdevelops.quartz.quick.scan;
 
-import cn.jdevelops.quartz.quick.ScheduleServiceImpl;
 import cn.jdevelops.quartz.quick.ScheduleService;
+import cn.jdevelops.quartz.quick.ScheduleServiceImpl;
 import cn.jdevelops.quartz.quick.dao.QrtzJobDetailsDao;
 import org.quartz.Scheduler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
