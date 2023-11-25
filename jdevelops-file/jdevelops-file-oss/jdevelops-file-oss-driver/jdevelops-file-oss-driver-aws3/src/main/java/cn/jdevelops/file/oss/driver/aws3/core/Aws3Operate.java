@@ -99,7 +99,7 @@ public class Aws3Operate implements OssOperateAPI {
     }
 
     @Override
-    public void downloadFile(HttpServletResponse response, DownloadDTO download) throws Exception {
+    public void downloadFile(HttpServletResponse response, DownloadDTO download){
         ExpireDateDTO expireDateDTO = new ExpireDateDTO();
         expireDateDTO.setBucket(download.getBucket());
         expireDateDTO.setExpires(100);

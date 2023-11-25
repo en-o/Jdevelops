@@ -1,8 +1,6 @@
 package cn.jdevelops.enums.gb;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 民族

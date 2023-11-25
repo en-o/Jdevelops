@@ -260,7 +260,7 @@ public class GsonUtils {
         @Override
         public Map<T, U> deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {
             if (!json.isJsonObject()) {
-                return null;
+                return Collections.emptyMap();
             }
 
             JsonObject jsonObject = json.getAsJsonObject();

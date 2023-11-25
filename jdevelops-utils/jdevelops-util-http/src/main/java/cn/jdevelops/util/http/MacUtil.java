@@ -81,7 +81,7 @@ public class MacUtil {
      * @return  String
      */
     public static String getMacAddress() {
-        if (macAddressStr == null || "".equals(macAddressStr)) {
+        if (macAddressStr == null || macAddressStr.isEmpty()) {
             // 存放多个网卡地址用，目前只取一个非0000000000E0隧道的值
             StringBuilder sb = new StringBuilder();
             try {
@@ -109,7 +109,7 @@ public class MacUtil {
      * @return String
      */
     public static String getComputerName() {
-        if (computerName == null || "".equals(computerName)) {
+        if (computerName == null || computerName.isEmpty()) {
             computerName = System.getenv().get("COMPUTERNAME");
         }
         return computerName;

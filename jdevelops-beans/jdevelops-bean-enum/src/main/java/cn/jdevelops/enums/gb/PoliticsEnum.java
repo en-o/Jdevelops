@@ -52,19 +52,14 @@ public enum PoliticsEnum {
     }
 
     public static String getCodeByDesc(String desc) {
-        try {
-            if (CommonUtil.isBlank(desc)) {
-                return null;
+        if (CommonUtil.isBlank(desc)) {
+            return null;
+        }
+        PoliticsEnum[] politicsEnums = values();
+        for (PoliticsEnum politicsEnum : politicsEnums) {
+            if (politicsEnum.getDesc().contains(desc)) {
+                return politicsEnum.getCode();
             }
-            PoliticsEnum[] politicsEnums = values();
-            for (int i = 0; i < politicsEnums.length; i++) {
-                PoliticsEnum politicsEnum = politicsEnums[i];
-                if (politicsEnum.getDesc().contains(desc)) {
-                    return politicsEnum.getCode();
-                }
-            }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
         return null;
     }

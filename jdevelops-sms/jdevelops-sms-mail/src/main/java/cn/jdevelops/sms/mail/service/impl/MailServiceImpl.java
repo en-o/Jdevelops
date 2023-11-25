@@ -114,7 +114,7 @@ public class MailServiceImpl implements MailService {
                 mimeMultipart.addBodyPart(bodyPart);
                 mailSender.send(message);
             } catch (MalformedURLException e) {
-                LOG.error("sendUrlResourceMail失败", e);;
+                LOG.error("sendUrlResourceMail失败", e);
             }
         }
 

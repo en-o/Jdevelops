@@ -137,7 +137,7 @@ public class StringFormat {
      * @return 返回字符串
      */
     public static String toCamelCase(String line,boolean smallCamel){
-        if(line==null||"".equals(line)){
+        if(line==null|| line.isEmpty()){
             return "";
         }
         StringBuilder sb=new StringBuilder();

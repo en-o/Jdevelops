@@ -47,7 +47,7 @@ public class AopReasolver {
                 return null;
             }
 
-            Object value = null;
+            Object value;
             String substring1 = null;
             String substring2;
 

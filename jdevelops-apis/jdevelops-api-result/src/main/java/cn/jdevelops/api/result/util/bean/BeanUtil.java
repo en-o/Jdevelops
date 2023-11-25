@@ -83,11 +83,11 @@ public class BeanUtil {
 
     /**
      * 合并对象
-     * 以destination对象为主
+     * 以destination对象为主[ 把 origin 塞到 destination]
      *
      * @param origin      对象1
      * @param destination 对象2
-     * @return 把 origin 塞到 destination
+     *
      */
     public static <T> void mergeObject(T origin, T destination) {
         if (origin == null || destination == null) {

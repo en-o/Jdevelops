@@ -57,7 +57,7 @@ public class ZipStrUtil {
    * @return string (压缩失败返回原字符
    */
   public static String gzip(String primStr) {
-    if (primStr == null || primStr.length() == 0) {
+    if (primStr == null || primStr.isEmpty()) {
       return primStr;
     }
     /*

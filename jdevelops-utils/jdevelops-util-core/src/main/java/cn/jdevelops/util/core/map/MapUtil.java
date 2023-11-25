@@ -392,7 +392,8 @@ public class MapUtil {
      */
     public static <K, V> K getKey(Map<K, V> map, V value) {
         K key = null;
-        for (K getKey : map.keySet()) {
+        for (Iterator<K> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
+            K getKey = iterator.next();
             if (map.get(getKey).equals(value)) {
                 key = getKey;
             }

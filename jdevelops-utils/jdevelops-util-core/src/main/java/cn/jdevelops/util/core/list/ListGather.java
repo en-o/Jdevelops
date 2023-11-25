@@ -65,10 +65,10 @@ public class ListGather {
         List<Bean> res = new ArrayList<>();
         List<Bean> beansLeft = differenceOneway(left, right, key);
         List<Bean> beansRight = differenceOneway(right, left , key);
-       if(null!=beansLeft&&beansLeft.size()>0) {
+       if(null!=beansLeft&& !beansLeft.isEmpty()) {
            res.addAll(beansLeft);
        }
-       if(null!=beansRight&&beansRight.size()>0) {
+       if(null!=beansRight&& !beansRight.isEmpty()) {
            res.addAll(beansRight);
        }
        return res;
