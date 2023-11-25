@@ -1,7 +1,6 @@
 package cn.jdevelops.sboot.authentication.jwt.server.impl;
 
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
-import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
 import cn.jdevelops.spi.JoinSPI;
 import cn.jdevelops.util.jwt.core.JwtService;
 import org.slf4j.Logger;

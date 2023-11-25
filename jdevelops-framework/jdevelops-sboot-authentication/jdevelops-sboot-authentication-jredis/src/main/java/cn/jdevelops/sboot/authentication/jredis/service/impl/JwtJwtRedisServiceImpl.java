@@ -10,8 +10,8 @@ import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.DisabledAccountException;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
-import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.config.JwtConfig;
+import cn.jdevelops.util.jwt.constant.JwtMessageConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
@@ -22,12 +22,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_ROLE_AUTH_ERROR;
-import static cn.jdevelops.api.result.emums.TokenExceptionCode.*;
-import static cn.jdevelops.api.result.emums.UserException.*;
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_EXPIRED_USER;
+import static cn.jdevelops.api.result.emums.TokenExceptionCode.UNAUTHENTICATED;
+import static cn.jdevelops.api.result.emums.UserException.BANNED_ACCOUNT;
+import static cn.jdevelops.api.result.emums.UserException.EXCESSIVE_ATTEMPTS_ACCOUNT;
 
 
 /**

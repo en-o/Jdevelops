@@ -3,6 +3,8 @@ package cn.jdevelops.util.encryption.core;
 
 import cn.jdevelops.enums.number.NumEnum;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -16,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * @author l
  */
 public class AESUtil {
-
+	private static final Logger LOG = LoggerFactory.getLogger(AESUtil.class);
 	/**
 	 * 加密用的Key 可以用26个字母和数字组成 此处使用AES-128-CBC加密模式，key需要为16位。可自行修改。
 	 */
@@ -74,7 +76,7 @@ public class AESUtil {
 			// 此处使用BASE64做转码。
 			return Base64.encodeBase64String(encrypted);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("加密失败", e);
 			return null;
 		}
 	}
@@ -126,7 +128,7 @@ public class AESUtil {
 			byte[] original = cipher.doFinal(encrypted);
 			return new String(original, StandardCharsets.UTF_8);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			LOG.error("解密失败", ex);
 			return null;
 		}
 	}

@@ -3,9 +3,9 @@ package cn.jdevelops.api.idempotent.service;
 
 import cn.jdevelops.api.idempotent.annotation.ApiIdempotent;
 import cn.jdevelops.api.idempotent.config.IdempotentConfig;
+import cn.jdevelops.api.idempotent.exception.IdempotentException;
 import cn.jdevelops.api.idempotent.util.ParamUtil;
 import cn.jdevelops.api.idempotent.util.ParseSha256;
-import cn.jdevelops.api.idempotent.exception.IdempotentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -54,14 +53,14 @@ public class IdempotentServiceImpl implements IdempotentService {
      * @param paramsHeader          参数
      * @param requestUri            请求地址
      * @param idempotentRedisFolder redis文件夹
-     * @param methodAnnotation 接口上的注解
+     * @param methodAnnotation      接口上的注解
      */
     public void createApiCall(String paramsHeader, String requestUri, String idempotentRedisFolder, ApiIdempotent methodAnnotation) {
         redisTemplate.boundHashOps(idempotentRedisFolder).put(requestUri,
                 paramsHeader);
         // 默认全局
         long expireTime = idempotentConfig.getExpireTime();
-        if(methodAnnotation.expireTime() > -1){
+        if (methodAnnotation.expireTime() > -1) {
             // 当注解上存在过期时间且大于-1是，则以注解上的时间为准
             expireTime = methodAnnotation.expireTime();
         }
@@ -73,9 +72,9 @@ public class IdempotentServiceImpl implements IdempotentService {
     public boolean checkApiRedo(HttpServletRequest request, HttpServletResponse response, ApiIdempotent methodAnnotation) {
         // 加密让数据变短
         String paramsHeader = "";
-        if(methodAnnotation.paramsHeader()){
+        if (methodAnnotation.paramsHeader()) {
             paramsHeader = ParamUtil.getRequestParam(request);
-            if(idempotentConfig.isParameterEncryption()){
+            if (idempotentConfig.isParameterEncryption()) {
                 paramsHeader = ParseSha256.getSha256StrJava(paramsHeader);
             }
         }
@@ -88,7 +87,7 @@ public class IdempotentServiceImpl implements IdempotentService {
             LOG.info("当前接口在redis中无记录，此处进行新增记录");
             return true;
         } else {
-            if(methodAnnotation.responseStatus()){
+            if (methodAnnotation.responseStatus()) {
                 response.setStatus(IdempotentException.IDEMPOTENT_CODE);
             }
             throw IdempotentException.specialMessage(methodAnnotation.message());
@@ -100,9 +99,9 @@ public class IdempotentServiceImpl implements IdempotentService {
     /**
      * redis简单存储建立文件夹
      *
-     * @param request          request
-     *  @param groupStr getHeader(groupStr) getParameter(groupStr)
-     * @param key              key
+     * @param request  request
+     * @param groupStr getHeader(groupStr) getParameter(groupStr)
+     * @param key      key
      * @return folderName:key
      */
     private static String getRedisFolder(HttpServletRequest request, String groupStr, String key) {
@@ -119,11 +118,11 @@ public class IdempotentServiceImpl implements IdempotentService {
      */
     private static String catalog(HttpServletRequest request, String groupStr) {
         String token = request.getHeader(groupStr);
-        if (Objects.isNull(token) || "".equals(token)) {
+        if (Objects.isNull(token) || token.isEmpty()) {
             token = request.getParameter(groupStr);
         }
         // 给token md5下
-        if (Objects.nonNull(token) && !"".equals(token)) {
+        if (Objects.nonNull(token) && !token.isEmpty()) {
             return ParseSha256.getSha256StrJava(token);
         }
         // token 拿不到就用IP
@@ -139,37 +138,37 @@ public class IdempotentServiceImpl implements IdempotentService {
      */
     private static String getPoxyIpEnhance(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_FORWARDED");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_VIA");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("REMOTE_ADDR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         // 本机访问
@@ -182,7 +181,7 @@ public class IdempotentServiceImpl implements IdempotentService {
                 inet = InetAddress.getLocalHost();
                 ip = inet.getHostAddress();
             } catch (UnknownHostException e) {
-                e.printStackTrace();
+                LOG.error("获取IP失败", e);
             }
         }
         // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割

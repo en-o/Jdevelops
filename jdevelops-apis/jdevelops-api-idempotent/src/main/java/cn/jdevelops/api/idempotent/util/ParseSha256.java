@@ -1,5 +1,8 @@
 package cn.jdevelops.api.idempotent.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +14,8 @@ import java.security.NoSuchAlgorithmException;
  * @author <a href="https://www.cnblogs.com/telwanggs/p/15180597.html">web</a>
  */
 public class ParseSha256 {
+
+  private static final Logger LOG = LoggerFactory.getLogger(ParseSha256.class);
 
   /**
    * 利用java原生的摘要实现SHA256加密
@@ -25,7 +30,7 @@ public class ParseSha256 {
       messageDigest.update(str.getBytes(StandardCharsets.UTF_8));
       encodeStr = byte2Hex(messageDigest.digest());
     } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
+      LOG.error("利用java原生的摘要实现SHA256加密失败", e);
     }
     return encodeStr;
   }

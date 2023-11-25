@@ -1,6 +1,8 @@
 package cn.jdevelops.util.http;
 
 import cn.jdevelops.enums.http.HttpEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,8 @@ import java.util.Map;
  * @author itdragons
  */
 public class HttpContextUtils {
+
+	private static final Logger LOG = LoggerFactory.getLogger(HttpContextUtils.class);
 
 	/**
 	 * 获取query参数
@@ -57,20 +61,20 @@ public class HttpContextUtils {
 				sb.append(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.debug("读取流失败", e);
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOG.debug("关闭流失败", e);
 				}
 			}
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOG.debug("关闭流失败", e);
 				}
 			}
 		}

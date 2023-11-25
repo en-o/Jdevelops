@@ -1,5 +1,8 @@
 package cn.jdevelops.util.http;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +19,7 @@ import java.util.regex.Pattern;
  */
 public class MacUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MacUtil.class);
     private static final String WIN="win";
     private static final String WINDOWS="Windows";
     private static final String LINUX="Linux";
@@ -77,7 +81,7 @@ public class MacUtil {
      * @return  String
      */
     public static String getMacAddress() {
-        if (macAddressStr == null || "".equals(macAddressStr)) {
+        if (macAddressStr == null || macAddressStr.isEmpty()) {
             // 存放多个网卡地址用，目前只取一个非0000000000E0隧道的值
             StringBuilder sb = new StringBuilder();
             try {
@@ -89,7 +93,7 @@ public class MacUtil {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("获取一个网卡地址失败", e);
             }
 
             macAddressStr = sb.toString();
@@ -105,7 +109,7 @@ public class MacUtil {
      * @return String
      */
     public static String getComputerName() {
-        if (computerName == null || "".equals(computerName)) {
+        if (computerName == null || computerName.isEmpty()) {
             computerName = System.getenv().get("COMPUTERNAME");
         }
         return computerName;
@@ -119,11 +123,11 @@ public class MacUtil {
      */
     public static String getComputerId() {
         String id = getMacAddress();
-        if (id == null || "".equals(id)) {
+        if (id == null || id.isEmpty()) {
             try {
                 return IpUtil.getIpAddrAndName();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("获取电脑唯一标识失败", e);
             }
         }
         return computerName;

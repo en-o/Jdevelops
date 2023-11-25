@@ -7,7 +7,8 @@ import cn.jdevelops.api.result.util.ListTo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * JPA 分页查询返回的指定对象

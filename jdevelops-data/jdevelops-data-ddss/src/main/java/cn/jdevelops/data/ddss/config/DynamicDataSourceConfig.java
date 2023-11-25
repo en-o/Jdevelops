@@ -3,8 +3,8 @@ package cn.jdevelops.data.ddss.config;
 
 import cn.jdevelops.data.ddss.core.DynamicDataSource;
 import cn.jdevelops.data.ddss.service.DynamicDatasourceService;
-import cn.jdevelops.data.ddss.util.DynamicSpringBeanUtil;
 import cn.jdevelops.data.ddss.util.DynamicDataSourceUtil;
+import cn.jdevelops.data.ddss.util.DynamicSpringBeanUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,8 +13,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
-
-import javax.sql.DataSource;
 
 /**
  * 配置多数据源

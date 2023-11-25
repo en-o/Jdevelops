@@ -1,6 +1,9 @@
 package cn.jdevelops.util.core.map;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author tn

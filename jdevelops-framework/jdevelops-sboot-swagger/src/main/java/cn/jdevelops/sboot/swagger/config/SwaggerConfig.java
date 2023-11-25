@@ -15,7 +15,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.basePackages;
 import static cn.jdevelops.sboot.swagger.core.util.SwaggerUtil.buildSecuritySchemes;

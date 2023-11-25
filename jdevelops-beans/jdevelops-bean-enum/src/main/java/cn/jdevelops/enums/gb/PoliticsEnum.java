@@ -52,37 +52,27 @@ public enum PoliticsEnum {
     }
 
     public static String getCodeByDesc(String desc) {
-        try {
-            if (CommonUtil.isBlank(desc)) {
-                return null;
+        if (CommonUtil.isBlank(desc)) {
+            return null;
+        }
+        PoliticsEnum[] politicsEnums = values();
+        for (PoliticsEnum politicsEnum : politicsEnums) {
+            if (politicsEnum.getDesc().contains(desc)) {
+                return politicsEnum.getCode();
             }
-            PoliticsEnum[] politicsEnums = values();
-            for (int i = 0; i < politicsEnums.length; i++) {
-                PoliticsEnum politicsEnum = politicsEnums[i];
-                if (politicsEnum.getDesc().contains(desc)) {
-                    return politicsEnum.getCode();
-                }
-            }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
         return null;
     }
 
     public static String getDescByCode(String code) {
-        try {
-            if (CommonUtil.isBlank(code)) {
-                return null;
+        if (CommonUtil.isBlank(code)) {
+            return null;
+        }
+        PoliticsEnum[] nationalityEnums = values();
+        for (PoliticsEnum politicsEnum : nationalityEnums) {
+            if (politicsEnum.getCode().contains(code)) {
+                return politicsEnum.getDesc();
             }
-            PoliticsEnum[] nationalityEnums = values();
-            for (int i = 0; i < nationalityEnums.length; i++) {
-                PoliticsEnum politicsEnum = nationalityEnums[i];
-                if (politicsEnum.getCode().contains(code)) {
-                    return politicsEnum.getDesc();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }

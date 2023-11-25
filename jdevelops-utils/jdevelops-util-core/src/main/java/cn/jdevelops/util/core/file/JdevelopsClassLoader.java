@@ -1,6 +1,10 @@
 package cn.jdevelops.util.core.file;
 
-import java.io.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +16,9 @@ import java.nio.file.Paths;
  * @date 2023/7/711:34
  */
 public class JdevelopsClassLoader  extends ClassLoader{
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(JdevelopsClassLoader.class);
 
     /**
      * 类路径
@@ -29,7 +36,7 @@ public class JdevelopsClassLoader  extends ClassLoader{
             // 调用defineClass，将字节数组数据转换为Class实例
             return defineClass(null, bytes, 0, bytes.length);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("调用defineClass失败", e);
         }
         return null;
     }

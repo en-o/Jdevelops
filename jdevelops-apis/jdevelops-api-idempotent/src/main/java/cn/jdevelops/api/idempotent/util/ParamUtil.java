@@ -30,19 +30,20 @@ public class ParamUtil {
 
     /**
      * 获取接口参数
+     *
      * @param request request
      * @return String
      */
     public static String getRequestParam(HttpServletRequest request) {
         try {
-            Map<String,Object> map = new LinkedHashMap<>();
+            Map<String, Object> map = new LinkedHashMap<>();
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
-                String paramName =  paramNames.nextElement();
+                String paramName = paramNames.nextElement();
                 String[] paramValues = request.getParameterValues(paramName);
                 if (paramValues.length == 1) {
                     String paramValue = paramValues[0];
-                    if (paramValue.length() != 0) {
+                    if (!paramValue.isEmpty()) {
                         map.put(paramName, paramValue);
                     }
                 } else {
@@ -53,14 +54,14 @@ public class ParamUtil {
             if (map.isEmpty()) {
                 //封装request
                 String requsetStr = getBodyString(request);
-                if("".equals(requsetStr)){
+                if ("".equals(requsetStr)) {
                     return requsetStr;
                 }
                 String bodyString = JSON.parse(requsetStr).toString();
                 LOG.debug("参数string：" + requsetStr);
                 return bodyString;
             } else {
-                String jsonString =  JSON.toJSONString(map);
+                String jsonString = JSON.toJSONString(map);
                 LOG.debug("参数string：" + jsonString);
                 return jsonString;
             }
@@ -68,7 +69,6 @@ public class ParamUtil {
             throw new IdempotentException("接口参数获取失败", e);
         }
     }
-
 
 
     /**
@@ -84,25 +84,25 @@ public class ParamUtil {
         try {
             inputStream = request.getInputStream();
             reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            String line ;
+            String line;
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.debug("获取请求Body失败", e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.debug("获取请求Body关流失败", e);
                 }
             }
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.debug("获取请求Body关流失败", e);
                 }
             }
         }

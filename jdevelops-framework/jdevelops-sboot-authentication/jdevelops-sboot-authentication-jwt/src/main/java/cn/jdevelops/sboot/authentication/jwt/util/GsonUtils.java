@@ -24,6 +24,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParseException;
 
 import java.io.IOException;
@@ -39,6 +41,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author xiaoyu(Myth)
  */
 public class GsonUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(GsonUtils.class);
     /**
      * The constant DECODE.
      */
@@ -161,7 +165,7 @@ public class GsonUtils {
                         .append(URLDecoder.decode(v, DECODE))
                         .append("&");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                LOG.error("toGetParam失败", e);
             }
         });
         final String r = stringBuilder.toString();
@@ -256,7 +260,7 @@ public class GsonUtils {
         @Override
         public Map<T, U> deserialize(final JsonElement json, final Type type, final JsonDeserializationContext context) throws JsonParseException {
             if (!json.isJsonObject()) {
-                return null;
+                return Collections.emptyMap();
             }
 
             JsonObject jsonObject = json.getAsJsonObject();

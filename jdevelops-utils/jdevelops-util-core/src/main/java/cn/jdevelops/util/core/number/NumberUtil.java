@@ -5,6 +5,9 @@
 
 package cn.jdevelops.util.core.number;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -12,6 +15,8 @@ import java.math.RoundingMode;
  * @author t
  */
 public class NumberUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(NumberUtil.class);
 
 
     /**
@@ -35,7 +40,7 @@ public class NumberUtil {
        try {
            return mul(v1, v2);
        }catch (Exception e){
-           e.printStackTrace();
+           LOG.error("乘法失败", e);
        }
        return new BigDecimal(0);
     }

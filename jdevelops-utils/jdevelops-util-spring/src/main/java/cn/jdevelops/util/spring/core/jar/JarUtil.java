@@ -16,7 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
-import static org.springframework.util.ClassUtils.*;
+import static org.springframework.util.ClassUtils.getDefaultClassLoader;
 
 /**
  * jar包相关工具类

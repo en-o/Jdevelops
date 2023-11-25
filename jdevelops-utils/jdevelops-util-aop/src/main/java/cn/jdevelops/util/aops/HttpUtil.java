@@ -1,6 +1,8 @@
 package cn.jdevelops.util.aops;
 
 import cn.jdevelops.enums.http.HttpEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,9 @@ import java.nio.charset.StandardCharsets;
  * @date 2022-08-10 14:13
  */
 public class HttpUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
+
     /**
      * 获取请求Body
      *
@@ -34,20 +39,20 @@ public class HttpUtil {
                 sb.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("读取流失败", e);
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.error("关闭流失败", e);
                 }
             }
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.error("关闭流失败", e);
                 }
             }
         }

@@ -1,5 +1,8 @@
 package cn.jdevelops.util.encryption.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
@@ -17,6 +20,8 @@ import java.security.Key;
 
 public class DESUtil {
 
+
+    private static final Logger LOG = LoggerFactory.getLogger(DESUtil.class);
 
     /**
      * 密钥
@@ -48,7 +53,7 @@ public class DESUtil {
             byte[] encryptData = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
             return Base64Encoder.encode(encryptData);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("加密失败", e);
             return "";
         }
     }
@@ -75,7 +80,7 @@ public class DESUtil {
 
             return new String(decryptData, StandardCharsets.UTF_8);
         }catch(Exception e){
-            e.printStackTrace();
+            LOG.error("解密失败", e);
             return "";
         }
     }
