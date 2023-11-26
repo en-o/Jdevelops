@@ -3,7 +3,8 @@ package cn.jdevelops.data.es.entity;
 import cn.jdevelops.api.result.request.PageDTO;
 import cn.jdevelops.api.result.response.PageResult;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * ES分页数据实体

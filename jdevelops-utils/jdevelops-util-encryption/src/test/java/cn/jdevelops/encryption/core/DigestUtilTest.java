@@ -3,7 +3,7 @@ package cn.jdevelops.encryption.core;
 import cn.jdevelops.util.encryption.core.DigestUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DigestUtilTest {
 

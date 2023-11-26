@@ -5,6 +5,8 @@ import cn.jdevelops.util.core.file.files.FileReader;
 import cn.jdevelops.util.core.file.files.FileWriter;
 import cn.jdevelops.util.core.list.CollectionUtil;
 import cn.jdevelops.util.core.thread.ThreadUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -19,6 +21,8 @@ import java.util.Objects;
  * @author looly
  */
 public class FileUtil {
+
+	private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 
 
 	/**
@@ -165,7 +169,7 @@ public class FileUtil {
 			}
 			return bos.toByteArray();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("将文件转换成Byte数组失败", e);
 		}
 		return new byte[0];
 	}

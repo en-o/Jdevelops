@@ -94,7 +94,7 @@ public class StringFormat {
             }
             return sb.toString();
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("给字符串指定位置插入数据失败", e);
         }
         return str;
     }
@@ -137,7 +137,7 @@ public class StringFormat {
      * @return 返回字符串
      */
     public static String toCamelCase(String line,boolean smallCamel){
-        if(line==null||"".equals(line)){
+        if(line==null|| line.isEmpty()){
             return "";
         }
         StringBuilder sb=new StringBuilder();
@@ -194,7 +194,7 @@ public class StringFormat {
         try {
             LOG.info(logs);
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("打印日志失败", e);
         }
     }
 

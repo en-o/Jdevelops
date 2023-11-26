@@ -2,7 +2,6 @@ package cn.jdevelops.quartz.quick.entity;
 
 import cn.jdevelops.quartz.quick.entity.key.QrtzJobDetailsUPK;
 
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;

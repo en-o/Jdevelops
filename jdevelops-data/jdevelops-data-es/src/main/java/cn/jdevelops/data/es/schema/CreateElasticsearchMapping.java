@@ -132,7 +132,6 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("创建索引失败,请手动完成创建 ======================>", e);
         }
     }
@@ -143,7 +142,6 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
      *
      * @param creatEsIndexDsl  预先初始化好的dsl json
      * @param creatEsIndexBean 需要处理成properties的对象
-     * @throws IllegalAccessException
      */
     private static void assemblyProperties(JSONObject creatEsIndexDsl,
                                            Object creatEsIndexBean) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
@@ -218,7 +216,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
         if (!esField.index()) {
             fieldJson.put("index", false);
         }
-        if (!esField.analyzer().equals("")) {
+        if (!"".equals(esField.analyzer())) {
             fieldJson.put("analyzer", esField.analyzer());
         }
         if (esField.ignoreMalformed()) {
@@ -244,8 +242,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
     private static Object getObject(BeanDefinition definition) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         String creatEsIndexBeanClassName = definition.getBeanClassName();
         Class<?> creatEsIndexBeanClazz = Class.forName(creatEsIndexBeanClassName);
-        Object creatEsIndexBean = creatEsIndexBeanClazz.newInstance();
-        return creatEsIndexBean;
+        return creatEsIndexBeanClazz.newInstance();
     }
 
     /**

@@ -6,6 +6,8 @@ import cn.jdevelops.enums.string.StringEnum;
 import cn.jdevelops.util.core.json.GsonUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -29,13 +31,16 @@ import static cn.jdevelops.util.core.map.MapSortUtil.sortByValueDescending;
 
 /**
  * map工具类
+ *
  * @author tn
- * @date  2020/4/9 15:12
+ * @date 2020/4/9 15:12
  */
-public class MapUtil  {
+public class MapUtil {
 
     private static final Pattern PATTERN = Pattern.compile("([^&=]+)(=?)([^&]+)?");
     private static final String CONTAINS_KEY_EMPTY = "empty";
+
+    private static final Logger LOG = LoggerFactory.getLogger(MapUtil.class);
 
     /**
      * 实体对象转成Map
@@ -56,16 +61,17 @@ public class MapUtil  {
                 map.put(field.getName(), field.get(obj));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("实体对象转成Map失败", e);
         }
         return map;
     }
 
     /**
      * map转换为bean
-     * @return T 返回类型
-     * @param map map
+     *
+     * @param map       map
      * @param beanClass beanClass
+     * @return T 返回类型
      * @throws Exception Exception
      */
     public static <T> T mapToObject(Map<String, Object> map, Class<T> beanClass) throws Exception {
@@ -80,11 +86,12 @@ public class MapUtil  {
 
     /**
      * Map转实体
+     *
      * @param map map
      * @param obj obj
      * @return Object
      */
-    public  static Object transMap2Bean(Map<String, Object> map, Object obj){
+    public static Object transMap2Bean(Map<String, Object> map, Object obj) {
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
@@ -98,13 +105,15 @@ public class MapUtil  {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Map转实体失败", e);
             return null;
         }
         return obj;
     }
+
     /**
      * 实体转Map
+     *
      * @param obj obj
      * @return Map
      */
@@ -120,11 +129,11 @@ public class MapUtil  {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey(StringEnum.EMPTY_STRING.getCode()) ){
+            if (obj != null && params.containsKey(StringEnum.EMPTY_STRING.getCode())) {
                 params = (Map<String, Object>) obj;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("实体转Map失败", e);
         }
         return params;
     }
@@ -165,6 +174,7 @@ public class MapUtil  {
 
     /**
      * 实体转Map
+     *
      * @param obj 实体
      * @return MultiValueMap
      */
@@ -180,11 +190,11 @@ public class MapUtil  {
                     params.add(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey(CONTAINS_KEY_EMPTY) ){
+            if (obj != null && params.containsKey(CONTAINS_KEY_EMPTY)) {
                 params = (MultiValueMap<String, Object>) obj;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("实体转Map失败", e);
         }
         return params;
     }
@@ -192,6 +202,7 @@ public class MapUtil  {
 
     /**
      * 实体转Map
+     *
      * @param obj 实体
      * @return LinkedHashMap
      */
@@ -207,62 +218,62 @@ public class MapUtil  {
                     params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                 }
             }
-            if(obj!=null&&params.containsKey(CONTAINS_KEY_EMPTY) ){
+            if (obj != null && params.containsKey(CONTAINS_KEY_EMPTY)) {
                 params = (LinkedHashMap<String, Object>) obj;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("实体转Map失败", e);
         }
         return params;
     }
 
     /**
+     * 把list 计算重复元素并生成bena返回
      *
-     *  把list 计算重复元素并生成bena返回
+     * @param list 数据
+     * @param type 1 升序  2降序
+     * @return java.util.Map<java.lang.String, java.lang.Object>
      * @author tn
-     * @date  2020/4/22 14:55
-     * @param list  数据
-     * @param type  1 升序  2降序
-     * @return java.util.Map<java.lang.String,java.lang.Object>
+     * @date 2020/4/22 14:55
      */
 
-    public static Map<String, Object> getRepetitionListElementNum(List<String> list, Integer type){
+    public static Map<String, Object> getRepetitionListElementNum(List<String> list, Integer type) {
         //判断重复次数最多的一个
         Map<String, Object> beanToMap = new HashMap<>(list.size());
         try {
             Map<String, Object> chongfu = new HashMap<>(list.size());
             for (String string : list) {
-                if(null==string) {
+                if (null == string) {
                     continue;
                 }
                 string = string.toLowerCase();
                 int i = 1;
                 for (String string2 : list) {
                     string2 = string2.toLowerCase();
-                    if(string.equals(string2)) {
-                        chongfu.put(string,i);
+                    if (string.equals(string2)) {
+                        chongfu.put(string, i);
                         i++;
                     }
                 }
             }
             Object dataMap = new Object();
-            if(1 == type) {
-                dataMap= sortByValueAscending(chongfu);
-            }else if(NumEnum.TWO.getNum().equals(type)) {
-                dataMap= sortByValueDescending(chongfu);
+            if (1 == type) {
+                dataMap = sortByValueAscending(chongfu);
+            } else if (NumEnum.TWO.getNum().equals(type)) {
+                dataMap = sortByValueDescending(chongfu);
             }
 
             beanToMap = beanToMap(dataMap);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("把list 计算重复元素并生成bena返回失败", e);
         }
         return beanToMap;
     }
 
 
-
     /**
      * 获取map第一位
+     *
      * @param map map
      * @return Map
      */
@@ -272,7 +283,7 @@ public class MapUtil  {
         try {
             beanToMap = beanToMap(next);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("获取map第一位失败", e);
         }
         return beanToMap;
     }
@@ -280,6 +291,7 @@ public class MapUtil  {
 
     /**
      * 获取map最后
+     *
      * @param map map
      * @return Map
      */
@@ -291,13 +303,15 @@ public class MapUtil  {
             Object object = tail.get(map);
             beanToMap = beanToMap(object);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("获取map最后位失败", e);
         }
         return beanToMap;
     }
 
 
-    /** Bean --> Map 1: 利用Introspector和PropertyDescriptor 将Bean --> Map */
+    /**
+     * Bean --> Map 1: 利用Introspector和PropertyDescriptor 将Bean --> Map
+     */
     public static Map<String, Object> transBean2Map(Object obj) {
         if (obj == null) {
             return null;
@@ -314,14 +328,14 @@ public class MapUtil  {
                     // 得到property对应的getter方法
                     Method getter = property.getReadMethod();
                     Object value = getter.invoke(obj);
-                    if(null !=value && !"".equals(value)) {
+                    if (null != value && !"".equals(value)) {
                         map.put(key, value);
                     }
                 }
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("利用Introspector和PropertyDescriptor 将Bean --> Map失败", e);
         }
         return map;
 
@@ -331,12 +345,12 @@ public class MapUtil  {
     /**
      * 从map中查询想要的map项，根据key
      */
-    public static<T> Map<String, T> parseMapForFilter(Map<String, T> map, String filters) {
+    public static <T> Map<String, T> parseMapForFilter(Map<String, T> map, String filters) {
         if (map == null) {
             return Collections.emptyMap();
         } else {
             map = map.entrySet().stream()
-                    .filter(e -> checkKey(e.getKey(),filters))
+                    .filter(e -> checkKey(e.getKey(), filters))
                     .collect(Collectors.toMap(
                             Map.Entry::getKey,
                             Map.Entry::getValue
@@ -368,17 +382,18 @@ public class MapUtil  {
     }
 
 
-
     /**
      * 根据value值获取到对应的一个key值
      * ps: 此方法用于 k,v 都不允许重复的情况下
-     * @param map map
+     *
+     * @param map   map
      * @param value value
      * @return key
      */
-    public static <K,V> K getKey(Map<K,V> map, V value){
+    public static <K, V> K getKey(Map<K, V> map, V value) {
         K key = null;
-        for (K getKey : map.keySet()) {
+        for (Iterator<K> iterator = map.keySet().iterator(); iterator.hasNext(); ) {
+            K getKey = iterator.next();
             if (map.get(getKey).equals(value)) {
                 key = getKey;
             }
@@ -394,10 +409,10 @@ public class MapUtil  {
      * @param value value
      * @return true 存在
      */
-    public static <K,V> boolean valueExist(Map<K,V> map, V value){
+    public static <K, V> boolean valueExist(Map<K, V> map, V value) {
         Collection<V> values = map.values();
         for (Object v : values) {
-            if(value.equals(v)){
+            if (value.equals(v)) {
                 return true;
             }
         }

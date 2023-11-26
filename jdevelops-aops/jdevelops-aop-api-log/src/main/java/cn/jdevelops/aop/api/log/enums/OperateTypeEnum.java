@@ -2,7 +2,6 @@ package cn.jdevelops.aop.api.log.enums;
 
 
 import cn.jdevelops.aop.api.log.annotation.ApiLog;
-import cn.jdevelops.aop.api.log.bean.ApiMonitoring;
 
 /**
  * 操作日志的操作类型

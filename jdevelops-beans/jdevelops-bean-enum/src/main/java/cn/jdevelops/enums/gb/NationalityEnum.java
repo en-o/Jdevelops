@@ -1,6 +1,7 @@
 package cn.jdevelops.enums.gb;
 
 
+
 /**
  * 民族
  *
@@ -8,6 +9,7 @@ package cn.jdevelops.enums.gb;
  * <a href="https://blog.csdn.net/zona_wzq/article/details/103207065">来源</a>
  */
 public enum NationalityEnum {
+
 
     /* 汉族 */
     HAN("01", "汉族"),
@@ -192,39 +194,27 @@ public enum NationalityEnum {
     }
 
     public static String getCodeByDesc(String desc) {
-        try {
-            if (CommonUtil.isBlank(desc)) {
-                return null;
-            }
-            NationalityEnum[] nationalityEnums = values();
-            for (int i = 0; i < nationalityEnums.length; i++) {
-                NationalityEnum nationalityEnum = nationalityEnums[i];
-                if (nationalityEnum.getDesc().contains(desc)) {
-                    return nationalityEnum.getCode();
-                }
-            }
+        if (CommonUtil.isBlank(desc)) {
             return null;
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        NationalityEnum[] nationalityEnums = values();
+        for (NationalityEnum nationalityEnum : nationalityEnums) {
+            if (nationalityEnum.getDesc().contains(desc)) {
+                return nationalityEnum.getCode();
+            }
         }
         return null;
     }
 
     public static String getDescByCode(String code) {
-
-        try {
-            if (CommonUtil.isBlank(code)) {
-                return null;
+        if (CommonUtil.isBlank(code)) {
+            return null;
+        }
+        NationalityEnum[] nationalityEnums = values();
+        for (NationalityEnum nationalityEnum : nationalityEnums) {
+            if (nationalityEnum.getCode().contains(code)) {
+                return nationalityEnum.getDesc();
             }
-            NationalityEnum[] nationalityEnums = values();
-            for (int i = 0; i < nationalityEnums.length; i++) {
-                NationalityEnum nationalityEnum = nationalityEnums[i];
-                if (nationalityEnum.getCode().contains(code)) {
-                    return nationalityEnum.getDesc();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }

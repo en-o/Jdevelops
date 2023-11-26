@@ -5,7 +5,10 @@ import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 

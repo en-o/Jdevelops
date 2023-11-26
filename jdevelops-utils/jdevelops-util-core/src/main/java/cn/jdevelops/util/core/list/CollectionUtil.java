@@ -1,11 +1,9 @@
 package cn.jdevelops.util.core.list;
 
-import cn.hutool.core.util.ObjectUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
-import java.awt.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

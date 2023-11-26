@@ -25,9 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
-import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.*;
+import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
 
 /**
  *  jwt工具

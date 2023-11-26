@@ -3,7 +3,7 @@ package cn.jdevelops.util.desensitized;
 import cn.jdevelops.uitl.desensitized.util.CoverUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CoverUtilTest {
 
