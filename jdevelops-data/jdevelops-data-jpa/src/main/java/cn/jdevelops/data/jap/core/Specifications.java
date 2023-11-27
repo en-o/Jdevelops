@@ -117,7 +117,8 @@ public class Specifications {
 
                 if (IObjects.nonNull(wrapperOperator)) {
                     // 需要判空，然后空值就不查了
-                    if (wrapperOperator.ignoreNull() && IObjects.isNull(fieldValue)) {
+                    if (Boolean.TRUE.equals(wrapperOperator.ignoreNull())
+                            && IObjects.isNull(fieldValue, wrapperOperator.ignoreNullEnhance())) {
                         continue;
                     }
 //                    wrapperOperator.connect().equals(SQLConnect.AND)
