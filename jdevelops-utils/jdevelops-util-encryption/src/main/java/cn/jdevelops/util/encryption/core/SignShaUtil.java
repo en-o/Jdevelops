@@ -21,7 +21,7 @@ import java.util.Map;
 public class SignShaUtil {
     private static final Logger log = LoggerFactory.getLogger(SignShaUtil.class);
     public static String encrypt(String str){
-        if (null == str || 0 == str.length()){
+        if (null == str || str.isEmpty()){
             return null;
         }
         char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -40,7 +40,6 @@ public class SignShaUtil {
             }
             return new String(buf);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             log.error("SHA1加密异常:",e);
         }
         return str;

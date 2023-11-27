@@ -1,5 +1,7 @@
 package cn.jdevelops.redis.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Collections;
@@ -21,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLock {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RedisLock.class);
+
 
     private static final Long SUCCESS = 1L;
 
@@ -38,7 +42,7 @@ public class RedisLock {
             //SET命令返回OK ，则证明获取锁成功
             return redisTemplate.opsForValue().setIfAbsent(key, value, expireTime, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(" 加锁，无阻塞失败", e);
         }
         return false;
     }
@@ -57,7 +61,7 @@ public class RedisLock {
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("解锁", e);
             return false;
         }
         return false;

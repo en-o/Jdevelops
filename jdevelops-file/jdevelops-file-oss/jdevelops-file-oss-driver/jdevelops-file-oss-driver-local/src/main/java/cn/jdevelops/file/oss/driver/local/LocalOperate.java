@@ -4,6 +4,7 @@ import cn.jdevelops.file.oss.api.OssOperateAPI;
 import cn.jdevelops.file.oss.api.bean.*;
 import cn.jdevelops.file.oss.api.config.OSSConfig;
 import cn.jdevelops.file.oss.api.constants.OSSConstants;
+import cn.jdevelops.file.oss.api.util.AboutFileUtil;
 import cn.jdevelops.file.oss.api.util.StrUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
@@ -54,10 +55,12 @@ public class LocalOperate implements OssOperateAPI {
         // getOriginalFilename方法获取文件名(带后缀)
         String originalName = file.getOriginalFilename();
         String freshName;
+        // 文件类型后缀 如 jpg png
+        String suffix = AboutFileUtil.getFileSuffix(originalName);
         if(StrUtil.notBlank(uploaded.getFileName())){
-            freshName = uploaded.getFileName().trim() + originalName.substring(originalName.lastIndexOf("."));
+            freshName = uploaded.getFileName().trim() + suffix;
         }else {
-            freshName = LocalDirverUtil.encrypt2MD5(originalName) + originalName.substring(originalName.lastIndexOf("."));
+            freshName = LocalDirverUtil.encrypt2MD5(originalName) +suffix;
         }
         String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
         String downPath =  childFolder + freshName;
@@ -75,13 +78,19 @@ public class LocalOperate implements OssOperateAPI {
             relativePath = contextPath.substring(0,contextPath.lastIndexOf("/")+1)+relativePath;
         }
         String absolutePath = getBrowserUrl() + relativePath;
-        FilePathResult filePathResult = new FilePathResult();
-        filePathResult.setAbsolutePath(absolutePath);
-        filePathResult.setRelativePath(relativePath);
-        filePathResult.setFreshName(freshName);
-        filePathResult.setDownPath(childFolder+freshName);
-        filePathResult.setOriginalName(originalName);
-        return filePathResult;
+
+
+        return new FilePathResult(relativePath,
+                absolutePath,
+                originalName,
+                freshName,
+                childFolder+freshName,
+                uploaded.getBucket(),
+                suffix,
+                uploaded.getFile().getContentType(),
+                ossConfig.getLocal().getContextPath()
+        );
+
     }
 
     @Override
@@ -121,7 +130,7 @@ public class LocalOperate implements OssOperateAPI {
             response.setHeader("Content-Length", String.valueOf(file.length()));
             IOUtils.copy(in, response.getOutputStream());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.debug("下载文件失败", e);
         }
     }
 

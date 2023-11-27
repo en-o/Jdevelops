@@ -2,6 +2,8 @@ package cn.jdevelops.data.jdbctemplate.util;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -16,6 +18,9 @@ import java.util.regex.Pattern;
  * @date 2020/4/22 10:35
  */
 public class AnnotationParse {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AnnotationParse.class);
+
 
     private static AnnotationParse resolver ;
 
@@ -64,7 +69,7 @@ public class AnnotationParse {
                                 valueStre = valueStre.replace(group,complexResolver.toString() );
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            LOG.error("需要解析的字符串失败", e);
                         }
                     } else {
                         Object simpleResolver = simpleResolver(joinPoint, newStr);
@@ -119,7 +124,7 @@ public class AnnotationParse {
             }
             return obj;
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("getValueByMap失败", e);
         }
         return null;
     }
@@ -143,7 +148,7 @@ public class AnnotationParse {
             return obj;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("getValueByBean失败", e);
             return null;
         }
 

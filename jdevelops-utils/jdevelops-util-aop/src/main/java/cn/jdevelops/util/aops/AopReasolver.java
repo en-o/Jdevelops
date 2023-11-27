@@ -2,6 +2,8 @@ package cn.jdevelops.util.aops;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
  * @date 2020/4/22 10:35
  */
 public class AopReasolver {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AopReasolver.class);
 
     private static AopReasolver resolver;
 
@@ -43,7 +47,7 @@ public class AopReasolver {
                 return null;
             }
 
-            Object value = null;
+            Object value;
             String substring1 = null;
             String substring2;
 
@@ -55,11 +59,7 @@ public class AopReasolver {
                     String newStr = substring2.replaceAll("#\\{", "").replaceAll("}", "");
                     // 复杂类型
                     if (newStr.contains(".")) {
-                        try {
-                            value = complexResolver(joinPoint, newStr);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        value = complexResolver(joinPoint, newStr);
                     } else {
                         value = simpleResolver(joinPoint, newStr);
                     }
@@ -71,32 +71,42 @@ public class AopReasolver {
             }
 
             return StringUtil.isBlank(substring1) ? value : substring1 + value;
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOG.error("解析参数的值失败", e);
         }
         return null;
     }
 
 
-    private Object complexResolver(JoinPoint joinPoint, String str) throws Exception {
+    /**
+     * 解析参数的值
+     * @param joinPoint JoinPoint
+     * @param str 参数
+     * @return 值
+     */
+    private Object complexResolver(JoinPoint joinPoint, String str) {
 
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        try {
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
-        String[] names = methodSignature.getParameterNames();
-        Object[] args = joinPoint.getArgs();
-        String[] stars = str.split("\\.");
-        for (int i = 0; i < names.length; i++) {
-            if (stars[0].equals(names[i])) {
-                Object obj = args[i];
-                if (obj instanceof Map) {
-                    return getValueByMap(obj, stars);
-                } else {
-                    Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]), new Class[0]);
-                    Object value = dmethod.invoke(args[i]);
-                    return getValueByBean(value, 1, stars);
+            String[] names = methodSignature.getParameterNames();
+            Object[] args = joinPoint.getArgs();
+            String[] stars = str.split("\\.");
+            for (int i = 0; i < names.length; i++) {
+                if (stars[0].equals(names[i])) {
+                    Object obj = args[i];
+                    if (obj instanceof Map) {
+                        return getValueByMap(obj, stars);
+                    } else {
+                        Method dmethod = obj.getClass().getDeclaredMethod(getMethodName(stars[1]), new Class[0]);
+                        Object value = dmethod.invoke(args[i]);
+                        return getValueByBean(value, 1, stars);
+                    }
+
                 }
-
             }
+        } catch (Exception e) {
+            LOG.error("解析参数的值失败", e);
         }
 
         return null;
@@ -107,12 +117,12 @@ public class AopReasolver {
     private Object getValueByMap(Object obj, String[] strs) {
         try {
             Map map = (Map) obj;
-            if( map.containsKey(strs[1])){
+            if (map.containsKey(strs[1])) {
                 return map.get(strs[1]);
             }
             return obj;
-        }catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOG.error("getValueByMap失败", e);
         }
         return null;
     }
@@ -129,7 +139,7 @@ public class AopReasolver {
             return obj;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("getValueByBean失败", e);
             return null;
         }
     }

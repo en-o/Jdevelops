@@ -1,5 +1,8 @@
 package cn.jdevelops.delay.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +15,9 @@ import java.security.NoSuchAlgorithmException;
  * @date 2023-01-05 16:25
  */
 public class Md5Util {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Md5Util.class);
+
     /**
      * 利用java原生的摘要实现SHA256加密
      * @param str 待加密的字符串
@@ -25,7 +31,7 @@ public class Md5Util {
             messageDigest.update(str.getBytes(StandardCharsets.UTF_8));
             encodeStr = byte2Hex(messageDigest.digest());
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOG.error("利用java原生的摘要实现SHA256加密失败", e);
         }
         return encodeStr;
     }

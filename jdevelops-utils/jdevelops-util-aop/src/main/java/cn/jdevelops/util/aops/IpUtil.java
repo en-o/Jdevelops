@@ -1,6 +1,9 @@
 package cn.jdevelops.util.aops;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -10,6 +13,8 @@ import java.net.UnknownHostException;
  * @author 谭宁
  */
 public class IpUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(IpUtil.class);
 
     static final String UNKNOWN = "unKnown";
     static final String LOCALHOST = "localhost";
@@ -59,37 +64,37 @@ public class IpUtil {
      */
     public static String getPoxyIpEnhance(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_FORWARDED_FOR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_FORWARDED");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_VIA");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("REMOTE_ADDR");
         }
-        if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (ip == null || ip.isEmpty() || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
         // 本机访问
@@ -102,7 +107,7 @@ public class IpUtil {
                 inet = InetAddress.getLocalHost();
                 ip = inet.getHostAddress();
             } catch (UnknownHostException e) {
-                e.printStackTrace();
+                LOG.debug("Ip获取失败", e);
             }
         }
         // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割

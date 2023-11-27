@@ -4,7 +4,7 @@ import cn.jdevelops.api.result.request.SortDTO;
 import cn.jdevelops.data.jap.util.JPageUtil;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class JPageUtilTest {
 

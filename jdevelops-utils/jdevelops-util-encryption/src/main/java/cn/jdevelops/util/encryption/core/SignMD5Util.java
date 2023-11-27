@@ -1,7 +1,7 @@
 package cn.jdevelops.util.encryption.core;
 
-import cn.jdevelops.util.encryption.RemarkUtil;
 import cn.jdevelops.enums.number.NumEnum;
+import cn.jdevelops.util.encryption.RemarkUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,8 +1,10 @@
 package cn.jdevelops.data.ddss.util;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.crypto.*;
+import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -14,11 +16,15 @@ import java.security.InvalidKeyException;
  */
 public class ObjectUtils {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ObjectUtils.class);
 
-    /**判断一个对象是否是基本类型或基本类型的封装类型*/
+
+    /**
+     * 判断一个对象是否是基本类型或基本类型的封装类型
+     */
     public static boolean isPrimitive(Object obj) {
         try {
-            return ((Class<?>)obj.getClass().getField("TYPE").get(null)).isPrimitive();
+            return ((Class<?>) obj.getClass().getField("TYPE").get(null)).isPrimitive();
         } catch (Exception e) {
             return false;
         }
@@ -37,9 +43,9 @@ public class ObjectUtils {
      * StringUtils.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is
-     *  not empty and not null and not whitespace only
+     * not empty and not null and not whitespace only
      * @since 2.0
      * @since 3.0 Changed signature from isNotBlank(String) to isNotBlank(CharSequence)
      */
@@ -60,7 +66,7 @@ public class ObjectUtils {
      * StringUtils.isBlank("  bob  ") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
+     * @param cs the CharSequence to check, may be null
      * @return {@code true} if the CharSequence is null, empty or whitespace only
      * @since 2.0
      * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
@@ -83,17 +89,15 @@ public class ObjectUtils {
      * Gets a CharSequence length or {@code 0} if the CharSequence is
      * {@code null}.
      *
-     * @param cs
-     *            a CharSequence or {@code null}
+     * @param cs a CharSequence or {@code null}
      * @return CharSequence length or {@code 0} if the CharSequence is
-     *         {@code null}.
+     * {@code null}.
      * @since 2.4
      * @since 3.0 Changed signature from length(String) to length(CharSequence)
      */
     public static int length(final CharSequence cs) {
         return cs == null ? 0 : cs.length();
     }
-
 
 
     /**
@@ -103,6 +107,7 @@ public class ObjectUtils {
 
     /**
      * 解密
+     *
      * @param code 带解密的密钥串
      * @param salt 解密的盐
      * @return 真实的信息(错误返回原文)
@@ -122,20 +127,21 @@ public class ObjectUtils {
             byte[] original = cipher.doFinal(encrypted);
             return new String(original, StandardCharsets.UTF_8);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.error("解密失败", ex);
         }
         return code;
     }
 
     /**
      * 加密
+     *
      * @param code 带加密的字符串
      * @param salt 解密的盐(16位)
      * @return 加密信息(错误返回原文)
      */
     public static String encryptAES(String code, String salt) throws InvalidKeyException {
         if (salt == null || 16 != salt.length()) {
-           throw new InvalidKeyException("salt必须满足16位");
+            throw new InvalidKeyException("salt必须满足16位");
         }
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -148,7 +154,7 @@ public class ObjectUtils {
             // 此处使用BASE64做转码。
             return Base64.encodeBase64String(encrypted);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("加密失败", e);
         }
         return code;
     }

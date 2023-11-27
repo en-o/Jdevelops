@@ -7,7 +7,7 @@ import org.junit.Test;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * 测试 参数检验

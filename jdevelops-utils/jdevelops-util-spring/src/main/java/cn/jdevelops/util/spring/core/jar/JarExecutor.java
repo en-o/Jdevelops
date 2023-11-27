@@ -1,5 +1,9 @@
 package cn.jdevelops.util.spring.core.jar;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,10 +26,19 @@ jar.shutdown();
  * </pr>
  */
 public class JarExecutor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JarExecutor.class);
+
     private BufferedReader error;
     private BufferedReader op;
     private int exitVal;
 
+
+    /**
+     * 执行JAR
+     * @param jarFilePath JAR 路径
+     * @param args jar参数
+     */
     public void executeJar(String jarFilePath, List args) {
 
         final List actualArgs = new ArrayList();
@@ -61,10 +74,15 @@ public class JarExecutor {
             }
 
         } catch (final InterruptedException | IOException e) {
-            e.printStackTrace();
+            LOG.error("执行JAR失败", e);
         }
     }
 
+
+    /**
+     * 执行日志
+      * @return 日志
+     */
     public String getExecutionLog() {
         StringBuilder error = new StringBuilder();
 
@@ -77,7 +95,7 @@ public class JarExecutor {
             }
 
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOG.error("读取错误日志失败", e);
         }
 
         StringBuilder output = new StringBuilder();
@@ -89,7 +107,7 @@ public class JarExecutor {
             }
 
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOG.error("输出错误日志失败", e);
         }
 
         try {
@@ -98,7 +116,7 @@ public class JarExecutor {
             this.op.close();
 
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOG.error("关闭文件流失败", e);
         }
 
         return "exitVal: " + this.exitVal + ", error: " + error + ", output: " + output;

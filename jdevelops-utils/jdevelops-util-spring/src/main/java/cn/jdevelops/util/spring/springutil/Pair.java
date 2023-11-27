@@ -15,11 +15,7 @@
  */
 package cn.jdevelops.util.spring.springutil;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Map;
 import java.util.stream.Collector;

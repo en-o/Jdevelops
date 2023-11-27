@@ -2,8 +2,12 @@ package cn.jdevelops.event.guava;
 
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GuavaEventBusUtilTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(GuavaEventBusUtilTest.class);
 
 
     public static void main(String[] args) {
@@ -44,7 +48,7 @@ public class GuavaEventBusUtilTest {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error("睡眠出错", e);
             }
             // TODO: 收到EventTest消息之后，做相应的处理
             System.out.println("我收到了您的命令，命令内容为：" + event);
@@ -61,7 +65,7 @@ public class GuavaEventBusUtilTest {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error("睡眠出错", e);
             }
             // TODO: 收到EventTest消息之后，做相应的处理\
             System.out.println("我收到了您的命令，命令内容为：" + event);
