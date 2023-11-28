@@ -54,6 +54,7 @@ public class SortDTO implements Serializable {
      *
      * @param orderBy 排序字段
      */
+    @SafeVarargs
     public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
         String[] list = new String[10];
         for (int i = 0; i < orderBy.length; i++) {
@@ -82,6 +83,7 @@ public class SortDTO implements Serializable {
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
      * @param orderBy   排序字段
      */
+    @SafeVarargs
     public <T> SortDTO(Integer orderDesc, ColumnSFunction<T, ?>... orderBy) {
         String[] list = new String[10];
         for (int i = 0; i < orderBy.length; i++) {
