@@ -25,7 +25,7 @@ public class SortDTO implements Serializable {
      * 默认id
      */
     @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
-    @Size(min=1, max=5,message = "排序字段超出了阈值")
+    @Size(max = 5, message = "排序字段超出了阈值")
     private String[] orderBy;
 
     /**
@@ -33,8 +33,8 @@ public class SortDTO implements Serializable {
      * 默认倒叙
      */
     @Schema(description = "排序方式（正序0，反序1）", defaultValue = "1", example = "1")
-    @Max(value = 1,message = "请正确选择排序方式")
-    @Min(value = 0,message = "请正确选择排序方式")
+    @Max(value = 1, message = "请正确选择排序方式")
+    @Min(value = 0, message = "请正确选择排序方式")
     private Integer orderDesc;
 
 
@@ -54,10 +54,11 @@ public class SortDTO implements Serializable {
      *
      * @param orderBy 排序字段
      */
+    @SafeVarargs
     public <T> SortDTO(ColumnSFunction<T, ?>... orderBy) {
         String[] list = new String[10];
         for (int i = 0; i < orderBy.length; i++) {
-            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
+            list[i] = (ColumnUtil.getFieldName(orderBy[i]));
         }
         this.orderBy = list;
         this.orderDesc = 1;
@@ -82,10 +83,11 @@ public class SortDTO implements Serializable {
      * @param orderDesc 正序0--Direction.ASC，反序1--Direction.DESC
      * @param orderBy   排序字段
      */
+    @SafeVarargs
     public <T> SortDTO(Integer orderDesc, ColumnSFunction<T, ?>... orderBy) {
         String[] list = new String[10];
         for (int i = 0; i < orderBy.length; i++) {
-            list[i]=(ColumnUtil.getFieldName(orderBy[i]));
+            list[i] = (ColumnUtil.getFieldName(orderBy[i]));
         }
         this.orderBy = list;
         this.orderDesc = orderDesc;
@@ -95,9 +97,8 @@ public class SortDTO implements Serializable {
     }
 
 
-
     public String[] getOrderBy() {
-        if (Objects.isNull(orderBy)) {
+        if (Objects.isNull(orderBy) || orderBy.length == 0) {
             return new String[]{"id"};
         }
         return orderBy;
@@ -108,7 +109,7 @@ public class SortDTO implements Serializable {
     }
 
     public Integer getOrderDesc() {
-        if (Objects.isNull(orderDesc)||orderDesc>2||orderDesc<0) {
+        if (Objects.isNull(orderDesc) || orderDesc > 2 || orderDesc < 0) {
             return 1;
         }
         return orderDesc;
@@ -117,7 +118,6 @@ public class SortDTO implements Serializable {
     public void setOrderDesc(Integer orderDesc) {
         this.orderDesc = orderDesc;
     }
-
 
 
     @Override
