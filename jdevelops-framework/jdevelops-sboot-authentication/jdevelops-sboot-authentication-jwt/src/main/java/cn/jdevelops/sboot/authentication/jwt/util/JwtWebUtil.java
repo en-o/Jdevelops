@@ -7,10 +7,7 @@ import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 
 import javax.servlet.http.Cookie;

@@ -30,10 +30,10 @@ public interface CheckTokenInterceptor {
 
     /**
      * 检查用户状态(不正常的直接抛异常出去
-     * @param subject token.subject[用户唯一编码，建议登录名]
+     * @param token token
      * @throws Exception ExpiredRedisException
      */
-    default void checkUserStatus(String subject) throws Exception{}
+    default void checkUserStatus(String token) throws Exception{}
 
     /**
      * 检查用户权限

@@ -40,10 +40,16 @@ public class StorageToken {
     Boolean onlyOnline;
 
     public Boolean getAlwaysOnline() {
-        return !Objects.isNull(alwaysOnline) && alwaysOnline;
+        if (Objects.isNull(alwaysOnline)) {
+            return false;
+        }
+        return alwaysOnline;
     }
 
     public Boolean getOnlyOnline() {
-        return !Objects.isNull(alwaysOnline) && alwaysOnline;
+        if (Objects.isNull(onlyOnline)) {
+            return false;
+        }
+        return onlyOnline;
     }
 }

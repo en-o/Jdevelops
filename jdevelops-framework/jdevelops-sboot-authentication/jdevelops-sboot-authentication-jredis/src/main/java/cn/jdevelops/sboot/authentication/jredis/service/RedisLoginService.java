@@ -1,6 +1,7 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.api.exception.exception.TokenException;
+import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserState;
 import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
@@ -36,44 +37,47 @@ public class RedisLoginService implements LoginService {
     @Resource
     private RedisToken redisToken;
 
+    @Resource
+    private RedisUserState redisUserState;
+
 
     /**
      * 登录
-     * @param subject RedisSignEntity
+     * @param loginMeta 登录需要的元数据
      * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
      * @return 签名
      */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> subject, RB account) {
-        if (null != account) {
-            jwtRedisService.storageUserStatus(account);
+    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> loginMeta, StorageUserState userState) {
+        if (null != userState) {
+            redisUserState.storage(userState);
         }
-        return login(subject);
+        return login(loginMeta);
     }
 
     /**
      * 登录
-     * @param redisSubject RedisSignEntity
+     * @param  loginMeta 登录需要的元数据
      * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
      * @return 签名
      */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> redisSubject) {
+    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> loginMeta) {
         // 生成token
         try {
             // token
-            String sign = JwtService.generateToken(redisSubject);
+            String sign = JwtService.generateToken(loginMeta);
             // 预备登录信息给redis存储
             StorageToken build = StorageToken.builder()
-                    .subject(redisSubject.getSubject())
-                    .onlyOnline(redisSubject.getOnlyOnline())
-                    .alwaysOnline(redisSubject.getAlwaysOnline())
+                    .subject(loginMeta.getSubject())
+                    .onlyOnline(loginMeta.getOnlyOnline())
+                    .alwaysOnline(loginMeta.getAlwaysOnline())
                     .token(sign)
                     .build();
             // 判断是否需要重复登录
             try {
                 // 查询当前用户是否已经登录
-                StorageToken loginUser = redisToken.verify(redisSubject.getSubject());
+                StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
                 // 用户存在登录，判断是否需要重新登录
-                if (Boolean.FALSE.equals(redisSubject.getOnlyOnline())) {
+                if (Boolean.FALSE.equals(loginMeta.getOnlyOnline())) {
                     // 继续使用当前token
                     logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
                     return loginUser.getToken();

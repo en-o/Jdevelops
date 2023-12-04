@@ -200,7 +200,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserStatus(String token) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserStatus(JwtService.getSubjectExpires(token));
+        checkTokenInterceptor.checkUserStatus(token);
     }
 
 // =================== 检查token中的role是否跟接口的role匹配 ==================================

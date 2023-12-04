@@ -1,7 +1,6 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
-import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
-import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserState;
 
 /**
  * 用户状态
@@ -16,14 +15,14 @@ public interface RedisUserState {
      *
      * @param state 用户状态
      */
-    void storage(String state);
+    void storage(StorageUserState state);
 
     /**
      * 刷新用户状态
      *
-     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     * @param state 新的状态
      */
-    void refresh(String subject);
+    void refresh(StorageUserState state);
 
     /**
      * 查询用户状态
@@ -31,7 +30,7 @@ public interface RedisUserState {
      * @param subject token.subject[用户唯一值(一般用用户的登录名]
      * @return 用户状态对象
      */
-    String load(String subject);
+    StorageUserState load(String subject);
 
     /**
      * 验证用户状态  [根据状态抛出相应的异常]
