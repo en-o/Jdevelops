@@ -7,7 +7,6 @@ import cn.jdevelops.sboot.authentication.jredis.util.RedisUtil;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.exception.LoginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,7 +20,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_EXPIRED_USER;
-import static cn.jdevelops.api.result.emums.TokenExceptionCode.UNAUTHENTICATED;
 
 /**
  * 用户token
