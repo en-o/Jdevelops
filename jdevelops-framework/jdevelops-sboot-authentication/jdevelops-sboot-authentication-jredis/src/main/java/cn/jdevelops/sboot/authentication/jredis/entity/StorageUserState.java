@@ -26,8 +26,6 @@ public class StorageUserState {
      */
     private boolean excessiveAttempts;
 
-    public StorageUserState() {
-    }
 
     public StorageUserState(String subject, boolean disabledAccount, boolean excessiveAttempts) {
         this.subject = subject;
