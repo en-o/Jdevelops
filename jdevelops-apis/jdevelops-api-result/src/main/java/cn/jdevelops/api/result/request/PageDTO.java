@@ -22,7 +22,7 @@ public class PageDTO implements Serializable {
      * 默认1
      */
     @Schema(description = "页码", defaultValue = "1", example = "1")
-    @Max(value = 500,message = "页码超出了阈值")
+    @Max(value = 10000,message = "页码超出了阈值")
     @Min(value = 1,message = "页码超出了阈值")
     private Integer pageIndex;
 

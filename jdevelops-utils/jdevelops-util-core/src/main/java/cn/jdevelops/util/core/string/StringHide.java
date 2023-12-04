@@ -251,7 +251,7 @@ public class StringHide {
      * 根据前缀树进行遮掩
      * @param words 需要遮掩的关键字
      * @param text  需要遮掩的字符串
-     * @param sensitiveWords 遮掩（2342**sda）
+     * @param sensitiveWords 遮掩符（2342**sda）
      * @return String
      */
     public static String nodeHide(List<String> words, String text, String sensitiveWords) {
