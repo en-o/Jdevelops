@@ -73,7 +73,7 @@ public class RedisLoginService implements LoginService {
                 // 查询当前用户是否已经登录
                 StorageToken loginUser = redisToken.verify(redisSubject.getSubject());
                 // 用户存在登录，判断是否需要重新登录
-                if (!redisSubject.getOnlyOnline()) {
+                if (Boolean.FALSE.equals(redisSubject.getOnlyOnline())) {
                     // 继续使用当前token
                     logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
                     return loginUser.getToken();
