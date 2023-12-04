@@ -172,7 +172,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                            Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform.name())) {
+            if (platformConstants.contains(annotationPlatform)) {
                 return true;
             }
         }
