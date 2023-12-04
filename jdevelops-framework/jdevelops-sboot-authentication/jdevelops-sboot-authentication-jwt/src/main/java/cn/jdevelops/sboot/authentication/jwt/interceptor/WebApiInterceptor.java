@@ -165,6 +165,9 @@ public class WebApiInterceptor implements HandlerInterceptor {
 
     }
 
+    /**
+     * 检查方法
+     */
     private boolean jwtListExistAnnotationMethod(List<PlatformConstant> platformConstants,
                                            Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
@@ -176,6 +179,9 @@ public class WebApiInterceptor implements HandlerInterceptor {
         return false;
     }
 
+    /**
+     * 检查类
+     */
     private boolean jwtListExistAnnotationMethodClasses(List<PlatformConstant> platformConstants,
                                                         Class<?> controllerClass) {
         ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
