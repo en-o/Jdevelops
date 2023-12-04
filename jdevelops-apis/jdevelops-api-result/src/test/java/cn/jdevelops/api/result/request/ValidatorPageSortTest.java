@@ -99,7 +99,7 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
         violations  = validate(pageDTO);
         violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
 
-        pageDTO.setPageIndex(501);
+        pageDTO.setPageIndex(10001);
         violations  = validate(pageDTO);
         violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
     }
@@ -150,7 +150,7 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
         violations  = validate(sortPageDTO);
         assertEquals(0,violations.size());
 
-        sortPageDTO.setPageIndex(600);
+        sortPageDTO.setPageIndex(10001);
         violations  = validate(sortPageDTO);
         violations.forEach(violation -> assertEquals("页码超出了阈值",violation.getMessage()));
 
@@ -164,7 +164,7 @@ public class ValidatorPageSortTest extends BeastValidatedTest {
         // 上面有个错了所以这里是2
         assertEquals(2,violations.size());
         ArrayList<ConstraintViolation<SortPageDTO>> list = new ArrayList<>(violations);
-        assertEquals("个数必须在1和5之间",list.get(0).getMessage());
-        assertEquals("页码超出了阈值",list.get(1).getMessage());
+        assertEquals("页码超出了阈值",list.get(0).getMessage());
+        assertEquals("个数必须在1和5之间",list.get(1).getMessage());
     }
 }
