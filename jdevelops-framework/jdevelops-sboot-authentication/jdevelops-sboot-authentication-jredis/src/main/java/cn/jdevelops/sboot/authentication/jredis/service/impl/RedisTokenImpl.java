@@ -31,7 +31,7 @@ import static cn.jdevelops.api.result.emums.TokenExceptionCode.REDIS_EXPIRED_USE
 public class RedisTokenImpl implements RedisToken{
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(JwtJwtRedisServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RedisTokenImpl.class);
 
     /**
      * reids
