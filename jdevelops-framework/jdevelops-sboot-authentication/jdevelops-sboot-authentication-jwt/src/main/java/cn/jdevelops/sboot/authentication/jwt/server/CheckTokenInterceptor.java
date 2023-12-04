@@ -23,9 +23,9 @@ public interface CheckTokenInterceptor {
 
     /**
      * 刷新token缓存 (默认不刷新
-     * @param subject token.subject[用户唯一编码，建议登录名]
+     * @param token token
      */
-    default void refreshToken(String subject){}
+    default void refreshToken(String token){}
 
 
     /**

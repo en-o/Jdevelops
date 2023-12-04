@@ -20,70 +20,7 @@ import java.util.List;
  */
 public interface JwtRedisService {
 
-    /**
-     * 存放 用户TOKEN
-     *
-     * @param storageToken 存储用户登录token
-     */
-    void storageUserToken(StorageToken storageToken);
 
-    /**
-     * 刷新用户token
-     *
-     * @param subject 用户唯一值(一般用用户的登录名
-     */
-    void refreshUserToken(String subject);
-
-
-    /**
-     * 删除 用户TOKEN
-     *
-     * @param subject 用户唯一值(一般用用户的登录名
-     */
-    void removeUserToken(String subject);
-
-    /**
-     * 删除 用户TOKEN
-     *
-     * @param subject 用户唯一值(一般用用户的登录名
-     */
-    void removeUserToken(List<String> subject);
-
-    /**
-     * 验证 用户TOKEN是否存在，存在则返回 token
-     * 不存在，或者 token 异常就报错
-     *
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @return LoginTokenRedis
-     * @throws ExpiredRedisException redis异常
-     */
-    StorageToken verifyUserTokenBySubject(String subject) throws ExpiredRedisException;
-
-    /**
-     * 验证 用户TOKEN是否存在，存在则返回 token的详细信息 {@link StorageToken}
-     * 不存在，或者 token 异常就报错
-     *
-     * @param token toekn
-     * @return LoginTokenRedis
-     * @throws ExpiredRedisException redis异常
-     */
-    StorageToken verifyUserTokenByToken(String token) throws ExpiredRedisException;
-
-
-    /**
-     * 获取存储的用户token详情
-     * @param subject 用户唯一值(一般用用户的登录名
-     * @return LoginTokenRedis
-     */
-    StorageToken loadUserStorageTokenBySubject(String subject) ;
-
-    /**
-     * 获取存储的用户token详情
-     * @param token token
-     * @return LoginTokenRedis
-     * @throws LoginException LoginException
-     */
-    StorageToken loadUserStorageTokenByToken(String token) throws  LoginException;
 
 
     /**

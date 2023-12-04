@@ -33,6 +33,9 @@ public class RedisLoginService implements LoginService {
     @Resource
     private JwtRedisService jwtRedisService;
 
+    @Resource
+    private RedisToken redisToken;
+
 
     /**
      * 登录
@@ -68,7 +71,7 @@ public class RedisLoginService implements LoginService {
             // 判断是否需要重复登录
             try {
                 // 查询当前用户是否已经登录
-                StorageToken loginUser = jwtRedisService.verifyUserTokenBySubject(redisSubject.getSubject());
+                StorageToken loginUser = redisToken.verify(redisSubject.getSubject());
                 // 用户存在登录，判断是否需要重新登录
                 if (!redisSubject.getOnlyOnline()) {
                     // 继续使用当前token
@@ -82,7 +85,7 @@ public class RedisLoginService implements LoginService {
                 logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
             }
             // 存储 用户登录信息
-            jwtRedisService.storageUserToken(build);
+            redisToken.storage(build);
             // 返回token
             return sign;
         } catch (JoseException e) {
@@ -105,7 +108,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public boolean isLogin(String subject) {
         try {
-            jwtRedisService.loadUserStorageTokenBySubject(subject);
+            redisToken.load(subject);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);
@@ -117,7 +120,7 @@ public class RedisLoginService implements LoginService {
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);
-            jwtRedisService.loadUserStorageTokenByToken(token);
+            redisToken.loadByToken(token);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);
@@ -129,7 +132,7 @@ public class RedisLoginService implements LoginService {
     public void loginOut(HttpServletRequest request) {
         try {
             String subject = JwtWebUtil.getTokenSubject(request);
-            jwtRedisService.removeUserToken(subject);
+            redisToken.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
@@ -138,7 +141,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public void loginOut(String subject) {
         try {
-            jwtRedisService.removeUserToken(subject);
+            redisToken.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
@@ -147,7 +150,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public void loginOut(List<String> subject) {
         try {
-            jwtRedisService.removeUserToken(subject);
+            redisToken.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }

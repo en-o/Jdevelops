@@ -2,6 +2,7 @@ package cn.jdevelops.sboot.authentication.jredis.interceptor;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
+import cn.jdevelops.sboot.authentication.jredis.service.RedisToken;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
@@ -28,16 +29,16 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public boolean checkToken(String token) {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-        StorageToken storageToken = jwtRedisService.verifyUserTokenByToken(token);
+        RedisToken redisToken = JwtContextUtil.getBean(RedisToken.class);
+        StorageToken storageToken = redisToken.verifyByToken(token);
         return Objects.nonNull(storageToken) && storageToken.getToken().equalsIgnoreCase(token);
     }
 
     @Override
-    public void refreshToken(String subject) {
+    public void refreshToken(String token) {
        try {
-           JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-           jwtRedisService.refreshUserToken(subject);
+           RedisToken redisToken = JwtContextUtil.getBean(RedisToken.class);
+           redisToken.refreshByToken(token);
        }catch (Exception e){
            LOG.warn("token刷新失败:", e);
        }

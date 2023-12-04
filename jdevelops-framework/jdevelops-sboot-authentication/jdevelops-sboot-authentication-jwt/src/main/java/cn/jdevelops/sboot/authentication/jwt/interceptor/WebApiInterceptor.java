@@ -233,7 +233,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
             // 全局设置刷新状态 false: 不刷新
             if (jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))) {
                 // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                checkTokenInterceptor.refreshToken(JwtService.getSubjectExpires(token));
+                checkTokenInterceptor.refreshToken(token);
             }
         } catch (Exception e) {
             log.warn("token缓存刷新失败", e);

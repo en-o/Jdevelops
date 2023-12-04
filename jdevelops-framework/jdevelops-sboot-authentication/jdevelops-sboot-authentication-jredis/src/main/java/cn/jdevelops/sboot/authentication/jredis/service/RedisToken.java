@@ -5,7 +5,7 @@ import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import java.util.List;
 
 /**
- * token存储
+ * 用户token
  *
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/11/9 16:17

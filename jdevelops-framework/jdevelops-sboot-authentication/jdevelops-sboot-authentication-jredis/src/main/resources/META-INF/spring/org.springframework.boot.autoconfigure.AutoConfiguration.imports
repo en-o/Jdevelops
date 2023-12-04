@@ -1,2 +1,3 @@
 cn.jdevelops.sboot.authentication.jredis.service.impl.JwtJwtRedisServiceImpl
+cn.jdevelops.sboot.authentication.jredis.service.impl.RedisTokenImpl
 cn.jdevelops.sboot.authentication.jredis.service.RedisLoginService
