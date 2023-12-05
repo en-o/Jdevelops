@@ -80,12 +80,14 @@ public class RedisUserRoleImpl implements RedisUserRole {
         if (!Objects.isNull(redisRole)) {
             String[] roles = annotation.roles();
             String[] permissions = annotation.permissions();
-            // 判断角色
-            if (roles != null && roles.length > 0 && (!ListUtil.verifyList(redisRole.getRoles(), roles))) {
+            // 判断角色  -  注解里无值就不判断了
+            if (roles != null && roles.length > 0
+                    && (!ListUtil.verifyList(redisRole.getRoles(), roles))) {
                 throw new PermissionsException(API_ROLE_AUTH_ERROR);
             }
-            // 判断权限
-            if (permissions != null && permissions.length > 0 && (!ListUtil.verifyList(redisRole.getPermissions(), permissions))) {
+            // 判断权限  -  注解里无值就不判断了
+            if (permissions != null && permissions.length > 0
+                    && (!ListUtil.verifyList(redisRole.getPermissions(), permissions))) {
                 throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
             }
         }

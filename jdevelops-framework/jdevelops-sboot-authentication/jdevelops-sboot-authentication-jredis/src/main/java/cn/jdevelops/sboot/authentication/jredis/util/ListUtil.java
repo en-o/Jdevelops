@@ -19,6 +19,9 @@ public final class ListUtil {
      * @return true  list的数据中有values的数据， false: values所需要的数据在list中没有发现
      */
     public static boolean verifyList(List<String> list, String[] values) {
+        if(values == null){
+            return false;
+        }
         for (String value : values) {
             if(null == value || value.trim().isEmpty()){
                 continue;
