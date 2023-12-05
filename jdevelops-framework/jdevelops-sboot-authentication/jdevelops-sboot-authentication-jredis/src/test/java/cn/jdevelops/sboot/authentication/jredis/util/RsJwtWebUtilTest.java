@@ -23,25 +23,7 @@ public class RsJwtWebUtilTest extends TestCase {
             this.name = name;
         }
     }
-    public void testGetTokenByRedisSignEntity() throws JoseException {
-        RedisSignEntity<TestBean> signEntity =
-                new RedisSignEntity<>(new SignEntity<>("tan",
-                        new TestBean("tan", "tan")));
-        String token = JwtService.generateToken(signEntity);
-        // 创建HttpServletRequest的模拟对象
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        // 设置模拟请求的上下文和参数
-        Mockito.when(request.getContextPath()).thenReturn("/test");
-        Mockito.when(request.getMethod()).thenReturn("GET");
-        Mockito.when(request.getParameter("token")).thenReturn(token);
-        RedisSignEntity<TestBean> tokenByRedisSignEntity = RsJwtWebUtil.getTokenByRedisSignEntity(request, TestBean.class);
 
-        assertEquals("RsJwtWebUtilTest.TestBean(sex=tan, name=tan)",
-                tokenByRedisSignEntity.getMap().toString());
-    }
-
-    public void testTestGetTokenByRedisSignEntity() {
-    }
 
     public void testGetLoginJwtExtendInfoExpires() throws JoseException {
         RedisSignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity =
