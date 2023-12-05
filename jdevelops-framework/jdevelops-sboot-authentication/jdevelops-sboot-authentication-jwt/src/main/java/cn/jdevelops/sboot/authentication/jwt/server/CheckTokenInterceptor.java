@@ -23,21 +23,21 @@ public interface CheckTokenInterceptor {
 
     /**
      * 刷新token缓存 (默认不刷新
-     * @param subject 用户唯一编码
+     * @param token token
      */
-    default void refreshToken(String subject){}
+    default void refreshToken(String token){}
 
 
     /**
      * 检查用户状态(不正常的直接抛异常出去
-     * @param subject 用户唯一编码
+     * @param token token
      * @throws Exception ExpiredRedisException
      */
-    default void checkUserStatus(String subject) throws Exception{}
+    default void checkUserStatus(String token) throws Exception{}
 
     /**
      * 检查用户权限
-     * @param subject 用户唯一编码
+     * @param subject token.subject[用户唯一编码，建议登录名]
      * @param method 请求接口的权限注解
      * @throws Exception ExpiredRedisException
      */

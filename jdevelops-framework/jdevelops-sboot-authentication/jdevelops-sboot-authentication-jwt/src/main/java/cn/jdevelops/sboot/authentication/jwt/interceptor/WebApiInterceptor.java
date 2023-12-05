@@ -5,17 +5,18 @@ import cn.jdevelops.api.result.emums.TokenExceptionCode;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiMapping;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPlatform;
 import cn.jdevelops.sboot.authentication.jwt.annotation.NotRefreshToken;
+import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
-import cn.jdevelops.sboot.authentication.jwt.vo.CheckVO;
+import cn.jdevelops.sboot.authentication.jwt.vo.CheckToken;
 import cn.jdevelops.spi.ExtensionLoader;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
-import cn.jdevelops.util.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static cn.jdevelops.api.result.emums.TokenExceptionCode.UNAUTHENTICATED_PLATFORM;
@@ -47,7 +49,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -89,8 +91,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                         Object handler, Method method,
                                         Logger logger,
                                         Class<?> controllerClass) throws Exception {
-        CheckVO check = check(request, response, handler, logger, method, controllerClass);
-        if (check.getCheck()) {
+        CheckToken check = check(request, response, handler, logger, method, controllerClass);
+        if (Boolean.TRUE.equals(check.getCheck())) {
             refreshToken(check.getToken(), method);
         }
         return check.getCheck();
@@ -108,12 +110,12 @@ public class WebApiInterceptor implements HandlerInterceptor {
      * @return check
      * @throws IOException IOException
      */
-    private CheckVO check(HttpServletRequest request,
-                          HttpServletResponse response,
-                          Object handler,
-                          Logger logger,
-                          Method method,
-                          Class<?> controllerClass) throws Exception {
+    private CheckToken check(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler,
+                             Logger logger,
+                             Method method,
+                             Class<?> controllerClass) throws Exception {
         String token = JwtWebUtil.getToken(request, jwtConfig.getCookie());
         // 验证token
         boolean flag = checkTokenInterceptor.checkToken(token);
@@ -121,22 +123,22 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
-                    .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
-            return new CheckVO(false, token);
+                    .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes(StandardCharsets.UTF_8));
+            return new CheckToken(false, token);
         }
-        // 日志用的 - %X{token}
+        /* 日志用的 - %X{token} */
         MDC.put(JwtConstant.TOKEN, token);
         // 验证接口是否允许被调用
-        if (jwtConfig.getVerifyPlatform()) {
+        if (Boolean.TRUE.equals(jwtConfig.getVerifyPlatform())) {
             checkApiPlatform(token, method, controllerClass);
         }
         // 验证用户状态
         checkUserStatus(token);
         // 验证用户接口权限
-        if (jwtConfig.getVerifyPermission()) {
+        if (Boolean.TRUE.equals(jwtConfig.getVerifyPermission())) {
             checkUserPermission(token, method);
         }
-        return new CheckVO(true, token);
+        return new CheckToken(true, token);
     }
 
 // =================== 检查接口的使用范围是否能跟token中的返回对应上 ==================================
@@ -151,36 +153,41 @@ public class WebApiInterceptor implements HandlerInterceptor {
     private void checkApiPlatform(String token,
                                   Method method,
                                   Class<?> controllerClass) {
+        List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
         if (method.isAnnotationPresent(ApiPlatform.class)) {
-            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
             if (!jwtListExistAnnotationMethod(platformConstants, method)) {
-                throw new LoginException(UNAUTHENTICATED_PLATFORM);
+                throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
             }
-        }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)){
-            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
-            if (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass)) {
-                throw new LoginException(UNAUTHENTICATED_PLATFORM);
-            }
+        }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)
+                && (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass))) {
+                throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
+
         }
 
     }
 
+    /**
+     * 检查方法
+     */
     private boolean jwtListExistAnnotationMethod(List<PlatformConstant> platformConstants,
                                            Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform.name())) {
+            if (annotationPlatform.contains(platformConstants)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * 检查类
+     */
     private boolean jwtListExistAnnotationMethodClasses(List<PlatformConstant> platformConstants,
                                                         Class<?> controllerClass) {
         ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform.name())) {
+            if (annotationPlatform.contains(platformConstants)) {
                 return true;
             }
         }
@@ -200,7 +207,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserStatus(String token) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserStatus(JwtService.getSubjectExpires(token));
+        checkTokenInterceptor.checkUserStatus(token);
     }
 
 // =================== 检查token中的role是否跟接口的role匹配 ==================================
@@ -214,7 +221,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserPermission(String token, Method method) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserPermission(JwtService.getSubjectExpires(token), method);
+        checkTokenInterceptor.checkUserPermission(token, method);
     }
 
     // =================== 检查token中的role是否跟接口的role匹配 ==================================
@@ -231,9 +238,10 @@ public class WebApiInterceptor implements HandlerInterceptor {
         try {
 
             // 全局设置刷新状态 false: 不刷新
-            if (jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))) {
+            if (Boolean.TRUE.equals(jwtConfig.getCallRefreshToken())
+                    && (!method.isAnnotationPresent(NotRefreshToken.class))) {
                 // 每次接口进来都要属性 token缓存。刷新方式请自主实现
-                checkTokenInterceptor.refreshToken(JwtService.getSubjectExpires(token));
+                checkTokenInterceptor.refreshToken(token);
             }
         } catch (Exception e) {
             log.warn("token缓存刷新失败", e);

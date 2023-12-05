@@ -7,10 +7,7 @@ import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.JCookie;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 
 import javax.servlet.http.Cookie;
@@ -128,34 +125,11 @@ public class JwtWebUtil {
      */
     public static <T, S> T getTokenByBean(HttpServletRequest request, Class<T> t, Class<S> ts) {
         String token = JwtWebUtil.getToken(request);
-        return getTokenByBean(token, t, ts);
+        return JwtService.getTokenByBean(token, t, ts);
     }
 
 
-    /**
-     * 获取token中的 数据并 转化成 T类型
-     *
-     * @param token token
-     * @param t     返回类型 （颁发时token存储的类型）
-     * @param ts  t中map的对象
-     * @return t
-     */
-    public static <T, S> T getTokenByBean(String token, Class<T> t, Class<S> ts) {
-        JwtClaims jwtClaims = JwtService.parseJwt(token);
-        String rawJson = jwtClaims.getRawJson();
-        JSONObject jsonObject = JSON.parseObject(rawJson);
-        if(ts != null){
-            String mapValue = jsonObject.getString("map");
-            if (null!=mapValue && mapValue.length() > 0) {
-                if(JSON.isValid(mapValue)){
-                    jsonObject.put("map", JSON.to(ts, mapValue));
-                }else {
-                    jsonObject.put("map", mapValue);
-                }
-            }
-        }
-        return JSON.to(t, jsonObject);
-    }
+
 
     /**
      *  获取token的参数并转化为登录时使用的实体对象
