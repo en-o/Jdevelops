@@ -6,7 +6,7 @@ package cn.jdevelops.util.jwt.entity;
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/11/3 11:14
  */
-public class LoginJwtExtendInfo {
+public class LoginJwtExtendInfo<T> {
 
     /**
      * 登录名
@@ -33,6 +33,12 @@ public class LoginJwtExtendInfo {
      */
     String phone;
 
+
+    /**
+     * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
+     */
+    T map;
+
     public LoginJwtExtendInfo() {
     }
 
@@ -46,6 +52,29 @@ public class LoginJwtExtendInfo {
         this.userNo = userNo;
         this.userName = userName;
         this.phone = phone;
+    }
+    public LoginJwtExtendInfo(String loginName,
+                              String userId,
+                              String userNo,
+                              String userName,
+                              String phone,
+                              T map) {
+        this.loginName = loginName;
+        this.userId = userId;
+        this.userNo = userNo;
+        this.userName = userName;
+        this.phone = phone;
+        this.map = map;
+    }
+
+    public LoginJwtExtendInfo(String loginName,
+                              String userNo,
+                              String userName,
+                              T map) {
+        this.loginName = loginName;
+        this.userNo = userNo;
+        this.userName = userName;
+        this.map = map;
     }
 
     public LoginJwtExtendInfo(String loginName,
@@ -96,6 +125,14 @@ public class LoginJwtExtendInfo {
         this.phone = phone;
     }
 
+    public T getMap() {
+        return map;
+    }
+
+    public void setMap(T map) {
+        this.map = map;
+    }
+
     @Override
     public String toString() {
         return "LoginJwtExtendInfo{" +
@@ -104,6 +141,7 @@ public class LoginJwtExtendInfo {
                 ", userNo='" + userNo + '\'' +
                 ", userName='" + userName + '\'' +
                 ", phone='" + phone + '\'' +
+                ", map=" + map +
                 '}';
     }
 }
