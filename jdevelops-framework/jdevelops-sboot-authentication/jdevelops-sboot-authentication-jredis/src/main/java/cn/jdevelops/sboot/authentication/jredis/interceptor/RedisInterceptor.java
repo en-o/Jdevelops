@@ -1,7 +1,9 @@
 package cn.jdevelops.sboot.authentication.jredis.interceptor;
 
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
-import cn.jdevelops.sboot.authentication.jredis.service.JwtRedisService;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
+import cn.jdevelops.sboot.authentication.jredis.service.RedisToken;
+import cn.jdevelops.sboot.authentication.jredis.service.RedisUserRole;
+import cn.jdevelops.sboot.authentication.jredis.service.RedisUserState;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.CheckTokenInterceptor;
@@ -28,33 +30,33 @@ public class RedisInterceptor implements CheckTokenInterceptor {
 
     @Override
     public boolean checkToken(String token) {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-        StorageUserTokenEntity storageUserTokenEntity = jwtRedisService.verifyUserTokenByToken(token);
-        return Objects.nonNull(storageUserTokenEntity) && storageUserTokenEntity.getToken().equalsIgnoreCase(token);
+        RedisToken redisToken = JwtContextUtil.getBean(RedisToken.class);
+        StorageToken storageToken = redisToken.verifyByToken(token);
+        return Objects.nonNull(storageToken) && storageToken.getToken().equalsIgnoreCase(token);
     }
 
     @Override
-    public void refreshToken(String subject) {
+    public void refreshToken(String token) {
        try {
-           JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-           jwtRedisService.refreshUserToken(subject);
+           RedisToken redisToken = JwtContextUtil.getBean(RedisToken.class);
+           redisToken.refreshByToken(token);
        }catch (Exception e){
            LOG.warn("token刷新失败:", e);
        }
     }
 
     @Override
-    public void checkUserStatus(String subject) throws ExpiredRedisException {
-        JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-        jwtRedisService.verifyUserStatus(subject);
+    public void checkUserStatus(String token) throws ExpiredRedisException {
+        RedisUserState redisUserState = JwtContextUtil.getBean(RedisUserState.class);
+        redisUserState.verifyByToken(token);
     }
 
     @Override
-    public void checkUserPermission(String subject, Method method) throws Exception {
+    public void checkUserPermission(String token, Method method) throws Exception {
         if (method.isAnnotationPresent(ApiPermission.class)) {
             ApiPermission annotation = method.getAnnotation(ApiPermission.class);
-            JwtRedisService jwtRedisService = JwtContextUtil.getBean(JwtRedisService.class);
-            jwtRedisService.verifyUserPermission(subject,annotation);
+            RedisUserRole jwtRedisService = JwtContextUtil.getBean(RedisUserRole.class);
+            jwtRedisService.verifyByToken(token,annotation);
         }
     }
 }

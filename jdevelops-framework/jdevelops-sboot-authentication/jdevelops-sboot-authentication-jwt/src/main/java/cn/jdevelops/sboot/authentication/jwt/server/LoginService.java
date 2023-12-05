@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 登录工具
@@ -40,6 +41,7 @@ public interface LoginService  {
      */
     boolean isLogin(String subject);
 
+
     /**
      * 是否登录
      *
@@ -62,5 +64,11 @@ public interface LoginService  {
      */
     default void loginOut(String subject){}
 
+
+    /**
+     * 退出登录
+     * @param subject subject
+     */
+    default void loginOut(List<String> subject){}
 
 }

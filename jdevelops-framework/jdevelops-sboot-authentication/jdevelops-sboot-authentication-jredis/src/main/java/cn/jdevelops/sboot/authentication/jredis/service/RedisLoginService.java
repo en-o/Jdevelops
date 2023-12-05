@@ -1,8 +1,7 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
-import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageUserTokenEntity;
+import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
@@ -17,6 +16,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -30,57 +30,60 @@ public class RedisLoginService implements LoginService {
     private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
 
     @Resource
-    private JwtRedisService jwtRedisService;
+    private RedisToken redisToken;
+
+    @Resource
+    private RedisUserState redisUserState;
+
+    @Resource
+    private RedisUserRole redisUserRole;
 
 
     /**
      * 登录
-     * @param subject RedisSignEntity
-     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
+     * @param  loginMeta 登录需要的元数据
      * @return 签名
      */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> subject, RB account) {
-        if (null != account) {
-            jwtRedisService.storageUserStatus(account);
+    public <T> String login(RedisSignEntity<T> loginMeta) {
+
+        // 判断是否需要重复登录
+        try {
+            // 查询当前用户是否已经登录
+            StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
+            // 用户存在登录，判断是否需要重新登录
+            if (Boolean.FALSE.equals(loginMeta.getOnlyOnline())) {
+                // 继续使用当前token
+                logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
+                return loginUser.getToken();
+            }
+            // 重新登录
+        } catch (ExpiredRedisException  | TokenException e) {
+            logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
+        }catch (Exception e) {
+            logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
         }
-        return login(subject);
-    }
 
-    /**
-     * 登录
-     * @param redisSubject RedisSignEntity
-     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
-     * @return 签名
-     */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> redisSubject) {
-        // 生成token
+        // 登录 - 生成token
         try {
             // token
-            String sign = JwtService.generateToken(redisSubject);
+            String sign = JwtService.generateToken(loginMeta);
             // 预备登录信息给redis存储
-            StorageUserTokenEntity build = StorageUserTokenEntity.builder()
-                    .userCode(redisSubject.getSubject())
-                    .alwaysOnline(redisSubject.getAlwaysOnline())
+            StorageToken build = StorageToken.builder()
+                    .subject(loginMeta.getSubject())
+                    .onlyOnline(loginMeta.getOnlyOnline())
+                    .alwaysOnline(loginMeta.getAlwaysOnline())
                     .token(sign)
                     .build();
-            // 判断是否需要重复登录
-            try {
-                // 查询当前用户是否已经登录
-                StorageUserTokenEntity loginUser = jwtRedisService.verifyUserTokenBySubject(redisSubject.getSubject());
-                // 用户存在登录，判断是否需要重新登录
-                if (!redisSubject.getOnlyOnline()) {
-                    // 继续使用当前token
-                    logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
-                    return loginUser.getToken();
-                }
-                // 重新登录
-            } catch (ExpiredRedisException  | TokenException e) {
-                logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
-            }catch (Exception e) {
-                logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
-            }
             // 存储 用户登录信息
-            jwtRedisService.storageUserToken(build);
+            redisToken.storage(build);
+            // state
+            if (null != loginMeta.getUserState()) {
+                redisUserState.storage(loginMeta.getUserState());
+            }
+            // role
+            if (null != loginMeta.getUserRole()) {
+                redisUserRole.storage(loginMeta.getUserRole());
+            }
             // 返回token
             return sign;
         } catch (JoseException e) {
@@ -103,7 +106,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public boolean isLogin(String subject) {
         try {
-            jwtRedisService.loadUserTokenInfoBySubject(subject);
+            redisToken.load(subject);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);
@@ -115,7 +118,7 @@ public class RedisLoginService implements LoginService {
     public boolean isLogin(HttpServletRequest request, Boolean cookie) {
         try {
             String token = JwtWebUtil.getToken(request, cookie);
-            jwtRedisService.loadUserTokenInfoByToken(token);
+            redisToken.loadByToken(token);
             return true;
         } catch (Exception e) {
             logger.warn("登录失效", e);
@@ -127,7 +130,7 @@ public class RedisLoginService implements LoginService {
     public void loginOut(HttpServletRequest request) {
         try {
             String subject = JwtWebUtil.getTokenSubject(request);
-            jwtRedisService.removeUserToken(subject);
+            redisToken.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
@@ -136,7 +139,16 @@ public class RedisLoginService implements LoginService {
     @Override
     public void loginOut(String subject) {
         try {
-            jwtRedisService.removeUserToken(subject);
+            redisToken.remove(subject);
+        } catch (Exception e) {
+            logger.warn("退出失败", e);
+        }
+    }
+
+    @Override
+    public void loginOut(List<String> subject) {
+        try {
+            redisToken.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }

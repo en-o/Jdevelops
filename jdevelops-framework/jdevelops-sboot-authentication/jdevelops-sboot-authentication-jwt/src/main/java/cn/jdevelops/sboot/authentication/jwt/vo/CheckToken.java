@@ -2,13 +2,14 @@ package cn.jdevelops.sboot.authentication.jwt.vo;
 
 
 /**
+ * token检查结果类
  * WebApiInterceptor.check
  *
  * @author tnnn
  * @version V1.0
  * @date 2023-02-10 11:33
  */
-public class CheckVO {
+public class CheckToken {
 
     /**
      * token 是否有效
@@ -20,7 +21,7 @@ public class CheckVO {
      */
     String token;
 
-    public CheckVO(Boolean check, String token) {
+    public CheckToken(Boolean check, String token) {
         this.check = check;
         this.token = token;
     }
