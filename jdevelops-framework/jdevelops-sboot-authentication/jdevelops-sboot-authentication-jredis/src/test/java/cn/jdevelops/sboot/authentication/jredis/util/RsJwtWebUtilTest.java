@@ -8,9 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import junit.framework.TestCase;
 import lombok.Data;
 import org.jose4j.lang.JoseException;
-import org.mockito.Mockito;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class RsJwtWebUtilTest extends TestCase {
