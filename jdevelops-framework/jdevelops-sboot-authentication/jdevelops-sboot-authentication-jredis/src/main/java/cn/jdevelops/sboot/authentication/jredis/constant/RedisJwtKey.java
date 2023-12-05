@@ -16,7 +16,7 @@ public interface RedisJwtKey {
     /**
      * 用户状态 存储文件夹
      */
-    String REDIS_USER_INFO_FOLDER = "user_status";
+    String REDIS_USER_STATUS_FOLDER = "user_status";
 
     /**
      * 用户角色code集 存储文件夹 （list）
@@ -25,7 +25,7 @@ public interface RedisJwtKey {
     /**
      * 用户角色集 存储文件夹 （list）
      */
-    String REDIS_USER_ROLE_INFO_FOLDER = "user_role_info";
+    String REDIS_USER_INFO_FOLDER = "user_info";
 
 
 }

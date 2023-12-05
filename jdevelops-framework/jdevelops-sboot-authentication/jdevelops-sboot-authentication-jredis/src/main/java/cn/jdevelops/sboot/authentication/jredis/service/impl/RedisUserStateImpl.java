@@ -41,7 +41,7 @@ public class RedisUserStateImpl implements RedisUserState {
 
     @Override
     public void storage(StorageUserState state) {
-        String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, state.getSubject());
+        String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_STATUS_FOLDER, state.getSubject());
         // 处理由于是泛型对象导致其他地方继承后有问题，
         String accountJson = JSON.toJSONString(state);
         redisTemplate.boundHashOps(userStateRedisFolder).put(state.getSubject(), accountJson);
@@ -56,7 +56,7 @@ public class RedisUserStateImpl implements RedisUserState {
 
     @Override
     public StorageUserState load(String subject) {
-        String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_INFO_FOLDER, subject);
+        String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
