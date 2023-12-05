@@ -19,13 +19,14 @@ import java.util.Objects;
 public class RedisSignEntity<T> extends SignEntity<T> {
 
     /**
-     * redis用 是否永久在线 (默认fales)
+     * redis用 是否永久在线 (默认fales,true redis中设置永不过期)
      */
     Boolean alwaysOnline;
 
 
     /**
      * redis用 唯一登录 ，以前的是否会被挤下线 （默认false：不挤）
+     * <p>会干扰 alwaysOnline的操作，如果为true永久在线的也会被挤下去</p>
      */
     Boolean onlyOnline;
 
