@@ -153,16 +153,15 @@ public class WebApiInterceptor implements HandlerInterceptor {
     private void checkApiPlatform(String token,
                                   Method method,
                                   Class<?> controllerClass) {
+        List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
         if (method.isAnnotationPresent(ApiPlatform.class)) {
-            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
             if (!jwtListExistAnnotationMethod(platformConstants, method)) {
                 throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
             }
-        }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)){
-            List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
-            if (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass)) {
+        }else if(controllerClass.isAnnotationPresent(ApiPlatform.class)
+                && (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass))) {
                 throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
-            }
+
         }
 
     }
@@ -174,7 +173,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                            Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform)) {
+            if (annotationPlatform.contains(platformConstants)) {
                 return true;
             }
         }
@@ -188,7 +187,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                                         Class<?> controllerClass) {
         ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform)) {
+            if (annotationPlatform.contains(platformConstants)) {
                 return true;
             }
         }

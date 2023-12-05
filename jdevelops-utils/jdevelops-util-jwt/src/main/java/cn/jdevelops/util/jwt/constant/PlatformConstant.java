@@ -1,5 +1,7 @@
 package cn.jdevelops.util.jwt.constant;
 
+import java.util.List;
+
 /**
  * 谁生成的jwt [前端系统平台]
  *
@@ -29,4 +31,20 @@ public enum PlatformConstant {
     APPLET;
 
 
+    /**
+     * 自定义 contains 方法
+     *
+     * <p>我用 list自己的 contains 出现 test能过 实际不过来 [问题发现了,从jwt中那数据的时候对象好像有点问题导致的，问题处理了但是这里不改了]</p>
+     *
+     * @param otherEnum PlatformConstants
+     * @return true 当前对象 在 [otherEnum] 里
+     */
+    public boolean contains(List<PlatformConstant> otherEnum) {
+        for (PlatformConstant constant : otherEnum) {
+            if(constant.name().equalsIgnoreCase(this.name())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

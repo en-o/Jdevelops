@@ -25,15 +25,13 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
 
 /**
- *  jwt工具
+ * jwt工具
+ *
  * @author tn
  * @version 1
  * @date 2020/6/19 11:52
@@ -55,19 +53,17 @@ public class JwtService {
     static {
         try {
             jwtConfig = JwtContextUtil.getBean(JwtConfig.class);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             logger.warn("未配置jwt项目元数据，则开始使用默认配置");
         }
-        if(Objects.isNull(jwtConfig)){
+        if (Objects.isNull(jwtConfig)) {
             jwtConfig = new JwtConfig(); // 默认
         }
         secret = new HmacKey(jwtConfig.getTokenSecret().getBytes(StandardCharsets.UTF_8));
     }
 
 
-
     /**
-     *
      * 生成token
      *
      * @param sign SignEntity
@@ -86,13 +82,24 @@ public class JwtService {
         claims.setIssuedAtToNow();  // 何时发行/创建令牌 (now)
 //        claims.setNotBeforeMinutesInThePast(1); //令牌尚未生效的时间 (2 minutes ago)
         claims.setSubject(sign.getSubject()); // 主体/主体是标记的对象
-        claims.setClaim(PLATFORM, sign.getPlatform());
+
+        // 将枚举类型的列表转换为字符串列表，
+        // 处理 #getPlatformConstantExpires(token) 时 java.lang.String cannot be cast to cn.jdevelops.util.jwt.constant.PlatformConstant 的问题
+
+        if(null != sign.getPlatform() && !sign.getPlatform().isEmpty()){
+            List<String> enumStringList = new ArrayList<>();
+            for (PlatformConstant myEnum : sign.getPlatform()) {
+                enumStringList.add(myEnum.name());
+            }
+            claims.setClaim(PLATFORM, enumStringList);
+        }
+
         claims.setClaim(SUBJECT, sign.getSubject());
-        if(null != sign.getMap()){
+        if (null != sign.getMap()) {
             // 判断是不是一个JAVA bean
-            if(sign.getMap() instanceof String || sign.getMap() instanceof Integer){
+            if (sign.getMap() instanceof String || sign.getMap() instanceof Integer) {
                 claims.setClaim(DATA_MAP, sign.getMap());
-            }else {
+            } else {
                 claims.setClaim(DATA_MAP, JSON.toJSONString(sign.getMap()));
             }
 
@@ -241,13 +248,13 @@ public class JwtService {
 
     /**
      * 获得Token中的 map 为 LoginJwtExtendInfo 用了这个对象的才能使用哈 （过期也解析）
-     *  ps: getTokenByBean
+     * ps: getTokenByBean
      *
      * @param token token
      * @return PlatformConstant
      */
     public static LoginJwtExtendInfo getLoginJwtExtendInfoExpires(String token) {
-        return  getTokenMapByBean(token, LoginJwtExtendInfo.class);
+        return getTokenMapByBean(token, LoginJwtExtendInfo.class);
     }
 
 
@@ -255,19 +262,19 @@ public class JwtService {
      * 获取token中 map的数据 并可以转换成指定对象
      *
      * @param token token
-     * @param ts  token中map的对象
+     * @param ts    token中map的对象
      * @return t  (空返回null)
      */
     public static <S> S getTokenMapByBean(String token, Class<S> ts) {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
         JSONObject jsonObject = JSON.parseObject(rawJson);
-        if(ts != null){
+        if (ts != null) {
             String mapValue = jsonObject.getString("map");
-            if (null!=mapValue && !mapValue.isEmpty()) {
-                if(JSON.isValid(mapValue)){
+            if (null != mapValue && !mapValue.isEmpty()) {
+                if (JSON.isValid(mapValue)) {
                     return JSON.to(ts, mapValue);
-                }else {
+                } else {
                     return (S) mapValue;
                 }
             }
@@ -280,20 +287,20 @@ public class JwtService {
      * 获取token中的 数据并 转化成 T类型
      *
      * @param token token
-     * @param t   返回类型 （颁发时token存储的类型， SignEntity 和他的子类）
-     * @param ts  t中map的对象
+     * @param t     返回类型 （颁发时token存储的类型， SignEntity 和他的子类）
+     * @param ts    t中map的对象
      * @return t
      */
     public static <T, S> T getTokenByBean(String token, Class<T> t, Class<S> ts) {
         JwtClaims jwtClaims = JwtService.parseJwt(token);
         String rawJson = jwtClaims.getRawJson();
         JSONObject jsonObject = JSON.parseObject(rawJson);
-        if(ts != null){
+        if (ts != null) {
             String mapValue = jsonObject.getString("map");
-            if (null!=mapValue && mapValue.length() > 0) {
-                if(JSON.isValid(mapValue)){
+            if (null != mapValue && mapValue.length() > 0) {
+                if (JSON.isValid(mapValue)) {
                     jsonObject.put("map", JSON.to(ts, mapValue));
-                }else {
+                } else {
                     jsonObject.put("map", mapValue);
                 }
             }
@@ -308,9 +315,22 @@ public class JwtService {
      * @return PlatformConstant
      */
     public static List<PlatformConstant> getPlatformConstantExpires(String token) {
-        // 解析 JWT
-        JwtClaims jwtClaims = parseJwt(token);
-        return (List<PlatformConstant>) jwtClaims.getClaimValue(PLATFORM);
+        // 将字符串列表转换回枚举类型的列表
+        List<PlatformConstant> enumList = new ArrayList<>();
+        try {
+            // 解析 JWT
+            JwtClaims jwtClaims = parseJwt(token);
+            // 从Claims中获取存储的枚举类型的列表的字符串表示
+            List<String> enumStringList = jwtClaims.getClaimValue(PLATFORM,  List.class);
+            if (enumStringList != null) {
+                for (String enumString : enumStringList) {
+                    enumList.add(PlatformConstant.valueOf(enumString));
+                }
+            }
+        } catch (Exception e) {
+            logger.error("获取PLATFORM失败,所以返回空，将此功能废弃", e);
+        }
+        return enumList;
     }
 
     /**
