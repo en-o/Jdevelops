@@ -16,6 +16,7 @@ import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static cn.jdevelops.api.result.emums.TokenExceptionCode.UNAUTHENTICATED_PLATFORM;
@@ -47,7 +49,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -90,7 +92,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                         Logger logger,
                                         Class<?> controllerClass) throws Exception {
         CheckToken check = check(request, response, handler, logger, method, controllerClass);
-        if (check.getCheck()) {
+        if (Boolean.TRUE.equals(check.getCheck())) {
             refreshToken(check.getToken(), method);
         }
         return check.getCheck();
@@ -121,19 +123,19 @@ public class WebApiInterceptor implements HandlerInterceptor {
         if (!flag) {
             response.setHeader("content-type", "application/json;charset=UTF-8");
             response.getOutputStream().write(JSON.toJSONString(ExceptionResultWrap
-                    .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes("UTF-8"));
+                    .result(TokenExceptionCode.TOKEN_ERROR.getCode(), TokenExceptionCode.TOKEN_ERROR.getMessage())).getBytes(StandardCharsets.UTF_8));
             return new CheckToken(false, token);
         }
-        // 日志用的 - %X{token}
+        /* 日志用的 - %X{token} */
         MDC.put(JwtConstant.TOKEN, token);
         // 验证接口是否允许被调用
-        if (jwtConfig.getVerifyPlatform()) {
+        if (Boolean.TRUE.equals(jwtConfig.getVerifyPlatform())) {
             checkApiPlatform(token, method, controllerClass);
         }
         // 验证用户状态
         checkUserStatus(token);
         // 验证用户接口权限
-        if (jwtConfig.getVerifyPermission()) {
+        if (Boolean.TRUE.equals(jwtConfig.getVerifyPermission())) {
             checkUserPermission(token, method);
         }
         return new CheckToken(true, token);
