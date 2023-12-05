@@ -66,4 +66,13 @@ public class StorageUserState {
     public void setSubject(String subject) {
         this.subject = subject;
     }
+
+    @Override
+    public String toString() {
+        return "StorageUserState{" +
+                "subject='" + subject + '\'' +
+                ", disabledAccount=" + disabledAccount +
+                ", excessiveAttempts=" + excessiveAttempts +
+                '}';
+    }
 }

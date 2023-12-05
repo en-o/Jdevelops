@@ -1,8 +1,6 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.api.exception.exception.TokenException;
-import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserState;
-import cn.jdevelops.sboot.authentication.jredis.entity.base.BasicsAccount;
 import cn.jdevelops.sboot.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.sboot.authentication.jredis.entity.sign.RedisSignEntity;
 import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
@@ -32,36 +30,40 @@ public class RedisLoginService implements LoginService {
     private static final Logger logger = LoggerFactory.getLogger(RedisLoginService.class);
 
     @Resource
-    private JwtRedisService jwtRedisService;
-
-    @Resource
     private RedisToken redisToken;
 
     @Resource
     private RedisUserState redisUserState;
 
+    @Resource
+    private RedisUserRole redisUserRole;
 
-    /**
-     * 登录
-     * @param loginMeta 登录需要的元数据
-     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
-     * @return 签名
-     */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> loginMeta, StorageUserState userState) {
-        if (null != userState) {
-            redisUserState.storage(userState);
-        }
-        return login(loginMeta);
-    }
 
     /**
      * 登录
      * @param  loginMeta 登录需要的元数据
-     * @param <RB>    account 用户状态  @see CheckTokenInterceptor#checkUserStatus(String)
      * @return 签名
      */
-    public <RB extends BasicsAccount, T> String login(RedisSignEntity<T> loginMeta) {
-        // 生成token
+    public <T> String login(RedisSignEntity<T> loginMeta) {
+
+        // 判断是否需要重复登录
+        try {
+            // 查询当前用户是否已经登录
+            StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
+            // 用户存在登录，判断是否需要重新登录
+            if (Boolean.FALSE.equals(loginMeta.getOnlyOnline())) {
+                // 继续使用当前token
+                logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
+                return loginUser.getToken();
+            }
+            // 重新登录
+        } catch (ExpiredRedisException  | TokenException e) {
+            logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
+        }catch (Exception e) {
+            logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
+        }
+
+        // 登录 - 生成token
         try {
             // token
             String sign = JwtService.generateToken(loginMeta);
@@ -72,22 +74,6 @@ public class RedisLoginService implements LoginService {
                     .alwaysOnline(loginMeta.getAlwaysOnline())
                     .token(sign)
                     .build();
-            // 判断是否需要重复登录
-            try {
-                // 查询当前用户是否已经登录
-                StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
-                // 用户存在登录，判断是否需要重新登录
-                if (Boolean.FALSE.equals(loginMeta.getOnlyOnline())) {
-                    // 继续使用当前token
-                    logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
-                    return loginUser.getToken();
-                }
-                // 重新登录
-            } catch (ExpiredRedisException  | TokenException e) {
-                logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
-            }catch (Exception e) {
-                logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
-            }
             // 存储 用户登录信息
             redisToken.storage(build);
             // 返回token

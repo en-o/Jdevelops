@@ -222,7 +222,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
      */
     private void checkUserPermission(String token, Method method) throws Exception {
         // 检查用户状态
-        checkTokenInterceptor.checkUserPermission(JwtService.getSubjectExpires(token), method);
+        checkTokenInterceptor.checkUserPermission(token, method);
     }
 
     // =================== 检查token中的role是否跟接口的role匹配 ==================================

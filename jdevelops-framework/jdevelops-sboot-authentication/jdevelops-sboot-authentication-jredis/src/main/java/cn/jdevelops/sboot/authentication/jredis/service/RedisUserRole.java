@@ -1,5 +1,8 @@
 package cn.jdevelops.sboot.authentication.jredis.service;
 
+import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserRole;
+import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
+
 /**
  * 用户权限
  *
@@ -14,14 +17,14 @@ public interface RedisUserRole {
      *
      * @param role 用户权限
      */
-    void storage(String role);
+    void storage(StorageUserRole role);
 
     /**
      * 刷新用户权限
      *
-     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     * @param role 新的权限
      */
-    void refresh(String subject);
+    void refresh(StorageUserRole role);
 
     /**
      * 查询用户权限
@@ -29,21 +32,23 @@ public interface RedisUserRole {
      * @param subject token.subject[用户唯一值(一般用用户的登录名]
      * @return 用户权限对象
      */
-    String load(String subject);
+    StorageUserRole load(String subject);
 
     /**
      * 验证用户权限  [根据权限抛出相应的异常]
      *
-     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     * @param subject    token.subject[用户唯一值(一般用用户的登录名]
+     * @param annotation 权限注解
      */
-    void verify(String subject);
+    void verify(String subject, ApiPermission annotation);
 
     /**
      * 验证用户权限  [根据权限抛出相应的异常]
      *
-     * @param token token
+     * @param token      token
+     * @param annotation 权限注解
      */
-    void verifyByToken(String token);
+    void verifyByToken(String token, ApiPermission annotation);
 
 
 }

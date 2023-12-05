@@ -1,6 +1,8 @@
 package cn.jdevelops.sboot.authentication.jredis.entity.sign;
 
 
+import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserRole;
+import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserState;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 
@@ -27,6 +29,16 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      */
     Boolean onlyOnline;
 
+    /**
+     * 用户状态
+     */
+    StorageUserState userState;
+    /**
+     * 用户角色
+     */
+    StorageUserRole userRole;
+
+
 
     /**
      * 用户登录签名办法token的数据
@@ -41,6 +53,8 @@ public class RedisSignEntity<T> extends SignEntity<T> {
         super(subject);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
+        this.userRole = new StorageUserRole(subject);
+        this.userState = new StorageUserState(subject);
     }
 
     /**
@@ -58,8 +72,53 @@ public class RedisSignEntity<T> extends SignEntity<T> {
         super(subject, platform);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
+        this.userRole = new StorageUserRole(subject);
+        this.userState = new StorageUserState(subject);
     }
 
+    /**
+     * 用户登录签名办法token的数据
+     *
+     * @param subject      唯一
+     * @param platform     jwt所所使用的平台
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline   以前的是否会被挤下线
+     * @param userState 状态
+     */
+    public RedisSignEntity(String subject,
+                           List<PlatformConstant> platform,
+                           Boolean alwaysOnline,
+                           Boolean onlyOnline,
+                           StorageUserState userState) {
+        super(subject, platform);
+        this.alwaysOnline = alwaysOnline;
+        this.onlyOnline = onlyOnline;
+        this.userRole = new StorageUserRole(subject);
+        this.userState = userState;
+    }
+
+    /**
+     * 用户登录签名办法token的数据
+     *
+     * @param subject      唯一
+     * @param platform     jwt所所使用的平台
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline   以前的是否会被挤下线
+     * @param userRole 角色
+     * @param userState 状态
+     */
+    public RedisSignEntity(String subject,
+                           List<PlatformConstant> platform,
+                           Boolean alwaysOnline,
+                           Boolean onlyOnline,
+                           StorageUserRole userRole,
+                           StorageUserState userState) {
+        super(subject, platform);
+        this.alwaysOnline = alwaysOnline;
+        this.onlyOnline = onlyOnline;
+        this.userRole = userRole;
+        this.userState = userState;
+    }
 
     public RedisSignEntity(SignEntity<T> subject) {
         super(subject.getSubject(),
@@ -67,6 +126,8 @@ public class RedisSignEntity<T> extends SignEntity<T> {
                 subject.getMap());
         this.alwaysOnline = false;
         this.onlyOnline = false;
+        this.userRole = new StorageUserRole(subject.getSubject());
+        this.userState = new StorageUserState(subject.getSubject());
     }
 
 
@@ -81,6 +142,51 @@ public class RedisSignEntity<T> extends SignEntity<T> {
                 subject.getMap());
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
+        this.userRole = new StorageUserRole(subject.getSubject());
+        this.userState = new StorageUserState(subject.getSubject());
+    }
+
+
+    /**
+     * 不能无状态有角色
+     * @param subject      SignEntity
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline   以前的是否会被挤下线
+     * @param userRole 角色
+     * @param userState 状态
+     */
+    public RedisSignEntity(SignEntity<T> subject,
+                           Boolean alwaysOnline,
+                           Boolean onlyOnline,
+                           StorageUserRole userRole,
+                           StorageUserState userState) {
+        super(subject.getSubject(),
+                subject.getPlatform(),
+                subject.getMap());
+        this.alwaysOnline = alwaysOnline;
+        this.onlyOnline = onlyOnline;
+        this.userRole = userRole;
+        this.userState = userState;
+    }
+
+    /**
+     * 可以有状态无角色
+     * @param subject      SignEntity
+     * @param alwaysOnline token是否永久在线
+     * @param onlyOnline   以前的是否会被挤下线
+     * @param userState 状态
+     */
+    public RedisSignEntity(SignEntity<T> subject,
+                           Boolean alwaysOnline,
+                           Boolean onlyOnline,
+                           StorageUserState userState) {
+        super(subject.getSubject(),
+                subject.getPlatform(),
+                subject.getMap());
+        this.alwaysOnline = alwaysOnline;
+        this.onlyOnline = onlyOnline;
+        this.userRole = new StorageUserRole(subject.getSubject());
+        this.userState = userState;
     }
 
 
@@ -89,6 +195,8 @@ public class RedisSignEntity<T> extends SignEntity<T> {
         return "RedisSignEntity{" +
                 "alwaysOnline=" + alwaysOnline +
                 ", onlyOnline=" + onlyOnline +
+                ", userState=" + userState +
+                ", userRole=" + userRole +
                 '}';
     }
 
@@ -114,4 +222,25 @@ public class RedisSignEntity<T> extends SignEntity<T> {
         this.alwaysOnline = alwaysOnline;
     }
 
+    public StorageUserState getUserState() {
+        if (Objects.isNull(userState)) {
+            return new StorageUserState(getSubject());
+        }
+        return userState;
+    }
+
+    public void setUserState(StorageUserState userState) {
+        this.userState = userState;
+    }
+
+    public StorageUserRole getUserRole() {
+        if (Objects.isNull(userRole)) {
+            return new StorageUserRole(getSubject());
+        }
+        return userRole;
+    }
+
+    public void setUserRole(StorageUserRole userRole) {
+        this.userRole = userRole;
+    }
 }
