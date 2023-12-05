@@ -2,7 +2,7 @@ package cn.jdevelops.sboot.authentication.jredis.entity;
 
 /**
  * 存储用户状态
- * 判断顺序： 禁用 -> 锁定 -> 白名单
+ * 判断顺序：锁定 -> 禁用
  *
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/12/4 16:07
