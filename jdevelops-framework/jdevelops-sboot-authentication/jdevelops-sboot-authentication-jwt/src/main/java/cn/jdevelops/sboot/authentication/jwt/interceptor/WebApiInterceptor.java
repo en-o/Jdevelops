@@ -186,7 +186,7 @@ public class WebApiInterceptor implements HandlerInterceptor {
                                                         Class<?> controllerClass) {
         ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
         for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (platformConstants.contains(annotationPlatform.name())) {
+            if (platformConstants.contains(annotationPlatform)) {
                 return true;
             }
         }
@@ -237,7 +237,8 @@ public class WebApiInterceptor implements HandlerInterceptor {
         try {
 
             // 全局设置刷新状态 false: 不刷新
-            if (jwtConfig.getCallRefreshToken() && (!method.isAnnotationPresent(NotRefreshToken.class))) {
+            if (Boolean.TRUE.equals(jwtConfig.getCallRefreshToken())
+                    && (!method.isAnnotationPresent(NotRefreshToken.class))) {
                 // 每次接口进来都要属性 token缓存。刷新方式请自主实现
                 checkTokenInterceptor.refreshToken(token);
             }
