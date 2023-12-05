@@ -1,6 +1,5 @@
 package cn.jdevelops.sboot.authentication.jwt.util;
 
-import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPlatform;
 import cn.jdevelops.util.jwt.constant.PlatformConstant;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
