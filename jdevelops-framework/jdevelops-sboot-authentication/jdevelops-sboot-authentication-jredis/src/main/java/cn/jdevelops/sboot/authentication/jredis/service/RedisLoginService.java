@@ -76,6 +76,14 @@ public class RedisLoginService implements LoginService {
                     .build();
             // 存储 用户登录信息
             redisToken.storage(build);
+            // state
+            if (null != loginMeta.getUserState()) {
+                redisUserState.storage(loginMeta.getUserState());
+            }
+            // role
+            if (null != loginMeta.getUserRole()) {
+                redisUserRole.storage(loginMeta.getUserRole());
+            }
             // 返回token
             return sign;
         } catch (JoseException e) {
