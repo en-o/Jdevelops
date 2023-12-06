@@ -13,6 +13,17 @@ public class AboutFileUtilTest {
     }
 
     @Test
+    public void getFileSuffixDot() {
+        assertEquals(AboutFileUtil.getFileSuffixDot("XX.jpg"),".jpg");
+    }
+
+    @Test
+    public void testKillPrefixDot() {
+        assertEquals(AboutFileUtil.killPrefixDot(".jpg"),"jpg");
+        assertEquals(AboutFileUtil.killPrefixDot("jpg"),"jpg");
+    }
+
+    @Test
     public void isSafe() {
         assertFalse(AboutFileUtil.isSafe("json"));
         assertTrue(AboutFileUtil.isSafe("png"));
@@ -29,6 +40,7 @@ public class AboutFileUtilTest {
         assertFalse(AboutFileUtil.isPic("xlsx"));
         assertFalse(AboutFileUtil.isPic("pdf"));
     }
+
 
 
 //    @Test
