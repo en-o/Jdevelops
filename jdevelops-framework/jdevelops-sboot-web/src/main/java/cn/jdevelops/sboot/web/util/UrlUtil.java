@@ -16,6 +16,14 @@ public class UrlUtil {
     /**
      * 不需要记录的url
      * 默认有了  /error /swagger /v2/api-docs /v3/api-docs
+     *
+     * <p>
+     *      （1）? 匹配一个字符（除过操作系统默认的文件分隔符）
+     *      （2）* 匹配0个或多个字符
+     *      （3）**匹配0个或多个目录
+     *      （4）{spring:[a-z]+} 将正则表达式[a-z]+匹配到的值,赋值给名为 spring 的路径变量.
+     *      (PS:必须是完全匹配才行,在SpringMVC中只有完全匹配才会进入controller层的方法)
+     * </p>
      * @param url 需要判断的url
      * @param excludePathPatterns 不记录的url集合
      * @return boolean 真不记录

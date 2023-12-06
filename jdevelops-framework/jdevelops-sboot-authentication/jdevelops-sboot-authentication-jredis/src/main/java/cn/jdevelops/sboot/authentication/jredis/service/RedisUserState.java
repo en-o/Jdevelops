@@ -2,6 +2,8 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 
 import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserState;
 
+import java.util.List;
+
 /**
  * 用户状态
  *
@@ -45,5 +47,25 @@ public interface RedisUserState {
      * @param token token
      */
     void verifyByToken(String token) ;
+
+
+    /**
+     * 删除 userState
+     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     */
+    void remove(String subject);
+
+    /**
+     * 删除  userState
+     * @param token token
+     */
+    void removeByToken(String token);
+
+    /**
+     * 删除 userState
+     *
+     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     */
+    void remove(List<String> subject);
 
 }

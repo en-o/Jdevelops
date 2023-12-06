@@ -83,8 +83,12 @@ public class RedisTokenImpl implements RedisToken{
 
     @Override
     public void remove(String subject) {
-        String redisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
-        redisTemplate.delete(redisFolder);
+       try {
+           String redisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, subject);
+           redisTemplate.delete(redisFolder);
+       }catch (Exception e){
+           LOG.error("删除"+subject+" <==> token失败", e);
+       }
     }
 
     @Override
@@ -95,14 +99,18 @@ public class RedisTokenImpl implements RedisToken{
 
     @Override
     public void remove(List<String> subject) {
-        Set<String> keys = new HashSet<>();
-        for (String key : subject) {
-            String redisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, key);
-            keys.add(redisFolder);
-        }
-        if(!keys.isEmpty()){
-            redisTemplate.delete(keys);
-        }
+       try {
+           Set<String> keys = new HashSet<>();
+           for (String key : subject) {
+               String redisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_LOGIN_FOLDER, key);
+               keys.add(redisFolder);
+           }
+           if(!keys.isEmpty()){
+               redisTemplate.delete(keys);
+           }
+       }catch (Exception e){
+           LOG.error("删除tokens失败", e);
+       }
     }
 
     @Override

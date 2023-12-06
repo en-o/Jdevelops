@@ -3,7 +3,7 @@ package cn.jdevelops.sboot.authentication.jredis.service.impl;
 import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKey;
 import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserRole;
 import cn.jdevelops.sboot.authentication.jredis.service.RedisUserRole;
-import cn.jdevelops.sboot.authentication.jredis.util.ListUtil;
+import cn.jdevelops.sboot.authentication.jredis.util.UserRoleUtil;
 import cn.jdevelops.sboot.authentication.jredis.util.RedisUtil;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
@@ -17,7 +17,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_PERMISSION_AUTH_ERROR;
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_ROLE_AUTH_ERROR;
@@ -79,15 +82,15 @@ public class RedisUserRoleImpl implements RedisUserRole {
         StorageUserRole redisRole = load(subject);
         if (!Objects.isNull(redisRole)) {
             String[] roles = annotation.roles();
-            String[] permissions = annotation.permissions();
+            String permissions = annotation.permissions();
             // 判断角色  -  注解里无值就不判断了
             if (roles != null && roles.length > 0
-                    && (!ListUtil.verifyList(redisRole.getRoles(), roles))) {
+                    && (!UserRoleUtil.verifyRoles(redisRole.getRoles(), roles))) {
                 throw new PermissionsException(API_ROLE_AUTH_ERROR);
             }
-            // 判断权限  -  注解里无值就不判断了
-            if (permissions != null && permissions.length > 0
-                    && (!ListUtil.verifyList(redisRole.getPermissions(), permissions))) {
+            // 判断权限(接口url)  -  注解里无值就不判断了
+            if (permissions != null && !permissions.isEmpty()
+                    && (!UserRoleUtil.verifyPermissions(redisRole.getPermissions(), permissions))) {
                 throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
             }
         }
@@ -97,5 +100,37 @@ public class RedisUserRoleImpl implements RedisUserRole {
     public void verifyByToken(String token, ApiPermission annotation) {
         String subjectExpires = JwtService.getSubjectExpires(token);
         verify(subjectExpires, annotation);
+    }
+
+    @Override
+    public void remove(String subject) {
+       try {
+           String userRoleRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_ROLE_FOLDER, subject);
+           redisTemplate.delete(userRoleRedisFolder);
+       }catch (Exception e){
+           LOG.error("删除"+subject+"userRole失败", e);
+       }
+    }
+
+    @Override
+    public void removeByToken(String token) {
+        String subjectExpires = JwtService.getSubjectExpires(token);
+        remove(subjectExpires);
+    }
+
+    @Override
+    public void remove(List<String> subject) {
+        try {
+            Set<String> keys = new HashSet<>();
+            for (String key : subject) {
+                String userRoleRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_ROLE_FOLDER, key);
+                keys.add(userRoleRedisFolder);
+            }
+            if (!keys.isEmpty()) {
+                redisTemplate.delete(keys);
+            }
+        } catch (Exception e) {
+            LOG.error("删除userRoles失败", e);
+        }
     }
 }
