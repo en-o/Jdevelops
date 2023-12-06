@@ -131,6 +131,8 @@ public class RedisLoginService implements LoginService {
         try {
             String subject = JwtWebUtil.getTokenSubject(request);
             redisToken.remove(subject);
+            redisUserState.remove(subject);
+            redisUserRole.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
@@ -140,6 +142,8 @@ public class RedisLoginService implements LoginService {
     public void loginOut(String subject) {
         try {
             redisToken.remove(subject);
+            redisUserState.remove(subject);
+            redisUserRole.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
@@ -149,6 +153,8 @@ public class RedisLoginService implements LoginService {
     public void loginOut(List<String> subject) {
         try {
             redisToken.remove(subject);
+            redisUserState.remove(subject);
+            redisUserRole.remove(subject);
         } catch (Exception e) {
             logger.warn("退出失败", e);
         }
