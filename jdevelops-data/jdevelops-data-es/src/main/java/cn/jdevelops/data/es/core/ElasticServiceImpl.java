@@ -406,8 +406,6 @@ public class ElasticServiceImpl implements ElasticService {
         SearchResponse<T> response = client.search(searchRequest, cc);
         String scrollId = response.scrollId();
         scrollIds.add(scrollId);
-        System.out.println("size: " + response.hits().hits().size());
-
         for (Hit<T> hit : response.hits().hits()) {
             list.add(hit.source());
         }
@@ -418,10 +416,9 @@ public class ElasticServiceImpl implements ElasticService {
             scrollId = scrollResponse.scrollId();
             scrollIds.add(scrollId);
             List<Hit<T>> hits = scrollResponse.hits().hits();
-            if (hits == null || hits.size() == 0) {
+            if (hits == null || hits.isEmpty()) {
                 break;
             }
-            System.out.println("size: " + hits.size());
             for (Hit<T> hit : hits) {
                 list.add(hit.source());
             }
