@@ -23,8 +23,12 @@ public final class UserRoleUtil {
      */
     public static boolean verifyRoles(List<String> userRoles, String[] apiRoles) {
         // 如果接口角色为空，则表示不需要角色就能使用此接口
-        if (apiRoles == null) {
+        if (apiRoles == null ) {
             return true;
+        }
+        // 如果用户的角色为空，但是接口需要 那就返回 false
+        if(userRoles == null || userRoles.isEmpty()){
+            return false;
         }
         for (String apiRole : apiRoles) {
             if (null == apiRole || apiRole.trim().isEmpty()) {
@@ -49,6 +53,10 @@ public final class UserRoleUtil {
         // 如果接口权限为空，则表示不需要权限
         if (apiPermission == null || apiPermission.isEmpty()) {
             return true;
+        }
+        // 如果用户的角色为空，但是接口需要 那就返回 false
+        if(userPermissions == null || userPermissions.isEmpty()){
+            return false;
         }
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         return userPermissions.stream().anyMatch(e -> antPathMatcher.match(e, apiPermission));

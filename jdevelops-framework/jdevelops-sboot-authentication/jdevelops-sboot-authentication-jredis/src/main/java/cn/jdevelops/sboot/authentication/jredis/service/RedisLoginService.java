@@ -76,6 +76,8 @@ public class RedisLoginService implements LoginService {
                     .build();
             // 存储 用户登录信息
             redisToken.storage(build);
+
+            // todo 这个考虑提到前面去，每次触发都改动
             // state
             if (null != loginMeta.getUserState()) {
                 redisUserState.storage(loginMeta.getUserState());
