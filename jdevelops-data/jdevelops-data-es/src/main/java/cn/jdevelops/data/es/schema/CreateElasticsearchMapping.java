@@ -58,7 +58,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
             provider.addIncludeFilter(new AnnotationTypeFilter(EsIndex.class));
             ElasticProperties elasticProperties = applicationContext.getBean(ElasticProperties.class);
-            if (null == elasticProperties.getBasePackage() || elasticProperties.getBasePackage().length() == 0) {
+            if (null == elasticProperties.getBasePackage() || elasticProperties.getBasePackage().isEmpty()) {
                 log.warn("创建 mappings 没有设置package，所有不进行创建");
                 return;
             }

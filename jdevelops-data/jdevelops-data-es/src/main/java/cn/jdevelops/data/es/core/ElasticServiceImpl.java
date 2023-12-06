@@ -39,7 +39,7 @@ public class ElasticServiceImpl implements ElasticService {
     private ElasticsearchClient client;
 
     @Override
-    public GetMappingResponse showIndexMapping(String indexName) throws IOException {
+    public GetMappingResponse showIndexMapping(String indexName) {
       try {
           // { indexName:{mappings:{}}}
           return client.indices().getMapping(id -> id.index(indexName));

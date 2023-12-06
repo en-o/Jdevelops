@@ -39,7 +39,7 @@ public class SignEntity<T>{
     public SignEntity(String subject,
                       T map) {
         this.subject = subject;
-        this.platform = Collections.singletonList(PlatformConstant.COMMON);;
+        this.platform = Collections.singletonList(PlatformConstant.COMMON);
         this.map = map;
     }
 

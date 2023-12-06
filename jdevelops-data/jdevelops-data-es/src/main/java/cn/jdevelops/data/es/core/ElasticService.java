@@ -26,9 +26,8 @@ public interface ElasticService {
      * 查看索引
      * @param indexName  索引名称
      * @return GetMappingResponse 没有所有的时候会返回空
-     * @throws IOException IOException
      */
-    GetMappingResponse showIndexMapping(String indexName) throws IOException;
+    GetMappingResponse showIndexMapping(String indexName) ;
 
     /**
      * 验证索引是否存在

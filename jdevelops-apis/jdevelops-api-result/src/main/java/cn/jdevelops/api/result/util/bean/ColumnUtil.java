@@ -66,7 +66,7 @@ public class ColumnUtil {
         }
         // 从field取出字段名，可以根据实际情况调整
         TableField tableField = field.getAnnotation(TableField.class);
-        if (tableField != null && tableField.value().length() > 0) {
+        if (tableField != null && !tableField.value().isEmpty()) {
             return tableField.value();
         } else {
             if(Boolean.TRUE.equals(toLine)){

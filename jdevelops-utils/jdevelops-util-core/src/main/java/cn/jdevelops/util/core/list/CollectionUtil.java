@@ -119,10 +119,9 @@ public class CollectionUtil {
         // 删除成功表示，有交集. 不管删除删除成功，都会去掉交集 然后相加就是并集了（A+B-AB）
         temp1.removeAll(temp2);
         // 使用 Java 8+ Stream 合并两个 Collection
-        Collection<?> combinedCollection = Stream.of(temp1, temp2)
+        return Stream.of(temp1, temp2)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        return combinedCollection;
     }
 
 }
