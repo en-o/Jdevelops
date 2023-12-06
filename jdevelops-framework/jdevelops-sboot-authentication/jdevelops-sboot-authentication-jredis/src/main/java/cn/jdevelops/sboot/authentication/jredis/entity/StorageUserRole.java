@@ -18,12 +18,18 @@ public class StorageUserRole {
     String subject;
 
     /**
-     * 用户角色 为空则默认不验证角色权限
+     * 用户角色 为空则默认不验证
      */
     private List<String> roles;
 
     /**
-     * 用户权限 为空则默认不验证角色权限
+     * 用户权限[用户能当问的接口组(url组) e.g /edit/password  ] 为空则默认不验证
+     * <p>
+     *      （2）* 匹配0个或多个字符
+     *      （3）**匹配0个或多个目录
+     *      参考： @see  UserRoleUtilTest
+     * </p>
+     *
      */
     private  List<String> permissions;
 

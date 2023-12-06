@@ -3,7 +3,7 @@ package cn.jdevelops.sboot.authentication.jredis.service.impl;
 import cn.jdevelops.sboot.authentication.jredis.constant.RedisJwtKey;
 import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserRole;
 import cn.jdevelops.sboot.authentication.jredis.service.RedisUserRole;
-import cn.jdevelops.sboot.authentication.jredis.util.ListUtil;
+import cn.jdevelops.sboot.authentication.jredis.util.UserRoleUtil;
 import cn.jdevelops.sboot.authentication.jredis.util.RedisUtil;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 import cn.jdevelops.sboot.authentication.jwt.exception.PermissionsException;
@@ -82,15 +82,15 @@ public class RedisUserRoleImpl implements RedisUserRole {
         StorageUserRole redisRole = load(subject);
         if (!Objects.isNull(redisRole)) {
             String[] roles = annotation.roles();
-            String[] permissions = annotation.permissions();
+            String permissions = annotation.permissions();
             // 判断角色  -  注解里无值就不判断了
             if (roles != null && roles.length > 0
-                    && (!ListUtil.verifyList(redisRole.getRoles(), roles))) {
+                    && (!UserRoleUtil.verifyRoles(redisRole.getRoles(), roles))) {
                 throw new PermissionsException(API_ROLE_AUTH_ERROR);
             }
-            // 判断权限  -  注解里无值就不判断了
-            if (permissions != null && permissions.length > 0
-                    && (!ListUtil.verifyList(redisRole.getPermissions(), permissions))) {
+            // 判断权限(接口url)  -  注解里无值就不判断了
+            if (permissions != null && !permissions.isEmpty()
+                    && (!UserRoleUtil.verifyPermissions(redisRole.getPermissions(), permissions))) {
                 throw new PermissionsException(API_PERMISSION_AUTH_ERROR);
             }
         }
