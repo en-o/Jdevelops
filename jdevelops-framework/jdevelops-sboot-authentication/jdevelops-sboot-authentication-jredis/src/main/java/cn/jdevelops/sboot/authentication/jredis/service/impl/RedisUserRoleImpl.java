@@ -17,7 +17,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_PERMISSION_AUTH_ERROR;
 import static cn.jdevelops.api.result.emums.PermissionsExceptionCode.API_ROLE_AUTH_ERROR;
@@ -97,5 +100,37 @@ public class RedisUserRoleImpl implements RedisUserRole {
     public void verifyByToken(String token, ApiPermission annotation) {
         String subjectExpires = JwtService.getSubjectExpires(token);
         verify(subjectExpires, annotation);
+    }
+
+    @Override
+    public void remove(String subject) {
+       try {
+           String userRoleRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_ROLE_FOLDER, subject);
+           redisTemplate.delete(userRoleRedisFolder);
+       }catch (Exception e){
+           LOG.error("删除"+subject+"userRole失败", e);
+       }
+    }
+
+    @Override
+    public void removeByToken(String token) {
+        String subjectExpires = JwtService.getSubjectExpires(token);
+        remove(subjectExpires);
+    }
+
+    @Override
+    public void remove(List<String> subject) {
+        try {
+            Set<String> keys = new HashSet<>();
+            for (String key : subject) {
+                String userRoleRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_ROLE_FOLDER, key);
+                keys.add(userRoleRedisFolder);
+            }
+            if (!keys.isEmpty()) {
+                redisTemplate.delete(keys);
+            }
+        } catch (Exception e) {
+            LOG.error("删除userRoles失败", e);
+        }
     }
 }

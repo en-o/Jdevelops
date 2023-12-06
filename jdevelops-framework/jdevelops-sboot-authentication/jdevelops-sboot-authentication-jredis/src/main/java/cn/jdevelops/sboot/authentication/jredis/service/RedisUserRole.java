@@ -3,6 +3,8 @@ package cn.jdevelops.sboot.authentication.jredis.service;
 import cn.jdevelops.sboot.authentication.jredis.entity.StorageUserRole;
 import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
 
+import java.util.List;
+
 /**
  * 用户权限
  *
@@ -50,5 +52,23 @@ public interface RedisUserRole {
      */
     void verifyByToken(String token, ApiPermission annotation);
 
+    /**
+     * 删除 userRole
+     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     */
+    void remove(String subject);
+
+    /**
+     * 删除  userRole
+     * @param token token
+     */
+    void removeByToken(String token);
+
+    /**
+     * 删除 userRole
+     *
+     * @param subject token.subject[用户唯一值(一般用用户的登录名]
+     */
+    void remove(List<String> subject);
 
 }

@@ -15,7 +15,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static cn.jdevelops.api.result.emums.UserException.BANNED_ACCOUNT;
 import static cn.jdevelops.api.result.emums.UserException.EXCESSIVE_ATTEMPTS_ACCOUNT;
@@ -90,5 +93,38 @@ public class RedisUserStateImpl implements RedisUserState {
     public void verifyByToken(String token) {
         String subjectExpires = JwtService.getSubjectExpires(token);
         verify(subjectExpires);
+    }
+
+    @Override
+    public void remove(String subject) {
+        try {
+            String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
+            redisTemplate.delete(userStateRedisFolder);
+        }catch (Exception e){
+            LOG.error("删除"+subject+"userState失败", e);
+        }
+
+    }
+
+    @Override
+    public void removeByToken(String token) {
+        String subjectExpires = JwtService.getSubjectExpires(token);
+        remove(subjectExpires);
+    }
+
+    @Override
+    public void remove(List<String> subject) {
+        try {
+            Set<String> keys = new HashSet<>();
+            for (String key : subject) {
+                String userStateRedisFolder = RedisUtil.getRedisFolder(RedisJwtKey.REDIS_USER_STATUS_FOLDER, key);
+                keys.add(userStateRedisFolder);
+            }
+            if(!keys.isEmpty()){
+                redisTemplate.delete(keys);
+            }
+        }catch (Exception e){
+            LOG.error("删除userStates失败", e);
+        }
     }
 }
