@@ -4,8 +4,6 @@ import org.apache.http.client.config.RequestConfig;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.time.Duration;
-
 /**
  * ES 基础配置
  *
