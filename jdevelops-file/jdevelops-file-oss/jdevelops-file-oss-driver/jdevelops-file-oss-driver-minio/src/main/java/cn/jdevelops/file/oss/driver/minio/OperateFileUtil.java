@@ -129,22 +129,22 @@ public class OperateFileUtil {
 	public FilePathResult uploadFile(MultipartFile file,String fileName, String bucket, String childFolder) throws Exception {
 		// 检查存储桶是否已经存在
 		makeBucket(bucket);
-		// 文件名称
+		// 内置文件名称
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		String filename = sdf.format(date).trim();
+		String builtInNames = sdf.format(date).trim();
 		// 文件名称为空值，则抛出空指针异常
 		Objects.requireNonNull(file.getOriginalFilename());
 		// 文件原名称
 		String originalName = file.getOriginalFilename();
 		// 文件类型后缀 如 jpg png
-		String suffix = AboutFileUtil.getFileSuffix(originalName);
+		String suffixDot = AboutFileUtil.getFileSuffixDot(originalName);
 		// 文件上传之后的新文件名称
 		String freshName;
 		if(StrUtil.notBlank(fileName)){
-			freshName = fileName.trim() + OSSConstants.SYMBOL_POINT + suffix;
+			freshName = fileName.trim() + suffixDot;
 		}else {
-			freshName = filename + OSSConstants.SYMBOL_POINT + suffix;
+			freshName = builtInNames + suffixDot;
 		}
 		String downName;
 		if (StrUtil.notBlank(childFolder) && !"null".equalsIgnoreCase(childFolder)) {
@@ -169,7 +169,7 @@ public class OperateFileUtil {
 				freshName,
 				downName,
 				bucket,
-				suffix,
+				AboutFileUtil.killPrefixDot(suffixDot),
 				file.getContentType()
 		);
 

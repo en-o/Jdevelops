@@ -45,8 +45,6 @@ public class Aws3Utils {
             // Wait until the bucket is created and print out the response
             WaiterResponse<HeadBucketResponse> waiterResponse = s3Waiter.waitUntilBucketExists(bucketRequestWait);
             waiterResponse.matched().response().ifPresent(System.out::println);
-            System.out.println(bucketName +" is ready");
-
         } catch (S3Exception e) {
 //            e.awsErrorDetails().errorMessage()
             LOG.error("s3桶创建错误",e);

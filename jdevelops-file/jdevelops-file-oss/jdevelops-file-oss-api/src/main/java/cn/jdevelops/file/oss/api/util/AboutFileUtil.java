@@ -92,6 +92,30 @@ public class AboutFileUtil {
 	}
 
 	/**
+	 * 从文件名中得到其后缀名 有点
+	 *
+	 * @param filename 文件名称
+	 * @return 后缀名
+	 */
+	public static String getFileSuffixDot(String filename) {
+		return filename.substring(
+				filename.lastIndexOf(OSSConstants.SYMBOL_POINT));
+	}
+
+	/**
+	 * 取掉前缀的 .
+	 * @param suffixDot .jpg
+	 * @return .jpg -> jpg
+	 */
+	public static String killPrefixDot(String suffixDot){
+		// 不是 . 开头的不做处理
+		if(!suffixDot.startsWith(OSSConstants.SYMBOL_POINT)){
+			return suffixDot;
+		}
+		return suffixDot.substring(1);
+	}
+
+	/**
 	 * 通过其后缀名判断其是否合法,合法后缀名为常见的
 	 *
 	 * @param suffix 后缀名

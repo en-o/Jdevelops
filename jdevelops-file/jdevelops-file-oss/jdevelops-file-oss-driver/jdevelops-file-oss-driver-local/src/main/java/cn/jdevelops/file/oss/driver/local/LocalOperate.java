@@ -56,11 +56,11 @@ public class LocalOperate implements OssOperateAPI {
         String originalName = file.getOriginalFilename();
         String freshName;
         // 文件类型后缀 如 jpg png
-        String suffix = AboutFileUtil.getFileSuffix(originalName);
+        String suffixDot = AboutFileUtil.getFileSuffixDot(originalName);
         if(StrUtil.notBlank(uploaded.getFileName())){
-            freshName = uploaded.getFileName().trim() + suffix;
+            freshName = uploaded.getFileName().trim() + suffixDot;
         }else {
-            freshName = LocalDirverUtil.encrypt2MD5(originalName) +suffix;
+            freshName = LocalDirverUtil.encrypt2MD5(originalName) +suffixDot;
         }
         String childFolder = Objects.isNull(uploaded.getChildFolder()) ? "" : uploaded.getChildFolder();
         String downPath =  childFolder + freshName;
@@ -86,7 +86,7 @@ public class LocalOperate implements OssOperateAPI {
                 freshName,
                 childFolder+freshName,
                 uploaded.getBucket(),
-                suffix,
+                AboutFileUtil.killPrefixDot(suffixDot),
                 uploaded.getFile().getContentType(),
                 ossConfig.getLocal().getContextPath()
         );

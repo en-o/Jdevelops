@@ -218,7 +218,7 @@ public class ApiLogAspectSave {
                         key = name.substring(3);
                     }
 
-                    if (key.length() > 0 && Character.isUpperCase(key.charAt(0)) && method.getParameterTypes().length == 0) {
+                    if (!key.isEmpty() && Character.isUpperCase(key.charAt(0)) && method.getParameterTypes().length == 0) {
                         if (key.length() == 1) {
                             key = key.toLowerCase();
                         } else if (!Character.isUpperCase(key.charAt(1))) {

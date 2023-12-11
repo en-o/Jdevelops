@@ -16,6 +16,7 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -39,6 +40,9 @@ public class ElasticClientConfig {
     @Value("${spring.elasticsearch.password}")
     private String passWord;
 
+    @Autowired
+    private ElasticProperties elasticProperties;
+
     @Bean
     @ConditionalOnMissingBean(ElasticsearchClient.class)
     public ElasticsearchClient elasticsearchClient() {
@@ -50,8 +54,9 @@ public class ElasticClientConfig {
         RestClientBuilder builder = RestClient.builder(httpHosts);
         builder.setRequestConfigCallback(
                 requestConfigBuilder -> requestConfigBuilder
-                        .setSocketTimeout(60000)
-                        .setConnectTimeout(5000)
+                        .setSocketTimeout(elasticProperties.getSocketTimeout())
+                        .setConnectTimeout(elasticProperties.getConnectTimeout())
+                        .setConnectionRequestTimeout(elasticProperties.getConnectionRequestTimeout())
         );
         builder.setHttpClientConfigCallback(hc -> hc.
                 setDefaultCredentialsProvider(credentialsProvider)

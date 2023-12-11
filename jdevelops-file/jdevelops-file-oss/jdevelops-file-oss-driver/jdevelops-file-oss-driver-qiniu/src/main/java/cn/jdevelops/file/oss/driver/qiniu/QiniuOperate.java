@@ -59,9 +59,9 @@ public class QiniuOperate implements OssOperateAPI {
         String originalName = uploaded.getFile().getOriginalFilename();
         String freshName;
         // 文件类型后缀 如 jpg png
-        String suffix = AboutFileUtil.getFileSuffix(originalName);
+        String suffixDot = AboutFileUtil.getFileSuffixDot(originalName);
         if(StrUtil.notBlank(uploaded.getFileName())){
-            freshName = uploaded.getFileName().trim() + suffix;
+            freshName = uploaded.getFileName().trim() + suffixDot;
         }else {
             freshName = originalName;
         }
@@ -82,7 +82,7 @@ public class QiniuOperate implements OssOperateAPI {
                 freshName,
                 downPath,
                 uploaded.getBucket(),
-                suffix,
+                AboutFileUtil.killPrefixDot(suffixDot),
                 uploaded.getFile().getContentType()
         );
 
