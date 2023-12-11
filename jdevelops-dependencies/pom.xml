@@ -678,7 +678,17 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-sas</artifactId>
+                <artifactId>jdevelops-sboot-authentication-sas-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-authentication-sas-resource</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-sboot-authentication-sas-server</artifactId>
                 <version>${revision}</version>
             </dependency>
 

@@ -8,8 +8,17 @@
         <artifactId>jdevelops-sboot-authentication</artifactId>
         <version>${revision}</version>
     </parent>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <artifactId>jdevelops-sboot-authentication-sas</artifactId>
+    <modules>
+        <!--客户端-->
+        <module>jdevelops-sboot-authentication-sas-client</module>
+        <!--服务端-->
+        <module>jdevelops-sboot-authentication-sas-server</module>
+        <!--资源端-->
+        <module>jdevelops-sboot-authentication-sas-resource</module>
+    </modules>
+
 
     <description>
         Spring Authorization Server
