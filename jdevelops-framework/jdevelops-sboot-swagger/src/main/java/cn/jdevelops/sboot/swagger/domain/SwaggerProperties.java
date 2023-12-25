@@ -1,9 +1,10 @@
-package cn.jdevelops.sboot.swagger.config;
+package cn.jdevelops.sboot.swagger.domain;
 
 
 import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,12 @@ public class SwaggerProperties {
      * controller接口所在的包(可以设置多个)，eg. cn.jdevelops.controller(默认)
      */
     private List<String> basePackage;
+
+    /**
+     * 多组 - 为空则不使用该字段
+     */
+    @NestedConfigurationProperty
+    private List<MultipleGroup> multipleGroups;
 
 
     /**
@@ -70,7 +77,7 @@ public class SwaggerProperties {
     private String licenseUrl;
 
     /**
-     *  分组
+     *  分组 必须英文 e.g jdevelopsAPI
      */
     private String groupName;
 
@@ -95,6 +102,7 @@ public class SwaggerProperties {
     public String toString() {
         return "SwaggerProperties{" +
                 "basePackage=" + basePackage +
+                ", multipleGroups=" + multipleGroups +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
@@ -263,5 +271,17 @@ public class SwaggerProperties {
 
     public void setSecuritySchemeDefault(Boolean securitySchemeDefault) {
         this.securitySchemeDefault = securitySchemeDefault;
+    }
+
+
+    public List<MultipleGroup> getMultipleGroups() {
+        if(multipleGroups == null){
+            return Collections.emptyList();
+        }
+        return multipleGroups;
+    }
+
+    public void setMultipleGroups(List<MultipleGroup> multipleGroups) {
+        this.multipleGroups = multipleGroups;
     }
 }

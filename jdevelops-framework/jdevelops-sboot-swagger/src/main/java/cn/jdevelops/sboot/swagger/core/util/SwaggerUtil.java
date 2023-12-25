@@ -2,7 +2,7 @@ package cn.jdevelops.sboot.swagger.core.util;
 
 
 
-import cn.jdevelops.sboot.swagger.config.SwaggerProperties;
+import cn.jdevelops.sboot.swagger.domain.SwaggerProperties;
 import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
