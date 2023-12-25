@@ -44,24 +44,25 @@ public class SwaggerConfig {
      *         Extension(properties = {ExtensionProperty(name = "x-order", value = "100", parseValue = true)})}
      *      )
      * </p>
+     *
      * @return the global open api customizer
      */
     @Bean
     public GlobalOpenApiCustomizer orderGlobalOpenApiCustomizer() {
         return openApi -> {
-            if (openApi.getTags()!=null){
+            if (openApi.getTags() != null) {
                 openApi.getTags().forEach(tag -> {
                     Map<String, Object> extensions = tag.getExtensions();
-                    if(extensions == null || extensions.isEmpty()){
-                        extensions =new HashMap<>(10);
-                        extensions.put("x-order", RandomUtil.randomInt(0,100));
+                    if (extensions == null || extensions.isEmpty()) {
+                        extensions = new HashMap<>(10);
+                        extensions.put("x-order", RandomUtil.randomInt(0, 100));
                     }
                     tag.setExtensions(extensions);
                 });
             }
-            if(openApi.getPaths()!=null){
-                openApi.addExtension("x-test123","333");
-                openApi.getPaths().addExtension("x-abb",RandomUtil.randomInt(1,100));
+            if (openApi.getPaths() != null) {
+                openApi.addExtension("x-test123", "333");
+                openApi.getPaths().addExtension("x-abb", RandomUtil.randomInt(1, 100));
             }
 
         };
@@ -69,13 +70,14 @@ public class SwaggerConfig {
 
     /**
      * 根据自定一份配置文件设置默认读取的分组
+     *
      * @param swaggerProperties SwaggerProperties
      * @return GroupedOpenApi
      */
     @Bean
-    public GroupedOpenApi defaultApi(SwaggerProperties swaggerProperties){
+    public GroupedOpenApi defaultApi(SwaggerProperties swaggerProperties) {
         BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties.getSwaggerSecuritySchemes());
-        String[] paths = { "/**" };
+        String[] paths = {"/**"};
         String[] packagedToMatch = basePackages(swaggerProperties.getBasePackage());
         return GroupedOpenApi.builder().group(swaggerProperties.getGroupName())
                 .displayName(swaggerProperties.getDisplayName())
@@ -113,8 +115,6 @@ public class SwaggerConfig {
         buildSecuritySchemes.getSecurityItem().forEach(openAPI::addSecurityItem);
         return openAPI;
     }
-
-
 
 
 }
