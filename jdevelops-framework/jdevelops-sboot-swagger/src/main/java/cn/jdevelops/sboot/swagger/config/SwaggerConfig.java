@@ -74,7 +74,7 @@ public class SwaggerConfig {
      */
     @Bean
     public GroupedOpenApi defaultApi(SwaggerProperties swaggerProperties){
-        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties);
+        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties.getSwaggerSecuritySchemes());
         String[] paths = { "/**" };
         String[] packagedToMatch = basePackages(swaggerProperties.getBasePackage());
         return GroupedOpenApi.builder().group(swaggerProperties.getGroupName())
@@ -90,7 +90,7 @@ public class SwaggerConfig {
      */
     @Bean
     public OpenAPI customOpenAPI(SwaggerProperties swaggerProperties) {
-        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties);
+        BuildSecuritySchemes buildSecuritySchemes = buildSecuritySchemes(swaggerProperties.getSwaggerSecuritySchemes());
         OpenAPI openAPI = new OpenAPI()
                 // 添加安全方案
                 .components(new Components().securitySchemes(buildSecuritySchemes.getSecuritySchemes()))
