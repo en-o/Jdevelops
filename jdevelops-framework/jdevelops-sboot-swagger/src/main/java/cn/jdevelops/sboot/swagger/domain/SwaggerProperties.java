@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SWAGGER_HEADER_HANDER;
 
@@ -94,6 +95,11 @@ public class SwaggerProperties {
 
     /**
      * 是否设置默认的 securityScheme ，true 要设置
+     * <p>
+     *     优先级在 swaggerSecuritySchemes.security 之下:
+     *      1. 存在 swaggerSecuritySchemes 以swaggerSecuritySchemes.security为准
+     *      2. swaggerSecuritySchemes.security 都是 false 的情况下有效
+     * </p>
      */
     private Boolean securitySchemeDefault;
 
@@ -253,6 +259,19 @@ public class SwaggerProperties {
                         .in(SecurityScheme.In.HEADER), true));
             }else {
                 return new ArrayList<>();
+            }
+        }else if(Boolean.TRUE.equals(getSecuritySchemeDefault())) {
+            //  那 Security == true
+            List<SwaggerSecurityScheme> collect = swaggerSecuritySchemes.stream().filter(SwaggerSecurityScheme::getSecurity).collect(Collectors.toList());
+            // 设置的都没有效果,那就设置一个默认，（securitySchemeDefault == ture）
+            if(collect.isEmpty()){
+                return Collections.singletonList(new SwaggerSecurityScheme( new SecurityScheme()
+                        // 类型
+                        .type(SecurityScheme.Type.APIKEY)
+                        // 请求头的 name
+                        .name(SWAGGER_HEADER_HANDER)
+                        // token 所在位置
+                        .in(SecurityScheme.In.HEADER), true));
             }
         }
         return swaggerSecuritySchemes;
