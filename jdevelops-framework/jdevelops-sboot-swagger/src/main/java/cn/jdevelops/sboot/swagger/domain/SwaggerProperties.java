@@ -29,12 +29,6 @@ public class SwaggerProperties {
      */
     private List<String> basePackage;
 
-    /**
-     * 多组 - 为空则不使用该字段
-     */
-    @NestedConfigurationProperty
-    private List<MultipleGroup> multipleGroups;
-
 
     /**
      * 网页标题
@@ -108,7 +102,6 @@ public class SwaggerProperties {
     public String toString() {
         return "SwaggerProperties{" +
                 "basePackage=" + basePackage +
-                ", multipleGroups=" + multipleGroups +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", version='" + version + '\'' +
@@ -293,14 +286,4 @@ public class SwaggerProperties {
     }
 
 
-    public List<MultipleGroup> getMultipleGroups() {
-        if(multipleGroups == null){
-            return Collections.emptyList();
-        }
-        return multipleGroups;
-    }
-
-    public void setMultipleGroups(List<MultipleGroup> multipleGroups) {
-        this.multipleGroups = multipleGroups;
-    }
 }
