@@ -297,7 +297,7 @@ public class JwtService {
         JSONObject jsonObject = JSON.parseObject(rawJson);
         if (ts != null) {
             String mapValue = jsonObject.getString("map");
-            if (null != mapValue && mapValue.length() > 0) {
+            if (null != mapValue && !mapValue.isEmpty()) {
                 if (JSON.isValid(mapValue)) {
                     jsonObject.put("map", JSON.to(ts, mapValue));
                 } else {
