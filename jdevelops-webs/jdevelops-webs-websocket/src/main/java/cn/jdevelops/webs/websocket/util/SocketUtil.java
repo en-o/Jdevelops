@@ -3,7 +3,9 @@ package cn.jdevelops.webs.websocket.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.websocket.Session;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,8 +24,10 @@ public class SocketUtil {
 
     /**
      * 从map中查询想要的map项，根据key
+     * key: name
+     * value: session
      */
-    public static<T> Map<String, T> parseMapForFilter(Map<String, T> map, String filters) {
+    public static Map<String, List<Session>> parseMapForFilter(Map<String, List<Session>> map, String filters) {
         if (map == null) {
             return Collections.emptyMap();
         } else {

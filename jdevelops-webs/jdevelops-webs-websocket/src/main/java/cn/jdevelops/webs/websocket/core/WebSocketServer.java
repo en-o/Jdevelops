@@ -106,9 +106,9 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message) {
-        for (List<Session> session : cacheService.loadSession()) {
+        for (Session session : cacheService.loadSession()) {
             try {
-                session.forEach(ss -> sendMessage(ss, message));
+                sendMessage(session, message);
             } catch (Exception e) {
                 logger.error("群发消息失败", e);
             }
@@ -122,9 +122,9 @@ public class WebSocketServer {
      * @param message 消息
      */
     public void onAsyncMessage(String message) {
-        for (List<Session> session : cacheService.loadSession()) {
+        for (Session session : cacheService.loadSession()) {
             try {
-                session.forEach(ss -> sendAsyncMessage(ss, message));
+                sendAsyncMessage(session, message);
             } catch (Exception e) {
                 logger.error("群发消息失败", e);
             }

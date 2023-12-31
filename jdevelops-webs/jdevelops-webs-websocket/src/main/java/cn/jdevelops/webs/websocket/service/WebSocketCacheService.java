@@ -1,5 +1,6 @@
 package cn.jdevelops.webs.websocket.service;
 
+import cn.jdevelops.webs.websocket.cache.SessionInfo;
 import cn.jdevelops.webs.websocket.config.WebSocketConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +86,7 @@ public class WebSocketCacheService {
      * @param sessionsArray Session Array
      */
     public void saveSession(final String userName, final String verify, final List<Session> sessionsArray) {
-        ROBUST_SESSION_POOLS.put(userName, sessionsArray);
+        ROBUST_SESSION_POOLS.put(userName, new SessionInfo(sessionsArray, verify));
     }
 
     /**
@@ -96,7 +97,12 @@ public class WebSocketCacheService {
      */
     public List<Session> loadSession(final String userName) {
         //获取session
-        return ROBUST_SESSION_POOLS.get(userName);
+        SessionInfo sessionInfo = ROBUST_SESSION_POOLS.get(userName);
+        if(sessionInfo != null){
+            return sessionInfo.getSessions();
+        }else {
+            return new ArrayList<>();
+        }
     }
 
 
@@ -105,19 +111,29 @@ public class WebSocketCacheService {
      *
      * @return List<Session> of Collection
      */
-    public Collection<List<Session>> loadSession() {
+    public List<Session> loadSession() {
         //获取session
-        return ROBUST_SESSION_POOLS.values();
+        Collection<SessionInfo> sessionInfos = ROBUST_SESSION_POOLS.values();
+        List<Session> result = new ArrayList<>();
+        for (SessionInfo sessionInfo : sessionInfos) {
+            List<Session> sessions = sessionInfo.getSessions();
+            result.addAll(sessions);
+        }
+        return result;
     }
 
 
     /**
      * 加载整个 缓存池map
      *
-     * @return Map
+     * @return Map(name,session)
      */
     public Map<String, List<Session>> loadSessionForPools() {
-        return ROBUST_SESSION_POOLS;
+        Map<String, List<Session>> result = new HashMap<>();
+        ROBUST_SESSION_POOLS.forEach((k,v) -> {
+            result.put(k,v.getSessions());
+        });
+        return result;
     }
 
 
