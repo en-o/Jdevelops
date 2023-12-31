@@ -2,6 +2,7 @@ package cn.jdevelops.webs.websocket.service;
 
 import cn.jdevelops.webs.websocket.cache.SessionInfo;
 import cn.jdevelops.webs.websocket.config.WebSocketConfig;
+import cn.jdevelops.webs.websocket.exception.WebSocketException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -86,6 +87,16 @@ public class WebSocketCacheService {
      * @param sessionsArray Session Array
      */
     public void saveSession(final String userName, final String verify, final List<Session> sessionsArray) {
+        Map<String, SessionInfo> robustSessionPools = ROBUST_SESSION_POOLS;
+        if(!robustSessionPools.isEmpty()){
+            SessionInfo sessionInfo = ROBUST_SESSION_POOLS.get(userName);
+            if (sessionInfo != null
+                    && sessionInfo.getSessions() != null
+                    && !sessionInfo.getSessions().isEmpty()
+                    && !sessionInfo.getPath().equalsIgnoreCase(verify)) {
+                throw new WebSocketException("同一个用户不允许同时存在于 Y/N 连接");
+            }
+        }
         ROBUST_SESSION_POOLS.put(userName, new SessionInfo(sessionsArray, verify));
     }
 
@@ -117,7 +128,9 @@ public class WebSocketCacheService {
         List<Session> result = new ArrayList<>();
         for (SessionInfo sessionInfo : sessionInfos) {
             List<Session> sessions = sessionInfo.getSessions();
-            result.addAll(sessions);
+            if(sessions != null && !sessions.isEmpty()){
+                result.addAll(sessions);
+            }
         }
         return result;
     }

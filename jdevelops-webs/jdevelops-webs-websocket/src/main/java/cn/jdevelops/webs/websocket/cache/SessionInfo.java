@@ -20,8 +20,10 @@ public class SessionInfo {
     String path;
 
     public SessionInfo(List<Session> sessions, String path) {
-        this.sessions = sessions;
-        this.path = path;
+        if(!sessions.isEmpty()){
+            this.sessions = sessions;
+            this.path = path;
+        }
     }
 
     public List<Session> getSessions() {
