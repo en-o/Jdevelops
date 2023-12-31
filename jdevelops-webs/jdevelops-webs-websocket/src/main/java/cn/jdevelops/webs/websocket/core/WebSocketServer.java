@@ -13,6 +13,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +117,30 @@ public class WebSocketServer {
         }
     }
 
+    /**
+     * 发送语音流
+     * 由于音频转化后的二进制数据较大，
+     * websocket默认的消息传输大小不能被接收，
+     * 所以需要通过 @OnMessage(maxMessageSize=5242880)注解进行调整[设置最大接收消息大小]
+     * @param userName 用户
+     * @param inputStream  语音流
+     */
+    @OnMessage(maxMessageSize=5242880)
+    public void onMessage( String userName, InputStream inputStream) {
+        List<Session> sessions = cacheService.loadSession(userName);
+        for (Session session : sessions) {
+            try {
+                byte[] buff = new byte[inputStream.available()];
+                inputStream.read(buff, 0, inputStream.available());
+                synchronized (session) {
+                    session.getBasicRemote().sendBinary(ByteBuffer.wrap(buff));
+                }
+            } catch (Exception e) {
+                logger.error("语音流消息失败", e);
+            }
+        }
+
+    }
 
     /**
      * 收到客户端消息时触发（群发）
