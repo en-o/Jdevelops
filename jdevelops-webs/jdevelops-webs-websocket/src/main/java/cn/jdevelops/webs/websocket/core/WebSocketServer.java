@@ -56,7 +56,8 @@ public class WebSocketServer {
      * 连接建立成功调用
      *
      * @param session  客户端与socket建立的会话
-     * @param userName 客户端的userName
+     * @param userName 客户端的userName（路径最后一个/d类容，e.g socket/y/tan 中的tan就是userName）[看类上的@ServerEndpoint就明白了]
+     * @param verify （ y,n ）
      */
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "name") String userName, @PathParam(value = "ver") String verify) {
