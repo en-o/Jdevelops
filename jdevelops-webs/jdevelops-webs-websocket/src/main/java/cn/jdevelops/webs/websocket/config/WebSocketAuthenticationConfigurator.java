@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.ServerEndpointConfig;
 
 
-
 /**
  * 鉴权  默认所有接口鉴权和 注入 (https://www.zhihu.com/question/509998275)
+ *
  * @author https://blog.csdn.net/lovo1/article/details/103852900
- * */
+ */
 @Component
 public class WebSocketAuthenticationConfigurator extends ServerEndpointConfig.Configurator implements ApplicationContextAware {
 
@@ -47,7 +47,8 @@ public class WebSocketAuthenticationConfigurator extends ServerEndpointConfig.Co
         String servletPath = request.getServletPath();
 
         VerifyService verifyService = applicationContext.getBean(VerifyService.class);
-        if(verifyService.verifyPath(servletPath)){
+        WebSocketConfig webSocketConfig = applicationContext.getBean(WebSocketConfig.class);
+        if (verifyService.verifyPath(servletPath, webSocketConfig.isVerifyPathNo())) {
             return verifyService.verifyLogin(request);
         }
         return false;
