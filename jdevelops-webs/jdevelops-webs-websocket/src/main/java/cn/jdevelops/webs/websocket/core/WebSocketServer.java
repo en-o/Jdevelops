@@ -123,15 +123,15 @@ public class WebSocketServer {
      * websocket默认的消息传输大小不能被接收，
      * 所以需要通过 @OnMessage(maxMessageSize=5242880)注解进行调整[设置最大接收消息大小]
      * @param userName 用户
-     * @param inputStream  语音流
+     * @param message  语音流
      */
-    @OnMessage(maxMessageSize=5242880)
-    public void onMessage( String userName, InputStream inputStream) {
+//    @OnMessage(maxMessageSize=5242880)
+    public void sendInputStream(String userName, InputStream message) {
         List<Session> sessions = cacheService.loadSession(userName);
         for (Session session : sessions) {
             try {
-                byte[] buff = new byte[inputStream.available()];
-                inputStream.read(buff, 0, inputStream.available());
+                byte[] buff = new byte[message.available()];
+                message.read(buff, 0, message.available());
                 synchronized (session) {
                     session.getBasicRemote().sendBinary(ByteBuffer.wrap(buff));
                 }
@@ -139,8 +139,26 @@ public class WebSocketServer {
                 logger.error("语音流消息失败", e);
             }
         }
-
     }
+
+    /**
+     * 发送语音流
+     * @param userName 用户
+     * @param message  语音流
+     */
+    public void sendByte(String userName, byte[] message) {
+        List<Session> sessions = cacheService.loadSession(userName);
+        for (Session session : sessions) {
+            try {
+                synchronized (session) {
+                    session.getBasicRemote().sendBinary(ByteBuffer.wrap(message));
+                }
+            } catch (Exception e) {
+                logger.error("语音流消息失败", e);
+            }
+        }
+    }
+
 
     /**
      * 收到客户端消息时触发（群发）
