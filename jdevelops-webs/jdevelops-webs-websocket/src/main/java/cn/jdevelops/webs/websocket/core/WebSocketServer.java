@@ -293,6 +293,24 @@ public class WebSocketServer {
         }
     }
 
+
+    /**
+     * 关闭连接
+     * @param userName 用户名
+     */
+    public void close(String userName){
+        //这个用户的所有session
+        List<Session> sessions = cacheService.loadSession(userName);
+        sessions.forEach(session -> {
+            try {
+                session.close();
+            } catch (Exception e) {
+                logger.error("session.close() error", e);
+            }
+        });
+    }
+
+
     public static void addOnlineCount() {
         online.incrementAndGet();
     }
