@@ -13,6 +13,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,12 +101,27 @@ public class WebSocketServer {
     }
 
     /**
-     * 收到客户端消息时触发（群发）
-     *
+     * 处理接收到的文本消息并转发（群发）
      * @param message 消息
      */
     @OnMessage
     public void onMessage(String message) {
+        for (Session session : cacheService.loadSession()) {
+            try {
+                sendMessage(session, message);
+            } catch (Exception e) {
+                logger.error("群发消息失败", e);
+            }
+        }
+    }
+
+
+    /**
+     * 处理接收到的二进制消息并转发（群发）
+     * @param message 消息
+     */
+    @OnMessage
+    public void onMessage(byte[] message) {
         for (Session session : cacheService.loadSession()) {
             try {
                 sendMessage(session, message);
@@ -247,6 +263,31 @@ public class WebSocketServer {
             logger.warn("发送消息失败", e);
         }
     }
+
+    /**
+     * 发送消息方法
+     *
+     * @param session 客户端与socket建立的会话
+     * @param message 消息
+     */
+    public void sendMessage(Session session, byte[] message) {
+        try {
+            if (session != null) {
+                Lock lock = new ReentrantLock();
+                lock.lock();
+                try {
+                    session.getAsyncRemote().sendBinary(ByteBuffer.wrap(message));
+                } catch (Exception ignored) {
+                } finally {
+                    lock.unlock();   //释放锁
+                }
+            }
+        } catch (Exception e) {
+            // 这个异常好像不影响什么
+            logger.warn("发送消息失败", e);
+        }
+    }
+
 
 
     /**
