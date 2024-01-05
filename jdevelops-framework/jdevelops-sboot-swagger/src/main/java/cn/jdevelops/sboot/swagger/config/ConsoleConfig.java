@@ -1,5 +1,6 @@
 package cn.jdevelops.sboot.swagger.config;
 
+import cn.jdevelops.sboot.swagger.domain.SwaggerProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class ConsoleConfig implements ApplicationRunner {
 
 
 	@Resource
-	private SwaggerProperties  swaggerBean;
+	private SwaggerProperties swaggerBean;
 
 
 	@Override

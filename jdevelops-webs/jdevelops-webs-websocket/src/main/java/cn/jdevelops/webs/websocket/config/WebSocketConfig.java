@@ -39,6 +39,15 @@ public class WebSocketConfig {
     private boolean onClose = true;
 
 
+    /**
+     * 是否开启 VERIFY_PATH_NO 路径
+     * 默认开启。
+     */
+    private boolean verifyPathNo = true;
+
+
+
+
 
 
     public boolean isEnable() {
@@ -66,12 +75,21 @@ public class WebSocketConfig {
         this.onClose = onClose;
     }
 
+    public boolean isVerifyPathNo() {
+        return verifyPathNo;
+    }
+
+    public void setVerifyPathNo(boolean verifyPathNo) {
+        this.verifyPathNo = verifyPathNo;
+    }
+
     @Override
     public String toString() {
         return "WebSocketConfig{" +
                 "enable=" + enable +
                 ", multipart=" + multipart +
                 ", onClose=" + onClose +
+                ", verifyPathNo=" + verifyPathNo +
                 '}';
     }
 }

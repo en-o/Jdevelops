@@ -18,6 +18,6 @@ public class WebSocketSessionLocalCache {
      * concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象
      * websocket session
      */
-    public static Map<String, List<Session>> sessionPools = new ConcurrentHashMap<>();
+    public static Map<String, SessionInfo> ROBUST_SESSION_POOLS = new ConcurrentHashMap<>();
 
 }

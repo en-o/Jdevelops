@@ -52,6 +52,10 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-sboot-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.jdevelops</groupId>
+            <artifactId>jdevelops-util-spring</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

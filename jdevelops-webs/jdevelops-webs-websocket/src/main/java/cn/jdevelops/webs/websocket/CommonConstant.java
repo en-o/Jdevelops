@@ -10,6 +10,17 @@ import java.util.List;
  * @date 2022-02-24 13:46
  */
 public interface CommonConstant {
+
+    /**
+     * 连接路径 y
+     */
+    String PATH_Y = "y";
+
+    /**
+     * 连接路径 n
+     */
+    String PATH_N = "n";
+
     /**
      * 限制连接路径
      * y：需要验证token
