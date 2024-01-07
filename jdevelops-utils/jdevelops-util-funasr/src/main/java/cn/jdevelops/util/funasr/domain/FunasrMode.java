@@ -1,4 +1,4 @@
-package cn.jdevelops.sboot.websocket.funasr;
+package cn.jdevelops.util.funasr.domain;
 
 /**
  * 录音模式
