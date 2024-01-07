@@ -603,7 +603,11 @@
                 <artifactId>jdevelops-util-core</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-util-funasr</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- 发布订阅 -->
             <dependency>
                 <groupId>cn.jdevelops</groupId>

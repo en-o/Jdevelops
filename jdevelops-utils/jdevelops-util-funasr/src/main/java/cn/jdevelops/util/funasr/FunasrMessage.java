@@ -1,7 +1,8 @@
 package cn.jdevelops.util.funasr;
 
-import cn.jdevelops.sboot.websocket.funasr.domain.FunasrConstant;
-import cn.jdevelops.sboot.websocket.funasr.domain.FunasrMode;
+
+import cn.jdevelops.util.funasr.domain.FunasrConstant;
+import cn.jdevelops.util.funasr.domain.FunasrMode;
 import cn.jdevelops.webs.websocket.core.WebSocketServer;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
