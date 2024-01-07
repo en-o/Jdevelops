@@ -1,6 +1,5 @@
 package cn.jdevelops.util.funasr.websocket;
 
-import cn.jdevelops.util.funasr.domain.FunasrMode;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

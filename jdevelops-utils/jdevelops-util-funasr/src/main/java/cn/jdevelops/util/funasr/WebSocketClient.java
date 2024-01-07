@@ -30,17 +30,16 @@ public class WebSocketClient {
     }
 
     /**
-     * @param audio   音频流
      * @param line  TargetDataLine
      */
-    public void startFunasr(byte[] audio, TargetDataLine line) {
+    public void startFunasr( TargetDataLine line) {
 
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         try {
             String uri = String.format("ws://%s:%d/", funasrProperties.getHost(), funasrProperties.getPort());
             Session session = container.connectToServer(FunasrWebSocketClientEndpoint.class, URI.create(uri));
             // 发送数据
-            funasrMessage.sendSpeech("username", session, audio, line);
+            funasrMessage.sendSpeech("username", session, line);
         } catch (Exception ex) {
             LOG.error("funasr连接失败", ex);
         }

@@ -7,17 +7,11 @@ import cn.jdevelops.util.funasr.domain.FunasrMode;
 import cn.jdevelops.util.funasr.websocket.FunasrWebSocketClientEndpoint;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sound.sampled.TargetDataLine;
-import javax.websocket.OnMessage;
 import javax.websocket.Session;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,10 +41,10 @@ public class FunasrMessage {
      *
      * @param username 接收用户
      * @param session  websocket session
-     * @param audio   音频流
+//     * @param audio   音频流
      * @param line  TargetDataLine
      */
-    public void sendSpeech(String username, Session session, byte[] audio, TargetDataLine line) {
+    public void sendSpeech(String username, Session session, TargetDataLine line) {
         // 首次通信,建立连接
         sendHandshake(
                 session,
@@ -61,7 +55,7 @@ public class FunasrMessage {
                 "");
         int chunkSize = FunasrConstant.sendChunkSize;
         byte[] bytes = new byte[chunkSize];
-        int readSize = line.read(audio, 0, audio.length);
+        int readSize = line.read(bytes, 0, bytes.length);
         while (readSize > 0) {
             try {
                 // send when it is chunk size
