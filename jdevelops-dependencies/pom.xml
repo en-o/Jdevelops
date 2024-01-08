@@ -691,7 +691,11 @@
                 <artifactId>jdevelops-sboot-authentication-sas-server</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-util-authorization-error</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- 注解 -->
             <dependency>

@@ -20,6 +20,7 @@
         <module>jdevelops-util-interceptor</module>
         <module>jdevelops-util-time</module>
         <module>jdevelops-util-core</module>
+        <module>jdevelops-util-authorization-error</module>
     </modules>
 
 
