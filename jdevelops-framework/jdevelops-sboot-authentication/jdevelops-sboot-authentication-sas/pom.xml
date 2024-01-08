@@ -25,12 +25,17 @@
         [spring-security-oauth2-authorization-server:0.4.3-SNAPSHOT](https://docs.spring.io/spring-authorization-server/docs/0.4.3-SNAPSHOT/reference/html/getting-started.html)
     </description>
 
-    <dependencies>
-        <!--https://docs.spring.io/spring-authorization-server/docs/0.4.3-SNAPSHOT/reference/html/getting-started.html-->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-authorization-server</artifactId>
-            <version>0.4.2</version>
-        </dependency>
-    </dependencies>
+    <properties>
+        <authorization.version>0.4.5</authorization.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!--https://docs.spring.io/spring-authorization-server/docs/0.4.5/reference/html/getting-started.html-->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${authorization.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
