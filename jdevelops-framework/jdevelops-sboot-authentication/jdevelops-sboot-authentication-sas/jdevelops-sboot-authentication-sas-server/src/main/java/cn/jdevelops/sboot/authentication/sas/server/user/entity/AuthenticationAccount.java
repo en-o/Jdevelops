@@ -19,17 +19,17 @@ import java.util.List;
 public class AuthenticationAccount implements Serializable {
 
     /**
-     * 用户编号
+     * 用户编号 [必填]
      */
     private String no;
 
     /**
-     * 登录名
+     * 登录名 [必填]
      */
     private String loginName;
 
     /**
-     * 密码
+     * 密码 [必填]
      */
     private String password;
 
@@ -44,7 +44,7 @@ public class AuthenticationAccount implements Serializable {
     private String description;
 
     /**
-     * 状态:0[停用],1[正常],2[封禁]
+     * 状态:1[正常],2[锁定[违规]],3[删除[禁用]]
      */
     private Integer status;
 
@@ -52,6 +52,26 @@ public class AuthenticationAccount implements Serializable {
      * 用户角色[逗号隔开]
      */
     private List<String> roles;
+
+    /**
+     * 手机号
+     */
+    private String phoneNumber;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 头像地址[http地址]
+     */
+    private String profile;
+
+    /**
+     * 家庭住址
+     */
+    private String address;
 
 
     public List<String> getRoles() {
