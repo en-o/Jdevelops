@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * UserDetailsService 的自定义实现。
@@ -66,5 +67,10 @@ public class UserDetailsServiceImpl implements UserDetailsService,JUserDetailsSe
                 .username(account.getLoginName())
                 .authorities(roles)
                 .build();
+    }
+
+    @Override
+    public Optional<AuthenticationAccount> findUserInfo(String username) {
+        return authenticationService.findUser(username);
     }
 }
