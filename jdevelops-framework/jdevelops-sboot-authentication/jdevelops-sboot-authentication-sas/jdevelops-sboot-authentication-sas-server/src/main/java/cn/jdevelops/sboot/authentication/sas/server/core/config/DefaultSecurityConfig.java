@@ -27,6 +27,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.annotation.Resource;
+
 
 /**
  * @author Joe Grandja
@@ -34,6 +36,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 public class DefaultSecurityConfig {
+
+
+    @Resource
+    private  SasProperties sasProperties;
 
 
     /**
@@ -51,22 +57,22 @@ public class DefaultSecurityConfig {
                 // 设置所有请求都需要认证，未认证的请求都被重定向到login页面进行登录
                 .authorizeHttpRequests((authorize) -> authorize
                         // 放行静态资源
-                        .mvcMatchers("/assets/**", "/webjars/**", "/login").permitAll()
+                        .mvcMatchers(sasProperties.getRequests().mvcMatchersToArr()).permitAll()
                         // 放行接口
-                        .antMatchers("/api/**").permitAll()
+                        .antMatchers(sasProperties.getRequests().antMatchersToArr()).permitAll()
                         // 拦截其余所有
                         .anyRequest().authenticated()
                 ) // 自定义登录界面
                 .formLogin(formLogin ->
                         formLogin
-                                .loginPage("/login")
+                                .loginPage("/page/login")
 
                 );
 
         // 异常处理器
         http.oauth2ResourceServer(resourceServer -> resourceServer
                         .jwt(Customizer.withDefaults())
-                        .authenticationEntryPoint(new UnAuthenticationEntryPoint("/login"))
+                        .authenticationEntryPoint(new UnAuthenticationEntryPoint("/page/login"))
                         .accessDeniedHandler(new UnAccessDeniedHandler())
         );
 

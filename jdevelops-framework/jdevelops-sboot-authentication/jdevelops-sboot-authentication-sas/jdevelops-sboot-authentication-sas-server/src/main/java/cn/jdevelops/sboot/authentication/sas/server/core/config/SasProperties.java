@@ -1,11 +1,10 @@
 package cn.jdevelops.sboot.authentication.sas.server.core.config;
 
+import cn.jdevelops.sboot.authentication.sas.server.core.entity.SasAuthorizeHttpRequests;
 import cn.jdevelops.sboot.authentication.sas.server.core.entity.SasTokenSettings;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.stereotype.Component;
 
 /**
  * 基础可配信息
@@ -17,8 +16,17 @@ import org.springframework.stereotype.Component;
 @AutoConfiguration
 public class SasProperties {
 
+    /**
+     * 注册客户端是设置的token信息
+     */
     @NestedConfigurationProperty
     SasTokenSettings  token;
+
+    /**
+     * 放行与拦截
+     */
+    @NestedConfigurationProperty
+    SasAuthorizeHttpRequests requests;
 
     public SasTokenSettings getToken() {
         return token;
@@ -26,5 +34,21 @@ public class SasProperties {
 
     public void setToken(SasTokenSettings token) {
         this.token = token;
+    }
+
+    public SasAuthorizeHttpRequests getRequests() {
+        return requests;
+    }
+
+    public void setRequests(SasAuthorizeHttpRequests requests) {
+        this.requests = requests;
+    }
+
+    @Override
+    public String toString() {
+        return "SasProperties{" +
+                "token=" + token +
+                ", requests=" + requests +
+                '}';
     }
 }

@@ -1,6 +1,5 @@
 package cn.jdevelops.sboot.authentication.sas.server.core.controller;
 
-import cn.jdevelops.sboot.authentication.sas.server.core.config.AuthorizationServerConfig;
 import cn.jdevelops.sboot.authentication.sas.server.core.config.SasProperties;
 import cn.jdevelops.sboot.authentication.sas.server.core.controller.dto.CustomRegisteredClient;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +36,10 @@ public class ServerController {
         this.sasProperties = sasProperties;
     }
 
-
+    @GetMapping(value = "/page/login")
+    public String login() {
+        return "login";
+    }
 
     /**
      * 接口作用: 类似去微信平台平台申请 appId和appSecret一样

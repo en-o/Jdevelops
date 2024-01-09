@@ -130,9 +130,9 @@ public class AuthorizationServerConfig {
 				// authorization endpoint
 				.exceptionHandling((exceptions) -> exceptions
 						.authenticationEntryPoint(
-								new LoginUrlAuthenticationEntryPoint("/login")
+								new LoginUrlAuthenticationEntryPoint("/page/login")
 						)
-						.authenticationEntryPoint(new UnAuthenticationEntryPoint("/login"))
+						.authenticationEntryPoint(new UnAuthenticationEntryPoint("/page/login"))
 						.accessDeniedHandler(new UnAccessDeniedHandler())
 				)
 				// Accept access tokens for User Info and/or Client Registration[使用jwt处理接收到的access token]
