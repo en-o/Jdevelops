@@ -1,13 +1,8 @@
 package cn.jdevelops.sboot.authentication.sas.server.user.service;
 
 
-import cn.jdevelops.sboot.authentication.sas.server.user.entity.AuthenticationAccount;
-import cn.jdevelops.util.authorization.error.CustomAuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.List;
 
 /**
  * @author <a href="https://tannn.cn/">tan</a>

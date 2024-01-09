@@ -1,7 +1,7 @@
 package cn.jdevelops.sboot.authentication.sas.server.oauth.model.oidc;
 
-import cn.jdevelops.sboot.authentication.sas.server.user.service.AuthenticationService;
 import cn.jdevelops.sboot.authentication.sas.server.user.entity.AuthenticationAccount;
+import cn.jdevelops.sboot.authentication.sas.server.user.service.AuthenticationService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
