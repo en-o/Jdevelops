@@ -1,9 +1,7 @@
 package cn.jdevelops.util.spring.core.context;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 /**
  * 获取上下文

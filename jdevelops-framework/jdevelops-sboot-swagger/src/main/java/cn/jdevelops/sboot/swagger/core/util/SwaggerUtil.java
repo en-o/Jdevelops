@@ -1,9 +1,8 @@
 package cn.jdevelops.sboot.swagger.core.util;
 
 
-
-import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
+import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.slf4j.Logger;
