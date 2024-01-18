@@ -48,7 +48,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -62,7 +62,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -77,7 +77,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -90,7 +90,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -105,7 +105,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -119,7 +119,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -135,7 +135,7 @@ public class Restrictions {
      * @param fieldName         字段名
      * @param value             字段值
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -149,7 +149,7 @@ public class Restrictions {
      * @param fieldName         字段名
      * @param value             字段值
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -165,7 +165,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -180,7 +180,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -196,7 +196,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -210,7 +210,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -224,7 +224,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -237,7 +237,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -252,7 +252,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -265,7 +265,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -279,7 +279,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -292,7 +292,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -307,7 +307,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -320,7 +320,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
@@ -335,7 +335,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
@@ -350,7 +350,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return LogicalExpression
      */
@@ -420,7 +420,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value {value: 1,2}
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
     public static SimpleExpression between(String fieldName, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
@@ -434,7 +434,7 @@ public class Restrictions {
      * @param fieldName         实体字段名
      * @param value             value {value: 1,2}
      * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param ignoreNullEnhance ignoreNull = true 有效(true: 值是否为 [null,""," "],false: 值是否为 null)
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @param function          处理数据格式
      * @return SimpleExpression
      */
