@@ -16,6 +16,9 @@ public class DynamicDataSourceProperties {
      */
     String salt;
 
+    /**
+     * 数据源管理的表名[默认dy_datasource,可自定义][ps表结构是固定的（init_table_dy_datasource_mysql.sql）]
+     */
     String tableName;
 
     public String getSalt() {
