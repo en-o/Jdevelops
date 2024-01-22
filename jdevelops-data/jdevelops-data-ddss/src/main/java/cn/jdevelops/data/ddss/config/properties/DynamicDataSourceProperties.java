@@ -11,8 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "jdevelops.dynamic")
 public class DynamicDataSourceProperties {
     /**
-     *  数据库加密盐(16位) <br/>
-     *  如果不满足16或者则会使用默认
+     *  tableName表中的数据库密码加密盐(16位) <br/>
+     *  如果不满足16或者则会使用默认 (加密方式ObjectUtils.encryptAES，参考：DynamicDatasourceService.add)
      */
     String salt;
 
