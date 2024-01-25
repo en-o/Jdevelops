@@ -37,6 +37,9 @@ public class SasProperties {
     }
 
     public SasAuthorizeHttpRequests getRequests() {
+        if(null == requests){
+            return new SasAuthorizeHttpRequests();
+        }
         return requests;
     }
 

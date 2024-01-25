@@ -18,6 +18,7 @@ package cn.jdevelops.authentication.sas.server.core.config;
 import cn.jdevelops.util.authorization.error.UnAccessDeniedHandler;
 import cn.jdevelops.util.authorization.error.UnAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,19 +28,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.annotation.Resource;
+
 
 /**
- * @author Joe Grandja
+ * EnableMethodSecurity  {@link https://www.cnblogs.com/goloving/p/14891241.html}
+ * <p>
+ *   EnableGlobalMethodSecurity(securedEnabled=true) 开启@Secured 注解过滤权限
+ *   EnableGlobalMethodSecurity(jsr250Enabled=true)开启@RolesAllowed 注解过滤权限
+ *   EnableGlobalMethodSecurity(prePostEnabled=true) 使用表达式时间方法级别的安全性 4个注解可用【默认启用】
+ * 		PreAuthorize 在方法调用之前, 基于表达式的计算结果来限制对方法的访问
+ * 		PostAuthorize 允许方法调用, 但是如果表达式计算结果为false, 将抛出一个安全性异常
+ * 		PostFilter 允许方法调用, 但必须按照表达式来过滤方法的结果
+ * 		PreFilter 允许方法调用, 但必须在进入方法之前过滤输入值
+ * </p>
+ * @author tan
  */
 @EnableWebSecurity
+@Configuration
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 public class DefaultSecurityConfig {
 
-    private  final SasProperties sasProperties;
 
-    public DefaultSecurityConfig(SasProperties sasProperties) {
-        this.sasProperties = sasProperties;
-    }
+    @Resource
+    private SasProperties sasProperties;
 
 
     /**
