@@ -30,6 +30,7 @@ public class AuthenticationAccount implements Serializable {
 
     /**
      * 密码 [必填]
+     * passwordEncoder.encode("明文password")
      */
     private String password;
 
