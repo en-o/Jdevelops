@@ -5,25 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops-framework</artifactId>
+        <artifactId>jdevelops-authentication-sas</artifactId>
         <version>${revision}</version>
     </parent>
-    <packaging>pom</packaging>
-    <artifactId>jdevelops-sboot-authentication</artifactId>
-    <description>
-       认证模块
-    </description>
-    <modules>
-        <module>jdevelops-sboot-authentication-jwt</module>
-        <module>jdevelops-sboot-authentication-jredis</module>
-    </modules>
 
+    <artifactId>jdevelops-authentication-sas-client</artifactId>
+    <description>
+        客户端
+    </description>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
     </dependencies>
 

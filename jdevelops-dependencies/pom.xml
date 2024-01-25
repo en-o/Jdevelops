@@ -678,17 +678,17 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-sas-client</artifactId>
+                <artifactId>jdevelops-authentication-sas-client</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-sas-resource</artifactId>
+                <artifactId>jdevelops-authentication-sas-resource</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-sas-server</artifactId>
+                <artifactId>jdevelops-authentication-sas-server</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
