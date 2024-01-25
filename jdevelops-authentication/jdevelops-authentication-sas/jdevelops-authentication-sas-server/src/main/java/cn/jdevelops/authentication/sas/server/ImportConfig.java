@@ -11,7 +11,9 @@ import cn.jdevelops.authentication.sas.server.user.service.JUserDetailsService;
 import cn.jdevelops.authentication.sas.server.user.service.impl.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -24,6 +26,11 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
  * @date 2024/1/25 10:01
  */
 @AutoConfiguration
+@Import({RegisteredClientRepository.class,
+        PasswordEncoder.class,
+        OAuth2AuthorizationConsentService.class,
+        UserDetailsService.class})
+@EntityScan("cn.jdevelops.authentication.sas.server.oauth.entity")
 public class ImportConfig {
 
 
