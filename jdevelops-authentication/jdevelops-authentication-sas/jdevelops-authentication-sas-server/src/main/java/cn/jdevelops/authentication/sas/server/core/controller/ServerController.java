@@ -1,7 +1,7 @@
 package cn.jdevelops.authentication.sas.server.core.controller;
 
-import cn.jdevelops.authentication.sas.server.core.controller.dto.CustomRegisteredClient;
 import cn.jdevelops.authentication.sas.server.core.config.SasProperties;
+import cn.jdevelops.authentication.sas.server.core.controller.dto.CustomRegisteredClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
