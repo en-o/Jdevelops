@@ -30,7 +30,8 @@ public class ServerController {
     private final SasProperties sasProperties;
 
     public ServerController(RegisteredClientRepository registeredClientRepository,
-                            PasswordEncoder passwordEncoder, SasProperties sasProperties) {
+                            PasswordEncoder passwordEncoder,
+                            SasProperties sasProperties) {
         this.registeredClientRepository = registeredClientRepository;
         this.passwordEncoder = passwordEncoder;
         this.sasProperties = sasProperties;

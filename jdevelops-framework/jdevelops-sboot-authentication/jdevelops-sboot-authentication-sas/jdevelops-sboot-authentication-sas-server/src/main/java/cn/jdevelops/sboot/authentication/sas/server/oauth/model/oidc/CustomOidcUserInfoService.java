@@ -4,7 +4,6 @@ import cn.jdevelops.sboot.authentication.sas.server.user.entity.AuthenticationAc
 import cn.jdevelops.sboot.authentication.sas.server.user.service.AuthenticationService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -16,8 +15,11 @@ import java.util.Optional;
 @Service
 public class CustomOidcUserInfoService {
 
-    @Resource
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+
+    public CustomOidcUserInfoService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     public CustomOidcUserInfo loadUser(String username) {
         Optional<AuthenticationAccount> userInfo = authenticationService.findUser(username);

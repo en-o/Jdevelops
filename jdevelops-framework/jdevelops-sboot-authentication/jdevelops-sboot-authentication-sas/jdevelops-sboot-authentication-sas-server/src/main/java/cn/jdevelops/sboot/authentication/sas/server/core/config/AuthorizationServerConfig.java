@@ -50,7 +50,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import javax.annotation.Resource;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
@@ -67,19 +66,24 @@ public class AuthorizationServerConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(AuthorizationServerConfig.class);
 
-	@Resource
-	private JUserDetailsService jUserDetailsService;
+	private final JUserDetailsService jUserDetailsService;
 
-	@Resource
-	UserDetailsService userDetailsService;
+	private final  UserDetailsService userDetailsService;
 
-	@Resource
-	private CustomOidcUserInfoService customOidcUserInfoService;
+	private final  CustomOidcUserInfoService customOidcUserInfoService;
 
 	/**
 	 * 授权页面
 	 */
 	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+
+	public AuthorizationServerConfig(JUserDetailsService jUserDetailsService,
+									 UserDetailsService userDetailsService,
+									 CustomOidcUserInfoService customOidcUserInfoService) {
+		this.jUserDetailsService = jUserDetailsService;
+		this.userDetailsService = userDetailsService;
+		this.customOidcUserInfoService = customOidcUserInfoService;
+	}
 
 	/**
 	 * Spring Authorization Server 相关配置  <br/>

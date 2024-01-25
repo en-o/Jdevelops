@@ -27,8 +27,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.annotation.Resource;
-
 
 /**
  * @author Joe Grandja
@@ -37,9 +35,11 @@ import javax.annotation.Resource;
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 public class DefaultSecurityConfig {
 
+    private  final SasProperties sasProperties;
 
-    @Resource
-    private  SasProperties sasProperties;
+    public DefaultSecurityConfig(SasProperties sasProperties) {
+        this.sasProperties = sasProperties;
+    }
 
 
     /**
