@@ -18,4 +18,9 @@ public @interface JpaUpdate {
      */
     boolean ignore() default false;
 
+    /**
+     * 更新时自动添加时间。默认不添加，[用户LocalDateTime updateTime]
+     */
+    boolean autoTime() default false;
+
 }

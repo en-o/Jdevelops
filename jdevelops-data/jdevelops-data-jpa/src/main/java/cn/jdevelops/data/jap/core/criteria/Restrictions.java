@@ -45,12 +45,13 @@ public class Restrictions {
     /**
      * 等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return eq(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -58,13 +59,14 @@ public class Restrictions {
     /**
      * 等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -72,25 +74,27 @@ public class Restrictions {
     /**
      * 不等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return ne(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
      * 不等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -98,12 +102,13 @@ public class Restrictions {
      * 模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return like(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -111,13 +116,14 @@ public class Restrictions {
      * 模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -126,12 +132,13 @@ public class Restrictions {
      * 模糊不包含
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  字段名
-     * @param value      字段值
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         字段名
+     * @param value             字段值
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return notLike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -139,13 +146,14 @@ public class Restrictions {
      * 模糊不包含
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  字段名
-     * @param value      字段值
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         字段名
+     * @param value             字段值
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NOTLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -154,12 +162,13 @@ public class Restrictions {
      * 左模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return llike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -168,13 +177,14 @@ public class Restrictions {
      * 左模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -183,12 +193,13 @@ public class Restrictions {
      * 右模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return rlike(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -196,38 +207,41 @@ public class Restrictions {
      * 右模糊匹配
      * ps：实体类型为 int Integer Long Float Double 等数字类型时不要使用like 会报错
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 大于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return gt(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
      * 大于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -235,50 +249,54 @@ public class Restrictions {
     /**
      * 小于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return lt(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
      * 小于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
      * 大于等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return gte(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
      * 大于等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -286,25 +304,27 @@ public class Restrictions {
     /**
      * 小于等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return lte(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
     /**
      * 小于等于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE, function, ignoreNull, ignoreNullEnhance);
     }
 
@@ -312,13 +332,14 @@ public class Restrictions {
     /**
      * 包含于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
-    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return in(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -326,14 +347,15 @@ public class Restrictions {
     /**
      * 包含于
      *
-     * @param fieldName  实体字段名
-     * @param value      value
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return LogicalExpression
      */
     @SuppressWarnings("rawtypes")
-    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static LogicalExpression in(String fieldName, Collection value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         if (ignoreNull && IObjects.isaBoolean(value)) {
             return null;
         }
@@ -366,7 +388,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL, function, false,true);
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL, function, false, true);
     }
 
 
@@ -388,19 +410,20 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNotNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL, function, false,true);
+        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL, function, false, true);
     }
 
 
     /**
      * 范围查询[x,y]
      *
-     * @param fieldName  实体字段名
-     * @param value      value {value: 1,2}
-     * @param ignoreNull 空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param fieldName         实体字段名
+     * @param value             value {value: 1,2}
+     * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
      * @return SimpleExpression
      */
-    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull,  boolean ignoreNullEnhance) {
+    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return between(fieldName, value, ignoreNull, ignoreNullEnhance, SpecBuilderDateFun.NULL);
     }
 
@@ -408,13 +431,14 @@ public class Restrictions {
     /**
      * 范围查询[x,y]
      *
-     * @param fieldName  实体字段名
-     * @param value      value {value: 1,2}
-     * @param ignoreNull true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
-     * @param function   处理数据格式
+     * @param fieldName         实体字段名
+     * @param value             value {value: 1,2}
+     * @param ignoreNull        true表示会判断value是否为空，空则不做查询条件，不空则做查询条件
+     * @param ignoreNullEnhance ignoreNull = true 有效(true: 不允许为 [null,""," "],false: 不允许为 null)
+     * @param function          处理数据格式
      * @return SimpleExpression
      */
-    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull,  boolean ignoreNullEnhance, SpecBuilderDateFun function) {
+    public static SimpleExpression between(String fieldName, String value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
         return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.BETWEEN, function, ignoreNull, ignoreNullEnhance);
     }
 

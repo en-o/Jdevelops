@@ -2,6 +2,7 @@ package cn.jdevelops.data.jap.modle.audit;
 
 
 import cn.jdevelops.api.result.bean.SerializableBean;
+import cn.jdevelops.data.jap.annotation.JpaUpdate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,16 +19,19 @@ public class BaseAuditFields<B> extends SerializableBean<B> {
     /**
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
      */
+    @JpaUpdate(ignore = true)
     private LocalDateTime createTime;
 
     /**
      * 表示该字段为创建人，在这个实体被insert的时候，会自动为其赋值
      */
+    @JpaUpdate(ignore = true)
     private String createUserName;
 
     /**
      * 表示该字段为修改时间字段，在这个实体被update的时候，会自动为其赋值
      */
+    @JpaUpdate(autoTime = true)
     private LocalDateTime updateTime;
 
     /**
