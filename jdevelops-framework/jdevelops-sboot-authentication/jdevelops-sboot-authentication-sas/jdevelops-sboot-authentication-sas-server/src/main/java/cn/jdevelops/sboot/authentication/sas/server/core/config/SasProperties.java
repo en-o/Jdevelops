@@ -17,7 +17,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class SasProperties {
 
     /**
-     * 注册客户端是设置的token信息
+     * 注册客户端时设置的token信息
      */
     @NestedConfigurationProperty
     SasTokenSettings  token;
