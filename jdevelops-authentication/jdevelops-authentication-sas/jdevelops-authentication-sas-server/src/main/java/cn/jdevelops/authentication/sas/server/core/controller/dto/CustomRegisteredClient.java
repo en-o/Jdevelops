@@ -47,13 +47,27 @@ public class CustomRegisteredClient {
     private Set<String> redirectUris;
 
     /**
-     * 默认 CLIENT_SECRET_BASIC
+     *  身份验证模式{@link AuthorizationGrantType} 默认 CLIENT_SECRET_BASIC
+     *  <p>
+     *  CLIENT_SECRET_BASIC： 使用 HTTP 基本身份验证。客户端通过在请求头中添加 Authorization 头，将客户端标识和客户端密钥（秘密）进行 Base64 编码并传递给授权服务器。
+     *  CLIENT_SECRET_POST： 客户端通过在请求体中添加 client_id 和 client_secret 这两个参数进行身份验证。这通常用于在不支持 HTTP 基本身份验证的环境中，例如浏览器 JavaScript 应用。
+     *  CLIENT_SECRET_BASIC 和 CLIENT_SECRET_POST 的组合： 客户端同时支持基本身份验证和通过请求体传递客户端密钥。
+     *  PRIVATE_KEY_JWT： 客户端使用私钥签名 JWT（JSON Web Token）进行身份验证。这通常用于客户端是一个移动应用或 Web 应用的情况。
+     *  NONE： 客户端无需进行身份验证。这通常用于无法保护客户端密钥的客户端，如纯前端 JavaScript 应用。
+     *  </p>
      */
     private Set<ClientAuthenticationMethod> clientAuthenticationMethods;
 
 
     /**
      * 授权模式 {@link AuthorizationGrantType}
+     * <p>
+     *     ● authorization_code  ：   授权码模式
+     *     ● refresh_token ： 刷新令牌模式
+     *     ● client_credentials ：客户端凭证模式
+     *     ● authorization_mobile ： 手机号登录模式
+     *     ● authorization_password ：账户密码模式
+     * </p>
      */
     @NotEmpty
     private Set<AuthorizationGrantType> authorizationGrantTypes;
