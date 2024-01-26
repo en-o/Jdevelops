@@ -1,5 +1,6 @@
 package cn.jdevelops.authentication.sas.server.core.controller.dto;
 
+import cn.jdevelops.util.authorization.error.constant.JdevelopsScopes;
 import cn.jdevelops.util.authorization.error.exception.AuthorizationException;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,6 +83,7 @@ public class CustomRegisteredClient {
 
     /**
      * 授权范围  scopes 有默认值[consent.html页面用的，也是给接口的权限注解‘@PreAuthorize("hasAuthority('SCOPE_profile')")’用的]
+     * {@link JdevelopsScopes}
      */
     private Set<String> scopes;
 
@@ -110,11 +112,15 @@ public class CustomRegisteredClient {
 
     public Set<String> getScopes() {
         if (scopes == null || scopes.isEmpty()) {
-            // OIDC 支持
-            Set<String> oidc = new HashSet<>();
-            oidc.add(OidcScopes.OPENID);
-            oidc.add(OidcScopes.PROFILE);
-            return oidc;
+            // 添加全部支持 支持
+            Set<String> allScopes = new HashSet<>();
+            allScopes.add(JdevelopsScopes.OPENID);
+            allScopes.add(JdevelopsScopes.PROFILE);
+            allScopes.add(JdevelopsScopes.PHONE);
+            allScopes.add(JdevelopsScopes.ADDRESS);
+            allScopes.add(JdevelopsScopes.EMAIL);
+            allScopes.add(JdevelopsScopes.STATUS);
+            return allScopes;
         }
         return scopes;
     }

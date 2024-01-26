@@ -15,6 +15,7 @@
  */
 package cn.jdevelops.authentication.sas.server.core.controller;
 
+import cn.jdevelops.util.authorization.error.constant.JdevelopsScopes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
@@ -101,20 +102,28 @@ public class AuthorizationConsentController {
 		private static final Map<String, String> scopeDescriptions = new HashMap<>();
 		static {
 			scopeDescriptions.put(
-					OidcScopes.PROFILE,
+					JdevelopsScopes.PROFILE,
 					"此应用程序将能够读取您的个人资料信息."
 			);
 			scopeDescriptions.put(
-					"message.read",
-					"此应用程序将能够读取您的消息"
+					JdevelopsScopes.STATUS,
+					"此应用程序将能够读取您的账户状态."
 			);
 			scopeDescriptions.put(
-					"message.write",
-					"此应用程序将能够添加新消息。它还将能够编辑和删除现有的消息"
+					JdevelopsScopes.ADDRESS,
+					"此应用程序将能够读取您的地址."
 			);
 			scopeDescriptions.put(
-					"other.scope",
-					"这是作用域描述的另一个作用域示例"
+					JdevelopsScopes.PHONE,
+					"此应用程序将能够读取您的手机号码."
+			);
+			scopeDescriptions.put(
+					JdevelopsScopes.EMAIL,
+					"此应用程序将能够读取您的邮件地址."
+			);
+			scopeDescriptions.put(
+					JdevelopsScopes.OPENID,
+					"此应用程序将能够读取您的openId."
 			);
 		}
 
