@@ -41,7 +41,7 @@ public class CustomRegisteredClient {
     private String clientName;
 
     /**
-     * 客户端回调地址
+     * 客户端回调地址[回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost]
      */
     @NotEmpty
     private Set<String> redirectUris;
