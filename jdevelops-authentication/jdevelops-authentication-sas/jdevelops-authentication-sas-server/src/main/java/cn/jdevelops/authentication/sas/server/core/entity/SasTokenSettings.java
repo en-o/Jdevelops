@@ -18,7 +18,7 @@ public class SasTokenSettings {
     Integer refreshTokenTimeToLive;
 
     /**
-     * 令牌是否能被刷新【默认ture】Auth 2.0 Parameter: grant_type
+     *  refreshToken 是否可以重复使用 [默认true可以]
      */
     Boolean reuseRefreshTokens;
 
