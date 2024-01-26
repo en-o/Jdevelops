@@ -100,6 +100,7 @@ public class AuthorizationServerConfig {
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
 				.authorizationEndpoint(authorizationEndpoint ->
 						authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI))
+				// https://docs.spring.io/spring-authorization-server/docs/0.4.5/reference/html/protocol-endpoints.html#oauth2-token-endpoint
 				// 设置自定义密码模式
 				.tokenEndpoint(tokenEndpoint ->
 						tokenEndpoint
