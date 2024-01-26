@@ -1,4 +1,4 @@
-package cn.jdevelops.util.authorization.error;
+package cn.jdevelops.util.authorization.error.core;
 
 import cn.jdevelops.api.result.emums.ExceptionCode;
 import cn.jdevelops.api.result.emums.TokenExceptionCode;

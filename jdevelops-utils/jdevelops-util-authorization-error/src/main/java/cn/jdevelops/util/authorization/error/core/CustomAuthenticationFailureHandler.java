@@ -1,4 +1,4 @@
-package cn.jdevelops.util.authorization.error;
+package cn.jdevelops.util.authorization.error.core;
 
 import cn.jdevelops.util.authorization.error.respone.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;

@@ -12,10 +12,10 @@ import cn.jdevelops.authentication.sas.server.oauth.model.password.PasswordConve
 import cn.jdevelops.authentication.sas.server.oauth.model.password.PasswordProvider;
 import cn.jdevelops.authentication.sas.server.user.entity.AuthenticationAccount;
 import cn.jdevelops.authentication.sas.server.user.service.JUserDetailsService;
-import cn.jdevelops.util.authorization.error.CustomAuthenticationFailureHandler;
-import cn.jdevelops.util.authorization.error.CustomExceptionTranslationFilter;
-import cn.jdevelops.util.authorization.error.UnAccessDeniedHandler;
-import cn.jdevelops.util.authorization.error.UnAuthenticationEntryPoint;
+import cn.jdevelops.util.authorization.error.core.CustomAuthenticationFailureHandler;
+import cn.jdevelops.util.authorization.error.core.CustomExceptionTranslationFilter;
+import cn.jdevelops.util.authorization.error.core.UnAccessDeniedHandler;
+import cn.jdevelops.util.authorization.error.core.UnAuthenticationEntryPoint;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;

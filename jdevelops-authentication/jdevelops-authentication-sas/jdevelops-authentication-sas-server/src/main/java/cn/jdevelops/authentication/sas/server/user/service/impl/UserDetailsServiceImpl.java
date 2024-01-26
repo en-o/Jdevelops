@@ -3,7 +3,7 @@ package cn.jdevelops.authentication.sas.server.user.service.impl;
 import cn.jdevelops.authentication.sas.server.user.entity.AuthenticationAccount;
 import cn.jdevelops.authentication.sas.server.user.service.AuthenticationService;
 import cn.jdevelops.authentication.sas.server.user.service.JUserDetailsService;
-import cn.jdevelops.util.authorization.error.CustomAuthenticationException;
+import cn.jdevelops.util.authorization.error.exception.CustomAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

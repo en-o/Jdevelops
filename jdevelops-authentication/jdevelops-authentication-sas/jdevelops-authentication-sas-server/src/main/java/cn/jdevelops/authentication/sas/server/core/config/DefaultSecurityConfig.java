@@ -15,8 +15,8 @@
  */
 package cn.jdevelops.authentication.sas.server.core.config;
 
-import cn.jdevelops.util.authorization.error.UnAccessDeniedHandler;
-import cn.jdevelops.util.authorization.error.UnAuthenticationEntryPoint;
+import cn.jdevelops.util.authorization.error.core.UnAccessDeniedHandler;
+import cn.jdevelops.util.authorization.error.core.UnAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
