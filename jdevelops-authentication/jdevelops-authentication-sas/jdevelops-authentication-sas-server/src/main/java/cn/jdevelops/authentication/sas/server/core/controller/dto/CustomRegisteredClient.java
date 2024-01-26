@@ -1,5 +1,6 @@
 package cn.jdevelops.authentication.sas.server.core.controller.dto;
 
+import cn.jdevelops.util.authorization.error.exception.AuthorizationException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,6 +8,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 
+import javax.security.auth.login.LoginException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
@@ -42,8 +44,8 @@ public class CustomRegisteredClient {
 
     /**
      * 客户端回调地址[回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost]
+     * <p>客户端模式（client_credentials）必填</p>
      */
-    @NotEmpty
     private Set<String> redirectUris;
 
     /**
@@ -87,6 +89,15 @@ public class CustomRegisteredClient {
         return clientAuthenticationMethods;
     }
 
+
+    public Set<String> getRedirectUris() {
+        if(redirectUris.isEmpty() && !authorizationGrantTypes.isEmpty()
+                && authorizationGrantTypes.contains(AuthorizationGrantType.CLIENT_CREDENTIALS)
+        ){
+            throw AuthorizationException.specialMessage("客户端模式不允许回调地址为空");
+        }
+        return redirectUris;
+    }
 
     public Set<String> getScopes() {
         if (scopes == null || scopes.isEmpty()) {
