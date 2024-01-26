@@ -8,10 +8,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.Duration;
@@ -23,7 +21,7 @@ import java.util.UUID;
  * 基础信息注册
  * @author tan
  */
-@RestController
+@Controller
 @Slf4j
 public class ServerController {
 
@@ -47,6 +45,7 @@ public class ServerController {
     /**
      * 接口作用: 类似去微信平台平台申请 appId和appSecret一样
      */
+    @ResponseBody
     @PostMapping("/api/addClient")
     public String addClient(@RequestBody @Valid CustomRegisteredClient client) {
         // JWT（Json Web Token）的配置项：TTL、是否复用refreshToken等等
