@@ -10,14 +10,11 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.util.CollectionUtils;
 
-import javax.security.auth.login.LoginException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.springframework.security.oauth2.core.oidc.OidcScopes.OPENID;
 
 /**
  * 客户端注册
