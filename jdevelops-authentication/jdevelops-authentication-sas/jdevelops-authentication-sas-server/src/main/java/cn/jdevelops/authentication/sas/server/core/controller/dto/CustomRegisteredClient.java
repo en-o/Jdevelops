@@ -37,10 +37,16 @@ public class CustomRegisteredClient {
     private String clientSecret;
 
     /**
+     * 客户端过期时间[为空永不过期,格式 日期:2023-01-01]
+     */
+    private String clientSecretExpiresAt;
+
+    /**
      * 客户端名称
      */
     @NotBlank
     private String clientName;
+
 
     /**
      * 客户端回调地址[回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost]
@@ -78,6 +84,9 @@ public class CustomRegisteredClient {
      * 授权范围  scopes 有默认值[consent.html页面用的，也是给接口的权限注解‘@PreAuthorize("hasAuthority('SCOPE_profile')")’用的]
      */
     private Set<String> scopes;
+
+
+
 
 
     public Set<ClientAuthenticationMethod> getClientAuthenticationMethods() {

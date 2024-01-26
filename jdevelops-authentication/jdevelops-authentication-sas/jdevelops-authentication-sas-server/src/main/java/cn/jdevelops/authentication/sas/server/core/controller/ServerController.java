@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.UUID;
 
 /**
@@ -95,6 +98,12 @@ public class ServerController {
 //                    授权范围（当前客户端的授权范围）
                     scope.addAll(client.getScopes());
                 })
+                .clientSecretExpiresAt(
+                        null == client.getClientSecretExpiresAt()
+                                ?null: LocalDate.parse(client.getClientSecretExpiresAt())
+                                .atStartOfDay(ZoneId.systemDefault())
+                                .toInstant()
+                )
                 // JWT（Json Web Token）配置项
                 .tokenSettings(tokenSettings)
                 // 客户端配置项
