@@ -25,7 +25,7 @@ public class CustomOidcConverter implements AuthenticationConverter {
     public Authentication convert(HttpServletRequest request) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //查询用户信息
+        //查询用户信息 /userinfo 接口的数据集
         CustomOidcUserInfo customOidcUserInfo = customOidcUserInfoService.loadUser(authentication.getName());
 
         //返回自定义的OidcUserInfoAuthenticationToken
