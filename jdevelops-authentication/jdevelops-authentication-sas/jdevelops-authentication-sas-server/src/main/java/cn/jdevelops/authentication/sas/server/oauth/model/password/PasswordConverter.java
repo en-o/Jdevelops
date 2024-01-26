@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 仿照下面：
+ * https://github.com/spring-projects/spring-authorization-server/blob/f6b07f5649fe5cec0507d0448733b389939a0960/oauth2-authorization-server/src/main/java/org/springframework/security/oauth2/server/authorization/web/authentication/OAuth2AuthorizationCodeRequestAuthenticationConverter.java#L155
  * 密码模式（自定义） - 用户将表单信息转换成 Authentication
  * @author tan
  */
