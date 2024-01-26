@@ -14,11 +14,12 @@ import java.io.IOException;
 
 /**
  * 鉴权失败处理器
+ * @author tan
  */
 public class UnAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException{
         ExceptionCode unauthenticated = TokenExceptionCode.UNAUTHENTICATED;
         if(request.getUserPrincipal() instanceof AbstractOAuth2TokenAuthenticationToken){
             ResponseUtil.exceptionResponse(response,unauthenticated);

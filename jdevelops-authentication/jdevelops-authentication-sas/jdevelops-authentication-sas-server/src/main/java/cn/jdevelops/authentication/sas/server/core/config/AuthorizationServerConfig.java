@@ -118,16 +118,14 @@ public class AuthorizationServerConfig {
 				// 拦截异常 处理
 				.tokenEndpoint(tokenEndpoint -> tokenEndpoint.errorResponseHandler(new CustomAuthenticationFailureHandler()))
 				// 客户端异常处理
-				.clientAuthentication(clientAuthentication->{
-					clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler());
-				})
+				.clientAuthentication(clientAuthentication->
+						clientAuthentication.errorResponseHandler(new CustomAuthenticationFailureHandler())
+				)
 				// Enable OpenID Connect 1.0[开启OpenID Connect 1.0] 自定义
-				.oidc(oidcCustomizer->{
-					oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer->{
-						userInfoEndpointCustomizer.userInfoRequestConverter(new CustomOidcConverter(customOidcUserInfoService));
-						userInfoEndpointCustomizer.authenticationProvider(new CustomOidcProvider(authorizationService,customOidcUserInfoService));
-					});
-				});
+				.oidc(oidcCustomizer-> oidcCustomizer.userInfoEndpoint(userInfoEndpointCustomizer->{
+					userInfoEndpointCustomizer.userInfoRequestConverter(new CustomOidcConverter(customOidcUserInfoService));
+					userInfoEndpointCustomizer.authenticationProvider(new CustomOidcProvider(authorizationService,customOidcUserInfoService));
+				}));
 		http
 				.addFilterBefore(new CustomExceptionTranslationFilter(), ExceptionTranslationFilter.class)
 				// Redirect to the login page when not authenticated from the[将需要认证的请求，重定向到login页面行登录认证。]
@@ -150,7 +148,7 @@ public class AuthorizationServerConfig {
 	// ===========使用数据库 start ===========
 	/**
 	 * 客户端信息 [新增客户端的注册是在数据库中注册{@link ServerController#addClient()]
-	 * @see https://springdoc.cn/spring-authorization-server/core-model-components.html#registered-client-repository
+	 * @see <a href="https://springdoc.cn/spring-authorization-server/core-model-components.html#registered-client-repository">...</a>
 	 * 对应表：oauth2_registered_client
 	 */
 	@Bean
@@ -159,7 +157,7 @@ public class AuthorizationServerConfig {
 	}
 
 	/**
-	 * [授权信息](https://springdoc.cn/spring-authorization-server/core-model-components.html#oauth2-authorization-service)
+	 * [授权信息](<a href="https://springdoc.cn/spring-authorization-server/core-model-components.html#oauth2-authorization-service">...</a>)
 	 * 对应表：oauth2_authorization
 	 */
 	@Bean
@@ -169,7 +167,7 @@ public class AuthorizationServerConfig {
 	}
 
 	/**
-	 * [授权确认](https://springdoc.cn/spring-authorization-server/core-model-components.html#oauth2-authorization-consent-service)
+	 * [授权确认](<a href="https://springdoc.cn/spring-authorization-server/core-model-components.html#oauth2-authorization-consent-service">...</a>)
 	 * 对应表：oauth2_authorization_consent
 	 */
 	@Bean
@@ -184,7 +182,7 @@ public class AuthorizationServerConfig {
 
 	/**
 	 * 配置 JWK，为JWT(id_token)提供加密密钥，用于加密/解密或签名/验签
-	 * [JWK详细见](https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-key-41)
+	 * [JWK详细见](<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-key-41">...</a>)
 	 */
 	@Bean
 	public JWKSource<SecurityContext> jwkSource() {
@@ -235,7 +233,7 @@ public class AuthorizationServerConfig {
 		return context -> {
 			// 根据登录名 查询用户信息
 			Optional<AuthenticationAccount> userInfo = jUserDetailsService.findUserInfo(context.getPrincipal().getName());
-			JwsHeader.Builder headers = context.getJwsHeader();
+//			JwsHeader.Builder headers = context.getJwsHeader();
 			JwtClaimsSet.Builder claims = context.getClaims();
 			if (context.getTokenType().equals(OAuth2TokenType.ACCESS_TOKEN)) {
 				//客户端模式不参与用户权限信息处理
