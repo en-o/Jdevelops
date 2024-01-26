@@ -102,10 +102,10 @@ public class CustomRegisteredClient {
     public Set<String> getScopes() {
         if (scopes == null || scopes.isEmpty()) {
             // OIDC 支持
-            Set<String> scopes = new HashSet<>();
-            scopes.add(OidcScopes.OPENID);
-            scopes.add(OidcScopes.PROFILE);
-            return scopes;
+            Set<String> oidc = new HashSet<>();
+            oidc.add(OidcScopes.OPENID);
+            oidc.add(OidcScopes.PROFILE);
+            return oidc;
         }
         return scopes;
     }
