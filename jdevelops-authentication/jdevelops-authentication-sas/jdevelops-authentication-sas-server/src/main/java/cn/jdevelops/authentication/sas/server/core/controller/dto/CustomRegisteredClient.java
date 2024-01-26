@@ -40,6 +40,7 @@ public class CustomRegisteredClient {
 
     /**
      * 客户端过期时间[为空永不过期,格式 日期:2023-01-01]
+     * ps: 时分秒默认00:00:00
      */
     private String clientSecretExpiresAt;
 
