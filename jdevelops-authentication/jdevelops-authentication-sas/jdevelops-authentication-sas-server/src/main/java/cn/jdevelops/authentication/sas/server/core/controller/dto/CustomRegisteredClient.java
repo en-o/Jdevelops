@@ -73,7 +73,7 @@ public class CustomRegisteredClient {
     private Set<AuthorizationGrantType> authorizationGrantTypes;
 
     /**
-     * 授权范围  scopes 有默认值
+     * 授权范围  scopes 有默认值[consent.html页面用的，也是给接口的权限注解‘@PreAuthorize("hasAuthority('SCOPE_profile')")’用的]
      */
     private Set<String> scopes;
 
