@@ -8,12 +8,16 @@ import lombok.ToString;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.util.CollectionUtils;
 
 import javax.security.auth.login.LoginException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.springframework.security.oauth2.core.oidc.OidcScopes.OPENID;
 
 /**
  * 客户端注册
@@ -102,7 +106,7 @@ public class CustomRegisteredClient {
 
 
     public Set<String> getRedirectUris() {
-        if(redirectUris.isEmpty() && !authorizationGrantTypes.isEmpty()
+        if(CollectionUtils.isEmpty(redirectUris)&& !authorizationGrantTypes.isEmpty()
                 && authorizationGrantTypes.contains(AuthorizationGrantType.CLIENT_CREDENTIALS)
         ){
             throw AuthorizationException.specialMessage("客户端模式不允许回调地址为空");
@@ -111,14 +115,14 @@ public class CustomRegisteredClient {
     }
 
     public Set<String> getScopes() {
-        if (scopes == null || scopes.isEmpty()) {
+        if (CollectionUtils.isEmpty(scopes)) {
             // 添加全部支持 支持
             Set<String> allScopes = new HashSet<>();
-            allScopes.add(JdevelopsScopes.OPENID);
-            allScopes.add(JdevelopsScopes.PROFILE);
-            allScopes.add(JdevelopsScopes.PHONE);
-            allScopes.add(JdevelopsScopes.ADDRESS);
-            allScopes.add(JdevelopsScopes.EMAIL);
+            allScopes.add(OidcScopes.OPENID);
+            allScopes.add(OidcScopes.PROFILE);
+            allScopes.add(OidcScopes.PHONE);
+            allScopes.add(OidcScopes.ADDRESS);
+            allScopes.add(OidcScopes.EMAIL);
             allScopes.add(JdevelopsScopes.STATUS);
             return allScopes;
         }
