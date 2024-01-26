@@ -18,7 +18,7 @@ public class SasTokenSettings {
     Integer refreshTokenTimeToLive;
 
     /**
-     * 令牌是否能被刷新【默认ture】
+     * 令牌是否能被刷新【默认ture】Auth 2.0 Parameter: grant_type
      */
     Boolean reuseRefreshTokens;
 
@@ -44,14 +44,14 @@ public class SasTokenSettings {
         this.refreshTokenTimeToLive = refreshTokenTimeToLive;
     }
 
-    public Boolean getReuseRefreshTokens() {
+    public boolean getReuseRefreshTokens() {
         if(null == reuseRefreshTokens){
             return true;
         }
         return reuseRefreshTokens;
     }
 
-    public void setReuseRefreshTokens(Boolean reuseRefreshTokens) {
+    public void setReuseRefreshTokens(boolean reuseRefreshTokens) {
         this.reuseRefreshTokens = reuseRefreshTokens;
     }
 
