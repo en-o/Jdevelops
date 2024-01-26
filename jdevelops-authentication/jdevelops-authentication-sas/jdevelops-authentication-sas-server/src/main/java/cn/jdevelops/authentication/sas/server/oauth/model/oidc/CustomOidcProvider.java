@@ -26,14 +26,12 @@ import java.util.function.Function;
 public class CustomOidcProvider implements AuthenticationProvider {
     private final Log logger = LogFactory.getLog(this.getClass());
     private final OAuth2AuthorizationService authorizationService;
-    private final CustomOidcUserInfoService customOidcUserInfoService;
     private Function<OidcUserInfoAuthenticationContext, CustomOidcUserInfo> userInfoMapper;
 
     public CustomOidcProvider(OAuth2AuthorizationService authorizationService,
                               CustomOidcUserInfoService customOidcUserInfoService) {
         Assert.notNull(authorizationService, "authorizationService cannot be null");
         this.authorizationService = authorizationService;
-        this.customOidcUserInfoService = customOidcUserInfoService;
         userInfoMapper = new DefaultOidcUserInfoMapper(customOidcUserInfoService);
     }
 
@@ -138,6 +136,7 @@ public class CustomOidcProvider implements AuthenticationProvider {
         private static Map<String, Object> getClaimsRequestedByScope(Map<String, Object> claims, Set<String> requestedScopes) {
             Set<String> scopeRequestedClaimNames = new HashSet<>(32);
             scopeRequestedClaimNames.add("sub");
+            // todo 根据不同的 scope 返回不同的数据
             if (requestedScopes.contains("address")) {
                 scopeRequestedClaimNames.add("address");
             }
@@ -155,9 +154,7 @@ public class CustomOidcProvider implements AuthenticationProvider {
             }
 
             Map<String, Object> requestedClaims = new HashMap<>(claims);
-            requestedClaims.keySet().removeIf((claimName) -> {
-                return !scopeRequestedClaimNames.contains(claimName);
-            });
+            requestedClaims.keySet().removeIf((claimName) -> !scopeRequestedClaimNames.contains(claimName));
             return requestedClaims;
         }
     }
