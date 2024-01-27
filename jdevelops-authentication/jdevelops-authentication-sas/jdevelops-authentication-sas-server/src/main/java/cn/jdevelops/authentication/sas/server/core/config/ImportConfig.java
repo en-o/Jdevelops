@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
@@ -17,8 +19,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date 2024/1/25 10:01
  */
 @AutoConfiguration
-@EnableJpaRepositories(basePackages = "cn.jdevelops.authentication.sas.server.oauth.dao")
-@EntityScan("cn.jdevelops.authentication.sas.server.oauth.entity")
+//@EnableJpaRepositories(basePackages = "cn.jdevelops.authentication.sas.server.oauth.dao")
+//@EntityScan("cn.jdevelops.authentication.sas.server.oauth.entity")
 public class ImportConfig {
 
     @Bean
