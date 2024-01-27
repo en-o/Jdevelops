@@ -1,4 +1,4 @@
-package cn.jdevelops.authentication.sas.server.core.controller.dto;
+package cn.jdevelops.authentication.sas.server.controller.dto;
 
 import cn.jdevelops.util.authorization.error.constant.JdevelopsScopes;
 import cn.jdevelops.util.authorization.error.exception.AuthorizationException;
@@ -25,7 +25,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class CustomRegisteredClient {
+public class ClientRegistered {
 
     /**
      * 客户端ID

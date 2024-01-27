@@ -26,7 +26,7 @@ public class SasAuthorizeHttpRequests {
         mvcMatchers.add("/assets/**");
         mvcMatchers.add("/webjars/**");
         mvcMatchers.add("/page/login");
-        mvcMatchers.add("/api/addClient");
+        mvcMatchers.add("/oauth/client/add");
         return mvcMatchers;
     }
 

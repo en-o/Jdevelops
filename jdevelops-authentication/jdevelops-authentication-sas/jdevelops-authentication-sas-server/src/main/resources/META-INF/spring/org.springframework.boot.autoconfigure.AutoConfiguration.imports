@@ -2,8 +2,8 @@ cn.jdevelops.authentication.sas.server.core.config.SasProperties
 cn.jdevelops.authentication.sas.server.core.config.ImportConfig
 cn.jdevelops.authentication.sas.server.core.config.AuthorizationServerConfig
 cn.jdevelops.authentication.sas.server.core.config.DefaultSecurityConfig
-cn.jdevelops.authentication.sas.server.core.controller.ServerController
-cn.jdevelops.authentication.sas.server.core.controller.AuthorizationConsentController
+cn.jdevelops.authentication.sas.server.controller.ClientController
+cn.jdevelops.authentication.sas.server.controller.AuthorizationConsentController
 
 
 

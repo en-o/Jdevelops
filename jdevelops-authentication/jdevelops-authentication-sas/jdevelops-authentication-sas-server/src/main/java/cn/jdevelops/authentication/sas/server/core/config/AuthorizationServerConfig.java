@@ -1,7 +1,7 @@
 package cn.jdevelops.authentication.sas.server.core.config;
 
 
-import cn.jdevelops.authentication.sas.server.core.controller.ServerController;
+import cn.jdevelops.authentication.sas.server.controller.ClientController;
 import cn.jdevelops.authentication.sas.server.jose.Jwks;
 import cn.jdevelops.authentication.sas.server.oauth.model.mobile.MobileConverter;
 import cn.jdevelops.authentication.sas.server.oauth.model.mobile.MobileProvider;
@@ -35,7 +35,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
-import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
@@ -75,7 +74,7 @@ public class AuthorizationServerConfig {
 	/**
 	 * 授权页面
 	 */
-	private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
+	private static final String CUSTOM_CONSENT_PAGE_URI = "/page/oauth2/consent";
 
 	public AuthorizationServerConfig(JUserDetailsService jUserDetailsService,
 									 UserDetailsService userDetailsService,
@@ -148,7 +147,7 @@ public class AuthorizationServerConfig {
 
 	// ===========使用数据库 start ===========
 	/**
-	 * 客户端信息 [新增客户端的注册是在数据库中注册{@link ServerController#addClient()]
+	 * 客户端信息 [新增客户端的注册是在数据库中注册{@link ClientController#addClient()]
 	 * @see <a href="https://springdoc.cn/spring-authorization-server/core-model-components.html#registered-client-repository">...</a>
 	 * 对应表：oauth2_registered_client
 	 */

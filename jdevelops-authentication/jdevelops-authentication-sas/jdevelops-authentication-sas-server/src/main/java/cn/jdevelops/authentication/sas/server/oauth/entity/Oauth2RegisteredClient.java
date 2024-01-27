@@ -96,7 +96,7 @@ public class Oauth2RegisteredClient implements Serializable {
 
     /**
      * 授权范围 [e.g {@link OidcScopes}]
-     * 客户允许请求的scope
+     * 客户允许请求的scope[空格隔开]
      */
     @Comment("授权范围{@link OidcScopes}")
     @Column(columnDefinition = " varchar(1000) NOT NULL")
