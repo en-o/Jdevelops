@@ -53,7 +53,7 @@ public class ClientRegistered {
 
     /**
      * 客户端回调地址[回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost]
-     * <p>客户端模式（client_credentials）必填</p>
+     * <p>客户端模式（client_credentials）和 授权码模式（authorization_code） 必填 </p>
      */
     private Set<String> redirectUris;
 
@@ -105,7 +105,10 @@ public class ClientRegistered {
 
     public Set<String> getRedirectUris() {
         if(CollectionUtils.isEmpty(redirectUris)&& !authorizationGrantTypes.isEmpty()
-                && authorizationGrantTypes.contains(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                && (
+                        authorizationGrantTypes.contains(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                || authorizationGrantTypes.contains(AuthorizationGrantType.AUTHORIZATION_CODE)
+        )
         ){
             throw AuthorizationException.specialMessage("客户端模式不允许回调地址为空");
         }
