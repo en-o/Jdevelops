@@ -4,7 +4,6 @@ package cn.jdevelops.sboot.swagger.domain;
 import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;

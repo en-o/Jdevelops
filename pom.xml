@@ -75,6 +75,8 @@
         <module>jdevelops-event</module>
         <!-- 注解组件 -->
         <module>jdevelops-annotation</module>
+        <!-- 鉴权 -->
+        <module>jdevelops-authentication</module>
     </modules>
 
     <properties>
