@@ -1,4 +1,4 @@
-package cn.jdevelops.authentication.sas.resource.core;
+package cn.jdevelops.authentication.sas.resource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

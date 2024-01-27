@@ -1,4 +1,4 @@
-package cn.jdevelops.authentication.sas.resource.core;
+package cn.jdevelops.authentication.sas.resource;
 
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
