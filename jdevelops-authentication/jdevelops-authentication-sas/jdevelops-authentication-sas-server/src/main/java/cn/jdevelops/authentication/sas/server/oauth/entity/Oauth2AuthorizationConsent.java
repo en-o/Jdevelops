@@ -29,7 +29,7 @@ public class Oauth2AuthorizationConsent implements Serializable {
      * 联合组键
      */
     @EmbeddedId
-    private Oauth2AuthorizationConsentUPK upk;
+    private Oauth2AuthorizationConsentUPK id;
 
     /**
      * 权限范围 {@Oauth2RegisteredClient#getAuthorizedScopes()}

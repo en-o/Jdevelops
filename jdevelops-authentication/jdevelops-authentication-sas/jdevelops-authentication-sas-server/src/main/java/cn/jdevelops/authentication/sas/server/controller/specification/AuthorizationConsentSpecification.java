@@ -21,7 +21,7 @@ public class AuthorizationConsentSpecification {
         if(null == principalName || principalName.isEmpty()){
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         }else {
-            return (root, query, builder) -> builder.like(root.get("principalName"), "%" + principalName + "%");
+            return (root, query, builder) -> builder.like(root.get("id").get("principalName"), "%" + principalName + "%");
         }
     }
 
@@ -34,7 +34,7 @@ public class AuthorizationConsentSpecification {
         if(null == clientId || clientId.isEmpty()){
             return (root, criteriaQuery, criteriaBuilder) -> criteriaQuery.getRestriction();
         }else {
-            return (root, query, builder) -> builder.equal(root.get("registeredClientId"), clientId);
+            return (root, query, builder) -> builder.equal(root.get("id").get("registeredClientId"), clientId);
         }
     }
 }
