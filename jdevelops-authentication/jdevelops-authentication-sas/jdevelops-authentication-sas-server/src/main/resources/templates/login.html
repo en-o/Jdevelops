@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" method="post" th:action="@{/login}">
+    <form class="form-signin" method="post" th:action="@{/page/login}">
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
             用户名或密码无效
         </div>
