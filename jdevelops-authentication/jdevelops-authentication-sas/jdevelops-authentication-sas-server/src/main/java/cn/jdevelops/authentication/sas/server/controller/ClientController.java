@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -126,6 +127,7 @@ public class ClientController {
      * @return String
      */
     @PostMapping("/delete")
+    @Transactional(rollbackFor = Exception.class)
     public ResultVO<String> delete(@RequestBody List<String> clientIds){
         oauth2RegisteredClientDao.deleteByClientIdIn(clientIds);
         return ResultVO.successMessage("删除成功");
