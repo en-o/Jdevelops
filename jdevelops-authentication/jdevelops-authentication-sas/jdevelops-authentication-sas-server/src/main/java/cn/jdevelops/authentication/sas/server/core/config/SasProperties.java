@@ -29,6 +29,9 @@ public class SasProperties {
     SasAuthorizeHttpRequests requests;
 
     public SasTokenSettings getToken() {
+       if (token == null){
+           return new SasTokenSettings();
+       }
         return token;
     }
 
