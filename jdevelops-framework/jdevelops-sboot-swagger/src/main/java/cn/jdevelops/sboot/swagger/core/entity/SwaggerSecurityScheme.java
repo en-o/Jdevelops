@@ -23,8 +23,8 @@ public class SwaggerSecurityScheme {
     SecurityScheme scheme;
 
     /**
-     *  全局接口都默认使用的鉴权方式
-     *  true: 全局（默认）， false  不设置全局
+     *  scheme 是否启用
+     *  true: 启用（默认）， false  不启用
      */
     Boolean security;
 

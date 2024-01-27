@@ -22,9 +22,10 @@ public interface VerifyService {
     /**
      * 验证路径是否合法
      * @param servletPath  servletRequestAttributes.getRequest().getServletPath();
+     * @param verifyPathNo  false 关闭 VERIFY_PATH_NO 前缀【即所有只允许y存在】
      * @return boolean ture:合法
      */
-    default boolean verifyPath(String servletPath ){
-        return !SocketUtil.banConnection(servletPath);
+    default boolean verifyPath(String servletPath , boolean verifyPathNo){
+        return !SocketUtil.banConnection(servletPath, verifyPathNo);
     }
 }

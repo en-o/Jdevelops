@@ -26,6 +26,7 @@ public class VerifyServiceImpl implements VerifyService{
     public boolean verifyLogin(HttpServletRequest request) {
 
         String servletPath = request.getServletPath();
+        // 如果开启了verify-path-no: true 配置，这里就必须些
         if(servletPath.contains(CommonConstant.VERIFY_PATH_NO)){
             //  不用登录直接连接
             return true;

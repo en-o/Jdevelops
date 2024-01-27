@@ -11,11 +11,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "jdevelops.dynamic")
 public class DynamicDataSourceProperties {
     /**
-     *  数据库加密盐(16位) <br/>
-     *  如果不满足16或者则会使用默认
+     *  tableName表中的数据库密码加密盐(16位) <br/>
+     *  如果不满足16或者则会使用默认 (加密方式ObjectUtils.encryptAES，参考：DynamicDatasourceService.add)
      */
     String salt;
 
+    /**
+     * 数据源管理的表名[默认dy_datasource,可自定义][ps表结构是固定的（init_table_dy_datasource_mysql.sql）]
+     */
     String tableName;
 
     public String getSalt() {
@@ -30,7 +33,7 @@ public class DynamicDataSourceProperties {
     }
 
     public String getTableName() {
-        if(tableName == null ||  0 == tableName.length() ){
+        if(tableName == null || tableName.isEmpty()){
             return "dy_datasource";
         }
         return tableName;

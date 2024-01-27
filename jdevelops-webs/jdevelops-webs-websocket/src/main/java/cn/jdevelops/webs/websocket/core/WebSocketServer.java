@@ -13,6 +13,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,8 @@ public class WebSocketServer {
      * 连接建立成功调用
      *
      * @param session  客户端与socket建立的会话
-     * @param userName 客户端的userName
+     * @param userName 客户端的userName（路径最后一个/d类容，e.g socket/y/tan 中的tan就是userName）[看类上的@ServerEndpoint就明白了]
+     * @param verify   （ y,n ）
      */
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "name") String userName, @PathParam(value = "ver") String verify) {
@@ -64,11 +66,11 @@ public class WebSocketServer {
             logger.error("第二路径不合法，第二路径只能为：y,n");
             return;
         }
-        Session onCloseSession = cacheService.saveSession(userName, session);
 
+        Session onCloseSession = cacheService.saveSession(userName, verify, session);
         if (Objects.nonNull(onCloseSession)) {
-            // 不允许的清空下下线用户
-            onClose(userName, onCloseSession);
+            // 不允许连接的用户,使其下线
+            onClose(userName, verify, onCloseSession);
         }
         addOnlineCount();
         logger.info("{}加入webSocket！当前人数为{}", userName, online);
@@ -82,11 +84,10 @@ public class WebSocketServer {
      * @param session  session
      */
     @OnClose
-    public void onClose(@PathParam(value = "name") String userName, Session session) {
+    public void onClose(@PathParam(value = "name") String userName, @PathParam(value = "ver") String verify, Session session) {
+        sendMessage(session, "您已被断开了连接！");
         // 有session ,删除指定session值, 没有session 直接删除key的所有值
-        cacheService.removeSession(userName, session);
-
-        sendMessage(session, "不允许多端登录,您已被断开了连接！");
+        cacheService.removeSession(userName, verify, session);
         try {
             // 关闭session
             if (Objects.nonNull(session)) {
@@ -100,15 +101,14 @@ public class WebSocketServer {
     }
 
     /**
-     * 收到客户端消息时触发（群发）
-     *
+     * 处理接收到的文本消息并转发（群发）
      * @param message 消息
      */
     @OnMessage
     public void onMessage(String message) {
-        for (List<Session> session : cacheService.loadSession()) {
+        for (Session session : cacheService.loadSession()) {
             try {
-                session.forEach(ss -> sendMessage(ss, message));
+                sendMessage(session, message);
             } catch (Exception e) {
                 logger.error("群发消息失败", e);
             }
@@ -117,14 +117,29 @@ public class WebSocketServer {
 
 
     /**
+     * 处理接收到的二进制消息并转发（群发）
+     * @param message 消息
+     */
+    @OnMessage
+    public void onMessage(byte[] message) {
+        for (Session session : cacheService.loadSession()) {
+            try {
+                sendMessage(session, message);
+            } catch (Exception e) {
+                logger.error("群发消息失败", e);
+            }
+        }
+    }
+
+    /**
      * 收到客户端消息时触发（群发）
      *
      * @param message 消息
      */
     public void onAsyncMessage(String message) {
-        for (List<Session> session : cacheService.loadSession()) {
+        for (Session session : cacheService.loadSession()) {
             try {
-                session.forEach(ss -> sendAsyncMessage(ss, message));
+                sendAsyncMessage(session, message);
             } catch (Exception e) {
                 logger.error("群发消息失败", e);
             }
@@ -203,7 +218,7 @@ public class WebSocketServer {
 
 
     /**
-     *  (异步)
+     * (异步)
      * eg:  name:324
      * name:432
      * 传入 name:   就可以给上面的那个一起发数据（前提这来两个在线）
@@ -234,20 +249,45 @@ public class WebSocketServer {
     public void sendMessage(Session session, String message) {
         try {
             if (session != null) {
-                Lock lock=new ReentrantLock();
+                Lock lock = new ReentrantLock();
                 lock.lock();
-                try{
+                try {
                     session.getAsyncRemote().sendText(message);
-                }catch(Exception ignored){
-                }finally{
+                } catch (Exception ignored) {
+                } finally {
                     lock.unlock();   //释放锁
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             // 这个异常好像不影响什么
-            logger.warn("发送消息失败",e);
+            logger.warn("发送消息失败", e);
         }
     }
+
+    /**
+     * 发送消息方法
+     *
+     * @param session 客户端与socket建立的会话
+     * @param message 消息
+     */
+    public void sendMessage(Session session, byte[] message) {
+        try {
+            if (session != null) {
+                Lock lock = new ReentrantLock();
+                lock.lock();
+                try {
+                    session.getAsyncRemote().sendBinary(ByteBuffer.wrap(message));
+                } catch (Exception ignored) {
+                } finally {
+                    lock.unlock();   //释放锁
+                }
+            }
+        } catch (Exception e) {
+            // 这个异常好像不影响什么
+            logger.warn("发送消息失败", e);
+        }
+    }
+
 
 
     /**
@@ -261,9 +301,9 @@ public class WebSocketServer {
             if (session != null) {
                 session.getAsyncRemote().sendText(message);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             // 这个异常好像不影响什么
-            logger.warn("发送消息失败",e);
+            logger.warn("发送消息失败", e);
         }
     }
 
@@ -272,9 +312,9 @@ public class WebSocketServer {
     }
 
     public static void subOnlineCount() {
-        if(online.get()>0){
+        if (online.get() > 0) {
             online.decrementAndGet();
-        }else {
+        } else {
             online.set(0);
         }
     }

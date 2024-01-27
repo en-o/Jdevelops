@@ -51,8 +51,8 @@ public @interface JpaSelectOperator {
 
     /**
      * ignoreNull = true 有效  <br/>
-     * true: 值是否为 [null,""," "]  <br/>
-     * false: 值是否为 null
+     * true: 不允许为 [null,""," "]  <br/>
+     * false: 不允许为 null
      */
     boolean ignoreNullEnhance() default true;
 

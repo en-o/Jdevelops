@@ -35,6 +35,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -188,12 +189,19 @@ public class J2ServiceImpl<M extends JpaBasicsRepository<B, ID>, B extends Seria
             Field field = fields[i];
             // 字段名
             String fieldName = field.getName();
-
             // 字段值
             Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-            if (fieldValue != null && !fieldName.equals(ignoreField)) {
-                // 设置更新值
-                update.set(deleteFrom.get(fieldName), fieldValue);
+
+            JpaUpdate jpaUpdate = field.getAnnotation(JpaUpdate.class);
+
+            if(null != jpaUpdate && jpaUpdate.autoTime() && field.getType().equals(LocalDateTime.class)){
+                // 强制更新时间
+                update.set(deleteFrom.get(fieldName), LocalDateTime.now());
+            }else {
+                if (fieldValue != null && !fieldName.equals(ignoreField)) {
+                    // 设置更新值
+                    update.set(deleteFrom.get(fieldName), fieldValue);
+                }
             }
         }
 

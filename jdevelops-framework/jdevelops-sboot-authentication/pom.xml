@@ -16,7 +16,6 @@
     <modules>
         <module>jdevelops-sboot-authentication-jwt</module>
         <module>jdevelops-sboot-authentication-jredis</module>
-        <module>jdevelops-sboot-authentication-sas</module>
     </modules>
 
 

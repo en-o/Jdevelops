@@ -1,9 +1,8 @@
 package cn.jdevelops.sboot.swagger.core.util;
 
 
-
-import cn.jdevelops.sboot.swagger.config.SwaggerProperties;
 import cn.jdevelops.sboot.swagger.core.entity.BuildSecuritySchemes;
+import cn.jdevelops.sboot.swagger.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.slf4j.Logger;
@@ -89,13 +88,14 @@ public class SwaggerUtil {
      * OpenID Connect Discovery
      * 在 java 中的抽象类型对应 io.swagger.v3.oas.models.security.SecurityScheme
      * </pre>
+     * @param swaggerSecuritySchemes SwaggerProperties.getSwaggerSecuritySchemes
      */
-    public static BuildSecuritySchemes buildSecuritySchemes(SwaggerProperties swaggerProperties) {
+    public static BuildSecuritySchemes buildSecuritySchemes(List<SwaggerSecurityScheme> swaggerSecuritySchemes) {
         List<SecurityRequirement> securityItem = new ArrayList<>();
         Map<String, SecurityScheme> securitySchemes = new HashMap<>(10);
-        swaggerProperties.getSwaggerSecuritySchemes().forEach(swaggerSecurityScheme -> {
-            securitySchemes.put(swaggerSecurityScheme.getScheme().getType().name(), swaggerSecurityScheme.getScheme());
+        swaggerSecuritySchemes.forEach(swaggerSecurityScheme -> {
             if(Boolean.TRUE.equals(swaggerSecurityScheme.getSecurity())){
+                securitySchemes.put(swaggerSecurityScheme.getScheme().getType().name(), swaggerSecurityScheme.getScheme());
                 securityItem.add(new SecurityRequirement().addList(swaggerSecurityScheme.getScheme().getType().name()));
             }
         });

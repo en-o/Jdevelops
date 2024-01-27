@@ -678,10 +678,19 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-sas</artifactId>
+                <artifactId>jdevelops-authentication-sas-resource</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-authentication-sas-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jdevelops</groupId>
+                <artifactId>jdevelops-util-authorization-error</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- 注解 -->
             <dependency>
