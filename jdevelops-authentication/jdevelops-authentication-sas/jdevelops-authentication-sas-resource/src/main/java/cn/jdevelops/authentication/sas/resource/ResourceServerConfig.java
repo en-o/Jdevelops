@@ -1,5 +1,8 @@
 package cn.jdevelops.authentication.sas.resource;
 
+import cn.jdevelops.util.authorization.error.core.CustomExceptionTranslationFilter;
+import cn.jdevelops.util.authorization.error.core.UnAccessDeniedHandler;
+import cn.jdevelops.util.authorization.error.core.UnAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 /**
  * EnableMethodSecurity  {@link https://www.cnblogs.com/goloving/p/14891241.html}
@@ -43,8 +47,11 @@ public class ResourceServerConfig {
                         //所有的访问都需要通过身份认证
 						.anyRequest().authenticated()
 				)
+				.addFilterBefore(new CustomExceptionTranslationFilter(), ExceptionTranslationFilter.class)
 				.oauth2ResourceServer(oauth2 -> oauth2
 								.jwt(Customizer.withDefaults())
+								.authenticationEntryPoint(new UnAuthenticationEntryPoint("/page/login"))
+								.accessDeniedHandler(new UnAccessDeniedHandler())
 
 				);
 		return http.build();

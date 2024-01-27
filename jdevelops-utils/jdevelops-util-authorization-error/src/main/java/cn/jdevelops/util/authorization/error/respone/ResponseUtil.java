@@ -27,6 +27,9 @@ public class ResponseUtil {
         if (e instanceof OAuth2AuthenticationException) {
             OAuth2AuthenticationException o = (OAuth2AuthenticationException) e;
             message = o.getError().getDescription();
+            if(null == message || message.isEmpty()){
+                message = o.getError().getErrorCode();
+            }
         } else {
             message = e.getMessage();
         }
