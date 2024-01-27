@@ -17,8 +17,6 @@
     </description>
 
     <modules>
-        <!-- 客户端 前后端没有分离时使用 -->
-        <module>jdevelops-authentication-sas-client</module>
         <!-- 资源端 前后点分离时使用 -->
         <module>jdevelops-authentication-sas-resource</module>
         <!-- 鉴权端 -->

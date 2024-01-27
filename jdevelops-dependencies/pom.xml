@@ -678,11 +678,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-authentication-sas-client</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.jdevelops</groupId>
                 <artifactId>jdevelops-authentication-sas-resource</artifactId>
                 <version>${revision}</version>
             </dependency>
