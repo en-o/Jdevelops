@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class ClientEditScopes {
 
     /**
-     * 新的授权范围[多个空格隔开]
+     * 新的授权范围[多个逗号隔开]
      */
     @NotBlank
     private String scopes;

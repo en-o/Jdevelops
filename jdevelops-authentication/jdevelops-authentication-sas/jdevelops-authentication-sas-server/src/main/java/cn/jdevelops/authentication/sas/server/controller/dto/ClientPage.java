@@ -12,7 +12,7 @@ import cn.jdevelops.api.result.request.SortPageDTO;
 public class ClientPage {
 
     /**
-     * 授权范围[多个空格隔开]
+     * 授权范围[多个逗号隔开]
      */
     private String scopes;
 
