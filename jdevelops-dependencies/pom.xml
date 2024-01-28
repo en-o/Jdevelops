@@ -11,6 +11,31 @@
     <description>基础依赖清单，管理整个项目的依赖版本</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
+
+    <!-- 项目发布管理 -->
+    <distributionManagement>
+        <!--私库-->
+        <!--<repository>
+            <id>tan-releases</id>
+            <name>jdevelops-Release</name>
+            <url>https://nexus.tannn.cn/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>tan-snapshots</id>
+            <name>jdevelops-SNAPSHOTS</name>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
+        </snapshotRepository>-->
+        <!--maven中央仓库配置 -->
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
     <!-- 统一依赖版本管理 -->
     <properties>
         <revision>2.0.7</revision>
