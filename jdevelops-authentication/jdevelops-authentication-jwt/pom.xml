@@ -4,23 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>jdevelops</artifactId>
         <groupId>cn.jdevelops</groupId>
+        <artifactId>jdevelops-authentication</artifactId>
         <version>${revision}</version>
     </parent>
     <packaging>pom</packaging>
-    <artifactId>jdevelops-authentication</artifactId>
+    <artifactId>jdevelops-authentication-jwt</artifactId>
     <description>
-        认证模块
+        jwt 登录
     </description>
+
     <modules>
-        <!-- Spring Authorization Server-->
-        <module>jdevelops-authentication-sas</module>
-        <!-- jwt -->
-        <module>jdevelops-authentication-jwt</module>
+        <module>jdevelops-authentication-cjwt</module>
+        <module>jdevelops-authentication-jredis</module>
     </modules>
-
-
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

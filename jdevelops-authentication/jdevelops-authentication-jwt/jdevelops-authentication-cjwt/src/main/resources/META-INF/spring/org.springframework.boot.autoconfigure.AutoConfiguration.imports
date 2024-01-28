@@ -1,0 +1,3 @@
+cn.jdevelops.authentication.jwt.config.WebApiConfig
+cn.jdevelops.authentication.jwt.config.InterceptorConfig
+cn.jdevelops.authentication.jwt.server.impl.DefLoginService
