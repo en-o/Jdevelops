@@ -1,7 +1,7 @@
 package cn.jdevelops.authentication.jredis.service;
 
 import cn.jdevelops.authentication.jredis.entity.StorageUserRole;
-import cn.jdevelops.sboot.authentication.jwt.annotation.ApiPermission;
+import cn.jdevelops.authentication.jwt.annotation.ApiPermission;
 
 import java.util.List;
 

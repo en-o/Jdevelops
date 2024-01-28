@@ -3,9 +3,9 @@ package cn.jdevelops.authentication.jredis.service;
 import cn.jdevelops.api.exception.exception.TokenException;
 import cn.jdevelops.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.authentication.jredis.entity.sign.RedisSignEntity;
-import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
-import cn.jdevelops.sboot.authentication.jwt.server.LoginService;
-import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
+import cn.jdevelops.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.authentication.jwt.server.LoginService;
+import cn.jdevelops.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.util.jwt.core.JwtService;
 import cn.jdevelops.util.jwt.entity.SignEntity;
 import cn.jdevelops.util.jwt.exception.LoginException;
@@ -57,7 +57,7 @@ public class RedisLoginService implements LoginService {
                 return loginUser.getToken();
             }
             // 重新登录
-        } catch (ExpiredRedisException  | TokenException e) {
+        } catch (ExpiredRedisException | TokenException e) {
             logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
         }catch (Exception e) {
             logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");

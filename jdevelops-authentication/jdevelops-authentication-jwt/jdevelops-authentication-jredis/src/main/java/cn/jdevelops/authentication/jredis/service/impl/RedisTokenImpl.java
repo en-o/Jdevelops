@@ -4,7 +4,7 @@ import cn.jdevelops.authentication.jredis.constant.RedisJwtKey;
 import cn.jdevelops.authentication.jredis.entity.only.StorageToken;
 import cn.jdevelops.authentication.jredis.util.RedisUtil;
 import cn.jdevelops.authentication.jredis.service.RedisToken;
-import cn.jdevelops.sboot.authentication.jwt.exception.ExpiredRedisException;
+import cn.jdevelops.authentication.jwt.exception.ExpiredRedisException;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.core.JwtService;
 import org.slf4j.Logger;

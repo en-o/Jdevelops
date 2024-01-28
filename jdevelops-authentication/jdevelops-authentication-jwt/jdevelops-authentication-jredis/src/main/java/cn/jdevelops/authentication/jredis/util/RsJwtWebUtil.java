@@ -1,6 +1,7 @@
 package cn.jdevelops.authentication.jredis.util;
 
-import cn.jdevelops.sboot.authentication.jwt.util.JwtWebUtil;
+
+import cn.jdevelops.authentication.jwt.util.JwtWebUtil;
 
 /**
  * RsJwtWebUtil

@@ -23,5 +23,10 @@
             <groupId>cn.jdevelops</groupId>
             <artifactId>jdevelops-caches-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
