@@ -27,7 +27,6 @@
         <!-- 接口文档 -->
         <module>jdevelops-sboot-swagger</module>
         <!--认证-->
-        <module>jdevelops-sboot-authentication</module>
         <module>jdevelops-sboot-websocket</module>
     </modules>
 

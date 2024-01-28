@@ -9,11 +9,17 @@
         <version>${revision}</version>
     </parent>
     <packaging>pom</packaging>
+    <artifactId>jdevelops-authentication</artifactId>
+    <description>
+        认证模块
+    </description>
     <modules>
         <!-- Spring Authorization Server-->
         <module>jdevelops-authentication-sas</module>
+        <!-- jwt -->
+        <module>jdevelops-authentication-jwt</module>
     </modules>
-    <artifactId>jdevelops-authentication</artifactId>
+
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

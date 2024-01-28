@@ -5,23 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.jdevelops</groupId>
-        <artifactId>jdevelops-sboot-authentication</artifactId>
+        <artifactId>jdevelops-authentication-jwt</artifactId>
         <version>${revision}</version>
     </parent>
     <packaging>jar</packaging>
-    <artifactId>jdevelops-sboot-authentication-jredis</artifactId>
+    <artifactId>jdevelops-authentication-cjwt</artifactId>
 
     <description>
-        jwt+redis认证 redis作为存储，jwt作为令牌，使用jwt的目的是一些基础用户信息可以直接从jwt中获取
+        jwt认证
     </description>
+
+
     <dependencies>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-sboot-authentication-jwt</artifactId>
+            <artifactId>jdevelops-util-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.jdevelops</groupId>
-            <artifactId>jdevelops-caches-redis</artifactId>
+            <artifactId>jdevelops-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
+
 </project>

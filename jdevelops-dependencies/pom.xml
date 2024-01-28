@@ -693,12 +693,12 @@
             <!--认证-->
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-jwt</artifactId>
+                <artifactId>jdevelops-authentication-cjwt</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.jdevelops</groupId>
-                <artifactId>jdevelops-sboot-authentication-jredis</artifactId>
+                <artifactId>jdevelops-authentication-jredis</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
