@@ -1,4 +1,4 @@
-cn.jdevelops.sboot.authentication.jredis.service.impl.RedisTokenImpl
-cn.jdevelops.sboot.authentication.jredis.service.impl.RedisUserStateImpl
-cn.jdevelops.sboot.authentication.jredis.service.impl.RedisUserRoleImpl
-cn.jdevelops.sboot.authentication.jredis.service.RedisLoginService
+cn.jdevelops.authentication.jredis.service.impl.RedisTokenImpl
+cn.jdevelops.authentication.jredis.service.impl.RedisUserStateImpl
+cn.jdevelops.authentication.jredis.service.impl.RedisUserRoleImpl
+cn.jdevelops.authentication.jredis.service.RedisLoginService
