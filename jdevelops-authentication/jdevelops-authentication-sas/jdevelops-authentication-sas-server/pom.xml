@@ -8,7 +8,7 @@
         <artifactId>jdevelops-authentication-sas</artifactId>
         <version>${revision}</version>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>jdevelops-authentication-sas-server</artifactId>
     <description>
         服务端
