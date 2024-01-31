@@ -80,7 +80,7 @@
     </modules>
 
     <properties>
-        <revision>2.0.7</revision>
+        <revision>2.0.8-SNAPSHOT</revision>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
