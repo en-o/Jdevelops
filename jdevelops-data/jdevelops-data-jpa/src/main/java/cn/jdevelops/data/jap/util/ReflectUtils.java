@@ -5,9 +5,9 @@ import cn.jdevelops.data.jap.exception.JpaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;

@@ -3,7 +3,7 @@ package cn.jdevelops.webs.websocket.service;
 
 import cn.jdevelops.webs.websocket.util.SocketUtil;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 鉴权

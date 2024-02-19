@@ -4,7 +4,7 @@ import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JpaUtils;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 
 /**
  * sql 表达式

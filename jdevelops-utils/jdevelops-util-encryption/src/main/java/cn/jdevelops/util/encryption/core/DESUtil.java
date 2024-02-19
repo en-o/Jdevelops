@@ -3,10 +3,10 @@ package cn.jdevelops.util.encryption.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.IvParameterSpec;
+import jakarta.crypto.Cipher;
+import jakarta.crypto.SecretKeyFactory;
+import jakarta.crypto.spec.DESedeKeySpec;
+import jakarta.crypto.spec.IvParameterSpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 

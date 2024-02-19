@@ -10,8 +10,8 @@ import cn.jdevelops.util.jwt.exception.LoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.MalformedClaimException;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static cn.jdevelops.util.jwt.constant.JwtMessageConstant.TOKEN_ERROR;

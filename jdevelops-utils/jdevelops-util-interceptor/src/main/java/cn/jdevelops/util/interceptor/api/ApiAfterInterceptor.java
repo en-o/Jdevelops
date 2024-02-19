@@ -2,8 +2,8 @@ package cn.jdevelops.util.interceptor.api;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 自定义的接口后置拦截器  - 模仿 HandlerInterceptor

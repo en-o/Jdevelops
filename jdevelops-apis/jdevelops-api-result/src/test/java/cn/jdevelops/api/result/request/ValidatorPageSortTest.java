@@ -4,7 +4,7 @@ import cn.jdevelops.api.result.BeastValidatedTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;

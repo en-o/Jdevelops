@@ -1,7 +1,7 @@
 package cn.jdevelops.util.interceptor.api;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 自定义的接口整个请求处理完毕拦截器  - 模仿 HandlerInterceptor

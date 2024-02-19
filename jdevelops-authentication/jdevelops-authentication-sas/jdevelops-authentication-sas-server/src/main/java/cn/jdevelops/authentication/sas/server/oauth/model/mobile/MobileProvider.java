@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
+ import jakarta.annotation.Resource;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;

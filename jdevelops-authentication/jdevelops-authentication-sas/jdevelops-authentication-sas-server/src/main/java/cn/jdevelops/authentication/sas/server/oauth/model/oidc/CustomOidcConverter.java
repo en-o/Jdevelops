@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcUserInfoAuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 
-import javax.servlet.http.HttpServletRequest;
+ import jakarta.servlet.http.HttpServletRequest;
 
 
 /**

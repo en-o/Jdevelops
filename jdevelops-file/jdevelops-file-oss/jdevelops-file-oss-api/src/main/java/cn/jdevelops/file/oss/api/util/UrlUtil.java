@@ -3,7 +3,7 @@ package cn.jdevelops.file.oss.api.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.activation.MimetypesFileTypeMap;
+import jakarta.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

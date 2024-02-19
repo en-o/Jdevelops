@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * description: 邮件配置

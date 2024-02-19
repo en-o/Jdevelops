@@ -6,10 +6,10 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Comment;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+ import jakarta.persistence.Column;
+ import jakarta.persistence.EmbeddedId;
+ import jakarta.persistence.Entity;
+ import jakarta.persistence.Table;
 import java.io.Serializable;
 
 /**

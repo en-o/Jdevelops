@@ -1,6 +1,6 @@
 package cn.jdevelops.webs.websocket.cache;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 import java.util.List;
 
 /**

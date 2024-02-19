@@ -5,8 +5,8 @@ import cn.jdevelops.api.result.util.bean.ColumnUtil;
 import cn.jdevelops.data.jap.annotation.JpaSelectOperator;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;

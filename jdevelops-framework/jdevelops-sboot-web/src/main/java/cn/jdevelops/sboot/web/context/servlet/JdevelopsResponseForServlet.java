@@ -4,7 +4,7 @@ package cn.jdevelops.sboot.web.context.servlet;
 import cn.jdevelops.sboot.web.entity.http.JdevelopsResponse;
 import cn.jdevelops.sboot.web.exception.JHttpException;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

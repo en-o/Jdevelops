@@ -3,8 +3,8 @@ package cn.jdevelops.api.result.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
+ import jakarta.validation.Valid;
+ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 

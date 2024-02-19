@@ -2,8 +2,8 @@ package cn.jdevelops.util.interceptor.chain;
 
 import cn.jdevelops.util.interceptor.api.ApiFinallyInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**

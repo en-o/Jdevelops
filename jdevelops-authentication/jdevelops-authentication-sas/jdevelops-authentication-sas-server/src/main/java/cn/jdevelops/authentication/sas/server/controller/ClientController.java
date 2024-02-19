@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;

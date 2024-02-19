@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 import java.util.*;
 
 import static cn.jdevelops.webs.websocket.cache.WebSocketSessionLocalCache.ROBUST_SESSION_POOLS;

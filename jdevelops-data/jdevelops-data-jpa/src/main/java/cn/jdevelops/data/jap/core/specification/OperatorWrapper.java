@@ -1,7 +1,7 @@
 package cn.jdevelops.data.jap.core.specification;
 
 
-import javax.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Expression;
 
 
 /**

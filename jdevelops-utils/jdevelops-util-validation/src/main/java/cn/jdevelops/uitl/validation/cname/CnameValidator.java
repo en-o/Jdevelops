@@ -2,8 +2,8 @@ package cn.jdevelops.uitl.validation.cname;
 
 import cn.jdevelops.uitl.validation.util.StrUtil;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+ import jakarta.validation.ConstraintValidator;
+ import jakarta.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 /**

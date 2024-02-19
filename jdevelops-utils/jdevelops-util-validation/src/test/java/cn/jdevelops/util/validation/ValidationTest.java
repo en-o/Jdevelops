@@ -4,7 +4,7 @@ import cn.jdevelops.util.BeastValidatedTest;
 import cn.jdevelops.util.model.ValidationUserBean;
 import org.junit.Test;
 
-import javax.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;

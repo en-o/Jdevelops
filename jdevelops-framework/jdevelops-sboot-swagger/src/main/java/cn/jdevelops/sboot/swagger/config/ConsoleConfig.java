@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.COLON;
 import static cn.jdevelops.sboot.swagger.core.constant.PublicConstant.SPIRIT;

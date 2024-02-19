@@ -11,7 +11,7 @@ import cn.jdevelops.data.jap.util.IObjects;
 import cn.jdevelops.data.jap.util.JpaUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;

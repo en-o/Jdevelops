@@ -1,6 +1,6 @@
 package cn.jdevelops.authentication.jwt.util;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 
 import static java.util.Optional.empty;

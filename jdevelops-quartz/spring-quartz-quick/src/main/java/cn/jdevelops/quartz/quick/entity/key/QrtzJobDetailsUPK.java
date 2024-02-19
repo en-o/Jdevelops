@@ -1,7 +1,7 @@
 package cn.jdevelops.quartz.quick.entity.key;
 
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 

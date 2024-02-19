@@ -15,8 +15,8 @@
  */
 package cn.jdevelops.authentication.sas.server.jose;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+ import jakarta.crypto.KeyGenerator;
+ import jakarta.crypto.SecretKey;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

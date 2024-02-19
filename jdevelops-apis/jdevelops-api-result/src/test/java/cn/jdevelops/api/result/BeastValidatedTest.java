@@ -4,8 +4,8 @@ package cn.jdevelops.api.result;
 import org.junit.Before;
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator;
 
-import javax.validation.*;
-import javax.validation.bootstrap.GenericBootstrap;
+import jakarta.validation.*;
+import jakarta.validation.bootstrap.GenericBootstrap;
 import java.util.Set;
 
 /**

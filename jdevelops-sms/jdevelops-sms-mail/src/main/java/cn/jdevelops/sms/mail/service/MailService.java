@@ -1,6 +1,6 @@
 package cn.jdevelops.sms.mail.service;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import java.util.List;
 
 /**

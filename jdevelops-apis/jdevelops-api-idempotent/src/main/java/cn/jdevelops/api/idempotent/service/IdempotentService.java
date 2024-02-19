@@ -3,8 +3,8 @@ package cn.jdevelops.api.idempotent.service;
 
 import cn.jdevelops.api.idempotent.annotation.ApiIdempotent;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author tnnn

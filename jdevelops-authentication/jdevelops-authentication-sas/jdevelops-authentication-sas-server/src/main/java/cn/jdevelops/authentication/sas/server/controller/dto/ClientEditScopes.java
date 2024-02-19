@@ -1,6 +1,6 @@
 package cn.jdevelops.authentication.sas.server.controller.dto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 修改授权范围

@@ -11,9 +11,9 @@ import cn.jdevelops.data.jap.core.criteria.SimpleExpression;
 import cn.jdevelops.data.jap.enums.SQLConnect;
 import cn.jdevelops.data.jap.enums.SpecBuilderDateFun;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Root;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Objects;

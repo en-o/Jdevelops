@@ -3,7 +3,7 @@ package cn.jdevelops.file.oss.api.util;
 import com.freewayso.image.combiner.ImageCombiner;
 import com.freewayso.image.combiner.enums.OutputFormat;
 
-import javax.imageio.ImageIO;
+import jakarta.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;

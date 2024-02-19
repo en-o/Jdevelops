@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 import org.jose4j.lang.JoseException;
 import org.mockito.Mockito;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 

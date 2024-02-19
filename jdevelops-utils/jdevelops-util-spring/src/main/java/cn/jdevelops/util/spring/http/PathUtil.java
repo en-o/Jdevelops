@@ -2,8 +2,8 @@ package cn.jdevelops.util.spring.http;
 
 import org.springframework.util.AntPathMatcher;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**

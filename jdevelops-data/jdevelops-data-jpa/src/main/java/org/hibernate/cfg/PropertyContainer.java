@@ -24,7 +24,7 @@ import org.hibernate.internal.util.StringHelper;
 import org.hibernate.internal.util.collections.CollectionHelper;
 import org.jboss.logging.Logger;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.*;
 
 /**

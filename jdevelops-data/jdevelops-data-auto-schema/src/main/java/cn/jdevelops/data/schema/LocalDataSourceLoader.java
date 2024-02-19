@@ -29,7 +29,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;

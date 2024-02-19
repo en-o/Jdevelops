@@ -3,13 +3,13 @@ package cn.jdevelops.api.idempotent.core;
 import cn.jdevelops.api.idempotent.annotation.ApiIdempotent;
 import cn.jdevelops.api.idempotent.service.IdempotentService;
 import cn.jdevelops.util.interceptor.api.ApiBeforeInterceptor;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.method.HandlerMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 /**
