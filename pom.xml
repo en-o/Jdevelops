@@ -86,7 +86,7 @@
         <spring.cloud.version>2021.0.5</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.5.0</spring.cloud.alibaba.version>
         <!-- jdk -->
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <!-- Maven 相关 -->
         <encoding.version>UTF-8</encoding.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
