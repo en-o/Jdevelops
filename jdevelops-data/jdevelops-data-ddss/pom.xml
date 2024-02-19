@@ -14,8 +14,8 @@
         动态数据源切换[配置文件 or 数据库]
     </description>
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <sqljdbc4.version>4.0</sqljdbc4.version>
         <postgresql.version>42.5.1</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -23,10 +23,10 @@
         <module>jdevelops-authentication-sas-server</module>
     </modules>
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <authorization.version>0.4.5</authorization.version>
+        <authorization.version>1.2.1</authorization.version>
     </properties>
 
 
