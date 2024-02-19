@@ -27,7 +27,7 @@
         <!-- knife4j knife4j 接口文档 -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <!--排查低版本-->
             <exclusions>
                 <exclusion>
