@@ -152,7 +152,7 @@ public class SwaggerProperties {
 
     public String getVersion() {
         if(Objects.isNull(version)){
-            return "2.0.8-SNAPSHOT";
+            return "3.0.0-SNAPSHOT";
         }
         return version;
     }
