@@ -17,6 +17,7 @@ public class TokenSign {
 
     /**
      * token描述
+     * @see SignState
      */
     String description;
 
