@@ -1,4 +1,6 @@
-package cn.jdevelops.authentication.jredis.pojo;
+package cn.jdevelops.authentication.jwt.vo;
+
+import cn.jdevelops.util.jwt.constant.SignState;
 
 /**
  * 签名对象
@@ -6,7 +8,7 @@ package cn.jdevelops.authentication.jredis.pojo;
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2024/4/9 10:04
  */
-public class TokenVO {
+public class TokenSign {
 
     /**
      * token
@@ -18,10 +20,16 @@ public class TokenVO {
      */
     String description;
 
-    public TokenVO() {
+    public TokenSign() {
     }
 
-    public TokenVO(String sign, String description) {
+
+    public TokenSign(String sign) {
+        this.sign = sign;
+        this.description = SignState.normal;
+    }
+
+    public TokenSign(String sign, String description) {
         this.sign = sign;
         this.description = description;
     }

@@ -2,13 +2,13 @@ package cn.jdevelops.authentication.jwt.interceptor;
 
 import cn.jdevelops.api.result.custom.ExceptionResultWrap;
 import cn.jdevelops.api.result.emums.TokenExceptionCode;
+import cn.jdevelops.authentication.jwt.annotation.ApiMapping;
+import cn.jdevelops.authentication.jwt.annotation.ApiPlatform;
+import cn.jdevelops.authentication.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.authentication.jwt.exception.PermissionsException;
 import cn.jdevelops.authentication.jwt.server.CheckTokenInterceptor;
 import cn.jdevelops.authentication.jwt.util.JwtWebUtil;
 import cn.jdevelops.authentication.jwt.vo.CheckToken;
-import cn.jdevelops.authentication.jwt.annotation.ApiMapping;
-import cn.jdevelops.authentication.jwt.annotation.ApiPlatform;
-import cn.jdevelops.authentication.jwt.annotation.NotRefreshToken;
 import cn.jdevelops.spi.ExtensionLoader;
 import cn.jdevelops.util.jwt.config.JwtConfig;
 import cn.jdevelops.util.jwt.constant.JwtConstant;
