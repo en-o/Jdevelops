@@ -187,6 +187,9 @@ public class JwtConfig {
     }
 
     public OssLocalAuthentication getOss() {
+        if(null == oss){
+            return new OssLocalAuthentication();
+        }
         return oss;
     }
 
