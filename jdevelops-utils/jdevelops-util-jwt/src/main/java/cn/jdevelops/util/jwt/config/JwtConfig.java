@@ -2,6 +2,7 @@ package cn.jdevelops.util.jwt.config;
 
 import cn.jdevelops.util.jwt.constant.JwtConstant;
 import cn.jdevelops.util.jwt.entity.JCookie;
+import cn.jdevelops.util.jwt.entity.OssLocalAuthentication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
@@ -72,6 +73,13 @@ public class JwtConfig {
      * 是否开启  ApiPlatform 注解 [默认false]
      */
     private Boolean verifyPlatform;
+
+
+    /**
+     * 本地文件上次，文件访问接口鉴权
+     */
+    @NestedConfigurationProperty
+    private OssLocalAuthentication oss;
 
 
     public String getTokenSecret() {
@@ -178,6 +186,15 @@ public class JwtConfig {
         this.verifyPlatform = verifyPlatform;
     }
 
+    public OssLocalAuthentication getOss() {
+        return oss;
+    }
+
+    public void setOss(OssLocalAuthentication oss) {
+        this.oss = oss;
+    }
+
+
     @Override
     public String toString() {
         return "JwtConfig{" +
@@ -190,6 +207,7 @@ public class JwtConfig {
                 ", callRefreshToken=" + callRefreshToken +
                 ", verifyPermission=" + verifyPermission +
                 ", verifyPlatform=" + verifyPlatform +
+                ", oss=" + oss +
                 '}';
     }
 }
