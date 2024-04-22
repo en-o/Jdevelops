@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2023-01-05 16:34
  */
 @Service
-public class RedisDelayService implements DelayService<DelayQueueMessage> {
+public class RedisDelayService<T extends DelayQueueMessage> implements DelayService<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisDelayService.class);
 
@@ -35,7 +37,12 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
     private RedisTemplate<String, String> redisTemplate;
 
     @Resource
-    private DelayFactory<DelayQueueMessage> delayRunFactory;
+    private DelayFactory<T> delayRunFactory;
+
+    /**
+     * 泛型类
+     */
+    private Class<T> genericType;
 
     /**
      * 延时队列的key
@@ -47,6 +54,11 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
      */
     @Resource(name = "delayRedisScript")
     private DefaultRedisScript<List<String>> delayRedisScript;
+
+
+    public RedisDelayService(Class<T> genericType) {
+        this.genericType = genericType;
+    }
 
 
     /**
@@ -62,23 +74,21 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
 
 
     @Override
-    public void produce(DelayQueueMessage delayMessage) {
+    public void produce(T delayMessage) {
         //生产者把消息丢到消息队列中
         //序列化
         String value = JSON.toJSONString(delayMessage);
         // 有序
         redisTemplate.opsForZSet().add(DELAY_QUEUE, value, delayMessage.getDelayTime());
-
     }
 
     @Override
-    public void produce(List<DelayQueueMessage> delayMessage) {
+    public void produce(List<T> delayMessage) {
         delayMessage.forEach(this::produce);
     }
 
-
     @Override
-    public void cancel(DelayQueueMessage delayMessage) {
+    public void cancel(T delayMessage) {
         logger.warn("===> redis delay 暂不支持取消操作");
     }
 
@@ -96,7 +106,7 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
                 Set<String> set = runLuaScript(DELAY_QUEUE);
                 if (!CollectionUtils.isEmpty(set)){
                     set.forEach(s -> {
-                        DelayQueueMessage redisDelayMessage = JSON.to(DelayQueueMessage.class,JSON.parseObject(s));
+                        T redisDelayMessage = JSON.to(genericType,JSON.parseObject(s));
                         delayRunFactory.delayExecute(redisDelayMessage);
                     });
                 }
