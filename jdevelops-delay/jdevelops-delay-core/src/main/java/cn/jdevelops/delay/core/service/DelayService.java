@@ -26,6 +26,15 @@ public interface DelayService<T extends DelayQueueMessage> {
      */
     void produce(List<T> delayMessage);
 
+
+
+    /**
+     * 取消队列
+     * @param delayMessage 消息
+     */
+    void cancel(T delayMessage);
+
+
     /**
      * 消费延迟队列数据
      */

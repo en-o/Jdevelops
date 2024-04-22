@@ -76,6 +76,12 @@ public class RedisDelayService implements DelayService<DelayQueueMessage> {
         delayMessage.forEach(this::produce);
     }
 
+
+    @Override
+    public void cancel(DelayQueueMessage delayMessage) {
+        logger.warn("===> redis delay 暂不支持取消操作");
+    }
+
     @Override
     public void consumeDelay() {
         // IllegalArgumentException 的话 initialDelay = 1， period = 1 直接写死
