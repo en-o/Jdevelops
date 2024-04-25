@@ -47,11 +47,14 @@ public class LoginLimitService {
      * @param responseStatus 是否修改 http请求的status， 默认false都是200, true=403
      */
     public void verify(String username, boolean responseStatus) {
+        LOG.debug("===> verify login error sum ...");
         String redisFolder = getRedisFolder(username);
         Object loginLimit = redisTemplate.boundHashOps(redisFolder).get(username);
         if (Objects.nonNull(loginLimit)) {
             int loginLimitInt = (int) loginLimit;
-            if(loginLimitInt >= loginLimitConfig.getLimit()){
+            Integer limit = loginLimitConfig.getLimit();
+            if(loginLimitInt >= limit){
+                LOG.debug("===> login  error  login sum {}, limit sum {}", loginLimit, limit);
                 throw new LoginLimitException(LOGIN_LIMIT).setHttpServletResponseStatus(responseStatus);
             }
         }
@@ -75,6 +78,7 @@ public class LoginLimitService {
             redisTemplate.boundHashOps(redisFolder).put(username,
                     loginLimitInt + 1);
         }
+        LOG.debug("===> record login error  user: {} ", username);
         // 设置过期时间（秒
         redisTemplate.expire(redisFolder, loginLimitConfig.getExpireTime(), TimeUnit.MILLISECONDS);
     }
