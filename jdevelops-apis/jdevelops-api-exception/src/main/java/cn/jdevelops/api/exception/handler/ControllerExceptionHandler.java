@@ -178,15 +178,39 @@ public class ControllerExceptionHandler {
     }
 
     private void responseConfigCustom(HttpServletResponse response, BusinessException e, int code) {
-        responseConfig(response, e, code);
+        heander(response, e);
         // 以自己设置的 http servlet response status 为主
-        if (e.getHttpServletResponseStatus()) {
+        if (Boolean.TRUE.equals(e.getHttpServletResponseStatus())) {
             response.setStatus(code);
+        }else {
+            responseStatus(response, code);
         }
     }
 
 
     private void responseConfig(HttpServletResponse response, Exception e, int code) {
+        heander(response, e);
+        responseStatus(response, code);
+    }
+
+
+    /**
+     * 设置 response status
+     * @param response HttpServletResponse
+     * @param code code
+     */
+    private void responseStatus(HttpServletResponse response, int code) {
+        if (Boolean.TRUE.equals(exceptionConfig.getHttpServletResponseStatus())) {
+            response.setStatus(code);
+        }
+    }
+
+    /**
+     * 设置 response header
+     * @param response HttpServletResponse
+     * @param e Exception
+     */
+    private void heander(HttpServletResponse response, Exception e) {
         if (Boolean.TRUE.equals(exceptionConfig.getLogInput())) {
             log.error(e.getMessage(), e);
         }
@@ -195,9 +219,6 @@ public class ControllerExceptionHandler {
             response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
         } else {
             response.setHeader(CONTENT_TYPE_HEADER_NAME, exceptionConfig.getHttpServletResponseHeaderContentType());
-        }
-        if (Boolean.TRUE.equals(exceptionConfig.getHttpServletResponseStatus())) {
-            response.setStatus(code);
         }
     }
 

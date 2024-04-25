@@ -16,7 +16,7 @@ public class BusinessException extends RuntimeException {
     private int code;
 
     /**
-     * 是否修改 http请求的status， 默认false都是200, true=code
+     * 是否修改 http请求的status， 默认false以全局为主, true=code
      */
     private Boolean  httpServletResponseStatus;
 
