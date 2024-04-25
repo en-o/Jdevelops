@@ -57,7 +57,7 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public Object handleBusinessException(BusinessException e, HttpServletResponse response) {
-        responseConfig(response, e, e.getCode());
+        responseConfigCustom(response, e, e.getCode());
         return ExceptionResultWrap.result(e.getCode(), e.getErrorMessage());
     }
 
@@ -177,11 +177,17 @@ public class ControllerExceptionHandler {
         return null;
     }
 
+    private void responseConfigCustom(HttpServletResponse response, BusinessException e, int code) {
+        responseConfig(response, e, code);
+        // 以自己设置的 http servlet response status 为主
+        if (e.getHttpServletResponseStatus()) {
+            response.setStatus(code);
+        }
+    }
+
 
     private void responseConfig(HttpServletResponse response, Exception e, int code) {
-
-
-        if (exceptionConfig.getLogInput()) {
+        if (Boolean.TRUE.equals(exceptionConfig.getLogInput())) {
             log.error(e.getMessage(), e);
         }
 
@@ -190,7 +196,7 @@ public class ControllerExceptionHandler {
         } else {
             response.setHeader(CONTENT_TYPE_HEADER_NAME, exceptionConfig.getHttpServletResponseHeaderContentType());
         }
-        if (exceptionConfig.getHttpServletResponseStatus()) {
+        if (Boolean.TRUE.equals(exceptionConfig.getHttpServletResponseStatus())) {
             response.setStatus(code);
         }
     }
