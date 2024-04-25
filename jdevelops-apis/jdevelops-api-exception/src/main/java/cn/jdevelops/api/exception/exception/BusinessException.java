@@ -68,6 +68,11 @@ public class BusinessException extends RuntimeException {
         }
     }
 
+    /**
+     * 否修改 http请求的status，
+     * @param httpServletResponseStatus 默认false以全局为主, true=code
+     * @return BusinessException
+     */
     public BusinessException setHttpServletResponseStatus(Boolean httpServletResponseStatus) {
         this.httpServletResponseStatus = httpServletResponseStatus;
         return this;
