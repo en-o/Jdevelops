@@ -44,17 +44,20 @@ public class LoginLimitService {
     /**
      * 错误验证（放在登录接口第一行）
      * @param username 登录名
+     * @param responseStatus 是否修改 http请求的status， 默认false都是200, true=403
      */
-    public void verify(String username) {
+    public void verify(String username, boolean responseStatus) {
         String redisFolder = getRedisFolder(username);
         Object loginLimit = redisTemplate.boundHashOps(redisFolder).get(username);
         if (Objects.nonNull(loginLimit)) {
             int loginLimitInt = (int) loginLimit;
             if(loginLimitInt >= loginLimitConfig.getLimit()){
-                throw new LoginLimitException(LOGIN_LIMIT);
+                throw new LoginLimitException(LOGIN_LIMIT).setHttpServletResponseStatus(responseStatus);
             }
         }
     }
+
+
 
     /**
      * 错误记录 （放在错误调用里）
