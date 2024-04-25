@@ -38,8 +38,8 @@ public class ExceptionConfig {
 
     public ExceptionConfig(Boolean logInput, Boolean httpServletResponseStatus, String httpServletResponseHeaderContentType) {
         this.logInput = logInput;
-        httpServletResponseStatus = httpServletResponseStatus;
-        httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
+        this.httpServletResponseStatus = httpServletResponseStatus;
+        this.httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
     }
 
     @Override
