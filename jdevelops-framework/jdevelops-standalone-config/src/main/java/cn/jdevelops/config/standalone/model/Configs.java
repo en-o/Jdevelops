@@ -8,6 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import javax.persistence.Table;
  * @author tan
  */
 @Entity
+@AutoConfigurationPackage
 @Table(name = "configs")
 @Getter
 @Setter
