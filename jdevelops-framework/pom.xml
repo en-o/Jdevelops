@@ -28,6 +28,8 @@
         <module>jdevelops-sboot-swagger</module>
         <!--认证-->
         <module>jdevelops-sboot-websocket</module>
+        <!--单体项目配置中心-->
+        <module>jdevelops-standalone-config</module>
     </modules>
 
 </project>
