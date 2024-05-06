@@ -13,7 +13,7 @@ public class ConfigRepositoryConfig {
     private EntityManager entityManager;
 
     @Bean
-    public ConfigsDao customUserRepository() {
+    public ConfigsDao configsDao() {
         return new ConfigsDaoImpl(entityManager);
     }
 }
