@@ -55,6 +55,6 @@ public class ConfigsServiceImpl implements ConfigsService {
     @Override
     public Page<Configs> page(ConfigsPage page) {
         Sort orders = Sort.by(Sort.Direction.DESC, "app");
-        return configsDao.findAll(page.getPage().getPageable(orders));
+        return configsDao.findAll(page.select(), page.getPage().getPageable(orders));
     }
 }
