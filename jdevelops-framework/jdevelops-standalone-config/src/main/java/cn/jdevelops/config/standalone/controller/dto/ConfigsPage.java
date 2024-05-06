@@ -1,6 +1,5 @@
 package cn.jdevelops.config.standalone.controller.dto;
 
-import cn.jdevelops.api.result.request.SortPageDTO;
 import cn.jdevelops.config.standalone.request.PageRequest;
 import lombok.Data;
 

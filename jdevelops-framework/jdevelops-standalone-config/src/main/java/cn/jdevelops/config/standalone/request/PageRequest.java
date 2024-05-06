@@ -1,15 +1,11 @@
 package cn.jdevelops.config.standalone.request;
 
 
-
 import cn.jdevelops.api.result.request.SortPageDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 分页

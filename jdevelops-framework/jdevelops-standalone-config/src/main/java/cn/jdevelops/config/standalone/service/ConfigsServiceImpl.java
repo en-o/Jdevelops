@@ -4,7 +4,6 @@ import cn.jdevelops.config.standalone.controller.dto.ConfigsPage;
 import cn.jdevelops.config.standalone.dao.ConfigsDao;
 import cn.jdevelops.config.standalone.model.Configs;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
