@@ -18,7 +18,6 @@ import javax.persistence.*;
  * @author tan
  */
 @Entity
-@EntityScan
 @Table(name = "configs")
 @Getter
 @Setter

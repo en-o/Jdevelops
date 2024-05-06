@@ -1,3 +1,2 @@
-cn.jdevelops.config.standalone.model.Configs
 cn.jdevelops.config.standalone.service.ConfigsServiceImpl
 cn.jdevelops.config.standalone.controller.ConfigController
