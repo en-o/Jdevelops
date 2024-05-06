@@ -1,2 +1,3 @@
+cn.jdevelops.config.standalone.scan.ConfigRepositoryConfig
 cn.jdevelops.config.standalone.service.ConfigsServiceImpl
 cn.jdevelops.config.standalone.controller.ConfigController

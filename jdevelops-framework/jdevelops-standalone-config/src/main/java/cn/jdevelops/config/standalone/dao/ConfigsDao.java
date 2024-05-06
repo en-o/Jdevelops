@@ -3,10 +3,6 @@ package cn.jdevelops.config.standalone.dao;
 import cn.jdevelops.config.standalone.model.Configs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,12 +42,5 @@ public interface ConfigsDao extends JpaRepository<Configs, Long>, JpaSpecificati
      * @param configs （app and env and ns and pkey） update  pval
      * @return int
      */
-    @Modifying
-    @Query("update Configs u set u.pval = :#{#configs.pval} " +
-            "where u.app = :#{#configs.app} " +
-            "and u.env = :#{#configs.env} " +
-            "and u.ns = :#{#configs.ns} " +
-            "and u.pkey = :#{#configs.pkey} ")
-    @Transactional(rollbackFor = Exception.class)
-    int updateNoId(@Param("configs") Configs configs);
+    int updateNoId(Configs configs);
 }

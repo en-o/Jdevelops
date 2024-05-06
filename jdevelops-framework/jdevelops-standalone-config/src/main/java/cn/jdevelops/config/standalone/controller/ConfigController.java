@@ -55,9 +55,7 @@ public class ConfigController {
                                    @RequestParam("env") String env,
                                    @RequestParam("ns") String ns,
                                    @RequestBody Map<String, String> params) {
-        params.forEach((k, v) -> configsService.select(app, env, ns, k).ifPresent(
-                        conf -> configsService.update(new Configs().create(app, env, ns, k, v))
-                ));
+        params.forEach((k, v) -> configsService.update(new Configs().create(app, env, ns, k, v)));
         return ResultVO.successMessage("更新成功");
     }
 
