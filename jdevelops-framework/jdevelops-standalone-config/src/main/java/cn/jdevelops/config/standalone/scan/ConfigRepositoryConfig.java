@@ -7,6 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 import javax.persistence.EntityManager;
 
+/**
+ * scan
+ * @author tan
+ */
 public class ConfigRepositoryConfig {
 
     @Autowired
