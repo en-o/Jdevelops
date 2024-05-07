@@ -82,6 +82,11 @@ public class JwtConfig {
     private OssLocalAuthentication oss;
 
 
+    /**
+     * 登录相关的jwt存储前缀，区分不同项目 prefix:RedisJwtKey.class:xx:xx
+     */
+    private String prefix;
+
     public String getTokenSecret() {
         if(Objects.isNull(tokenSecret)||tokenSecret.length()<=0){
             return "b30715ff9b4d60c4dff8044acfb33ba091544b2e21825672edc38799f52f1895";
@@ -198,6 +203,14 @@ public class JwtConfig {
     }
 
 
+    public String getPrefix() {
+        return prefix==null ? "project" : prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
     @Override
     public String toString() {
         return "JwtConfig{" +
@@ -211,6 +224,7 @@ public class JwtConfig {
                 ", verifyPermission=" + verifyPermission +
                 ", verifyPlatform=" + verifyPlatform +
                 ", oss=" + oss +
+                ", prefix='" + prefix + '\'' +
                 '}';
     }
 }
