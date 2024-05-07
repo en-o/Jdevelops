@@ -79,19 +79,17 @@ public class ConfigsServiceImpl implements ConfigsService {
      */
     public void send(){
         HashMap<String, String> newConfigs = getConfig();
-        log.debug(" ====> refresh configs {}", newConfigs);
         listeners.forEach(listener -> listener.onChange(new ConfigChangeEvent(configMeta, newConfigs)));
     }
 
     @Override
     public void send(Map<String, String> newConfigs){
-        log.debug(" ====> refresh configs {}", newConfigs);
         listeners.forEach(listener -> listener.onChange(new ConfigChangeEvent(configMeta, newConfigs)));
     }
 
     @Override
     public HashMap<String, String> getConfig() {
-        List<Configs> configs = findAll();
+        List<Configs> configs = list(configMeta.getApp(),configMeta.getEnv(),configMeta.getNs());
         HashMap<String, String> newConfigs = new HashMap<>();
         configs.forEach(c -> newConfigs.put(c.getPkey(), c.getPval()));
         return newConfigs;

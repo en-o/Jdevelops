@@ -66,12 +66,12 @@ public interface ConfigsService {
 
     /**
      * 发送事件
-     * @param newConfigs newConfigs
+     * @param newConfigs  list(app,env,ns)
      */
     void send(Map<String, String> newConfigs);
 
     /**
-     * 获取配置的 key-value
+     * 获取app+env+ns配置的 key-value,
      * @return List<Configs> ->  Map
      */
     Map<String, String> getConfig();

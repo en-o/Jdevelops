@@ -39,6 +39,7 @@ public class ConfigPropertySourceServiceImpl implements ConfigPropertySourceServ
     @Override
     public void onChange(ConfigChangeEvent event) {
         this.config = event.getConfig();
+        log.debug(" ====> refresh configs {}, meta {}", config, event.getMeta());
         if(!config.isEmpty()){
             // 发送 EnvironmentChangeEvent 事件让spring刷新 environment
             log.debug("[TCONFIG] fire an EnvironmentChangeEvent with keys:" + config.keySet());
