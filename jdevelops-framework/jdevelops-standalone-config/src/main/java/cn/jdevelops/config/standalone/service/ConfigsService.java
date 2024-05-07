@@ -1,10 +1,13 @@
 package cn.jdevelops.config.standalone.service;
 
 import cn.jdevelops.config.standalone.controller.dto.ConfigsPage;
+import cn.jdevelops.config.standalone.listener.ConfigChangeListener;
 import cn.jdevelops.config.standalone.model.Configs;
 import org.springframework.data.domain.Page;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -60,4 +63,18 @@ public interface ConfigsService {
      * @return Configs
      */
     Page<Configs> page(ConfigsPage page);
+
+
+    /**
+     * 获取配置的 key-value
+     * @return List<Configs> ->  Map
+     */
+    Map<String, String> getConfig();
+
+    /**
+     * 添加属性改变监听器
+     * @param listener {@link ConfigChangeListener}
+     */
+    void addListener(ConfigChangeListener listener);
+
 }
