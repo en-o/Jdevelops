@@ -28,5 +28,8 @@ public class ConfigRepositoryConfig {
         return new ConfigsDaoImpl(entityManager);
     }
 
-
+    @Bean
+    public ConfigsService configsService(ConfigsDao configsDao, ConfigMeta configMeta) {
+        return new ConfigsServiceImpl(configsDao, configMeta);
+    }
 }
