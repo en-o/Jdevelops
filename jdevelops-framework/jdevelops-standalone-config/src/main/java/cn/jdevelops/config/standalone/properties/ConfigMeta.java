@@ -40,4 +40,9 @@ public class ConfigMeta {
     public String getNs() {
         return ns==null?"public":ns;
     }
+
+    public String genKey() {
+        return this.getApp() + "_" + this.getEnv() + "_" + this.getNs();
+    }
+
 }
