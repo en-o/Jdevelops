@@ -65,6 +65,12 @@ public interface ConfigsService {
 
 
     /**
+     * 发送事件
+     * @param newConfigs newConfigs
+     */
+    void send(Map<String, String> newConfigs);
+
+    /**
      * 获取配置的 key-value
      * @return List<Configs> ->  Map
      */

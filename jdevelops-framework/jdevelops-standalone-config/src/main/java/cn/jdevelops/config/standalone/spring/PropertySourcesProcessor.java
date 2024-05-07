@@ -73,6 +73,7 @@ public class PropertySourcesProcessor implements ApplicationRunner, ApplicationC
         composite.addPropertySource(propertySource);
         // 将配置中心得到属性置顶(拥有更高的优先级
         ENV.getPropertySources().addFirst(composite);
+        configsService.send(configMap);
         log.debug(" configs env setting flush  ... ");
     }
 }

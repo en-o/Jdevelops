@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 客户端注册上来的配置信息
@@ -82,9 +79,15 @@ public class ConfigsServiceImpl implements ConfigsService {
      */
     public void send(){
         HashMap<String, String> newConfigs = getConfig();
+        log.debug(" ====> refresh configs {}", newConfigs);
         listeners.forEach(listener -> listener.onChange(new ConfigChangeEvent(configMeta, newConfigs)));
     }
 
+    @Override
+    public void send(Map<String, String> newConfigs){
+        log.debug(" ====> refresh configs {}", newConfigs);
+        listeners.forEach(listener -> listener.onChange(new ConfigChangeEvent(configMeta, newConfigs)));
+    }
 
     @Override
     public HashMap<String, String> getConfig() {
