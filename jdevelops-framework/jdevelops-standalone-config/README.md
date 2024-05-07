@@ -1,0 +1,1 @@
+目前无法做到项目在BeanFactoryPostProcessor阶段就加载
