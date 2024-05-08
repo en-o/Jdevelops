@@ -8,7 +8,6 @@
     <artifactId>jdevelops-apis</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-
     <name>jdevelops :: apis </name>
     <description>接口处理</description>
     <url>https://github.com/en-o/Jdevelops</url>
@@ -49,6 +48,7 @@
     </developers>
 
     <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
         <!-- JDK -->
         <java.version>8</java.version>
         <!-- 编译 -->

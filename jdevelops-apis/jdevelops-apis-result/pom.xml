@@ -9,9 +9,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>jdevelops-apis-result</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>jdevelops :: apis :: result</name>
     <description>
         全局使用[公共pojo,util,enums等]
