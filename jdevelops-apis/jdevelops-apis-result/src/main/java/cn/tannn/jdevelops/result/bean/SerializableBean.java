@@ -20,27 +20,11 @@ public class SerializableBean<B> implements Serializable {
     private static final long serialVersionUID = 315654089784739497L;
 
     /**
-     * 浅拷贝
-     * @param source  查询出来的数据
+     * 将传入的source非空属性拷贝到当前bean下  - 只会忽略 null,不会忽略 ""
+     * @param source 数据源
      */
     public void copy(B source) {
         BeanCopyUtil.beanCopy(source, this);
-    }
-
-
-    /**
-     * 获取实体类的字段名称
-     */
-    public static <B>  String of(ColumnSFunction<B, ?> fn){
-        return ColumnUtil.getFieldName(fn);
-    }
-
-    /**
-     * 获取实体类的字段名称
-     * @param toLine  是否转驼峰（默认不转） true:驼峰 。 false：正常bean字段
-     */
-    public static <B> String of(ColumnSFunction<B, ?> fn, Boolean toLine){
-        return ColumnUtil.getFieldName(fn,toLine);
     }
 
 
@@ -65,7 +49,7 @@ public class SerializableBean<B> implements Serializable {
      * @param clazz 需要转变的类型
      * @return List<clazz>
      */
-    public static <R, S extends SerializableBean<Object>> List<R> to(Collection<S> list, Class<R> clazz) {
+    public static <R, S> List<R> to(Collection<S> list, Class<R> clazz) {
         if (list != null && !list.isEmpty()) {
             return ListTo.to(clazz, list);
         } else {
@@ -80,10 +64,10 @@ public class SerializableBean<B> implements Serializable {
      * @param clazz  需要转变的类型
      * @return List<clazz>
      */
-    public static <B, S extends SerializableBean<Object>> List<B> to(Iterable<S> iterable, Class<B> clazz) {
-        if (iterable !=null) {
+    public static <B, SB, S extends SerializableBean<SB>> List<B> to(Iterable<S> iterable, Class<B> clazz) {
+        if (iterable != null) {
             List<B> result = new ArrayList<>();
-            for (SerializableBean<Object> abs : iterable) {
+            for (SerializableBean<SB> abs : iterable) {
                 result.add(abs.to(clazz));
             }
             return result;
@@ -107,31 +91,15 @@ public class SerializableBean<B> implements Serializable {
         }
     }
 
-
-    /**
-     * bean转换
-     * @param object 原数据
-     * @param clazz 需要转变的类型
-     * @return clazz
-     */
-    public static <B,  S extends SerializableBean<Object>> B to(S object, Class<B> clazz) {
-        if (object != null) {
-            return object.to(clazz);
-        } else {
-            return null;
-        }
-    }
-
-
     /**
      * 两个空bean转换
      * @param clazzs 原来的
      * @param clazz  需要返回的
      * @return clazz
      */
-    public static <B,  S extends SerializableBean<Object>> B to(Class<S> clazzs, Class<B> clazz) {
+    public static <B,SB,  S extends SerializableBean<SB>> B to(Class<S> clazzs, Class<B> clazz) {
         try {
-            SerializableBean<Object> abs = clazzs.newInstance();
+            SerializableBean<SB> abs = clazzs.newInstance();
             return abs.to(clazz);
         }catch (Exception e){
             return null;

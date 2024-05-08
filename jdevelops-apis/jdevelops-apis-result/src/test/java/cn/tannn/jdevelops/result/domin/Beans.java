@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.result.domin;
 
+import java.util.StringJoiner;
+
 public class Beans {
     String name;
     int sex;
@@ -36,5 +38,14 @@ public class Beans {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Beans.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("sex=" + sex)
+                .add("age=" + age)
+                .toString();
     }
 }
