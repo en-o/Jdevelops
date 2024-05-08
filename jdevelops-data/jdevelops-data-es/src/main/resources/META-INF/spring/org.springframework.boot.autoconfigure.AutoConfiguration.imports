@@ -1,4 +1,0 @@
-cn.jdevelops.data.es.config.ElasticProperties
-cn.jdevelops.data.es.config.ElasticClientConfig
-cn.jdevelops.data.es.core.ElasticServiceImpl
-cn.jdevelops.data.es.schema.CreateElasticsearchMapping

@@ -1,1 +1,0 @@
-defaultInterceptor=cn.jdevelops.authentication.jredis.interceptor.RedisInterceptor
