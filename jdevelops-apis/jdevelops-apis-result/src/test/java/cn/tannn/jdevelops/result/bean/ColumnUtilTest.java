@@ -4,7 +4,7 @@ import cn.tannn.jdevelops.result.domin.Apply;
 import cn.tannn.jdevelops.result.domin.Help;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ColumnUtilTest {
 

@@ -4,7 +4,6 @@ import cn.tannn.jdevelops.result.domin.Beans;
 import cn.tannn.jdevelops.result.domin.BeansVO;
 import cn.tannn.jdevelops.result.domin.UserSerializableBean;
 import cn.tannn.jdevelops.result.domin.UserVO;
-import cn.tannn.jdevelops.result.utils.ListTo;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
