@@ -6,7 +6,7 @@ import cn.tannn.jdevelops.result.domin.UserSerializableBean;
 import cn.tannn.jdevelops.result.domin.UserVO;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BeanCopyUtilTest {
 
