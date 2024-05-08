@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.result.domin;
+package cn.tannn.jdevelops.result.domin.column;
 
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
 

@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.result.domin;
+package cn.tannn.jdevelops.result.domin.column;
 
 public class Help {
     private String author, title, myTest;
