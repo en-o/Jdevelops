@@ -30,3 +30,6 @@
 ## [配套基础代码生成工具](https://code.tannn.cn/)
 ## [maven archetype](ttps://gitee.com/etn/jdevelops-archetype.git)
 > [使用方法](https://www.yuque.com/tanning/yg9ipo/os0zl7#GocqT)
+
+# mvn package / install
+1. 使用maven 3.9 ，因为我用了 junit 5 [maven 3.6 会出问题]
