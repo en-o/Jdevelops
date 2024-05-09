@@ -49,6 +49,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
+        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
         <!-- JDK -->
@@ -73,6 +74,7 @@
 
     <modules>
         <module>jdevelops-apis-result</module>
+        <module>jdevelops-apis-exception</module>
     </modules>
 
 
