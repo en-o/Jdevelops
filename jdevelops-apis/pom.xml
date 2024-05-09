@@ -156,6 +156,13 @@
                     <target>${java.version}</target> <!-- 需要生成的目标class文件的编译版本 -->
                     <encoding>${project.build.sourceEncoding}</encoding> <!-- 字符集编码 -->
                     <showWarnings>true</showWarnings><!--设置为true以显示编译警告-->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>${spring.boot.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <!-- 将源码一并打包 -->
