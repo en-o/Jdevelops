@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.result.handler;
 
 import cn.tannn.jdevelops.result.exception.ExceptionResultWrap;
+import cn.tannn.jdevelops.result.response.ResultPageVO;
+import cn.tannn.jdevelops.result.response.ResultVO;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -31,7 +33,9 @@ public class ResultHandlerMethodReturnValueHandler implements HandlerMethodRetur
         // 指定 接口存在ResponseBody注解和返回的不是ExceptionResultWrap类就要做自定义处理，给与包裹类 handleReturnValue 中的处理逻辑
         return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
                 returnType.hasMethodAnnotation(ResponseBody.class))
-                && !ExceptionResultWrap.class.equals(returnType.getDeclaringClass());
+                && !ExceptionResultWrap.class.equals(returnType.getDeclaringClass())
+                && !ResultPageVO.class.equals(returnType.getParameterType())
+                && !ExceptionResultWrap.success().getClass().equals(returnType.getParameterType());
     }
 
     @Override
