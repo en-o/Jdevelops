@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.result.utils;
 
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator;
 
@@ -13,16 +14,16 @@ import java.util.Set;
  */
 public class BeastValidatedTest {
 
-    private Validator validator;
+    private static Validator validator;
 
-    @BeforeEach
-    public void init() {
+    @BeforeAll
+    public static void init() {
         GenericBootstrap bootstrap = Validation.byDefaultProvider();
         Configuration<?> configure = bootstrap.configure();
         MessageInterpolator targetInterpolator = configure.getDefaultMessageInterpolator();
         configure.messageInterpolator(new LocaleContextMessageInterpolator(targetInterpolator));
         ValidatorFactory validatorFactory = configure.buildValidatorFactory();
-        this.validator = validatorFactory.getValidator();
+        validator = validatorFactory.getValidator();
     }
 
     protected <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
