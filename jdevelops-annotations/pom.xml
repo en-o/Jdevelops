@@ -24,6 +24,13 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
+    <modules>
+        <module>jdevelops-annotations-web</module>
+        <module>jdevelops-annotations-es</module>
+        <module>jdevelops-annotations-ddss</module>
+    </modules>
+
     <!-- 开源地址 -->
     <scm>
         <!-- 发布分支 -->
@@ -52,6 +59,7 @@
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
+        <spring.cloud.commons.version>3.0.5</spring.cloud.commons.version>
         <!-- JDK -->
         <java.version>1.8</java.version>
         <!-- 编译 -->

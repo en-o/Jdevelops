@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-annotations</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jdevelops-annotations-ddss</artifactId>
+    <packaging>jar</packaging>
+    <name>jdevelops :: annotations :: ddss</name>
+    <description>
+        动态数据源切换 相关的注解
+    </description>
+
+</project>
