@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.tannn.jdevelops</groupId>
-    <artifactId>jdevelops-dals</artifactId>
+    <artifactId>jdevelops-authentications</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-    <name>jdevelops :: dals </name>
-    <description>数据访问</description>
+    <name>jdevelops :: authentications </name>
+    <description>访问鉴权(登录)</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
     <organization>
@@ -49,7 +49,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.dals.version>${revision}</jdevelops.dals.version>
+        <jdevelops.authentications.version>${revision}</jdevelops.authentications.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
         <!-- JDK -->
@@ -270,7 +270,7 @@
                             <tokenAuth>true</tokenAuth>
                             <!-- 自动提交 ，不写就自己去web手动点击-->
                             <autoPublish>true</autoPublish>
-                            <deploymentName>jdevelops-dals</deploymentName>
+                            <deploymentName>jdevelops-authentications</deploymentName>
                         </configuration>
                     </plugin>
                     <!-- gpg -->
