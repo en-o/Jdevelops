@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @date 2023/8/7 10:00
  */
 @ConfigurationProperties(prefix = "jdevelops.exception")
-@Component
 public class ExceptionConfig {
 
     /**
