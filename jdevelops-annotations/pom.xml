@@ -9,7 +9,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>jdevelops :: annotations </name>
-    <description>注解</description>
+    <description>注解 [考虑参数实体跟主体项目分离时轻量导包]</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
     <organization>
@@ -29,6 +29,7 @@
         <module>jdevelops-annotations-web</module>
         <module>jdevelops-annotations-es</module>
         <module>jdevelops-annotations-ddss</module>
+        <module>jdevelops-annotations-jpa</module>
     </modules>
 
     <!-- 开源地址 -->

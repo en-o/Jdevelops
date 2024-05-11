@@ -9,11 +9,20 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>jdevelops-annotations-es</artifactId>
+    <artifactId>jdevelops-annotations-jpa</artifactId>
     <packaging>jar</packaging>
-    <name>jdevelops :: annotations :: es</name>
+    <name>jdevelops :: annotations :: jpa</name>
     <description>
-        es 相关的注解 [考虑参数实体跟主体项目分离时轻量导包]
+        jpa 相关的注解 [考虑参数实体跟主体项目分离时轻量导包]
     </description>
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>2.2.3</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
 
 </project>

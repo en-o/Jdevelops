@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>jdevelops :: annotations :: ddss</name>
     <description>
-        动态数据源切换 相关的注解
+        动态数据源切换 相关的注解 [考虑参数实体跟主体项目分离时轻量导包]
     </description>
 
 </project>
