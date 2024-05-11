@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jpa.spel;
 
 import cn.tannn.jdevelops.jpa.constant.CommonStateExpressionRoot;
 import org.springframework.data.spel.spi.EvaluationContextExtension;
-import org.springframework.stereotype.Component;
 
 /**
  * 常用状态
