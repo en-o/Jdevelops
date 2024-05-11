@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.annotations.jpa.modle.audit;
+package cn.tannn.jdevelops.jpa.modle.audit;
 
 
 import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;

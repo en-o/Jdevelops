@@ -1,6 +1,6 @@
-package cn.tannn.jdevelops.annotations.jpa.modle.mysql;
+package cn.tannn.jdevelops.jpa.modle.mysql;
 
-import cn.tannn.jdevelops.annotations.jpa.modle.audit.BaseFields;
+import cn.tannn.jdevelops.jpa.modle.audit.BaseFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

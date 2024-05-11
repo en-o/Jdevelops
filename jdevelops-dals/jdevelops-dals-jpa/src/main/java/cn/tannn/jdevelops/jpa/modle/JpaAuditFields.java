@@ -1,6 +1,6 @@
-package cn.tannn.jdevelops.annotations.jpa.modle;
+package cn.tannn.jdevelops.jpa.modle;
 
-import cn.tannn.jdevelops.annotations.jpa.modle.audit.BaseAuditFields;
+import cn.tannn.jdevelops.jpa.modle.audit.BaseAuditFields;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
