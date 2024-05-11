@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.result.utils;
 
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator;
 
 import javax.validation.*;
