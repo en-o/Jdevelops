@@ -24,12 +24,12 @@ public class CommonStateExpressionRoot {
     public final Integer woman = 2;
 
     /**
-     * true
+     * true:启用
      */
     public final Integer truee = 1;
 
     /**
-     * false
+     * false:停用
      */
     public final Integer falsee = 0;
 
