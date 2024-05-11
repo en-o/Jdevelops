@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jpa.auditor;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
-import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
