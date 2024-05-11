@@ -57,6 +57,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
+        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>

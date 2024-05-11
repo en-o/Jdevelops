@@ -21,13 +21,14 @@ import java.lang.annotation.*;
 public @interface JpaSelectOperator {
 
     /**
-     * sql 运算符 (JpaUtils方法用)
+     * sql 运算符 (CustomSpecification) 建议用 {@link SQLOperatorWrapper}
      * <pre>
      * 作用于 CommUtils.getSelectBean
      *  根据注解内容进行条件拼接，例如： 用的EQ 则： where 字段 = 值
      * </pre>
      *
      */
+    @Deprecated
     SQLOperator operator() default SQLOperator.EQ;
 
 
