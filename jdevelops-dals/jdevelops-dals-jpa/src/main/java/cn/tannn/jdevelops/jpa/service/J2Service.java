@@ -21,4 +21,10 @@ public interface J2Service<B> {
     <ID, M extends JpaBasicsRepository<B, ID>> M getJpaBasicsDao();
 
 
+    // 唯一查询
+    // 多值唯一查询
+
+    // list 单查询
+    // list 多值查询
+
 }
