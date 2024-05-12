@@ -37,6 +37,10 @@ public class Paging implements Serializable {
     public Paging() {
     }
 
+    public static Paging def(){
+       return new Paging();
+    }
+
     /**
      * 默认 pageIndex = 1
      * @param pageSize 一页显示几条

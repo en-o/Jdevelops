@@ -40,6 +40,22 @@ public class Sorted implements Serializable {
     }
 
     /**
+     * 默认
+     * @return Sorted
+     */
+    public static Sorted def(){
+        return new Sorted();
+    }
+
+    /**
+     * 默认
+     * @return Sorted
+     */
+    public static Sorted def(String orderBy){
+        return new Sorted(orderBy);
+    }
+
+    /**
      * 默认倒序
      *
      * @param orderBy 排序字段
