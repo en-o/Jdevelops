@@ -3,7 +3,6 @@ package cn.tannn.jdevelops.jpa.auditor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
