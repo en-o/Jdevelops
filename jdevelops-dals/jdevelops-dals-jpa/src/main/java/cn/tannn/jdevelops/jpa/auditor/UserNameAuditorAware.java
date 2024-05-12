@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.jpa.auditor;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Component;
@@ -14,8 +15,8 @@ import java.util.Optional;
  * @version 1
  * @date 2020/5/26 22:29
  */
-@Component
 @EnableJpaAuditing
+@ConditionalOnMissingBean(UserNameAuditorAware.class)
 public class UserNameAuditorAware implements AuditorAware<String> {
 
 

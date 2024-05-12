@@ -1,2 +1,5 @@
 cn.tannn.jdevelops.jpa.spel.CommonStateEvaluationContextExtension
+cn.tannn.jdevelops.jpa.auditor.DefAuditorNameService
+cn.tannn.jdevelops.jpa.auditor.UserNameAuditorAware
+
 
