@@ -42,6 +42,20 @@ public class Sorteds extends Sorted {
         }
         return sort.sort();
     }
+
+    /**
+     * Sorted to Sort
+     *
+     * @param sort {@link Sorted}
+     * @return Sort
+     */
+    public static Sort sort(Sorted sort) {
+        if (sort == null) {
+            sort = Sorted.def();
+        }
+        return Sort.by(direction(sort.getOrderDesc()), sort.getOrderBy());
+    }
+
     /**
      * Sorteds  转成 Sort
      * @param sort SortDTO
