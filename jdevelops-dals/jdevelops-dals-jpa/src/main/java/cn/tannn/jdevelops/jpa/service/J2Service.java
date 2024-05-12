@@ -6,6 +6,7 @@ import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import cn.tannn.jdevelops.jpa.request.PagingSorteds;
 import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.request.Sorteds;
+import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -214,17 +215,36 @@ public interface J2Service<B> {
     // ============ find page
 
     /**
-     * 排序
+     * 分页-排序
      * @param pageable 分页{@link Pagings}
      * @return Page of B
      */
     Page<B> findPage(Pagings pageable);
 
     /**
-     * 排序
+     * 分页-排序
      * @param pageable 分页{@link PagingSorteds}
      * @return Page of B
      */
     Page<B> findPage(PagingSorteds pageable);
 
+    /**
+     * 分页-查询
+     *
+     * @param req      查询条件
+     * @param pageable 分页 {@link Pagings}
+     * @param <T>  数据实体的VO TDO BO PO等异形类
+     * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
+     */
+     <T> Page<B>  findPage(T req, Pagings pageable);
+
+    /**
+     * 分页-查询
+     *
+     * @param req      查询条件
+     * @param pageable 分页 {@link PagingSorteds}
+     * @param <T>  数据实体的VO TDO BO PO等异形类
+     * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
+     */
+    <T> Page<B>  findPage(T req, PagingSorteds pageable);
 }
