@@ -36,7 +36,7 @@ public class IObjects {
     /**
      * 等于空
      * @param obj  obj
-     * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
+     * @param ignoreNullEnhance  true: null,""," "   , false: null
      * @return boolean
      */
     public static boolean isNull(Object obj, Boolean ignoreNullEnhance) {
