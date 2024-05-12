@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.jpa.request;
 import cn.tannn.jdevelops.result.request.Sorted;
 import org.springframework.data.domain.Sort;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,9 +15,6 @@ import java.util.Objects;
  */
 public class Sorteds extends Sorted {
 
-    public static Sorteds defs(){
-        return new Sorteds();
-    }
 
     /**
      * Sorted to Sort
@@ -25,6 +23,11 @@ public class Sorteds extends Sorted {
      */
     public Sort sort() {
         return Sort.by(direction(getOrderDesc()), getOrderBy());
+    }
+
+
+    public static Sorteds defs(){
+        return new Sorteds();
     }
 
     /**
@@ -39,20 +42,42 @@ public class Sorteds extends Sorted {
         }
         return sort.sort();
     }
-
-
     /**
-     * Sorted to Sort
-     *
-     * @param sort {@link Sorted}
+     * Sorteds  转成 Sort
+     * @param sort SortDTO
      * @return Sort
      */
-    public static Sort sort(Sorted sort) {
-        if (sort == null) {
-            sort = Sorted.def();
-        }
-        return Sort.by(direction(sort.getOrderDesc()), sort.getOrderBy());
+    public static Sort sorteds2Sort(List<Sorteds> sort) {
+        return sort.stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
     }
+
+    /**
+     * Sorteds  转成 Sort
+     * @param sort SortDTO
+     * @return Sort
+     */
+    public static Sort sorteds2Sort2(List<Sorted> sort) {
+        return sort.stream()
+                .map(s -> {
+                    // （正序0，反序1）
+                    if (s.getOrderDesc() == 0) {
+                        return Sort.by(s.getOrderBy()).ascending();
+                    }else {
+                        return Sort.by(s.getOrderBy()).descending();
+                    }
+                })
+                .reduce(Sort::and).orElse(null);
+    }
+
 
     /**
      * Sorted#getOrderDesc() -> Sort.Direction
@@ -66,4 +91,7 @@ public class Sorteds extends Sorted {
         }
         return Sort.Direction.DESC;
     }
+
+
+
 }

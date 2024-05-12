@@ -28,6 +28,12 @@ public class PagingSorted extends Paging{
     public PagingSorted() {
     }
 
+    /**
+     * 默认
+     */
+    public static PagingSorted def(){
+        return new PagingSorted();
+    }
 
     /**
      * 分页排序

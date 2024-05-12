@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jpa.request;
 
 import cn.tannn.jdevelops.result.request.Paging;
-import cn.tannn.jdevelops.result.request.Sorted;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +15,11 @@ import org.springframework.data.domain.Sort;
 @Schema(description = "Jpa分页参数")
 public class Pagings extends Paging {
 
-    public static Pagings defs(){
-        return new Pagings();
-    }
-
 
     public Pageable pageable() {
         return PageRequest.of(getPageIndex(),
                 getPageSize());
     }
-
 
     /**
      * add Sort
@@ -43,26 +37,17 @@ public class Pagings extends Paging {
                 sort);
     }
 
-    /**
-     * add Sort
-     *
-     * @param sort {@link Sort}
-     * @return Pageable
-     */
-    public Pageable pageable(Sorted sort) {
-        return PageRequest.of(getPageIndex(),
-                getPageSize(),
-                Sorteds.sort(sort));
-    }
-
 
     /**
      * add Sort
      *
-     * @param sort {@link Sort}
+     * @param sort {@link Sorteds}
      * @return Pageable
      */
     public Pageable pageable(Sorteds sort) {
+        if(sort == null){
+            return PageRequest.of(getPageIndex(),getPageSize());
+        }
         return PageRequest.of(getPageIndex(),
                 getPageSize(),
                 Sorteds.sort(sort));
@@ -72,24 +57,16 @@ public class Pagings extends Paging {
 
 
 
-    /**
-     * Paging to Pageable
-     *
-     * @param paging {@link Paging}
-     * @return Pageable
-     */
-    public static Pageable pageable(Paging paging) {
-        if (paging == null) {
-            paging = Paging.def();
-        }
-        return PageRequest.of(paging.getPageIndex(),
-                paging.getPageSize());
+
+    public static Pagings defs(){
+        return new Pagings();
     }
+
 
     /**
      * Paging to Pageable
      *
-     * @param paging {@link Paging}
+     * @param paging {@link Pagings}
      * @return Pageable
      */
     public static Pageable pageable(Pagings paging) {
@@ -99,22 +76,35 @@ public class Pagings extends Paging {
         return paging.pageable();
     }
 
-
     /**
-     * Sorted to Pageable ： 默认分页+自定义排序
+     * Paging to Pageable
      *
-     * @param sort {@link Sorted}
+     * @param paging {@link Pagings}
+     * @param sort {@link Sorteds}
      * @return Pageable
      */
-    public static Pageable pageableSorted(Sorted sort) {
-        Pagings paging = Pagings.defs();
+    public static Pageable pageable(Pagings paging, Sorteds sort) {
+        if (paging == null) {
+            paging = Pagings.defs();
+        }
         return paging.pageable(sort);
     }
 
     /**
      * Sort to Pageable ： 默认分页+自定义排序
      *
-     * @param sort {@link Sorted}
+     * @param sort {@link Sorteds}
+     * @return Pageable
+     */
+    public static Pageable pageableSorted(Sorteds sort) {
+        Pagings paging = Pagings.defs();
+        return  paging.pageable(sort);
+    }
+
+    /**
+     * Sort to Pageable ： 默认分页+自定义排序
+     *
+     * @param sort {@link Sort}
      * @return Pageable
      */
     public static Pageable pageableSorted(Sort sort) {
