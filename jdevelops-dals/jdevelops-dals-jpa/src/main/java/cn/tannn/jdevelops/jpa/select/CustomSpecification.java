@@ -8,6 +8,7 @@ import cn.tannn.jdevelops.jpa.select.criteria.ExtendSpecification;
 import cn.tannn.jdevelops.jpa.select.criteria.Restrictions;
 import cn.tannn.jdevelops.jpa.select.criteria.SimpleExpression;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
+import cn.tannn.jdevelops.jpa.utils.JpaUtils;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -49,7 +50,7 @@ public class CustomSpecification {
                 if (!IObjects.isBlank(selectOperator.fieldName())) {
                     fieldName = selectOperator.fieldName();
                 }
-                SimpleExpression simpleExpression = jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
+                SimpleExpression simpleExpression = JpaUtils.jpaSelectOperatorSwitch(selectOperator, fieldName, fieldValue);
                 if (Objects.equals(selectOperator.connect(), SQLConnect.OR)) {
                     jpaSelect.or(simpleExpression);
                 } else {
@@ -64,46 +65,5 @@ public class CustomSpecification {
     }
 
 
-    /**
-     * 根据注解组装  jpa动态查询
-     *
-     * @param annotation JpaSelectOperator 注解
-     * @param fieldName  字段名
-     * @param fieldValue 字段值
-     * @return SimpleExpression
-     */
-    public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
-                                                           String fieldName,
-                                                           Object fieldValue) {
-        switch (annotation.operator()) {
-            case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case ISNULL:
-                return Restrictions.isNull(fieldName, annotation.function());
-            case ISNOTNULL:
-                return Restrictions.isNotNull(fieldName, annotation.function());
-            case BETWEEN:
-                // 值以逗号隔开
-                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.ignoreNullEnhance(),  annotation.function());
-            case EQ:
-            default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(),  annotation.ignoreNullEnhance(), annotation.function());
-        }
-    }
+
 }

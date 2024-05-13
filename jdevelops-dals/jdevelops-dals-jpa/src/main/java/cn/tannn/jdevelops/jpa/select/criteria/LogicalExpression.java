@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.jpa.select.criteria;
 
 
 
+import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,9 +26,9 @@ public class LogicalExpression implements ExpandCriterion {
     /**
      * 计算符
      */
-    private Operator operator;
+    private SQLOperator operator;
 
-    public LogicalExpression(ExpandCriterion[] criterions, Operator operator) {
+    public LogicalExpression(ExpandCriterion[] criterions, SQLOperator operator) {
         this.criterion = criterions;
         this.operator = operator;
     }

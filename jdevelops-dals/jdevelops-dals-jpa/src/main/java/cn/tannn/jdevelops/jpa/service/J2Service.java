@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.jpa.service;
 
 
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import cn.tannn.jdevelops.jpa.request.PagingSorteds;
@@ -26,7 +27,14 @@ import java.util.Optional;
  */
 public interface J2Service<B> {
 
+    /**
+     * EntityManager
+     * <p> <a href="https://developer.aliyun.com/article/1157551#slide-2">说明教程</a>
+     * <p> <a href="https://www.yuque.com/tanning/mbquef/wu997plag7h9hmhy?singleDoc# 《常规》">常规教程</a>
+     * @return EntityManager
+     */
     EntityManager getEntityManager();
+
     /**
      * 获取 dao
      *
@@ -83,7 +91,7 @@ public interface J2Service<B> {
     int delete(String fieldName, Object value);
 
     /**
-     * 删除
+     * 删除(单条件多值)
      *
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
@@ -93,13 +101,12 @@ public interface J2Service<B> {
     int delete(String fieldName, SQLOperator operator, Object... value);
 
     /**
-     * 删除
+     * 自定义条件删除2
      *
-     * @param wheres   非空属性才会被删除 [请注意 '' ' ' 一律会被认为时空]
-     * @param operator 判断表达式 {@link SQLOperator}  (ps. 此处单值操作有效， 如in,isnull,between等是无效的)
+     * @param wheres   配合{@link JpaSelectOperator}
      * @return int (>0删除成功且为删除了多少条)
      */
-    int delete(B wheres, SQLOperator operator);
+    <T> int delete(T wheres);
 
 
     // ============ update

@@ -21,7 +21,7 @@ import java.lang.annotation.*;
 public @interface JpaSelectOperator {
 
     /**
-     * sql 运算符 (CustomSpecification) 建议用 {@link SQLOperatorWrapper}
+     * sql 运算符 (CustomSpecification) 建议用 {@link SQLOperatorWrapper} 不是所有的都支持
      * <pre>
      * 作用于 CommUtils.getSelectBean
      *  根据注解内容进行条件拼接，例如： 用的EQ 则： where 字段 = 值

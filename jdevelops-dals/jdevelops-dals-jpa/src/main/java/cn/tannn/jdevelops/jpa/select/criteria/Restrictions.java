@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.jpa.select.criteria;
 
+import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 
@@ -25,7 +26,7 @@ public class Restrictions {
         ExpandCriterion[] expandCriteria = Arrays.stream(criterions)
                 .filter(Objects::nonNull)
                 .toArray(ExpandCriterion[]::new);
-        return expandCriteria.length > 0 ? new LogicalExpression(expandCriteria, ExpandCriterion.Operator.OR) : null;
+        return expandCriteria.length > 0 ? new LogicalExpression(expandCriteria, SQLOperator.OR) : null;
     }
 
     /**
@@ -38,7 +39,7 @@ public class Restrictions {
         ExpandCriterion[] expandCriteria = Arrays.stream(criterions)
                 .filter(Objects::nonNull)
                 .toArray(ExpandCriterion[]::new);
-        return expandCriteria.length > 0 ? new LogicalExpression(expandCriteria, ExpandCriterion.Operator.OR) : null;
+        return expandCriteria.length > 0 ? new LogicalExpression(expandCriteria, SQLOperator.OR) : null;
     }
 
 
@@ -67,7 +68,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression eq(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.EQ, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.EQ, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -95,7 +96,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression ne(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.NE, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -124,7 +125,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression like(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LIKE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.LIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -154,7 +155,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression notLike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.NOTLIKE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.NOTLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -185,7 +186,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression llike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LLIKE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.LLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -215,7 +216,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression rlike(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.RLIKE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.RLIKE, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -242,7 +243,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression gt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GT, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.GT, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -270,7 +271,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression lt(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LT, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.LT, function, ignoreNull, ignoreNullEnhance);
     }
 
     /**
@@ -297,7 +298,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression gte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.GTE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.GTE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -325,7 +326,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression lte(String fieldName, Object value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.LTE, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.LTE, function, ignoreNull, ignoreNullEnhance);
     }
 
 
@@ -362,11 +363,11 @@ public class Restrictions {
         SimpleExpression[] ses = new SimpleExpression[value.size()];
         int i = 0;
         for (Object obj : value) {
-            SimpleExpression simpleExpression = new SimpleExpression(fieldName, obj, ExpandCriterion.Operator.EQ, function, ignoreNull, ignoreNullEnhance);
+            SimpleExpression simpleExpression = new SimpleExpression(fieldName, obj, SQLOperator.EQ, function, ignoreNull, ignoreNullEnhance);
             ses[i] = simpleExpression;
             i++;
         }
-        return new LogicalExpression(ses, ExpandCriterion.Operator.OR);
+        return new LogicalExpression(ses, SQLOperator.OR);
     }
 
 
@@ -388,7 +389,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNULL, function, false, true);
+        return new SimpleExpression(fieldName, SQLOperator.ISNULL, function, false, true);
     }
 
 
@@ -410,7 +411,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression isNotNull(String fieldName, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, ExpandCriterion.Operator.ISNOTNULL, function, false, true);
+        return new SimpleExpression(fieldName, SQLOperator.ISNOTNULL, function, false, true);
     }
 
 
@@ -439,7 +440,7 @@ public class Restrictions {
      * @return SimpleExpression
      */
     public static SimpleExpression between(String fieldName, String value, boolean ignoreNull, boolean ignoreNullEnhance, SpecBuilderDateFun function) {
-        return new SimpleExpression(fieldName, value, ExpandCriterion.Operator.BETWEEN, function, ignoreNull, ignoreNullEnhance);
+        return new SimpleExpression(fieldName, value, SQLOperator.BETWEEN, function, ignoreNull, ignoreNullEnhance);
     }
 
 

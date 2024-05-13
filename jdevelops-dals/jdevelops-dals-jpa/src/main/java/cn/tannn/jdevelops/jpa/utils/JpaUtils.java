@@ -1,11 +1,18 @@
 package cn.tannn.jdevelops.jpa.utils;
 
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
+import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
+import cn.tannn.jdevelops.jpa.select.criteria.Restrictions;
+import cn.tannn.jdevelops.jpa.select.criteria.SimpleExpression;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.Date;
 
@@ -18,7 +25,7 @@ import java.util.Date;
  */
 public class JpaUtils {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(JpaUtils.class);
 
 
     /**
@@ -84,5 +91,99 @@ public class JpaUtils {
                 .function("date"
                         , Date.class
                         , root.get(selectKey));
+    }
+
+    /**
+     * @param operator   {@link SQLOperator}
+     * @param builder    {@link CriteriaBuilder}
+     * @param value      添加值
+     * @param expression 添加表达书
+     * @return
+     */
+    public static Predicate getPredicate(
+            SQLOperator operator
+            , CriteriaBuilder builder
+            , Expression expression
+            , Object... value
+    ) {
+        switch (operator) {
+            case EQ:
+                return builder.equal(expression, value[0]);
+            case NE:
+                return builder.notEqual(expression, value[0]);
+            case LIKE:
+                return builder.like(expression, "%" + value[0] + "%");
+            case NOTLIKE:
+                return builder.notLike(expression, "%" + value[0] + "%");
+            case LLIKE:
+                return builder.like(expression, "%" + value[0]);
+            case RLIKE:
+                return builder.like(expression, value + "%");
+            case LT:
+                return builder.lessThan(expression, (Comparable) value[0]);
+            case GT:
+                return builder.greaterThan(expression, (Comparable) value[0]);
+            case LTE:
+                return builder.lessThanOrEqualTo(expression, (Comparable) value[0]);
+            case GTE:
+                return builder.greaterThanOrEqualTo(expression, (Comparable) value[0]);
+            case ISNULL:
+                return builder.isNull(expression);
+            case ISNOTNULL:
+                return builder.isNotNull(expression);
+            case BETWEEN:
+                return builder.between(expression, value[0].toString(), value[1].toString());
+            case IN:
+                return builder.in(expression).value(value);
+            case NOTIN:
+                return builder.not(builder.in(expression).value(value));
+            default:
+                LOG.warn("占不支持的表达式: {}", operator);
+                return null;
+        }
+    }
+
+
+    /**
+     * 根据注解组装  jpa动态查询
+     *
+     * @param annotation JpaSelectOperator 注解
+     * @param fieldName  字段名
+     * @param fieldValue 字段值
+     * @return SimpleExpression
+     */
+    public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
+                                                           String fieldName,
+                                                           Object fieldValue) {
+        switch (annotation.operator()) {
+            case NE:
+                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case LIKE:
+                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case NOTLIKE:
+                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case LLIKE:
+                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case RLIKE:
+                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case LT:
+                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case GT:
+                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case LTE:
+                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case GTE:
+                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case ISNULL:
+                return Restrictions.isNull(fieldName, annotation.function());
+            case ISNOTNULL:
+                return Restrictions.isNotNull(fieldName, annotation.function());
+            case BETWEEN:
+                // 值以逗号隔开
+                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+            case EQ:
+            default:
+                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
+        }
     }
 }

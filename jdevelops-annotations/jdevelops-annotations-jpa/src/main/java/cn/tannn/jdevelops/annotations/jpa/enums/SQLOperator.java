@@ -32,7 +32,22 @@ public enum SQLOperator {
     ISNULL,
     /* 空值 */
     ISNOTNULL,
-
     /* [x,y] */
     BETWEEN,
+    /*包含*/
+    IN,
+    /*不包含*/
+    NOTIN,
+
+
+    // 这不是添加判断
+    /**
+     * 并且
+     */
+    AND,
+    /**
+     * 或者
+     */
+    OR
+
 }

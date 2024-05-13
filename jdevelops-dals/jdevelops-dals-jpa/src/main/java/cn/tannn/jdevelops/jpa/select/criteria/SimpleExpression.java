@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.jpa.select.criteria;
 
 
+import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 import cn.tannn.jdevelops.jpa.utils.JpaUtils;
@@ -28,12 +29,12 @@ public class SimpleExpression implements ExpandCriterion {
     /**
      * 计算符
      */
-    private Operator operator;
+    private SQLOperator operator;
 
 
     /**
      * 空值验证 <br/>
-     *
+     * <p>
      * true: 空值不作为查询参数 <br/>
      * false: 需要查询为空的数据
      */
@@ -52,10 +53,9 @@ public class SimpleExpression implements ExpandCriterion {
     private SpecBuilderDateFun function;
 
 
-
     public SimpleExpression(String fieldName,
                             Object value,
-                            Operator operator,
+                            SQLOperator operator,
                             SpecBuilderDateFun function,
                             Boolean ignoreNull,
                             Boolean ignoreNullEnhance) {
@@ -68,7 +68,7 @@ public class SimpleExpression implements ExpandCriterion {
     }
 
     public SimpleExpression(String fieldName,
-                            Operator operator,
+                            SQLOperator operator,
                             SpecBuilderDateFun function,
                             Boolean ignoreNull,
                             Boolean ignoreNullEnhance) {
@@ -90,48 +90,14 @@ public class SimpleExpression implements ExpandCriterion {
             return null;
         }
         // 构建查询
-        switch (operator) {
-            case EQ:
-                return builder.equal(expression, value);
-            case NE:
-                return builder.notEqual(expression, value);
-            case LIKE:
-                return builder.like(expression, "%" + value + "%");
-            case NOTLIKE:
-                return builder.notLike(expression, "%" + value + "%");
-            case LLIKE:
-                return builder.like(expression, "%" + value);
-            case RLIKE:
-                return builder.like(expression, value + "%");
-            case LT:
-                return builder.lessThan(expression, (Comparable) value);
-            case GT:
-                return builder.greaterThan(expression, (Comparable) value);
-            case LTE:
-                return builder.lessThanOrEqualTo(expression, (Comparable) value);
-            case GTE:
-                return builder.greaterThanOrEqualTo(expression, (Comparable) value);
-            case ISNULL:
-                return builder.isNull(expression);
-            case ISNOTNULL:
-                return builder.isNotNull(expression);
-            case BETWEEN:
-                String[] split = value.toString().split(",");
-                if (split.length == 2) {
-                    return builder.between(expression, split[0], split[1]);
-                } else {
-                    return null;
-                }
-            default:
-                return null;
-        }
+        return JpaUtils.getPredicate(operator, builder, expression, value);
     }
 
 
     /**
      * 字符串的key名转jpa要用的对象
      */
-    public Expression str2Path(Root<?> root, CriteriaBuilder builder) {
+    public Expression<?> str2Path(Root<?> root, CriteriaBuilder builder) {
         Path<?> path;
         if (null != function && !function.equals(SpecBuilderDateFun.NULL)) {
             return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
@@ -190,11 +156,11 @@ public class SimpleExpression implements ExpandCriterion {
         this.value = value;
     }
 
-    public Operator getOperator() {
+    public SQLOperator getOperator() {
         return operator;
     }
 
-    public void setOperator(Operator operator) {
+    public void setOperator(SQLOperator operator) {
         this.operator = operator;
     }
 
