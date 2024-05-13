@@ -16,6 +16,7 @@ import java.io.Serializable;
  *     @GenericGenerator(name = "uuidCustomGenerator", strategy = "cn.jdevelops.data.jap.generator.UuidCustomGenerator")
  *     @Column(columnDefinition="bigint")
  *     @Comment("uuid")
+ *     @JsonSerialize(using = ToStringSerializer.class)
  *     private Long id;
  * </code>
  *
