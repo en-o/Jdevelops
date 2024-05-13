@@ -11,6 +11,7 @@ import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import java.util.Collection;
 import java.util.List;
@@ -25,13 +26,14 @@ import java.util.Optional;
  */
 public interface J2Service<B> {
 
+    EntityManager getEntityManager();
     /**
      * 获取 dao
      *
-     * @param <M> dao
-     * @return dao
+     * @param <R> Repository
+     * @return Repository
      */
-    <ID, M extends JpaBasicsRepository<B, ID>> M getJpaBasicsDao();
+    <ID, R extends JpaBasicsRepository<B, ID>> R getJpaBasicsDao();
 
     // ============ add
 
