@@ -104,7 +104,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
             // root  参数表示查询的根对象,通常是要查询的实体类
             // query 参数表示当前的 CriteriaQuery 对象,用于构建查询
             // cb    参数是 CriteriaBuilder 对象,用于构建查询的各个部分,如 Predicate、Order 等
-            // 创建伪 CriteriaQuery 对象 ps: spec.toPredicate只认 CriteriaQuery不认CriteriaDelete
+            // 创建伪 CriteriaQuery 对象 ps: spec.toPredicate只认 CriteriaQuery不认CriteriaDelete（好像可以传null
             CriteriaQuery<B> query = builder.createQuery(domainClass);
             Predicate predicate = spec.toPredicate(from, query, builder);
             if (predicate != null) {
