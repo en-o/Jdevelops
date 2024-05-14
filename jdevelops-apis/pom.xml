@@ -66,6 +66,7 @@
         <!-- 其他 -->
         <swagger.v3.version>2.2.8</swagger.v3.version>
         <jackson.version>2.13.5</jackson.version>
+        <hutool.version>5.8.16</hutool.version>
         <!--监控-->
         <skywalking.version>9.2.0</skywalking.version>
         <tlog.version>1.5.2</tlog.version>
