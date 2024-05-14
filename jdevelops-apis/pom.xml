@@ -195,6 +195,7 @@
                     <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
                     <maxmemory>1024</maxmemory>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <docencoding>${project.build.sourceEncoding}</docencoding>
                     <charset>${project.build.sourceEncoding}</charset>
                     <docencoding>${project.build.sourceEncoding}</docencoding>
                     <show>protected</show>

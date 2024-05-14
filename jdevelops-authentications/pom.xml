@@ -196,6 +196,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <charset>${project.build.sourceEncoding}</charset>
                     <docencoding>${project.build.sourceEncoding}</docencoding>
+                    <docencoding>${project.build.sourceEncoding}</docencoding>
                     <show>protected</show>
                     <notree>true</notree>
                     <failOnError>false</failOnError>
