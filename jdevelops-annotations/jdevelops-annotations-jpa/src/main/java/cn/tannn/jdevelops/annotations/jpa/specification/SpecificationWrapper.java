@@ -29,7 +29,7 @@ public class SpecificationWrapper<B> {
 
 
     /**
-     * 连接对象  （or  and ...）
+     *  条件列表 （x = 'b' ）
      */
     private List<Predicate> predicates = new ArrayList<>();
 
@@ -40,6 +40,32 @@ public class SpecificationWrapper<B> {
         this.query = query;
         this.builder = builder;
     }
+
+    /**
+     *  构建一个 wrapper 同 EnhanceSpecification#where
+     *
+     * @param isConnect true用and(默认), fales用or
+     * @param operator  {@link SpecificationWrapper}
+     * @return SpecificationWrapper
+     */
+    public SpecificationWrapper<B> newWrapper(boolean isConnect, Consumer<SpecificationWrapper<B>> operator) {
+        if (operator == null) {
+            throw new IllegalArgumentException("Operator cannot be null");
+        }
+        SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
+        CriteriaBuilder newBuilder = specification.getBuilder();
+        // 根据isConnect参数选择创建conjunction（and）或disjunction（or）谓词
+        Predicate predicate = isConnect ? newBuilder.conjunction() : newBuilder.disjunction();
+        // 执行操作符提供的逻辑，用于构建查询条件 (operator 里面是处理过程，specification 是数据体
+        operator.accept(specification);
+        // 线程安全地将构建的谓词添加到predicates列表中
+        synchronized (predicates) {
+            predicate.getExpressions().addAll(specification.getPredicates());
+            predicates.add(predicate);
+        }
+        return this;
+    }
+
 
     /**
      * or
@@ -63,22 +89,7 @@ public class SpecificationWrapper<B> {
     }
 
 
-    /**
-     * 构建
-     *
-     * @param isConnect true用and(默认), fales用or
-     * @param operator  操作
-     * @return SpecificationWrapper
-     */
-    public SpecificationWrapper<B> newWrapper(boolean isConnect, Consumer<SpecificationWrapper<B>> operator) {
-        SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
-        CriteriaBuilder newBuilder = specification.getBuilder();
-        Predicate predicate = isConnect ? newBuilder.conjunction() : newBuilder.disjunction();
-        operator.accept(specification);
-        predicate.getExpressions().addAll(specification.getPredicates());
-        predicates.add(predicate);
-        return this;
-    }
+
 
     // ================================== 查询空值 ==================================
 

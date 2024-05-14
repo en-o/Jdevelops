@@ -5,7 +5,7 @@ import javax.persistence.criteria.Expression;
 
 
 /**
- * 查询查找包装
+ * 查询条件组装 specWrapper(selectKey, selectValue)
  * @author tan
  * @date 2023-03-24 10:59:17
  */

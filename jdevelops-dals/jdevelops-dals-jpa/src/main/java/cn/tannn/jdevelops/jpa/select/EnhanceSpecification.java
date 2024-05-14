@@ -2,13 +2,17 @@ package cn.tannn.jdevelops.jpa.select;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
+import cn.tannn.jdevelops.annotations.jpa.enums.SQLConnect;
 import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.annotations.jpa.specification.OperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.specification.SpecificationWrapper;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 import cn.tannn.jdevelops.jpa.utils.JpaUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -25,7 +29,32 @@ import java.util.function.Consumer;
  * @date 2023-03-24 10:59:17
  */
 public class EnhanceSpecification {
-    private static final String SEPARATOR = ".";
+    private static final Logger LOG = LoggerFactory.getLogger(EnhanceSpecification.class);
+
+    /**
+     * 自定义查询 (主方法）
+     *
+     * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
+     * @param action    Query code
+     * @param <B>       查询对象
+     * @return Specification
+     */
+    public static <B> Specification<B> where(boolean isConnect, Consumer<SpecificationWrapper<B>> action) {
+        return (Root<B> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+            SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
+            try {
+                action.accept(specification);
+            } catch (Exception e) {
+                LOG.error("Error occurred while building query specification: ", e);
+                // 根据需求行为，这里可以选择抛出运行时异常或者返回始终为真的Predicate
+                throw new RuntimeException("Error building query specification", e);
+            }
+            action.accept(specification);
+            List<Predicate> predicates = specification.getPredicates();
+            Predicate[] arr = predicates.toArray(new Predicate[0]);
+            return isConnect ? builder.and(arr) : builder.or(arr);
+        };
+    }
 
     /**
      * 自定义查询
@@ -39,23 +68,6 @@ public class EnhanceSpecification {
         return where(true, action);
     }
 
-    /**
-     * 自定义查询
-     *
-     * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
-     * @param action    Query code
-     * @param <B>       查询对象
-     * @return Specification
-     */
-    public static <B> Specification<B> where(boolean isConnect, Consumer<SpecificationWrapper<B>> action) {
-        return (Root<B> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
-            SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
-            action.accept(specification);
-            List<Predicate> predicates = specification.getPredicates();
-            Predicate[] arr = predicates.toArray(new Predicate[predicates.size()]);
-            return isConnect ? builder.and(arr) : builder.or(arr);
-        };
-    }
 
     /**
      * 根据实体自动组装
@@ -90,14 +102,25 @@ public class EnhanceSpecification {
      *
      * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
      * @param bean      构造的查询对象
-     * @param action    除了bean还能自定义操作
+     * @param operator  除了bean还能自定义操作
      * @param <R>       返回对象
      * @param <B>       查询对象
      * @return Specification
      */
-    public static <R, B> Specification<R> beanWhere(boolean isConnect, B bean, Consumer<SpecificationWrapper<R>> action) {
+    public static <R, B> Specification<R> beanWhere(boolean isConnect, B bean, Consumer<SpecificationWrapper<R>> operator) {
         Field[] fields = ReflectUtil.getFields(bean.getClass());
-        return where(isConnect, e -> {
+        return where(isConnect, specification -> {
+            /*
+             * 从注解里得到 SpecificationWrapper 并组装数据
+             * 这里类似 组装
+             * <code>
+                  specification.and(e2 -> {
+                            e2.eq(true,"phone", "123");
+                            e2.likes(true,"address", "重");
+                        }
+                );
+             * <code>
+             */
             for (int i = 0, fieldsLength = fields.length; i < fieldsLength; i++) {
                 Field field = fields[i];
                 // 字段名
@@ -112,69 +135,62 @@ public class EnhanceSpecification {
                 if (IObjects.nonNull(ignoreField)) {
                     continue;
                 }
-                // 获取组装条件
+                // 或者字段注解 - 标记计算表达式，标记空值处理
                 JpaSelectOperator wrapperOperator = field.getAnnotation(JpaSelectOperator.class);
+                JpaSelectNullField valueNull = field.getAnnotation(JpaSelectNullField.class);
 
                 if (IObjects.nonNull(wrapperOperator)) {
+                    // =========== 空值处理
+                    if (IObjects.isNull(valueNull)) {
+                        valueNull = wrapperOperator.nullField();
+                    }
                     // 需要判空，然后空值就不查了
-                    if (Boolean.TRUE.equals(wrapperOperator.ignoreNull())
-                            && IObjects.isNull(fieldValue, wrapperOperator.ignoreNullEnhance())) {
+                    if (Boolean.TRUE.equals(valueNull.ignoreNull())
+                            && IObjects.isNull(fieldValue, valueNull.ignoreNullEnhance())) {
                         continue;
                     }
-//                    wrapperOperator.connect().equals(SQLConnect.AND)
-                    // 默认 eq，且空值也查询
-                    SQLOperatorWrapper operator = IObjects.nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
+
+
+                    // =========== 得到注解标注的 SQLOperatorWrapper ， 里面有 SpecificationWrapper
+                    SQLOperatorWrapper operatorBean = IObjects
+                            .nonNull(wrapperOperator) ? wrapperOperator.operatorWrapper() : SQLOperatorWrapper.EQ;
+
                     // 如果 值等于 list 则 使用 In 操作
                     if (fieldValue instanceof Collection) {
-                        operator = SQLOperatorWrapper.IN;
+                        operatorBean = SQLOperatorWrapper.IN;
                     }
                     // 使用自定义的名字
                     if (!IObjects.isBlank(wrapperOperator.fieldName())) {
                         fieldName = wrapperOperator.fieldName();
                     }
-                    OperatorWrapper operatorWrapper = new OperatorWrapper(e, str2Path(e.getRoot()
-                            ,e.getBuilder()
-                            ,wrapperOperator.function()
-                            ,fieldName
+                    // =========== 构造 注解里的 OperatorWrapper 详细参数数据， key , value
+                    OperatorWrapper operatorWrapper = new OperatorWrapper(specification, JpaUtils.str2Path(specification.getRoot()
+                            , specification.getBuilder()
+                            , wrapperOperator.function()
+                            , fieldName
                     ), fieldValue);
 
-                    operator.consumer().accept(operatorWrapper);
+                    // 将完整的参数体  operatorWrapper 传入  SQLOperatorWrapper
+                    // 并根据 SQLOperatorWrapper.xx().name() 构造  SpecificationWrapper
+                    // SpecificationWrapper的构建过程方法在枚举参数里完成的
+                    operatorBean.consumer().accept(operatorWrapper, wrapperOperator.connect().equals(SQLConnect.AND));
                 } else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
                     // 构造 OperatorWrapper // 空值就不查了
                     if (IObjects.nonNull(fieldValue)) {
-                        OperatorWrapper wrapper = new OperatorWrapper(e, str2Path(e.getRoot()
-                                ,e.getBuilder()
+                        OperatorWrapper wrapper = new OperatorWrapper(specification, JpaUtils.str2Path(specification.getRoot()
+                                , specification.getBuilder()
                                 , SpecBuilderDateFun.NULL
-                                ,fieldName
+                                , fieldName
                         ), fieldValue);
-                        SQLOperatorWrapper.EQ.consumer().accept(wrapper);
+                        SQLOperatorWrapper.EQ.consumer().accept(wrapper, true);
                     }
                 }
             }
-            action.accept(e);
+            // 执行自定义的操作,得到过程和结果与上面的for差不多(operator 里面是处理过程，specification 是数据体）
+            operator.accept(specification);
         });
     }
 
-
-    /**
-     * 字符串的key名转jpa要用的对象
-     */
-    private static Expression str2Path(Root<?> root, CriteriaBuilder builder,SpecBuilderDateFun function, String fieldName) {
-        Path<?> path;
-        if (null != function && !function.equals(SpecBuilderDateFun.NULL)) {
-            return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
-        }
-        if (fieldName.contains(SEPARATOR)) {
-            String[] names = fieldName.split("\\" + SEPARATOR);
-            path = root.get(names[0]);
-            for (int i = 1; i < names.length; i++) {
-                path = path.get(names[i]);
-            }
-        } else {
-            path = root.get(fieldName);
-        }
-        return path;
-    }
 
 }

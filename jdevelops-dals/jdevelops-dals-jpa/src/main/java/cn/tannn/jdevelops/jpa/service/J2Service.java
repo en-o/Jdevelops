@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.jpa.service;
 
 
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
-import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
+import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import cn.tannn.jdevelops.jpa.request.PagingSorteds;
 import cn.tannn.jdevelops.jpa.request.Pagings;

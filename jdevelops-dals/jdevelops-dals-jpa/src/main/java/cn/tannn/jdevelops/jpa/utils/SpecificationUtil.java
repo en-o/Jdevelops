@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.jpa.utils;
 
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
@@ -603,7 +604,6 @@ public final class SpecificationUtil<T> {
         return spec;
     }
 
-
     /**
      * 根据注解组装  jpa动态查询
      *
@@ -615,35 +615,37 @@ public final class SpecificationUtil<T> {
     public Specification<T> specification(JpaSelectOperator annotation,
                                           String fieldName,
                                           Object fieldValue) {
-        switch (annotation.operator()) {
+        JpaSelectNullField jpaSelectNullField = annotation.nullField();
+        boolean ignoreNull = jpaSelectNullField.ignoreNull();
+        boolean ignoreNullEnhance = jpaSelectNullField.ignoreNullEnhance();
+        switch (annotation.operatorWrapper()) {
             case NE:
-                return notEq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return notEq(fieldName, fieldValue, ignoreNull, ignoreNullEnhance);
             case LIKE:
-                return like(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return like(fieldName, String.valueOf(fieldValue), ignoreNull, ignoreNullEnhance);
             case NOTLIKE:
-                return notLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return notLike(fieldName, String.valueOf(fieldValue), ignoreNull, ignoreNullEnhance);
             case LLIKE:
-                return lLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return lLike(fieldName, String.valueOf(fieldValue), ignoreNull, ignoreNullEnhance);
             case RLIKE:
-                return rLike(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return rLike(fieldName, String.valueOf(fieldValue), ignoreNull, ignoreNullEnhance);
             case LT:
-                return lt(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return lt(fieldName, (Integer) fieldValue, ignoreNull, ignoreNullEnhance);
             case GT:
-                return gt(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return gt(fieldName, (Integer) fieldValue, ignoreNull, ignoreNullEnhance);
             case LTE:
-                return le(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return le(fieldName, (Integer) fieldValue, ignoreNull, ignoreNullEnhance);
             case GTE:
-                return ge(fieldName, (Integer) fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return ge(fieldName, (Integer) fieldValue, ignoreNull, ignoreNullEnhance);
             case BETWEEN:
-                return between(fieldName, String.valueOf(fieldValue), annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return between(fieldName, String.valueOf(fieldValue), ignoreNull, ignoreNullEnhance);
             case ISNULL:
                 return isNull(fieldName);
             case ISNOTNULL:
                 return isNotNull(fieldName);
             case EQ:
             default:
-                return eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance());
+                return eq(fieldName, fieldValue, ignoreNull, ignoreNullEnhance);
         }
     }
-
 }

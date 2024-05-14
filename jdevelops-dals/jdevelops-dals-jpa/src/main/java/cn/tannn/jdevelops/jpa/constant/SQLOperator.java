@@ -1,7 +1,7 @@
-package cn.tannn.jdevelops.annotations.jpa.enums;
+package cn.tannn.jdevelops.jpa.constant;
 
 /**
- * 关系运输符
+ * 关系运算符
  *
  * @author tn
  * @date 2021-12-08 16:53
@@ -38,16 +38,4 @@ public enum SQLOperator {
     IN,
     /*不包含*/
     NOTIN,
-
-
-    // 这不是添加判断
-    /**
-     * 并且
-     */
-    AND,
-    /**
-     * 或者
-     */
-    OR
-
 }

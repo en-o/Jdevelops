@@ -1,19 +1,13 @@
 package cn.tannn.jdevelops.jpa.utils;
 
-import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
-import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
-import cn.tannn.jdevelops.jpa.select.criteria.Restrictions;
-import cn.tannn.jdevelops.jpa.select.criteria.SimpleExpression;
+import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.Date;
 
 /**
@@ -26,7 +20,7 @@ import java.util.Date;
 public class JpaUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(JpaUtils.class);
-
+    private static final String SEPARATOR = ".";
 
     /**
      * 处理时间格式的key
@@ -93,12 +87,51 @@ public class JpaUtils {
                         , root.get(selectKey));
     }
 
+
+    /**
+     * 字符串的key名转jpa要用的对象
+     * @param root {@link Root}
+     * @param fieldName 字段名,可以处理 `address.name` 这种key
+     * @return Expression
+     */
+    public static Expression str2Path(Root<?> root
+            , String fieldName) {
+        Path<?> path;
+
+        if (fieldName.contains(SEPARATOR)) {
+            String[] names = fieldName.split("\\" + SEPARATOR);
+            path = root.get(names[0]);
+            for (int i = 1; i < names.length; i++) {
+                path = path.get(names[i]);
+            }
+        } else {
+            path = root.get(fieldName);
+        }
+        return path;
+    }
+
+    /**
+     * 字符串的key名转jpa要用的对象
+     * @param root {@link Root}
+     * @param builder {@link CriteriaBuilder}}
+     * @param function {@link SpecBuilderDateFun}}
+     * @param fieldName 字段名,可以处理 `address.name` 这种key
+     * @return Expression
+     */
+    public static Expression str2Path(Root<?> root, CriteriaBuilder builder,SpecBuilderDateFun function, String fieldName) {
+        if (null != function && !function.equals(SpecBuilderDateFun.NULL)) {
+            return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
+        }
+        return str2Path(root,fieldName);
+    }
+
+
     /**
      * @param operator   {@link SQLOperator}
      * @param builder    {@link CriteriaBuilder}
      * @param value      添加值
-     * @param expression 添加表达书
-     * @return
+     * @param expression 添加表达书 {@link Path#get(String)}
+     * @return Predicate
      */
     public static Predicate getPredicate(
             SQLOperator operator
@@ -143,47 +176,4 @@ public class JpaUtils {
         }
     }
 
-
-    /**
-     * 根据注解组装  jpa动态查询
-     *
-     * @param annotation JpaSelectOperator 注解
-     * @param fieldName  字段名
-     * @param fieldValue 字段值
-     * @return SimpleExpression
-     */
-    public static SimpleExpression jpaSelectOperatorSwitch(JpaSelectOperator annotation,
-                                                           String fieldName,
-                                                           Object fieldValue) {
-        switch (annotation.operator()) {
-            case NE:
-                return Restrictions.ne(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case LIKE:
-                return Restrictions.like(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case NOTLIKE:
-                return Restrictions.notLike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case LLIKE:
-                return Restrictions.llike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case RLIKE:
-                return Restrictions.rlike(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case LT:
-                return Restrictions.lt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case GT:
-                return Restrictions.gt(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case LTE:
-                return Restrictions.lte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case GTE:
-                return Restrictions.gte(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case ISNULL:
-                return Restrictions.isNull(fieldName, annotation.function());
-            case ISNOTNULL:
-                return Restrictions.isNotNull(fieldName, annotation.function());
-            case BETWEEN:
-                // 值以逗号隔开
-                return Restrictions.between(fieldName, fieldValue.toString().trim(), annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-            case EQ:
-            default:
-                return Restrictions.eq(fieldName, fieldValue, annotation.ignoreNull(), annotation.ignoreNullEnhance(), annotation.function());
-        }
-    }
 }

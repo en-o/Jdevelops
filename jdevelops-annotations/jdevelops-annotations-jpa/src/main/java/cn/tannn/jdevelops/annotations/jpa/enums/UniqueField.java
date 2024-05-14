@@ -9,7 +9,7 @@ package cn.tannn.jdevelops.annotations.jpa.enums;
  * @date 2021/1/27 0:09
  */
 
-public enum FieldName {
+public enum UniqueField {
     /**
      * id字段
      */
@@ -45,7 +45,7 @@ public enum FieldName {
         return aClass;
     }
 
-    FieldName(String fieldName, String fieldNameRemark, Class aClass) {
+    UniqueField(String fieldName, String fieldNameRemark, Class aClass) {
         this.fieldName = fieldName;
         this.fieldNameRemark = fieldNameRemark;
         this.aClass = aClass;
