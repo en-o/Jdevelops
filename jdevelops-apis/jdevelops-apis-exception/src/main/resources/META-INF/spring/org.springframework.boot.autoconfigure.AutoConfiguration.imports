@@ -1,2 +1,1 @@
-cn.tannn.jdevelops.exception.ControllerExceptionHandler
-cn.tannn.jdevelops.exception.config.ExceptionConfig
+cn.tannn.jdevelops.exception.imports.ExceptionConfiguration
