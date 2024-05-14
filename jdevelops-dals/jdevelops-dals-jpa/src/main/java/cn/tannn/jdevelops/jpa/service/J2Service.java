@@ -219,14 +219,14 @@ public interface J2Service<B> {
     /**
      * 分页-排序
      * @param pageable 分页{@link Pagings}
-     * @return Page of B
+     * @return Page of B 如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
     Page<B> findPage(Pagings pageable);
 
     /**
      * 分页-排序
      * @param pageable 分页{@link PagingSorteds}
-     * @return Page of B
+     * @return Page of B 如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
     Page<B> findPage(PagingSorteds pageable);
 
