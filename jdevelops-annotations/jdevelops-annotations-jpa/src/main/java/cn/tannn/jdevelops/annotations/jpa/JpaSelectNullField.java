@@ -1,10 +1,6 @@
 package cn.tannn.jdevelops.annotations.jpa;
 
 
-import cn.tannn.jdevelops.annotations.jpa.enums.SQLConnect;
-import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperatorWrapper;
-import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
-
 import java.lang.annotation.*;
 
 /**

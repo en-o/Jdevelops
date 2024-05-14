@@ -4,7 +4,6 @@ package cn.tannn.jdevelops.annotations.jpa.enums;
 import cn.tannn.jdevelops.annotations.jpa.specification.OperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.specification.SpecificationWrapper;
 
-import java.util.Collection;
 import java.util.function.BiConsumer;
 
 /**
