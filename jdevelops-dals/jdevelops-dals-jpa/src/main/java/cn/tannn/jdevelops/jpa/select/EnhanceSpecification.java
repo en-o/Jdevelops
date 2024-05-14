@@ -180,7 +180,14 @@ public class EnhanceSpecification {
                 } else {
                     // 没加查询注解的且没有被忽略的，默认设添加为 and  eq 查询条件 ， 且为空值就不查了
                     // 构造 OperatorWrapper // 空值就不查了
-                    if (IObjects.nonNull(fieldValue)) {
+
+                    // =========== 空值处理
+                    if (IObjects.nonNull(valueNull) && Boolean.TRUE.equals(valueNull.ignoreNull())
+                            && IObjects.isNull(fieldValue, valueNull.ignoreNullEnhance())) {
+                        // 需要判空，然后空值就不查了
+                        continue;
+                    }
+                    if (fieldValue != null) {
                         OperatorWrapper wrapper = new OperatorWrapper(specification, JpaUtils.str2Path(specification.getRoot()
                                 , specification.getBuilder()
                                 , SpecBuilderDateFun.NULL
@@ -188,6 +195,7 @@ public class EnhanceSpecification {
                         ), fieldValue);
                         SQLOperatorWrapper.EQ.consumer().accept(wrapper, true);
                     }
+
                 }
             }
             // 执行自定义的操作,得到过程和结果与上面的for差不多(operator 里面是处理过程，specification 是数据体）

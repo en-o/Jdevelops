@@ -94,8 +94,8 @@ public interface J2Service<B> {
      * 删除(单条件多值)
      *
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
-     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
-     * @param value     删除的条件
+     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
+     * @param value     删除的条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return int (>0删除成功且为删除了多少条)
      */
     int delete(String fieldName, SQLOperator operator, Object... value);
@@ -112,20 +112,13 @@ public interface J2Service<B> {
     // ============ update
 
     /**
-     * 更新数据 返回实体
-     *
-     * @param bean     实体,VO [@Id标注字段一定要有值，如果时vo的要一定要有实体里{@link Id}标注的字段]
-     * @param operator 判断表达式 （ 等于，小于，模糊 ...
-     * @return Boolean
-     */
-    <T> Boolean update(T bean, SQLOperator operator);
-
-    /**
-     * 更新数据 返回实体
-     *
-     * @param bean      实体,VO,DTO
+     * 根据主键更新数据 返回实体
+     * <ps> uniqueKey 后面可能会封装成注解 </ps>
+     * @param bean      实体,VO,DTO 可以结合{@link cn.tannn.jdevelops.annotations.jpa.JpaUpdate}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
-     * @param uniqueKey 指定 bean 用作更新的条件字段名（实体里的字段
+     * @param uniqueKey 指定 bean 用作更新的条件字段名[实体里的字段]
+     *                  <p> 1. 为空的话 @Id标注字段一定要有值，如果时vo的要一定要有实体里{@link Id}标注的字段
+     *                  <p> 2.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return Boolean
      */
     <T> Boolean update(T bean, SQLOperator operator, String... uniqueKey);
@@ -175,7 +168,7 @@ public interface J2Service<B> {
      *
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
-     * @param value     查询条件
+     * @param value     查询条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return list of B （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
      */
     List<B> finds(String fieldName, SQLOperator operator, Object... value);
@@ -187,7 +180,7 @@ public interface J2Service<B> {
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
      * @param sort 排序 {@link Sorteds}
-     * @param value     查询条件
+     * @param value     查询条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return list of B （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
      */
     List<B> finds(String fieldName, SQLOperator operator, Sorteds sort, Object... value);
