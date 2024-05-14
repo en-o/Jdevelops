@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -93,6 +94,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(Specification<B> spec) {
         if (spec != null) {
             CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -119,6 +121,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int delete(String fieldName, SQLOperator operator, Object... value) {
         // 时间处理： JpaUtils.functionTimeFormat(function, root, builder, fieldName)
         CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
