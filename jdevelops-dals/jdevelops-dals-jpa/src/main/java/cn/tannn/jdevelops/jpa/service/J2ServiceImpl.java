@@ -146,6 +146,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public <T> Boolean update(T bean, SQLOperator operator, String... uniqueKey) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
