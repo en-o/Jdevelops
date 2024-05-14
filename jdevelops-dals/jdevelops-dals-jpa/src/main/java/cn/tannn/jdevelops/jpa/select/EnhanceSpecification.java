@@ -52,7 +52,6 @@ public class EnhanceSpecification {
                 // 根据需求行为，这里可以选择抛出运行时异常或者返回始终为真的Predicate
                 throw new RuntimeException("Error building query specification", e);
             }
-            action.accept(specification);
             List<Predicate> predicates = specification.getPredicates();
             Predicate[] arr = predicates.toArray(new Predicate[0]);
             return isConnect ? builder.and(arr) : builder.or(arr);
