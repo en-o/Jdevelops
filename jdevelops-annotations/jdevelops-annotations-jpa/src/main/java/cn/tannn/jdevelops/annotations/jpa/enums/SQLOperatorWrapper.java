@@ -37,39 +37,48 @@ public enum SQLOperatorWrapper {
     /*  模糊 必须 string */
     LIKE((e, isConnect) -> {
         SpecificationWrapper<?> specWrapper = e.getSpecWrapper();
+        Object selectValue = e.getSelectValue();
+        String value = selectValue == null ? "" : selectValue.toString();
         if (isConnect != null && !isConnect) {
-            specWrapper.or(or -> or.likes(e.getSelectKey(), (String) e.getSelectValue()));
+            specWrapper.or(or -> or.likes(e.getSelectKey(), value));
         } else {
-            specWrapper.likes(e.getSelectKey(), (String) e.getSelectValue());
+            specWrapper.likes(e.getSelectKey(), value);
         }
     }),
 
     /* 不包含(not like) 必须 string */
     NOTLIKE((e, isConnect) -> {
         SpecificationWrapper<?> specWrapper = e.getSpecWrapper();
+        Object selectValue = e.getSelectValue();
+        String value = selectValue == null ? "" : selectValue.toString();
         if (isConnect != null && !isConnect) {
-            specWrapper.or(or -> or.nlike(e.getSelectKey(), (String) e.getSelectValue()));
+            specWrapper.or(or -> or.nlike(e.getSelectKey(), value));
         } else {
-            specWrapper.nlike(e.getSelectKey(), (String) e.getSelectValue());
+            specWrapper.nlike(e.getSelectKey(), value
+            );
         }
 
     }),
     /* 左模糊(%value) 必须 string  */
     LLIKE((e, isConnect) -> {
         SpecificationWrapper<?> specWrapper = e.getSpecWrapper();
+        Object selectValue = e.getSelectValue();
+        String value = selectValue == null ? "" : selectValue.toString();
         if (isConnect != null && !isConnect) {
-            specWrapper.or(or -> or.llike(e.getSelectKey(), (String) e.getSelectValue()));
+            specWrapper.or(or -> or.llike(e.getSelectKey(), value));
         } else {
-            specWrapper.llike(e.getSelectKey(), (String) e.getSelectValue());
+            specWrapper.llike(e.getSelectKey(), value);
         }
     }),
     /* 右模糊(value%) 必须 string  */
     RLIKE((e, isConnect) -> {
         SpecificationWrapper<?> specWrapper = e.getSpecWrapper();
+        Object selectValue = e.getSelectValue();
+        String value = selectValue == null ? "" : selectValue.toString();
         if (isConnect != null && !isConnect) {
-            specWrapper.or(or -> or.rlike(e.getSelectKey(), (String) e.getSelectValue()));
+            specWrapper.or(or -> or.rlike(e.getSelectKey(), value));
         } else {
-            specWrapper.rlike(e.getSelectKey(), (String) e.getSelectValue());
+            specWrapper.rlike(e.getSelectKey(), value);
         }
     }),
     /* 大于 */
