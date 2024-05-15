@@ -4,7 +4,7 @@ package cn.tannn.jdevelops.annotations.jpa;
 import java.lang.annotation.*;
 
 /**
- * 使用 JpaUtils.getSelectBean（2） 时忽略一些不需要的字段
+ *  查询忽略一些不需要的字段 （配合 EnhanceSpecification 使用）
  *
  * @author tn
  * @version 1

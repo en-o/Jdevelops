@@ -4,7 +4,7 @@ package cn.tannn.jdevelops.annotations.jpa;
 import java.lang.annotation.*;
 
 /**
- * jpa查询条件
+ * jpa查询条件 （配合 EnhanceSpecification 使用）
  *
  * @author tn
  * @version 1
