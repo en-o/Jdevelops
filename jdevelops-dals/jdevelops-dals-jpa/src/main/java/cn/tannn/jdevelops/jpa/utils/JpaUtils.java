@@ -310,7 +310,8 @@ public class JpaUtils {
             } else if (result.getOperator() == Predicate.BooleanOperator.OR && current.getOperator() == Predicate.BooleanOperator.OR) {
                 result = criteriaBuilder.or(result, current);
             } else {
-                throw new UnsupportedOperationException("Unsupported combination of predicates with different operators");
+                // 默认and
+                result = criteriaBuilder.and(result, current);
             }
         }
         return result;
