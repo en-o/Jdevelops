@@ -34,7 +34,8 @@ public interface J2Service<B> {
     /**
      * EntityManager
      * <p> <a href="https://developer.aliyun.com/article/1157551#slide-2">说明教程</a>
-     * <p> <a href="https://www.yuque.com/tanning/mbquef/wu997plag7h9hmhy?singleDoc# 《常规》">常规教程</a>
+     * <p> <a href="https://developer.aliyun.com/article/885236">EntityManager常用API</a>
+     * <p> <a href="https://www.yuque.com/tanning/mbquef/wu997plag7h9hmhy">entityManager.getCriteriaBuilder</a>
      * @return EntityManager
      */
     EntityManager getEntityManager();
