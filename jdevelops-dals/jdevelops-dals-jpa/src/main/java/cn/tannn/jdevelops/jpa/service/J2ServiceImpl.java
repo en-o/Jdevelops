@@ -1,7 +1,5 @@
 package cn.tannn.jdevelops.jpa.service;
 
-import cn.hutool.core.util.ReflectUtil;
-import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.exception.JpaException;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
@@ -22,12 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 
 /**
