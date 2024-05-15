@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 
 /**
- * 内置更新用的注解，自定义更新也可用得到
+ * j2service中update用的注解
  * @author tan
  */
 @Target(ElementType.FIELD)
