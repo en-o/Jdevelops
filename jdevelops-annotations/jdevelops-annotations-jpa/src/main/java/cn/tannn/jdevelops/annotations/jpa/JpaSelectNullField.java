@@ -25,7 +25,7 @@ public @interface JpaSelectNullField {
     boolean ignoreNull() default true;
 
     /**
-     * ignoreNull = true 有效  <br/>
+     * ignoreNull = true（项目需要我这里是true,一般建议置为false） 有效  <br/>
      * true: 不允许为 [null,""," "]  <br/>
      * false: 不允许为 null
      */
