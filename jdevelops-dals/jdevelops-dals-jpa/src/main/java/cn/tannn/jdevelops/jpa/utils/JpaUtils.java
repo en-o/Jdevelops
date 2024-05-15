@@ -167,9 +167,9 @@ public class JpaUtils {
             case BETWEEN:
                 return builder.between(expression, value[0].toString(), value[1].toString());
             case IN:
-                return builder.in(expression).value(value);
+                return expression.in(value);
             case NOTIN:
-                return builder.not(builder.in(expression).value(value));
+                return builder.not(expression.in(value));
             default:
                 LOG.warn("占不支持的表达式: {}", operator);
                 return null;
