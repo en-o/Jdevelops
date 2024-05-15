@@ -20,7 +20,7 @@ import java.lang.annotation.*;
 public @interface JpaSelectOperator {
 
     /**
-     * sql 运算符 (Specifications方法用)
+     * sql 运算符
      * <pre>
      *  根据注解内容进行条件拼接，例如： 用的EQ 则： where 字段 = 值
      * </pre>
