@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.jpa.utils;
 
+import cn.hutool.core.util.ReflectUtil;
+import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
@@ -7,8 +9,16 @@ import cn.tannn.jdevelops.result.bean.ColumnUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Jpa项目里的工具类
@@ -174,6 +184,108 @@ public class JpaUtils {
                 LOG.warn("占不支持的表达式: {}", operator);
                 return null;
         }
+    }
+
+    /**
+     * 更新数据
+     * <p> 此方法不会用到 jpa的审计功能 </p>
+     *
+     * @param updateBean 需要更新的数据集
+     * @param entityManager {@link EntityManager}
+     * @param domainClass  entity的真实对象
+     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
+     *                  <p> 1.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
+     * @param uniqueKey 指定 bean 用作更新的条件字段名[实体里的字段]
+     *                  <p> 2. 为空的话
+     *                  <p> 2.1 首先判断 bean里是个否标注了{@link JpaUpdate#unique()},标注了就使用他做条件
+     *                  <p> 2.2 其次如何自定义的注解为标注那就回去拿实体的 {@link Id} 标注的字段名
+     *
+     * @return int 0:表示没有更新
+     * @param <T> updateBean
+     * @param <B> domainClass
+     */
+
+    public static  <T,B> int updateBean(T updateBean
+            ,  EntityManager entityManager
+            , Class<B> domainClass
+            , SQLOperator operator
+            , String... uniqueKey) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(domainClass);
+        Root<B> updateRoot = update.from(domainClass);
+
+        AtomicReference<String> jpaUpdateUnique = new AtomicReference<>();
+        // 获取字段
+        Field[] fields = ReflectUtil.getFields(updateBean.getClass(), field -> {
+            // 忽略字段
+            if ("serialVersionUID".equalsIgnoreCase(field.getName())) {
+                return false;
+            }
+            JpaUpdate ignoreField = field.getAnnotation(JpaUpdate.class);
+            if(ignoreField == null){
+                return true;
+            }
+            if(ignoreField.unique()){
+                jpaUpdateUnique.set(field.getName());
+            }
+            return !ignoreField.ignore();
+        });
+
+        // 获取主键名
+        Metamodel metamodel = entityManager.getMetamodel();
+        EntityType<B> entityType = metamodel.entity(domainClass);
+
+        Predicate where;
+        // 忽略查询字段
+        String ignoreField;
+        if (uniqueKey == null || uniqueKey.length == 0) {
+            if(!jpaUpdateUnique.get().isEmpty()){
+                ignoreField = jpaUpdateUnique.get();
+            }else {
+                SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
+                ignoreField = id.getName();
+            }
+            // 根据主键更新
+            where = criteriaBuilder.equal(updateRoot.get(ignoreField)
+                    , ReflectUtil.getFieldValue(updateBean, ignoreField));
+        } else {
+            // 根据传入的唯一key键
+            ignoreField = uniqueKey[0];
+            where = JpaUtils.getPredicate(operator
+                    , criteriaBuilder
+                    , updateRoot.get(ignoreField)
+                    , ReflectUtil.getFieldValue(updateBean, ignoreField));
+        }
+
+        // 更新字段
+        for (Field field : fields) {
+            // 字段名
+            String fieldName = field.getName();
+            if (ignoreField.equalsIgnoreCase(fieldName)) {
+                continue;
+            }
+            // 字段值
+            Object fieldValue = ReflectUtil.getFieldValue(updateBean, field);
+
+            JpaUpdate jpaUpdate = field.getAnnotation(JpaUpdate.class);
+
+            if (null != jpaUpdate && jpaUpdate.autoTime() && field.getType().equals(LocalDateTime.class)) {
+                // 强制更新时间
+                update.set(updateRoot.get(fieldName), LocalDateTime.now());
+            } else {
+                if (fieldValue != null) {
+                    // 设置更新值
+                    update.set(updateRoot.get(fieldName), fieldValue);
+                }
+            }
+        }
+        if (where == null) {
+            return 0;
+        }
+        // 应用更新的条件
+        update.where(where);
+        // 执行更新
+        return entityManager.createQuery(update).executeUpdate();
     }
 
 }

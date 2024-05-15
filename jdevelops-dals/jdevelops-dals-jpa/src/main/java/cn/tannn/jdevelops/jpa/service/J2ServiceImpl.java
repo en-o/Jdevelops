@@ -147,73 +147,9 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public <T> Boolean update(T bean, SQLOperator operator, String... uniqueKey) {
-
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<B> update = criteriaBuilder.createCriteriaUpdate(domainClass);
-        Root<B> updateRoot = update.from(domainClass);
-
-        // 获取字段
-        Field[] fields = ReflectUtil.getFields(bean.getClass(), (field) -> {
-            // 忽略字段
-            if ("serialVersionUID".equals(field.getName())) {
-                return false;
-            }
-            JpaUpdate ignoreField = field.getAnnotation(JpaUpdate.class);
-            return ignoreField == null || !ignoreField.ignore();
-        });
-
-        // 获取主键名
-        Metamodel metamodel = entityManager.getMetamodel();
-        EntityType<B> entityType = metamodel.entity(domainClass);
-        SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
-        Predicate where = null;
-        // 忽略查询字段
-        String ignoreField;
-        if (uniqueKey == null || uniqueKey.length == 0) {
-            ignoreField = id.getName();
-            // 根据主键更新
-            where = criteriaBuilder.equal(updateRoot.get(id.getName())
-                    , ReflectUtil.getFieldValue(bean, id.getName()));
-        } else {
-            // 根据传入的唯一key键
-            ignoreField = uniqueKey[0];
-            where = JpaUtils.getPredicate(operator
-                    , criteriaBuilder
-                    , updateRoot.get(ignoreField)
-                    , ReflectUtil.getFieldValue(bean, ignoreField));
-        }
-
-        // 更新字段
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            // 字段名
-            String fieldName = field.getName();
-            if (ignoreField.equalsIgnoreCase(fieldName)) {
-                continue;
-            }
-            // 字段值
-            Object fieldValue = ReflectUtil.getFieldValue(bean, field);
-
-            JpaUpdate jpaUpdate = field.getAnnotation(JpaUpdate.class);
-
-            if (null != jpaUpdate && jpaUpdate.autoTime() && field.getType().equals(LocalDateTime.class)) {
-                // 强制更新时间
-                update.set(updateRoot.get(fieldName), LocalDateTime.now());
-            } else {
-                if (fieldValue != null) {
-                    // 设置更新值
-                    update.set(updateRoot.get(fieldName), fieldValue);
-                }
-            }
-        }
-        if (where == null) {
-            return false;
-        }
-        // 应用更新的条件
-        update.where(where);
-        // 执行更新
-        return entityManager.createQuery(update).executeUpdate() >= 0;
+        return JpaUtils.updateBean(bean, entityManager, domainClass, operator, uniqueKey) > 0;
     }
+
 
     @Override
     public Optional<B> findOnly(String fieldName, Object value) {
@@ -244,12 +180,12 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
 
     @Override
     public List<B> finds(String fieldName, SQLOperator operator, Object... value) {
-        return finds(fieldName,operator,new Sorteds(),value);
+        return finds(fieldName, operator, new Sorteds(), value);
     }
 
     @Override
     public List<B> finds(String fieldName, SQLOperator operator, Sorteds sort, Object... value) {
-        Specification<B> specification = (root, criteriaQuery, builder) ->{
+        Specification<B> specification = (root, criteriaQuery, builder) -> {
             Predicate where = JpaUtils.getPredicate(operator, builder, root.get(fieldName), value);
             if (where == null) {
                 throw new JpaException("占不支持的表达式: " + operator);

@@ -4,6 +4,7 @@ package cn.tannn.jdevelops.jpa.service;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
+import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import cn.tannn.jdevelops.jpa.request.PagingSorteds;
@@ -116,12 +117,15 @@ public interface J2Service<B> {
 
     /**
      * 根据主键更新数据 返回实体
-     * <ps> uniqueKey 后面可能会封装成注解 </ps>
-     * @param bean      实体,VO,DTO 可以结合{@link cn.tannn.jdevelops.annotations.jpa.JpaUpdate}
-     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
+     *
+     * @param bean      实体,VO,DTO 可以结合{@link JpaUpdate}
+     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
+     *                  <p> 1.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @param uniqueKey 指定 bean 用作更新的条件字段名[实体里的字段]
-     *                  <p> 1. 为空的话 @Id标注字段一定要有值，如果时vo的要一定要有实体里{@link Id}标注的字段
-     *                  <p> 2.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
+     *                  <p> 2. 为空的话
+     *                  <p> 2.1 首先判断 bean里是个否标注了{@link JpaUpdate#unique()},标注了就使用他做条件
+     *                  <p> 2.2 其次如何自定义的注解为标注那就回去拿实体的 {@link Id} 标注的字段名
+     *
      * @return Boolean
      */
     <T> Boolean update(T bean, SQLOperator operator, String... uniqueKey);
