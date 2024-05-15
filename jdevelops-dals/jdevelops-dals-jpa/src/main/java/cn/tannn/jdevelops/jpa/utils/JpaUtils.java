@@ -18,6 +18,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -100,7 +101,8 @@ public class JpaUtils {
 
     /**
      * 字符串的key名转jpa要用的对象
-     * @param root {@link Root}
+     *
+     * @param root      {@link Root}
      * @param fieldName 字段名,可以处理 `address.name` 这种key
      * @return Expression
      */
@@ -122,17 +124,18 @@ public class JpaUtils {
 
     /**
      * 字符串的key名转jpa要用的对象
-     * @param root {@link Root}
-     * @param builder {@link CriteriaBuilder}}
-     * @param function {@link SpecBuilderDateFun}}
+     *
+     * @param root      {@link Root}
+     * @param builder   {@link CriteriaBuilder}}
+     * @param function  {@link SpecBuilderDateFun}}
      * @param fieldName 字段名,可以处理 `address.name` 这种key
      * @return Expression
      */
-    public static Expression str2Path(Root<?> root, CriteriaBuilder builder,SpecBuilderDateFun function, String fieldName) {
+    public static Expression str2Path(Root<?> root, CriteriaBuilder builder, SpecBuilderDateFun function, String fieldName) {
         if (null != function && !function.equals(SpecBuilderDateFun.NULL)) {
             return JpaUtils.functionTimeFormat(function, root, builder, fieldName);
         }
-        return str2Path(root,fieldName);
+        return str2Path(root, fieldName);
     }
 
 
@@ -190,23 +193,22 @@ public class JpaUtils {
      * 更新数据
      * <p> 此方法不会用到 jpa的审计功能 </p>
      *
-     * @param updateBean 需要更新的数据集
+     * @param updateBean    需要更新的数据集
      * @param entityManager {@link EntityManager}
-     * @param domainClass  entity的真实对象
-     * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
-     *                  <p> 1.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
-     * @param uniqueKey 指定 bean 用作更新的条件字段名[实体里的字段]
-     *                  <p> 2. 为空的话
-     *                  <p> 2.1 首先判断 bean里是个否标注了{@link JpaUpdate#unique()},标注了就使用他做条件
-     *                  <p> 2.2 其次如何自定义的注解为标注那就回去拿实体的 {@link Id} 标注的字段名
-     *
+     * @param domainClass   entity的真实对象
+     * @param operator      判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
+     *                      <p> 1.  [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
+     * @param uniqueKey     指定 bean 用作更新的条件字段名[实体里的字段]
+     *                      <p> 2. 为空的话
+     *                      <p> 2.1 首先判断 bean里是个否标注了{@link JpaUpdate#unique()},标注了就使用他做条件
+     *                      <p> 2.2 其次如何自定义的注解为标注那就回去拿实体的 {@link Id} 标注的字段名
+     * @param <T>           updateBean
+     * @param <B>           domainClass
      * @return int 0:表示没有更新
-     * @param <T> updateBean
-     * @param <B> domainClass
      */
 
-    public static  <T,B> int updateBean(T updateBean
-            ,  EntityManager entityManager
+    public static <T, B> int updateBean(T updateBean
+            , EntityManager entityManager
             , Class<B> domainClass
             , SQLOperator operator
             , String... uniqueKey) {
@@ -222,10 +224,10 @@ public class JpaUtils {
                 return false;
             }
             JpaUpdate ignoreField = field.getAnnotation(JpaUpdate.class);
-            if(ignoreField == null){
+            if (ignoreField == null) {
                 return true;
             }
-            if(ignoreField.unique()){
+            if (ignoreField.unique()) {
                 jpaUpdateUnique.set(field.getName());
             }
             return !ignoreField.ignore();
@@ -239,9 +241,9 @@ public class JpaUtils {
         // 忽略查询字段
         String ignoreField;
         if (uniqueKey == null || uniqueKey.length == 0) {
-            if(!jpaUpdateUnique.get().isEmpty()){
+            if (!jpaUpdateUnique.get().isEmpty()) {
                 ignoreField = jpaUpdateUnique.get();
-            }else {
+            } else {
                 SingularAttribute<? super B, ?> id = entityType.getId(entityType.getIdType().getJavaType());
                 ignoreField = id.getName();
             }
@@ -288,4 +290,29 @@ public class JpaUtils {
         return entityManager.createQuery(update).executeUpdate();
     }
 
+
+    /**
+     * List<Predicate> -> Predicate
+     *
+     * @param criteriaBuilder {@link CriteriaBuilder}
+     * @param predicates
+     * @return Predicate
+     */
+    public static Predicate combinePredicates(CriteriaBuilder criteriaBuilder, List<Predicate> predicates) {
+        if (predicates == null || predicates.isEmpty()) {
+            throw new IllegalArgumentException("Predicate list is empty or null");
+        }
+        Predicate result = predicates.get(0);
+        for (int i = 1; i < predicates.size(); i++) {
+            Predicate current = predicates.get(i);
+            if (result.getOperator() == Predicate.BooleanOperator.AND && current.getOperator() == Predicate.BooleanOperator.AND) {
+                result = criteriaBuilder.and(result, current);
+            } else if (result.getOperator() == Predicate.BooleanOperator.OR && current.getOperator() == Predicate.BooleanOperator.OR) {
+                result = criteriaBuilder.or(result, current);
+            } else {
+                throw new UnsupportedOperationException("Unsupported combination of predicates with different operators");
+            }
+        }
+        return result;
+    }
 }

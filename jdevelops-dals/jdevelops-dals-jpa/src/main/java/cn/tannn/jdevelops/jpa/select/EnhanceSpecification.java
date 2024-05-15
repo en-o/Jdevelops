@@ -9,6 +9,7 @@ import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.annotations.jpa.specification.OperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.specification.SpecificationWrapper;
+import cn.tannn.jdevelops.jpa.exception.JpaException;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 import cn.tannn.jdevelops.jpa.utils.JpaUtils;
 import org.slf4j.Logger;
@@ -37,12 +38,11 @@ public class EnhanceSpecification {
     /**
      * 自定义查询 (主方法）
      *
-     * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
      * @param action    Query code
      * @param <B>       查询对象
      * @return Specification
      */
-    public static <B> Specification<B> where(boolean isConnect, Consumer<SpecificationWrapper<B>> action) {
+    public static <B> Specification<B> where(Consumer<SpecificationWrapper<B>> action) {
         return (Root<B> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
             SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
             try {
@@ -50,68 +50,38 @@ public class EnhanceSpecification {
             } catch (Exception e) {
                 LOG.error("Error occurred while building query specification: ", e);
                 // 根据需求行为，这里可以选择抛出运行时异常或者返回始终为真的Predicate
-                throw new RuntimeException("Error building query specification", e);
+                throw new JpaException("Error building query specification", e);
             }
             List<Predicate> predicates = specification.getPredicates();
-            Predicate[] arr = predicates.toArray(new Predicate[0]);
-            return isConnect ? builder.and(arr) : builder.or(arr);
+            return  JpaUtils.combinePredicates(builder, predicates);
         };
     }
 
     /**
-     * 自定义查询
-     * 默认and连接（where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
-     *
-     * @param action 查询参数
-     * @param <B>    查询对象
-     * @return Specification
-     */
-    public static <B> Specification<B> where(Consumer<SpecificationWrapper<B>> action) {
-        return where(true, action);
-    }
-
-
-    /**
      * 根据实体自动组装
-     * 默认and连接（where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
      *
-     * @param bean 构造的查询对象
+     * @param bean 构造的查询对象 ，可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @param <R>  返回对象
      * @param <B>  查询对象
      * @return Specification
      */
     public static <R, B> Specification<R> beanWhere(B bean) {
-        return beanWhere(true, bean, e -> {
-        });
-    }
-
-    /**
-     * 根据实体自动组装
-     * 默认or连接（where x=1 or y=2 or (z=3 and g=4)） (or 为默认，and在action中定义)
-     *
-     * @param bean 构造的查询对象
-     * @param <R>  返回对象
-     * @param <B>  查询对象
-     * @return Specification
-     */
-    public static <R, B> Specification<R> beanWhereOr(B bean) {
-        return beanWhere(false, bean, e -> {
+        return beanWhere(bean, e -> {
         });
     }
 
     /**
      * 根据实体自动组装 + 自定义查询
      *
-     * @param isConnect 连接符： true用and(默认), fales用or （where x=1 and y=2 and (z=3 or g=4)） (and 为默认，or在action中定义)
-     * @param bean      构造的查询对象
+     * @param bean      构造的查询对象，可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @param operator  除了bean还能自定义操作
      * @param <R>       返回对象
      * @param <B>       查询对象
      * @return Specification
      */
-    public static <R, B> Specification<R> beanWhere(boolean isConnect, B bean, Consumer<SpecificationWrapper<R>> operator) {
+    public static <R, B> Specification<R> beanWhere(B bean, Consumer<SpecificationWrapper<R>> operator) {
         Field[] fields = ReflectUtil.getFields(bean.getClass());
-        return where(isConnect, specification -> {
+        return where(specification -> {
             /*
              * 从注解里得到 SpecificationWrapper 并组装数据
              * 这里类似 组装
