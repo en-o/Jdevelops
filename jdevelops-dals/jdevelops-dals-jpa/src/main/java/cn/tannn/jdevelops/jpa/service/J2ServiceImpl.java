@@ -268,13 +268,13 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     }
 
     @Override
-    public <T> List<B> findComplex(T req) {
+    public <T> List<B> finds(T req) {
         Specification<B> selectRegionBean = EnhanceSpecification.beanWhere(req);
         return commonDao.findAll(selectRegionBean);
     }
 
     @Override
-    public <T> List<B> findComplex(T req, Sorteds sort) {
+    public <T> List<B> finds(T req, Sorteds sort) {
         Specification<B> selectRegionBean = EnhanceSpecification.beanWhere(req);
         return commonDao.findAll(selectRegionBean, Sorteds.sort(sort));
     }

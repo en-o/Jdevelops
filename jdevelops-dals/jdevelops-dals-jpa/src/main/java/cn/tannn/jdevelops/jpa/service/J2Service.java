@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.jpa.service;
 
 
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
+import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
@@ -8,6 +10,7 @@ import cn.tannn.jdevelops.jpa.request.PagingSorteds;
 import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.request.Sorteds;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
+import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -103,7 +106,7 @@ public interface J2Service<B> {
     /**
      * 自定义条件删除2
      *
-     * @param wheres   配合{@link JpaSelectOperator}
+     * @param wheres  可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @return int (>0删除成功且为删除了多少条)
      */
     <T> int delete(T wheres);
@@ -164,7 +167,7 @@ public interface J2Service<B> {
     List<B> finds();
 
     /**
-     * 查询添加查询
+     * 条件查询
      *
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
@@ -175,7 +178,7 @@ public interface J2Service<B> {
 
 
     /**
-     * 查询添加查询
+     * 条件排序查询
      *
      * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
@@ -187,7 +190,7 @@ public interface J2Service<B> {
 
 
     /**
-     * 查询添加查询
+     * {@link EnhanceSpecification#beanWhere(Object)} 排序查询
      *
      * @param spec 自定义条件{@link  cn.tannn.jdevelops.jpa.utils.SpecificationUtil}
      * @param sort 排序 {@link Sorteds}
@@ -197,21 +200,21 @@ public interface J2Service<B> {
 
 
     /**
-     * 复杂查询
+     * 异体Entity查询
      *
-     * @param req 数据实体的VO TDO BO PO等异形类
+     * @param req 数据实体的VO TDO BO PO等异形类 ,可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @return List<T> 返回数据库实体 （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
      */
-    <T> List<B> findComplex(T req);
+    <T> List<B> finds(T req);
 
     /**
-     * 复杂查询
+     * 异体Entity排序查询
      *
-     * @param req  数据实体的VO TDO BO PO等异形类
+     * @param req  数据实体的VO TDO BO PO等异形类,可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @param sort 排序 {@link Sorteds}
      * @return List<T> 返回数据库实体 （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
      */
-    <T> List<B> findComplex(T req, Sorteds sort);
+    <T> List<B> finds(T req, Sorteds sort);
 
 
     // ============ find page
@@ -233,7 +236,7 @@ public interface J2Service<B> {
     /**
      * 分页-查询
      *
-     * @param req      查询条件
+     * @param req      查询条件 ,可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @param pageable 分页 {@link Pagings}
      * @param <T>  数据实体的VO TDO BO PO等异形类
      * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
@@ -243,7 +246,7 @@ public interface J2Service<B> {
     /**
      * 分页-查询
      *
-     * @param req      查询条件
+     * @param req      查询条件 ,可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
      * @param pageable 分页 {@link PagingSorteds}
      * @param <T>  数据实体的VO TDO BO PO等异形类
      * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
