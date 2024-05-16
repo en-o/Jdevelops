@@ -3,7 +3,6 @@ package cn.tannn.jdevelops.jpa.request;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Sort;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PagingsTest {
