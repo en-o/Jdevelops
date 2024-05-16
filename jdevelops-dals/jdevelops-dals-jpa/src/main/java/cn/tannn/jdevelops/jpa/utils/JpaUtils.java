@@ -129,6 +129,7 @@ public class JpaUtils {
      * @param builder   {@link CriteriaBuilder}}
      * @param function  {@link SpecBuilderDateFun}}
      * @param fieldName 字段名,可以处理 `address.name` 这种key
+     * @see cn.tannn.jdevelops.jpa.select.EnhanceSpecification#beanWhere(Object)
      * @return Expression
      */
     public static Expression str2Path(Root<?> root, CriteriaBuilder builder, SpecBuilderDateFun function, String fieldName) {
@@ -144,6 +145,7 @@ public class JpaUtils {
      * @param builder    {@link CriteriaBuilder}
      * @param value      添加值
      * @param expression 添加表达书 {@link Path#get(String)}
+     * @see cn.tannn.jdevelops.jpa.service.J2Service#deleteEq(String, Object)
      * @return Predicate
      */
     public static Predicate getPredicate(
@@ -205,6 +207,7 @@ public class JpaUtils {
      * @param <T>           updateBean
      * @param <B>           domainClass
      * @return int 0:表示没有更新
+     * @see cn.tannn.jdevelops.jpa.service.J2Service#update(Object, SQLOperator, String...)
      */
 
     public static <T, B> int updateBean(T updateBean
@@ -295,8 +298,9 @@ public class JpaUtils {
      * List<Predicate> -> Predicate
      *
      * @param criteriaBuilder {@link CriteriaBuilder}
-     * @param predicates
+     * @param predicates List
      * @return Predicate
+     * @see cn.tannn.jdevelops.jpa.select.EnhanceSpecification#where
      */
     public static Predicate combinePredicates(CriteriaBuilder criteriaBuilder, List<Predicate> predicates) {
         if (predicates == null || predicates.isEmpty()) {
