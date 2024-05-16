@@ -6,6 +6,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -77,6 +78,56 @@ public class Sorted implements Serializable {
         this.orderDesc = orderDesc;
     }
 
+
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
+    public Sorted fixSort(String... orderBy) {
+        if (this.orderBy == null) {
+            this.orderBy = orderBy;
+        }
+        return this;
+    }
+
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     */
+    public Sorted fixSort(Integer orderDesc) {
+        if (this.orderDesc == null) {
+            this.orderDesc = orderDesc;
+        }
+        return this;
+    }
+
+
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
+    public Sorted fixSort(Integer orderDesc, String... orderBy) {
+        if (this.orderBy == null) {
+            this.orderBy = orderBy;
+        }
+        if (this.orderDesc == null) {
+            this.orderDesc = orderDesc;
+        }
+        return this;
+    }
 
     public String[] getOrderBy() {
         if (Objects.isNull(orderBy) || orderBy.length == 0) {

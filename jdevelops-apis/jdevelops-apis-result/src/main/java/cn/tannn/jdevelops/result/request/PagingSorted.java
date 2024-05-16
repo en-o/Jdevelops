@@ -15,7 +15,7 @@ import java.util.StringJoiner;
  * @date 2024/5/8 上午11:01
  */
 @Schema(description = "分页排序参数")
-public class PagingSorted extends Paging{
+public class PagingSorted extends Paging {
 
     /**
      * 范围：[1-5]
@@ -31,7 +31,7 @@ public class PagingSorted extends Paging{
     /**
      * 默认
      */
-    public static PagingSorted def(){
+    public static PagingSorted def() {
         return new PagingSorted();
     }
 
@@ -152,11 +152,14 @@ public class PagingSorted extends Paging{
 
 
     /**
-     *当排序为空是修改默认的排序字段,若不为空在原有的排序基础上追加默认自定义排序
+     * 追加排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空在原有的排序基础上追加默认自定义排序
      *
      * @param orderBy 排序字段 （默认排序方式为倒叙）
      */
-    public PagingSorted optionsDefOrderBy(String... orderBy) {
+    public PagingSorted append(String... orderBy) {
         if (this.sorts == null) {
             ArrayList<Sorted> sortArray = new ArrayList<>();
             sortArray.add(new Sorted(orderBy));
@@ -169,26 +172,15 @@ public class PagingSorted extends Paging{
 
 
     /**
-     * 当排序为空是修改默认的排序字段,若不为空则不进行操作
+     * 追加排序
      *
-     * @param orderBy 排序字段 （默认排序方式为倒叙）
-     */
-    public PagingSorted optionsNullDefOrderBy(String... orderBy) {
-        if (this.sorts == null) {
-            ArrayList<Sorted> sortArray = new ArrayList<>();
-            sortArray.add(new Sorted(orderBy));
-            this.sorts = sortArray;
-        }
-        return this;
-    }
-
-    /**
-     * 当排序为空是修改默认的排序字段,若不为空在原有的排序基础上追加默认自定义排序
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空在原有的排序基础上追加默认自定义排序
      *
      * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
      * @param orderBy   排序字段
      */
-    public PagingSorted optionsDefOrderBy(Integer orderDesc, String... orderBy) {
+    public PagingSorted append(Integer orderDesc, String... orderBy) {
         if (this.sorts == null) {
             ArrayList<Sorted> sortArray = new ArrayList<>();
             sortArray.add(new Sorted(orderDesc, orderBy));
@@ -202,12 +194,33 @@ public class PagingSorted extends Paging{
 
 
     /**
-     * 当排序为空是修改默认的排序字段,若不为空则不进行操作
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
+    public PagingSorted fixSort(String... orderBy) {
+        if (this.sorts == null) {
+            ArrayList<Sorted> sortArray = new ArrayList<>();
+            sortArray.add(new Sorted(orderBy));
+            this.sorts = sortArray;
+        }
+        return this;
+    }
+
+
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
      *
      * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
-     * @param orderBy   排序字段
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
      */
-    public PagingSorted optionsNullDefOrderBy(Integer orderDesc, String... orderBy) {
+    public PagingSorted fixSort(Integer orderDesc, String... orderBy) {
         if (this.sorts == null) {
             ArrayList<Sorted> sortArray = new ArrayList<>();
             sortArray.add(new Sorted(orderDesc, orderBy));

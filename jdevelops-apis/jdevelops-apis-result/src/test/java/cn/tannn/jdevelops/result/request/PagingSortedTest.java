@@ -90,26 +90,26 @@ class PagingSortedTest {
         assertEquals("[id]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
-        sortPageDTO = new PagingSorted().optionsDefOrderBy("name");
+        sortPageDTO = new PagingSorted().append("name");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("[name]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
-        sortPageDTO = new PagingSorted().optionsDefOrderBy(0, "name");
+        sortPageDTO = new PagingSorted().append(0, "name");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("[name]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
-        sortPageDTO = new PagingSorted(20, new Sorted("id")).optionsDefOrderBy(0, "name");
+        sortPageDTO = new PagingSorted(20, new Sorted("id")).append(0, "name");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("[id]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
 
-        sortPageDTO = new PagingSorted(20, new Sorted(0, "id")).optionsDefOrderBy(0, "name", "sex");
+        sortPageDTO = new PagingSorted(20, new Sorted(0, "id")).append(0, "name", "sex");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("[id]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
@@ -118,18 +118,38 @@ class PagingSortedTest {
         assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
 
-        sortPageDTO = new PagingSorted(20, new Sorted(0, "id")).optionsNullDefOrderBy(0, "name", "sex");
+        sortPageDTO = new PagingSorted().append(0, "name", "sex");
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("20", sortPageDTO.getPageSize().toString());
+        assertEquals("[name, sex]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals(1, sortPageDTO.getSorts().size());
+        assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+
+
+        sortPageDTO = new PagingSorted().fixSort("name", "sex");
+        assertEquals("0", sortPageDTO.getPageIndex().toString());
+        assertEquals("20", sortPageDTO.getPageSize().toString());
+        assertEquals("[name, sex]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals(1, sortPageDTO.getSorts().size());
+        assertEquals("1", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+
+
+        sortPageDTO = new PagingSorted(20, new Sorted(0, "id")).fixSort( "name", "sex");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
         assertEquals("[id]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals(1, sortPageDTO.getSorts().size());
         assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
 
-        sortPageDTO = new PagingSorted().optionsDefOrderBy(0, "name", "sex");
+
+        sortPageDTO = new PagingSorted(20, new Sorted(0, "id")).fixSort(0, "name", "sex");
         assertEquals("0", sortPageDTO.getPageIndex().toString());
         assertEquals("20", sortPageDTO.getPageSize().toString());
-        assertEquals("[name, sex]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
+        assertEquals("[id]", Arrays.toString(sortPageDTO.getSorts().get(0).getOrderBy()));
         assertEquals(1, sortPageDTO.getSorts().size());
         assertEquals("0", sortPageDTO.getSorts().get(0).getOrderDesc().toString());
+
+
+
     }
 }
