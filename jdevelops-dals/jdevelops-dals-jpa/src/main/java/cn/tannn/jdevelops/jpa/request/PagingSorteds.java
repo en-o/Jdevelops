@@ -1,9 +1,13 @@
 package cn.tannn.jdevelops.jpa.request;
 
+import cn.tannn.jdevelops.result.request.Paging;
 import cn.tannn.jdevelops.result.request.PagingSorted;
+import cn.tannn.jdevelops.result.request.Sorted;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * 分页JPA扩展
@@ -14,6 +18,61 @@ import org.springframework.data.domain.Pageable;
 @Schema(description = "Jpa分页排序参数")
 public class PagingSorteds extends PagingSorted {
 
+    public PagingSorteds() {
+    }
+
+    public PagingSorteds(Integer pageSize) {
+        super(pageSize);
+    }
+
+    public PagingSorteds(Integer pageSize, List<Sorted> sorts) {
+        super(pageSize, sorts);
+    }
+
+    public PagingSorteds(Integer pageSize, Sorted sorts) {
+        super(pageSize, sorts);
+    }
+
+    public PagingSorteds(List<Sorted> sorts) {
+        super(sorts);
+    }
+
+    public PagingSorteds(Integer pageIndex, Integer pageSize) {
+        super(pageIndex, pageSize);
+    }
+
+    public PagingSorteds(Integer pageIndex, Integer pageSize, List<Sorted> sorts) {
+        super(pageIndex, pageSize, sorts);
+    }
+
+    public PagingSorteds(Integer pageIndex, Integer pageSize, Integer orderDesc, String... orderBy) {
+        super(pageIndex, pageSize, orderDesc, orderBy);
+    }
+
+    public PagingSorteds(Integer pageIndex, Integer pageSize, Sorted sorts) {
+        super(pageIndex, pageSize, sorts);
+    }
+
+
+    @Override
+    public PagingSorteds append(String... orderBy) {
+        return pagingSorted(super.append(orderBy));
+    }
+
+    @Override
+    public PagingSorteds append(Integer orderDesc, String... orderBy) {
+        return pagingSorted(super.append(orderDesc, orderBy));
+    }
+
+    @Override
+    public PagingSorteds fixSort(String... orderBy) {
+        return pagingSorted(super.fixSort(orderBy));
+    }
+
+    @Override
+    public PagingSorteds fixSort(Integer orderDesc, String... orderBy) {
+        return pagingSorted(super.fixSort(orderDesc, orderBy));
+    }
 
     /**
      * 获取分页 Pageable
@@ -23,6 +82,20 @@ public class PagingSorteds extends PagingSorted {
         return PageRequest.of(getPageIndex(),
                 getPageSize(),
                 Sorteds.sorteds2Sort2(getSorts()));
+    }
+
+
+
+    /**
+     *  fix append 内用
+     * @param pagingSorted PagingSorted
+     * @return Sorteds
+     */
+    public PagingSorteds pagingSorted(PagingSorted pagingSorted) {
+        setPageIndex(pagingSorted.getPageIndex());
+        setSorts(pagingSorted.getSorts());
+        setPageSize(pagingSorted.getPageSize());
+        return this;
     }
 
     /**

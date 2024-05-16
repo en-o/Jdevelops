@@ -26,6 +26,23 @@ public class Sorteds extends Sorted {
         super(orderDesc, orderBy);
     }
 
+    @Override
+    public Sorteds fixSort(String... orderBy) {
+        return sorted(super.fixSort(orderBy));
+    }
+
+    @Override
+    public Sorteds fixSort(Integer orderDesc) {
+        return sorted(super.fixSort(orderDesc));
+    }
+
+    @Override
+    public Sorteds fixSort(Integer orderDesc, String... orderBy) {
+        return sorted(super.fixSort(orderDesc, orderBy));
+    }
+
+
+
     /**
      * Sorted to Sort
      *
@@ -35,6 +52,17 @@ public class Sorteds extends Sorted {
         return Sort.by(direction(getOrderDesc()), getOrderBy());
     }
 
+
+    /**
+     *  fix 内用
+     * @param sorted Sorted
+     * @return Sorteds
+     */
+    public Sorteds sorted(Sorted sorted) {
+        setOrderBy(sorted.getOrderBy());
+        setOrderDesc(sorted.getOrderDesc());
+        return this;
+    }
 
     public static Sorteds defs(){
         return new Sorteds();
