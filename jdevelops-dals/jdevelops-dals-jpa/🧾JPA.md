@@ -1,4 +1,5 @@
 > 为项目大多数用的都是JPA且很多固定的操作方法，所以对JPA做了下包装加了一些常用的方法
+> - 具体使用示例请看  [dal-jpa](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java) 里的单元测试
 
 # 依赖
 ```xml
@@ -168,10 +169,11 @@ public class TokenAuditorNameServiceImpl implements AuditorNameService {
 
 # 分页
 > **使用参考**： [💬接口包裹类](https://www.yuque.com/tanning/yg9ipo/qcyw5934uv8ga089?view=doc_embed&inner=a6RaQ) 中的分页设置，**但是此处使用的是他的继承类**
+> - [具体如何使用方法请看](https://github.com/en-o/Jdevelops-Example/tree/main/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/page)
+> - Pagings
+> - Sorteds
+> - PagingSorteds
 
-- Pagings
-- Sorteds
-- PagingSorteds
 ```java
 @JpaSelectIgnoreField
 PagingSorteds page;
@@ -196,13 +198,94 @@ public Sorteds getSort() {
     return sort == null ? new Sorteds() : sort;
 }
 ```
+## PagingSorteds
+> 注意他里里面的 排序是个list
+
+### 获取`org.springframework.data.domain.Pageable`
+```java
+new PagingSorteds().pageable()
+```
+### 构造`org.springframework.data.domain.Pageable`
+```java
+PagingSorteds.pageable(new Pagings(),new Sorteds())
+```
+### 空处理
+```java
+PagingSorteds.pageable(null)
+```
+### 修改默认值
+> [跟 result 的区别在于放回的对象不同](https://www.yuque.com/tanning/yg9ipo/qcyw5934uv8ga089#nVOYw)
+
+```java
+// 为空 覆盖默认值
+sortPage = new PagingSorteds().fixSort(0, "name","sex");
+sortPage = new PagingSorteds().fixSort("name","sex");
+// 不空 以原来的为准
+sortPage = new PagingSorteds(20,new Sorted(0,"fix")).fixSort("name","sex");
+
+// 为空  覆盖默认值
+sortPage = new PagingSorteds().append("name");
+// 不空  追加排序
+sortPage = new PagingSorteds(20,new Sorted(0,"fix")).append(0, "name");
+
+```
+## Pagings
+### 获取`org.springframework.data.domain.Pageable`
+```java
+new Pageable().pageable()
+```
+### 获取`Pageable`注入排序 `org.springframework.data.domain.Sort`
+```java
+new Pageable().pageable(org.springframework.data.domain.Sort)
+```
+### 获取`Pageable`注入排序 `cn.tannn.jdevelops.jpa.request.Sorteds`
+```java
+new Pageable().pageable(cn.tannn.jdevelops.jpa.request.Sorteds)
+```
+### 构造`org.springframework.data.domain.Pageable`
+```java
+PagingSorteds.pageable(new Pagings(),new Sorteds())
+```
+### 内嵌 `org.springframework.data.domain.Sort`
+```java
+Pagings p = new Pagings().sort(Sort.by("name"))
+// pageable 获取加载设置的sort转换成 Pageable
+Pageable page = p.pageable()
+```
+## Sorteds
+### 获取`org.springframework.data.domain.Sort`
+```java
+new Sorteds().sort()
+```
+### 构造`org.springframework.data.domain.Sort`
+```java
+Sorteds.sort(new Sorteds())
+Sorteds.sort(new Sorted())
+```
+### List<Sorteds> 转 Sort
+```java
+Sorteds.sorteds2Sort(List<Sorteds> sort)
+```
+### 获取 `Sort.Direction`
+```java
+Sorteds.direction(Sorteds#getOrderDesc())
+```
+### 修改默认值
+```java
+// 为空 覆盖默认值
+sort = new Sorteds().fixSort(0, "name","sex");
+sort = new Sorteds().fixSort("name","sex");
+// 不空 以原来的为准
+sort = new Sorteds(1,"id").fixSort("name","sex");
+```
+
 # 常用工具类
+> 处理下面列举的之外还有 [💬接口包裹类](https://www.yuque.com/tanning/yg9ipo/qcyw5934uv8ga089?view=doc_embed&inner=OcYfD) 的工具类也能直接使用
+
 ## 分页工具类
 > 本身是参数对象，同时里面有着自己相关的 static 方法
 
-### Pagings
-### PagingSorteds
-### Sorteds
+[https://www.yuque.com/tanning/yg9ipo/qe15wg78n3orgrah#WjcNz](#WjcNz)
 
 ## IObjects
 > 当前项目用的非规范的特殊方法，尽量不要使用
@@ -252,3 +335,103 @@ Specification<B> specification = (root, criteriaQuery, builder) -> {
 [J2Service 内嵌接口文档备注](https://www.yuque.com/tanning/yg9ipo/vg6vou7gvlg4ryzc?singleDoc=&view=doc_embed)
 
 ## 简单说明
+> **具体操作请看代码里的注释说明 和 **[dal-jpa](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java)
+
+### 存储
+```java
+List<B> saves(List<B> bean);
+B saveOne(B bean);
+<V> B saveOneByVo(V bean);
+```
+### 删除
+```java
+int delete(Specification<B> spec);
+int delete(String fieldName, Object value);
+int delete(String fieldName, SQLOperator operator, Object... value);
+<T> int delete(T wheres);
+```
+### 更新
+```java
+<T> Boolean update(T bean, SQLOperator operator, String... uniqueKey);
+```
+### 单查询
+```java
+Optional<B> findOnly(String fieldName, Object value);
+Optional<B> findOnly(String fieldName, Object value, String fieldName2, Object value2);
+Optional<B> findOnly(Specification<B> spec);
+```
+### 多查询
+```java
+List<B> finds();
+List<B> finds(String fieldName, SQLOperator operator, Object... value);
+List<B> finds(String fieldName, SQLOperator operator, Sorteds sort, Object... value);
+List<B> finds(Specification<B> spec, Sorteds sort);
+<T> List<B> finds(T req);
+<T> List<B> finds(T req, Sorteds sort);
+```
+### 分页查询
+```java
+Page<B> findPage(Pagings pageable);
+Page<B> findPage(PagingSorteds pageable);
+<T> Page<B>  findPage(T req, Pagings pageable);
+<T> Page<B>  findPage(T req, PagingSorteds pageable);
+```
+### ORM操作
+> [entityManagerDemo](https://github.com/en-o/Jdevelops-Example/tree/main/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/entityManager)
+> [使用文档](https://www.yuque.com/tanning/mbquef/fkwisqfhwicoz5mw)
+
+```java
+EntityManager getEntityManager();
+<ID, R extends JpaBasicsRepository<B, ID>> R getJpaBasicsDao();
+```
+```java
+
+/**
+ * 测试 {@link J2Service#getJpaBasicsDao()}  {@link J2Service#getEntityManager()}
+ */
+@SpringBootTest
+class OrmTest {
+
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 在 service 层 获取 repository 在controller层直接使用 dao层的方法
+     */
+    @Test
+    void genServiceJpaBasicsDao() {
+        UserDao jpaBasicsDao = userService.getJpaBasicsDao();
+        System.out.println("用UserDao接收后调用： ");
+        jpaBasicsDao.customSql().forEach(System.out::println);
+        // 如果直接调用的，不能得到 UserDao 里自定义构建的方法，只能使用内置的方法
+        // 想要使用在UserDao中自定义的方法就用UserDao接收一下在调用
+        System.out.println("直接调用： " + userService.getJpaBasicsDao().findById(1L));
+    }
+    
+
+    /**
+     * 在 service 层 获取 EntityManager
+     * <p> 删改增都要加事务
+     * @see EntityManagerTest
+     */
+    @Test
+    void genServiceEntityManager() {
+        // getEntityManager 方法说明中有简单的使用教程
+        // 或者参考 J2Service#updateBean
+        EntityManager entityManager = userService.getEntityManager();
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u where id = :id", User.class);
+        query.setParameter("id", 1L);
+        System.out.println(query.getResultList());
+    }
+
+
+}
+
+```
+# 其他文档
+## JPA 生成的数据库表顺序问题
+> spring boot 3.x 可以解决了，2.x 需要重写 `org.hibernate.cfg.propertycontainer`
+
+[Just a moment...](https://stackoverflow.com/questions/1298322/wrong-ordering-in-generated-table-in-jpa/65731578#65731578)
+[Ordering columns in a Table in JPA/Hibernate](https://robertniestroj.hashnode.dev/ordering-columns-in-a-table-in-jpahibernate)
