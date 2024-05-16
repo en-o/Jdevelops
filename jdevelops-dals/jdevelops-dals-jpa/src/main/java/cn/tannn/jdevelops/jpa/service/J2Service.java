@@ -96,7 +96,7 @@ public interface J2Service<B> {
      * @param value     删除的条件
      * @return int (>0删除成功且为删除了多少条)
      */
-    int delete(String fieldName, Object value);
+    int deleteEq(String fieldName, Object value);
 
     /**
      * 删除(单条件多值)

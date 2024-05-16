@@ -108,7 +108,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int delete(String fieldName, Object value) {
+    public int deleteEq(String fieldName, Object value) {
         return delete(fieldName, SQLOperator.EQ, value);
     }
 
