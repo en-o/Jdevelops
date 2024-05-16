@@ -15,6 +15,16 @@ import java.util.Objects;
  */
 public class Sorteds extends Sorted {
 
+    public Sorteds() {
+    }
+
+    public Sorteds(String... orderBy) {
+        super(orderBy);
+    }
+
+    public Sorteds(Integer orderDesc, String... orderBy) {
+        super(orderDesc, orderBy);
+    }
 
     /**
      * Sorted to Sort
