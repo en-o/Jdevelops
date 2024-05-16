@@ -109,6 +109,16 @@ public class PagingSorteds extends PagingSorted {
      * 获取分页 Pageable
      *
      * @param page 分页
+     * @return Pageable
+     */
+    public static Pageable pageable(Pagings page) {
+        return Pagings.pageable(page);
+    }
+
+    /**
+     * 获取分页 Pageable
+     *
+     * @param page 分页
      * @param sort 排序
      * @return Pageable
      */

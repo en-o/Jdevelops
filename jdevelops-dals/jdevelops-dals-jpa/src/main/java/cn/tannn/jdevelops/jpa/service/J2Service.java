@@ -14,6 +14,7 @@ import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EntityManager;
@@ -234,7 +235,7 @@ public interface J2Service<B> {
     Page<B> findPage(Pagings pageable);
 
     /**
-     * 分页-排序
+     * 分页-排序  建议用{@link #getJpaBasicsDao().findAll( Pageable )}
      * @param pageable 分页{@link PagingSorteds}
      * @return Page of B 如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
@@ -249,6 +250,7 @@ public interface J2Service<B> {
      * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
      <T> Page<B>  findPage(T req, Pagings pageable);
+
 
     /**
      * 分页-查询
