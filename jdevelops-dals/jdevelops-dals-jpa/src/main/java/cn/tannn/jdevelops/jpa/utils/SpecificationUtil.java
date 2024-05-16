@@ -77,6 +77,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> eq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -95,6 +96,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> eq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return eq(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -108,6 +110,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> notEq(String key, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -125,6 +128,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> notEq(ColumnSFunction<T, ?> fn, Object value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return notEq(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -138,6 +142,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> gt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -155,6 +160,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> gt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return gt(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -168,6 +174,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> ge(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -185,6 +192,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> ge(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return ge(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -198,6 +206,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> lt(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -215,6 +224,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> lt(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return lt(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -228,6 +238,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> le(String key, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -246,6 +257,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> le(ColumnSFunction<T, ?> fn, Comparable value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return le(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -294,6 +306,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> between(String key, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && (IObjects.isNull(v1, ignoreNullEnhance) || IObjects.isNull(v2, ignoreNullEnhance))) {
@@ -313,6 +326,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> between(String key, String v1v2, boolean ignoreNull, boolean ignoreNullEnhance) {
         String v1;
@@ -342,6 +356,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> between(ColumnSFunction<T, ?> fn, String v1, String v2, boolean ignoreNull, boolean ignoreNullEnhance) {
         return between(ColumnUtil.getFieldName(fn), v1, v2, ignoreNull, ignoreNullEnhance);
@@ -356,6 +371,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> like(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -374,6 +390,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> like(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return like(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -389,6 +406,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> lLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -408,6 +426,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> lLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return lLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -423,6 +442,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> rLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -442,6 +462,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> rLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return rLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -455,6 +476,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> notLike(String key, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         if (ignoreNull && IObjects.isNull(value, ignoreNullEnhance)) {
@@ -472,6 +494,7 @@ public final class SpecificationUtil<T> {
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
      * @return Specification
+     * @see JpaSelectNullField
      */
     public Specification<T> notLike(ColumnSFunction<T, ?> fn, String value, boolean ignoreNull, boolean ignoreNullEnhance) {
         return notLike(ColumnUtil.getFieldName(fn), value, ignoreNull, ignoreNullEnhance);
@@ -563,6 +586,7 @@ public final class SpecificationUtil<T> {
      *                          </p>
      * @param ignoreNull        空值验证 [true: 空值不作为查询参数 false: 需要查询为空的数据]
      * @param ignoreNullEnhance ignoreNull = true 有效 [true: 值是否为<null,""," ">，false: 值是否为 null]
+     * @see JpaSelectNullField
      */
     private <D> Specification<T> selectTimeLessGreater(boolean lessThan,
                                                        String key,
