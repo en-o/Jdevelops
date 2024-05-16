@@ -13,6 +13,7 @@ import cn.tannn.jdevelops.jpa.request.Sorteds;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
+import cn.tannn.jdevelops.result.bean.ColumnUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -92,7 +93,7 @@ public interface J2Service<B> {
     /**
      * 删除  (fieldName=vale) 常用
      *
-     * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param value     删除的条件
      * @return int (>0删除成功且为删除了多少条)
      */
@@ -101,7 +102,7 @@ public interface J2Service<B> {
     /**
      * 删除(单条件多值)
      *
-     * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...)
      * @param value     删除的条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return int (>0删除成功且为删除了多少条)
@@ -140,7 +141,7 @@ public interface J2Service<B> {
     /**
      * 查询
      *
-     * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param value     查询条件
      * @return B
      */
@@ -149,9 +150,9 @@ public interface J2Service<B> {
     /**
      * 查询
      *
-     * @param fieldName  实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName  实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param value      查询条件
-     * @param fieldName2 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName2 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param value2     查询条件
      * @return B
      */
@@ -177,7 +178,7 @@ public interface J2Service<B> {
     /**
      * 条件查询
      *
-     * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
      * @param value     查询条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
      * @return list of B （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
@@ -188,7 +189,7 @@ public interface J2Service<B> {
     /**
      * 条件排序查询
      *
-     * @param fieldName 实体里的字段名 建议{@link ColumnSFunction}
+     * @param fieldName 实体里的字段名 建议{@link ColumnUtil#getFieldName(ColumnSFunction)}
      * @param operator  判断表达式  {@link SQLOperator}（ 等于，小于，模糊 ...) (ps. in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值)
      * @param sort 排序 {@link Sorteds}
      * @param value     查询条件 [根据 operator方式传值：in between 这种就传多个值，其他的根据情况而定，比如ISNULL这种就不用传值]
