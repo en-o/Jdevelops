@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.StringJoiner;
 
 /**
  * 分页JPA扩展
@@ -162,8 +161,9 @@ public class Pagings extends Paging {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Pagings.class.getSimpleName() + "[", "]")
-                .add("sort=" + sort)
-                .toString();
+        // 调用父类的toString()方法
+        return super.toString() + ", Sort{" +
+                "sort='" + sort + '\'' +
+                '}';
     }
 }
