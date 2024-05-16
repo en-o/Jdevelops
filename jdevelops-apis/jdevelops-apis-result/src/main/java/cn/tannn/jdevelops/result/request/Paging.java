@@ -78,10 +78,10 @@ public class Paging implements Serializable {
     }
 
     /**
-     * 真实的 pageIndex
+     * 真实的 pageIndex [没有减1]
      */
     public Integer realPageIndex() {
-        return pageIndex;
+        return pageIndex==null?0:pageIndex;
     }
 
     public void setPageIndex(Integer pageIndex) {
