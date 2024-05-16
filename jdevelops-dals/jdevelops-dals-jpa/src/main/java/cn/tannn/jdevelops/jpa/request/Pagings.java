@@ -15,6 +15,16 @@ import org.springframework.data.domain.Sort;
 @Schema(description = "Jpa分页参数")
 public class Pagings extends Paging {
 
+    public Pagings() {
+    }
+
+    public Pagings(Integer pageSize) {
+        super(pageSize);
+    }
+
+    public Pagings(Integer pageIndex, Integer pageSize) {
+        super(pageIndex, pageSize);
+    }
 
     public Pageable pageable() {
         return PageRequest.of(getPageIndex(),
