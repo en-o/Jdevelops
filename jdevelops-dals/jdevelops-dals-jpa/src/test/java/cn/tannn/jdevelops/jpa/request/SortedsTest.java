@@ -2,11 +2,10 @@ package cn.tannn.jdevelops.jpa.request;
 
 import cn.tannn.jdevelops.result.request.Sorted;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SortedsTest {
 
