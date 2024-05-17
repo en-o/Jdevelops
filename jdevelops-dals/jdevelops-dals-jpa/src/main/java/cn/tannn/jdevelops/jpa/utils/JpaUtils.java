@@ -6,9 +6,7 @@ import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
-import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.query.internal.AbstractProducedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
@@ -149,7 +147,7 @@ public class JpaUtils {
      * @param operator   {@link SQLOperator}
      * @param builder    {@link CriteriaBuilder}
      * @param value      添加值
-     * @param expression 添加表达书 {@link Path#get(String)}
+     * @param expression 添加表达式 {@link Root#get(String)}
      * @see cn.tannn.jdevelops.jpa.service.J2Service#deleteEq(String, Object)
      * @return Predicate
      */

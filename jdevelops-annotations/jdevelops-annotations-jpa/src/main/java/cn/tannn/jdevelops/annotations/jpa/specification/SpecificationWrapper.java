@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.annotations.jpa.specification;
 
 
-
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,15 +20,22 @@ import java.util.function.Consumer;
 public class SpecificationWrapper<B> {
 
     /**
-     * 查询对象  （key = value ...）
+     * 需要查询的实体类
      */
     private Root<B> root;
+
+    /**
+     * 用于构建查询
+     */
     private CriteriaQuery<?> query;
+    /**
+     * 用于构建查询的各个部分,如 Predicate、Order 等
+     */
     private CriteriaBuilder builder;
 
 
     /**
-     *  条件列表 （x = 'b' ）
+     * 条件列表 （x = 'b' ）
      */
     private List<Predicate> predicates = new ArrayList<>();
 
@@ -42,7 +48,7 @@ public class SpecificationWrapper<B> {
     }
 
     /**
-     *  构建一个 wrapper 同 EnhanceSpecification#where
+     * 构建一个 wrapper 同 EnhanceSpecification#where
      *
      * @param isConnect true用and(默认), fales用or
      * @param operator  {@link SpecificationWrapper}
@@ -89,12 +95,13 @@ public class SpecificationWrapper<B> {
     }
 
 
-
-
     // ================================== 查询空值 ==================================
 
     /**
      * 查询空值
+     *
+     * @param selectKey key
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> isNull(String selectKey) {
         return handle(selectKey, this::isNull);
@@ -102,6 +109,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 查询空值
+     *
+     * @param x 添加表达式 {@link Root#get(String)}
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> isNull(Expression<?> x) {
         predicates.add(builder.isNull(x));
@@ -113,6 +123,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 查询非空值
+     *
+     * @param selectKey key
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> isNotNull(String selectKey) {
         return handle(selectKey, this::isNotNull);
@@ -120,6 +133,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 查询非空值
+     *
+     * @param x 添加表达式 {@link Root#get(String)}
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> isNotNull(Expression<?> x) {
         predicates.add(builder.isNotNull(x));
@@ -131,6 +147,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 等于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> eq(boolean valueNotNull, String selectKey, Object value) {
         return valueNotNull ? handle(selectKey, e -> this.eq(e, value)) : this;
@@ -138,6 +159,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * 等于
+     *
+     * @param x     添加表达式 {@link Root#get(String)}
+     * @param value 值
      */
     public SpecificationWrapper<B> eq(Expression<?> x, Object value) {
         predicates.add(builder.equal(x, value));
@@ -149,6 +173,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 不等于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> ne(boolean valueNotNull, String selectKey, Object value) {
         return valueNotNull ? handle(selectKey, e -> this.ne(e, value)) : this;
@@ -156,6 +185,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 不等于
+     *
+     * @param x     添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> ne(Expression<?> x, Object value) {
         predicates.add(builder.notEqual(x, value));
@@ -166,6 +199,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 模糊查询的基方法，不要使用因为没有百分号
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> like(boolean valueNotNull, String selectKey, String value) {
         return valueNotNull ? handle(selectKey, e -> this.like(e, value)) : this;
@@ -174,6 +212,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 模糊查询的基方法，不要使用因为没有百分号（value）
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> like(Expression<String> path, String value) {
         predicates.add(builder.like(path, value));
@@ -182,6 +224,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 右模糊（value%）
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> rlike(boolean valueNotNull, String selectKey, String value) {
         return this.like(valueNotNull, selectKey, value + "%");
@@ -189,7 +236,11 @@ public class SpecificationWrapper<B> {
 
 
     /**
-     *左模糊（%value）
+     * 左模糊（%value）
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> rlike(Expression<String> path, String value) {
         return this.like(path, value + "%");
@@ -198,13 +249,22 @@ public class SpecificationWrapper<B> {
 
     /**
      * 左模糊（%value）
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> llike(boolean valueNotNull, String selectKey, String value) {
         return this.like(valueNotNull, selectKey, "%" + value);
     }
 
     /**
-     *左模糊（%value）
+     * 左模糊（%value）
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> llike(Expression<String> path, String value) {
         return this.like(path, "%" + value);
@@ -213,6 +273,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 全模糊（%value%）
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> likes(boolean valueNotNull, String selectKey, String value) {
         return this.like(valueNotNull, selectKey, "%" + value + "%");
@@ -221,6 +286,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 全模糊（%value%）
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> likes(Expression<String> path, String value) {
         return this.like(path, "%" + value + "%");
@@ -229,6 +298,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * not like
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> nlike(boolean valueNotNull, String selectKey, String value) {
         return valueNotNull ? handle(selectKey, e -> this.nlike(e, value)) : this;
@@ -237,6 +311,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * not like
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> nlike(Expression<String> path, String value) {
         predicates.add(builder.notLike(path, value));
@@ -248,6 +326,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 大于等于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(boolean valueNotNull, String selectKey, Y value) {
         return valueNotNull ? handle(selectKey, e -> this.ge(e, value)) : this;
@@ -255,6 +338,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 大于等于
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> ge(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThanOrEqualTo(path, value));
@@ -265,6 +352,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 小于等于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(boolean valueNotNull, String selectKey, Y value) {
         return valueNotNull ? handle(selectKey, e -> this.le(e, value)) : this;
@@ -273,6 +365,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 小于等于
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> le(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThanOrEqualTo(path, value));
@@ -283,6 +379,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 大于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(boolean valueNotNull, String selectKey, Y value) {
         return valueNotNull ? handle(selectKey, e -> this.gt(e, value)) : this;
@@ -291,6 +392,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 大于
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> gt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.greaterThan(path, value));
@@ -301,6 +406,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 小于
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(boolean valueNotNull, String selectKey, Y value) {
         return valueNotNull ? handle(selectKey, e -> this.lt(e, value)) : this;
@@ -309,6 +419,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * 小于
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param value 值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> lt(Expression<? extends Y> path, Y value) {
         predicates.add(builder.lessThan(path, value));
@@ -319,6 +433,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * in
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Collection<?> value) {
         return this.in(valueNotNull, selectKey, value.toArray());
@@ -326,6 +445,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * in
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Object... value) {
         return valueNotNull ? handle(selectKey, e -> this.in(e, value)) : this;
@@ -334,6 +458,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * in
+     *
+     * @param expression 添加表达式 {@link Root#get(String)}
+     * @param value      值
+     * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> in(Expression<? extends U> expression, Object... value) {
         predicates.add(expression.in(value));
@@ -344,6 +472,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * not in
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Collection<?> value) {
         return this.notIn(valueNotNull, selectKey, value.toArray());
@@ -351,6 +484,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * not in
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Object... value) {
         return valueNotNull ? handle(selectKey, e -> this.notIn(e, value)) : this;
@@ -359,6 +497,10 @@ public class SpecificationWrapper<B> {
 
     /**
      * not in
+     *
+     * @param expression 添加表达式 {@link Root#get(String)}
+     * @param value      值
+     * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> notIn(Expression<? extends U> expression, Object... value) {
         predicates.add(expression.in(value).not());
@@ -369,6 +511,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 之间 包头包尾[闭区间]
+     *
+     * @param valueNotNull false:不做空值查询
+     * @param selectKey    key
+     * @param value        值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull,
                                                                              String selectKey, Y start, Y end) {
@@ -378,6 +525,11 @@ public class SpecificationWrapper<B> {
 
     /**
      * 之间 包头包尾[闭区间]
+     *
+     * @param path  添加表达式 {@link Root#get(String)}
+     * @param start 值
+     * @param end   值
+     * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(Expression<? extends Y> path,
                                                                              Y start, Y end) {
@@ -389,6 +541,9 @@ public class SpecificationWrapper<B> {
 
     /**
      * join
+     * <p> 没测试过
+     *
+     * @return Join
      */
     public <U> Join<B, U> leftJoin(String fieldName) {
         return root.join(fieldName, JoinType.LEFT);
@@ -399,7 +554,8 @@ public class SpecificationWrapper<B> {
      * 主方法，处理器
      *
      * @param selectKey key
-     * @param action    Consumer<Path>
+     * @param action    Consumer<Path> {@link Root#get(String)}
+     * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> handle(String selectKey, Consumer<Path> action) {
         Path<?> path;
