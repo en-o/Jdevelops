@@ -1,5 +1,5 @@
 > 为项目大多数用的都是JPA且很多固定的操作方法，所以对JPA做了下包装加了一些常用的方法
-> - 具体使用示例请看  [dal-jpa](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java) 里的单元测试
+> - **具体使用示例请看  **[dal-jpa](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java)** 里的单元测试**
 
 # 依赖
 ```xml
@@ -13,7 +13,6 @@
       <groupId>cn.tannn.jdevelops</groupId>
       <artifactId>jdevelops-apis-exception</artifactId>
       <version>0.0.1-SNAPSHOT</version>
-      <scope>provided</scope>
   </dependency>
   <!-- 这个根据自己的数据库选择，目前测试过pg和人大金仓 -->
   <dependency>
@@ -247,6 +246,8 @@ new Pageable().pageable(cn.tannn.jdevelops.jpa.request.Sorteds)
 PagingSorteds.pageable(new Pagings(),new Sorteds())
 ```
 ### 内嵌 `org.springframework.data.domain.Sort`
+> 此方法是这对后端想通过`J2service#findPage(Pagings)`传入`Pagings` 对象构建 `Pageable`对象时想要加入个临时的排序又不想用 `PagingSorteds`这这复杂的对象时时使用，请不要暴露给前端
+
 ```java
 Pagings p = new Pagings().sort(Sort.by("name"))
 // pageable 获取加载设置的sort转换成 Pageable
@@ -329,13 +330,97 @@ Specification<B> specification = (root, criteriaQuery, builder) -> {
   }
 ```
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/1642320/1715760892501-3b22678c-db50-4c2a-a83c-a01acde2e32b.png#averageHue=%23ecf1f6&clientId=uc89d1779-66d8-4&from=paste&height=636&id=u14812811&originHeight=636&originWidth=369&originalType=binary&ratio=1&rotation=0&showTitle=false&size=58023&status=done&style=none&taskId=u250807d4-d10c-480b-ba15-b4e9ea214f9&title=&width=369)
+## EnhanceSpecification
+> 这个接口时本项目组装 `where` 语句的核心方法
+
+1. 配合[注解](#RT0zG)使用
+2. 具体示例在：[EnhanceSpecificationTest](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/EnhanceSpecificationTest.java)
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserComplexFind {
+
+    /**
+     * like OR (not null and not "" and not " ")
+     */
+    @JpaSelectOperator(operatorWrapper = SQLOperatorWrapper.LIKE, connect = SQLConnect.OR)
+    private String userNo;
+
+    /**
+     * in AND (not null and not "" and not " ")
+     */
+    @JpaSelectOperator(operatorWrapper = SQLOperatorWrapper.IN, connect = SQLConnect.AND)
+    private List<String> name;
+
+    /**
+     * and (not null and not "" and not " ")
+     */
+    @JpaSelectOperator(operatorWrapper = SQLOperatorWrapper.EQ)
+    private String loginName;
+
+    /**
+     * like or (not null)
+     */
+    @JpaSelectOperator(operatorWrapper = SQLOperatorWrapper.LIKE, nullField = @JpaSelectNullField(ignoreNullEnhance = false)
+            , connect = SQLConnect.OR)
+    private String userIcon;
+
+    /**
+     * 默认 eq / and  / not null
+     */
+    private String loginPwd;
+
+    /**
+     * 忽略
+     */
+    @JpaSelectIgnoreField
+    private String phone;
+
+    /**
+     * not null
+     */
+    @JpaSelectNullField(ignoreNullEnhance = false)
+    private String address;
+
+    /**
+     * 处理时间格式
+     */
+    @JpaSelectOperator(function = SpecBuilderDateFun.DATE_FORMAT)
+    private String createTime;
+}
+```
+```java
+   UserComplexFind userComplexFind = new UserComplexFind();
+        userComplexFind.setUserNo("weq");
+        userComplexFind.setName(Arrays.asList("a","b"));
+        userComplexFind.setLoginName("ta");
+        userComplexFind.setUserIcon("1");
+        userComplexFind.setLoginPwd("23");
+        userComplexFind.setPhone("123");
+        userComplexFind.setAddress("1");
+        userComplexFind.setCreateTime("2024-05-17 10:44:57");
+        Specification<User> spec = EnhanceSpecification.beanWhere(userComplexFind);
+        System.out.println(userDao.findAll(spec));
+```
+```sql
+ from sys_user user0_ where
+        (
+          ( user0_.user_no like ? or user0_.name in (? , ?) )
+          and user0_.login_name=?
+          and (user0_.user_icon like ?) or user0_.login_pwd=?
+        )
+         and user0_.address=?
+         and date_format(user0_.create_time, ?)=?
+```
 # J2Service 内嵌接口
 ## 接口文档
 [ 测试 J2Service](https://yrzyjs4ns6.apifox.cn/api-174223111) 
 [J2Service 内嵌接口文档备注](https://www.yuque.com/tanning/yg9ipo/vg6vou7gvlg4ryzc?singleDoc=&view=doc_embed)
-
+## 级联
+[Jdevelops-Example/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/RelationSelectTest.java at main · en-o/Jdevelops-Example](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/RelationSelectTest.java)
 ## 简单说明
-> **具体操作请看代码里的注释说明 和 **[dal-jpa](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java)
+> **具体操作请看代码里的注释说明 和 **[dal-jpa， 具体请看单元测试](https://github.com/en-o/Jdevelops-Example/blob/main/dal-jpa/src/main/java/cn/tannn/jdevelops/demo/jpa/controller/UserController.java)
 
 ### 存储
 ```java
@@ -346,7 +431,7 @@ B saveOne(B bean);
 ### 删除
 ```java
 int delete(Specification<B> spec);
-int delete(String fieldName, Object value);
+int deleteEq(String fieldName, Object value);
 int delete(String fieldName, SQLOperator operator, Object... value);
 <T> int delete(T wheres);
 ```
@@ -378,7 +463,7 @@ Page<B> findPage(PagingSorteds pageable);
 ```
 ### ORM操作
 > [entityManagerDemo](https://github.com/en-o/Jdevelops-Example/tree/main/dal-jpa/src/test/java/cn/tannn/jdevelops/demo/jpa/entityManager)
-> [使用文档](https://www.yuque.com/tanning/mbquef/fkwisqfhwicoz5mw)
+> [使用文档](https://www.yuque.com/tanning/mbquef/fkwisqfhwicoz5mw)	
 
 ```java
 EntityManager getEntityManager();
