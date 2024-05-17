@@ -262,4 +262,16 @@ public interface J2Service<B> {
      * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
     <T> Page<B>  findPage(T req, PagingSorteds pageable);
+
+
+    /**
+     * 分页-查询
+     *
+     * @param req      查询条件 ,可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
+     * @param pageable 分页 {@link Pagings}
+     * @param sort 分页 {@link Sorteds} 可以为空
+     * @param <T>  数据实体的VO TDO BO PO等异形类
+     * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
+     */
+    <T> Page<B>  findPage(T req,  Pagings pageable, Sorteds sort);
 }

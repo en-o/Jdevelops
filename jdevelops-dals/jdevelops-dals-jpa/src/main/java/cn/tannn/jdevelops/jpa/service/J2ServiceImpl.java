@@ -227,4 +227,17 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
         Specification<B> selectRegionBean = EnhanceSpecification.beanWhere(req);
         return commonDao.findAll(selectRegionBean, PagingSorteds.pageable(pageable));
     }
+
+    @Override
+    public <T> Page<B> findPage(T req, Pagings pageable, Sorteds sort) {
+        Specification<B> selectRegionBean = EnhanceSpecification.beanWhere(req);
+        if(sort == null){
+            return commonDao.findAll(selectRegionBean, Pagings.pageable(pageable));
+        }else {
+            if(pageable == null){
+                pageable  = Pagings.defs();
+            }
+            return commonDao.findAll(selectRegionBean, pageable.pageable(sort));
+        }
+    }
 }
