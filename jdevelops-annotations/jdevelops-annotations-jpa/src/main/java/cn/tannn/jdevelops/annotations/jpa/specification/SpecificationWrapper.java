@@ -440,7 +440,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> in(boolean valueNotNull, String selectKey, Collection<?> value) {
-        return this.in(valueNotNull, selectKey, value.toArray());
+        if(valueNotNull){
+            return this.in(valueNotNull, selectKey, value.toArray());
+        }else {
+            return this;
+        }
     }
 
     /**
@@ -479,7 +483,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public SpecificationWrapper<B> notIn(boolean valueNotNull, String selectKey, Collection<?> value) {
-        return this.notIn(valueNotNull, selectKey, value.toArray());
+        if(valueNotNull){
+            return this.notIn(valueNotNull, selectKey, value.toArray());
+        }else {
+            return this;
+        }
     }
 
     /**
@@ -514,7 +522,8 @@ public class SpecificationWrapper<B> {
      *
      * @param valueNotNull false:不做空值查询
      * @param selectKey    key
-     * @param value        值
+     * @param start        值
+     * @param end        值
      * @return SpecificationWrapper
      */
     public <Y extends Comparable<? super Y>> SpecificationWrapper<B> between(boolean valueNotNull,
