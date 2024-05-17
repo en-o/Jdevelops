@@ -6,11 +6,16 @@ import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.hibernate.query.internal.AbstractProducedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
@@ -319,5 +324,30 @@ public class JpaUtils {
             }
         }
         return result;
+    }
+
+
+    /**
+     * 获取 specification 里的sql
+     * <p>  不要瞎使用，我测试用的方法
+     * @param entityManager EntityManager
+     * @param entityClass entityClass
+     * @param specification Specification
+     * @return sql
+     * @param <T> entityClass
+     */
+    public static <T> String toSql(EntityManager entityManager, Class<T> entityClass, Specification<T> specification) {
+        // 创建CriteriaBuilder和CriteriaQuery
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
+        Root<T> root = criteriaQuery.from(entityClass);
+        // 应用Specification
+        criteriaQuery.where(specification.toPredicate(root, criteriaQuery, criteriaBuilder));
+        // 创建查询对象
+        TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+        // 获取底层的Hibernate Query对象
+        Query hibernateQuery = query.unwrap(Query.class);
+        // 返回生成的SQL字符串
+        return hibernateQuery.getQueryString();
     }
 }
