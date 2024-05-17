@@ -25,11 +25,19 @@
 </div>
 
 # JavaWeb工具集
-## [文档](https://www.yuque.com/tanning/yg9ipo)
+## [语雀文档](https://www.yuque.com/tanning/yg9ipo)
 ## [文档配套代码示例](https://github.com/en-o/Jdevelops-Example)
-## [配套基础代码生成工具](https://code.tannn.cn/)
-## [maven archetype](ttps://gitee.com/etn/jdevelops-archetype.git)
+## [maven archetype](https://gitee.com/etn/jdevelops-archetype.git)
 > [使用方法](https://www.yuque.com/tanning/yg9ipo/os0zl7#GocqT)
 
 # mvn package / install
 1. 使用maven 3.9 ，因为我用了 junit 5 [maven 3.6 会出问题]
+
+
+# 本地文档
+## APIS
+1. [💬接口包裹类.md](jdevelops-apis/jdevelops-apis-result/💬接口包裹类.md)
+2. [❌全局异常捕获.md](jdevelops-apis/jdevelops-apis-exception/❌全局异常捕获.md)
+
+# DALS
+1. [🧾JPA.md](jdevelops-dals/jdevelops-dals-jpa/🧾JPA.md)
