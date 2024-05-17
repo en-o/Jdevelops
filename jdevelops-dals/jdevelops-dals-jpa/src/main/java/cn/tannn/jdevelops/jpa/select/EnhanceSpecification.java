@@ -38,8 +38,8 @@ public class EnhanceSpecification {
     /**
      * 自定义查询 (主方法）
      *
-     * @param action    Query code
-     * @param <B>       查询对象
+     * @param action Query code
+     * @param <B>    查询对象
      * @return Specification
      */
     public static <B> Specification<B> where(Consumer<SpecificationWrapper<B>> action) {
@@ -53,7 +53,12 @@ public class EnhanceSpecification {
                 throw new JpaException("Error building query specification", e);
             }
             List<Predicate> predicates = specification.getPredicates();
-            return  JpaUtils.combinePredicates(builder, predicates);
+            if (predicates == null || predicates.isEmpty()) {
+                // 返回个空的 = 没有where
+                return query.getRestriction();
+            } else {
+                return JpaUtils.combinePredicates(builder, predicates);
+            }
         };
     }
 
@@ -73,10 +78,10 @@ public class EnhanceSpecification {
     /**
      * 根据实体自动组装 + 自定义查询
      *
-     * @param bean      构造的查询对象，可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
-     * @param operator  除了bean还能自定义操作
-     * @param <R>       返回对象
-     * @param <B>       查询对象
+     * @param bean     构造的查询对象，可以配合 {@link JpaSelectOperator}  {@link JpaSelectNullField}   {@link JpaSelectIgnoreField}
+     * @param operator 除了bean还能自定义操作
+     * @param <R>      返回对象
+     * @param <B>      查询对象
      * @return Specification
      */
     public static <R, B> Specification<R> beanWhere(B bean, Consumer<SpecificationWrapper<R>> operator) {
