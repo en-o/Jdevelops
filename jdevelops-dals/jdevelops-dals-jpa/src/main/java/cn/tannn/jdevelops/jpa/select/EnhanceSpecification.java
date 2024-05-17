@@ -85,6 +85,10 @@ public class EnhanceSpecification {
      * @return Specification
      */
     public static <R, B> Specification<R> beanWhere(B bean, Consumer<SpecificationWrapper<R>> operator) {
+        if(bean == null){
+            // 为空不处理条件了之际返回  getRestriction
+            return (r,q,b) -> q.getRestriction();
+        }
         Field[] fields = ReflectUtil.getFields(bean.getClass());
         return where(specification -> {
             /*
