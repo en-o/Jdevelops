@@ -24,6 +24,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: 3.9.1 # 设置 Maven 版本为 3.9.1
+
       # 指定特定模块 可以使用 -pl 或 --projects 选项来指定模块路径,-pl path/to/module1,path/to/module2
       - name: Run the Maven package
         run: |
