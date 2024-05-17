@@ -151,13 +151,7 @@ public class Pagings extends Paging {
         return paging.pageable(sort);
     }
 
-    public Sort getSort() {
-        return sort == null ? Sorteds.defs().sort() : sort;
-    }
 
-    public void setSort(Sort sort) {
-        this.sort = sort;
-    }
 
     @Override
     public String toString() {
