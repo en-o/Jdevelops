@@ -50,8 +50,10 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.apis.version>${revision}</jdevelops.apis.version>
+        <jdevelops.webs.version>0.0.1-SNAPSHOT</jdevelops.webs.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <!-- JDK -->
         <java.version>1.8</java.version>
         <!-- 编译 -->
