@@ -21,7 +21,7 @@ public class LogConfiguration {
      * @return ApiLogSave
      */
     @Bean
-    @ConditionalOnMissingBean(name = "apiLogSave")
+    @ConditionalOnMissingBean(ApiLogSave.class)
     @ConditionalOnProperty(
             value="jdevelops.api.log.save.enabled",
             havingValue = "true",
