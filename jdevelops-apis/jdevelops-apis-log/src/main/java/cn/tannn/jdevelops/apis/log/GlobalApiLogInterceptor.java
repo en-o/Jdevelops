@@ -2,13 +2,12 @@ package cn.tannn.jdevelops.apis.log;
 
 
 import cn.tannn.jdevelops.apis.log.constants.ApiLogConstants;
-import cn.tannn.jdevelops.apis.log.module.LoggerEntity;
+import cn.tannn.jdevelops.apis.log.module.LoggerPrint;
 import cn.tannn.jdevelops.apis.log.util.IpUtil;
 import cn.tannn.jdevelops.webs.interceptor.ApiBeforeInterceptor;
 import cn.tannn.jdevelops.webs.interceptor.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 
@@ -36,19 +35,19 @@ public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
     @Override
     public boolean before(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //获取请求参数
-        LoggerEntity loggerEntity = null;
+        LoggerPrint loggerPrint = null;
         try {
             // 不拦截这个页面
             if(request.getRequestURI().contains(ApiLogConstants.ERROR_PAGE)){
                 return true;
             }
             String requestParams = RequestUtil.requestParams(request);
-            loggerEntity = new LoggerEntity(IpUtil.httpRequestIp(request),
+            loggerPrint = new LoggerPrint(IpUtil.httpRequestIp(request),
                     request.getRequestURL().toString(),request.getMethod(), requestParams, System.currentTimeMillis());
         }catch (Exception e){
             logger.error("接口日志记录失败", e);
         }
-        logger.info(Objects.isNull(loggerEntity)? "" : loggerEntity.ltoString());
+        logger.info(Objects.isNull(loggerPrint)? "" : loggerPrint.ltoString());
         return true;
     }
 }

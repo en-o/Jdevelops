@@ -2,10 +2,10 @@ package cn.tannn.jdevelops.apis.log.module;
 
 
 /**
- * 日志输出
+ * 日志打印
  * @author tan
  */
-public class LoggerEntity {
+public class LoggerPrint {
 
     /**
      * 请求IP
@@ -35,7 +35,7 @@ public class LoggerEntity {
      */
     Long callTime;
 
-    public LoggerEntity(String ip, String url, String method, String params, Long callTime) {
+    public LoggerPrint(String ip, String url, String method, String params, Long callTime) {
         this.ip = ip;
         this.url = url;
         this.method = method;
