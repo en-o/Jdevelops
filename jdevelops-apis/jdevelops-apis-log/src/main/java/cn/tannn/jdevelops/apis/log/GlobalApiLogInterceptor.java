@@ -21,7 +21,6 @@ import java.util.Objects;
  *
  * @author tan
  */
-@AutoConfiguration
 @ConditionalOnProperty(
         value="jdevelops.api.log.enabled",
         havingValue = "true",
