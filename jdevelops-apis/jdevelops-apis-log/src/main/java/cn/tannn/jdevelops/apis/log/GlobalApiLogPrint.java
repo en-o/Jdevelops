@@ -25,7 +25,7 @@ import java.util.Objects;
         havingValue = "true",
         matchIfMissing = true)
 @Order(1)
-public class GlobalApiLogInterceptor implements ApiBeforeInterceptor {
+public class GlobalApiLogPrint implements ApiBeforeInterceptor {
 
     /**
      * logback-spring.xml中定义 appender api-log 完成自定api文件输出

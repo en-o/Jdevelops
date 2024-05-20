@@ -17,14 +17,15 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.13</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -33,10 +34,9 @@
             <version>${jdevelops.webs.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-            <optional>true</optional>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-utils-aop</artifactId>
+            <version>${jdevelops.utils.version}</version>
         </dependency>
     </dependencies>
 
