@@ -121,7 +121,7 @@ public class ApiLogAspectSave {
         Method method = signature.getMethod();
         /*key*/
         ApiLog myLog = method.getAnnotation(ApiLog.class);
-        if(myLog == null || !myLog.enable()){
+        if (myLog == null || !myLog.enable()) {
             return;
         }
 
@@ -140,29 +140,28 @@ public class ApiLogAspectSave {
         /* outParams and  status  */
         if (Objects.nonNull(rvt)) {
             try {
+                apiLog.setStatus(true);
+                if (rvt instanceof String || rvt instanceof Integer) {
+                    apiLog.setStatus(true);
+                } else if (rvt instanceof List) {
+                    apiLog.setStatus(true);
+                } else {
+                    Boolean status = (Boolean) JsonUtils.objectToMap(rvt).getOrDefault("success", false);
+                    apiLog.setStatus(status);
+                }
+            } catch (Exception e) {
+                LOG.warn("api find status error : {}", e.getMessage());
+                apiLog.setStatus(false);
+            }
+            try {
                 if (myLog.logResultData()) {
-                    if (rvt instanceof String || rvt instanceof Integer) {
-                        apiLog.setStatus(true);
-                    } else if (rvt instanceof List) {
-                        apiLog.setStatus(true);
-                    } else {
-                       try {
-                           Boolean status = (Boolean)JsonUtils.objectToMap(rvt).getOrDefault("success",false);
-                           apiLog.setStatus(status);
-                       }catch (Exception e){
-                           LOG.warn("api find status error : {}", e.getMessage());
-                           apiLog.setStatus(false);
-                       }
-                    }
                     apiLog.setOutParams(JsonUtils.toJson(rvt));
                 } else {
-                    apiLog.setStatus(true);
                     apiLog.setOutParams("");
                 }
-
             } catch (Exception e) {
-                LOG.error("解析结果失败", e);
-                apiLog.setStatus(false);
+                LOG.error("", e);
+                LOG.warn("api find out params  resolver error : {}", e.getMessage());
                 apiLog.setOutParams("");
             }
         } else {
@@ -178,7 +177,7 @@ public class ApiLogAspectSave {
 
         /*inParams    输入 */
 
-        if ( myLog.logArgs()) {
+        if (myLog.logArgs()) {
             //请求的参数
             Object[] args = joinPoint.getArgs();
             //将参数所在的数组转换成json
