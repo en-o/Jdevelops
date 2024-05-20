@@ -76,6 +76,7 @@
     <modules>
         <module>jdevelops-apis-result</module>
         <module>jdevelops-apis-exception</module>
+        <module>jdevelops-apis-log</module>
     </modules>
 
 
