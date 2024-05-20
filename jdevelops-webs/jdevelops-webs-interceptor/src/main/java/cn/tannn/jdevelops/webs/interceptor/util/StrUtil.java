@@ -12,8 +12,8 @@ public class StrUtil {
      */
     public  static boolean isNull(StringBuilder sb){
         return sb.length() <= 0
-                || "null".equals(sb.toString())
-                || "".equals(sb.toString());
+                || "null".contentEquals(sb)
+                || "".contentEquals(sb);
     }
 
 

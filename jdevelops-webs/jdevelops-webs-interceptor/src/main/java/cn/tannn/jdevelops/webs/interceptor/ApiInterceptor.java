@@ -36,6 +36,7 @@ public interface ApiInterceptor  {
      * @param request 请求对象
      * @param response 响应对象
      * @param handler 被调用的处理器对象，本质是一个方法对象，对反射中的Method对象进行了再包装，对方法进行封装加强，操作原始对象
+     * @param modelAndView modelAndView
      * @throws Exception Exception
      */
     default void after(HttpServletRequest request,
