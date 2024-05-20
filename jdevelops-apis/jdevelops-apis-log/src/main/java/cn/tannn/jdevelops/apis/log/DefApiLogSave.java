@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.apis.log;
 
-import cn.tannn.jdevelops.apis.log.enums.ApiMonitoring;
+import cn.tannn.jdevelops.apis.log.module.ApiMonitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;

@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.apis.log;
 
-import cn.tannn.jdevelops.apis.log.enums.ApiMonitoring;
+import cn.tannn.jdevelops.apis.log.module.ApiMonitoring;
 
 /**
  * 保存接口日志，需要时重写里面的保存方法即可实现数据自定义存入

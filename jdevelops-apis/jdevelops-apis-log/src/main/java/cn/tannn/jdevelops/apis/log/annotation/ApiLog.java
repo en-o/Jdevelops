@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.apis.log.annotation;
 
 
 
-import cn.tannn.jdevelops.apis.log.enums.OperateTypeEnum;
+import cn.tannn.jdevelops.apis.log.constants.OperateType;
 
 import java.lang.annotation.*;
 
@@ -21,9 +21,9 @@ import java.lang.annotation.*;
 public @interface ApiLog {
 
     /**
-     * 操作分类 建议使用 {@link OperateTypeEnum}
+     * 操作分类 建议使用 {@link OperateType}
      */
-    int type() default 0;
+    int type() default OperateType.OTHER;
 
     /**
      * 日志存储需要用的的一些东西，自己设置自己解析

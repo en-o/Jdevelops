@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.apis.log.config;
 
 import cn.tannn.jdevelops.apis.log.ApiLogSave;
 import cn.tannn.jdevelops.apis.log.DefApiLogSave;
+import cn.tannn.jdevelops.apis.log.aspect.ApiLogAspectSave;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,11 @@ public class LogConfiguration {
             matchIfMissing = true)
     public ApiLogSave apiLogSave(){
         return new DefApiLogSave();
+    }
+
+    @Bean
+    public ApiLogAspectSave apiLogAspectSave(ApiLogSave apiLogSave){
+        return new ApiLogAspectSave(apiLogSave);
     }
 
 }

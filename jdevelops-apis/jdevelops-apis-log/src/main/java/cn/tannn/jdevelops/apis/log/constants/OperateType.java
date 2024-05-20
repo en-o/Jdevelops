@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.apis.log.enums;
+package cn.tannn.jdevelops.apis.log.constants;
 
 
 import cn.tannn.jdevelops.apis.log.annotation.ApiLog;
@@ -9,51 +9,39 @@ import cn.tannn.jdevelops.apis.log.annotation.ApiLog;
  * @author tan
  */
 
-public enum OperateTypeEnum {
+public interface OperateType {
 
     /**
      * 查询
      *
      */
-    GET(1),
+    int GET = 1;
     /**
      * 新增
      */
-    CREATE(2),
+    int CREATE = 2;
     /**
      * 修改
      */
-    UPDATE(3),
+    int UPDATE = 3;
     /**
      * 删除
      */
-    DELETE(4),
+    int DELETE = 4;
     /**
      * 导出
      */
-    EXPORT(5),
+    int EXPORT = 5;
     /**
      * 导入
      */
-    IMPORT(6),
+    int IMPORT = 6;
     /**
      * 其它
      *
      * 在无法归类时，可以选择使用其它。因为还有操作名可以进一步标识
      */
-    OTHER(0);
-
-    /**
-     * 类型
-     */
-    private final int type;
+   int OTHER = 0;
 
 
-    public int getType() {
-        return type;
-    }
-
-    OperateTypeEnum(Integer type) {
-        this.type = type;
-    }
 }

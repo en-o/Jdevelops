@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.apis.log.enums;
+package cn.tannn.jdevelops.apis.log.module;
 
 
 /**

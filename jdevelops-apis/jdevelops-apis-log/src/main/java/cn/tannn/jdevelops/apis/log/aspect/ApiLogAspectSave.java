@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.apis.log.aspect;
 
 import cn.tannn.jdevelops.apis.log.ApiLogSave;
 import cn.tannn.jdevelops.apis.log.annotation.ApiLog;
-import cn.tannn.jdevelops.apis.log.enums.ApiMonitoring;
+import cn.tannn.jdevelops.apis.log.module.ApiMonitoring;
 import cn.tannn.jdevelops.apis.log.util.IpUtil;
 import cn.tannn.jdevelops.uitls.aop.JsonUtils;
 import cn.tannn.jdevelops.uitls.aop.reflect.AopReasolver;
@@ -14,8 +14,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -36,18 +34,20 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
 @Aspect
-@Component
 public class ApiLogAspectSave {
 
     private static final Logger LOG = LoggerFactory.getLogger("APILOG");
 
-    @Autowired
-    private ApiLogSave apiLogSave;
+    private final ApiLogSave apiLogSave;
 
     /**
      * 表达式 异常时用
      */
     String expressionError = "";
+
+    public ApiLogAspectSave(ApiLogSave apiLogSave) {
+        this.apiLogSave = apiLogSave;
+    }
 
 
     /**
