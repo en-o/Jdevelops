@@ -1,10 +1,12 @@
 package cn.tannn.jdevelops.apis.log;
 
 
+import cn.tannn.jdevelops.apis.log.annotation.ApiLog;
 import cn.tannn.jdevelops.apis.log.constants.ApiLogConstants;
 import cn.tannn.jdevelops.apis.log.module.LoggerPrint;
 import cn.tannn.jdevelops.apis.log.util.IpUtil;
 import cn.tannn.jdevelops.webs.interceptor.ApiBeforeInterceptor;
+import cn.tannn.jdevelops.webs.interceptor.util.HandlerUtil;
 import cn.tannn.jdevelops.webs.interceptor.util.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.core.annotation.Order;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 全局打印接口日志
@@ -37,6 +40,9 @@ public class GlobalApiLogPrint implements ApiBeforeInterceptor {
         //获取请求参数
         LoggerPrint loggerPrint = null;
         try {
+            if(HandlerUtil.methodAnnotation(handler, ApiLog.class).isPresent()){
+                return true;
+            }
             // 不拦截这个页面
             if(request.getRequestURI().contains(ApiLogConstants.ERROR_PAGE)){
                 return true;
