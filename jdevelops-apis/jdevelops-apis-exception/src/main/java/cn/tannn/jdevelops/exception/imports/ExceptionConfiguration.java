@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.exception.imports;
 
 import cn.tannn.jdevelops.exception.ControllerExceptionHandler;
+import cn.tannn.jdevelops.exception.aspect.ExceptionAspect;
 import cn.tannn.jdevelops.exception.config.ExceptionConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,6 +31,11 @@ public class ExceptionConfiguration {
     @ConditionalOnMissingBean(name = "controllerExceptionHandler")
     public ControllerExceptionHandler controllerExceptionHandler () {
        return new ControllerExceptionHandler();
+    }
+
+    @Bean
+    public ExceptionAspect exceptionAspect () {
+        return new ExceptionAspect();
     }
 
 }

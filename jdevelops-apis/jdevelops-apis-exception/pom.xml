@@ -22,6 +22,11 @@
             <version>${jdevelops.apis.version}</version>
         </dependency>
         <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-utils-aop</artifactId>
+            <version>${jdevelops.utils.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
