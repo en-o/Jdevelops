@@ -51,6 +51,11 @@ public @interface ApiLog {
      */
     boolean enable() default true;
     /**
+     * 是否影响 GlobalApiLogPrint, false 不影响，true GlobalApiLogPrint 不在工作
+     */
+        boolean consolEenable() default true;
+
+    /**
      * 是否记录方法参数 ,false 不记录
      */
     boolean logArgs() default true;

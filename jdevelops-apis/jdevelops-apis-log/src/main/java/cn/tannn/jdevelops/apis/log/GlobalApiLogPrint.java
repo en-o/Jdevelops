@@ -40,13 +40,19 @@ public class GlobalApiLogPrint implements ApiBeforeInterceptor {
         //获取请求参数
         LoggerPrint loggerPrint = null;
         try {
-            if(HandlerUtil.methodAnnotation(handler, ApiLog.class).isPresent()){
-                return true;
-            }
             // 不拦截这个页面
             if(request.getRequestURI().contains(ApiLogConstants.ERROR_PAGE)){
                 return true;
             }
+            try {
+                Optional<ApiLog> apiLog = HandlerUtil.methodAnnotation(handler, ApiLog.class);
+                if(apiLog.isPresent() && apiLog.get().enable() && apiLog.get().consolEenable()){
+                    return true;
+                }
+            }catch (Exception e){
+                logger.error("ApiLog注解查询失败 {}", e.getMessage());
+            }
+
             String requestParams = RequestUtil.requestParams(request);
             loggerPrint = new LoggerPrint(IpUtil.httpRequestIp(request),
                     request.getRequestURL().toString(),request.getMethod(), requestParams, System.currentTimeMillis());
