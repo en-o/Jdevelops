@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * 项目接口的归属
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/10/31 12:18
  */
 @Target({ElementType.METHOD,ElementType.TYPE})

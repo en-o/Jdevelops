@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * 排序
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午11:00
  */
 @Schema(description = "排序参数")

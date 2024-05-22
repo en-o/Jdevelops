@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.result.utils;
 /**
  * string
  *
- * @author <a href="https://tannn.cn/">tan</a>, org.apache.commons.lang3
+ * @author <a href="https://t.tannn.cn/">tan</a>, org.apache.commons.lang3
  * @date 2024/5/8 上午11:10
  */
 public class StrUtils {

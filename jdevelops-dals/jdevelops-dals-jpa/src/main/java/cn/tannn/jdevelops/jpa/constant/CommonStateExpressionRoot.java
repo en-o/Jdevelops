@@ -5,7 +5,7 @@ package cn.tannn.jdevelops.jpa.constant;
  * 自定义扩展 root
  * <p> 使用示例 @Query("select o from User o where o.gender = :#{woman} ")
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/11/16 14:36
  */
 public class CommonStateExpressionRoot {

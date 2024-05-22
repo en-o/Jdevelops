@@ -6,7 +6,7 @@ import cn.tannn.jdevelops.result.exception.ExceptionCode;
 /**
  * 公共的错误code
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2023-03-19 14:13
  */

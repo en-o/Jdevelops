@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.annotations.es.constant;
 /**
  * 时间格式
  * {@link https://www.elastic.co/guide/en/elasticsearch/reference/8.9/date.html}
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/9/21 14:26
  */
 public interface EsTypeDataFormat {

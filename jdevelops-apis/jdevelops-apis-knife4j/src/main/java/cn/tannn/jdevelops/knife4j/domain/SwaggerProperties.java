@@ -174,7 +174,7 @@ public class SwaggerProperties {
 
     public String getUrl() {
         if(Objects.isNull(url)){
-            return "https://tannn.cn/";
+            return "https://t.tannn.cn/";
         }
         return url;
     }
@@ -207,7 +207,7 @@ public class SwaggerProperties {
 
     public String getLicenseUrl() {
         if(Objects.isNull(licenseUrl)){
-            return "https://tannn.cn/";
+            return "https://t.tannn.cn/";
         }
         return licenseUrl;
     }

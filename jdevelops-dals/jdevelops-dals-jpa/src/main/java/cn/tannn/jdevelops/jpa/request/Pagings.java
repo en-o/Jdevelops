@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 /**
  * 分页JPA扩展
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午10:59
  */
 @Schema(description = "Jpa分页参数")

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 分页JPA扩展
- * @author <a href="https://tannn.cn/">tnnn</a>
+ * @author <a href="https://t.tannn.cn/">tnnn</a>
  * @version V1.0
  * @date 2024/5/12 下午12:16
  */

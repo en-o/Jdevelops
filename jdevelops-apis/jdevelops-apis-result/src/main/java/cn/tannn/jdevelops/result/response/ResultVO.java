@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 /**
  * 常规接口返回类
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午10:58
  */
 @Schema(description = "全局返回对象")
