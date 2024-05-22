@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.knife4j.core.entity.BuildSecuritySchemes;
 import cn.tannn.jdevelops.knife4j.core.entity.SwaggerSecurityScheme;
 import cn.tannn.jdevelops.knife4j.core.util.RandomUtil;
 import cn.tannn.jdevelops.knife4j.domain.SwaggerProperties;
+import com.github.xiaoymin.knife4j.spring.extension.Knife4jOpenApiCustomizer;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -49,6 +51,7 @@ public class SwaggerConfig {
      * @return the global open api customizer
      */
     @Bean
+//    @ConditionalOnMissingBean(Knife4jOpenApiCustomizer.class)
     public GlobalOpenApiCustomizer orderGlobalOpenApiCustomizer() {
         return openApi -> {
             if (openApi.getTags() != null) {

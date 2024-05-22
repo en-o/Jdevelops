@@ -118,7 +118,7 @@ public class SwaggerProperties {
 
     public List<String> getBasePackage() {
         if(Objects.isNull(basePackage)){
-            return Collections.singletonList("cn.jdevelops.controller");
+            return Collections.singletonList("cn.tannn.jdevelops.controller");
         }
         return basePackage;
     }
