@@ -22,12 +22,6 @@
             <version>2.2.3</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>cn.tannn.jdevelops</groupId>
-            <artifactId>jdevelops-apis-result</artifactId>
-            <version>${jdevelops.apis.version}</version>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
 
