@@ -12,6 +12,6 @@
 > 接口调用日志
 
 
-## [jdevelops-apis-knife4j](jdevelops-apis-knife4j/📃 knife4j 二次封装.md)
+## [jdevelops-apis-knife4j](jdevelops-apis-knife4j/knife4j二次封装.md)
 > knife4j 二次封装
 
