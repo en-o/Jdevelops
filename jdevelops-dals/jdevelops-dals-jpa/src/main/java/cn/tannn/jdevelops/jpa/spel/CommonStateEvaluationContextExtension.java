@@ -11,7 +11,7 @@ import org.springframework.data.spel.spi.EvaluationContextExtension;
  * @see jpa repository https://github.com/spring-projects/spring-data-examples/blob/main/jpa/security/src/main/java/example/springdata/jpa/security/SecureBusinessObjectRepository.java
  *
  * @see EvaluationContextExtension
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/11/16 13:56
  */
 public class CommonStateEvaluationContextExtension implements EvaluationContextExtension {

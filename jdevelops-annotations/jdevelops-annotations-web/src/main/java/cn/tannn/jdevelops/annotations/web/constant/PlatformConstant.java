@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 谁生成的jwt [前端系统平台]
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/10/31 9:32
  */
 public enum PlatformConstant {

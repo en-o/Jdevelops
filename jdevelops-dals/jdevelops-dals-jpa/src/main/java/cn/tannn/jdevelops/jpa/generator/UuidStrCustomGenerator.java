@@ -21,7 +21,7 @@ import java.io.Serializable;
  * </code>
  *
  * <p>https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#identifiers-generators-GenericGenerator
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/4/15 9:42
  */
 public class UuidStrCustomGenerator implements IdentifierGenerator {

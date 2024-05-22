@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.annotations.es.constant;
 /**
  * ES dynamic
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/9/2114:36
  */
 public enum EsDynamic {

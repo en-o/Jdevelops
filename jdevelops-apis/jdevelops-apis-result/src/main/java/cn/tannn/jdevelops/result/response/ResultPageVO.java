@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * 分页接口返回类
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午10:59
  */
 @Schema(description = "分页全局结果集")

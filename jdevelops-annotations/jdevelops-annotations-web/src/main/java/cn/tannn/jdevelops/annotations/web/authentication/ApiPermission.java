@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 接口权限
  * ps 参数为空则就会不严重
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/7/12 13:33
  */
 @Target(ElementType.METHOD)

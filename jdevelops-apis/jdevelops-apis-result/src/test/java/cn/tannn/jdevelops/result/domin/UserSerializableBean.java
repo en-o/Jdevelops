@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.result.domin;
 import cn.tannn.jdevelops.result.bean.SerializableBean;
 
 /**
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 下午2:35
  */
 public class UserSerializableBean extends SerializableBean<UserSerializableBean> {

@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.annotations.es.constant;
 /**
  * 索引创建的模式
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2023/9/25 10:37
  */
 public enum EsDdlAuto {

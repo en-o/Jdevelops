@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * 分页参数
  *
- * @author <a href="https://tannn.cn/">tan</a>
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午10:59
  */
 @Schema(description = "分页参数")

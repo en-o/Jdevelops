@@ -1,6 +1,6 @@
 <div style="text-align: center;">
 	<a href="https://www.yuque.com/tanning/yg9ipo"  target="_blank">
-	    <img src="https://tannn.cn/images/myProj/Jdevelop.png" width="400" alt="Jdevelop">
+	    <img src="https://t.tannn.cn/images/myProj/Jdevelop.png" width="400" alt="Jdevelop">
 	</a>
 </div>
 <div style="text-align: center;">
