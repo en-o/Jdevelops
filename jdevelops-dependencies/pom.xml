@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-build</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
