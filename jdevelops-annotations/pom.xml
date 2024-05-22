@@ -8,7 +8,6 @@
         <artifactId>jdevelops-build</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-annotations</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -64,7 +63,6 @@
         <jdevelops.apis.version>${revision}</jdevelops.apis.version>
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
-        <spring.boot.version>2.7.15</spring.boot.version>
         <spring.cloud.commons.version>3.0.5</spring.cloud.commons.version>
 
         <!--json-->

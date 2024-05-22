@@ -8,7 +8,6 @@
         <artifactId>jdevelops-build</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-utils</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>

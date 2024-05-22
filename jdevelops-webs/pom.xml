@@ -8,7 +8,6 @@
         <artifactId>jdevelops-build</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-webs</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -54,10 +53,7 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.webs.version>${revision}</jdevelops.webs.version>
-        <!-- spring  -->
-        <spring.boot.version>2.7.15</spring.boot.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-
         <!--json-->
         <fastjson.version>2.0.35</fastjson.version>
         <jackson.version>2.14.0</jackson.version>
