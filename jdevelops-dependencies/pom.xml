@@ -109,6 +109,11 @@
                 <artifactId>jdevelops-apis-log</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-knife4j</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
             <!-- dal -->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
