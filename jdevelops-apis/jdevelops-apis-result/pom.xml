@@ -43,6 +43,14 @@
                     <groupId>cn.hutool</groupId>
                     <artifactId>hutool-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-lang3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -73,6 +81,11 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>commons-lang3</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <version>${lang3.version}</version>
         </dependency>
     </dependencies>
 

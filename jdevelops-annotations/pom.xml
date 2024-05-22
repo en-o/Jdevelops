@@ -66,10 +66,10 @@
         <spring.cloud.commons.version>3.0.5</spring.cloud.commons.version>
 
         <!--json-->
-        <jackson.version>2.14.0</jackson.version>
+        <jackson.version>2.16.2</jackson.version>
 
         <!-- 其他 -->
-        <swagger.v3.version>2.2.8</swagger.v3.version>
+        <swagger.v3.version>2.2.21</swagger.v3.version>
 
         <!--监控-->
         <skywalking.version>9.2.0</skywalking.version>
