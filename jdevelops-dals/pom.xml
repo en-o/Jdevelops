@@ -3,7 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-build</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-dals</artifactId>
     <version>${revision}</version>
@@ -56,16 +60,7 @@
         <spring.boot.version>2.7.15</spring.boot.version>
         <mysql.version>8.0.33</mysql.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <!-- JDK -->
-        <java.version>1.8</java.version>
-        <!-- 编译 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-<!--        <maven.compiler.release>8</maven.compiler.release>-->
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <flatten_maven.version>1.5.0</flatten_maven.version>
+
 
         <!--json-->
         <jackson.version>2.14.0</jackson.version>
@@ -80,7 +75,6 @@
     </properties>
 
     <modules>
-
         <module>jdevelops-dals-jpa</module>
     </modules>
 
@@ -111,195 +105,5 @@
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
-
-
-    <build>
-        <plugins>
-            <!-- revsion 版本处理-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>${flatten_maven.version}</version>
-                <configuration>
-                    <!--插件默认只会处理packaging属性为非pom的，如果要处理packaging为pom的，可将本属性值设置为true -->
-                    <updatePomFile>true</updatePomFile>
-                    <!--插件预定义了若干种压缩模式-->
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                        <configuration>
-                            <!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
-                            <updatePomFile>true</updatePomFile>
-                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                            <pomElements>
-                                <parent>expand</parent>
-                                <distributionManagement>remove</distributionManagement>
-                                <repositories>remove</repositories>
-                            </pomElements>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- 编译的时候指定JDK和编码 ,-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source> <!-- 源代码使用的JDK版本 -->
-                    <target>${java.version}</target> <!-- 需要生成的目标class文件的编译版本 -->
-                    <encoding>${project.build.sourceEncoding}</encoding> <!-- 字符集编码 -->
-                    <showWarnings>true</showWarnings><!--设置为true以显示编译警告-->
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-configuration-processor</artifactId>
-                            <version>${spring.boot.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <!-- 将源码一并打包 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version>
-                <inherited>true</inherited>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludeResources>true</excludeResources>
-                    <useDefaultExcludes>true</useDefaultExcludes>
-                </configuration>
-            </plugin>
-            <!-- Javadoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
-                    <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>
-                    <maxmemory>1024</maxmemory>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <docencoding>${project.build.sourceEncoding}</docencoding>
-                    <charset>${project.build.sourceEncoding}</charset>
-                    <docencoding>${project.build.sourceEncoding}</docencoding>
-                    <show>protected</show>
-                    <notree>true</notree>
-                    <failOnError>false</failOnError>
-                    <doclint>none</doclint>
-                    <tags>
-                        <tag>
-                            <name>description</name>
-                            <placement>a</placement>
-                            <head>描述: </head>
-                        </tag>
-                        <tag>
-                            <name>return</name>
-                            <placement>a</placement>
-                            <head>return: </head>
-                        </tag>
-                        <tag>
-                            <name>ClassName</name>
-                            <placement>a</placement>
-                            <head>类名: </head>
-                        </tag>
-                        <tag>
-                            <name>link</name>
-                            <placement>a</placement>
-                            <head>外链: </head>
-                        </tag>
-                        <tag>
-                            <head>参数</head>
-                            <name>param: </name>
-                            <placement>a</placement>
-                        </tag>
-                        <tag>
-                            <name>date</name>
-                            <placement>a</placement>
-                            <head>时间: </head>
-                        </tag>
-                        <tag>
-                            <name>author</name>
-                            <placement>a</placement>
-                            <head>作者: </head>
-                        </tag>
-                    </tags>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>bundle-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-
-
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <!-- 中央仓库 https://central.sonatype.org/publish/publish-portal-maven/ -->
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.4.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <publishingServerId>central</publishingServerId>
-                            <tokenAuth>true</tokenAuth>
-                            <!-- 自动提交 ，不写就自己去web手动点击-->
-                            <autoPublish>true</autoPublish>
-                            <deploymentName>jdevelops-dals</deploymentName>
-                        </configuration>
-                    </plugin>
-                    <!-- gpg -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
