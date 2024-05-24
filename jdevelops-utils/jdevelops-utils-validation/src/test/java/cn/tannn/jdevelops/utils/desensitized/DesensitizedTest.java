@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.utils.desensitized;
 
 
-import cn.tannn.jdevelops.utils.validation.model.ValidationResultBean;
+import cn.tannn.jdevelops.utils.model.ValidationResultBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

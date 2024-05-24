@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.utils.validation.validation;
 
 
 import cn.tannn.jdevelops.utils.validation.BeastValidatedTest;
-import cn.tannn.jdevelops.utils.validation.model.ValidationUserBean;
+import cn.tannn.jdevelops.utils.model.ValidationUserBean;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;

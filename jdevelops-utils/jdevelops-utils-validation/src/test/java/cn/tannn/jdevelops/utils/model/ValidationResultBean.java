@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.utils.validation.model;
+package cn.tannn.jdevelops.utils.model;
 
 import cn.tannn.jdevelops.utils.desensitized.annotation.Cover;
 import cn.tannn.jdevelops.utils.desensitized.enums.CoverRuleEnum;
