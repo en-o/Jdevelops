@@ -73,6 +73,7 @@
 
     <modules>
         <module>jdevelops-utils-aop</module>
+        <module>jdevelops-utils-validation</module>
     </modules>
 
 
