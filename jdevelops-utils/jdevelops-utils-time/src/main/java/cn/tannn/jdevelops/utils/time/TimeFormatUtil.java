@@ -42,6 +42,19 @@ public class TimeFormatUtil {
     }
 
     /**
+     * yyyy-MM-dd HH:mm:ss字符串格式转另一种字符串格式
+     *
+     * @param defTimeStr          待转格式的时间字符串
+     * @param newTimeFormat 新的格式
+     * @return timeStr
+     */
+    public static String str2StrTime(String defTimeStr, TimeFormatEnum newTimeFormat) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(TimeFormat.DEFAULT_FORMAT_DATETIME);
+        DateTime parse = DateTime.parse(defTimeStr, formatter);
+        return parse.toString(newTimeFormat.getFormat());
+    }
+
+    /**
      * 默认格式转 util.Date
      *
      * @param timeStr yyyy-MM-dd HH:mm:ss
@@ -117,11 +130,11 @@ public class TimeFormatUtil {
      * @param timestamp Timestamp
      * @return java.time.LocalDateTime
      */
-    public static java.time.LocalDateTime localDateTimeToDate(Timestamp timestamp) {
+    public static java.time.LocalDateTime timestampToLocalDateTime(Timestamp timestamp) {
         return timestamp.toLocalDateTime();
     }
     /**
-     * joda.time.LocalDateTime  转化成  java.time.LocalDateTime
+     * org.joda.time.LocalDateTime 转化成  java.time.LocalDateTime
      *
      * @param localDateTime joda.time.LocalDateTime
      * @return java.time.LocalDateTime
@@ -138,7 +151,7 @@ public class TimeFormatUtil {
      * @param defTimeStr yyyy-MM-dd HH:mm:ss
      * @return java.time.LocalDateTime
      */
-    public static java.time.LocalDateTime str2LocalDate(String defTimeStr) {
+    public static java.time.LocalDateTime str2LocalDateTime(String defTimeStr) {
         java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(TimeFormat.DEFAULT_FORMAT_DATETIME);
         return java.time.LocalDateTime.parse(defTimeStr, df);
     }
@@ -150,7 +163,7 @@ public class TimeFormatUtil {
      * @param format      时间字符串的格式
      * @return java.time.LocalDateTime
      */
-    public static java.time.LocalDateTime str2LocalDate(String strDateTime, String format) {
+    public static java.time.LocalDateTime str2LocalDateTime(String strDateTime, String format) {
         java.time.format.DateTimeFormatter df = java.time.format.DateTimeFormatter.ofPattern(format);
         return java.time.LocalDateTime.parse(strDateTime, df);
     }
@@ -158,7 +171,7 @@ public class TimeFormatUtil {
 
 
     /**
-     * LocalDate 转 Date
+     * java.time.LocalDate 转 java.time.Date
      * @param localDate LocalDate
      * @return Date
      */
@@ -172,7 +185,7 @@ public class TimeFormatUtil {
      * @param localDateTime java.time.LocalDateTime
      * @return java.util.Date
      */
-    public static Date localDateTimeToDate(java.time.LocalDateTime localDateTime) {
+    public static Date LocalDateTimeToDate(java.time.LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
@@ -236,15 +249,6 @@ public class TimeFormatUtil {
         return localDateTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    /**
-     * 得到当前时间的默认格式
-     *
-     * @return yyyy-MM-dd HH:mm:ss
-     */
-    public static String time2DefaultFormat() {
-        return DateTime.now().toString(TimeFormat.DEFAULT_FORMAT_DATETIME);
-    }
-
 
     /**
      * 去除字符串时间的"-",返回格式"yyMMdd"
@@ -265,7 +269,7 @@ public class TimeFormatUtil {
      * @return 所有时间格式
      * @throws IllegalAccessException 非法
      */
-    static List<String> getJavaTimeFormat() throws IllegalAccessException {
+    static List<String> javaTimeFormats() throws IllegalAccessException {
         List<String> list = new ArrayList<>();
         Field[] fields = TimeFormat.class.getFields();
         for (Field f : fields) {
@@ -281,7 +285,7 @@ public class TimeFormatUtil {
      * @return 所有时间格式
      * @throws IllegalAccessException 非法
      */
-    static List<String> getSqlTimeFormat() throws IllegalAccessException {
+    static List<String> sqlTimeFormats() throws IllegalAccessException {
         List<String> list = new ArrayList<>();
         Field[] fields = SqlTimeFormat.class.getFields();
         for (Field f : fields) {
@@ -298,7 +302,7 @@ public class TimeFormatUtil {
      * @return 所有时间格式
      * @throws IllegalAccessException 非法
      */
-    static List<String> getMySqlFormat() throws IllegalAccessException {
+    static List<String> mySqlFormats() throws IllegalAccessException {
         List<String> list = new ArrayList<>();
         Field[] fields = SqlTimeFormat.class.getFields();
         for (Field f : fields) {
