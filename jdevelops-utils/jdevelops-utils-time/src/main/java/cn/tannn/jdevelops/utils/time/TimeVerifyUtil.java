@@ -6,8 +6,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -22,6 +20,7 @@ public class TimeVerifyUtil {
 
     /**
      * 验证 开始时间 大于等于 结束时间
+     *
      * @param begin 开始
      * @param end   结束
      * @return true 大于(等于)  ， false 小于
@@ -34,8 +33,9 @@ public class TimeVerifyUtil {
     /**
      * 验证 开始时间 大于等于 结束时间
      * ps：默认字符串时间格式
-     * @param defTimeFormatBegin      开始 "2021-10-21 13:24:30"
-     * @param defTimeFormatBeginEnd   结束 "2021-10-21 13:24:30"
+     *
+     * @param defTimeFormatBegin    开始 "2021-10-21 13:24:30"
+     * @param defTimeFormatBeginEnd 结束 "2021-10-21 13:24:30"
      * @return true 大于(等于)  ， false 小于
      */
     public static boolean beginGteEnd(String defTimeFormatBegin,
@@ -51,6 +51,7 @@ public class TimeVerifyUtil {
 
     /**
      * 验证 开始时间 大于 结束时间
+     *
      * @param begin 开始
      * @param end   结束
      * @return true 大于 ， false 小于（等于）
@@ -63,9 +64,10 @@ public class TimeVerifyUtil {
     /**
      * 验证 开始时间 大于 结束时间
      * ps：默认字符串时间格式
-     * @param defTimeFormatBegin      开始 "2021-10-21 13:24:30"
-     * @param defTimeFormatBeginEnd   结束 "2021-10-21 13:24:30"
-     * @return  true 大于 ， false 小于（等于）
+     *
+     * @param defTimeFormatBegin    开始 "2021-10-21 13:24:30"
+     * @param defTimeFormatBeginEnd 结束 "2021-10-21 13:24:30"
+     * @return true 大于 ， false 小于（等于）
      */
     public static boolean beginGtEnd(String defTimeFormatBegin,
                                      String defTimeFormatBeginEnd) {
@@ -102,9 +104,9 @@ public class TimeVerifyUtil {
     }
 
 
-
     /**
      * 验证闰年
+     *
      * @return true 闰年
      */
     public static boolean verifyLeapYear() {
@@ -116,6 +118,7 @@ public class TimeVerifyUtil {
 
     /**
      * 验证闰年
+     *
      * @return true 闰年
      */
     public static boolean verifyLeapYear(Date date) {
@@ -126,6 +129,7 @@ public class TimeVerifyUtil {
 
     /**
      * 验证闰年
+     *
      * @return true 闰年
      */
     public static boolean verifyLeapYear(int year) {
@@ -152,26 +156,6 @@ public class TimeVerifyUtil {
         } catch (Exception e) {
             return false;
         }
-    }
-
-
-    /***
-     *  比较时间先后顺序，a<b,return true
-     *@date 2020/6/5
-     *@param  aTime （HH:mm）, bTime（HH:mm）
-     *@return java.lang.Boolean
-     */
-    public static Boolean checkTimeBefore(String aTime, String bTime) throws ParseException {
-
-        if (aTime.length() != bTime.length() || aTime.length() != 5) {
-            throw new NullPointerException("时间格式不正确");
-        } else {
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-            Date asd = df.parse(aTime);
-            Date bsd = df.parse(bTime);
-            return asd.before(bsd);
-        }
-
     }
 
 }
