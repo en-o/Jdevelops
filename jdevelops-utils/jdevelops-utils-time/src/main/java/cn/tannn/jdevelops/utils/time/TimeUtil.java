@@ -7,7 +7,6 @@ import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -50,7 +49,22 @@ public class TimeUtil {
         return DateTime.now().toString(TimeFormat.EN_FORMAT_DATETIME_SECOND);
     }
 
+    /**
+     * 计算时间差
+     *
+     * @param beginTime  开始时间 yyyy-MM-dd HH:mm:ss
+     * @param endTime    结束时间 yyyy-MM-dd HH:mm:ss
+     * @param returnTime 输出类型 0：天，1:小时，2:分钟，3：秒，4：毫秒
+     */
+    public static Long timeDifference(String beginTime,
+                                      String endTime,
+                                      Integer returnTime) {
 
+        return timeDifference(beginTime
+                , TimeFormatEnum.DEFAULT_FORMAT_DATETIME
+                , endTime, TimeFormatEnum.DEFAULT_FORMAT_DATETIME
+                , returnTime);
+    }
 
     /**
      * 计算时间差
@@ -98,19 +112,17 @@ public class TimeUtil {
     }
 
 
-
     /**
-     * 获取指定月份的以周分组的结果集
+     * 获取指定[yyyy-MM]月份的以周分组的结果集
      *
      * @param times 指定 月份  eg：2021-05
      * @return Map
      */
-    public static Map<Integer, List<String>> getMonthForWeek(String times) throws ParseException {
+    public static Map<Integer, List<String>> monthForWeek(String times) throws ParseException {
         Map<Integer, List<String>> map = new HashMap<>(10);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cBegin = new GregorianCalendar();
         Calendar cEnd = new GregorianCalendar();
-        DateFormatSymbols dfs = new DateFormatSymbols();
         cBegin.setTime(sdf.parse(times + "-01"));
         cEnd.setTime(sdf.parse(endMonth(times)));
         //  c_begin.set(2019, 3, 2); //Calendar的月从0-11，所以4月是3.
@@ -139,14 +151,14 @@ public class TimeUtil {
     }
 
 
-
     /**
      * 获取指定年份的第一天日期
+     *
      * @param year           指定年份
-     * @param timeFormatEnum 指定时间格式
-     * @return {String}   yy-mm-dd 00:00:00
+     * @param timeFormatEnum 指定返回的时间格式
+     * @return {String}   timeFormatEnum
      */
-    public static String getYearFirst(int year, TimeFormatEnum timeFormatEnum) {
+    public static String yearFirstTime(int year, TimeFormatEnum timeFormatEnum) {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(Calendar.YEAR, year);
@@ -161,7 +173,7 @@ public class TimeUtil {
      * @param timeFormatEnum 指定返回时间格式
      * @return {String}   timeFormatEnum
      */
-    public static String getYearLast(int year, TimeFormatEnum timeFormatEnum) {
+    public static String yearLastTime(int year, TimeFormatEnum timeFormatEnum) {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(Calendar.YEAR, year);
@@ -182,25 +194,26 @@ public class TimeUtil {
      * @param format 返回格式
      * @return String
      */
-    public static String getTimeBeginAfterTime(final Integer hour, final TimeFormat format) {
-        return DateTime.now().plusHours(hour).toString(format.toString());
+    public static String nowBeginAfterTime(final Integer hour, final TimeFormatEnum format) {
+        return DateTime.now().plusHours(hour).toString(format.getFormat());
     }
 
     /**
      * *  获取指定时间的前 后N小时
      *
-     * @param time      +后 -前 N小时 (1-24之间)
+     * @param time      inFormat TIME STR
+     * @param hour      +后 -前 N小时 (1-24之间)
      * @param inFormat  指定的时间的格式
      * @param outFormat 时间返回格式
      * @return String
      */
-    public static String getTimeBeginAfterTime(final String time,
-                                               final Integer hour,
-                                               final TimeFormat inFormat,
-                                               final TimeFormat outFormat) {
-        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(inFormat.toString());
+    public static String nowBeginAfterTime(final String time,
+                                           final Integer hour,
+                                           final TimeFormatEnum inFormat,
+                                           final TimeFormatEnum outFormat) {
+        org.joda.time.format.DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(inFormat.getFormat());
         DateTime dateTime = DateTime.parse(time, dateTimeFormatter);
-        return dateTime.plusHours(hour).toString(outFormat.toString());
+        return dateTime.plusHours(hour).toString(outFormat.getFormat());
     }
 
 
