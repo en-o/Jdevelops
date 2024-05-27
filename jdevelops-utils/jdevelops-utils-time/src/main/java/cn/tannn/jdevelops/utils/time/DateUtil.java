@@ -29,7 +29,7 @@ public class DateUtil {
     /**
      * 昨天
      *
-     * @return 昨天
+     * @return 昨天 2024-05-26T09:04:51.404+08:00
      */
     public static DateTime yesterday() {
         return DateTime.now().plusDays(-1);
@@ -37,7 +37,7 @@ public class DateUtil {
 
     /**
      * 明天
-     * @return 明天
+     * @return 明天 2024-05-28T09:05:37.500+08:00
      */
     public static DateTime tomorrow() {
         return DateTime.now().plusDays(1);
@@ -137,7 +137,7 @@ public class DateUtil {
      * @param yearMonth yyyy-MM
      * @return String
      */
-    public static String getLastDayOfMonth(String yearMonth) {
+    public static String endMonth(String yearMonth) {
         int year = Integer.parseInt(yearMonth.split("-")[0]);
         int month = Integer.parseInt(yearMonth.split("-")[1]);
         Calendar cal = Calendar.getInstance();

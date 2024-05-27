@@ -12,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static cn.tannn.jdevelops.utils.time.DateUtil.getLastDayOfMonth;
+import static cn.tannn.jdevelops.utils.time.DateUtil.endMonth;
 
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>
@@ -112,7 +112,7 @@ public class TimeUtil {
         Calendar cEnd = new GregorianCalendar();
         DateFormatSymbols dfs = new DateFormatSymbols();
         cBegin.setTime(sdf.parse(times + "-01"));
-        cEnd.setTime(sdf.parse(getLastDayOfMonth(times)));
+        cEnd.setTime(sdf.parse(endMonth(times)));
         //  c_begin.set(2019, 3, 2); //Calendar的月从0-11，所以4月是3.
         //  c_end.set(2019, 3, 29); //Calendar的月从0-11，所以5月是4.
 
