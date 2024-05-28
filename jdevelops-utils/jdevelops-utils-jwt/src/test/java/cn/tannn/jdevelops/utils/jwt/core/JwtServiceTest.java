@@ -1,10 +1,14 @@
 package cn.tannn.jdevelops.utils.jwt.core;
 
+import cn.tannn.jdevelops.utils.jwt.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.module.LoginJwtExtendInfo;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
+import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,20 +35,19 @@ class JwtServiceTest {
         assertTrue(JwtService.validateTokenByBoolean(dasda));
     }
 
+
     @Test
-    void validateTokenByJwtClaims() {
+    void getSubject() throws MalformedClaimException, JoseException {
+        // token生成
+        String dasda = JwtService.generateToken("dasda");
+        assertEquals("dasda", JwtService.getSubject(dasda));
     }
 
     @Test
-    void refreshToken() {
-    }
-
-    @Test
-    void getSubject() {
-    }
-
-    @Test
-    void getSubjectExpires() {
+    void getSubjectExpires() throws  JoseException {
+        // token生成
+        String dasda = JwtService.generateToken("dasda");
+        assertEquals("dasda", JwtService.getSubjectExpires(dasda));
     }
 
     @Test
@@ -68,19 +71,32 @@ class JwtServiceTest {
                 loginJwtExtendInfoExpires2.toString());
     }
 
+
+
     @Test
-    void getTokenMapByBean() {
+    void getTokenByBean() throws JoseException {
+        SignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity2 =
+                new SignEntity<>("tan",
+                        new LoginJwtExtendInfo<Map<String,String>>("tan","tan","tan",
+                        new HashMap<String,String>(){{
+                            put("key","tan");
+                        }}));
+        String token2 = JwtService.generateToken(signEntity2);
+        assertEquals("LoginJwtExtendInfo{loginName='null', userId='null', userNo='null', userName='null', phone='null', map={\"loginName\":\"tan\",\"userNo\":\"tan\",\"userName\":\"tan\",\"map\":{\"key\":\"tan\"}}}",
+                JwtService.getTokenByBean(token2, LoginJwtExtendInfo.class, HashMap.class).toString());
     }
 
     @Test
-    void getTokenByBean() {
+    void getPlatformConstantExpires() throws JoseException {
+        // token生成
+        String dasda = JwtService.generateToken(new SignEntity("tan", Arrays.asList(PlatformConstant.WEB_ADMIN)));
+        assertEquals(Collections.singletonList(PlatformConstant.WEB_ADMIN), JwtService.getPlatformConstantExpires(dasda));
     }
 
     @Test
-    void getPlatformConstantExpires() {
-    }
-
-    @Test
-    void parseJwt() {
+    void parseJwt() throws MalformedClaimException, JoseException {
+        // token生成
+        String dasda = JwtService.generateToken("dasda");
+        assertEquals("dasda", JwtService.parseJwt(dasda).getSubject());
     }
 }
