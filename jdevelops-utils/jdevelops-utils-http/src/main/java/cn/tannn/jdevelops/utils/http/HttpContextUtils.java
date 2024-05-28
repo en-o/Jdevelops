@@ -98,4 +98,20 @@ public class HttpContextUtils {
 		return (contentType != null) && (contentType.toLowerCase().startsWith(HttpEnum.MULTIPART_PATHSEPARATOR.getCode().toLowerCase()));
 
 	}
+
+
+	/**
+	 * 从 request 获取参数值
+	 * @param request request
+	 * @param param 指定key
+	 * @return String
+	 */
+	public static String getRequestParamValue(HttpServletRequest request,String param) {
+		String token = request.getHeader(param);
+		if (null!=token&& !token.isEmpty()) {
+			return token;
+		}
+		token = request.getParameter(param);
+		return token;
+	}
 }

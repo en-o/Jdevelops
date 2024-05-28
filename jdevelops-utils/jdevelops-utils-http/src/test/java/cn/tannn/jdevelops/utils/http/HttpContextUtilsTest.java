@@ -5,19 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class HttpContextUtilsTest {
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -80,5 +78,10 @@ class HttpContextUtilsTest {
     @Test
     void isMultipartContent() {
         assertFalse(HttpContextUtils.isMultipartContent(request));
+    }
+
+    @Test
+    void getRequestParamValue() {
+        assertEquals("testuser",HttpContextUtils.getRequestParamValue(request,"username"));
     }
 }

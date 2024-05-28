@@ -212,7 +212,7 @@ public class IpUtil {
     /**
      * 获取客户端IP地址
      *
-     * @return String
+     * @return String tan/172.18.96.1
      */
     public static String getIpAddrAndName() throws IOException {
         return InetAddress.getLocalHost().toString();
