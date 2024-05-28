@@ -65,17 +65,21 @@
         <okhttp.version>4.9.3</okhttp.version>
         <swagger.v3.version>2.2.21</swagger.v3.version>
         <hutool.version>5.8.16</hutool.version>
+        <guava.version>31.1-jre</guava.version>
         <commons-logging.version>1.2</commons-logging.version>
-        <junit.version>5.8.1</junit.version>
+
         <!--时间-->
         <joda-time.version>2.12.7</joda-time.version>
         <!--json-->
         <fastjson.version>2.0.50</fastjson.version>
         <jackson.version>2.16.2</jackson.version>
         <gson.version>2.9.1</gson.version>
+        <!--test-->
+        <junit.version>5.8.1</junit.version>
         <!--traceId-->
         <skywalking.version>9.2.0</skywalking.version>
         <tlog.version>1.5.2</tlog.version>
+        <lombok.version>1.18.28</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -220,6 +224,11 @@
                 <artifactId>hutool-core</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
             <!--test-->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -230,6 +239,11 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>4.8.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

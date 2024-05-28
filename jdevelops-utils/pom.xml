@@ -62,6 +62,7 @@
         <module>jdevelops-utils-time</module>
         <module>jdevelops-utils-http</module>
         <module>jdevelops-utils-jwt</module>
+        <module>jdevelops-utils-spring</module>
     </modules>
 
 
