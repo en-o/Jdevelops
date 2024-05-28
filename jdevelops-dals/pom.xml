@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-build</artifactId>
-        <version>0.0.1</version>
+        <artifactId>jdevelops-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdevelops-dals</artifactId>
     <version>${revision}</version>
@@ -57,19 +57,7 @@
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
 
-
-        <!--json-->
-        <jackson.version>2.16.2</jackson.version>
-
-        <!-- 其他 -->
-        <swagger.v3.version>2.2.21</swagger.v3.version>
-
-        <!--监控-->
-        <skywalking.version>9.2.0</skywalking.version>
-        <tlog.version>1.5.2</tlog.version>
-        <commons-logging.version>1.2</commons-logging.version>
     </properties>
 
     <modules>

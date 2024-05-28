@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-build</artifactId>
-        <version>0.0.1</version>
+        <artifactId>jdevelops-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdevelops-webs</artifactId>
     <version>${revision}</version>
@@ -53,19 +53,6 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.webs.version>${revision}</jdevelops.webs.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <!--json-->
-        <fastjson.version>2.0.35</fastjson.version>
-        <jackson.version>2.16.2</jackson.version>
-        <gson.version>2.9.1</gson.version>
-
-        <!-- 其他 -->
-        <swagger.v3.version>2.2.21</swagger.v3.version>
-        <hutool.version>5.8.16</hutool.version>
-        <!--监控-->
-        <skywalking.version>9.2.0</skywalking.version>
-        <tlog.version>1.5.2</tlog.version>
-        <commons-logging.version>1.2</commons-logging.version>
     </properties>
 
     <modules>
