@@ -67,7 +67,7 @@ public final class OkHttpTools {
      *
      * @return the instance
      */
-    public static OkHttpTools Default() {
+    public static OkHttpTools DEF() {
         return OK_HTTP_TOOLS;
     }
 

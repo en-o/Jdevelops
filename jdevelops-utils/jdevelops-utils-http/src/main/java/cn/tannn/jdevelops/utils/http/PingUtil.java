@@ -28,7 +28,7 @@ public class PingUtil {
      */
     public static int ping(String url) {
         try {
-            OkHttpTools.Default().get(url);
+            OkHttpTools.DEF().get(url);
             return 1;
         } catch (Exception e) {
             LOG.error("url调用失败：{}",e.getMessage());
@@ -52,7 +52,7 @@ public class PingUtil {
         Integer vaildState = 2;
 
         try {
-            String context =  OkHttpTools.Default().get(url);
+            String context =  OkHttpTools.DEF().get(url);
             runningState = 1;
             // 词组
             if (contextRule != null && null != contextRule.getRule()) {
