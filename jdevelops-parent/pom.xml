@@ -70,7 +70,7 @@
         <!--时间-->
         <joda-time.version>2.12.7</joda-time.version>
         <!--json-->
-        <fastjson.version>2.0.35</fastjson.version>
+        <fastjson.version>2.0.50</fastjson.version>
         <jackson.version>2.16.2</jackson.version>
         <gson.version>2.9.1</gson.version>
         <!--traceId-->
@@ -145,9 +145,9 @@
                 <version>${webmvc.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${webmvc.version}</version>
             </dependency>
 
             <!--swagger-->
@@ -178,6 +178,7 @@
                 <artifactId>okhttp-sse</artifactId>
                 <version>${okhttp.version}</version>
             </dependency>
+            <!--json-->
             <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
@@ -188,6 +189,17 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>

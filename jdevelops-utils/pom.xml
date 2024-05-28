@@ -53,6 +53,7 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.utils.version>${revision}</jdevelops.utils.version>
+        <jdevelops.apis.version>0.0.1-SNAPSHOT</jdevelops.apis.version>
     </properties>
 
     <modules>
@@ -60,6 +61,7 @@
         <module>jdevelops-utils-validation</module>
         <module>jdevelops-utils-time</module>
         <module>jdevelops-utils-http</module>
+        <module>jdevelops-utils-jwt</module>
     </modules>
 
 
