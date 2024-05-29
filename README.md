@@ -40,6 +40,13 @@
 ## APIS
 1. [💬接口包裹类.md](jdevelops-apis/jdevelops-apis-result/💬接口包裹类.md)
 2. [❌全局异常捕获.md](jdevelops-apis/jdevelops-apis-exception/❌全局异常捕获.md)
+3. [knife4j二次封装.md](jdevelops-apis/jdevelops-apis-knife4j/knife4j二次封装.md)
+4. [🗑️接口调用日志.md](jdevelops-apis-log/🗑️接口调用日志.md)
 
 # DALS
 1. [🧾JPA.md](jdevelops-dals/jdevelops-dals-jpa/🧾JPA.md)
+
+
+# Delays
+1. [🧺Redis延时队列.md](jdevelops-delays-redis/🧺Redis延时队列.md)
+2. [☕JDK延时队列.md](jdevelops-delays-jdk/☕JDK延时队列.md)
