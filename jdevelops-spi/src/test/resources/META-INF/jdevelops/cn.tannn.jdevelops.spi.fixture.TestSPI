@@ -1,0 +1,4 @@
+testSPI1=cn.tannn.jdevelops.spi.fixture.TestSPIImpl_1
+testSPI2=cn.tannn.jdevelops.spi.fixture.TestSPIImpl_2
+testSPI3=cn.tannn.jdevelops.spi.fixture.TestSPIImpl_3
+testSPI3=cn.tannn.jdevelops.spi.fixture.TestSPIImpl_4

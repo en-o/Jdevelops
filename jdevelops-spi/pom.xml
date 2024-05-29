@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-build</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <artifactId>jdevelops-spi</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>jdevelops :: spi</name>
+    <description>
+        Java SPI 机制详解： https://javaguide.cn/java/basis/spi.html
+        代码参考： https://github.com/apache/incubator-shenyu/tree/master/shenyu-spi
+        使用: 请看单元测试
+    </description>
+
+    <url>https://github.com/en-o/Jdevelops</url>
+
+    <organization>
+        <name>tan</name>
+        <url>https://t.tannn.cn/</url>
+    </organization>
+
+    <!-- 开源许可证 -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!-- 开源地址 -->
+    <scm>
+        <!-- 发布分支 -->
+        <tag>master</tag>
+        <url>https://github.com/en-o/Jdevelops.git</url>
+        <connection>https://github.com/en-o/Jdevelops.git</connection>
+        <developerConnection>https://github.com/en-o/Jdevelops.git</developerConnection>
+    </scm>
+
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <id>tanning</id>
+            <name>tanning</name>
+            <email>1445763190@qq.com</email>
+            <organization>cn.tannn.jdevelops</organization>
+            <url>https://t.tannn.cn/</url>
+            <roles>
+                <role>author</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+    </distributionManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
+    <repositories>
+        <repository>
+            <id>snapshot</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
+</project>
