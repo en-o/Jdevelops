@@ -63,6 +63,7 @@
         <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-knife4j</module>
         <module>jdevelops-apis-version</module>
+        <module>jdevelops-apis-idempotent</module>
     </modules>
 
 
