@@ -62,6 +62,7 @@
         <module>jdevelops-apis-exception</module>
         <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-knife4j</module>
+        <module>jdevelops-apis-version</module>
     </modules>
 
 
