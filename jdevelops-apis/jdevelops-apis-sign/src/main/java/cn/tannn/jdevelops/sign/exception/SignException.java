@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.sign.exception;
 
 
 import cn.tannn.jdevelops.result.exception.ExceptionCode;
-import cn.tannn.jdevelops.sign.enums.SignExceptionCode;
 
 /**
  * AopException
