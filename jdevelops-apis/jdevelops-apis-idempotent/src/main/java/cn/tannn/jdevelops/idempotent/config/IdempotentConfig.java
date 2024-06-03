@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.idempotent.config;
 
 import cn.tannn.jdevelops.idempotent.annotation.ApiIdempotent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/6/19 9:56
  */
 @ConfigurationProperties(prefix = "jdevelops.idempotent")
-@Component
 public class IdempotentConfig {
 
     /**

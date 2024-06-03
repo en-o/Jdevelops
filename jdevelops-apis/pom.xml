@@ -64,6 +64,7 @@
         <module>jdevelops-apis-knife4j</module>
         <module>jdevelops-apis-version</module>
         <module>jdevelops-apis-idempotent</module>
+        <module>jdevelops-apis-sign</module>
     </modules>
 
 

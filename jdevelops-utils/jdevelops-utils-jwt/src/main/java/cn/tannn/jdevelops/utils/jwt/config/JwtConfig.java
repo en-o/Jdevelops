@@ -5,7 +5,6 @@ import cn.tannn.jdevelops.utils.jwt.module.JCookie;
 import cn.tannn.jdevelops.utils.jwt.module.OssLocalAuthentication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
@@ -17,7 +16,6 @@ import java.util.Objects;
  */
 
 @ConfigurationProperties(prefix = "jdevelops.jwt")
-@Component
 public class JwtConfig {
 
     /**
