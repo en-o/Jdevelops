@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.sign.exception;
 
 
+import cn.tannn.jdevelops.result.exception.ExceptionCode;
 import cn.tannn.jdevelops.sign.enums.SignExceptionCode;
 
 /**
@@ -27,10 +28,10 @@ public class SignException extends RuntimeException{
         this.code = 500;
     }
 
-    public SignException(SignExceptionCode sgin) {
-        super(sgin.getMessage());
-        this.msg = sgin.getMessage();
-        this.code = sgin.getCode();
+    public SignException(ExceptionCode resultCode) {
+        super(resultCode.getMessage());
+        this.msg = resultCode.getMessage();
+        this.code = resultCode.getCode();
     }
 
     public SignException(Integer code, String message) {
