@@ -75,15 +75,6 @@ public class SignUtil {
     }
 
     /**
-     * @param map2Str 传入map2Str数据串换取sign
-     * @return sign
-     */
-    public static String getMd5SignBymap2Str(String map2Str) {
-        String encrypt1 = SignMD5Util.encrypt(map2Str, true);
-        return getMd5Sign(encrypt1);
-    }
-
-    /**
      * @param encrypt1 第一次加密的密钥
      * @return 真正的密钥
      */
