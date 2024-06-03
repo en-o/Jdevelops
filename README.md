@@ -37,6 +37,7 @@
 在： `.github/workflows/build-and-unittest.yml` 
 
 # 本地文档
+> 以语雀的文档为主，本地文档不一定更新了
 ## APIS
 1. [💬接口包裹类.md](jdevelops-apis/jdevelops-apis-result/💬接口包裹类.md)
 2. [❌全局异常捕获.md](jdevelops-apis/jdevelops-apis-exception/❌全局异常捕获.md)
