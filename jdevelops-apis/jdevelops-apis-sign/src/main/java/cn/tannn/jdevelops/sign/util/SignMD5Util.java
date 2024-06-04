@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public class SignMD5Util {
 
-   private final static Integer THIRTY_TWO = 32;
+    private final static Integer THIRTY_TWO = 32;
+    public static final String MD_5 = "md5";
 
     public static String encrypt(String plainText) {
         return encrypt(plainText,true);
@@ -32,16 +33,16 @@ public class SignMD5Util {
      * @param  flag true为32位,false为16位
      * @return 返回密钥
      */
-    public static String encrypt(String plainText, boolean flag) throws RuntimeException {
+    public static String encrypt(String plainText, boolean flag) {
         if (StringUtils.isEmpty(plainText)) {
             return null;
         }
         byte[] secretBytes ;
         try {
-            secretBytes = MessageDigest.getInstance("md5").digest(
+            secretBytes = MessageDigest.getInstance(MD_5).digest(
                     plainText.getBytes(StandardCharsets.UTF_8)  );
         } catch (Exception e) {
-            throw new RuntimeException("没有md5这个算法！",e);
+            throw new SignException("没有md5这个算法！",e);
         }
         // 16进制数字
         StringBuilder md5code = new StringBuilder(new BigInteger(1, secretBytes).toString(16));
