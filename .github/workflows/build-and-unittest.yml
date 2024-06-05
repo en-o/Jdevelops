@@ -41,13 +41,13 @@ jobs:
           mvn clean package install
           cd ../jdevelops-parent
           mvn clean package install
+          cd ../jdevelops-annotations  
+          mvn clean package install
           cd ../jdevelops-apis
           mvn clean package install
           cd ../jdevelops-utils
           mvn clean package install
           cd ../jdevelops-webs
-          mvn clean package install
-          cd ../jdevelops-annotations  
           mvn clean package install
           cd ../jdevelops-apis
           mvn clean package install 
