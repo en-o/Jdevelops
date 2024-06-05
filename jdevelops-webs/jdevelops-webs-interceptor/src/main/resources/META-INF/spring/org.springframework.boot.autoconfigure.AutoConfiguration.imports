@@ -1,7 +1,1 @@
-cn.tannn.jdevelops.webs.interceptor.fiflter.JdevelopsHttpServletRequestFilter
-cn.tannn.jdevelops.webs.interceptor.chain.ApiAfterInterceptorChain
-cn.tannn.jdevelops.webs.interceptor.chain.ApiAsyncInterceptorChain
-cn.tannn.jdevelops.webs.interceptor.chain.ApiBeforeInterceptorChain
-cn.tannn.jdevelops.webs.interceptor.chain.ApiFinallyInterceptorChain
-cn.tannn.jdevelops.webs.interceptor.core.JdevelopsWebMvcConfig
-
+cn.tannn.jdevelops.webs.interceptor.InterceptorAutoconfigure
