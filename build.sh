@@ -38,4 +38,4 @@ mvn clean package install -Dmaven.test.skip=true | tee -a dals.log
 cd ../jdevelops-delays
 mvn clean package install -Dmaven.test.skip=true | tee -a delays.log
 
-
+read -n 1 -s -r -p "Press any key to continue..."
