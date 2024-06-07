@@ -17,6 +17,9 @@ mvn clean package install | tee -a parent.log
 cd ../jdevelops-annotations
 mvn clean package install | tee -a annotations.log
 
+cd ../jdevelops-spi
+mvn clean package install | tee -a annotations.log
+
 cd ../jdevelops-apis
 mvn clean package install | tee -a apis.log
 
