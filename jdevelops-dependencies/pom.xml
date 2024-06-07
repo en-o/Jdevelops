@@ -68,6 +68,26 @@
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-core</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-http</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-jwt</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-spring</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-utils-time</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
@@ -76,6 +96,7 @@
                 <artifactId>jdevelops-utils-validation</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
+
             <!--web-->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
@@ -124,10 +145,49 @@
                 <artifactId>jdevelops-apis-knife4j</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-sign</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-version</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-idempotent</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
             <!-- dal -->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dals-jpa</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+
+            <!-- spi -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-spi</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+
+            <!-- delays -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-core</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-jdk</artifactId>
+                <version>${jdevelops.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-redis</artifactId>
                 <version>${jdevelops.version}</version>
             </dependency>
         </dependencies>
