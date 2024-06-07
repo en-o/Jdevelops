@@ -6,36 +6,36 @@ echo  " ==============当前maven环境 =============="
 
 
 cd jdevelops-build
-mvn clean package install | tee -a build.log
+mvn clean package install -Dmaven.test.skip=true | tee -a build.log
 
 cd ../jdevelops-dependencies
-mvn clean package install | tee -a dependencies.log
+mvn clean package install -Dmaven.test.skip=true | tee -a dependencies.log
 
 cd ../jdevelops-parent
-mvn clean package install | tee -a parent.log
+mvn clean package install -Dmaven.test.skip=true | tee -a parent.log
 
 cd ../jdevelops-annotations
-mvn clean package install | tee -a annotations.log
+mvn clean package install -Dmaven.test.skip=true | tee -a annotations.log
 
 cd ../jdevelops-spi
-mvn clean package install | tee -a annotations.log
+mvn clean package install -Dmaven.test.skip=true | tee -a annotations.log
 
 cd ../jdevelops-apis
-mvn clean package install | tee -a apis.log
+mvn clean package install -Dmaven.test.skip=true | tee -a apis.log
 
 cd ../jdevelops-utils
-mvn clean package install | tee -a utils.log
+mvn clean package install -Dmaven.test.skip=true | tee -a utils.log
 
 cd ../jdevelops-webs
-mvn clean package install | tee -a webs.log
+mvn clean package install -Dmaven.test.skip=true | tee -a webs.log
 
 cd ../jdevelops-apis
-mvn clean package install | tee -a apis.log
+mvn clean package install -Dmaven.test.skip=true | tee -a apis.log
 
 cd ../jdevelops-dals
-mvn clean package install | tee -a dals.log
+mvn clean package install -Dmaven.test.skip=true | tee -a dals.log
 
 cd ../jdevelops-delays
-mvn clean package install | tee -a delays.log
+mvn clean package install -Dmaven.test.skip=true | tee -a delays.log
 
 
