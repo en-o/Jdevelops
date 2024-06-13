@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -170,6 +171,11 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     @Override
     public List<B> finds() {
         return commonDao.findAll();
+    }
+
+    @Override
+    public List<B> finds(Sorteds sort) {
+        return commonDao.findAll(Sorteds.sort(sort));
     }
 
     @Override
