@@ -1,0 +1,11 @@
+#spring.redis.database=1
+#spring.redis.host=192.168.2.3
+#spring.redis.port=6379
+##spring.redis.password=
+#spring.redis.timeout=2000
+#
+#debug=false
+#
+###  topic
+#tn.redis.cache.subpub.pattern-topic[0]=test
+#tn.redis.cache.subpub.pattern-topic[1]=test
