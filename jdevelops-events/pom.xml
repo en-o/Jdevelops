@@ -61,6 +61,7 @@
 
 
         <module>jdevelops-events-redis</module>
+        <module>jdevelops-events-websocket</module>
     </modules>
 
 
