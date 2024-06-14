@@ -3,7 +3,6 @@ package cn.tannn.jdevelops.events.redis.receiver;
 import cn.tannn.jdevelops.events.redis.server.RedisReceiverServer;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
