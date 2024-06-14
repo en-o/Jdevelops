@@ -3,11 +3,9 @@ package cn.tannn.jdevelops.events.simple;
 
 import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+
 
 class GuavaEventBusUtilTest {
-    private static final Logger LOG = LoggerFactory.getLogger(GuavaEventBusUtilTest.class);
 
     public static void main(String[] args) {
 
@@ -48,7 +46,7 @@ class GuavaEventBusUtilTest {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                LOG.error("睡眠出错", e);
+                System.err.println("睡眠出错"+ e.getMessage());
             }
             // TODO: 收到EventTest消息之后，做相应的处理
             System.out.println("我收到了您的命令，命令内容为：" + event);
@@ -65,7 +63,7 @@ class GuavaEventBusUtilTest {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                LOG.error("睡眠出错", e);
+                System.err.println("睡眠出错"+ e.getMessage());
             }
             // TODO: 收到EventTest消息之后，做相应的处理\
             System.out.println("我收到了您的命令，命令内容为：" + event);
