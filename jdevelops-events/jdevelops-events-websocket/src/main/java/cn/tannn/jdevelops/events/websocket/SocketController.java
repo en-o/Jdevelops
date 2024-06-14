@@ -3,7 +3,9 @@ package cn.tannn.jdevelops.events.websocket;
 import cn.tannn.jdevelops.events.websocket.core.WebSocketServer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * websocket 基础接口
