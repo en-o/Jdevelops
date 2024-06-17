@@ -105,6 +105,9 @@ public class WebSocketConfig {
     }
 
     public String getTokenSecret() {
+        if(tokenSecret == null){
+            return "123456";
+        }
         return tokenSecret;
     }
 
