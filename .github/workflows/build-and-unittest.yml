@@ -57,6 +57,8 @@ jobs:
           mvn clean package install
           cd ../jdevelops-delays
           mvn clean package install
+          cd ../jdevelops-events
+          mvn clean package install
 
       - name: Codecov
         uses: codecov/codecov-action@v4.3.0
