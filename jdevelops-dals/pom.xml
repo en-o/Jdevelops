@@ -65,6 +65,7 @@
         <module>jdevelops-dals-redis</module>
         <module>jdevelops-dals-es</module>
         <module>jdevelops-dals-ddss</module>
+        <module>jdevelops-dals-autoschema</module>
     </modules>
 
 
