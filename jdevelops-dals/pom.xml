@@ -62,6 +62,7 @@
 
     <modules>
         <module>jdevelops-dals-jpa</module>
+        <module>jdevelops-dals-redis</module>
     </modules>
 
 
