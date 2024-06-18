@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-dals</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jdevelops-dals-es</artifactId>
+    <packaging>jar</packaging>
+    <name>jdevelops :: dals :: es</name>
+    <description>
+        elasticsearch
+        api参考：https://juejin.cn/post/7216679822096908347#heading-5
+        官方参考：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/getting-started-java.html
+        官方参考rest-apis：https://www.elastic.co/guide/en/elasticsearch/reference/8.10/rest-apis.html
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <!--elasticsearch-->
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-annotations-es</artifactId>
+            <version>${jdevelops.annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- Needed only if you use the spring-boot Maven plugin -->
+        <dependency>
+            <groupId>jakarta.json</groupId>
+            <artifactId>jakarta.json-api</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-apis-result</artifactId>
+            <version>${jdevelops.apis.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-utils-time</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

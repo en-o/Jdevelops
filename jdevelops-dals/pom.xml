@@ -57,12 +57,13 @@
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
-
+        <elasticsearch.version>8.6.2</elasticsearch.version>
     </properties>
 
     <modules>
         <module>jdevelops-dals-jpa</module>
         <module>jdevelops-dals-redis</module>
+        <module>jdevelops-dals-es</module>
     </modules>
 
 
