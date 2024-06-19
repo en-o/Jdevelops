@@ -14,6 +14,8 @@ import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
 import javax.annotation.Resource;
@@ -33,7 +35,7 @@ import java.util.List;
 @ConditionalOnMissingBean(ElasticService.class)
 public class ElasticServiceImpl implements ElasticService {
 
-    protected final Log logger = LogFactory.getLog(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ElasticServiceImpl.class);
 
     @Resource
     private ElasticsearchClient client;
