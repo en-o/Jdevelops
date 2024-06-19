@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 /**
- * 默认不启用
+ * 默认不启用 （都启用以注解为准
  * <p> 1. 可以使用注解方式启用{@link EnableAutoSchema}
  * <p> 2. 通过 jdevelops.autoschema.enabled=true 启用
  *
