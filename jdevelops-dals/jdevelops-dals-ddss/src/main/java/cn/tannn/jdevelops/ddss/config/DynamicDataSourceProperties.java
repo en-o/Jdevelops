@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.ddss.config.properties;
+package cn.tannn.jdevelops.ddss.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

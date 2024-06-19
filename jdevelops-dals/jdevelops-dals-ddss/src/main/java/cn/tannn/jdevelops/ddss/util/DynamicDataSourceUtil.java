@@ -100,7 +100,7 @@ public class DynamicDataSourceUtil {
                 dataSource.getConnection().close();
                 dataSource.close();
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.warn("closeDbName失败:{}", e.getMessage(), e);
         }
     }

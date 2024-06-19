@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.ddss.service;
 
-import cn.tannn.jdevelops.ddss.config.properties.DynamicDataSourceProperties;
+import cn.tannn.jdevelops.ddss.config.DynamicDataSourceProperties;
 import cn.tannn.jdevelops.ddss.core.DynamicDataSource;
 import cn.tannn.jdevelops.ddss.exception.DynamicDataSourceException;
 import cn.tannn.jdevelops.ddss.model.AddDynamicDatasource;
