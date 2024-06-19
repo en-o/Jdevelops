@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.es;
 
-import cn.tannn.jdevelops.es.config.ElasticClientConfig;
 import cn.tannn.jdevelops.es.config.ElasticProperties;
 import cn.tannn.jdevelops.es.core.ElasticService;
 import cn.tannn.jdevelops.es.core.ElasticServiceImpl;
@@ -22,10 +21,6 @@ public class EsConfiguration {
         return new ElasticProperties();
     }
 
-    @Bean
-    public ElasticClientConfig elasticClientConfig(){
-        return new ElasticClientConfig();
-    }
 
     @Bean
     public ElasticService elasticService(){

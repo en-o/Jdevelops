@@ -66,6 +66,7 @@ public class ElasticClientConfig {
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
         ElasticsearchTransport transport = new RestClientTransport(restClient, jsonpMapper);
+        LOGGER.info("=====> Starting Elasticsearch");
         return new ElasticsearchClient(transport);
     }
 
