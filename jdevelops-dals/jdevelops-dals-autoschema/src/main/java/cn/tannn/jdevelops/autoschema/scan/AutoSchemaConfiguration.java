@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
  * <p> 1. 可以使用注解方式启用{@link EnableAutoSchema}
  * <p> 2. 通过 jdevelops.autoschema.enabled=true 启用
  *
+ * <p>  在上面启动的情况下关闭 自动建库： jdevelops.database.enabled=false
+ *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/18 下午2:42
  */
