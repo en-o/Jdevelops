@@ -15,8 +15,9 @@ import co.elastic.clients.elasticsearch._types.mapping.Property;
 import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 import co.elastic.clients.elasticsearch.indices.get_mapping.IndexMappingRecord;
 import com.alibaba.fastjson2.JSONObject;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
@@ -43,15 +44,17 @@ import static cn.tannn.jdevelops.annotations.es.constant.EsTypeDataFormat.STRICT
  *
  * @author tan
  */
-@Slf4j
 public class CreateElasticsearchMapping implements ApplicationListener<ContextRefreshedEvent>, ApplicationContextAware {
 
-    private  ApplicationContext applicationContext;
+    private static final Logger logger = LoggerFactory.getLogger(CreateElasticsearchMapping.class);
+
+    private ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
@@ -61,7 +64,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             provider.addIncludeFilter(new AnnotationTypeFilter(EsIndex.class));
             ElasticProperties elasticProperties = applicationContext.getBean(ElasticProperties.class);
             if (null == elasticProperties.getBasePackage() || elasticProperties.getBasePackage().isEmpty()) {
-                log.warn("创建 mappings 没有设置package，所有不进行创建");
+                logger.warn("创建 mappings 没有设置package，所有不进行创建");
                 return;
             }
             Set<BeanDefinition> beanDefinitionSet = provider.findCandidateComponents(
@@ -76,7 +79,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                     indexName = esIndex.name();
                     ElasticService elasticService = applicationContext.getBean(ElasticService.class);
                     if (esIndex.ddlAuto().equals(EsDdlAuto.NONE)) {
-                        log.warn(definition.getBeanClassName() + "不需要创建索引");
+                        logger.warn(definition.getBeanClassName() + "不需要创建索引");
                         continue;
                     }
                     creatEsIndexDsl.put("dynamic", esIndex.dynamic().name().toLowerCase());
@@ -86,22 +89,22 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                         mappingsJson.put("mappings", creatEsIndexDsl);
 
                         if (esIndex.ddlAuto().equals(EsDdlAuto.CREATE)) {
-                            log.debug("开始创建索引[" + indexName + "]先删后建");
+                            logger.debug("开始创建索引[" + indexName + "]先删后建");
                             elasticService.deleteIndex(indexName);
                         } else if (esIndex.ddlAuto().equals(EsDdlAuto.VALIDATE)) {
                             if (elasticService.existIndex(indexName)) {
-                                log.debug("开始创建索引[" + indexName + "]存在无需创建");
+                                logger.debug("开始创建索引[" + indexName + "]存在无需创建");
                                 continue;
                             }
                         } else if (esIndex.ddlAuto().equals(EsDdlAuto.UPDATE)) {
-                            log.debug("开始更新索引[" + indexName + "]检查索引结构一致性");
+                            logger.debug("开始更新索引[" + indexName + "]检查索引结构一致性");
                             GetMappingResponse getMappingResponse = elasticService.showIndexMapping(indexName);
                             if (getMappingResponse == null) {
-                                log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
+                                logger.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
                             } else {
                                 IndexMappingRecord mappingRecord = getMappingResponse.get(indexName);
                                 if (mappingRecord == null) {
-                                    log.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
+                                    logger.debug("开始更新索引[" + indexName + "]索引未找到，将直接创建索引");
                                 } else {
                                     Map<String, Property> properties = mappingRecord.mappings().properties();
                                     DynamicMapping dynamic = mappingRecord.mappings().dynamic();
@@ -109,32 +112,32 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
                                         // 一模一样
                                         if (dynamic.jsonValue().equals(creatEsIndexDsl.getString("dynamic"))
                                             && BeanUtil.compareDSL(creatEsIndexDsl.getJSONObject("properties"), properties)) {
-                                            log.debug("开始更新索引[" + indexName + "]检查索引结构无变化");
+                                            logger.debug("开始更新索引[" + indexName + "]检查索引结构无变化");
                                             continue;
                                         } else {
-                                            log.debug("开始更新索引[" + indexName + "]原有的mappings发生变化，正在进行重写构建");
+                                            logger.debug("开始更新索引[" + indexName + "]原有的mappings发生变化，正在进行重写构建");
                                             elasticService.deleteIndex(indexName);
                                         }
                                     } else {
-                                        log.debug("开始更新索引[" + indexName + "]检测结构失败，将不做任何操作请主动检查索引结构");
+                                        logger.debug("开始更新索引[" + indexName + "]检测结构失败，将不做任何操作请主动检查索引结构");
                                         continue;
                                     }
                                 }
                             }
                         }
-                        log.debug("正在创建索引[" + indexName + "]mappings ======================>" + mappingsJson);
+                        logger.debug("正在创建索引[" + indexName + "]mappings ======================>" + mappingsJson);
                         elasticService.createIndexNoVerify(indexName,
                                 new ByteArrayInputStream(mappingsJson.toJSONString().getBytes()));
                     }
                 } catch (Exception e) {
-                    log.error("@EsIndex字段值获取失败,请检查", e);
+                    logger.error("@EsIndex字段值获取失败,请检查", e);
                     SpringApplication.exit(applicationContext);
                     throw new RuntimeException(e);
                 }
             }
 
         } catch (Exception e) {
-            log.error("创建索引失败,请手动完成创建 ======================>", e);
+            logger.error("创建索引失败,请手动完成创建 ======================>", e);
         }
     }
 
@@ -160,7 +163,7 @@ public class CreateElasticsearchMapping implements ApplicationListener<ContextRe
             String name = field.getName();
             EsFieldIgnore esFieldIgnore = field.getAnnotation(EsFieldIgnore.class);
             if (esFieldIgnore != null) {
-                log.warn("构建mappings时忽略字段：" + name);
+                logger.warn("构建mappings时忽略字段：" + name);
                 continue;
             }
 

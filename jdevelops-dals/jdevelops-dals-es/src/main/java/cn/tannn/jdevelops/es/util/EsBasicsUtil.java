@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.es.util;
 
 import cn.tannn.jdevelops.es.constant.EsConstant;
-import cn.tannn.jdevelops.es.dto.SortDTO;
+import cn.tannn.jdevelops.es.dto.EsSorted;
 import cn.tannn.jdevelops.es.exception.ElasticsearchException;
 import cn.tannn.jdevelops.result.request.Paging;
 import co.elastic.clients.elasticsearch._types.Script;
@@ -293,7 +293,7 @@ public class EsBasicsUtil {
      * @author lxw
      * @date 2023/2/16 9:57
      **/
-    public static void setOrder(SearchRequest.Builder builder, SortDTO sort) {
+    public static void setOrder(SearchRequest.Builder builder, EsSorted sort) {
         if (isNotBlank(sort.getOrderBy())) {
             SortOrder asc = SortOrder.Asc;
             if (sort.getOrderDesc() == 1) {

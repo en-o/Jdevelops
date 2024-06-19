@@ -54,6 +54,7 @@
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.dals.version>${revision}</jdevelops.dals.version>
         <jdevelops.apis.version>${revision}</jdevelops.apis.version>
+        <jdevelops.utils.version>${revision}</jdevelops.utils.version>
         <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>

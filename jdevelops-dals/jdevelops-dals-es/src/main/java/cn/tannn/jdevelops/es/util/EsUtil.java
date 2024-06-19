@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.es.util;
 
 import cn.hutool.core.date.DateTime;
 import cn.tannn.jdevelops.es.constant.EsConstant;
-import cn.tannn.jdevelops.es.dto.ConditionDTO;
+import cn.tannn.jdevelops.es.dto.EsCondition;
 import cn.tannn.jdevelops.utils.time.enums.TimeFormatEnum;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.aggregations.DateHistogramBucket;
@@ -249,12 +249,12 @@ public class EsUtil {
      * @author lxw
      * @date 2023/7/14 13:51
      **/
-    public static void defaultHighSelect(BoolQuery.Builder builder, List<ConditionDTO> highSelects) {
+    public static void defaultHighSelect(BoolQuery.Builder builder, List<EsCondition> highSelects) {
         if (highSelects == null || highSelects.isEmpty()) {
             return;
         }
         BoolQuery.Builder builder3 = new BoolQuery.Builder();
-        for (ConditionDTO condition : highSelects) {
+        for (EsCondition condition : highSelects) {
             if (StringUtils.isNotBlank(condition.getFieldValue())) {
                 Query query;
                 if (StringUtils.equalsIgnoreCase(condition.getSymbol(), EsConstant.EQ)) {
