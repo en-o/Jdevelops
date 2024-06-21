@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jdectemplate.core;
 
 
 import cn.tannn.jdevelops.jdectemplate.annotation.Query;
-import cn.tannn.jdevelops.jdectemplate.util.ProxyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
