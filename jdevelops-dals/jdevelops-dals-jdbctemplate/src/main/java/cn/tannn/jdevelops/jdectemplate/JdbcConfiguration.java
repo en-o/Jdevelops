@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.jdectemplate;
 import cn.tannn.jdevelops.jdectemplate.annotation.Query;
 import cn.tannn.jdevelops.jdectemplate.util.ProxyUtils;
 import cn.tannn.jdevelops.jdectemplate.util.ScanPackagesUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -25,10 +26,14 @@ public class JdbcConfiguration {
 //        return new QueryAop();
 //    }
 
+    @Value("${jdevelops.jdectemplate.scanPackages:cn.tannn.jdevelops}")
+    private String[] scanPackages;
+
+
     @Bean
     @Order(Integer.MIN_VALUE)
     public ApplicationRunner jdbcDalsRunner(ApplicationContext context, JdbcTemplate jdbcTemplate) {
-        return x -> scanConsumerAndProxy(new String[]{"jdbc"}, context, jdbcTemplate);
+        return x -> scanConsumerAndProxy(scanPackages, context, jdbcTemplate);
     }
 
     /**
