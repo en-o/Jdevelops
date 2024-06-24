@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate;
 
-import cn.tannn.jdevelops.jdectemplate.annotation.Query;
+import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
 import cn.tannn.jdevelops.jdectemplate.util.JdbcProxyCreator;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
