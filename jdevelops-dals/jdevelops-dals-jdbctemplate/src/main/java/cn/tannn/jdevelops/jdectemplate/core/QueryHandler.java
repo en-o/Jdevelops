@@ -11,6 +11,7 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import static cn.tannn.jdevelops.jdectemplate.util.JdbcTemplateUtil.*;
@@ -55,9 +56,9 @@ public class QueryHandler implements InvocationHandler {
             // 返回对象 - bean
             String resultActualType;
             Object resolver = AnnotationParse.newInstance().resolver(method, args, sql);
-            if(method.getGenericReturnType() instanceof ParameterizedTypeImpl){
-                ParameterizedTypeImpl genericReturnType = (ParameterizedTypeImpl) method.getGenericReturnType();
-                 resultRawType = genericReturnType.getRawType().getName();
+            if(method.getGenericReturnType() instanceof ParameterizedType){
+                ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
+                 resultRawType = genericReturnType.getRawType().getTypeName();
                  resultActualType = genericReturnType.getActualTypeArguments()[0].getTypeName();
             }else {
                 resultRawType = method.getGenericReturnType().getTypeName();
