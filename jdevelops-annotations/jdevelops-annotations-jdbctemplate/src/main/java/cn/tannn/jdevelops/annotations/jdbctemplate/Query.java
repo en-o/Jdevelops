@@ -4,7 +4,7 @@ package cn.tannn.jdevelops.annotations.jdbctemplate;
 import java.lang.annotation.*;
 
 /**
- * 查询注解，必须使用在继承类的方法上才能生效
+ * 查询注解
  * @author tnnn
  * @date 2022-08-01 11:50:342
  */
