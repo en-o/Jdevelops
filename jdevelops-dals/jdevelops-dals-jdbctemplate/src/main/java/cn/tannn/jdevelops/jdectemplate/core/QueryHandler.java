@@ -1,18 +1,15 @@
 package cn.tannn.jdevelops.jdectemplate.core;
 
-import cn.tannn.jdevelops.jdectemplate.annotation.Query;
+import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
 import cn.tannn.jdevelops.jdectemplate.util.AnnotationParse;
-import cn.tannn.jdevelops.jdectemplate.util.JdbcTemplateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 import static cn.tannn.jdevelops.jdectemplate.util.JdbcTemplateUtil.*;
 

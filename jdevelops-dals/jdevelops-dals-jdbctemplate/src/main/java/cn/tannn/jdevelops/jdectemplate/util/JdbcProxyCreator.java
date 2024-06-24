@@ -1,14 +1,12 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
-import cn.tannn.jdevelops.jdectemplate.annotation.JdecTemplate;
+import cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate;
 import cn.tannn.jdevelops.jdectemplate.core.QueryHandler;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -37,10 +35,10 @@ public class JdbcProxyCreator {
      */
     public static void jdbcSelectProxy(ApplicationContext applicationContext
             , Class<? extends Annotation> annotation
-            , JdbcTemplate jdbcTemplate
+            , org.springframework.jdbc.core.JdbcTemplate jdbcTemplate
             , String basePackage) {
         Reflections reflections = new Reflections(basePackage);
-        Set<Class<?>> interfaces = reflections.getTypesAnnotatedWith(JdecTemplate.class);
+        Set<Class<?>> interfaces = reflections.getTypesAnnotatedWith(JdbcTemplate.class);
 
         Map<String, Object> proxyBeans = new HashMap<>();
 
@@ -72,7 +70,7 @@ public class JdbcProxyCreator {
      * @return 代理类
      */
     private static Object createProxy(Class<?> service
-            , JdbcTemplate jdbcTemplate
+            , org.springframework.jdbc.core.JdbcTemplate jdbcTemplate
             , Class<? extends Annotation> annotation) {
 
         return Proxy.newProxyInstance(

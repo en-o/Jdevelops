@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jdectemplate.annotation;
+package cn.tannn.jdevelops.annotations.jdbctemplate;
 
 
 import java.lang.annotation.*;
@@ -13,5 +13,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Documented
-public @interface JdecTemplate {
+public @interface JdbcTemplate {
 }

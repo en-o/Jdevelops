@@ -26,6 +26,11 @@
             <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-annotations-jdbctemplate</artifactId>
+            <version>${jdevelops.annotations.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>

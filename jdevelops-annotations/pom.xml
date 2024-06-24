@@ -33,6 +33,7 @@
         <module>jdevelops-annotations-es</module>
         <module>jdevelops-annotations-ddss</module>
         <module>jdevelops-annotations-jpa</module>
+        <module>jdevelops-annotations-jdbctemplate</module>
     </modules>
 
     <!-- 开源地址 -->
