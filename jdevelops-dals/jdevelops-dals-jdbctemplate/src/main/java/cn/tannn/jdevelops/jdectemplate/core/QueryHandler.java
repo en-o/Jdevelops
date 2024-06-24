@@ -35,7 +35,7 @@ public class QueryHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.isAnnotationPresent(annotation)) {
-            LOG.debug("Executing query for method: {}", method.getName());
+            LOG.debug("jdbctemplate ========> Executing query for method: {}", method.getName());
             Annotation ann = method.getAnnotation(annotation);
             String sql = null;
 
@@ -45,7 +45,7 @@ public class QueryHandler implements InvocationHandler {
             }
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("query sql : {}, resultObjType:{}, args:{}", sql, resultObjType, args);
+                LOG.debug("jdbctemplate ========> query sql : {},  args:{}", sql,  args);
             }
             if ( sql == null) {
                 return null;
@@ -63,7 +63,9 @@ public class QueryHandler implements InvocationHandler {
                 resultRawType = method.getGenericReturnType().getTypeName();
                 resultActualType = resultRawType;
             }
-
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("jdbctemplate ========> resultRawType : {},  resultActualType:{}", resultRawType,  resultActualType);
+            }
             return getJdbcTemplateSql(jdbcTemplate,
                     resultRawType, resolver, resultActualType);
         }

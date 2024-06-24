@@ -1,5 +1,8 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
+import cn.tannn.jdevelops.jdectemplate.core.QueryHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -12,6 +15,7 @@ import java.util.List;
  * @date 2024/6/24 下午1:44
  */
 public class JdbcTemplateUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcTemplateUtil.class);
 
     /**
      * 返回值为 String, Integer 基本类型时使用的方法
@@ -25,13 +29,15 @@ public class JdbcTemplateUtil {
                                                            String resultRawType,
                                                            Object resolver,
                                                            String resultActualType ) throws ClassNotFoundException {
+        String sql = resolver.toString();
+        LOG.debug("jdbctemplate ========> sql {}",sql);
         if (resultRawType.equals(String.class.getName())
             || resultRawType.equals(Integer.class.getName())) {
             return getJdbcTemplateSqlContextBaseType(jdbcTemplate,
-                    resultRawType, resolver, resultActualType);
+                    resultRawType, sql, resultActualType);
         }
         return getJdbcTemplateSqlContextMapType(jdbcTemplate,
-                resultRawType, resolver, resultActualType);
+                resultRawType, sql, resultActualType);
     }
 
 
@@ -39,21 +45,21 @@ public class JdbcTemplateUtil {
      * 返回值为 String, Integer 基本类型时使用的方法
      * @param jdbcTemplate jdbcTemplate
      * @param resultRawType     返回的类型
-     * @param resolver sql
+     * @param sql sql
      * @param resultActualType    返回的具体类型
      * @return Object 数据
      */
     public static Object getJdbcTemplateSqlContextBaseType(JdbcTemplate jdbcTemplate,
                                                            String resultRawType,
-                                                           Object resolver,
+                                                           String sql,
                                                            String resultActualType ) throws ClassNotFoundException {
         Class<?> rvt = Class.forName(resultRawType);
         Class<?> query = Class.forName(resultActualType);
         if (rvt.getName().equals(List.class.getName())) {
-            return jdbcTemplate.queryForList(resolver.toString(),
+            return jdbcTemplate.queryForList(sql,
                     query);
         } else {
-            return jdbcTemplate.queryForObject(resolver.toString(),
+            return jdbcTemplate.queryForObject(sql,
                     query);
         }
     }
@@ -64,23 +70,23 @@ public class JdbcTemplateUtil {
      *
      * @param jdbcTemplate jdbcTemplate
      * @param resultRawType     返回的类型
-     * @param resolver sql
+     * @param sql sql
      * @param resultActualType    返回的具体类型
      * @return Object 数据
      */
     public static Object getJdbcTemplateSqlContextMapType(JdbcTemplate jdbcTemplate
             ,  String resultRawType
-            , Object resolver
+            , String sql
             , String resultActualType ) throws ClassNotFoundException {
         Class<?> rvt = Class.forName(resultRawType);
         Class<?> query = Class.forName(resultActualType);
         BeanPropertyRowMapper beanPropertyRowMapper = new BeanPropertyRowMapper<>(query);
         if (rvt.getName().equals(List.class.getName())) {
-            return jdbcTemplate.query(resolver.toString(),
+            return jdbcTemplate.query(sql,
                     beanPropertyRowMapper);
 
         } else {
-            return jdbcTemplate.queryForObject(resolver.toString(),
+            return jdbcTemplate.queryForObject(sql,
                     beanPropertyRowMapper);
         }
     }
