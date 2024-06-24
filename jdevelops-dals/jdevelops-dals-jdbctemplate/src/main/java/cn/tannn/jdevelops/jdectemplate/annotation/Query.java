@@ -16,10 +16,4 @@ public @interface Query {
      * @return sql 语句
      */
     String value() ;
-
-    /**
-     *
-     * @return 返回的实体对象（String.class, Bean.class
-     */
-    Class clazz() ;
 }
