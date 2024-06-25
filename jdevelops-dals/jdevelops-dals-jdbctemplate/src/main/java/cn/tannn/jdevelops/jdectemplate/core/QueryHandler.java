@@ -65,7 +65,7 @@ public class QueryHandler implements InvocationHandler {
                 LOG.debug("jdbctemplate ========> resultRawType : {},  resultActualType:{}", resultRawType,  resultActualType);
             }
             return getJdbcTemplateSql(jdbcTemplate,
-                    resultRawType, resolver, resultActualType);
+                    resultRawType, resolver, resultActualType, args);
         }
         return null;
     }
