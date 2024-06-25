@@ -38,10 +38,9 @@ public class JdbcTemplateUtil {
                                             Object[] args) throws ClassNotFoundException {
         String sql = resolver.toString();
         LOG.debug("jdbctemplate ========> sql {}", sql);
-        if (resultRawType.equals(String.class.getName())
-            || resultRawType.equals(Integer.class.getName())) {
+        if (isBasicType(resultRawType)) {
             return getJdbcTemplateSqlContextBaseType(jdbcTemplate,
-                    resultRawType, sql, resultActualType);
+                    resultRawType, sql, resultActualType, args);
         }
         return getJdbcTemplateSqlContextMapType(jdbcTemplate,
                 resultRawType, sql, resultActualType, args);
@@ -60,7 +59,8 @@ public class JdbcTemplateUtil {
     public static Object getJdbcTemplateSqlContextBaseType(JdbcTemplate jdbcTemplate,
                                                            String resultRawType,
                                                            String sql,
-                                                           String resultActualType) throws ClassNotFoundException {
+                                                           String resultActualType,
+                                                           Object[] args) throws ClassNotFoundException {
         Class<?> rvt = Class.forName(resultRawType);
         Class<?> query = Class.forName(resultActualType);
         if (rvt.isAssignableFrom(List.class)) {
@@ -90,26 +90,47 @@ public class JdbcTemplateUtil {
         if (rvt.isAssignableFrom(List.class)) {
             return jdbcTemplate.query(sql, rowMapper(resultActualType));
         } else if (rvt.isAssignableFrom(PageResult.class)) {
-            Paging paging = new Paging();
-            for (Object arg : args) {
-                if (arg instanceof Paging) {
-                    paging = (Paging) arg;
-                }
-            }
-            StringBuilder sqlb = new StringBuilder(sql);
-            sqlb.append(" LIMIT ");
-            sqlb.append(paging.getPageSize());
-            sqlb.append(" OFFSET ");
-            sqlb.append(paging.getPageIndex() * paging.getPageSize());
-
-            List<?> query = jdbcTemplate.query(sqlb.toString(), rowMapper(resultActualType));
-            return PageResult.page(paging.realPageIndex()
-                    , paging.getPageSize()
-                    , amount(jdbcTemplate, JdbcUtils.tableName(sql))
-                    , query);
+            return paging(jdbcTemplate, sql, resultActualType, args);
         } else {
             return jdbcTemplate.queryForObject(sql, rowMapper(resultActualType));
         }
+    }
+
+    /**
+     * 分页
+     *
+     * @param jdbcTemplate jdbcTemplate
+     * @param sql          sql
+     * @param resultActualType 返回的具体类型
+     * @param args         参数
+     * @return PageResult
+     */
+    private static PageResult<?> paging(JdbcTemplate jdbcTemplate
+            , String sql
+            , String resultActualType
+            , Object[] args) throws ClassNotFoundException {
+        Paging paging = new Paging();
+        for (Object arg : args) {
+            if (arg instanceof Paging) {
+                paging = (Paging) arg;
+            }
+        }
+        StringBuilder sqlb = new StringBuilder(sql);
+        sqlb.append(" LIMIT ");
+        sqlb.append(paging.getPageSize());
+        sqlb.append(" OFFSET ");
+        sqlb.append(paging.getPageIndex() * paging.getPageSize());
+        List<?> query;
+        if (isBasicType(resultActualType)) {
+            query = jdbcTemplate.queryForList(sqlb.toString(),  Class.forName(resultActualType));
+        } else {
+            query = jdbcTemplate.query(sqlb.toString(), rowMapper(resultActualType));
+        }
+
+        return PageResult.page(paging.realPageIndex()
+                , paging.getPageSize()
+                , amount(jdbcTemplate, JdbcUtils.tableName(sql))
+                , query);
     }
 
     private static RowMapper<?> rowMapper(String resultActualType) throws ClassNotFoundException {
@@ -137,5 +158,14 @@ public class JdbcTemplateUtil {
         return 0L;
     }
 
+    /**
+     * 判断是不是基础类型 （String, Integer ）
+     * @param resultType 类型
+     * @return boolean
+     */
+    private static boolean isBasicType(String resultType) {
+        return resultType.equals(String.class.getName())
+               || resultType.equals(Integer.class.getName());
+    }
 
 }
