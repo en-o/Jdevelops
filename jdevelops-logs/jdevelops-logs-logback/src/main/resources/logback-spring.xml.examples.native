@@ -10,8 +10,8 @@
         debug="false" scan="true" scanPeriod="10 second">
 
     <!-- 配置日志输出目录文件夹以及进行重命名 -->
-    <property name="PROJECT" value="swagger" />
-    <property name="ROOT" value="logs/docstructa/${PROJECT}/" />
+    <property name="PROJECT" value="" />
+    <property name="ROOT" value="logs/${PROJECT}/" />
     <!-- 配置日志文件大小 -->
     <property name="FILESIZE" value="50MB" />
     <!-- 设置日志保留的时间，单位为天 -->
@@ -149,6 +149,7 @@
 <!--        </rollingPolicy>-->
 <!--    </appender>-->
 
+
     <!-- 输出sql相关日志，不需要可删除；additivity：是否向上级loger传递打印信息，默认是true-->
     <logger name="org.apache.ibatis" level="INFO" additivity="false" />
     <logger name="org.mybatis.spring" level="INFO" additivity="false" />
@@ -156,9 +157,12 @@
     <logger name="io.lettuce.core.protocol" level="INFO" additivity="false" />
     <!-- nacos改变日志级别 -->
     <logger name="com.alibaba.nacos" level="INFO"/>
-     <!-- nacos改变日志级别 -->
-     <logger name="com.alibaba.nacos" level="INFO"/>
-     <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.springframework.web.servlet.mvc" level="INFO"/>
+    <logger name="org.springframework.jdbc" level="INFO"/>
+    <logger name="org.springframework.orm.jpa" level="INFO"/>
+    <logger name="org.springframework.beans" level="INFO"/>
 
 
     <springProfile name="dev">

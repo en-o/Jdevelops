@@ -10,7 +10,7 @@
         debug="false" scan="true" scanPeriod="10 second">
 
     <!-- 配置日志输出目录文件夹以及进行重命名 -->
-    <property name="PROJECT" value="tfile" />
+    <property name="PROJECT" value="" />
     <property name="ROOT" value="logs/${PROJECT}/" />
     <!-- 配置日志文件大小 -->
     <property name="FILESIZE" value="50MB" />

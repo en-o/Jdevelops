@@ -14,21 +14,11 @@
     <name>jdevelops :: logs :: logback</name>
     <description>logback日志相关的配置</description>
 
-    <properties>
-        <logback-core.version>1.5.6</logback-core.version>
-    </properties>
-
     <dependencies>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>${logback-core.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-core.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <version>${spring.boot.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
