@@ -51,13 +51,13 @@ jobs:
           mvn clean package install
           cd ../jdevelops-webs
           mvn clean package install
-          cd ../jdevelops-apis
-          mvn clean package install 
           cd ../jdevelops-dals
           mvn clean package install
           cd ../jdevelops-delays
           mvn clean package install
           cd ../jdevelops-events
+          mvn clean package install
+          cd ../jdevelops-logs
           mvn clean package install
 
       - name: Codecov

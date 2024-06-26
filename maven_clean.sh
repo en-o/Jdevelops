@@ -18,7 +18,7 @@ cd ../jdevelops-annotations
 mvn clean  | tee -a annotations.log
 
 cd ../jdevelops-spi
-mvn clean  | tee -a annotations.log
+mvn clean  | tee -a spi.log
 
 cd ../jdevelops-apis
 mvn clean  | tee -a apis.log
@@ -29,9 +29,6 @@ mvn clean  | tee -a utils.log
 cd ../jdevelops-webs
 mvn clean  | tee -a webs.log
 
-cd ../jdevelops-apis
-mvn clean  | tee -a apis.log
-
 cd ../jdevelops-dals
 mvn clean  | tee -a dals.log
 
@@ -40,6 +37,10 @@ mvn clean  | tee -a delays.log
 
 
 cd ../jdevelops-events
-mvn clean  | tee -a delays.log
+mvn clean  | tee -a events.log
+
+
+cd ../jdevelops-logs
+mvn clean  | tee -a logs.log
 
 read -n 1 -s -r -p "Press any key to continue..."
