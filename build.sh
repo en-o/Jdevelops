@@ -42,4 +42,8 @@ mvn clean package install -Dmaven.test.skip=true | tee -a events.log
 cd ../jdevelops-logs
 mvn clean package install -Dmaven.test.skip=true | tee -a logs.log
 
+cd ../jdevelops-authentications
+mvn clean package install -Dmaven.test.skip=true | tee -a authentications.log
+
+
 read -n 1 -s -r -p "Press any key to continue..."

@@ -43,4 +43,8 @@ mvn clean  | tee -a events.log
 cd ../jdevelops-logs
 mvn clean  | tee -a logs.log
 
+cd ../jdevelops-authentications
+mvn clean  | tee -a authentications.log
+
+
 read -n 1 -s -r -p "Press any key to continue..."
