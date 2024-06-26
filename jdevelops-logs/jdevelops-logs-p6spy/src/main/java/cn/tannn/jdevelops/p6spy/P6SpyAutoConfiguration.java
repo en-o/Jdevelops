@@ -60,26 +60,27 @@ public class P6SpyAutoConfiguration {
          * <li> sqlExpression: 设置用于过滤SQL语句的正则表达式。
          */
         private void configureP6Spy() {
-            P6SpyLoadableOptions options = P6SpyOptions.getActiveInstance();
-            // 指定 Log 的文件名 默认 spy.log
-            options.setLogfile("p6spy.log");
-            // 定是否每次是增加 Log，设置为 false 则每次都会先进行清空 默认true
-            options.setAppend(true);
-            // 使用日志系统记录sql
-            options.setAppend("com.p6spy.engine.spy.appender.Slf4JLogger");
-            // 是否自动刷新 默认 flase
-            options.setAutoflush(true);
-            // 自定义日志打印
-            options.setLogMessageFormat(p6spyConfig.getLogMessageFormatter());
-            // 驱动
-            options.setDriverlist(checkDriverClasses(p6spyConfig.getDrivers()));
-            // 日期格式
-            options.setDateformat("yyyy-MM-dd HH:mm:ss.SSS");
-            // https://p6spy.readthedocs.io/en/latest/configandusage.html?highlight=autoflush#modulelist
-            options.setModulelist("com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory");
-
             // 创建一个新的 Map 来存储当前配置
+            P6SpyLoadableOptions options = P6SpyOptions.getActiveInstance();
             Map<String, String> properties = options.getDefaults();
+
+            // 指定 Log 的文件名 默认 spy.log
+            properties.put("logfile","p6spy.log");
+            // 定是否每次是增加 Log，设置为 false 则每次都会先进行清空 默认true
+            properties.put("append","true");
+            // 使用日志系统记录sql
+            properties.put("appender","com.p6spy.engine.spy.appender.Slf4JLogger");
+            // 是否自动刷新 默认 flase
+            properties.put("autoflush","true");
+            // 自定义日志打印
+            properties.put("logMessageFormat",p6spyConfig.getLogMessageFormatter());
+            // 驱动
+            properties.put("driverlist",checkDriverClasses(p6spyConfig.getDrivers()));
+            // 日期格式
+            properties.put("dateformat","yyyy-MM-dd HH:mm:ss.SSS");
+            // https://p6spy.readthedocs.io/en/latest/configandusage.html?highlight=autoflush#modulelist
+            properties.put("modulelist","com.p6spy.engine.spy.P6SpyFactory,com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory");
+
             // 是否开启慢SQL记录
             properties.put("outagedetection","true");
             // 慢SQL记录标准 秒 ,只有当超过这个时间才进行记录 Log。 默认30s
