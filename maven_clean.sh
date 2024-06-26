@@ -8,8 +8,6 @@ echo  " ==============当前maven环境 =============="
 cd jdevelops-build
 mvn clean  | tee -a build.log
 
-cd ../jdevelops-dependencies
-mvn clean  | tee -a dependencies.log
 
 cd ../jdevelops-parent
 mvn clean  | tee -a parent.log
@@ -20,14 +18,15 @@ mvn clean  | tee -a annotations.log
 cd ../jdevelops-spi
 mvn clean  | tee -a spi.log
 
-cd ../jdevelops-apis
-mvn clean  | tee -a apis.log
-
 cd ../jdevelops-utils
 mvn clean  | tee -a utils.log
 
 cd ../jdevelops-webs
 mvn clean  | tee -a webs.log
+
+cd ../jdevelops-apis
+mvn clean  | tee -a apis.log
+
 
 cd ../jdevelops-dals
 mvn clean  | tee -a dals.log
@@ -45,6 +44,10 @@ mvn clean  | tee -a logs.log
 
 cd ../jdevelops-authentications
 mvn clean  | tee -a authentications.log
+
+
+cd ../jdevelops-dependencies
+mvn clean  | tee -a dependencies.log
 
 
 read -n 1 -s -r -p "Press any key to continue..."

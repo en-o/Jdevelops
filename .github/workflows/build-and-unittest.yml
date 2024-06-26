@@ -37,19 +37,17 @@ jobs:
         run: |
           cd jdevelops-build
           mvn clean package install
-          cd ../jdevelops-dependencies
-          mvn clean package install
           cd ../jdevelops-parent
           mvn clean package install
           cd ../jdevelops-spi
           mvn clean package install
           cd ../jdevelops-annotations  
           mvn clean package install
-          cd ../jdevelops-apis
-          mvn clean package install
           cd ../jdevelops-utils
           mvn clean package install
           cd ../jdevelops-webs
+          mvn clean package install
+          cd ../jdevelops-apis
           mvn clean package install
           cd ../jdevelops-dals
           mvn clean package install
@@ -58,6 +56,8 @@ jobs:
           cd ../jdevelops-events
           mvn clean package install
           cd ../jdevelops-logs
+          mvn clean package install
+          cd ../jdevelops-dependencies
           mvn clean package install
 
       - name: Codecov
