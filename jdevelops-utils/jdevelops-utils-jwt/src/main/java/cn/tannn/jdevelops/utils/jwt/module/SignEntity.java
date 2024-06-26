@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.utils.jwt.module;
 
 
 
-import cn.tannn.jdevelops.utils.jwt.constant.PlatformConstant;
+import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 
 import java.util.Collections;
 import java.util.List;

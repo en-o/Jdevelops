@@ -40,6 +40,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-annotations-web</artifactId>
+            <version>${jdevelops.annotations.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <scope>provided</scope>
