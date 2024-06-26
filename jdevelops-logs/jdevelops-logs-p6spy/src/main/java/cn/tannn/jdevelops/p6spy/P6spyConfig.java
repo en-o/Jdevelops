@@ -11,7 +11,7 @@ import java.util.List;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/26 上午10:18
  */
-@ConfigurationProperties(prefix = "jdevelops.websocket")
+@ConfigurationProperties(prefix = "jdevelops.p6spy")
 public class P6spyConfig {
 
     /**
