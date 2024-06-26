@@ -52,12 +52,14 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.authentications.version>${revision}</jdevelops.authentications.version>
-
+        <jdevelops.utils.version>0.0.1-SNAPSHOT</jdevelops.utils.version>
+        <jdevelops.annotations.version>0.0.1-SNAPSHOT</jdevelops.annotations.version>
+        <jdevelops.spi.version>0.0.1-SNAPSHOT</jdevelops.spi.version>
+        <jdevelops.apis.version>0.0.1-SNAPSHOT</jdevelops.apis.version>
     </properties>
 
     <modules>
-
+        <module>jdevelops-authentications-jwt</module>
     </modules>
 
 
