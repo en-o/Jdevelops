@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.utils.jwt.core;
 
+import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.module.LoginJwtExtendInfo;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import org.jose4j.jwt.MalformedClaimException;
