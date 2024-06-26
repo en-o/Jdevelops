@@ -17,7 +17,6 @@ public interface LoginService  {
 
       Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-
     /**
      * 登录
      *  - 信息保存到redis中

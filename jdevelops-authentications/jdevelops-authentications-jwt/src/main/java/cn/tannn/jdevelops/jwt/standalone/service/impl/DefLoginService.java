@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author tan
  */
-@ConditionalOnMissingBean(LoginService.class)
 public class DefLoginService implements LoginService {
 
     Logger logger = LoggerFactory.getLogger(DefLoginService.class);
