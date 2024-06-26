@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>jdevelops :: parent</name>
     <description>
         jdevelops parent

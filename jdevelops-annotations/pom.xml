@@ -60,9 +60,8 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
+        <revision>0.0.1</revision>
         <jdevelops.apis.version>${revision}</jdevelops.apis.version>
-        <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
     </properties>
 
 
