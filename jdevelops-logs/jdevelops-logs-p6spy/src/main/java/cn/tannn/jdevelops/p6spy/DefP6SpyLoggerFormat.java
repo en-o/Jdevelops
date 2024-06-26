@@ -11,7 +11,7 @@ import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
  * @version 1
  * @date 2020/7/3 9:19
  */
-public class P6SpyLogger implements MessageFormattingStrategy {
+public class DefP6SpyLoggerFormat implements MessageFormattingStrategy {
 
     static final String SELECT_1 = "SELECT 1";
 

@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
-import ch.qos.logback.classic.db.names.TableName;
 import cn.tannn.jdevelops.result.request.Paging;
 import cn.tannn.jdevelops.result.response.PageResult;
 import org.slf4j.Logger;
