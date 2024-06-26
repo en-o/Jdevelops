@@ -93,7 +93,6 @@ public class P6SpyAutoConfiguration {
             // 性能优化：排除 resultset 可以减少大结果集的日志输出。
             // 专注于特定操作：例如，只关注 statement 和 commit，排除其他类别。
             properties.put("excludecategories","info,batch,debug,commit,rollback,result,resultset");
-            properties.put("","");
             options.load(properties);
         }
     }
