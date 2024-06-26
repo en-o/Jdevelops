@@ -46,18 +46,18 @@ public class P6SpyAutoConfiguration {
         }
 
         /**
-         * modulelist: 定义要使用的P6Spy模块列表。
-         * driverlist: 指定要拦截的JDBC驱动程序类名。
-         * logfile: 设置日志文件的路径和名称。
-         * append: 决定是否将新的日志内容追加到现有日志文件中。
-         * logMessageFormat: 定义日志消息的格式。
-         * databaseDialectDateFormat: 设置数据库方言的日期格式。
-         * excludecategories: 指定要排除的日志类别。
-         * includeCategories: 指定要包含的日志类别。
-         * filter: 启用或禁用SQL语句过滤。
-         * exclude: 定义要排除的SQL语句模式。
-         * include: 定义要包含的SQL语句模式。
-         * sqlExpression: 设置用于过滤SQL语句的正则表达式。
+         * <li> modulelist: 定义要使用的P6Spy模块列表。
+         * <li> driverlist: 指定要拦截的JDBC驱动程序类名。
+         * <li> logfile: 设置日志文件的路径和名称。
+         * <li> append: 决定是否将新的日志内容追加到现有日志文件中。
+         * <li> logMessageFormat: 定义日志消息的格式。
+         * <li> databaseDialectDateFormat: 设置数据库方言的日期格式。
+         * <li> excludecategories: 指定要排除的日志类别。
+         * <li> includeCategories: 指定要包含的日志类别。
+         * <li> filter: 启用或禁用SQL语句过滤。
+         * <li> exclude: 定义要排除的SQL语句模式。
+         * <li> include: 定义要包含的SQL语句模式。
+         * <li> sqlExpression: 设置用于过滤SQL语句的正则表达式。
          */
         private void configureP6Spy() {
             P6SpyLoadableOptions options = P6SpyOptions.getActiveInstance();
