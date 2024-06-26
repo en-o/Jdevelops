@@ -17,7 +17,14 @@ public class DefP6SpyLoggerFormat implements MessageFormattingStrategy {
 
     @Override
     public String formatMessage(int connectionId, String now, long elapsed, String category, String prepared, String sql, String url) {
-        if(!SELECT_1.equalsIgnoreCase(P6Util.singleLine(prepared))){
+        if("commit".equalsIgnoreCase(category)){
+            return "=====================================================\n" +
+                   "连接id：" + connectionId + "\n" +
+                   "当前时间：" + now + "\n" +
+                   "类别：" + category + "\n" +
+                   "花费时间(ms)：" + elapsed + "\n" +
+                   "\n=====================================================\n";
+        }else if(!SELECT_1.equalsIgnoreCase(P6Util.singleLine(prepared))){
             return "=====================================================\n" +
                     "连接id：" + connectionId + "\n" +
                     "当前时间：" + now + "\n" +
