@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.jwt.standalone.interceptor.check;
 
 import cn.tannn.jdevelops.jwt.standalone.service.CheckTokenInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
