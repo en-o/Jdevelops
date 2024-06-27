@@ -34,7 +34,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-ddss</artifactId>
-            <version>${jdevelops.annotations.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <!--sqlserver-->
 <!--        <dependency>-->

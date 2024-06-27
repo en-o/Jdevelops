@@ -42,7 +42,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-web</artifactId>
-            <version>${jdevelops.annotations.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>${jdevelops.apis.version}</version>
+            <version>0.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -28,12 +28,12 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-jdbctemplate</artifactId>
-            <version>${jdevelops.annotations.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-result</artifactId>
-            <version>${jdevelops.apis.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
