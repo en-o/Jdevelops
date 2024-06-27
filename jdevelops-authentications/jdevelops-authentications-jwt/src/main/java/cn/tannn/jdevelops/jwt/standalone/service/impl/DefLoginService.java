@@ -9,7 +9,6 @@ import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
 import javax.servlet.http.HttpServletRequest;
 

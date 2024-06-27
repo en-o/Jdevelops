@@ -1,0 +1,1 @@
+defaultInterceptor=cn.tannn.jdevelops.jwt.redis.RedisInterceptor
