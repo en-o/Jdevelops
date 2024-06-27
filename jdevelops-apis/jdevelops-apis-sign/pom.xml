@@ -11,6 +11,7 @@
     <artifactId>jdevelops-apis-sign</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: apis :: sign</name>
+    <version>${jdevelops.apis.version}</version>
     <description>
         接口验签
     </description>

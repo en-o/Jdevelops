@@ -51,8 +51,8 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
+        <revision>0.0.1</revision>
+        <jdevelops.apis.version>0.0.1-SNAPSHOT</jdevelops.apis.version>
         <jdevelops.webs.version>0.0.1-SNAPSHOT</jdevelops.webs.version>
         <jdevelops.utils.version>0.0.1-SNAPSHOT</jdevelops.utils.version>
     </properties>
@@ -60,9 +60,9 @@
     <modules>
         <module>jdevelops-apis-result</module>
         <module>jdevelops-apis-exception</module>
-        <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-knife4j</module>
         <module>jdevelops-apis-version</module>
+        <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-idempotent</module>
         <module>jdevelops-apis-sign</module>
     </modules>
