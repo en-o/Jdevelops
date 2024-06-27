@@ -11,7 +11,7 @@
 
     <packaging>jar</packaging>
     <artifactId>jdevelops-spi</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>jdevelops :: spi</name>
     <description>
         Java SPI 机制详解： https://javaguide.cn/java/basis/spi.html
