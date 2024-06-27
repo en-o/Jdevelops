@@ -58,9 +58,9 @@ public class CheckSpecialPath {
                 return null;
             }
             Environment environment = applicationContext.getEnvironment();
-            String localOssResourceUpDir = environment.getProperty("detabes.oss.local.upload-dir", "");
+            String localOssResourceUpDir = environment.getProperty("jdevelops.oss.local.upload-dir", "");
 
-            String localOssResourceContextPath = environment.getProperty("detabes.oss.local.context-path", "");
+            String localOssResourceContextPath = environment.getProperty("jdevelops.oss.local.context-path", "");
 
             // local oss
             if (servletPath.startsWith(localOssResourceContextPath)) {
