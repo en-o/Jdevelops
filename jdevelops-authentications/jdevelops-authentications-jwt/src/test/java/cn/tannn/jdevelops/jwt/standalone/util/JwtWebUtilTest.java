@@ -81,7 +81,7 @@ public class JwtWebUtilTest {
     @Test
     public void testGetTokenByBeanMapNull() {
         // map null
-        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=tan}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=null}",
                 JwtService.getTokenByBean(signNull, SignEntity.class, null).toString());
     }
 
@@ -89,7 +89,7 @@ public class JwtWebUtilTest {
     public void testGetTokenByBeanMapStr() {
         // map str
         SignEntity<String> tokenByBeanStr = JwtService.getTokenByBean(signStr, SignEntity.class, String.class);
-        assertEquals("SignEntity{subject='tan', platform=[\"COMMON\"], map=tan}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=tan}",
                 tokenByBeanStr.toString());
         assertEquals("tan",
                 tokenByBeanStr.getMap());
