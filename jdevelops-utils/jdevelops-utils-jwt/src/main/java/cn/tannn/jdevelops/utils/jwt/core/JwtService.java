@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.utils.jwt.core;
 
-import cn.hutool.core.lang.TypeReference;
 import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.result.constant.TokenCode;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
@@ -24,7 +23,6 @@ import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;

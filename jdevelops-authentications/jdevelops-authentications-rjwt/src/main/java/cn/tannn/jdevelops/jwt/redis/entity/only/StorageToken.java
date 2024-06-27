@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jwt.redis.entity.only;
 
 import cn.tannn.jdevelops.jwt.redis.entity.sign.RedisSignEntity;
-import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 
 import java.util.Objects;
 import java.util.StringJoiner;

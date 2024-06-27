@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jwt.standalone.util;
 
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
-import com.alibaba.fastjson2.TypeReference;
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
