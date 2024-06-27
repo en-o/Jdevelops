@@ -74,14 +74,14 @@ public class JwtWebUtilTest {
     public void testGetTokenByBeanMapBean() {
         // map bean
         SignEntity<JwtWebUtilBean> tokenByBean = JwtService.getTokenByBean(signBean, SignEntity.class, JwtWebUtilBean.class);
-        assertEquals("SignEntity{subject='tan', platform=[\"COMMON\"], map=JwtWebUtilBean(name=tan, sex=10)}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map={\"name\":\"tan\",\"sex\":10}}",
                 tokenByBean.toString());
     }
 
     @Test
     public void testGetTokenByBeanMapNull() {
         // map null
-        assertEquals("SignEntity{subject='tan', platform=[\"COMMON\"], map=null}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=tan}",
                 JwtService.getTokenByBean(signNull, SignEntity.class, null).toString());
     }
 
@@ -98,7 +98,7 @@ public class JwtWebUtilTest {
     public void testGetTokenByBeanMapInt() {
         // map int
         SignEntity<Integer> tokenByBeanInt = JwtService.getTokenByBean(signInt, SignEntity.class, Integer.class);
-        assertEquals("SignEntity{subject='tan', platform=[\"COMMON\"], map=1}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=1}",
                 tokenByBeanInt.toString());
         Integer map = tokenByBeanInt.getMap();
         assertEquals(1, (int) map);
