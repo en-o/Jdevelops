@@ -74,7 +74,7 @@ public class JwtWebUtilTest {
     public void testGetTokenByBeanMapBean() {
         // map bean
         SignEntity<JwtWebUtilBean> tokenByBean = JwtService.getTokenByBean(signBean, SignEntity.class, JwtWebUtilBean.class);
-        assertEquals("SignEntity{subject='tan', platform=[COMMON], map={\"name\":\"tan\",\"sex\":10}}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=JwtWebUtilBean[name='tan', sex=10]}",
                 tokenByBean.toString());
     }
 
@@ -163,7 +163,7 @@ public class JwtWebUtilTest {
                 JwtWebUtil.getTokenBySignEntity(request,
                         JwtWebUtilBean.class);
         JwtWebUtilBean mapBean = tokenByBeanListBean.getMap();
-        assertEquals("JwtWebUtilBean(name=tan, sex=10)",
+        assertEquals("JwtWebUtilBean[name='tan', sex=10]",
                 mapBean.toString());
     }
 
