@@ -28,7 +28,7 @@ public class OssLocalAuthentication {
     }
 
     public String getOssLocalJwtKey() {
-        return ossLocalJwtKey;
+        return ossLocalJwtKey==null?"token":ossLocalJwtKey;
     }
 
     public void setOssLocalJwtKey(String ossLocalJwtKey) {
