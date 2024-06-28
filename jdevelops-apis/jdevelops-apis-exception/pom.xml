@@ -19,12 +19,12 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-result</artifactId>
-            <version>${jdevelops.apis.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-aop</artifactId>
-            <version>${jdevelops.utils.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

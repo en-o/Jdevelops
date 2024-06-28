@@ -86,7 +86,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-time</artifactId>
-            <version>${jdevelops.utils.version}</version>
+            <version>0.0.1</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
