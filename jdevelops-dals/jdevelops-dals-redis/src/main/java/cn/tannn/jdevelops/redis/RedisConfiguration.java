@@ -5,6 +5,8 @@ import cn.tannn.jdevelops.redis.limit.LoginLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -15,25 +17,23 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 
 @ConditionalOnWebApplication
+@Import({
+        CustomCacheConfig.class
+})
 public class RedisConfiguration {
 
     @Bean
-    public LoginLimitConfig loginLimitConfig(){
+    public LoginLimitConfig loginLimitConfig() {
         return new LoginLimitConfig();
     }
 
     @Bean
-    public CustomCacheConfig customCacheConfig(){
-        return new CustomCacheConfig();
-    }
-
-    @Bean
-    public LoginLimitService loginLimitService(LoginLimitConfig loginLimitConfig){
+    public LoginLimitService loginLimitService(LoginLimitConfig loginLimitConfig) {
         return new LoginLimitService(loginLimitConfig);
     }
 
     @Bean
-    public RedisOperateService redisOperateService(@Autowired RedisTemplate<String, Object> redisTemplate){
+    public RedisOperateService redisOperateService(@Autowired RedisTemplate<String, Object> redisTemplate) {
         return new RedisOperateService(redisTemplate);
     }
 
