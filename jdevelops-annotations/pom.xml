@@ -61,7 +61,6 @@
 
     <properties>
         <revision>0.0.2-SNAPSHOT</revision>
-        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
     </properties>
 
 
