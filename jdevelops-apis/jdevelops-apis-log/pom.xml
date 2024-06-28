@@ -11,7 +11,6 @@
     <packaging>jar</packaging>
     <artifactId>jdevelops-apis-log</artifactId>
     <name>jdevelops :: apis :: log</name>
-    <version>${jdevelops.apis.version}</version>
     <description>
         接口 request 日志
     </description>
