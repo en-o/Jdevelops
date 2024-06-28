@@ -51,8 +51,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.webs.version>0.0.1-SNAPSHOT</jdevelops.webs.version>
+        <revision>0.0.1</revision>
     </properties>
 
     <modules>
