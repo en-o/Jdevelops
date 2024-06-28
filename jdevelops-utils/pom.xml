@@ -53,7 +53,6 @@
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
         <jdevelops.utils.version>${revision}</jdevelops.utils.version>
-        <jdevelops.apis.version>0.0.1-SNAPSHOT</jdevelops.apis.version>
     </properties>
 
     <modules>
