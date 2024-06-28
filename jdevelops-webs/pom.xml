@@ -52,7 +52,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.webs.version>${revision}</jdevelops.webs.version>
+        <jdevelops.webs.version>0.0.1-SNAPSHOT</jdevelops.webs.version>
     </properties>
 
     <modules>
