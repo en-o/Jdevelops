@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo  " ==============tips =============="
+echo  "0.x use jdk8 please"
+echo  "jdk manage tool :  https://sdkman.io/install"
+echo  " ==============tips =============="
 echo  " ==============当前maven环境 =============="
 echo  $(mvn -v)
 echo  " ==============当前maven环境 =============="
