@@ -53,8 +53,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.events.version>${revision}</jdevelops.events.version>
+        <revision>0.0.1</revision>
     </properties>
 
     <modules>
