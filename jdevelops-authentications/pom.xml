@@ -52,8 +52,6 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.authentications.version>0.0.1-SNAPSHOT</jdevelops.authentications.version>
-        <jdevelops.dals.version>0.0.1-SNAPSHOT</jdevelops.dals.version>
     </properties>
 
     <modules>

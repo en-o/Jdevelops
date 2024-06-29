@@ -20,12 +20,12 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-authentications-jwt</artifactId>
-            <version>${jdevelops.authentications.version}</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-redis</artifactId>
-            <version>${jdevelops.dals.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

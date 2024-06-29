@@ -58,15 +58,16 @@
 
         <jdevelops.api.version>0.0.2</jdevelops.api.version>
         <jdevelops.spi.version>0.0.1</jdevelops.spi.version>
-
+        <jdevelops.annotation.version>0.0.1</jdevelops.annotation.version>
 
         <jdevelops.authentication.version>0.0.1-SNAPSHOT</jdevelops.authentication.version>
-        <jdevelops.dal.version>0.0.1-SNAPSHOT</jdevelops.dal.version>
+        <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.delay.version>0.0.1-SNAPSHOT</jdevelops.delay.version>
         <jdevelops.event.version>0.0.1-SNAPSHOT</jdevelops.event.version>
         <jdevelops.log.version>0.0.1-SNAPSHOT</jdevelops.log.version>
 
-        <jdevelops.annotation.version>0.0.1</jdevelops.annotation.version>
+
+        <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.util.version>0.0.1</jdevelops.util.version>
         <jdevelops.web.version>0.0.1</jdevelops.web.version>
 
