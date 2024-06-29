@@ -19,7 +19,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-delays-core</artifactId>
-            <version>${jdevelops.delays.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

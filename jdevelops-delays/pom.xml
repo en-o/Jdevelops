@@ -53,12 +53,10 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.delays.version>${revision}</jdevelops.delays.version>
+        <revision>0.0.1</revision>
     </properties>
 
     <modules>
-
         <module>jdevelops-delays-core</module>
         <module>jdevelops-delays-jdk</module>
         <module>jdevelops-delays-redis</module>
