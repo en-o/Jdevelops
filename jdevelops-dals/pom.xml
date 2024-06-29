@@ -51,8 +51,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.dals.version>${revision}</jdevelops.dals.version>
+        <revision>0.0.1</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>
