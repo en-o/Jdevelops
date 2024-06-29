@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>jdevelops :: dependencies</name>
     <description>
-        jdevelops 所有组件的清单，统一的版本
+        jdevelops 所有组件的清单，统一的版本(物料清单)
         在项目上使用的是引入就可以写版本号了
         使用 typ pom, scope import的方式在 dependencyManagement 里引入
     </description>
@@ -55,71 +55,238 @@
     </developers>
 
     <properties>
-        <jdevelops.version>0.0.1-SNAPSHOT</jdevelops.version>
+
+        <jdevelops.api.version>0.0.2</jdevelops.api.version>
+        <jdevelops.spi.version>0.0.1</jdevelops.spi.version>
+        <jdevelops.annotation.version>0.0.1</jdevelops.annotation.version>
+
+        <jdevelops.authentication.version>0.0.1</jdevelops.authentication.version>
+        <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
+        <jdevelops.delay.version>0.0.1</jdevelops.delay.version>
+        <jdevelops.event.version>0.0.1</jdevelops.event.version>
+        <jdevelops.log.version>0.0.1</jdevelops.log.version>
+
+
+        <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
+        <jdevelops.util.version>0.0.1</jdevelops.util.version>
+        <jdevelops.web.version>0.0.1</jdevelops.web.version>
+
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!--util-->
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-utils-aop</artifactId>
-                <version>${jdevelops.version}</version>
-            </dependency>
-            <!--web-->
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-webs-interceptor</artifactId>
-                <version>${jdevelops.version}</version>
-            </dependency>
             <!--annotations-->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-annotations-ddss</artifactId>
-                <version>${jdevelops.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-annotations-web</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${jdevelops.annotation.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-annotations-es</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${jdevelops.annotation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-annotations-jdbctemplate</artifactId>
+                <version>${jdevelops.annotation.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-annotations-jpa</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${jdevelops.annotation.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-annotations-web</artifactId>
+                <version>${jdevelops.annotation.version}</version>
+            </dependency>
+
+
             <!--api-->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-apis-result</artifactId>
-                <version>${jdevelops.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-apis-exception</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${jdevelops.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-apis-log</artifactId>
-                <version>${jdevelops.version}</version>
+                <artifactId>jdevelops-apis-idempotent</artifactId>
+                <version>${jdevelops.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-apis-knife4j</artifactId>
-                <version>${jdevelops.version}</version>
+                <version>${jdevelops.api.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-log</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-result</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-sign</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-version</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+
+            <!-- authentications -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-authentications-jwt</artifactId>
+                <version>${jdevelops.authentication.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-authentications-rjwt</artifactId>
+                <version>${jdevelops.authentication.version}</version>
+            </dependency>
+
             <!-- dal -->
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-dals-jpa</artifactId>
-                <version>${jdevelops.version}</version>
+                <artifactId>jdevelops-dals-autoschema</artifactId>
+                <version>${jdevelops.dal.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-ddss</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-es</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-jdbctemplate</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-jpa</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-redis</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+
+            <!-- events -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-events-redis</artifactId>
+                <version>${jdevelops.event.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-events-simple</artifactId>
+                <version>${jdevelops.event.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-events-websocket</artifactId>
+                <version>${jdevelops.event.version}</version>
+            </dependency>
+
+
+            <!-- delays -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-core</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-jdk</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-redis</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+
+
+            <!-- logs -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-logs-logback</artifactId>
+                <version>${jdevelops.log.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-logs-p6spy</artifactId>
+                <version>${jdevelops.log.version}</version>
+            </dependency>
+
+            <!-- spi -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-spi</artifactId>
+                <version>${jdevelops.spi.version}</version>
+            </dependency>
+
+            <!--util-->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-aop</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-core</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-http</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-jwt</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-spring</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-time</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-validation</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
+
+
+            <!--web-->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-webs-interceptor</artifactId>
+                <version>${jdevelops.web.version}</version>
+            </dependency>
+
+
+
+
         </dependencies>
     </dependencyManagement>
 

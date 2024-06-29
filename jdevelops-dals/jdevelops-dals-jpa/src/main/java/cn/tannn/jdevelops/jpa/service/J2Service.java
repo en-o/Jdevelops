@@ -175,6 +175,14 @@ public interface J2Service<B> {
      */
     List<B> finds();
 
+
+    /**
+     * 查询所有 排序
+     *
+     * @return List （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
+     */
+    List<B> finds(Sorteds sort);
+
     /**
      * 条件查询
      *

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-utils</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jdevelops-utils-jwt</artifactId>
+    <packaging>jar</packaging>
+    <name>jdevelops :: utils :: jwt</name>
+    <description>
+        jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
+        [jwt](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
+        [tokenSecret加密方式 hmacsha256 ](http://www.jsons.cn/allencrypt/)
+    </description>
+    <dependencies>
+        <!--   jwt     -->
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-annotations-web</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-apis-exception</artifactId>
+            <version>0.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

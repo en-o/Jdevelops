@@ -18,25 +18,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring.boot.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-webs-interceptor</artifactId>
-            <version>${jdevelops.webs.version}</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-aop</artifactId>
-            <version>${jdevelops.utils.version}</version>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

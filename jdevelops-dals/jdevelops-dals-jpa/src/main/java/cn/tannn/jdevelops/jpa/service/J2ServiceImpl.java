@@ -173,6 +173,11 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     }
 
     @Override
+    public List<B> finds(Sorteds sort) {
+        return commonDao.findAll(Sorteds.sort(sort));
+    }
+
+    @Override
     public List<B> finds(String fieldName, SQLOperator operator, Object... value) {
         return finds(fieldName, operator, new Sorteds(), value);
     }

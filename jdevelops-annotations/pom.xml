@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-build</artifactId>
+        <artifactId>jdevelops-parent</artifactId>
         <version>0.0.1</version>
     </parent>
     <artifactId>jdevelops-annotations</artifactId>
@@ -33,6 +33,7 @@
         <module>jdevelops-annotations-es</module>
         <module>jdevelops-annotations-ddss</module>
         <module>jdevelops-annotations-jpa</module>
+        <module>jdevelops-annotations-jdbctemplate</module>
     </modules>
 
     <!-- 开源地址 -->
@@ -59,22 +60,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
-        <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
-        <!-- spring  -->
-        <spring.cloud.commons.version>3.0.5</spring.cloud.commons.version>
-
-        <!--json-->
-        <jackson.version>2.14.0</jackson.version>
-
-        <!-- 其他 -->
-        <swagger.v3.version>2.2.8</swagger.v3.version>
-
-        <!--监控-->
-        <skywalking.version>9.2.0</skywalking.version>
-        <tlog.version>1.5.2</tlog.version>
-        <commons-logging.version>1.2</commons-logging.version>
+        <revision>0.0.2-SNAPSHOT</revision>
     </properties>
 
 

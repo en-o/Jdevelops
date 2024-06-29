@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-build</artifactId>
+        <artifactId>jdevelops-parent</artifactId>
         <version>0.0.1</version>
     </parent>
     <artifactId>jdevelops-apis</artifactId>
@@ -51,30 +51,17 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
-        <jdevelops.webs.version>0.0.1-SNAPSHOT</jdevelops.webs.version>
-        <jdevelops.utils.version>0.0.1-SNAPSHOT</jdevelops.utils.version>
-        <!-- spring  -->
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-
-        <!--json-->
-        <jackson.version>2.14.0</jackson.version>
-
-        <!-- 其他 -->
-        <swagger.v3.version>2.2.8</swagger.v3.version>
-        <hutool.version>5.8.16</hutool.version>
-        <!--监控-->
-        <skywalking.version>9.2.0</skywalking.version>
-        <tlog.version>1.5.2</tlog.version>
-        <commons-logging.version>1.2</commons-logging.version>
+        <revision>0.0.3-SNAPSHOT</revision>
     </properties>
 
     <modules>
         <module>jdevelops-apis-result</module>
         <module>jdevelops-apis-exception</module>
-        <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-knife4j</module>
+        <module>jdevelops-apis-version</module>
+        <module>jdevelops-apis-log</module>
+        <module>jdevelops-apis-idempotent</module>
+        <module>jdevelops-apis-sign</module>
     </modules>
 
 

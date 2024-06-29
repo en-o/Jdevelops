@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-build</artifactId>
+        <artifactId>jdevelops-parent</artifactId>
         <version>0.0.1</version>
     </parent>
     <artifactId>jdevelops-dals</artifactId>
@@ -51,29 +51,19 @@
     </developers>
 
     <properties>
-        <revision>0.0.1-SNAPSHOT</revision>
-        <jdevelops.dals.version>${revision}</jdevelops.dals.version>
-        <jdevelops.apis.version>${revision}</jdevelops.apis.version>
-        <jdevelops.annotations.version>${revision}</jdevelops.annotations.version>
+        <revision>0.0.2-SNAPSHOT</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-
-
-        <!--json-->
-        <jackson.version>2.14.0</jackson.version>
-
-        <!-- 其他 -->
-        <swagger.v3.version>2.2.8</swagger.v3.version>
-
-        <!--监控-->
-        <skywalking.version>9.2.0</skywalking.version>
-        <tlog.version>1.5.2</tlog.version>
-        <commons-logging.version>1.2</commons-logging.version>
+        <elasticsearch.version>8.6.2</elasticsearch.version>
     </properties>
 
     <modules>
         <module>jdevelops-dals-jpa</module>
+        <module>jdevelops-dals-redis</module>
+        <module>jdevelops-dals-es</module>
+        <module>jdevelops-dals-ddss</module>
+        <module>jdevelops-dals-autoschema</module>
+        <module>jdevelops-dals-jdbctemplate</module>
     </modules>
 
 

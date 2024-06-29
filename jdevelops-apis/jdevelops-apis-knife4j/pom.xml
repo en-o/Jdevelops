@@ -19,7 +19,7 @@
     </description>
 
     <properties>
-        <swagger-models-v3.version>2.2.21</swagger-models-v3.version>
+        <knife4j.version>4.5.0</knife4j.version>
     </properties>
 
     <dependencies>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-            <version>4.5.0</version>
+            <version>${knife4j.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.swagger.core.v3</groupId>
@@ -37,18 +37,41 @@
                     <groupId>io.swagger.core.v3</groupId>
                     <artifactId>swagger-models</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-autoconfigure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-webmvc</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-models-v3.version}</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-models</artifactId>
-            <version>${swagger-models-v3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>
