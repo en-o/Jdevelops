@@ -1,9 +1,6 @@
 package cn.tannn.jdevelops.frameworks.web.starter.entity.url;
 
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
-
 /**
  * 接口请求类型和接口地址
  *
