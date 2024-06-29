@@ -51,11 +51,10 @@
     </developers>
 
     <properties>
-        <revision>0.0.1</revision>
+        <revision>0.0.2-SNAPSHOT</revision>
     </properties>
 
     <modules>
-
         <module>jdevelops-logs-logback</module>
         <module>jdevelops-logs-p6spy</module>
     </modules>
