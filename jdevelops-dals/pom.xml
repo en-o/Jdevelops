@@ -12,7 +12,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>jdevelops :: dals </name>
-    <description>数据访问</description>
+    <description>数据库访问层（Data Access Layer）, JPA , mybaits</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
     <organization>
