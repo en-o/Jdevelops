@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-files</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>jdevelops-files-sdk</artifactId>
+    <packaging>jar</packaging>
+    <name>jdevelops :: files :: sdk</name>
+    <description>
+        1. 依赖式files-sdk
+        2. 建议使用https://gitee.com/tanoo/tfiles
+    </description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.tannn.cat</groupId>
+            <artifactId>file-sdk</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.tannn.jdevelops</groupId>
+            <artifactId>jdevelops-apis-exception</artifactId>
+            <version>0.0.2</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>
