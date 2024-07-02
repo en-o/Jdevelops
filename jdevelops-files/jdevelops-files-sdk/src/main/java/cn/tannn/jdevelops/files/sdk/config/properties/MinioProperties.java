@@ -33,6 +33,15 @@ public class MinioProperties {
         return StorageDict.MINIO_STORAGE.getValue();
     }
 
+    public MinioConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(MinioConfig config) {
+        this.config = config;
+    }
+
+
     public FileStorage toStorage(){
         FileStorage fileStorage = new FileStorage();
         fileStorage.setId(getId());

@@ -5,6 +5,7 @@ import cn.tannn.cat.file.sdk.core.local.LocalOperate;
 import cn.tannn.cat.file.sdk.core.minio.MinioOperate;
 import cn.tannn.cat.file.sdk.core.qiniu.QiNiuOperate;
 import cn.tannn.jdevelops.files.sdk.config.OssConfig;
+import cn.tannn.jdevelops.files.sdk.init.LocalInit;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -19,6 +20,11 @@ public class ImportsConfiguration {
     @Bean
     public OssConfig ossConfig() {
         return new OssConfig();
+    }
+
+    @Bean
+    public LocalInit localInit(OssConfig ossConfig) {
+        return new LocalInit(ossConfig);
     }
 
     @Bean
