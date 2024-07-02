@@ -1,8 +1,10 @@
 package cn.tannn.jdevelops.files.sdk;
 
-import cn.tannn.cat.file.sdk.config.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import cn.tannn.cat.file.sdk.core.ftp.FtpOperate;
+import cn.tannn.cat.file.sdk.core.local.LocalOperate;
+import cn.tannn.cat.file.sdk.core.minio.MinioOperate;
+import cn.tannn.cat.file.sdk.core.qiniu.QiNiuOperate;
+import cn.tannn.jdevelops.files.sdk.config.OssConfig;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -14,32 +16,24 @@ import org.springframework.context.annotation.Bean;
  */
 public class ImportsConfiguration {
 
-    //  oss 配置元信息
     @Bean
-    @ConfigurationProperties(prefix = "jdevelops.oss.ftp")
-    @ConditionalOnProperty(prefix = "jdevelops.oss", name = "enable", havingValue = "ftp")
-    public FtpConfig ftpConfig() {
-        return new FtpConfig();
+    public OssConfig ossConfig() {
+        return new OssConfig();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "jdevelops.oss.local")
-    @ConditionalOnProperty(prefix = "jdevelops.oss", name = "enable", havingValue = "local")
-    public LocalConfig localConfig() {
-        return new LocalConfig();
+    public FileOperateService fileOperateService(
+            LocalOperate localOperate,
+            MinioOperate minioOperate,
+            QiNiuOperate qiNiuOperate,
+            FtpOperate ftpOperate,
+            OssConfig ossConfig
+    ) {
+        return new DefFileOperateService(localOperate
+                , minioOperate
+                , qiNiuOperate
+                , ftpOperate
+                , ossConfig);
     }
 
-    @Bean
-    @ConfigurationProperties(prefix = "jdevelops.oss.minio")
-    @ConditionalOnProperty(prefix = "jdevelops.oss", name = "enable", havingValue = "fminiotp")
-    public MinioConfig minioConfig() {
-        return new MinioConfig();
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "jdevelops.oss.qiniu")
-    @ConditionalOnProperty(prefix = "jdevelops.oss", name = "enable", havingValue = "qiniu")
-    public QiNiuConfig qiNiuConfig() {
-        return new QiNiuConfig();
-    }
 }

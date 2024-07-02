@@ -1,0 +1,153 @@
+package cn.tannn.jdevelops.files.sdk.config;
+
+import cn.tannn.cat.file.sdk.bean.FileStorage;
+import cn.tannn.cat.file.sdk.enums.StorageDict;
+import cn.tannn.cat.file.sdk.enums.StorageMaster;
+import cn.tannn.cat.file.sdk.exception.FileException;
+import cn.tannn.jdevelops.files.sdk.config.properties.FtpProperties;
+import cn.tannn.jdevelops.files.sdk.config.properties.LocalProperties;
+import cn.tannn.jdevelops.files.sdk.config.properties.MinioProperties;
+import cn.tannn.jdevelops.files.sdk.config.properties.QiNiuProperties;
+import cn.tannn.jdevelops.result.exception.ExceptionCode;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
+/**
+ * spirng  properties
+ *
+ * @author <a href="https://t.tannn.cn/">tan</a>
+ * @date 2024/7/2 上午11:04
+ */
+@ConfigurationProperties(prefix = "jdevelops.oss")
+public class OssConfig {
+
+    /**
+     * 设置主配置
+     * <p> 目前只支持[local,minio,七牛,ftp]
+     *
+     * @see StorageDict
+     */
+    private StorageDict master;
+
+    /**
+     * 配置
+     */
+    @NestedConfigurationProperty
+    private FtpProperties ftp;
+
+
+    /**
+     * 配置
+     */
+    @NestedConfigurationProperty
+    private LocalProperties local;
+
+
+    /**
+     * 配置
+     */
+    @NestedConfigurationProperty
+    private MinioProperties minio;
+
+
+    /**
+     * 配置
+     */
+    @NestedConfigurationProperty
+    private QiNiuProperties qiniu;
+
+
+    public StorageDict getMaster() {
+        return master;
+    }
+
+    public void setMaster(StorageDict master) {
+        this.master = master;
+    }
+
+    public FtpProperties getFtp() {
+        return ftp;
+    }
+
+    public void setFtp(FtpProperties ftp) {
+        this.ftp = ftp;
+    }
+
+    public LocalProperties getLocal() {
+        return local;
+    }
+
+    public void setLocal(LocalProperties local) {
+        this.local = local;
+    }
+
+    public MinioProperties getMinio() {
+        return minio;
+    }
+
+    public void setMinio(MinioProperties minio) {
+        this.minio = minio;
+    }
+
+    public QiNiuProperties getQiniu() {
+        return qiniu;
+    }
+
+    public void setQiniu(QiNiuProperties qiniu) {
+        this.qiniu = qiniu;
+    }
+
+
+    /**
+     * 获取 master 的  FileStorage
+     * @return FileStorage
+     */
+    public FileStorage genMasterStorage() {
+        if ("ftp".equalsIgnoreCase(master.getType())) {
+            FileStorage storage = ftp.toStorage();
+            storage.setMaster(StorageMaster.MASTER);
+            return storage;
+        } else if ("local".equalsIgnoreCase(master.getType())) {
+            FileStorage storage = local.toStorage();
+            storage.setMaster(StorageMaster.MASTER);
+            return storage;
+        } else if ("minio".equalsIgnoreCase(master.getType())) {
+            FileStorage storage = minio.toStorage();
+            storage.setMaster(StorageMaster.MASTER);
+            return storage;
+        } else if ("qiniu".equalsIgnoreCase(master.getType())) {
+            FileStorage storage = qiniu.toStorage();
+            storage.setMaster(StorageMaster.MASTER);
+            return storage;
+        } else {
+            throw new FileException(new ExceptionCode(11002, "暂不支持[" + master.getType() + "]存储"));
+        }
+    }
+
+
+    /**
+     * 根据ID获取  FileStorage
+     * @param id [ftp:1, local:2 , minio:3 , qiniu:4 ]
+     * @return FileStorage
+     */
+    public FileStorage genMasterStorage(Long id) {
+        FileStorage ftpStorage = ftp.toStorage();
+        FileStorage localStorage = local.toStorage();
+        FileStorage minioStorage = minio.toStorage();
+        FileStorage qiniuStorage = qiniu.toStorage();
+
+        if (id.equals(ftpStorage.getId())) {
+            return ftpStorage;
+        } else if (id.equals(localStorage.getId())) {
+            return localStorage;
+        } else if (id.equals(minioStorage.getId())) {
+            return minioStorage;
+        } else if (id.equals(qiniuStorage.getId())) {
+            return qiniuStorage;
+        } else {
+            throw new FileException(new ExceptionCode(11002, "非法的ID"));
+        }
+
+    }
+
+}

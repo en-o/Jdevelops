@@ -16,7 +16,7 @@ import java.io.IOException;
 public interface FileOperateService {
 
     /**
-     * 上传
+     * master上传
      *
      * @param uploaded UploadDTO
      * @return Object
@@ -25,10 +25,10 @@ public interface FileOperateService {
     FileIndex upload(UploadFile uploaded) throws IOException;
 
     /**
-     * 上传
+     * 选择存储器上传
      *
      * @param uploaded  UploadDTO
-     * @param storageId 存储器ID
+     * @param storageId 存储器ID [ftp:1, local:2 , minio:3 , qiniu:4 ]
      * @return Object
      * @throws IOException Exception
      */
@@ -36,7 +36,7 @@ public interface FileOperateService {
 
 
     /**
-     * 上传
+     * master 批量上传文件
      *
      * @param uploads UploadFiles
      */
@@ -44,20 +44,13 @@ public interface FileOperateService {
 
 
     /**
-     * 下载
+     * 下载文件
      *
-     * @param fileIndexId 文件索引ID
+     * @param fileIndex 文件info
      * @param response    HttpServletResponse
      */
-    void download(Long fileIndexId, HttpServletResponse response);
+    void download(FileIndex fileIndex, HttpServletResponse response);
 
-
-    /**
-     * 删除文件 - oss中的文件/index中的记录
-     *
-     * @param fileIndexId 文件索引ID
-     */
-    void remove(Long fileIndexId);
 
     /**
      * 删除文件 - oss中的文件/index中的记录

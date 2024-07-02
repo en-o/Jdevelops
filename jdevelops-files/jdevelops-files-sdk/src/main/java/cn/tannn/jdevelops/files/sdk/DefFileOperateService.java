@@ -10,7 +10,7 @@ import cn.tannn.cat.file.sdk.core.local.LocalOperate;
 import cn.tannn.cat.file.sdk.core.minio.MinioOperate;
 import cn.tannn.cat.file.sdk.core.qiniu.QiNiuOperate;
 import cn.tannn.cat.file.sdk.exception.FileException;
-import cn.tannn.cat.file.sdk.exception.FileExceptionCode;
+import cn.tannn.jdevelops.files.sdk.config.OssConfig;
 import cn.tannn.jdevelops.result.exception.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +27,9 @@ import java.io.IOException;
  * @date 2024/3/15 14:04
  */
 @Service
-public class FileOperateServiceImpl implements FileOperateService {
+public  class DefFileOperateService implements FileOperateService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileOperateServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefFileOperateService.class);
 
 
     /**
@@ -40,30 +40,36 @@ public class FileOperateServiceImpl implements FileOperateService {
     private final OssOperateAPI qiNiuOperate;
     private final FtpOperate ftpOperate;
 
+    /**
+     * 配置文件
+     */
+    private final OssConfig ossConfig;
 
-    public FileOperateServiceImpl(
-                                  LocalOperate localOperate,
-                                  MinioOperate minioOperate,
-                                  QiNiuOperate qiNiuOperate, FtpOperate ftpOperate
+
+    public DefFileOperateService(
+            LocalOperate localOperate,
+            MinioOperate minioOperate,
+            QiNiuOperate qiNiuOperate,
+            FtpOperate ftpOperate,
+            OssConfig ossConfig
     ) {
         this.localOperate = localOperate;
         this.minioOperate = minioOperate;
         this.qiNiuOperate = qiNiuOperate;
         this.ftpOperate = ftpOperate;
+        this.ossConfig = ossConfig;
     }
 
     @Override
     public FileIndex upload(UploadFile upload) throws IOException {
-        FileStorageConfig master = fileStorageConfigDao.findMaster()
-                .orElseThrow(() -> new FileException(FileExceptionCode.FILE_CONFIG_MASTER_NONENTITY));
-        return upload(upload, master);
+        FileStorage fileStorage = ossConfig.genMasterStorage();
+        return upload(upload, fileStorage);
     }
 
     @Override
     public FileIndex upload(Long storageId, UploadFile upload) throws IOException {
-        FileStorageConfig storageConfig = fileStorageConfigDao.findById(storageId)
-                .orElseThrow(() -> new FileException(FILE_CONFIG_NONSUPPORT));
-        return upload(upload, storageConfig);
+        FileStorage fileStorage = ossConfig.genMasterStorage(storageId);
+        return upload(upload, fileStorage);
     }
 
 
@@ -87,26 +93,16 @@ public class FileOperateServiceImpl implements FileOperateService {
 
 
     @Override
-    public void download(Long fileIndexId, HttpServletResponse response) {
-        fileIndexMetaDao.findById(fileIndexId)
-                .ifPresent(file -> {
-                            FileIndex fileIndex = file.toFileIndex();
-                            if (fileIndex.localStorage()) {
-                                localOperate.downloadFile(response, fileIndex);
-                            } else if (fileIndex.minioStorage()) {
-                                minioOperate.downloadFile(response, fileIndex);
-                            } else if (fileIndex.qiNiuStorage()) {
-                                qiNiuOperate.downloadFile(response, fileIndex);
-                            } else if (fileIndex.ftpStorage()) {
-                                ftpOperate.downloadFile(response, fileIndex);
-                            }
-                        }
-                );
-    }
-
-    @Override
-    public void remove(Long fileIndexId) {
-
+    public void download(FileIndex fileIndex, HttpServletResponse response) {
+        if (fileIndex.localStorage()) {
+            localOperate.downloadFile(response, fileIndex);
+        } else if (fileIndex.minioStorage()) {
+            minioOperate.downloadFile(response, fileIndex);
+        } else if (fileIndex.qiNiuStorage()) {
+            qiNiuOperate.downloadFile(response, fileIndex);
+        } else if (fileIndex.ftpStorage()) {
+            ftpOperate.downloadFile(response, fileIndex);
+        }
     }
 
 
@@ -136,12 +132,10 @@ public class FileOperateServiceImpl implements FileOperateService {
     /**
      * 上传
      * @param upload 文件信息
-     * @param storageConfig 存储器信息
      * @return 文件索引
      * @throws IOException IOException
      */
-    private FileIndex upload(UploadFile upload, FileStorageConfig storageConfig) throws IOException {
-        FileStorage storage = storageConfig.toFileStorage();
+    private FileIndex upload(UploadFile upload,FileStorage storage) throws IOException {
         FileIndex fileIndex;
         if (storage.localConfig()) {
             fileIndex = localOperate.uploadFile(upload, storage);
@@ -152,13 +146,9 @@ public class FileOperateServiceImpl implements FileOperateService {
         } else if (storage.ftpConfig()) {
             fileIndex = ftpOperate.uploadFile(upload, storage);
         } else {
-            throw new FileException(new ExceptionCode(11002, "暂不支持[" + storageConfig.getName() + "]存储"));
+            throw new FileException(new ExceptionCode(11002, "暂不支持[" + storage.getName() + "]存储"));
         }
-        //  判断重复，配置ID 和 path 重复的情况会清楚不在重复save
-        FileIndex fileIndexMeta = FileIndex.toFileIndexMeta(fileIndex);
-        if (!fileIndexMetaDao.existsByStorageIdAndUrlSuffix(storageConfig.getId(), fileIndex.getUrlSuffix())) {
-            fileIndexMeta = fileIndexMetaDao.save(fileIndexMeta);
-        }
-        return fileIndexMeta;
+        return fileIndex;
     }
+
 }
