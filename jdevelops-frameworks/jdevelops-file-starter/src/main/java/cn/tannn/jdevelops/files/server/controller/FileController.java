@@ -101,14 +101,14 @@ public class FileController {
     /**
      * 删除文件
      *
-     * @param fileIndexId fileIndexId
+     * @param path FileIndexMeta.path
      * @return String
      */
     @DeleteMapping("/remove")
     @Operation(summary = "删除文件")
-    @Parameter(name = "fileIndexId", description = "文件索引的ID", required = true)
-    public ResultVO<String> remove(@RequestParam("fileIndexId") Long fileIndexId) {
-        startFileOperateService.remove(fileIndexId);
+    @Parameter(name = "path", description = "文件路径[FileIndexMeta.path]", required = true)
+    public ResultVO<String> remove(@RequestParam("path") String path) {
+        startFileOperateService.removeByPath(path);
         return ResultVO.successMessage("删除成功");
     }
 }

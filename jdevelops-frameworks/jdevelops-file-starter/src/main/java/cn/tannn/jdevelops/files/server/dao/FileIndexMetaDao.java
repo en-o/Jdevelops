@@ -46,4 +46,11 @@ public interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Lon
      * @return FileIndexMeta
      */
     Optional<FileIndexMeta> findByPathAndStorage(String path, String storage);
+
+    /**
+     * 查询文件
+     * @param path path（不出意外这个是唯一的）
+     * @return FileIndexMeta
+     */
+    Optional<FileIndexMeta> findByPath(String path);
 }

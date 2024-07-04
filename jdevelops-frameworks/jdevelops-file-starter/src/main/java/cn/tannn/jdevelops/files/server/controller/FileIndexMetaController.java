@@ -69,4 +69,18 @@ public class FileIndexMetaController {
         return ResultVO.successMessage("存储信息和真实源文件删除成功");
     }
 
+    /**
+     * 删除文件
+     *
+     * @param fileIndexId fileIndexId
+     * @return String
+     */
+    @DeleteMapping("/remove")
+    @Operation(summary = "删除文件")
+    @Parameter(name = "fileIndexId", description = "文件索引的ID", required = true)
+    public ResultVO<String> remove(@RequestParam("fileIndexId") Long fileIndexId) {
+        startFileOperateService.remove(fileIndexId);
+        return ResultVO.successMessage("删除成功");
+    }
+
 }

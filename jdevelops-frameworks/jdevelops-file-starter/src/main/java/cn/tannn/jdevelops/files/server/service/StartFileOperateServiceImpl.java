@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * 文件操作
@@ -81,6 +82,11 @@ public class StartFileOperateServiceImpl implements StartFileOperateService {
         if (remove) {
             fileIndexMetaDao.deleteById(fileIndex.getId());
         }
+    }
+
+    @Override
+    public void removeByPath(String path) {
+        fileIndexMetaDao.findByPath(path).ifPresent(this::remove);
     }
 
 

@@ -64,4 +64,10 @@ public interface StartFileOperateService {
      * @param fileIndex FileIndexMeta
      */
     void remove(FileIndexMeta fileIndex);
+
+    /**
+     * 删除文件
+     * @param path 文件路径[FileIndexMeta.path]
+     */
+    void removeByPath(String path);
 }
