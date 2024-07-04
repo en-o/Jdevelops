@@ -6,7 +6,6 @@ import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import cn.tannn.jdevelops.jpa.service.J2ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 

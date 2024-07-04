@@ -8,12 +8,10 @@ import cn.tannn.jdevelops.files.server.dao.FileIndexMetaDao;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * 文件操作

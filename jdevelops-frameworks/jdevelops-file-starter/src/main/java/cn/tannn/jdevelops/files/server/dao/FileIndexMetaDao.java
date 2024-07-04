@@ -3,8 +3,6 @@ package cn.tannn.jdevelops.files.server.dao;
 
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.List;
 import java.util.Optional;
