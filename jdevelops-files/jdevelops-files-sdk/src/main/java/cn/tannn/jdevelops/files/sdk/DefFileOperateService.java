@@ -12,6 +12,7 @@ import cn.tannn.cat.file.sdk.core.qiniu.QiNiuOperate;
 import cn.tannn.cat.file.sdk.exception.FileException;
 import cn.tannn.jdevelops.files.sdk.config.OssConfig;
 import cn.tannn.jdevelops.result.exception.ExceptionCode;
+import cn.tannn.jdevelops.result.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -148,6 +149,7 @@ public  class DefFileOperateService implements FileOperateService {
         } else {
             throw new FileException(new ExceptionCode(11002, "暂不支持[" + storage.getName() + "]存储"));
         }
+        fileIndex.setId(UUIDUtils.getInstance().generateShortUuidLong());
         return fileIndex;
     }
 
