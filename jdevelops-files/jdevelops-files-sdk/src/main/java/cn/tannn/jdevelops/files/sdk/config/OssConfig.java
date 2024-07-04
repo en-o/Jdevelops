@@ -103,19 +103,19 @@ public class OssConfig {
      * @return FileStorage
      */
     public FileStorage genMasterStorage() {
-        if ("ftp".equalsIgnoreCase(master.getType())) {
+        if ("60".equalsIgnoreCase(master.getValue())) {
             FileStorage storage = ftp.toStorage();
             storage.setMaster(StorageMaster.MASTER);
             return storage;
-        } else if ("local".equalsIgnoreCase(master.getType())) {
+        } else if ("10".equalsIgnoreCase(master.getValue())) {
             FileStorage storage = local.toStorage();
             storage.setMaster(StorageMaster.MASTER);
             return storage;
-        } else if ("minio".equalsIgnoreCase(master.getType())) {
+        } else if ("20".equalsIgnoreCase(master.getValue())) {
             FileStorage storage = minio.toStorage();
             storage.setMaster(StorageMaster.MASTER);
             return storage;
-        } else if ("qiniu".equalsIgnoreCase(master.getType())) {
+        } else if ("40".equalsIgnoreCase(master.getValue())) {
             FileStorage storage = qiniu.toStorage();
             storage.setMaster(StorageMaster.MASTER);
             return storage;
