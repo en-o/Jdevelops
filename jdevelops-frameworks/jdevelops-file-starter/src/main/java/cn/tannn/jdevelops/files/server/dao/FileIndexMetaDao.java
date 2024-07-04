@@ -4,6 +4,7 @@ package cn.tannn.jdevelops.files.server.dao;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +15,7 @@ import java.util.Optional;
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2024/3/7 14:10
  */
-@AutoConfigurationPackage
-public interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Long> {
+public  interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Long> {
 
     /**
      *  存储器配置被使用

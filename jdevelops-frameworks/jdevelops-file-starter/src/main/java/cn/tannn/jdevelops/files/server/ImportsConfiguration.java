@@ -5,6 +5,7 @@ import cn.tannn.jdevelops.files.server.controller.FileController;
 import cn.tannn.jdevelops.files.server.controller.FileIndexMetaController;
 import cn.tannn.jdevelops.files.server.controller.FtpController;
 import cn.tannn.jdevelops.files.server.dao.FileIndexMetaDao;
+import cn.tannn.jdevelops.files.server.dao.FileIndexMetaDaoImpl;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import cn.tannn.jdevelops.files.server.service.FileIndexMetaService;
 import cn.tannn.jdevelops.files.server.service.FileIndexMetaServiceImpl;
@@ -14,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+
+import javax.persistence.EntityManager;
 
 /**
  * spring
@@ -24,16 +29,22 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnProperty(name = "jdevelops.oss.starter.enabled", havingValue = "true", matchIfMissing = true)
 public class ImportsConfiguration {
 
+
     @Bean
     public FileIndexMeta fileIndexMeta() {
         return new FileIndexMeta();
+    }
+
+    @Bean
+    public FileIndexMetaDao fileIndexMetaDao(@Autowired EntityManager entityManager) {
+        return new FileIndexMetaDaoImpl(entityManager);
     }
 
 
     @Bean
     @ConditionalOnMissingBean(StartFileOperateService.class)
     public StartFileOperateService startFileOperateService(FileOperateService fileOperateService,
-                                                           @Autowired FileIndexMetaDao fileIndexMetaDao) {
+                                                           FileIndexMetaDao fileIndexMetaDao) {
         return new StartFileOperateServiceImpl(fileOperateService, fileIndexMetaDao);
     }
 

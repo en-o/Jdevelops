@@ -6,6 +6,7 @@ import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import cn.tannn.jdevelops.jpa.service.J2ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
  * @date 2024/3/7 14:24
  */
 @Service
-public class FileIndexMetaServiceImpl extends J2ServiceImpl<FileIndexMetaDao, FileIndexMeta, Long> implements FileIndexMetaService {
+public class FileIndexMetaServiceImpl extends J2ServiceImpl<FileIndexMetaDao,FileIndexMeta, Long> implements FileIndexMetaService {
 
 
     public FileIndexMetaServiceImpl() {

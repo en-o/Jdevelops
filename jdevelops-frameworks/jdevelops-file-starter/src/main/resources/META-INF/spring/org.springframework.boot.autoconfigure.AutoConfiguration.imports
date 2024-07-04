@@ -1,2 +1,3 @@
+cn.tannn.jdevelops.files.server.entity.FileIndexMeta
 cn.tannn.jdevelops.files.server.ImportsConfiguration
-cn.tannn.jdevelops.files.server.dao.FileIndexMetaDao
+

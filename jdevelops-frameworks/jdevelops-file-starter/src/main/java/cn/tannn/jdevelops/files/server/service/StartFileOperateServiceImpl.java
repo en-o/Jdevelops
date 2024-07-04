@@ -8,6 +8,7 @@ import cn.tannn.jdevelops.files.server.dao.FileIndexMetaDao;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,11 +25,10 @@ import java.util.Optional;
 public class StartFileOperateServiceImpl implements StartFileOperateService {
 
     private static final Logger logger = LoggerFactory.getLogger(StartFileOperateServiceImpl.class);
-    private static FileOperateService fileOperateService;
-    private static FileIndexMetaDao fileIndexMetaDao;
+    private final FileOperateService fileOperateService;
+    private final FileIndexMetaDao fileIndexMetaDao;
 
-    public StartFileOperateServiceImpl(FileOperateService fileOperateService
-            , FileIndexMetaDao fileIndexMetaDao) {
+    public StartFileOperateServiceImpl(FileOperateService fileOperateService, FileIndexMetaDao fileIndexMetaDao) {
         this.fileOperateService = fileOperateService;
         this.fileIndexMetaDao = fileIndexMetaDao;
     }
