@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.Optional;
  * @version V1.0
  * @date 2024/7/4 下午11:04
  */
-public class FileIndexMetaDaoImpl  extends SimpleJpaRepository<FileIndexMeta, Long> implements FileIndexMetaDao{
+public class FileIndexMetaDaoImpl extends SimpleJpaRepository<FileIndexMeta, Long> implements FileIndexMetaDao {
 
     private final EntityManager entityManager;
 
@@ -25,27 +26,48 @@ public class FileIndexMetaDaoImpl  extends SimpleJpaRepository<FileIndexMeta, Lo
     }
 
     @Override
-    public boolean existsByStorageId(Long configId) {
-        return false;
+    public boolean existsByStorageId(Long storageId) {
+        String jpql = "SELECT COUNT(f) FROM FileIndexMeta f WHERE f.storageId = :storageId";
+        Long count = entityManager.createQuery(jpql, Long.class)
+                .setParameter("storageId", storageId)
+                .getSingleResult();
+        return count > 0;
     }
 
     @Override
     public boolean existsByStorageIdAndUrlSuffix(Long storageId, String urlSuffix) {
-        return false;
+        String jpql = "SELECT COUNT(f) FROM FileIndexMeta f WHERE f.storageId = :storageId AND f.urlSuffix = :urlSuffix";
+        Long count = entityManager.createQuery(jpql, Long.class)
+                .setParameter("storageId", storageId)
+                .setParameter("urlSuffix", urlSuffix)
+                .getSingleResult();
+        return count > 0;
     }
 
     @Override
     public List<FileIndexMeta> findByIdIn(List<Long> ids) {
-        return Collections.emptyList();
+        String jpql = "SELECT f FROM FileIndexMeta f WHERE f.id IN (:ids)";
+        TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
+                .setParameter("ids", ids);
+        return query.getResultList();
     }
 
     @Override
     public Optional<FileIndexMeta> findByPathAndStorage(String path, String storage) {
-        return Optional.empty();
+        String jpql = "SELECT f FROM FileIndexMeta f WHERE f.path = :path AND f.storage = :storage";
+        TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
+                .setParameter("path", path)
+                .setParameter("storage", storage);
+        List<FileIndexMeta> resultList = query.getResultList();
+        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 
     @Override
     public Optional<FileIndexMeta> findByPath(String path) {
-        return Optional.empty();
+        String jpql = "SELECT f FROM FileIndexMeta f WHERE f.path = :path";
+        TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
+                .setParameter("path", path);
+        List<FileIndexMeta> resultList = query.getResultList();
+        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
 }

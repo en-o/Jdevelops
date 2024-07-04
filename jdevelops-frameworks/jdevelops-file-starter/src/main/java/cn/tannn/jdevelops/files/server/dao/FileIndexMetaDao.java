@@ -19,10 +19,10 @@ public  interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Lo
 
     /**
      *  存储器配置被使用
-     * @param configId 存储器配置ID
+     * @param storageId 存储器配置ID
      * @return true 使用中
      */
-    boolean existsByStorageId(Long configId);
+    boolean existsByStorageId(Long storageId);
 
     /**
      * 判断是否存在
