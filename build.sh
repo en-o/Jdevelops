@@ -45,12 +45,19 @@ mvn clean package install -Dmaven.test.skip=true | tee -a events.log
 cd ../jdevelops-logs
 mvn clean package install -Dmaven.test.skip=true | tee -a logs.log
 
+cd ../jdevelops-files
+mvn clean package install -Dmaven.test.skip=true | tee -a files.log
+
+
 cd ../jdevelops-authentications
 mvn clean package install -Dmaven.test.skip=true | tee -a authentications.log
 
 
 cd ../jdevelops-dependencies
 mvn clean package install -Dmaven.test.skip=true | tee -a dependencies.log
+
+cd ../jdevelops-frameworks
+mvn clean package install -Dmaven.test.skip=true | tee -a frameworks.log
 
 
 read -n 1 -s -r -p "Press any key to continue..."

@@ -55,9 +55,15 @@ jobs:
           mvn clean package install
           cd ../jdevelops-events
           mvn clean package install
+          cd ../jdevelops-files
+          mvn clean package install
           cd ../jdevelops-logs
           mvn clean package install
+          cd ../jdevelops-authentications
+          mvn clean package install
           cd ../jdevelops-dependencies
+          mvn clean package install
+          cd ../jdevelops-frameworks
           mvn clean package install
 
       - name: Codecov

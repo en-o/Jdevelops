@@ -39,6 +39,11 @@ cd ../jdevelops-events
 mvn clean  | tee -a events.log
 
 
+
+cd ../jdevelops-files
+mvn clean  | tee -a files.log
+
+
 cd ../jdevelops-logs
 mvn clean  | tee -a logs.log
 

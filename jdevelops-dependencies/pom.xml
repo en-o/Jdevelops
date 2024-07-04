@@ -64,6 +64,7 @@
         <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.delay.version>0.0.1</jdevelops.delay.version>
         <jdevelops.event.version>0.0.1</jdevelops.event.version>
+        <jdevelops.file.version>0.0.1-SNAPSHOT</jdevelops.file.version>
         <jdevelops.log.version>0.0.1</jdevelops.log.version>
 
 
@@ -199,6 +200,13 @@
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-events-websocket</artifactId>
                 <version>${jdevelops.event.version}</version>
+            </dependency>
+
+            <!--file-->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-files-sdk</artifactId>
+                <version>${jdevelops.file.version}</version>
             </dependency>
 
 
