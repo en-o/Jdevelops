@@ -12,6 +12,7 @@
     <artifactId>jdevelops-file-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: file :: starter</name>
+    <version>0.0.1-SNAPSHOT</version>
     <description>
         jdevelops-files-sdk starter
     </description>
