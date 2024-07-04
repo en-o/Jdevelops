@@ -41,16 +41,19 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    private R commonDao;
+    /**
+     * Repository
+     */
+    private final R commonDao;
 
     /**
      * 实体对象类型
      */
-    private Class<B> domainClass;
+    private final Class<B> domainClass;
 
-    public J2ServiceImpl(Class<B> domainClass) {
+    public J2ServiceImpl(Class<B> domainClass, R repositoryClass) {
         this.domainClass = domainClass;
+        this.commonDao = repositoryClass;
     }
 
     @Override
