@@ -58,6 +58,7 @@
 
     <modules>
         <module>jdevelops-spring-boot-starter</module>
+        <module>jdevelops-file-starter</module>
     </modules>
 
 
