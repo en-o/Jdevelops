@@ -100,6 +100,7 @@ public class OssConfig {
 
     /**
      * 获取 master 的  FileStorage
+     *
      * @return FileStorage
      */
     public FileStorage genMasterStorage() {
@@ -127,6 +128,7 @@ public class OssConfig {
 
     /**
      * 根据ID获取  FileStorage
+     *
      * @param id [ftp:1, local:2 , minio:3 , qiniu:4 ]
      * @return FileStorage
      */
@@ -136,16 +138,16 @@ public class OssConfig {
         FileStorage minioStorage = minio.toStorage();
         FileStorage qiniuStorage = qiniu.toStorage();
 
-        if (id.equals(ftpStorage.getId())) {
+        if (null != ftpStorage && id.equals(ftpStorage.getId())) {
             return ftpStorage;
-        } else if (id.equals(localStorage.getId())) {
+        } else if (null != localStorage && id.equals(localStorage.getId())) {
             return localStorage;
-        } else if (id.equals(minioStorage.getId())) {
+        } else if (null != minioStorage && id.equals(minioStorage.getId())) {
             return minioStorage;
-        } else if (id.equals(qiniuStorage.getId())) {
+        } else if (null != qiniuStorage && id.equals(qiniuStorage.getId())) {
             return qiniuStorage;
         } else {
-            throw new FileException(new ExceptionCode(11002, "非法的ID"));
+            throw new FileException(new ExceptionCode(11002, "非法的ID/未在配置文件中为相应的ID配置元数据，ID:" + id));
         }
 
     }
