@@ -33,7 +33,7 @@ public class ImportsConfiguration {
     }
 
     @Bean
-    public InitOss ftpInit(OssConfig ossConfig) {
+    public InitOss initOss(OssConfig ossConfig) {
         return new InitOss(ossConfig);
     }
 
