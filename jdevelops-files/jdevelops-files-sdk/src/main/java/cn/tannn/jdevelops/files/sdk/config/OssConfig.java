@@ -8,7 +8,6 @@ import cn.tannn.jdevelops.files.sdk.config.properties.FtpProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.LocalProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.MinioProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.QiNiuProperties;
-import cn.tannn.jdevelops.result.exception.ExceptionCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -121,7 +120,7 @@ public class OssConfig {
             storage.setMaster(StorageMaster.MASTER);
             return storage;
         } else {
-            throw new FileException(new ExceptionCode(11002, "暂不支持[" + master.getType() + "]存储"));
+            throw FileException.specialMessage(11002, "暂不支持[" + master.getType() + "]存储");
         }
     }
 
@@ -142,10 +141,8 @@ public class OssConfig {
         } else if (null != qiniu && id.equals(qiniu.getId())) {
             return qiniu.toStorage();
         } else {
-            throw new FileException(
-                    new ExceptionCode(11002
-                            , "非法的ID/未在配置文件中为相应的ID配置元数据，ID:" + id)
-            );
+            throw FileException.specialMessage(11002
+                    , "非法的ID/未在配置文件中为相应的ID配置元数据，ID:" + id);
         }
 
     }
