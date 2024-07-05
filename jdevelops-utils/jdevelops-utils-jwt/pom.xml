@@ -12,7 +12,7 @@
     <artifactId>jdevelops-utils-jwt</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: jwt</name>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <description>
         jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
         [jwt](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
@@ -62,6 +62,66 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <url>https://github.com/en-o/Jdevelops</url>
 
+    <organization>
+        <name>tan</name>
+        <url>https://t.tannn.cn/</url>
+    </organization>
+
+    <!-- 开源许可证 -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!-- 开源地址 -->
+    <scm>
+        <!-- 发布分支 -->
+        <tag>master</tag>
+        <url>https://github.com/en-o/Jdevelops.git</url>
+        <connection>https://github.com/en-o/Jdevelops.git</connection>
+        <developerConnection>https://github.com/en-o/Jdevelops.git</developerConnection>
+    </scm>
+
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <id>tanning</id>
+            <name>tanning</name>
+            <email>1445763190@qq.com</email>
+            <organization>cn.tannn.jdevelops</organization>
+            <url>https://t.tannn.cn/</url>
+            <roles>
+                <role>author</role>
+            </roles>
+        </developer>
+    </developers>
+    <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
+    <repositories>
+        <repository>
+            <id>snapshot</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
 
 </project>
