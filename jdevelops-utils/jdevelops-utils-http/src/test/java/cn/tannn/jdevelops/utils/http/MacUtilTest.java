@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MacUtilTest {
 
@@ -32,14 +33,22 @@ class MacUtilTest {
     }
 
     @Test
-    void win2Linux() {
-        if(System.getProperty("os.name").toLowerCase().contains("win")){
-            assertEquals("\\",MacUtil.win2Linux("/"));
-            assertEquals("\\",MacUtil.win2Linux("\\"));
-        }else {
-            assertEquals("/",MacUtil.win2Linux("/"));
-            assertEquals("\\",MacUtil.win2Linux("\\"));
-        }
+    void testWin2Linux() {
+        // 测试 Windows 路径转换为 Linux 路径
+        assertEquals("/", MacUtil.win2Linux("\\"));
+        assertEquals("/path/to/file", MacUtil.win2Linux("\\path\\to\\file"));
+        assertEquals("/path/to/file", MacUtil.win2Linux("/path/to/file")); // 已经是 Linux 路径
+        assertEquals("", MacUtil.win2Linux("")); // 空字符串
+        assertNull(MacUtil.win2Linux(null)); // null
+    }
 
+    @Test
+    void testLinux2Win() {
+        // 测试 Linux 路径转换为 Windows 路径
+        assertEquals("\\", MacUtil.linux2Win("/"));
+        assertEquals("\\path\\to\\file", MacUtil.linux2Win("/path/to/file"));
+        assertEquals("\\path\\to\\file", MacUtil.linux2Win("\\path\\to\\file")); // 已经是 Windows 路径
+        assertEquals("", MacUtil.linux2Win("")); // 空字符串
+        assertNull(MacUtil.linux2Win(null)); // null
     }
 }
