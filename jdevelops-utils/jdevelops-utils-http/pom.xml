@@ -11,6 +11,7 @@
     <artifactId>jdevelops-utils-http</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: http</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         http
     </description>

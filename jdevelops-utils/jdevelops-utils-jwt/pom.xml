@@ -12,6 +12,7 @@
     <artifactId>jdevelops-utils-jwt</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: jwt</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
         [jwt](https://bitbucket.org/b_c/jose4j/wiki/JWT%20Examples)
