@@ -133,18 +133,29 @@ public class MacUtil {
         return computerName;
     }
 
+
     /**
-     *  win separator Linux 相互转换
-     * @param path 地址
-     * @return String
+     * 将 Windows 路径转换为 Linux 路径
+     * @param path Windows 路径
+     * @return Linux 路径
      */
     public static String win2Linux(String path) {
-        String os = System.getProperty("os.name");
-        if(os.toLowerCase().startsWith(WIN)){
-            path = path.replace("/","\\");
-        }else {
-            path = path.replace("\\","/");
+        if (path == null) {
+            return null;
         }
-        return path;
+        return path.replace("\\", "/");
     }
+
+    /**
+     * 将 Linux 路径转换为 Windows 路径
+     * @param path Linux 路径
+     * @return Windows 路径
+     */
+    public static String linux2Win(String path) {
+        if (path == null) {
+            return null;
+        }
+        return path.replace("/", "\\");
+    }
+
 }

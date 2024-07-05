@@ -12,25 +12,27 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
+      #- strategy:
+      #    matrix:
+     #       java-version: [ '8.0.302+8', '11', '17' ]  # 定义你需要的Java版本
+      - name: Set timezone to Asia/Shanghai
+        run: |
+          sudo timedatectl set-timezone Asia/Shanghai
       - uses: actions/checkout@v4
       - name: Set up JDK 1.8
         uses: actions/setup-java@v4
         with:
           java-version: '8.0.302+8'
+         # java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: maven
-
       # 设置 Maven 版本为 3.9.1
       - name: Set up Maven
         uses: stCarolas/setup-maven@v4
         with:
           maven-version: 3.9.1
-
-
       # maven build
       # 指定特定模块 可以使用 -pl 或 --projects 选项来指定模块路径,-pl path/to/module1,path/to/module2
       - name: Run the Maven package
@@ -55,9 +57,15 @@ jobs:
           mvn clean package install
           cd ../jdevelops-events
           mvn clean package install
+          cd ../jdevelops-files
+          mvn clean package install
           cd ../jdevelops-logs
           mvn clean package install
+          cd ../jdevelops-authentications
+          mvn clean package install
           cd ../jdevelops-dependencies
+          mvn clean package install
+          cd ../jdevelops-frameworks
           mvn clean package install
 
       - name: Codecov
