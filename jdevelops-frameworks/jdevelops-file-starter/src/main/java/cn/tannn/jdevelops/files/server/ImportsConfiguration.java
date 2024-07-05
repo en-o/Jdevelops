@@ -55,14 +55,12 @@ public class ImportsConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(FileController.class)
-    public FileController fileController(StartFileOperateService startFileOperateService
-            , FileIndexMetaService fileIndexMetaService
-    ) {
-        return new FileController(startFileOperateService, fileIndexMetaService);
+    public FileController fileController(StartFileOperateService startFileOperateService) {
+        return new FileController(startFileOperateService);
     }
 
     @Bean
-    @ConditionalOnMissingBean(FileController.class)
+    @ConditionalOnMissingBean(FileIndexMetaController.class)
     public FileIndexMetaController fileIndexMetaController(StartFileOperateService startFileOperateService
             , FileIndexMetaService fileIndexMetaService
     ) {
@@ -70,7 +68,7 @@ public class ImportsConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(FileController.class)
+    @ConditionalOnMissingBean(FtpController.class)
     public FtpController ftpController(FileIndexMetaService fileIndexMetaService) {
         return new FtpController(fileIndexMetaService);
     }

@@ -30,12 +30,9 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     private final StartFileOperateService startFileOperateService;
-    private final FileIndexMetaService fileIndexMetaService;
 
-    public FileController(StartFileOperateService startFileOperateService
-            , FileIndexMetaService fileIndexMetaService) {
+    public FileController(StartFileOperateService startFileOperateService) {
         this.startFileOperateService = startFileOperateService;
-        this.fileIndexMetaService = fileIndexMetaService;
     }
 
     /**
