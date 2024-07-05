@@ -60,7 +60,7 @@
         <jdevelops.spi.version>0.0.1</jdevelops.spi.version>
         <jdevelops.annotation.version>0.0.1</jdevelops.annotation.version>
 
-        <jdevelops.authentication.version>0.0.1</jdevelops.authentication.version>
+        <jdevelops.authentication.version>0.0.2</jdevelops.authentication.version>
         <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.delay.version>0.0.1</jdevelops.delay.version>
         <jdevelops.event.version>0.0.1</jdevelops.event.version>
