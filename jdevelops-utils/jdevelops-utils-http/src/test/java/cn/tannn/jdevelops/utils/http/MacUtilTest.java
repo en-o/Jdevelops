@@ -33,7 +33,13 @@ class MacUtilTest {
 
     @Test
     void win2Linux() {
-        assertEquals("\\",MacUtil.win2Linux("/"));
-        assertEquals("\\",MacUtil.win2Linux("\\"));
+        if(System.getProperty("os.name").toLowerCase().contains("win")){
+            assertEquals("\\",MacUtil.win2Linux("/"));
+            assertEquals("\\",MacUtil.win2Linux("\\"));
+        }else {
+            assertEquals("/",MacUtil.win2Linux("/"));
+            assertEquals("\\",MacUtil.win2Linux("\\"));
+        }
+
     }
 }
