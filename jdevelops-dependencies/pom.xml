@@ -266,7 +266,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-utils-jwt</artifactId>
-                <version>${jdevelops.util.version}</version>
+                <version>0.0.2</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
