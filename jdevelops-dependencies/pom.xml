@@ -60,16 +60,17 @@
         <jdevelops.spi.version>0.0.1</jdevelops.spi.version>
         <jdevelops.annotation.version>0.0.1</jdevelops.annotation.version>
 
-        <jdevelops.authentication.version>0.0.1</jdevelops.authentication.version>
+        <jdevelops.authentication.version>0.0.2</jdevelops.authentication.version>
         <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.delay.version>0.0.1</jdevelops.delay.version>
         <jdevelops.event.version>0.0.1</jdevelops.event.version>
-        <jdevelops.file.version>0.0.1-SNAPSHOT</jdevelops.file.version>
+        <jdevelops.file.version>0.0.1</jdevelops.file.version>
         <jdevelops.log.version>0.0.1</jdevelops.log.version>
 
 
         <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
         <jdevelops.util.version>0.0.1</jdevelops.util.version>
+        <jdevelops.util.jwt.version>0.0.2</jdevelops.util.jwt.version>
         <jdevelops.web.version>0.0.1</jdevelops.web.version>
 
     </properties>
@@ -266,7 +267,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-utils-jwt</artifactId>
-                <version>${jdevelops.util.version}</version>
+                <version>${jdevelops.util.jwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>

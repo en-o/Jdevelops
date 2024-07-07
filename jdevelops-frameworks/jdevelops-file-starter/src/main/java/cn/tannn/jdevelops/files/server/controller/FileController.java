@@ -4,7 +4,6 @@ import cn.tannn.cat.file.sdk.api.UploadFile;
 import cn.tannn.cat.file.sdk.api.UploadFiles;
 import cn.tannn.jdevelops.files.server.controller.vo.FileIndexVO;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
-import cn.tannn.jdevelops.files.server.service.FileIndexMetaService;
 import cn.tannn.jdevelops.files.server.service.StartFileOperateService;
 import cn.tannn.jdevelops.result.response.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,12 +29,9 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     private final StartFileOperateService startFileOperateService;
-    private final FileIndexMetaService fileIndexMetaService;
 
-    public FileController(StartFileOperateService startFileOperateService
-            , FileIndexMetaService fileIndexMetaService) {
+    public FileController(StartFileOperateService startFileOperateService) {
         this.startFileOperateService = startFileOperateService;
-        this.fileIndexMetaService = fileIndexMetaService;
     }
 
     /**

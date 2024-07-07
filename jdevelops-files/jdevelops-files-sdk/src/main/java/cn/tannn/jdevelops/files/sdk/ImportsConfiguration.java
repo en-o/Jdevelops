@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * 导入
- * <p>  启用oss jdevelops.oss.enable= ftp/local/minio/qiniu
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/7/1 下午4:29

@@ -12,6 +12,7 @@
     <artifactId>jdevelops-utils-aop</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: aop</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         spring aop utils
     </description>
