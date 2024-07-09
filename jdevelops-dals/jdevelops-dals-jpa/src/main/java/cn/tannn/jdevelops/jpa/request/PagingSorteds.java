@@ -91,7 +91,7 @@ public class PagingSorteds extends PagingSorted {
      * @return Sorteds
      */
     public PagingSorteds pagingSorted(PagingSorted pagingSorted) {
-        setPageIndex(pagingSorted.getPageIndex());
+        setPageIndex(pagingSorted.realPageIndex());
         setSorts(pagingSorted.getSorts());
         setPageSize(pagingSorted.getPageSize());
         return this;
