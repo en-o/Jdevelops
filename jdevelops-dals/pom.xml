@@ -8,7 +8,7 @@
         <artifactId>jdevelops-parent</artifactId>
         <version>0.0.1</version>
     </parent>
-        <artifactId>jdevelops-dals</artifactId>
+    <artifactId>jdevelops-dals</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>jdevelops :: dals </name>
