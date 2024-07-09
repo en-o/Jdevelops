@@ -32,11 +32,10 @@
 
 # 分支注意
 ## 正式分支
-1. master=jdk17分支
+1. master是适配jdk17+spring boot 3.x的版本[1.x]
 2. jdk8是适配jdk8+spring boot 2.x的版本[0.x]
-3. jdk17是适配jdk17+spring boot 3.x的版本[1.x]
 ## 开发分支
-1. dev jdk17的开发分支
+1. dev master的开发分支
 2. dev8 jdk8的开发分支
 
 # mvn package / install
