@@ -12,6 +12,7 @@
     <artifactId>jdevelops-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: spring :: boot :: starter</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         spring boot starter
     </description>
