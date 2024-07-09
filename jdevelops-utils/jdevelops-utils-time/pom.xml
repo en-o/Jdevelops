@@ -12,7 +12,7 @@
     <artifactId>jdevelops-utils-time</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: time</name>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>
         时间工具
         https://www.yuque.com/tanning/mbquef/kioiy4
