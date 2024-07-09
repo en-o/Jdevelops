@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-ddss</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: ddss</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         动态数据源切换[配置文件 or 数据库]
     </description>

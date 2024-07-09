@@ -8,7 +8,7 @@
         <artifactId>jdevelops-parent</artifactId>
         <version>0.0.1</version>
     </parent>
-    <artifactId>jdevelops-dals</artifactId>
+        <artifactId>jdevelops-dals</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>jdevelops :: dals </name>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.2-SNAPSHOT</revision>
+        <revision>0.0.1</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>

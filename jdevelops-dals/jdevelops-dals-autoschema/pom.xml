@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-autoschema</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: autoschema</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         自定建库：mysql,pgsql
     </description>

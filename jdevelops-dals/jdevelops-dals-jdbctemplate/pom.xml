@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-jdbctemplate</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: jdbctemplate</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         jdbctemplate 注解化
     </description>
