@@ -30,6 +30,12 @@
 ## [maven archetype](https://gitee.com/etn/jdevelops-archetype.git)
 > [使用方法](https://www.yuque.com/tanning/yg9ipo/os0zl7#GocqT)
 
+# 分支注意
+1. master实时最新的（默认是sb3
+2. jdk8是适配jdk8的版本[0.x]
+3. jdk17是适配jdk17的版本[1.x]
+4. sb3是适配jdk17+spring boot 3.x 的版本[2.x]
+
 # mvn package / install
 1. 使用maven 3.9 ，因为我用了 junit 5 [maven 3.6 会出问题]
 
