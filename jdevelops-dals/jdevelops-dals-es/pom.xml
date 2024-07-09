@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-es</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: es</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         elasticsearch
         api参考：https://juejin.cn/post/7216679822096908347#heading-5

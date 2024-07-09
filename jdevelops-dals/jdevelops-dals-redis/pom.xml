@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-redis</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: redis</name>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         redis
     </description>

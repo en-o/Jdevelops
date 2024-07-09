@@ -12,6 +12,7 @@
     <artifactId>jdevelops-dals-jpa</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: jpa</name>
+    <version>0.0.3-SNAPSHOT</version>
     <description>
         jpa 封装
     </description>
