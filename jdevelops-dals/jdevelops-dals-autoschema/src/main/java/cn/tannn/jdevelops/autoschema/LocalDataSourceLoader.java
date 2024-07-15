@@ -23,13 +23,13 @@ import cn.tannn.jdevelops.autoschema.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -51,7 +51,8 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
     private static final String PRE_FIX = "file:";
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
     private static final String AUTO_INITSCRIPT_PGSQL = " CREATE DATABASE  %s ;";
-    @Resource
+
+    @Autowired
     private DataBaseProperties dataBaseProperties;
 
     @Override
