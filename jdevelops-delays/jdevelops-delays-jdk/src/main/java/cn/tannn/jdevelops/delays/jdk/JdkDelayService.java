@@ -7,9 +7,9 @@ import cn.tannn.jdevelops.delays.jdk.constant.DelayQueueConstant;
 import cn.tannn.jdevelops.delays.jdk.task.DelayTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -41,7 +41,7 @@ public class JdkDelayService implements DelayService<DelayTask> {
     /**
      * 执行工厂
      */
-    @Resource
+    @Autowired
     DelayFactory<DelayTask> delayRunFactory;
 
     @Override

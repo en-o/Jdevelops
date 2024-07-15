@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-build</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>jdevelops :: Build</name>
     <description>打包用的插件集合</description>
     <url>https://github.com/en-o/Jdevelops</url>
@@ -47,12 +47,12 @@
     </developers>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>17</java.version>
         <!-- spring  -->
         <spring.boot.version>2.7.15</spring.boot.version>
         <!-- 编译 -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

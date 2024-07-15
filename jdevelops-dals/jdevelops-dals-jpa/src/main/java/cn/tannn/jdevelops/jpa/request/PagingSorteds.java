@@ -52,22 +52,56 @@ public class PagingSorteds extends PagingSorted {
         super(pageIndex, pageSize, sorts);
     }
 
-
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
     @Override
     public PagingSorteds append(String... orderBy) {
         return pagingSorted(super.append(orderBy));
     }
 
+
+    /**
+     * 追加排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空在原有的排序基础上追加默认自定义排序
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy   排序字段
+     */
     @Override
     public PagingSorteds append(Integer orderDesc, String... orderBy) {
         return pagingSorted(super.append(orderDesc, orderBy));
     }
 
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
     @Override
     public PagingSorteds fixSort(String... orderBy) {
         return pagingSorted(super.fixSort(orderBy));
     }
 
+    /**
+     * 修改排序
+     *
+     * <p> 当排序为空是修改默认的排序字段
+     * <p> 若不为空则不做任何操作
+     *
+     * @param orderDesc 排序方式 正序0--Direction.ASC，反序1--Direction.DESC [0-1]
+     * @param orderBy  排序字段 （默认排序方式为倒叙）
+     */
     @Override
     public PagingSorteds fixSort(Integer orderDesc, String... orderBy) {
         return pagingSorted(super.fixSort(orderDesc, orderBy));
@@ -91,7 +125,7 @@ public class PagingSorteds extends PagingSorted {
      * @return Sorteds
      */
     public PagingSorteds pagingSorted(PagingSorted pagingSorted) {
-        setPageIndex(pagingSorted.getPageIndex());
+        setPageIndex(pagingSorted.realPageIndex());
         setSorts(pagingSorted.getSorts());
         setPageSize(pagingSorted.getPageSize());
         return this;

@@ -12,7 +12,7 @@
     <artifactId>jdevelops-utils-spring</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: spring</name>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>${revision}</version>
     <description>
         spring util
     </description>

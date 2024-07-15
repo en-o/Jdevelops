@@ -4,8 +4,8 @@ import cn.tannn.jdevelops.delays.core.entity.DelayQueueMessage;
 import cn.tannn.jdevelops.delays.core.execute.DelayExecute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class DelayFactory<T extends DelayQueueMessage> {
      * key为bean id，
      * value值则为对应的策略实现类
      */
-    @Resource
+    @Autowired(required=false)
     private Map<String, DelayExecute<T>> delaydMap;
 
 

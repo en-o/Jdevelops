@@ -4,13 +4,14 @@ import cn.tannn.jdevelops.knife4j.domain.SwaggerProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 
-import javax.annotation.Resource;
+
 
 import static cn.tannn.jdevelops.knife4j.core.constant.PublicConstant.COLON;
 import static cn.tannn.jdevelops.knife4j.core.constant.PublicConstant.SPIRIT;
@@ -37,7 +38,7 @@ public class ConsoleConfig implements ApplicationRunner {
 	private String serverName;
 
 
-	@Resource
+	@Autowired
 	private SwaggerProperties swaggerBean;
 
 

@@ -9,23 +9,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ZipStrUtilTest {
 
 
-    final static String str_jiami = "{\n" +
-            "\t\"code\":\"0\",\n" +
-            "\t\"data\":{\n" +
-            "\t\t\"sh\":1,\n" +
-            "\t\t\"gd\":5,\n" +
-            "\t\t\"sc\":7,\n" +
-            "\t\t\"hb\":1,\n" +
-            "\t\t\"zj\":1,\n" +
-            "\t\t\"jx\":1,\n" +
-            "\t\t\"bj\":1,\n" +
-            "\t\t\"ah\":1\n" +
-            "\t},\n" +
-            "\t\"description\":\"\",\n" +
-            "\t\"success\":true\n" +
-            "}";
+    final static String str_jiami = """
+            {
+                "code": 0,
+                "data": {
+                    "sh": 1,
+                    "gd": 5,
+                    "sc": 7,
+                    "sh": 1,
+                    "hb": 1,
+                    "zj": 1,
+                    "jx": 1,
+                    "bj": 1,
+                    "ah": 1
+                },
+                "description" : "",
+                "success" : true
+            }
+            """;
 
-    final static String str_jiemi = "H4sIAAAAAAAAAD3NwQqAIBAE0LN+xpw71CGC/RtbJfNQ0RpE4b+ngt3e7sDMqxV4tw6EHl0+rIkG9GqlIB40dEWLBY1VwqCpys8tfUJTuJvm/2dKi1apljvhcz3ium95sO7JxexEQPG8nE4f+HcAX5AAAAA=";
+    final static String str_jiemi = "H4sIAAAAAAAA/33OwQqAIAyA4btPITt7qEMEvY1NyTpkOIMoeveWFYWHvP0f23ATkh+gNxYaWagrjY6ac0uVhBx3qV7oDEP1AUKGWv2suDaDdchgWDJo8wmdjqben89awtBPsfcjyEYC3E4zoiU6LYbZil0cn3upMO0AAAA=";
 
 
     @Test

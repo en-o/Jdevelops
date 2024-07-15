@@ -1,6 +1,10 @@
 package cn.tannn.jdevelops.utils.core.thread;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.io.unit.DataUnit;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 public class ThreadUtilsTest {
 
@@ -19,4 +23,16 @@ public class ThreadUtilsTest {
 //        ThreadUtils.sleep(1000);
 //        System.out.println(System.currentTimeMillis()-timeMillis);
     }
+
+
+//    @Test
+//    void  testSchedule() {
+//
+//        ThreadUtils.getDefault().init(1);
+//        ThreadUtils.getDefault().schedule(() -> {
+//            System.out.println(System.currentTimeMillis());
+//        },100,100);
+//        ThreadUtils.sleep(10000);
+//        ThreadUtils.getDefault().shutdown();
+//    }
 }

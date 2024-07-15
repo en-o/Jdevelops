@@ -54,5 +54,7 @@ mvn clean  | tee -a authentications.log
 cd ../jdevelops-dependencies
 mvn clean  | tee -a dependencies.log
 
+cd ../jdevelops-frameworks
+mvn clean  | tee -a frameworks.log
 
 read -n 1 -s -r -p "Press any key to continue..."
