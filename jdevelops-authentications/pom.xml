@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>0.0.2</revision>
+        <revision>1.0.0-SNAPSHOT</revision>
     </properties>
 
     <modules>
