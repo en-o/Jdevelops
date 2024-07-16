@@ -6,11 +6,11 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-build</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>jdevelops :: dependencies</name>
     <description>
         jdevelops 所有组件的清单，统一的版本(物料清单)
@@ -56,21 +56,21 @@
 
     <properties>
 
-        <jdevelops.api.version>1.0.0-SNAPSHOT</jdevelops.api.version>
-        <jdevelops.spi.version>1.0.0-SNAPSHOT</jdevelops.spi.version>
-        <jdevelops.annotation.version>1.0.0-SNAPSHOT</jdevelops.annotation.version>
+        <jdevelops.api.version>1.0.1-SNAPSHOT</jdevelops.api.version>
+        <jdevelops.spi.version>1.0.1-SNAPSHOT</jdevelops.spi.version>
+        <jdevelops.annotation.version>1.0.1-SNAPSHOT</jdevelops.annotation.version>
 
-        <jdevelops.authentication.version>1.0.0-SNAPSHOT</jdevelops.authentication.version>
-        <jdevelops.dal.version>1.0.0-SNAPSHOT</jdevelops.dal.version>
-        <jdevelops.delay.version>1.0.0-SNAPSHOT</jdevelops.delay.version>
-        <jdevelops.event.version>1.0.0-SNAPSHOT</jdevelops.event.version>
-        <jdevelops.file.version>1.0.0-SNAPSHOT</jdevelops.file.version>
-        <jdevelops.log.version>1.0.0-SNAPSHOT</jdevelops.log.version>
+        <jdevelops.authentication.version>1.0.1-SNAPSHOT</jdevelops.authentication.version>
+        <jdevelops.dal.version>1.0.1-SNAPSHOT</jdevelops.dal.version>
+        <jdevelops.delay.version>1.0.1-SNAPSHOT</jdevelops.delay.version>
+        <jdevelops.event.version>1.0.1-SNAPSHOT</jdevelops.event.version>
+        <jdevelops.file.version>1.0.1-SNAPSHOT</jdevelops.file.version>
+        <jdevelops.log.version>1.0.1-SNAPSHOT</jdevelops.log.version>
 
 
-        <jdevelops.dal.version>1.0.0-SNAPSHOT</jdevelops.dal.version>
-        <jdevelops.util.version>1.0.0-SNAPSHOT</jdevelops.util.version>
-        <jdevelops.web.version>1.0.0-SNAPSHOT</jdevelops.web.version>
+        <jdevelops.dal.version>1.0.1-SNAPSHOT</jdevelops.dal.version>
+        <jdevelops.util.version>1.0.1-SNAPSHOT</jdevelops.util.version>
+        <jdevelops.web.version>1.0.1-SNAPSHOT</jdevelops.web.version>
 
     </properties>
 

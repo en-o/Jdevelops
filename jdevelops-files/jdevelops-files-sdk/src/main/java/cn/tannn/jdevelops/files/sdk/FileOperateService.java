@@ -4,7 +4,7 @@ import cn.tannn.cat.file.sdk.api.UploadFile;
 import cn.tannn.cat.file.sdk.api.UploadFiles;
 import cn.tannn.cat.file.sdk.bean.FileIndex;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
