@@ -15,6 +15,7 @@
     <description>
         jpa 封装
         官方的demo: https://github.com/spring-projects/spring-data-examples
+        文档：https://docs.spring.io/spring-data/jpa/reference/jpa/getting-started.html
     </description>
 
     <dependencies>
