@@ -14,6 +14,7 @@
     <name>jdevelops :: dals :: jpa</name>
     <description>
         jpa 封装
+        官方的demo: https://github.com/spring-projects/spring-data-examples
     </description>
 
     <dependencies>
