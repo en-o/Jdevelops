@@ -1,7 +1,8 @@
 package cn.tannn.jdevelops.webs.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 /**
  * 自定义的接口前置拦截器  - 模仿 HandlerInterceptor

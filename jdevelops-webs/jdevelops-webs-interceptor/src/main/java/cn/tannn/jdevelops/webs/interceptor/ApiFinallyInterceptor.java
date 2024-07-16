@@ -1,7 +1,8 @@
 package cn.tannn.jdevelops.webs.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 /**
  * 自定义的接口整个请求处理完毕拦截器  - 模仿 HandlerInterceptor
@@ -20,9 +21,9 @@ public interface ApiFinallyInterceptor {
      * @throws Exception Exception
      */
     default void finallys(HttpServletRequest request,
-                                 HttpServletResponse response,
-                                 Object handler,
-                                 Exception ex) throws Exception {
+                          HttpServletResponse response,
+                          Object handler,
+                          Exception ex) throws Exception {
         // 这里可以添加你的业务逻辑，例如资源释放等
     }
 }

@@ -1,12 +1,12 @@
 package cn.tannn.jdevelops.webs.interceptor;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * 自定义的接口后置拦截器  - 模仿 HandlerInterceptor
+ * 自定义的接口拦截器  - 模仿 HandlerInterceptor
  * before -> after -> afterCompletion
  * @author tnnn
  */

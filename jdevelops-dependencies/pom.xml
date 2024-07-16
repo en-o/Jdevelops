@@ -142,7 +142,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-api-jwt</artifactId>
+                <artifactId>jdevelops-apis-jwt</artifactId>
                 <version>${jdevelops.api.version}</version>
             </dependency>
 
