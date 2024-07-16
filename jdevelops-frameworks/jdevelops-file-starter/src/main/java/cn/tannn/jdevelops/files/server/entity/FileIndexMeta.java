@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.format.DateTimeFormatter;
 import java.util.StringJoiner;
 
@@ -27,7 +27,7 @@ import static cn.tannn.jdevelops.uitls.aop.CommonConstant.DEFAULT_FORMAT_DATETIM
  */
 @Entity
 @Table(name = "file_index_meta")
-@org.hibernate.annotations.Table(appliesTo = "file_index_meta", comment = "文件索引数据")
+@Comment("文件索引数据")
 @DynamicUpdate
 @DynamicInsert
 @AutoConfigurationPackage

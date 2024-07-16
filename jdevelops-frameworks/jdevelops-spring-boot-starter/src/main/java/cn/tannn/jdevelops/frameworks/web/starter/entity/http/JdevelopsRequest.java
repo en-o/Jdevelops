@@ -3,8 +3,8 @@ package cn.tannn.jdevelops.frameworks.web.starter.entity.http;
 
 
 import cn.tannn.jdevelops.frameworks.web.starter.exception.JHttpException;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
