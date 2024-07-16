@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdevelops-apis</artifactId>
     <version>${revision}</version>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>1.0.1-SNAPSHOT</revision>
     </properties>
 
     <modules>
@@ -62,6 +62,7 @@
         <module>jdevelops-apis-log</module>
         <module>jdevelops-apis-idempotent</module>
         <module>jdevelops-apis-sign</module>
+        <module>jdevelops-apis-jwt</module>
     </modules>
 
 

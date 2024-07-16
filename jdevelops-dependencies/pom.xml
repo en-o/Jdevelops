@@ -70,7 +70,6 @@
 
         <jdevelops.dal.version>1.0.0-SNAPSHOT</jdevelops.dal.version>
         <jdevelops.util.version>1.0.0-SNAPSHOT</jdevelops.util.version>
-        <jdevelops.util.jwt.version>1.0.0-SNAPSHOT</jdevelops.util.jwt.version>
         <jdevelops.web.version>1.0.0-SNAPSHOT</jdevelops.web.version>
 
     </properties>
@@ -139,6 +138,11 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-apis-version</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-api-jwt</artifactId>
                 <version>${jdevelops.api.version}</version>
             </dependency>
 
@@ -263,11 +267,6 @@
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-utils-http</artifactId>
                 <version>${jdevelops.util.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-utils-jwt</artifactId>
-                <version>${jdevelops.util.jwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>

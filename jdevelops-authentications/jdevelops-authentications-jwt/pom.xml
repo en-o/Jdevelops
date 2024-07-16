@@ -26,18 +26,18 @@
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
-            <artifactId>jdevelops-utils-jwt</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>jdevelops-api-jwt</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-spi</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>

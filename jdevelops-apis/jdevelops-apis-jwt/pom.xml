@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
-        <artifactId>jdevelops-utils</artifactId>
+        <artifactId>jdevelops-apis</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>jdevelops-utils-jwt</artifactId>
+    <artifactId>jdevelops-apis-jwt</artifactId>
     <packaging>jar</packaging>
-    <name>jdevelops :: utils :: jwt</name>
+    <name>jdevelops :: apis :: jwt</name>
     <version>${revision}</version>
     <description>
         jwt 工具 使用的是[jose4j](https://bitbucket.org/b_c/jose4j/src)
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-web</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,7 +53,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
