@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.jwt.redis.util;
 
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 

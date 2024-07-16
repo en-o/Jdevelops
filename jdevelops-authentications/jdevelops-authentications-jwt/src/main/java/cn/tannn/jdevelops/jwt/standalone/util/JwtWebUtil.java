@@ -7,11 +7,11 @@ import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
 import cn.tannn.jdevelops.utils.jwt.module.JCookie;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.MalformedClaimException;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static cn.tannn.jdevelops.result.constant.TokenCode.TOKEN_ERROR;
