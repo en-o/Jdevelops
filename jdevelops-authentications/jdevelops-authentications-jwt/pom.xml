@@ -12,7 +12,7 @@
     <artifactId>jdevelops-authentications-jwt</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: authentications :: jwt</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <description>
         jwt认证
     </description>
