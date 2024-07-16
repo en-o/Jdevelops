@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.delays.core.entity.DelayQueueMessage;
 import cn.tannn.jdevelops.delays.core.factory.DelayFactory;
 import cn.tannn.jdevelops.delays.core.service.DelayService;
 import com.alibaba.fastjson2.JSON;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +16,6 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
