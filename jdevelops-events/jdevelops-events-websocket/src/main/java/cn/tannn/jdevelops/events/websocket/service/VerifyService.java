@@ -3,8 +3,8 @@ package cn.tannn.jdevelops.events.websocket.service;
 
 
 import cn.tannn.jdevelops.events.websocket.util.SocketUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 鉴权

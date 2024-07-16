@@ -3,8 +3,8 @@ package cn.tannn.jdevelops.events.websocket.service.impl;
 import cn.tannn.jdevelops.events.websocket.config.WebSocketConfig;
 import cn.tannn.jdevelops.events.websocket.core.CommonConstant;
 import cn.tannn.jdevelops.events.websocket.service.VerifyService;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 

@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.events.websocket.cache;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
+
 import java.util.List;
 
 /**

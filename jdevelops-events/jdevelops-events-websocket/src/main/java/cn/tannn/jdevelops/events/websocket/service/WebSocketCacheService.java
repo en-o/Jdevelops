@@ -3,10 +3,10 @@ package cn.tannn.jdevelops.events.websocket.service;
 import cn.tannn.jdevelops.events.websocket.cache.SessionInfo;
 import cn.tannn.jdevelops.events.websocket.config.WebSocketConfig;
 import cn.tannn.jdevelops.events.websocket.exception.WebSocketException;
+import jakarta.websocket.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.websocket.Session;
 import java.util.*;
 
 import static cn.tannn.jdevelops.events.websocket.cache.WebSocketSessionLocalCache.ROBUST_SESSION_POOLS;
