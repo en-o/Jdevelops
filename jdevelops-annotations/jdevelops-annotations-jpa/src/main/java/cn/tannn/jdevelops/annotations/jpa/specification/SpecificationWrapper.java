@@ -1,7 +1,8 @@
 package cn.tannn.jdevelops.annotations.jpa.specification;
 
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
