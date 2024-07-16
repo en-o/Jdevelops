@@ -1,8 +1,8 @@
 package cn.tannn.jdevelops.utils.http;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.SocketException;
 
