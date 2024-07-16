@@ -2,9 +2,9 @@ package cn.tannn.jdevelops.sign.util;
 
 import cn.tannn.jdevelops.result.utils.StrUtils;
 import cn.tannn.jdevelops.sign.exception.SignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -164,7 +164,7 @@ public class SignMD5Util {
      * @param salt 盐
      * @return 对错
      */
-    public static boolean checkHeader(HttpServletRequest request, String jsonString,String salt){
+    public static boolean checkHeader(HttpServletRequest request, String jsonString, String salt){
         try {
             String sign = getHeaderSign(request);
             if(StringUtils.isEmpty(sign)){

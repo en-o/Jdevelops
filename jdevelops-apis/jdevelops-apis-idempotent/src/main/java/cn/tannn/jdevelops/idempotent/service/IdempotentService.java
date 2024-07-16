@@ -3,9 +3,9 @@ package cn.tannn.jdevelops.idempotent.service;
 
 
 import cn.tannn.jdevelops.idempotent.annotation.ApiIdempotent;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author tnnn
