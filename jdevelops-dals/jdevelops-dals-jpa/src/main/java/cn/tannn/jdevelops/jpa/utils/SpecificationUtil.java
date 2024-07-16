@@ -4,10 +4,10 @@ import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;

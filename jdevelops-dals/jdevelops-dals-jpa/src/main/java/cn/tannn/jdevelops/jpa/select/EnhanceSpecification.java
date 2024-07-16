@@ -12,14 +12,15 @@ import cn.tannn.jdevelops.annotations.jpa.specification.SpecificationWrapper;
 import cn.tannn.jdevelops.jpa.exception.JpaException;
 import cn.tannn.jdevelops.jpa.utils.IObjects;
 import cn.tannn.jdevelops.jpa.utils.JpaUtils;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
