@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.utils.spring;
 
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.AntPathMatcher;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**

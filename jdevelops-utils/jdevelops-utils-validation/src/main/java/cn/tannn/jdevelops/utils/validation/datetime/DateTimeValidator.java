@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.utils.validation.datetime;
 
 import cn.tannn.jdevelops.utils.validation.util.StrUtil;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 /**

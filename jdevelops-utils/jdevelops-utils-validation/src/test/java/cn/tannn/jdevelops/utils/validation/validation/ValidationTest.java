@@ -3,9 +3,9 @@ package cn.tannn.jdevelops.utils.validation.validation;
 
 import cn.tannn.jdevelops.utils.model.ValidationUserBean;
 import cn.tannn.jdevelops.utils.validation.BeastValidatedTest;
+import jakarta.validation.ConstraintViolation;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
