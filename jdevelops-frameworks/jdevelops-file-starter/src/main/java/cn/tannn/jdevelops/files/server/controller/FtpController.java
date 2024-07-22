@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import static cn.tannn.cat.file.sdk.utils.FileUtils.getMimeType;
+
 /**
  * ftp特殊处理
  *
@@ -40,7 +42,7 @@ public class FtpController {
 
     @Operation(summary = "ftp文件预览")
     @Parameter(name = "filePath", description = "文件索引的path", required = true)
-    @Parameter(name = "storage", description = "文件存储器类型字典", required = true)
+    @Parameter(name = "storage", description = "文件存储器类型字典【StorageDict.value】", required = true)
     @GetMapping(value ="/operation/"+ OSSConstants.FTP_VIEWS_API_NAME + "/{storage}")
     public void views(@PathVariable("storage") String storage, @RequestParam("filePath") String filePath, HttpServletResponse response) {
         fileIndexMetaService.findPathAndStorage(filePath, StorageDict.fromValue(storage)).ifPresent(index -> {
@@ -53,7 +55,7 @@ public class FtpController {
 
                 HttpServletResponse downResponse = ResponseFile.customResponse(response
                         , index.getType(), index.getFreshName());
-                downResponse.setContentType("application/octet-stream");
+                downResponse.setContentType(getMimeType(index.getFreshName()));
                 //设置文件大小
                 downResponse.setHeader("Content-Length", String.valueOf(index.getSize()));
                 IOUtils.copy(inputStream, downResponse.getOutputStream());
