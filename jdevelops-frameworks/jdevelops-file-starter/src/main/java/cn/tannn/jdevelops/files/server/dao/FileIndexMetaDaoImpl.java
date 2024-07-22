@@ -69,4 +69,13 @@ public class FileIndexMetaDaoImpl extends SimpleJpaRepository<FileIndexMeta, Lon
         List<FileIndexMeta> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }
+
+    @Override
+    public Optional<FileIndexMeta> findByUrlSuffix(String urlSuffix) {
+        String jpql = "SELECT f FROM FileIndexMeta f WHERE f.urlSuffix = :urlSuffix";
+        TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
+                .setParameter("urlSuffix", urlSuffix);
+        List<FileIndexMeta> resultList = query.getResultList();
+        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
+    }
 }

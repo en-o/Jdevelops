@@ -51,4 +51,12 @@ public  interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Lo
      * @return FileIndexMeta
      */
     Optional<FileIndexMeta> findByPath(String path);
+
+
+    /**
+     * 查询文件
+     * @param urlSuffix urlSuffix（不出意外这个是唯一的）
+     * @return FileIndexMeta
+     */
+    Optional<FileIndexMeta> findByUrlSuffix(String urlSuffix);
 }

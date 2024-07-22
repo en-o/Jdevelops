@@ -83,4 +83,34 @@ public class FileIndexMetaController {
         return ResultVO.successMessage("删除成功");
     }
 
+
+
+    /**
+     * 删除文件
+     *
+     * @param urlSuffix FileIndexMeta.url_suffix
+     * @return String
+     */
+    @DeleteMapping("/urlSuffix/remove")
+    @Operation(summary = "通过urlSuffix删除文件")
+    @Parameter(name = "urlSuffix", description = "文件路径[FileIndexMeta.url_suffix]", required = true)
+    public ResultVO<String> urlSuffixRemove(@RequestParam("urlSuffix") String urlSuffix) {
+        startFileOperateService.removeByUrlSuffix(urlSuffix);
+        return ResultVO.successMessage("删除成功");
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param path FileIndexMeta.path
+     * @return String
+     */
+    @DeleteMapping("/path/remove")
+    @Operation(summary = "通过path删除文件")
+    @Parameter(name = "path", description = "文件路径[FileIndexMeta.path]", required = true)
+    public ResultVO<String> pathRemove(@RequestParam("path") String path) {
+        startFileOperateService.removeByPath(path);
+        return ResultVO.successMessage("删除成功");
+    }
+
 }

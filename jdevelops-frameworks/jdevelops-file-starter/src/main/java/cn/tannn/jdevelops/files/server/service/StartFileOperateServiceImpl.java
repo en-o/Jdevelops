@@ -87,6 +87,11 @@ public class StartFileOperateServiceImpl implements StartFileOperateService {
         fileIndexMetaDao.findByPath(path).ifPresent(this::remove);
     }
 
+    @Override
+    public void removeByUrlSuffix(String urlSuffix) {
+        fileIndexMetaDao.findByUrlSuffix(urlSuffix).ifPresent(this::remove);
+    }
+
 
     /**
      * 保存文件索引
