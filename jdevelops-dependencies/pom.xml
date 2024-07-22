@@ -301,7 +301,7 @@
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>snapshots</id>
             <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
