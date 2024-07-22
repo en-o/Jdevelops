@@ -7,7 +7,7 @@
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-build</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <name>jdevelops :: Build</name>
+    <name>jdevelops :: build</name>
     <description>打包用的插件集合</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
