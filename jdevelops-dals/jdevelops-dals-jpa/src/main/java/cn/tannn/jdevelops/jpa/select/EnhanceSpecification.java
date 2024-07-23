@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -108,6 +109,9 @@ public class EnhanceSpecification {
                 // 字段名
                 String fieldName = field.getName();
                 if ("serialVersionUID".equals(fieldName)) {
+                    continue;
+                }
+                if(Modifier.isStatic(field.getModifiers())){
                     continue;
                 }
                 // 字段值
