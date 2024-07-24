@@ -25,6 +25,7 @@ public class AlphabeticalColumnOrderingStrategy
         extends ColumnOrderingStrategyLegacy
         implements HibernatePropertiesCustomizer {
 
+    // 自定义排序
     @Override
     public List<Column> orderTableColumns(Table table, Metadata metadata) {
         return table.getColumns().stream()
@@ -32,6 +33,7 @@ public class AlphabeticalColumnOrderingStrategy
                 .toList();
     }
 
+    // 将自定义类注册为排序策略
     @Override
     public void customize(Map<String, Object> hibernateProperties) {
         hibernateProperties.put(AvailableSettings.COLUMN_ORDERING_STRATEGY, this);

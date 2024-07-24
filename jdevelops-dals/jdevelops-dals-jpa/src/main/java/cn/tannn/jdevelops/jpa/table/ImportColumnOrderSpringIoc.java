@@ -17,9 +17,9 @@ public class ImportColumnOrderSpringIoc {
 //     */
 //    @Bean
 //    @ConditionalOnProperty(
-//            value="jdevelops.jpa.column.order",
+//            value = "jdevelops.jpa.column.order",
 //            havingValue = "alphabet")
-//    public AlphabeticalColumnOrderingStrategy alphabeticalColumnOrderingStrategy(){
+//    public AlphabeticalColumnOrderingStrategy alphabeticalColumnOrderingStrategy() {
 //        return new AlphabeticalColumnOrderingStrategy();
 //    }
 //
@@ -28,9 +28,9 @@ public class ImportColumnOrderSpringIoc {
 //     */
 //    @Bean
 //    @ConditionalOnProperty(
-//            value="jdevelops.jpa.column.order",
-//            havingValue = "field", matchIfMissing=true)
-//    public FieldSequenceColumnOrderingStrategy fieldSequenceColumnOrderingStrategy(){
+//            value = "jdevelops.jpa.column.order",
+//            havingValue = "field", matchIfMissing = true)
+//    public FieldSequenceColumnOrderingStrategy fieldSequenceColumnOrderingStrategy() {
 //        return new FieldSequenceColumnOrderingStrategy();
 //    }
 }
