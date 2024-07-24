@@ -76,6 +76,12 @@ public class FileIndexVO  {
     private String bucket;
 
     /**
+     * 文件在桶中的路径[桶加子路径和本身]
+     */
+    @Schema(description ="文件在桶中的路径[桶加子路径和本身]")
+    private String bucketPath;
+
+    /**
      * 文件类型[contentType]
      */
     @Schema(description ="文件类型[contentType]")
@@ -220,23 +226,32 @@ public class FileIndexVO  {
     }
 
 
+    public String getBucketPath() {
+        return bucketPath;
+    }
+
+    public void setBucketPath(String bucketPath) {
+        this.bucketPath = bucketPath;
+    }
+
     @Override
     public String toString() {
-        return new StringJoiner(", ", FileIndexVO.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("storageId=" + storageId)
-                .add("storage='" + storage + "'")
-                .add("originalName='" + originalName + "'")
-                .add("freshName='" + freshName + "'")
-                .add("path='" + path + "'")
-                .add("url='" + url + "'")
-                .add("urlSuffix='" + urlSuffix + "'")
-                .add("bucket='" + bucket + "'")
-                .add("type='" + type + "'")
-                .add("size='" + size + "'")
-                .add("sizeUnit='" + sizeUnit + "'")
-                .add("createTime='" + createTime + "'")
-                .add("createUserName='" + createUserName + "'")
-                .toString();
+        return "FileIndexVO{" +
+                "id=" + id +
+                ", storageId=" + storageId +
+                ", storage='" + storage + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", freshName='" + freshName + '\'' +
+                ", path='" + path + '\'' +
+                ", url='" + url + '\'' +
+                ", urlSuffix='" + urlSuffix + '\'' +
+                ", bucket='" + bucket + '\'' +
+                ", bucketPath='" + bucketPath + '\'' +
+                ", type='" + type + '\'' +
+                ", size='" + size + '\'' +
+                ", sizeUnit='" + sizeUnit + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", createUserName='" + createUserName + '\'' +
+                '}';
     }
 }
