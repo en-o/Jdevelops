@@ -3,13 +3,15 @@ package cn.tannn.jdevelops.quartz.controller;
 import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.quartz.dao.bo.JobAndTriggerBO;
-import cn.tannn.jdevelops.quartz.job.EsIndexDataTotalJob;
+import cn.tannn.jdevelops.quartz.exception.TaskException;
 import cn.tannn.jdevelops.quartz.service.ScheduleService;
 import cn.tannn.jdevelops.result.response.ResultPageVO;
 import cn.tannn.jdevelops.result.response.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,7 @@ import javax.validation.Valid;
 public class QzController {
 
     private final ScheduleService scheduleService;
+    private static final Logger LOG = LoggerFactory.getLogger(QzController.class);
 
 
     public QzController(ScheduleService scheduleService) {
@@ -34,12 +37,10 @@ public class QzController {
     }
 
 
-    /**
-     * @see EsIndexDataTotalJob
-     */
+
     @Operation(summary = "添加任务")
     @GetMapping("add")
-    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径")
+    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径[cn.tannn.JobBean]")
     @Parameter(name = "jName", description = "任务名")
     @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
     @Parameter(name = "isStartNow", description = "是否立即执行", deprecated = true)
@@ -116,8 +117,8 @@ public class QzController {
         try {
             return Class.forName(drivers);
         } catch (Exception e) {
-            log.warn("quartz class not found: {}", drivers);
-            throw new BusinessException("quartz class not found", e);
+            LOG.warn("quartz class not found: {}", drivers);
+            throw new TaskException("quartz class not found", e);
         }
     }
 }
