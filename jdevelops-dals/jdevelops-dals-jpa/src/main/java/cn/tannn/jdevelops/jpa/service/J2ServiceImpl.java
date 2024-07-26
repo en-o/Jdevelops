@@ -9,6 +9,9 @@ import cn.tannn.jdevelops.jpa.request.Sorteds;
 import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.jpa.utils.JpaUtils;
 import cn.tannn.jdevelops.result.bean.SerializableBean;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+
 import java.util.List;
 import java.util.Optional;
 

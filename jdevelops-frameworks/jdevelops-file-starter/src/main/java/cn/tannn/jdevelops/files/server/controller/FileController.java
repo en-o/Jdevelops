@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.io.IOException;
 
 /**
@@ -88,7 +88,7 @@ public class FileController {
      */
     @PostMapping(value = "download")
     @Operation(summary = "下载文件")
-    @Parameter(name = "fileStorageId", description = "文件索引的ID", required = true)
+    @Parameter(name = "fileIndexId", description = "文件索引的ID", required = true)
     public void download(@RequestParam("fileIndexId") Long fileIndexId, HttpServletResponse response) {
         startFileOperateService.download(fileIndexId, response);
     }

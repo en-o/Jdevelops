@@ -1,10 +1,10 @@
 package cn.tannn.jdevelops.events.redis.receiver;
 
 import cn.tannn.jdevelops.events.redis.server.RedisReceiverServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 
-import javax.annotation.Resource;
 
 
 /**
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  */
 public class RedisReceiver implements MessageListener {
 
-    @Resource
+    @Autowired
     private RedisReceiverServer redisReceiverServer;
 
 

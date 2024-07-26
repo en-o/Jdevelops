@@ -3,8 +3,8 @@ package cn.tannn.jdevelops.files.server.dao;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +66,15 @@ public class FileIndexMetaDaoImpl extends SimpleJpaRepository<FileIndexMeta, Lon
         String jpql = "SELECT f FROM FileIndexMeta f WHERE f.path = :path";
         TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
                 .setParameter("path", path);
+        List<FileIndexMeta> resultList = query.getResultList();
+        return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
+    }
+
+    @Override
+    public Optional<FileIndexMeta> findByUrlSuffix(String urlSuffix) {
+        String jpql = "SELECT f FROM FileIndexMeta f WHERE f.urlSuffix = :urlSuffix";
+        TypedQuery<FileIndexMeta> query = entityManager.createQuery(jpql, FileIndexMeta.class)
+                .setParameter("urlSuffix", urlSuffix);
         List<FileIndexMeta> resultList = query.getResultList();
         return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
     }

@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.events.websocket.util;
 
+import jakarta.websocket.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.websocket.Session;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

@@ -12,7 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.format.DateTimeFormatter;
 import java.util.StringJoiner;
 
@@ -27,7 +27,7 @@ import static cn.tannn.jdevelops.uitls.aop.CommonConstant.DEFAULT_FORMAT_DATETIM
  */
 @Entity
 @Table(name = "file_index_meta")
-@org.hibernate.annotations.Table(appliesTo = "file_index_meta", comment = "文件索引数据")
+@Comment("文件索引数据")
 @DynamicUpdate
 @DynamicInsert
 @AutoConfigurationPackage
@@ -101,6 +101,15 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
     @Column(columnDefinition = "varchar(100)")
     private String bucket;
 
+
+    /**
+     * 存储的桶
+     */
+    @Comment("文件在桶中的路径[桶加子路径和本身]")
+    @Column(columnDefinition = "varchar(100)")
+    private String bucketPath;
+
+
     /**
      * 文件类型[contentType]
      */
@@ -137,6 +146,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         vo.setPath(path);
         vo.setUrl(url);
         vo.setBucket(bucket);
+        vo.setBucketPath(bucketPath);
         vo.setUrlSuffix(urlSuffix);
         vo.setType(type);
         vo.setSize(size);
@@ -163,6 +173,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         fileIndex.setPath(path);
         fileIndex.setUrl(url);
         fileIndex.setBucket(bucket);
+        fileIndex.setBucketPath(bucketPath);
         fileIndex.setUrlSuffix(urlSuffix);
         fileIndex.setType(type);
         fileIndex.setSize(size);
@@ -183,6 +194,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         indexMeta.setPath(fileIndex.getPath());
         indexMeta.setUrl(fileIndex.getUrl());
         indexMeta.setBucket(fileIndex.getBucket());
+        indexMeta.setBucketPath(fileIndex.getBucketPath());
         indexMeta.setUrlSuffix(fileIndex.getUrlSuffix());
         indexMeta.setType(fileIndex.getType());
         indexMeta.setSize(fileIndex.getSize());
@@ -287,25 +299,30 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         this.sizeUnit = sizeUnit;
     }
 
+    public String getBucketPath() {
+        return bucketPath;
+    }
+
+    public void setBucketPath(String bucketPath) {
+        this.bucketPath = bucketPath;
+    }
+
     @Override
     public String toString() {
-        return new StringJoiner(", ", FileIndexMeta.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("storageId=" + storageId)
-                .add("storage='" + storage + "'")
-                .add("originalName='" + originalName + "'")
-                .add("freshName='" + freshName + "'")
-                .add("path='" + path + "'")
-                .add("url='" + url + "'")
-                .add("urlSuffix='" + urlSuffix + "'")
-                .add("bucket='" + bucket + "'")
-                .add("type='" + type + "'")
-                .add("size='" + size + "'")
-                .add("sizeUnit='" + sizeUnit + "'")
-                .add("createTime=" + getCreateTime() + "'")
-                .add("createUserName=" + getCreateUserName() + "'")
-                .add("updateTime=" + getUpdateTime() + "'")
-                .add("updateUserName=" + getUpdateUserName() + "'")
-                .toString();
+        return "FileIndexMeta{" +
+                "id=" + id +
+                ", storageId=" + storageId +
+                ", storage='" + storage + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", freshName='" + freshName + '\'' +
+                ", path='" + path + '\'' +
+                ", url='" + url + '\'' +
+                ", urlSuffix='" + urlSuffix + '\'' +
+                ", bucket='" + bucket + '\'' +
+                ", bucketPath='" + bucketPath + '\'' +
+                ", type='" + type + '\'' +
+                ", size='" + size + '\'' +
+                ", sizeUnit='" + sizeUnit + '\'' +
+                '}';
     }
 }

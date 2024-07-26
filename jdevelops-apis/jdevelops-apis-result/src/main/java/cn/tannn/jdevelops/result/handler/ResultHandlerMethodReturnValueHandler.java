@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.result.handler;
 
 import cn.tannn.jdevelops.result.exception.ExceptionResultWrap;
 import cn.tannn.jdevelops.result.response.ResultPageVO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -13,7 +14,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**

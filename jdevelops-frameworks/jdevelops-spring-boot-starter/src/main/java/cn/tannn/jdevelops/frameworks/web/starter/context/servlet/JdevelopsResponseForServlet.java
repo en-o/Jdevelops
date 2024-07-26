@@ -5,7 +5,7 @@ package cn.tannn.jdevelops.frameworks.web.starter.context.servlet;
 import cn.tannn.jdevelops.frameworks.web.starter.entity.http.JdevelopsResponse;
 import cn.tannn.jdevelops.frameworks.web.starter.exception.JHttpException;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

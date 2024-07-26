@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>jdevelops-utils</artifactId>
     <version>${revision}</version>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>1.0.1-SNAPSHOT</revision>
     </properties>
 
     <modules>
@@ -59,7 +59,6 @@
         <module>jdevelops-utils-validation</module>
         <module>jdevelops-utils-time</module>
         <module>jdevelops-utils-http</module>
-        <module>jdevelops-utils-jwt</module>
         <module>jdevelops-utils-spring</module>
         <module>jdevelops-utils-core</module>
     </modules>
@@ -69,8 +68,8 @@
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>snapshots</id>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
@@ -88,7 +87,7 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 </project>

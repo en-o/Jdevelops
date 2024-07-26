@@ -1,8 +1,7 @@
 package cn.tannn.jdevelops.annotations.jpa.specification;
 
 
-import javax.persistence.criteria.Expression;
-
+import jakarta.persistence.criteria.Expression;
 
 /**
  * 查询条件组装 specWrapper(selectKey, selectValue)

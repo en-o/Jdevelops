@@ -6,12 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-build</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
     <artifactId>jdevelops-spi</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>jdevelops :: spi</name>
     <description>
         Java SPI 机制详解： https://javaguide.cn/java/basis/spi.html
@@ -59,8 +59,8 @@
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>snapshots</id>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+            <version>2.0.13</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -94,7 +94,7 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 

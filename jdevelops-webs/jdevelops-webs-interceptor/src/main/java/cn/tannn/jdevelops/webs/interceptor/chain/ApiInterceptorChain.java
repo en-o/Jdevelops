@@ -1,16 +1,16 @@
 package cn.tannn.jdevelops.webs.interceptor.chain;
 
 import cn.tannn.jdevelops.webs.interceptor.ApiInterceptor;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 自定义的接口后置拦截器责任链
+ * 自定义的接口拦截器责任链
  * - 交给spring管理
  *
  * @author tnnn

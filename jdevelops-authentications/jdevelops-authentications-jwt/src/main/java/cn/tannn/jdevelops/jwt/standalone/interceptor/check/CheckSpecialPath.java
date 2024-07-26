@@ -9,9 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static cn.tannn.jdevelops.jwt.standalone.interceptor.JwtWebApiInterceptor.extractedErrorResponse;
 

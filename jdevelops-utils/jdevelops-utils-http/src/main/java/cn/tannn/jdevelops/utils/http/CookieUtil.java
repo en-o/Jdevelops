@@ -1,7 +1,8 @@
 package cn.tannn.jdevelops.utils.http;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 /**
  * Cookie

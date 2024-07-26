@@ -17,8 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**
@@ -80,6 +80,36 @@ public class FileIndexMetaController {
     @Parameter(name = "fileIndexId", description = "文件索引的ID", required = true)
     public ResultVO<String> remove(@RequestParam("fileIndexId") Long fileIndexId) {
         startFileOperateService.remove(fileIndexId);
+        return ResultVO.successMessage("删除成功");
+    }
+
+
+
+    /**
+     * 删除文件
+     *
+     * @param urlSuffix FileIndexMeta.url_suffix
+     * @return String
+     */
+    @DeleteMapping("/urlSuffix/remove")
+    @Operation(summary = "通过urlSuffix删除文件")
+    @Parameter(name = "urlSuffix", description = "文件路径[FileIndexMeta.url_suffix]", required = true)
+    public ResultVO<String> urlSuffixRemove(@RequestParam("urlSuffix") String urlSuffix) {
+        startFileOperateService.removeByUrlSuffix(urlSuffix);
+        return ResultVO.successMessage("删除成功");
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param path FileIndexMeta.path
+     * @return String
+     */
+    @DeleteMapping("/path/remove")
+    @Operation(summary = "通过path删除文件")
+    @Parameter(name = "path", description = "文件路径[FileIndexMeta.path]", required = true)
+    public ResultVO<String> pathRemove(@RequestParam("path") String path) {
+        startFileOperateService.removeByPath(path);
         return ResultVO.successMessage("删除成功");
     }
 

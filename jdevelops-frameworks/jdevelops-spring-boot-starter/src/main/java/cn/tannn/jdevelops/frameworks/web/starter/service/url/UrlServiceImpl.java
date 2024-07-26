@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.*;
 
 import static cn.tannn.jdevelops.frameworks.web.starter.util.UrlUtil.noRecordUrl;

@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.jpa.modle.fn;
 
 import cn.tannn.jdevelops.jpa.modle.audit.BaseAuditFields;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,7 +12,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**

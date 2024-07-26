@@ -14,12 +14,12 @@ import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Id;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

@@ -14,6 +14,8 @@
     <name>jdevelops :: dals :: jpa</name>
     <description>
         jpa 封装
+        官方的demo: https://github.com/spring-projects/spring-data-examples
+        文档：https://docs.spring.io/spring-data/jpa/reference/jpa/getting-started.html
     </description>
 
     <dependencies>
@@ -24,12 +26,12 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-jpa</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -39,8 +41,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -62,6 +64,10 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
         </dependency>
     </dependencies>
 

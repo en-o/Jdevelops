@@ -7,7 +7,7 @@
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-build</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <name>jdevelops :: Build</name>
+    <name>jdevelops :: build</name>
     <description>打包用的插件集合</description>
     <url>https://github.com/en-o/Jdevelops</url>
 
@@ -49,22 +49,22 @@
     <properties>
         <java.version>17</java.version>
         <!-- spring  -->
-        <spring.boot.version>2.7.15</spring.boot.version>
+        <spring.boot.version>3.2.7</spring.boot.version>
         <!-- 编译 -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <flatten_maven.version>1.5.0</flatten_maven.version>
+        <flatten_maven.version>1.6.0</flatten_maven.version>
         <maven-lombok-plugin.version>1.18.20.0</maven-lombok-plugin.version>
     </properties>
 
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>snapshots</id>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
@@ -82,7 +82,7 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -163,7 +163,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.3.1</version>
                 <inherited>true</inherited>
                 <executions>
                     <execution>
@@ -182,7 +182,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>3.7.0</version>
                 <inherited>true</inherited>
                 <configuration>
                     <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
@@ -196,6 +196,7 @@
                     <notree>true</notree>
                     <failOnError>false</failOnError>
                     <doclint>none</doclint>
+                    <nohelp>true</nohelp>
                     <tags>
                         <tag>
                             <name>description</name>
@@ -234,15 +235,6 @@
                         </tag>
                     </tags>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>bundle-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

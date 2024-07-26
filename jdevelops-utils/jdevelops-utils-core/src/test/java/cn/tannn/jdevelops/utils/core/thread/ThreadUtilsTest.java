@@ -1,10 +1,6 @@
 package cn.tannn.jdevelops.utils.core.thread;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.io.unit.DataUnit;
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
 
 public class ThreadUtilsTest {
 

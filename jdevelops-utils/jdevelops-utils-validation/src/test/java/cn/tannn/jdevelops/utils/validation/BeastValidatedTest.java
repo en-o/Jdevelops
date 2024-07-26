@@ -1,11 +1,11 @@
 package cn.tannn.jdevelops.utils.validation;
 
 
+import jakarta.validation.*;
+import jakarta.validation.bootstrap.GenericBootstrap;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator;
 
-import javax.validation.*;
-import javax.validation.bootstrap.GenericBootstrap;
 import java.util.Set;
 
 /**

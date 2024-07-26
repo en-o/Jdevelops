@@ -4,7 +4,7 @@ import cn.tannn.cat.file.sdk.api.UploadFile;
 import cn.tannn.cat.file.sdk.api.UploadFiles;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -65,9 +65,16 @@ public interface StartFileOperateService {
      */
     void remove(FileIndexMeta fileIndex);
 
+
     /**
      * 删除文件
      * @param path 文件路径[FileIndexMeta.path]
      */
     void removeByPath(String path);
+
+    /**
+     * 删除文件
+     * @param urlSuffix 文件路径[FileIndexMeta.urlSuffix]
+     */
+    void removeByUrlSuffix(String urlSuffix);
 }

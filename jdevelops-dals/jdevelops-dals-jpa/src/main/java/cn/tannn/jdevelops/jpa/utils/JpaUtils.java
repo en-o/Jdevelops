@@ -6,19 +6,21 @@ import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Id;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.SingularAttribute;
+
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -227,6 +229,9 @@ public class JpaUtils {
         Field[] fields = ReflectUtil.getFields(updateBean.getClass(), field -> {
             // 忽略字段
             if ("serialVersionUID".equalsIgnoreCase(field.getName())) {
+                return false;
+            }
+            if(Modifier.isStatic(field.getModifiers())){
                 return false;
             }
             JpaUpdate ignoreField = field.getAnnotation(JpaUpdate.class);

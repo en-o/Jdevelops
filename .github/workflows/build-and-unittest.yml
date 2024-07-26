@@ -16,12 +16,12 @@ jobs:
     steps:
       - strategy:
           matrix:
-            java-version: [ '8.0.302+8', '11', '17' ]  # 定义你需要的Java版本
+            java-version: [ '17' ]  # 定义你需要的Java版本
       - name: Set timezone to Asia/Shanghai
         run: |
           sudo timedatectl set-timezone Asia/Shanghai
       - uses: actions/checkout@v4
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
 #          java-version: '8.0.302+8'

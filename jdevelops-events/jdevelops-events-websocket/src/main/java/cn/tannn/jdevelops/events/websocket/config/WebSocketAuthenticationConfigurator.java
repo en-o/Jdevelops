@@ -1,14 +1,15 @@
 package cn.tannn.jdevelops.events.websocket.config;
 
 import cn.tannn.jdevelops.events.websocket.service.VerifyService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.ServerEndpointConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.ServerEndpointConfig;
+
 
 
 /**

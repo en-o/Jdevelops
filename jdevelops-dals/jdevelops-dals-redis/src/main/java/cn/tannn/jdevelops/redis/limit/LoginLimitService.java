@@ -1,12 +1,12 @@
 package cn.tannn.jdevelops.redis.limit;
 
 import cn.tannn.jdevelops.exception.built.LoginLimitException;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.Resource;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 

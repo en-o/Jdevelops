@@ -11,8 +11,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 
-
-
 import static cn.tannn.jdevelops.knife4j.core.constant.PublicConstant.COLON;
 import static cn.tannn.jdevelops.knife4j.core.constant.PublicConstant.SPIRIT;
 import static cn.tannn.jdevelops.knife4j.core.util.SwaggerUtil.getRealIp;

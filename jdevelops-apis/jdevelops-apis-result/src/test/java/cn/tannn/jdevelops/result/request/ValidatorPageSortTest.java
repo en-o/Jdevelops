@@ -1,10 +1,10 @@
 package cn.tannn.jdevelops.result.request;
 
 import cn.tannn.jdevelops.result.utils.BeastValidatedTest;
+import jakarta.validation.ConstraintViolation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
