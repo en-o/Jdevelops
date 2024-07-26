@@ -64,6 +64,7 @@
         <module>jdevelops-dals-ddss</module>
         <module>jdevelops-dals-autoschema</module>
         <module>jdevelops-dals-jdbctemplate</module>
+        <module>jdevelops-dals-quartz</module>
     </modules>
 
 
