@@ -1,4 +1,5 @@
-package cn.tannn.jdevelops.quartz.controller;
+package cn.tannn.jdevelops.quick.quratz.controller;
+
 
 import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
