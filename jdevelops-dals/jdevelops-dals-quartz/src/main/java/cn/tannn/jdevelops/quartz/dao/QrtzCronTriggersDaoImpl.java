@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.quartz.dao;
 
 import cn.tannn.jdevelops.quartz.entity.QrtzCronTriggersEntity;
-import cn.tannn.jdevelops.quartz.entity.QrtzJobDetailsEntity;
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
