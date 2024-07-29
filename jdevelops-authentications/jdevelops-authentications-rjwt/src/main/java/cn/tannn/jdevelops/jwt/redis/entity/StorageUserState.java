@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.jwt.redis.entity;
 
+import cn.tannn.jdevelops.utils.jwt.constant.UserStatusMark;
+
 /**
  * 存储用户状态
  * 判断顺序：锁定 -> 禁用
@@ -8,55 +10,66 @@ package cn.tannn.jdevelops.jwt.redis.entity;
  * @date 2023/12/4 16:07
  */
 public class StorageUserState {
-
     /**
      * subject  token.subject[用户唯一编码，建议登录名]
      */
     String subject;
 
     /**
-     * 禁用[账号禁用，跟锁定有点像，但是这个是没有失效，除非管理员主动解除], 同类状态有：
-     * - 删除
-     * - 停用
+     * 当前用户的异常状态-user.status
+     * <p> 1[正常] : 不处理
+     * <p> 2[锁定]
+     * <p> 3[删除[禁用]]
      */
-    private boolean disabledAccount;
+    Integer status;
 
     /**
-     * 锁定[过度的尝试，判断未异常操作进行账号锁定，一般是有时效的]
+     * 异常状态码-Exception.code
      */
-    private boolean excessiveAttempts;
+    Integer code;
 
-
-    public StorageUserState(String subject, boolean disabledAccount, boolean excessiveAttempts) {
-        this.subject = subject;
-        this.disabledAccount = disabledAccount;
-        this.excessiveAttempts = excessiveAttempts;
-    }
 
     /**
-     *  默认所有状态不用，内置 false
-     * @param subject  token.subject[用户唯一编码，建议登录名]
+     * 状态标记说明
+     * @see UserStatusMark
+     */
+    String statusMark;
+
+    /**
+     * 用户无状态
+     *
+     * @param subject subject  token.subject[用户唯一编码，建议登录名]
      */
     public StorageUserState(String subject) {
         this.subject = subject;
-        this.disabledAccount = false;
-        this.excessiveAttempts = false;
     }
 
-    public boolean isDisabledAccount() {
-        return disabledAccount;
+    /**
+     * 用户存在异常
+     *
+     * @param subject    subject  token.subject[用户唯一编码，建议登录名]
+     * @param status     当前用户状态
+     * @param statusMark 状态标记
+     */
+    public StorageUserState(String subject, int status, int code, String statusMark) {
+        this.subject = subject;
+        this.code = code;
+        this.status = status;
+        this.statusMark = statusMark;
     }
 
-    public void setDisabledAccount(boolean disabledAccount) {
-        this.disabledAccount = disabledAccount;
-    }
-
-    public boolean isExcessiveAttempts() {
-        return excessiveAttempts;
-    }
-
-    public void setExcessiveAttempts(boolean excessiveAttempts) {
-        this.excessiveAttempts = excessiveAttempts;
+    /**
+     * 用户存在异常
+     *
+     * @param subject    subject  token.subject[用户唯一编码，建议登录名]
+     * @param status     当前用户状态
+     * @param statusMark 状态标记
+     */
+    public StorageUserState(String subject, int status, String statusMark) {
+        this.subject = subject;
+        this.code = 400;
+        this.status = status;
+        this.statusMark = statusMark;
     }
 
     public String getSubject() {
@@ -67,12 +80,37 @@ public class StorageUserState {
         this.subject = subject;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getStatusMark() {
+        return statusMark;
+    }
+
+    public void setStatusMark(String statusMark) {
+        this.statusMark = statusMark;
+    }
+
+    public Integer getCode() {
+        return code == null ? 400 : code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
         return "StorageUserState{" +
                 "subject='" + subject + '\'' +
-                ", disabledAccount=" + disabledAccount +
-                ", excessiveAttempts=" + excessiveAttempts +
+                ", status=" + status +
+                ", code=" + code +
+                ", statusMark='" + statusMark + '\'' +
                 '}';
     }
 }

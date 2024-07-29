@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.jwt.standalone.util;
 
 import cn.tannn.jdevelops.exception.built.TokenException;
-import cn.tannn.jdevelops.jwt.standalone.exception.TokenCode;
+import cn.tannn.jdevelops.utils.jwt.exception.TokenCode;
 import cn.tannn.jdevelops.utils.jwt.constant.JwtConstant;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
@@ -14,7 +14,7 @@ import org.jose4j.jwt.MalformedClaimException;
 
 import java.util.Optional;
 
-import static cn.tannn.jdevelops.jwt.standalone.exception.TokenCode.TOKEN_ERROR;
+import static cn.tannn.jdevelops.utils.jwt.exception.TokenCode.TOKEN_ERROR;
 
 
 /**

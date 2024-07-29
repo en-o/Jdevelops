@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jwt.standalone.exception;
+package cn.tannn.jdevelops.utils.jwt.exception;
 
 
 import cn.tannn.jdevelops.result.exception.ExceptionCode;

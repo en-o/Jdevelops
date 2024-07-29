@@ -15,13 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import jakarta.annotation.Resource;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import static cn.tannn.jdevelops.jwt.standalone.exception.UserCode.BANNED_ACCOUNT;
-import static cn.tannn.jdevelops.jwt.standalone.exception.UserCode.EXCESSIVE_ATTEMPTS_ACCOUNT;
 
 
 /**
@@ -63,7 +61,7 @@ public class RedisUserStateImpl implements RedisUserState {
     @Override
     public StorageUserState load(String subject) {
         String userStateRedisFolder = RedisUtil.getRedisFolder(jwtConfig.getPrefix()
-                ,RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
+                , RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
         String redisUser;
         try {
             redisUser = (String) redisTemplate
@@ -73,9 +71,9 @@ public class RedisUserStateImpl implements RedisUserState {
             LOG.info("加载用户状态缓存失败");
             throw new LoginException(JwtMessageConstant.TOKEN_ERROR, e);
         }
-        if(Objects.isNull(redisUser)){
+        if (Objects.isNull(redisUser)) {
             return null;
-        }else {
+        } else {
             return JSON.to(StorageUserState.class, redisUser);
         }
     }
@@ -84,11 +82,8 @@ public class RedisUserStateImpl implements RedisUserState {
     public void verify(String subject) {
         StorageUserState userState = load(subject);
         if (!Objects.isNull(userState)) {
-            if (userState.isExcessiveAttempts()) {
-                throw new DisabledAccountException(EXCESSIVE_ATTEMPTS_ACCOUNT);
-            }
-            if (userState.isDisabledAccount()) {
-                throw new DisabledAccountException(BANNED_ACCOUNT);
+            if (userState.getStatus() != null || userState.getStatus() != 1) {
+                throw new DisabledAccountException(userState.getCode(), userState.getStatusMark());
             }
         }
     }
@@ -103,10 +98,10 @@ public class RedisUserStateImpl implements RedisUserState {
     public void remove(String subject) {
         try {
             String userStateRedisFolder = RedisUtil.getRedisFolder(jwtConfig.getPrefix()
-                    ,RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
+                    , RedisJwtKey.REDIS_USER_STATUS_FOLDER, subject);
             redisTemplate.delete(userStateRedisFolder);
-        }catch (Exception e){
-            LOG.error("删除"+subject+"userState失败", e);
+        } catch (Exception e) {
+            LOG.error("删除" + subject + "userState失败", e);
         }
 
     }
@@ -123,13 +118,13 @@ public class RedisUserStateImpl implements RedisUserState {
             Set<String> keys = new HashSet<>();
             for (String key : subject) {
                 String userStateRedisFolder = RedisUtil.getRedisFolder(jwtConfig.getPrefix()
-                        ,RedisJwtKey.REDIS_USER_STATUS_FOLDER, key);
+                        , RedisJwtKey.REDIS_USER_STATUS_FOLDER, key);
                 keys.add(userStateRedisFolder);
             }
-            if(!keys.isEmpty()){
+            if (!keys.isEmpty()) {
                 redisTemplate.delete(keys);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.error("删除userStates失败", e);
         }
     }

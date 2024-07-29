@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.redis.limit;
 
 import cn.tannn.jdevelops.exception.built.LoginLimitException;
+import cn.tannn.jdevelops.result.exception.ExceptionCode;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static cn.tannn.jdevelops.result.constant.UserCode.LOGIN_LIMIT;
 
 
 /**
@@ -55,7 +55,7 @@ public class LoginLimitService {
             Integer limit = loginLimitConfig.getLimit();
             if(loginLimitInt >= limit){
                 LOG.debug("===> login  error  login sum {}, limit sum {}", loginLimit, limit);
-                throw new LoginLimitException(LOGIN_LIMIT).setHttpServletResponseStatus(responseStatus);
+                throw new LoginLimitException(new ExceptionCode(403, "频繁登录请稍后再试")).setHttpServletResponseStatus(responseStatus);
             }
         }
     }
