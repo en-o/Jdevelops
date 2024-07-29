@@ -29,7 +29,11 @@ public class QrtzJobDetailsDaoImpl extends SimpleJpaRepository<QrtzJobDetailsEnt
                 " jd.jobDetailsUPK.jobName as jobName, " +
                 " jd.jobDetailsUPK.jobGroup as jobGroup , " +
                 " jd.jobClassName as jobClassName , " +
+                " jd.isUpdateData as isUpdateData , " +
                 " qt.startTime as startTime, " +
+                " qt.endTime as endTime, " +
+                " qt.nextFireTime as nextFireTime, " +
+                " qt.prevFireTime as prevFireTime, " +
                 " qt.triggerType as triggerType, " +
                 " qt.triggerState as triggerState, " +
                 " qt.cronTriggersUPK.triggerName as triggerName, " +
