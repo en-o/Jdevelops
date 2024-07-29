@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static cn.tannn.jdevelops.result.constant.UserCode.BANNED_ACCOUNT;
-import static cn.tannn.jdevelops.result.constant.UserCode.EXCESSIVE_ATTEMPTS_ACCOUNT;
+import static cn.tannn.jdevelops.jwt.standalone.exception.UserCode.BANNED_ACCOUNT;
+import static cn.tannn.jdevelops.jwt.standalone.exception.UserCode.EXCESSIVE_ATTEMPTS_ACCOUNT;
 
 
 /**

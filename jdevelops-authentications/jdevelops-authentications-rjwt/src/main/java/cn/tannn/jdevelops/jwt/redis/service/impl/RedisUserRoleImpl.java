@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static cn.tannn.jdevelops.result.constant.PermissionsCode.API_PERMISSION_AUTH_ERROR;
-import static cn.tannn.jdevelops.result.constant.PermissionsCode.API_ROLE_AUTH_ERROR;
+import static cn.tannn.jdevelops.jwt.standalone.exception.PermissionsCode.API_PERMISSION_AUTH_ERROR;
+import static cn.tannn.jdevelops.jwt.standalone.exception.PermissionsCode.API_ROLE_AUTH_ERROR;
 
 
 /**

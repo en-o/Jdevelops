@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static cn.tannn.jdevelops.result.constant.TokenCode.UNAUTHENTICATED_PLATFORM;
+import static cn.tannn.jdevelops.jwt.standalone.exception.TokenCode.UNAUTHENTICATED_PLATFORM;
 
 
 /**

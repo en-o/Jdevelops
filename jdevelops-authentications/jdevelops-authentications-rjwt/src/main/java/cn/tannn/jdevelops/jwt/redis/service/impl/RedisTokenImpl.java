@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static cn.tannn.jdevelops.result.constant.TokenCode.REDIS_EXPIRED_USER;
+import static cn.tannn.jdevelops.jwt.standalone.exception.TokenCode.REDIS_EXPIRED_USER;
 
 
 /**

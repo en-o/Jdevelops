@@ -6,7 +6,7 @@ import cn.tannn.jdevelops.exception.aspect.ExceptionAspect;
 import cn.tannn.jdevelops.jwt.standalone.interceptor.check.CheckSpecialPath;
 import cn.tannn.jdevelops.jwt.standalone.interceptor.check.CheckTokenService;
 import cn.tannn.jdevelops.jwt.standalone.service.CheckTokenInterceptor;
-import cn.tannn.jdevelops.result.constant.TokenCode;
+import cn.tannn.jdevelops.jwt.standalone.exception.TokenCode;
 import cn.tannn.jdevelops.result.exception.ExceptionResultWrap;
 import cn.tannn.jdevelops.spi.ExtensionLoader;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
