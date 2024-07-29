@@ -82,7 +82,7 @@ public class RedisUserStateImpl implements RedisUserState {
     public void verify(String subject) {
         StorageUserState userState = load(subject);
         if (!Objects.isNull(userState)) {
-            if (userState.getStatus() != null || userState.getStatus() != 1) {
+            if (userState.getStatus() != null && userState.getStatus() != 1) {
                 throw new DisabledAccountException(userState.getCode(), userState.getStatusMark());
             }
         }
