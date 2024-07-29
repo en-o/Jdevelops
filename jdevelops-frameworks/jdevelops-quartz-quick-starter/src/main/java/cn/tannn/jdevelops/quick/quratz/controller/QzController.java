@@ -4,19 +4,18 @@ package cn.tannn.jdevelops.quick.quratz.controller;
 import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.quartz.dao.bo.JobAndTriggerBO;
-import cn.tannn.jdevelops.quartz.exception.TaskException;
 import cn.tannn.jdevelops.quartz.service.ScheduleService;
 import cn.tannn.jdevelops.result.response.ResultPageVO;
 import cn.tannn.jdevelops.result.response.ResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static cn.tannn.jdevelops.quartz.util.ClazzUtil.checkClasses;
 
 
 /**
@@ -30,32 +29,42 @@ import javax.validation.Valid;
 public class QzController {
 
     private final ScheduleService scheduleService;
-    private static final Logger LOG = LoggerFactory.getLogger(QzController.class);
-
 
     public QzController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
 
 
-
-    @Operation(summary = "添加任务")
-    @GetMapping("add")
-    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径[cn.tannn.JobBean]")
+    @Operation(summary = "添加定时任务")
+    @GetMapping("addRecurring")
+    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径")
     @Parameter(name = "jName", description = "任务名")
     @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
     @Parameter(name = "isStartNow", description = "是否立即执行", deprecated = true)
-    public ResultVO<String> add(String jobBeanClass,
-                                String jName,
-                                String cron,
-                                Boolean isStartNow) {
+    public ResultVO<String> addRecurring(String jobBeanClass,
+                                         String jName,
+                                         String cron,
+                                         Boolean isStartNow) {
 
-        scheduleService.addScheduleJob(checkClasses(jobBeanClass)
-                , jName
-                , jName
-                , jName
+        scheduleService.recurringJob(checkClasses(jobBeanClass)
                 , jName
                 , cron, isStartNow == null || isStartNow);
+        return ResultVO.successMessage("新增成功");
+    }
+
+
+    @Operation(summary = "添加延时任务")
+    @GetMapping("addDelay")
+    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径")
+    @Parameter(name = "jName", description = "任务名")
+    @Parameter(name = "delaySeconds", description = "延时时间/秒", example = "10")
+    public ResultVO<String> addDelay(String jobBeanClass,
+                                     String jName,
+                                     Integer delaySeconds) {
+
+        scheduleService.delayJob(checkClasses(jobBeanClass)
+                , jName
+                , delaySeconds);
         return ResultVO.successMessage("新增成功");
     }
 
@@ -73,7 +82,7 @@ public class QzController {
     @GetMapping("delete")
     @Parameter(name = "jName", description = "任务名")
     public ResultVO<String> delete(String jName) {
-        scheduleService.deleteScheduleJob(jName, jName);
+        scheduleService.deleteJob(jName, jName);
         return ResultVO.successMessage("删除成功");
     }
 
@@ -82,7 +91,7 @@ public class QzController {
     @GetMapping("pause")
     @Parameter(name = "jName", description = "任务名")
     public ResultVO<String> pause(String jName) {
-        scheduleService.pauseScheduleJob(jName, jName);
+        scheduleService.pauseJob(jName, jName);
         return ResultVO.successMessage("暂停成功");
     }
 
@@ -91,7 +100,7 @@ public class QzController {
     @GetMapping("resume")
     @Parameter(name = "jName", description = "任务名")
     public ResultVO<String> resume(String jName) {
-        scheduleService.resumeScheduleJob(jName, jName);
+        scheduleService.resumeJob(jName, jName);
         return ResultVO.successMessage("重启成功");
     }
 
@@ -101,7 +110,7 @@ public class QzController {
     @Parameter(name = "jName", description = "任务名")
     @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
     public ResultVO<String> resume(String jName, String cron) {
-        scheduleService.resScheduleJob(jName, jName, cron);
+        scheduleService.resJob(jName, jName, cron);
         return ResultVO.successMessage("重置成功");
     }
 
@@ -114,12 +123,5 @@ public class QzController {
         return ResultVO.successMessage("执行成功");
     }
 
-    public static Class checkClasses(String drivers) {
-        try {
-            return Class.forName(drivers);
-        } catch (Exception e) {
-            LOG.warn("quartz class not found: {}", drivers);
-            throw new TaskException("quartz class not found", e);
-        }
-    }
+
 }

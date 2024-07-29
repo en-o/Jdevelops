@@ -41,15 +41,15 @@ public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
     private  String  isDurable ;
 
 
-    /** 是否集群 */
+    /** 是否集群(是否并发执行) */
     private  String  isNonconcurrent ;
 
 
-    /** 跟新数据 */
+    /** 是否更新数据[0:否 1:是] */
     private  String  isUpdateData ;
 
 
-    /** 需要恢复 */
+    /** 需要恢复(是否接受恢复执行，默认为false，设置了RequestsRecovery为true，则该job会被重新执行) */
     private  String  requestsRecovery ;
 
 
