@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.quartz.dao.*;
 import cn.tannn.jdevelops.quartz.entity.*;
 import cn.tannn.jdevelops.quartz.service.ScheduleService;
 import cn.tannn.jdevelops.quartz.service.ScheduleServiceImpl;
+import cn.tannn.jdevelops.quick.quratz.controller.QzController;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -99,5 +100,8 @@ public class QuickQuartzConfiguration {
     }
 
 
-
+    @Bean
+    public QzController qzController(ScheduleService scheduleService) {
+        return new QzController(scheduleService);
+    }
 }
