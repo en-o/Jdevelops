@@ -38,7 +38,7 @@ public class AutoRegisterJob implements ApplicationRunner {
         for (Class<?> beanClass : interfaces) {
             try {
                 Job annotation = beanClass.getAnnotation(Job.class);
-                scheduleService.addScheduleJob((Class<? extends org.quartz.Job>) beanClass, annotation.jobName(), annotation.cron(), annotation.isStartNow());
+                scheduleService.recurringJob((Class<? extends org.quartz.Job>) beanClass, annotation.jobName(), annotation.cron(), annotation.isStartNow());
                 log.info(" auto register job success, className {}", beanClass.getName());
             } catch (Exception e) {
                 log.error("auto register job failed, className {}", beanClass.getName(), e);
