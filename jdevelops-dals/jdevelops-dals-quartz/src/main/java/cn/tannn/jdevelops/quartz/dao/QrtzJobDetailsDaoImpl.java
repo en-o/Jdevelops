@@ -4,10 +4,13 @@ import cn.tannn.jdevelops.quartz.dao.bo.JobAndTriggerBO;
 import cn.tannn.jdevelops.quartz.entity.QrtzJobDetailsEntity;
 import cn.tannn.jdevelops.quartz.entity.key.QrtzJobDetailsUPK;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>
@@ -46,6 +49,25 @@ public class QrtzJobDetailsDaoImpl extends SimpleJpaRepository<QrtzJobDetailsEnt
                 "LEFT JOIN QrtzCronTriggersEntity ct ON jd.jobDetailsUPK.jobName = qt.cronTriggersUPK.triggerName " +
                 "AND qt.cronTriggersUPK.triggerName = ct.cronTriggersUPK.triggerName " +
                 "AND qt.cronTriggersUPK.triggerGroup = ct.cronTriggersUPK.triggerGroup ";
-        return null;
+
+
+        // Create count query for total elements
+        String countJpql = "SELECT COUNT(DISTINCT jd) " +
+                "FROM QrtzJobDetailsEntity jd " +
+                "LEFT JOIN QrtzTriggersEntity qt ON qt.cronTriggersUPK.triggerGroup = jd.jobDetailsUPK.jobGroup " +
+                "LEFT JOIN QrtzCronTriggersEntity ct ON jd.jobDetailsUPK.jobName = qt.cronTriggersUPK.triggerName " +
+                "AND qt.cronTriggersUPK.triggerName = ct.cronTriggersUPK.triggerName " +
+                "AND qt.cronTriggersUPK.triggerGroup = ct.cronTriggersUPK.triggerGroup ";
+
+        Query query = entityManager.createQuery(jpql, JobAndTriggerBO.class);
+        query.setFirstResult((int) pageable.getOffset());
+        query.setMaxResults(pageable.getPageSize());
+
+        List<JobAndTriggerBO> results = query.getResultList();
+
+        Query countQuery = entityManager.createQuery(countJpql);
+        long total = (long) countQuery.getSingleResult();
+
+        return new PageImpl<>(results, pageable, total);
     }
 }

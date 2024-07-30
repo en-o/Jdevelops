@@ -5,6 +5,7 @@ import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>
@@ -22,18 +23,32 @@ public class QrtzCronTriggersDaoImpl extends SimpleJpaRepository<QrtzCronTrigger
 
     @Override
     public int deleteByPrimaryKey(QrtzCronTriggersUPK key) {
-        String sql = "delete from QrtzCronTriggersEntity  qt where qt.cronTriggersUPK.schedName = :#{#key.schedName} and " +
-                " qt.cronTriggersUPK.triggerGroup = :#{#key.triggerGroup} " +
-                "and qt.cronTriggersUPK.triggerName = :#{#key.triggerName}";
-        return 0;
+        String jpql = "delete from QrtzCronTriggersEntity  qt where qt.cronTriggersUPK.schedName =  :schedName and " +
+                " qt.cronTriggersUPK.triggerGroup = :triggerGroup " +
+                "and qt.cronTriggersUPK.triggerName = :triggerName";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("schedName", key.getSchedName());
+        query.setParameter("triggerGroup", key.getTriggerGroup());
+        query.setParameter("triggerName", key.getTriggerName());
+
+        return query.executeUpdate();
     }
 
     @Override
     public void updateByPrimaryKey(QrtzCronTriggersEntity cronTriggers) {
-        String sql = "update QrtzCronTriggersEntity qt set qt.cronExpression = :#{#cronTriggers.cronExpression} , " +
-                " qt.timeZoneId = :#{#cronTriggers.timeZoneId} " +
-                " where qt.cronTriggersUPK.schedName = :#{#cronTriggers.cronTriggersUPK.schedName} and " +
-                " qt.cronTriggersUPK.triggerGroup = :#{#cronTriggers.cronTriggersUPK.triggerGroup} " +
-                "and qt.cronTriggersUPK.triggerName = :#{#cronTriggers.cronTriggersUPK.triggerName}";
+        String jpql = "update QrtzCronTriggersEntity qt set qt.cronExpression = :cronExpression , " +
+                " qt.timeZoneId = :timeZoneId  " +
+                " where qt.cronTriggersUPK.schedName = :schedName  and " +
+                " qt.cronTriggersUPK.triggerGroup = :triggerGroup " +
+                "and qt.cronTriggersUPK.triggerName = :triggerName ";
+
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("cronExpression", cronTriggers.getCronExpression());
+        query.setParameter("timeZoneId", cronTriggers.getTimeZoneId());
+        query.setParameter("schedName", cronTriggers.getCronTriggersUPK().getSchedName());
+        query.setParameter("triggerGroup", cronTriggers.getCronTriggersUPK().getTriggerGroup());
+        query.setParameter("triggerName", cronTriggers.getCronTriggersUPK().getTriggerName());
+
+        query.executeUpdate();
     }
 }
