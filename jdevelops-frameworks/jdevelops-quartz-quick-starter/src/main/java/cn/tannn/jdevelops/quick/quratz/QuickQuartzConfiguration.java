@@ -9,6 +9,7 @@ import cn.tannn.jdevelops.quick.quratz.controller.QzController;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import javax.persistence.EntityManager;
@@ -34,7 +35,6 @@ public class QuickQuartzConfiguration {
     }
 
 
-
     @Bean
     public QrtzTriggersDao qrtzTriggersDao(@Autowired EntityManager entityManager) {
         return new QrtzTriggersDaoImpl(entityManager);
@@ -53,11 +53,9 @@ public class QuickQuartzConfiguration {
 
     @Bean
     public AutoRegisterJob autoRegisterJob(ScheduleService scheduleService
-            , QuartzConfig quartzConfig) {
-        return new AutoRegisterJob(scheduleService, quartzConfig);
+            , QuartzConfig quartzConfig, ApplicationContext context) {
+        return new AutoRegisterJob(scheduleService, quartzConfig, context);
     }
-
-
 
 
     @Bean
