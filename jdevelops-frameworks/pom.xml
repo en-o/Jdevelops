@@ -53,12 +53,13 @@
     </developers>
 
     <properties>
-        <revision>0.0.2-SNAPSHOT</revision>
+        <revision>0.0.1</revision>
     </properties>
 
     <modules>
         <module>jdevelops-spring-boot-starter</module>
         <module>jdevelops-file-starter</module>
+        <module>jdevelops-quartz-quick-starter</module>
     </modules>
 
 

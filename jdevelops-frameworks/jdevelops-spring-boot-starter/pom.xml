@@ -12,6 +12,7 @@
     <artifactId>jdevelops-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: spring :: boot :: starter</name>
+    <version>0.0.3-SNAPSHOT</version>
     <description>
         spring boot starter
     </description>
@@ -21,7 +22,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dependencies</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

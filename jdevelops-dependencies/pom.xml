@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>jdevelops :: dependencies</name>
     <description>
         jdevelops 所有组件的清单，统一的版本(物料清单)
@@ -62,6 +62,7 @@
 
         <jdevelops.authentication.version>0.0.2</jdevelops.authentication.version>
         <jdevelops.dal.version>0.0.1</jdevelops.dal.version>
+        <jdevelops.dal.jpa.version>0.0.2</jdevelops.dal.jpa.version>
         <jdevelops.delay.version>0.0.1</jdevelops.delay.version>
         <jdevelops.event.version>0.0.1</jdevelops.event.version>
         <jdevelops.file.version>0.0.1</jdevelops.file.version>
@@ -178,7 +179,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dals-jpa</artifactId>
-                <version>${jdevelops.dal.version}</version>
+                <version>${jdevelops.dal.jpa.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
