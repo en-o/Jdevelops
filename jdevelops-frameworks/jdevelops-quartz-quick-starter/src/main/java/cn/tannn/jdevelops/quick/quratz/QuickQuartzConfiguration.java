@@ -8,6 +8,7 @@ import cn.tannn.jdevelops.quartz.service.ScheduleServiceImpl;
 import cn.tannn.jdevelops.quick.quratz.controller.QzController;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/21 下午3:07
  */
+@ConditionalOnProperty(name = "jdevelops.quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class QuickQuartzConfiguration {
 
 
