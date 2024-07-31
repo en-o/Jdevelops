@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 import java.util.Set;
 
@@ -25,16 +27,23 @@ public class AutoRegisterJob implements ApplicationRunner {
     private final ScheduleService scheduleService;
 
     private final QuartzConfig quartzConfig;
+    private final ApplicationContext context;
 
-    public AutoRegisterJob(ScheduleService scheduleService, QuartzConfig quartzConfig) {
+    public AutoRegisterJob(ScheduleService scheduleService
+            , QuartzConfig quartzConfig
+            , ApplicationContext context) {
         this.scheduleService = scheduleService;
         this.quartzConfig = quartzConfig;
+        this.context = context;
     }
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Reflections reflections = new Reflections(quartzConfig.getBasePackage());
+        String mainClassPath = context.getBeansWithAnnotation(SpringBootApplication.class)
+                .values().iterator().next().getClass().getName();
+        String packagePath = mainClassPath.substring(0, mainClassPath.lastIndexOf('.'));
+        Reflections reflections = new Reflections(packagePath);
         Set<Class<?>> interfaces = reflections.getTypesAnnotatedWith(Job.class);
         if (interfaces == null || interfaces.isEmpty()) {
             log.info(" no auto register job ");
