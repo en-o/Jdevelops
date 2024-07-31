@@ -22,11 +22,15 @@ public class AutoRegisterJob implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(AutoRegisterJob.class);
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
-    @Autowired
-    private QuartzConfig quartzConfig;
+    private final QuartzConfig quartzConfig;
+
+    public AutoRegisterJob(ScheduleService scheduleService, QuartzConfig quartzConfig) {
+        this.scheduleService = scheduleService;
+        this.quartzConfig = quartzConfig;
+    }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

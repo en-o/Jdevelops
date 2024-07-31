@@ -2,6 +2,8 @@ package cn.tannn.jdevelops.quartz.entity.key;
 
 
 
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,7 +15,7 @@ import java.util.Objects;
  * @version V1.0
  * @date 2023-03-07 11:45
  */
-
+@AutoConfigurationPackage
 @Embeddable
 public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
 
