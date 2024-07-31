@@ -115,7 +115,7 @@ public class QzController {
     }
 
 
-    @Operation(summary = "执行一次")
+    @Operation(summary = "手动执行一次[存在的任务]")
     @GetMapping("run")
     @Parameter(name = "jName", description = "任务名")
     public ResultVO<String> run(String jName) {

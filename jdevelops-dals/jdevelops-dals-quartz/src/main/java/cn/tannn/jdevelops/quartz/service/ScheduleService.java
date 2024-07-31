@@ -178,7 +178,7 @@ public interface ScheduleService {
     void deleteJob(String jName, String jGroup) throws TaskException;
 
     /**
-     * 执行一次
+     * 手动执行一次[存在的任务]
      *
      * @param jName  任务名
      * @param jGroup 任务分组
