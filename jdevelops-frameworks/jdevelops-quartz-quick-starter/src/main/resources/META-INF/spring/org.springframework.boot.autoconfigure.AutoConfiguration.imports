@@ -1,1 +1,12 @@
+cn.tannn.jdevelops.quartz.entity.QrtzBlobTriggersEntity
+cn.tannn.jdevelops.quartz.entity.QrtzCalendarsEntity
+cn.tannn.jdevelops.quartz.entity.QrtzCronTriggersEntity
+cn.tannn.jdevelops.quartz.entity.QrtzFiredTriggersEntity
+cn.tannn.jdevelops.quartz.entity.QrtzJobDetailsEntity
+cn.tannn.jdevelops.quartz.entity.QrtzLocksEntity
+cn.tannn.jdevelops.quartz.entity.QrtzPausedTriggerGrpsEntity
+cn.tannn.jdevelops.quartz.entity.QrtzSchedulerStateEntity
+cn.tannn.jdevelops.quartz.entity.QrtzSimpleTriggersEntity
+cn.tannn.jdevelops.quartz.entity.QrtzSimpropTriggersEntity
+cn.tannn.jdevelops.quartz.entity.QrtzTriggersEntity
 cn.tannn.jdevelops.quick.quratz.QuickQuartzConfiguration
