@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.quartz.dao.bo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import javax.persistence.Tuple;
+
 /**
  * 任务详情（job和trigger）
  *
@@ -100,4 +102,79 @@ public interface JobAndTriggerBO {
      */
     String getTimeZoneId();
 
+
+
+     static JobAndTriggerBO mapToJobAndTriggerBO(Tuple tuple) {
+        return new JobAndTriggerBO() {
+            @Override
+            public String getJobName() {
+                return tuple.get("jobName", String.class);
+            }
+
+            @Override
+            public String getJobGroup() {
+                return tuple.get("jobGroup", String.class);
+            }
+
+            @Override
+            public String getIsUpdateData() {
+                return tuple.get("isUpdateData", String.class);
+            }
+
+            @Override
+            public String getJobClassName() {
+                return tuple.get("jobClassName", String.class);
+            }
+
+            @Override
+            public Long getStartTime() {
+                return tuple.get("startTime", Long.class);
+            }
+
+            @Override
+            public Long getEndTime() {
+                return tuple.get("endTime", Long.class);
+            }
+
+            @Override
+            public Long getNextFireTime() {
+                return tuple.get("nextFireTime", Long.class);
+            }
+
+            @Override
+            public Long getPrevFireTime() {
+                return tuple.get("prevFireTime", Long.class);
+            }
+
+            @Override
+            public String getTriggerState() {
+                return tuple.get("triggerState", String.class);
+            }
+
+            @Override
+            public String getTriggerName() {
+                return tuple.get("triggerName", String.class);
+            }
+
+            @Override
+            public String getTriggerGroup() {
+                return tuple.get("triggerGroup", String.class);
+            }
+
+            @Override
+            public String getTriggerType() {
+                return tuple.get("triggerType", String.class);
+            }
+
+            @Override
+            public String getCronExpression() {
+                return tuple.get("cronExpression", String.class);
+            }
+
+            @Override
+            public String getTimeZoneId() {
+                return tuple.get("timeZoneId", String.class);
+            }
+        };
+    }
 }

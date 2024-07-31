@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>
@@ -59,11 +61,14 @@ public class QrtzJobDetailsDaoImpl extends SimpleJpaRepository<QrtzJobDetailsEnt
                 "AND qt.cronTriggersUPK.triggerName = ct.cronTriggersUPK.triggerName " +
                 "AND qt.cronTriggersUPK.triggerGroup = ct.cronTriggersUPK.triggerGroup ";
 
-        Query query = entityManager.createQuery(jpql, JobAndTriggerBO.class);
+        Query query = entityManager.createQuery(jpql, Tuple.class);
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        List<JobAndTriggerBO> results = query.getResultList();
+        List<Tuple> tuples = query.getResultList();
+        List<JobAndTriggerBO> results = tuples.stream()
+                .map(JobAndTriggerBO::mapToJobAndTriggerBO)
+                .collect(Collectors.toList());
 
         Query countQuery = entityManager.createQuery(countJpql);
         long total = (long) countQuery.getSingleResult();
