@@ -37,7 +37,8 @@ public class QzController {
 
     @Operation(summary = "添加定时任务")
     @GetMapping("addRecurring")
-    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径")
+    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径"
+            ,example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean")
     @Parameter(name = "jName", description = "任务名")
     @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
     @Parameter(name = "isStartNow", description = "是否立即执行", deprecated = true)
@@ -55,7 +56,8 @@ public class QzController {
 
     @Operation(summary = "添加延时任务")
     @GetMapping("addDelay")
-    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径")
+    @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径"
+            ,example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean")
     @Parameter(name = "jName", description = "任务名")
     @Parameter(name = "delaySeconds", description = "延时时间/秒", example = "10")
     public ResultVO<String> addDelay(String jobBeanClass,
