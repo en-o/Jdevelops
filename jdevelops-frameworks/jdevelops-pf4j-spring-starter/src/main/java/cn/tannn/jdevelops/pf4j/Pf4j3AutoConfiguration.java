@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.pf4j;
 
+import cn.tannn.jdevelops.pf4j.service.DefPluginService;
+import cn.tannn.jdevelops.pf4j.service.PluginService;
 import org.pf4j.AbstractPluginManager;
 import org.pf4j.PluginManager;
 import org.pf4j.spring.SpringPluginManager;
@@ -38,5 +40,11 @@ public class Pf4j3AutoConfiguration {
         //  SpringPluginManager 内部有个init
         LOG.info("=======pluginManager end ============");
         return pluginManager;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PluginService pluginService(PluginManager springPluginManager) {
+        return new DefPluginService(springPluginManager);
     }
 }
