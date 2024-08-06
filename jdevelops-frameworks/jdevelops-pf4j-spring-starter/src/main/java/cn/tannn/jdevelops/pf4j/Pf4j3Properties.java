@@ -37,6 +37,7 @@ public class Pf4j3Properties {
 
     /**
      * 扩展插件目录：可配置绝对路径和相对路径 可选项 【默认项目root\plugins】
+     * <p> windows: G:/项目/stest/pf4j/plugins/
      */
     private String path = "src/main/plugins";
 
