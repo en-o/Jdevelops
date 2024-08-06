@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.pf4j.service;
 
+import cn.tannn.jdevelops.pf4j.module.PluginInfo;
 import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
@@ -47,8 +48,11 @@ public class DefPluginService<T> implements PluginService{
     }
 
     @Override
-    public List<PluginDescriptor> pluginsDescriptor() {
-        return pluginManager.getPlugins().stream().map(PluginWrapper::getDescriptor).collect(Collectors.toList());
+    public List<PluginInfo> pluginsDescriptor() {
+        return pluginManager.getPlugins()
+                .stream()
+                .map( des -> new PluginInfo(des.getPluginState(), des.getDescriptor()))
+                .collect(Collectors.toList());
     }
 
     @Override
