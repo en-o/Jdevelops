@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.pf4j.controller;
 
 import cn.tannn.jdevelops.pf4j.service.PluginService;
-import cn.tannn.jdevelops.pf4j.util.ClazzUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.pf4j.PluginDescriptor;
