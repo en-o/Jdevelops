@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.pf4j.service;
 
+import cn.tannn.jdevelops.pf4j.module.PluginInfo;
 import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
@@ -51,9 +52,9 @@ public interface PluginService {
     /**
      * 获取所有插件的描述信息
      *
-     * @return PluginDescriptor
+     * @return PluginInfo
      */
-    List<PluginDescriptor> pluginsDescriptor();
+    List<PluginInfo> pluginsDescriptor();
 
     /**
      * 获取所有插件ID

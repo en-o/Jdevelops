@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.pf4j.controller;
 
+import cn.tannn.jdevelops.pf4j.module.PluginInfo;
 import cn.tannn.jdevelops.pf4j.service.PluginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class PluginController {
      */
     @Operation(summary = "获取所有插件描述信息")
     @GetMapping("/")
-    public List<PluginDescriptor> plugins() {
+    public List<PluginInfo> plugins() {
         return pluginService.pluginsDescriptor();
     }
 
