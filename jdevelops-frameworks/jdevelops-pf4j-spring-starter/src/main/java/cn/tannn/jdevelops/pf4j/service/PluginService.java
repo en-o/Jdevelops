@@ -71,7 +71,7 @@ public interface PluginService {
     PluginState startPlugin(String pluginId);
 
     /**
-     * 启用插件
+     * 启用插件，好像没什么用，尽量不用这个方法
      *
      * @param pluginId 插件ID
      * @return boolean
@@ -87,7 +87,7 @@ public interface PluginService {
     PluginState stopPlugin(String pluginId);
 
     /**
-     * 禁用插件
+     * 禁用插件 - 禁用之后必须使用启动才能生效，所以尽量不用这个方法
      *
      * @param pluginId 插件ID
      * @return boolean
