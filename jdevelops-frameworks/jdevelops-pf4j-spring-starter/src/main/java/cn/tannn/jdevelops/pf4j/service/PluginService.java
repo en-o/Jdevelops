@@ -64,7 +64,7 @@ public interface PluginService {
     List<String> pluginsId();
 
     /**
-     * 启动插件
+     * 启动插件  {@link PluginState#STARTED}
      *
      * @param pluginId 插件ID
      * @return PluginState
@@ -72,7 +72,7 @@ public interface PluginService {
     PluginState startPlugin(String pluginId);
 
     /**
-     * 启用插件，好像没什么用，尽量不用这个方法
+     * 启用插件 {@link PluginState#CREATED}
      *
      * @param pluginId 插件ID
      * @return boolean
@@ -80,7 +80,7 @@ public interface PluginService {
     boolean enablePlugin(String pluginId);
 
     /**
-     * 停止插件
+     * 停止插件  {@link PluginState#STOPPED}
      *
      * @param pluginId 插件ID
      * @return PluginState
@@ -88,7 +88,7 @@ public interface PluginService {
     PluginState stopPlugin(String pluginId);
 
     /**
-     * 禁用插件 - 禁用之后必须使用启动才能生效，所以尽量不用这个方法
+     * 禁用插件 - 禁用之后必须使用启动才能生效 {@link PluginState#DISABLED}
      *
      * @param pluginId 插件ID
      * @return boolean
