@@ -6,13 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-dals</artifactId>
-        <version>0.0.1</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>jdevelops-dals-quartz</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: quartz</name>
-    <version>0.0.1-SNAPSHOT</version>
     <description>
         quartz 封装
     </description>

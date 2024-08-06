@@ -6,13 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-frameworks</artifactId>
-        <version>0.0.1</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>jdevelops-pf4j-spring-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: pf4j :: spring :: starter</name>
-    <version>0.0.1-SNAPSHOT</version>
     <description>
         pf4j 一些基础配置封装
     </description>
