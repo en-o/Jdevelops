@@ -30,8 +30,8 @@ public class Pf4j3Properties {
      *  </ul>
      * </ol>
      *
-     * @see https://pf4j.org/doc/development-mode.html
-     * @see https://www.yuque.com/tanning/mbquef/gqed6ormkahepucp
+     * @see <a href="https://pf4j.org/doc/development-mode.html">development-mode</a>
+     * @see <a href="https://www.yuque.com/tanning/mbquef/gqed6ormkahepucp">RuntimeMode</a>
      */
     private RuntimeMode runtimeMode = RuntimeMode.DEPLOYMENT;
 

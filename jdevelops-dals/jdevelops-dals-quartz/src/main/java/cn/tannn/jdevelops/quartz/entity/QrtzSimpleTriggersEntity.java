@@ -1,16 +1,17 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
+ * 存储简单的Trigger，包括重复次数、间隔、以及已触的次数
  *
  * @author tnnn
  * @version V1.0
@@ -19,33 +20,40 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_simple_triggers")
 @AutoConfigurationPackage
+@Comment("存储简单的Trigger，包括重复次数、间隔、以及已触的次数")
 public class QrtzSimpleTriggersEntity implements Serializable,Cloneable{
 
 
     /** 调度器名 */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 触发器名 */
     @Id
+    @Comment("触发器名")
     private  String  triggerName ;
 
 
     /** 触发器分组 */
     @Id
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
 
-    /** 重复技术 */
+    /** 重复的次数统计 */
+    @Comment("重复的次数统计")
     private  Long  repeatCount ;
 
 
-    /** 重复间隔  */
+    /** 重复的间隔时间  */
+    @Comment("重复的间隔时间")
     private  Long  repeatInterval ;
 
 
-    /** 时间触发 */
+    /** 已经触发的次数 */
+    @Comment("已经触发的次数")
     private  Long  timesTriggered ;
 
 

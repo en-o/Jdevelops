@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.quartz.dao.bo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * 任务详情（job和trigger）

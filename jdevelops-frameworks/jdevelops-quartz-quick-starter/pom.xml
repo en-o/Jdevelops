@@ -27,7 +27,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-quartz</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>

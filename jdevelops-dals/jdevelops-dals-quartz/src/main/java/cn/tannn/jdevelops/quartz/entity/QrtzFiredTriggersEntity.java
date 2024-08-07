@@ -1,11 +1,12 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,60 +20,74 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_fired_triggers")
 @AutoConfigurationPackage
+@Comment("存储与已触发的Trigger相关的状态信息，以及相联Job的执行信息")
 public class QrtzFiredTriggersEntity   implements Serializable,Cloneable {
 
 
     /** 调度器名 */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 入口ID */
     @Id
+    @Comment("entryId")
     private  String  entryId ;
 
 
     /** 触发器名 */
+    @Comment("触发器名")
     private  String  triggerName ;
 
 
     /** 触发器分组 */
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
 
     /** 实例名  */
+    @Comment("实例名")
     private  String  instanceName ;
 
 
     /** 执行时间 */
+    @Comment("执行时间")
     private  Long  firedTime ;
 
 
     /** 调度时间 */
+    @Comment("调度时间")
     private  Long  schedTime ;
 
 
     /** 优先级 */
+    @Comment("优先级")
     private  Integer  priority ;
 
 
     /** 状态 */
+    @Comment("状态")
     private  String  state ;
 
 
     /** 任务名 */
+    @Comment("任务名")
     private  String  jobName ;
 
 
     /** 任务分组 */
+    @Comment("任务分组")
     private  String  jobGroup ;
 
 
     /** 集群 */
+    @Comment("集群")
     private  String  isNonconcurrent ;
 
 
-    /** 需要恢复 */
+    /** 是否接受恢复执行，默认为false，设置了RequestsRecovery为true，则会被重新执行 */
+    @Comment("是否接受恢复执行，默认为false，设置了RequestsRecovery为true，则会被重新执行")
     private  String  requestsRecovery ;
 
     @Override

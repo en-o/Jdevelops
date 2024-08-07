@@ -4,7 +4,7 @@ import cn.tannn.jdevelops.quartz.entity.QrtzTriggersEntity;
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * QrtzTriggersDao

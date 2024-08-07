@@ -1,18 +1,19 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 /**
- *
+ * 存储Quartz的Calendar信息
  *
  * @author tnnn
  * @version V1.0
@@ -21,19 +22,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_calendars")
 @AutoConfigurationPackage
+@Comment("存储Quartz的Calendar信息")
 public class QrtzCalendarsEntity    implements Serializable,Cloneable {
 
     /** 调度器名  */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 日程名  */
     @Id
+    @Comment("日程名")
     private  String  calendarName ;
 
 
     /** 日程数据 */
+    @Comment("日程数据")
     @Column(columnDefinition="Blob")
     private  byte[]  calendar ;
 

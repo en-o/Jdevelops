@@ -2,9 +2,10 @@ package cn.tannn.jdevelops.quartz.entity.key;
 
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,15 +18,19 @@ import java.util.Objects;
  */
 @AutoConfigurationPackage
 @Embeddable
+@Comment("CronTrigger联合主键")
 public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
 
     /** 调度器名 */
+    @Comment("调度器名")
     private  String  schedName ;
 
     /** 触发器名  */
+    @Comment("触发器名")
     private  String  triggerName ;
 
     /** 触发器分组 */
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
     @Override

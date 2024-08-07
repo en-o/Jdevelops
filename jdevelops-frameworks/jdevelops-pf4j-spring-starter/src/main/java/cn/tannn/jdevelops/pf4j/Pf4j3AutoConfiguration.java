@@ -16,15 +16,17 @@ import org.springframework.context.annotation.Configuration;
 import java.io.File;
 
 /**
+ * pf4j configuration
  *
- * @see https://www.yuque.com/tanning/mbquef/gqed6ormkahepucp
- * @see https://blog.csdn.net/weixin_33347188/article/details/129880387
+ * @see <a href="https://www.yuque.com/tanning/mbquef/gqed6ormkahepucp">我的文档</a>
+ * @see <a href="https://blog.csdn.net/weixin_33347188/article/details/129880387">参考文档</a>
  */
 @Configuration
 @EnableConfigurationProperties(Pf4j3Properties.class)
 @ConditionalOnProperty(prefix = Pf4j3Properties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 public class Pf4j3AutoConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(Pf4j3AutoConfiguration.class);
+
     @Bean
     @ConditionalOnMissingBean
     public PluginManager springPluginManager(Pf4j3Properties pf4j3Properties) {

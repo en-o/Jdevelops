@@ -1,11 +1,12 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,16 +20,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_locks")
 @AutoConfigurationPackage
+@Comment("存储程序的悲观锁的信息")
 public class QrtzLocksEntity  implements Serializable,Cloneable{
 
 
     /** 调度器名  */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 锁名 */
     @Id
+    @Comment("锁名")
     private  String  lockName ;
 
     @Override

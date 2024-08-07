@@ -4,8 +4,8 @@ import cn.tannn.jdevelops.quartz.entity.QrtzCronTriggersEntity;
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>

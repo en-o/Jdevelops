@@ -1,16 +1,17 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
+ *  存储CalendarIntervalTrigger和DailyTimeIntervalTrigger
  *
  * @author tnnn
  * @version V1.0
@@ -19,65 +20,80 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_simprop_triggers")
 @AutoConfigurationPackage
+@Comment("存储CalendarIntervalTrigger和DailyTimeIntervalTrigger")
 public class QrtzSimpropTriggersEntity  implements Serializable,Cloneable {
 
 
     /** 调度器名 */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 触发器名 */
     @Id
+    @Comment("触发器名")
     private  String  triggerName ;
 
 
     /** 触发器分组 */
     @Id
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
 
-    /**  */
+    /** String类型的trigger的第一个参数 */
+    @Comment("String类型的trigger的第一个参数")
     private  String  strProp1 ;
 
 
-    /**  */
+    /** String类型的trigger的第二个参数 */
+    @Comment("String类型的trigger的第二个参数")
     private  String  strProp2 ;
 
 
-    /**  */
+    /** String类型的trigger的第三个参数 */
+    @Comment("String类型的trigger的第三个参数")
     private  String  strProp3 ;
 
 
-    /**  */
+    /** int类型的trigger的第一个参数 */
+    @Comment("int类型的trigger的第一个参数")
     private  Integer  intProp1 ;
 
 
-    /**  */
+    /** int类型的trigger的第二个参数 */
+    @Comment("int类型的trigger的第二个参数")
     private  Integer  intProp2 ;
 
 
-    /**  */
+    /** long类型的trigger的第一个参数 */
+    @Comment("long类型的trigger的第一个参数")
     private  Long  longProp1 ;
 
 
-    /**  */
+    /** long类型的trigger的第二个参数 */
+    @Comment("long类型的trigger的第二个参数")
     private  Long  longProp2 ;
 
 
-    /**  */
+    /** decimal类型的trigger的第一个参数 */
+    @Comment("decimal类型的trigger的第一个参数")
     private  Double  decProp1 ;
 
 
-    /**  */
+    /** decimal类型的trigger的第二个参数 */
+    @Comment("decimal类型的trigger的第二个参数")
     private  Double  decProp2 ;
 
 
-    /**  */
+    /** Boolean类型的trigger的第一个参数 */
+    @Comment("Boolean类型的trigger的第一个参数")
     private  String  boolProp1 ;
 
 
-    /**  */
+    /** Boolean类型的trigger的第二个参数 */
+    @Comment("Boolean类型的trigger的第二个参数")
     private  String  boolProp2 ;
 
     @Override

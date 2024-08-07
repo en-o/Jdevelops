@@ -3,11 +3,12 @@ package cn.tannn.jdevelops.quartz.entity;
 
 
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,16 +21,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_cron_triggers")
 @AutoConfigurationPackage
+@Comment("CronTrigger")
 public class QrtzCronTriggersEntity   implements Serializable,Cloneable {
 
     @EmbeddedId
     private QrtzCronTriggersUPK cronTriggersUPK;
 
     /** cron表达式 */
+    @Comment("cron表达式")
     private  String  cronExpression ;
 
 
     /** 时区  */
+    @Comment("时区")
     private  String  timeZoneId ;
 
     @Override

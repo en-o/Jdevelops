@@ -3,12 +3,13 @@ package cn.tannn.jdevelops.quartz.entity;
 
 
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_triggers")
 @AutoConfigurationPackage
+@Comment("触发器的基本信息")
 public class QrtzTriggersEntity   implements Serializable,Cloneable {
 
 
@@ -31,54 +33,67 @@ public class QrtzTriggersEntity   implements Serializable,Cloneable {
 
 
     /** 任务名 */
+    @Comment("任务名")
     private  String  jobName ;
 
 
     /** 任务分组 */
+    @Comment("任务分组")
     private  String  jobGroup ;
 
 
-    /** 描述 */
+    /** 详细描述信息 */
+    @Comment("详细描述信息")
     private  String  description ;
 
 
-    /** 下一次执行时间 */
+    /** 下一次触发时间，默认为-1，意味不会自动触发 */
+    @Comment("下一次触发时间，默认为-1，意味不会自动触发")
     private  Long  nextFireTime ;
 
 
-    /**上一次执行时间*/
+    /**上一次触发时间（毫秒）*/
+    @Comment("上一次触发时间（毫秒）")
     private  Long  prevFireTime ;
 
 
     /** 优先级 */
+    @Comment("优先级")
     private  Integer  priority ;
 
 
-    /** 触发器状态 */
+    /** 触发器状态[当前触发器状态，设置为ACQUIRED,如果设置为WAITING,则job不会触发 （ WAITING:等待 PAUSED:暂停ACQUIRED:正常执行 BLOCKED：阻塞 ERROR：错误）] */
+    @Comment("触发器状态[当前触发器状态，设置为ACQUIRED,如果设置为WAITING,则job不会触发 （ WAITING:等待 PAUSED:暂停ACQUIRED:正常执行 BLOCKED：阻塞 ERROR：错误）]")
     private  String  triggerState ;
 
 
     /** 触发器类型 */
+    @Comment("触发器类型")
     private  String  triggerType ;
 
 
     /** 开始时间 */
+    @Comment("开始时间")
     private  Long  startTime ;
 
 
     /** 结束时间 */
+    @Comment("结束时间")
     private  Long  endTime ;
 
 
     /** 日程名 */
+    @Comment("日程名")
     private  String  calendarName ;
 
 
-    /** 执行失败标识符  */
+    /** 措施或者是补偿执行的策略  */
+    @Comment("措施或者是补偿执行的策略")
     private  Integer  misfireInstr ;
 
 
     /** 任务数据 */
+    @Comment("任务数据")
     @Column(columnDefinition="Blob")
     private  byte[]  jobData ;
 

@@ -8,9 +8,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.Tuple;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.Tuple;
 import java.util.List;
 import java.util.stream.Collectors;
 

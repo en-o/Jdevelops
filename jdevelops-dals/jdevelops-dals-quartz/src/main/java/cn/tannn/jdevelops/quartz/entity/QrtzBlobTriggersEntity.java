@@ -1,11 +1,12 @@
 package cn.tannn.jdevelops.quartz.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -20,23 +21,28 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_blob_triggers")
 @AutoConfigurationPackage
+@Comment("Trigger作为Blob类型存储")
 public class QrtzBlobTriggersEntity  implements Serializable,Cloneable {
 
 
     /** 调度器名 */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
     /** 触发器名 */
     @Id
+    @Comment("触发器名")
     private  String  triggerName ;
 
     /** 触发器分组 */
     @Id
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
     /** 数据 */
     @Column(columnDefinition="Blob")
+    @Comment("数据")
     private  byte[]  blobData ;
 
 

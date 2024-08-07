@@ -2,7 +2,9 @@ package cn.tannn.jdevelops.quartz.entity.key;
 
 
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
+import org.hibernate.annotations.Comment;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,16 +15,20 @@ import java.util.Objects;
  * @version V1.0
  * @date 2023-03-07 12:04
  */
+@Comment("任务详情联合主键")
 @Embeddable
 public class QrtzJobDetailsUPK implements Serializable,Cloneable  {
 
     /** 调度器名 */
+    @Comment("调度器名")
     private  String  schedName ;
 
     /** 任务名 */
+    @Comment("任务名")
     private  String  jobName ;
 
     /** 任务分组 */
+    @Comment("任务分组")
     private  String  jobGroup ;
 
     @Override

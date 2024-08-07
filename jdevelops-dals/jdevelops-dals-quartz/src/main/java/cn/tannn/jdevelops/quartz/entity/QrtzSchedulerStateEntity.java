@@ -1,16 +1,18 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
+ * 储少量的有关Scheduler的状态信息，和别的Scheduler实例
  *
  * @author tnnn
  * @version V1.0
@@ -19,25 +21,38 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_scheduler_state")
 @AutoConfigurationPackage
-public class QrtzSchedulerStateEntity  implements Serializable,Cloneable{
+@Comment("储少量的有关Scheduler的状态信息，和别的Scheduler实例")
+public class QrtzSchedulerStateEntity implements Serializable, Cloneable {
 
 
-    /** 调度器名  */
-   @Id
-    private  String  schedName ;
-
-
-    /** 实例名 */
+    /**
+     * 调度器名
+     */
     @Id
-    private  String  instanceName ;
+    @Comment("调度器名")
+    private String schedName;
 
 
-    /** 最后检查时间 */
-    private  Long  lastCheckinTime ;
+    /**
+     * 实例名
+     */
+    @Id
+    @Comment("实例名")
+    private String instanceName;
 
 
-    /** 检查时间间隔  */
-    private  Long  checkinInterval ;
+    /**
+     * 最后检查时间
+     */
+    @Comment("最后检查时间")
+    private Long lastCheckinTime;
+
+
+    /**
+     * 检查时间间隔
+     */
+    @Comment("检查时间间隔")
+    private Long checkinInterval;
 
 
     @Override

@@ -3,12 +3,13 @@ package cn.tannn.jdevelops.quartz.entity;
 
 
 import cn.tannn.jdevelops.quartz.entity.key.QrtzJobDetailsUPK;
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_job_details")
 @AutoConfigurationPackage
+@Comment("任务详情")
 public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
 
 
@@ -30,30 +32,37 @@ public class QrtzJobDetailsEntity   implements Serializable,Cloneable{
     private QrtzJobDetailsUPK jobDetailsUPK;
 
     /** 描述  */
+    @Comment("描述")
     private  String  description ;
 
 
     /** 任务类名 */
+    @Comment("任务类名")
     private  String  jobClassName ;
 
 
-    /** 是否持久 */
+    /** 是否持久[把该属性设置为1，quartz会把job持久化到数据库中] */
+    @Comment("是否持久[把该属性设置为1，quartz会把job持久化到数据库中]")
     private  String  isDurable ;
 
 
     /** 是否集群(是否并发执行) */
+    @Comment("是否集群(是否并发执行)")
     private  String  isNonconcurrent ;
 
 
     /** 是否更新数据[0:否 1:是] */
+    @Comment("是否更新数据[0:否 1:是]")
     private  String  isUpdateData ;
 
 
     /** 需要恢复(是否接受恢复执行，默认为false，设置了RequestsRecovery为true，则该job会被重新执行) */
+    @Comment("需要恢复(是否接受恢复执行，默认为false，设置了RequestsRecovery为true，则该job会被重新执行)")
     private  String  requestsRecovery ;
 
 
     /** 任务数据 */
+    @Comment("任务数据")
     @Column(columnDefinition="Blob")
     private  byte[]  jobData ;
 

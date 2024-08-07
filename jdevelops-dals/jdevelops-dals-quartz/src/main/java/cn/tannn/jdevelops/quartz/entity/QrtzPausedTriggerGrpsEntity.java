@@ -1,11 +1,12 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
+import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -19,16 +20,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "qrtz_paused_trigger_grps")
 @AutoConfigurationPackage
+@Comment("存储已暂停的Trigger组的信息")
 public class QrtzPausedTriggerGrpsEntity  implements Serializable,Cloneable {
 
 
     /** 调度器名  */
     @Id
+    @Comment("调度器名")
     private  String  schedName ;
 
 
     /** 触发器分组 */
     @Id
+    @Comment("触发器分组")
     private  String  triggerGroup ;
 
     @Override
