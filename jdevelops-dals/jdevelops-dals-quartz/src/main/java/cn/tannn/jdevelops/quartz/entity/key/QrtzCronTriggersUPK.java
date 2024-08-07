@@ -18,7 +18,6 @@ import java.util.Objects;
  */
 @AutoConfigurationPackage
 @Embeddable
-@Comment("CronTrigger联合主键")
 public class QrtzCronTriggersUPK  implements Serializable,Cloneable {
 
     /** 调度器名 */

@@ -15,7 +15,6 @@ import java.util.Objects;
  * @version V1.0
  * @date 2023-03-07 12:04
  */
-@Comment("任务详情联合主键")
 @Embeddable
 public class QrtzJobDetailsUPK implements Serializable,Cloneable  {
 

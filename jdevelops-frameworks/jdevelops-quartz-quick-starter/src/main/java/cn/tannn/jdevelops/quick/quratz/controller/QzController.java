@@ -38,13 +38,13 @@ public class QzController {
     @Operation(summary = "添加定时任务")
     @GetMapping("addRecurring")
     @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径"
-            ,example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean")
-    @Parameter(name = "jName", description = "任务名")
-    @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
-    @Parameter(name = "isStartNow", description = "是否立即执行", deprecated = true)
-    public ResultVO<String> addRecurring(String jobBeanClass,
-                                         String jName,
-                                         String cron,
+            , example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean", required = true)
+    @Parameter(name = "jName", description = "任务名", required = true)
+    @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?", required = true)
+    @Parameter(name = "isStartNow", description = "是否立即执行")
+    public ResultVO<String> addRecurring(@RequestParam("jobBeanClass") String jobBeanClass,
+                                         @RequestParam("jName") String jName,
+                                         @RequestParam("cron") String cron,
                                          Boolean isStartNow) {
 
         scheduleService.recurringJob(checkClasses(jobBeanClass)
@@ -57,12 +57,12 @@ public class QzController {
     @Operation(summary = "添加延时任务")
     @GetMapping("addDelay")
     @Parameter(name = "jobBeanClass", description = "定时任务bean的类路径"
-            ,example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean")
-    @Parameter(name = "jName", description = "任务名")
-    @Parameter(name = "delaySeconds", description = "延时时间/秒", example = "10")
-    public ResultVO<String> addDelay(String jobBeanClass,
-                                     String jName,
-                                     Integer delaySeconds) {
+            , example = "cn.tannn.demo.jdevelops.frameworksquick.job.TestQuartzJobBean", required = true)
+    @Parameter(name = "jName", description = "任务名", required = true)
+    @Parameter(name = "delaySeconds", description = "延时时间/秒", example = "10", required = true)
+    public ResultVO<String> addDelay(@RequestParam("jobBeanClass") String jobBeanClass,
+                                     @RequestParam("jName") String jName,
+                                     @RequestParam("delaySeconds") Integer delaySeconds) {
 
         scheduleService.delayJob(checkClasses(jobBeanClass)
                 , jName
@@ -82,8 +82,8 @@ public class QzController {
 
     @Operation(summary = "删除任务")
     @GetMapping("delete")
-    @Parameter(name = "jName", description = "任务名")
-    public ResultVO<String> delete(String jName) {
+    @Parameter(name = "jName", description = "任务名", required = true)
+    public ResultVO<String> delete(@RequestParam("jName") String jName) {
         scheduleService.deleteJob(jName, jName);
         return ResultVO.successMessage("删除成功");
     }
@@ -91,8 +91,8 @@ public class QzController {
 
     @Operation(summary = "暂停任务")
     @GetMapping("pause")
-    @Parameter(name = "jName", description = "任务名")
-    public ResultVO<String> pause(String jName) {
+    @Parameter(name = "jName", description = "任务名", required = true)
+    public ResultVO<String> pause(@RequestParam("jName") String jName) {
         scheduleService.pauseJob(jName, jName);
         return ResultVO.successMessage("暂停成功");
     }
@@ -100,8 +100,8 @@ public class QzController {
 
     @Operation(summary = "重启任务")
     @GetMapping("resume")
-    @Parameter(name = "jName", description = "任务名")
-    public ResultVO<String> resume(String jName) {
+    @Parameter(name = "jName", description = "任务名", required = true)
+    public ResultVO<String> resume(@RequestParam("jName") String jName) {
         scheduleService.resumeJob(jName, jName);
         return ResultVO.successMessage("重启成功");
     }
@@ -109,9 +109,9 @@ public class QzController {
 
     @Operation(summary = "重置任务")
     @GetMapping("res")
-    @Parameter(name = "jName", description = "任务名")
-    @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?")
-    public ResultVO<String> resume(String jName, String cron) {
+    @Parameter(name = "jName", description = "任务名", required = true)
+    @Parameter(name = "cron", description = "cron表达式(开始时间)", example = "0/2 * * * * ?", required = true)
+    public ResultVO<String> resume(@RequestParam("jName") String jName, @RequestParam("cron") String cron) {
         scheduleService.resJob(jName, jName, cron);
         return ResultVO.successMessage("重置成功");
     }
@@ -119,8 +119,8 @@ public class QzController {
 
     @Operation(summary = "手动执行一次[存在的任务]")
     @GetMapping("run")
-    @Parameter(name = "jName", description = "任务名")
-    public ResultVO<String> run(String jName) {
+    @Parameter(name = "jName", description = "任务名", required = true)
+    public ResultVO<String> run(@RequestParam("jName") String jName) {
         scheduleService.runJob(jName, jName);
         return ResultVO.successMessage("执行成功");
     }
