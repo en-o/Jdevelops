@@ -50,7 +50,7 @@ public class PluginController {
      */
     @Operation(summary = "启动插件")
     @PostMapping("/start/{pluginId}")
-    public PluginState startPlugin(@PathVariable String pluginId) {
+    public PluginState startPlugin(@PathVariable("pluginId") String pluginId) {
         return pluginService.startPlugin(pluginId);
     }
 
@@ -59,7 +59,7 @@ public class PluginController {
      */
     @Operation(summary = "启用插件")
     @PostMapping("/enable/{pluginId}")
-    public boolean enablePlugin(@PathVariable String pluginId) {
+    public boolean enablePlugin(@PathVariable("pluginId")  String pluginId) {
         return pluginService.enablePlugin(pluginId);
     }
 
@@ -68,7 +68,7 @@ public class PluginController {
      */
     @Operation(summary = "停止插件")
     @PostMapping("/stop/{pluginId}")
-    public PluginState stopPlugin(@PathVariable String pluginId) {
+    public PluginState stopPlugin(@PathVariable("pluginId")  String pluginId) {
         return pluginService.stopPlugin(pluginId);
     }
 
@@ -77,7 +77,7 @@ public class PluginController {
      */
     @Operation(summary = "禁用插件")
     @PostMapping("/disable/{pluginId}")
-    public boolean disablePlugin(@PathVariable String pluginId) {
+    public boolean disablePlugin(@PathVariable("pluginId")  String pluginId) {
         return pluginService.disablePlugin(pluginId);
     }
 
@@ -86,7 +86,7 @@ public class PluginController {
      */
     @Operation(summary = "加载插件")
     @PostMapping("/load")
-    public String loadPlugin(@RequestParam String pluginPath) {
+    public String loadPlugin(@RequestParam("pluginPath")  String pluginPath) {
         return pluginService.loadPlugin(pluginPath);
     }
 
@@ -95,7 +95,7 @@ public class PluginController {
      */
     @Operation(summary = "卸载插件")
     @PostMapping("/unload/{pluginId}")
-    public boolean unloadPlugin(@PathVariable String pluginId) {
+    public boolean unloadPlugin(@PathVariable("pluginId")  String pluginId) {
         return pluginService.unloadPlugin(pluginId);
     }
 
