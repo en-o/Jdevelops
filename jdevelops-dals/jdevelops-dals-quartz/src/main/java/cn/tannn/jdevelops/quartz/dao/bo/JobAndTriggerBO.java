@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.quartz.dao.bo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import jakarta.persistence.Tuple;
 
 /**

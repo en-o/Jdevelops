@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.pf4j.service;
 
 import cn.tannn.jdevelops.pf4j.module.PluginInfo;
-import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 import org.pf4j.PluginWrapper;

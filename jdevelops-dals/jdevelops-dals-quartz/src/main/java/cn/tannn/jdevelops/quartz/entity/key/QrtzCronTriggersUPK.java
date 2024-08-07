@@ -1,11 +1,10 @@
 package cn.tannn.jdevelops.quartz.entity.key;
 
 
-
+import jakarta.persistence.Embeddable;
 import org.hibernate.annotations.Comment;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 
-import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 

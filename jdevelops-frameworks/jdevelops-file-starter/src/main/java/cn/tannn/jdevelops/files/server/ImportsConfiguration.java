@@ -11,12 +11,11 @@ import cn.tannn.jdevelops.files.server.service.FileIndexMetaService;
 import cn.tannn.jdevelops.files.server.service.FileIndexMetaServiceImpl;
 import cn.tannn.jdevelops.files.server.service.StartFileOperateService;
 import cn.tannn.jdevelops.files.server.service.StartFileOperateServiceImpl;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-
-import jakarta.persistence.EntityManager;
 
 /**
  * spring

@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jpa.table;
 
 import org.hibernate.boot.Metadata;
-import org.hibernate.boot.model.relational.ColumnOrderingStrategy;
 import org.hibernate.boot.model.relational.ColumnOrderingStrategyLegacy;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
@@ -12,7 +11,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Field;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

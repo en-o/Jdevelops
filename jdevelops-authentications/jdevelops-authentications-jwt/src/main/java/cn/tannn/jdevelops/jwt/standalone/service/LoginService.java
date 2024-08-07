@@ -2,10 +2,10 @@ package cn.tannn.jdevelops.jwt.standalone.service;
 
 import cn.tannn.jdevelops.jwt.standalone.pojo.TokenSign;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**

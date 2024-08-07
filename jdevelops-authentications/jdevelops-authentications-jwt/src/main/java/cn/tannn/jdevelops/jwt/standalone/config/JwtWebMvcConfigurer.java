@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.jwt.standalone.config;
 
 import cn.tannn.jdevelops.jwt.standalone.interceptor.JwtWebApiInterceptor;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
+import jakarta.annotation.Resource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

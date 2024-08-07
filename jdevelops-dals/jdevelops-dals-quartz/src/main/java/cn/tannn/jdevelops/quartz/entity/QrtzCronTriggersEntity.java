@@ -1,14 +1,13 @@
 package cn.tannn.jdevelops.quartz.entity;
 
 
-
 import cn.tannn.jdevelops.quartz.entity.key.QrtzCronTriggersUPK;
-import org.hibernate.annotations.Comment;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
-
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Comment;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+
 import java.io.Serializable;
 import java.util.Objects;
 

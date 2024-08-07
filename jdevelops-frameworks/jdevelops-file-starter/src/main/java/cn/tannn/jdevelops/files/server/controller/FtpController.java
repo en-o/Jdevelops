@@ -8,6 +8,7 @@ import cn.tannn.jdevelops.files.server.service.FileIndexMetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 

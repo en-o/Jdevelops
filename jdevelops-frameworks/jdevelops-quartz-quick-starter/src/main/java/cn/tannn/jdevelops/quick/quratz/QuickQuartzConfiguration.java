@@ -6,13 +6,12 @@ import cn.tannn.jdevelops.quartz.dao.*;
 import cn.tannn.jdevelops.quartz.service.ScheduleService;
 import cn.tannn.jdevelops.quartz.service.ScheduleServiceImpl;
 import cn.tannn.jdevelops.quick.quratz.controller.QzController;
+import jakarta.persistence.EntityManager;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-
-import jakarta.persistence.EntityManager;
 
 /**
  * spring boot 注入

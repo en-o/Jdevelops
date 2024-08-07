@@ -3,15 +3,14 @@ package cn.tannn.jdevelops.jwt.standalone.interceptor.check;
 import cn.tannn.jdevelops.jwt.standalone.service.CheckTokenInterceptor;
 import cn.tannn.jdevelops.jwt.standalone.util.CookieUtil;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import static cn.tannn.jdevelops.jwt.standalone.interceptor.JwtWebApiInterceptor.extractedErrorResponse;
 
