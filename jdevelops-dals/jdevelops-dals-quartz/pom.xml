@@ -12,7 +12,7 @@
     <artifactId>jdevelops-dals-quartz</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: dals :: quartz</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <description>
         quartz 封装
     </description>
