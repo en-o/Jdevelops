@@ -12,7 +12,7 @@
     <artifactId>jdevelops-quartz-quick-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: quartz :: quick :: starter</name>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <description>
         quartz  quick starter
     </description>
