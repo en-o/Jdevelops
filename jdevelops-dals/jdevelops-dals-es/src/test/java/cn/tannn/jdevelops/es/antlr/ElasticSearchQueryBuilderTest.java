@@ -1,12 +1,7 @@
 package cn.tannn.jdevelops.es.antlr;
 
-import cn.tannn.jdevelops.es.util.EsBasicsUtil;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
