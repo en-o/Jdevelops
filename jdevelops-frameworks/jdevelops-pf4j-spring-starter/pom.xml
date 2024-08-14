@@ -12,7 +12,7 @@
     <artifactId>jdevelops-pf4j-spring-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: pf4j :: spring :: starter</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <description>
         pf4j 一些基础配置封装
     </description>
