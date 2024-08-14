@@ -7,18 +7,18 @@ import cn.tannn.jdevelops.jwt.redis.util.RedisUtil;
 import cn.tannn.jdevelops.jwt.standalone.exception.ExpiredRedisException;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static cn.tannn.jdevelops.result.constant.TokenCode.REDIS_EXPIRED_USER;
+import static cn.tannn.jdevelops.utils.jwt.exception.TokenCode.REDIS_EXPIRED_USER;
 
 
 /**

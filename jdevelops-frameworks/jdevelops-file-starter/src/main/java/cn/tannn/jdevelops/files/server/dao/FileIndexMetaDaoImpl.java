@@ -1,10 +1,10 @@
 package cn.tannn.jdevelops.files.server.dao;
 
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
 import java.util.List;
 import java.util.Optional;
 

@@ -24,7 +24,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.util.List;
 import java.util.Objects;
 
-import static cn.tannn.jdevelops.result.constant.PermissionsCode.AUTH_ERROR;
 import static cn.tannn.jdevelops.result.constant.ResultCode.SYS_ERROR;
 
 
@@ -86,10 +85,9 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object exceptionHandler(NoHandlerFoundException e, HttpServletResponse response) {
-        responseConfig(response, e, AUTH_ERROR.getCode());
-        return ExceptionResultWrap.result(AUTH_ERROR.getCode(), "路径不存在，请检查路径是否正确");
+        responseConfig(response, e,403);
+        return ExceptionResultWrap.result(403, "路径不存在，请检查路径是否正确");
     }
-
 
     @ExceptionHandler(NullPointerException.class)
     public Object handleNullPointerException(NullPointerException e, HttpServletResponse response) {

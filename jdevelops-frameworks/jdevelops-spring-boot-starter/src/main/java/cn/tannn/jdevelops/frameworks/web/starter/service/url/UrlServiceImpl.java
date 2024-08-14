@@ -7,6 +7,7 @@ import cn.tannn.jdevelops.frameworks.web.starter.entity.url.Urls;
 import cn.tannn.jdevelops.frameworks.web.starter.util.StringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import jakarta.annotation.Resource;
 import java.util.*;
 
 import static cn.tannn.jdevelops.frameworks.web.starter.util.UrlUtil.noRecordUrl;

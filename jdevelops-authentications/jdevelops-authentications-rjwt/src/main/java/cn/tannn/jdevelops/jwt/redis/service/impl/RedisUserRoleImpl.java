@@ -12,18 +12,18 @@ import cn.tannn.jdevelops.utils.jwt.constant.JwtMessageConstant;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
 import com.alibaba.fastjson2.JSON;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import jakarta.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static cn.tannn.jdevelops.result.constant.PermissionsCode.API_PERMISSION_AUTH_ERROR;
-import static cn.tannn.jdevelops.result.constant.PermissionsCode.API_ROLE_AUTH_ERROR;
+import static cn.tannn.jdevelops.jwt.standalone.exception.PermissionsCode.API_PERMISSION_AUTH_ERROR;
+import static cn.tannn.jdevelops.jwt.standalone.exception.PermissionsCode.API_ROLE_AUTH_ERROR;
 
 
 /**

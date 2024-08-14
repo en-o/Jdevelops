@@ -6,11 +6,10 @@ import cn.tannn.jdevelops.jwt.standalone.util.JwtWebUtil;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 登录工具

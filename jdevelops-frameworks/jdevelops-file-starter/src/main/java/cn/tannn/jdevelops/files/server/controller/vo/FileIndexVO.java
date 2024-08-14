@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.StringJoiner;
-
 /**
  * 文件索引，快速查询各个存储器的文件数据
  *

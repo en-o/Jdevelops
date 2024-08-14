@@ -1,9 +1,5 @@
 package cn.tannn.jdevelops.jpa.table;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.model.relational.ColumnOrderingStrategyLegacy;
 import org.hibernate.cfg.AvailableSettings;
@@ -11,6 +7,10 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 表生成时对列的顺序自定义
