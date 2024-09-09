@@ -11,12 +11,16 @@ import java.util.Map;
  * actuator/info信息填充
  * @author tan
  */
+
 public class AppInfoContributor implements InfoContributor {
 
     @Autowired
     private AppInfoConfiguration appInfoConfiguration;
     @Override
     public void contribute(Info.Builder builder) {
+        if ("false".equals(appInfoConfiguration.getEnabled())){
+            return;
+        }
         Map<String, Object> details = appInfoConfiguration.toMap();
         builder.withDetail("application", details);
     }

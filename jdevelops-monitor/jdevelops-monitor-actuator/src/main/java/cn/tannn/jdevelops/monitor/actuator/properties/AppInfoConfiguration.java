@@ -19,6 +19,11 @@ import java.util.Map;
 public class AppInfoConfiguration {
 
     /**
+     * false 关闭 info显示新增只返回空{}
+     */
+    String enabled;
+
+    /**
      * 应用名(默认spring.application.name)
      */
     String app;
@@ -74,10 +79,19 @@ public class AppInfoConfiguration {
         this.description = description;
     }
 
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "AppInfoConfiguration{" +
-                "app='" + app + '\'' +
+                "enabled='" + enabled + '\'' +
+                ", app='" + app + '\'' +
                 ", version='" + version + '\'' +
                 ", description='" + description + '\'' +
                 '}';
