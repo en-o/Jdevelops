@@ -26,6 +26,12 @@ public interface PlatformConstant {
      */
     String WEB_H5="WEB_H5";
 
+
+    /**
+     * web-pc 平台使用
+     */
+    String WEB_PC="WEB_PC";
+
     /**
      * 小程序 平台使用
      */
@@ -47,6 +53,7 @@ public interface PlatformConstant {
         all.add(WEB_H5);
         all.add(WEB_ADMIN);
         all.add(COMMON);
+        all.add(WEB_PC);
         return all;
     }
 
