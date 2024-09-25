@@ -19,6 +19,7 @@ public @interface ApiPlatform {
 
     /**
      * 接口所属的前端
+     * @see PlatformConstant
      */
-    PlatformConstant[] platform() default {PlatformConstant.COMMON};
+    String[] platform() default {PlatformConstant.COMMON};
 }

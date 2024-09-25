@@ -18,10 +18,10 @@ public class RedisLoginServiceTest {
     @Test
     public void testPlatformSubtract() {
         try {
-            List<PlatformConstant> input = Arrays.asList(PlatformConstant.APPLET, PlatformConstant.COMMON);
-            List<PlatformConstant> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
+            List<String> input = Arrays.asList(PlatformConstant.APPLET, PlatformConstant.COMMON);
+            List<String> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
             // 新增的 platform
-            Collection<PlatformConstant> subtract = CollectionUtils.subtract(input, local);
+            Collection<String> subtract = CollectionUtils.subtract(input, local);
             log.info("input:"+input);
             log.info("local:"+local);
             log.info("subtract:"+subtract);
@@ -33,10 +33,10 @@ public class RedisLoginServiceTest {
         }
         log.info("============================================");
         try {
-            List<PlatformConstant> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
-            List<PlatformConstant> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
+            List<String> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
+            List<String> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
             // 新增的 platform
-            Collection<PlatformConstant> subtract = CollectionUtils.subtract(input, local);
+            Collection<String> subtract = CollectionUtils.subtract(input, local);
             log.info("input:"+input);
             log.info("local:"+local);
             log.info("subtract:"+subtract);
@@ -48,10 +48,10 @@ public class RedisLoginServiceTest {
         }
         log.info("============================================");
         try {
-            List<PlatformConstant> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
-            List<PlatformConstant> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
+            List<String> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
+            List<String> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
             // 新增的 platform
-            Collection<PlatformConstant> subtract = CollectionUtils.subtract(input, local);
+            Collection<String> subtract = CollectionUtils.subtract(input, local);
             log.info("input:"+input);
             log.info("local:"+local);
             log.info("subtract:"+subtract);
@@ -65,10 +65,10 @@ public class RedisLoginServiceTest {
 
         log.info("============================================");
         try {
-            List<PlatformConstant> input = Collections.emptyList();
-            List<PlatformConstant> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
+            List<String> input = Collections.emptyList();
+            List<String> local = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.APPLET, PlatformConstant.COMMON);
             // 新增的 platform
-            Collection<PlatformConstant> subtract = CollectionUtils.subtract(input, local);
+            Collection<String> subtract = CollectionUtils.subtract(input, local);
             log.info("input:"+input);
             log.info("local:"+local);
             log.info("subtract:"+subtract);
@@ -81,10 +81,10 @@ public class RedisLoginServiceTest {
 
         log.info("============================================");
         try {
-            List<PlatformConstant> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
-            List<PlatformConstant> local = Collections.emptyList();
+            List<String> input = Arrays.asList(PlatformConstant.WEB_H5, PlatformConstant.COMMON);
+            List<String> local = Collections.emptyList();
             // 新增的 platform
-            Collection<PlatformConstant> subtract = CollectionUtils.subtract(input, local);
+            Collection<String> subtract = CollectionUtils.subtract(input, local);
             log.info("input:"+input);
             log.info("local:"+local);
             log.info("subtract:"+subtract);

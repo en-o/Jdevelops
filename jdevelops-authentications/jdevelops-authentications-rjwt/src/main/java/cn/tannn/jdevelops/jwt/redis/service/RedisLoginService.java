@@ -55,9 +55,9 @@ public class RedisLoginService implements LoginService {
                 // 查询当前用户是否已经登录
                 StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
                 String token = loginUser.getToken();
-                List<PlatformConstant> input = loginMeta.getPlatform();
+                List<String> input = loginMeta.getPlatform();
                 if(input != null){
-                    List<PlatformConstant> local = JwtService.getPlatformConstantExpires(token);
+                    List<String> local = JwtService.getPlatformConstantExpires(token);
                     if (!CollectionUtils.subtract(input, local).isEmpty()) {
                         throw new LoginException("存储的 platform 跟新登录的platform不一致");
                     }

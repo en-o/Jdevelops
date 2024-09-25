@@ -53,7 +53,7 @@ class JwtServiceTest {
     @Test
     void getLoginJwtExtendInfoExpires() throws JoseException {
         SignEntity<LoginJwtExtendInfo<String>> signEntity =
-                new SignEntity<>("tan",  new LoginJwtExtendInfo<String>("tan","tan","tan"));
+                SignEntity.initMap("tan",  new LoginJwtExtendInfo<String>("tan","tan","tan"));
         String token = JwtService.generateToken(signEntity);
         LoginJwtExtendInfo<Map<String,String>> loginJwtExtendInfoExpires = JwtService.getLoginJwtExtendInfoExpires(token);
         assertEquals("LoginJwtExtendInfo{loginName='tan', userId='null', userNo='tan', userName='tan', phone='null', map=null}",
@@ -61,7 +61,7 @@ class JwtServiceTest {
 
 
         SignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity2 =
-                new SignEntity<>("tan",  new LoginJwtExtendInfo<Map<String,String>>("tan","tan","tan",
+                SignEntity.initMap("tan",  new LoginJwtExtendInfo<Map<String,String>>("tan","tan","tan",
                         new HashMap<String,String>(){{
                             put("key","tan");
                         }}));
@@ -76,11 +76,11 @@ class JwtServiceTest {
     @Test
     void getTokenByBean() throws JoseException {
         SignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity2 =
-                new SignEntity<>("tan",
-                        new LoginJwtExtendInfo<Map<String,String>>("tan","tan","tan",
-                        new HashMap<String,String>(){{
-                            put("key","tan");
-                        }}));
+                SignEntity.initMap("tan",
+                        new LoginJwtExtendInfo<>("tan", "tan", "tan",
+                                new HashMap<>() {{
+                                    put("key", "tan");
+                                }}));
         String token2 = JwtService.generateToken(signEntity2);
         assertEquals("LoginJwtExtendInfo{loginName='null', userId='null', userNo='null', userName='null', phone='null', map={loginName=tan, userNo=tan, userName=tan, map={\"key\":\"tan\"}}}",
                 JwtService.getTokenByBean(token2, LoginJwtExtendInfo.class, HashMap.class).toString());
@@ -93,7 +93,7 @@ class JwtServiceTest {
     @Test
     void getPlatformConstantExpires() throws JoseException {
         // token生成
-        String dasda = JwtService.generateToken(new SignEntity("tan", Arrays.asList(PlatformConstant.WEB_ADMIN)));
+        String dasda = JwtService.generateToken(SignEntity.initPlatform("tan", Arrays.asList(PlatformConstant.WEB_ADMIN)));
         assertEquals(Collections.singletonList(PlatformConstant.WEB_ADMIN), JwtService.getPlatformConstantExpires(dasda));
     }
 

@@ -18,7 +18,7 @@ public class RsJwtWebUtilTest{
     @Test
     public void testGetLoginJwtExtendInfoExpires() throws JoseException {
         RedisSignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity =
-                new RedisSignEntity<>(new SignEntity<>("tan", new LoginJwtExtendInfo<>("tan", "tan", "tan")));
+                new RedisSignEntity<>(SignEntity.initMap("tan", new LoginJwtExtendInfo<>("tan", "tan", "tan")));
         String token = JwtService.generateToken(signEntity);
         LoginJwtExtendInfo<Map<String,String>> loginJwtExtendInfoExpires = JwtService.getLoginJwtExtendInfoExpires(token);
         assertEquals("LoginJwtExtendInfo{loginName='tan', userId='null', userNo='tan', userName='tan', phone='null', map=null}",
@@ -27,7 +27,7 @@ public class RsJwtWebUtilTest{
 
 
         RedisSignEntity<LoginJwtExtendInfo<Map<String,String>>> signEntity2 =
-                new RedisSignEntity<>(new SignEntity<>("tan", new LoginJwtExtendInfo<>(
+                new RedisSignEntity<>(SignEntity.initMap("tan", new LoginJwtExtendInfo<>(
                         "tan",
                         "tan",
                         "tan", new HashMap<String,String>(){{

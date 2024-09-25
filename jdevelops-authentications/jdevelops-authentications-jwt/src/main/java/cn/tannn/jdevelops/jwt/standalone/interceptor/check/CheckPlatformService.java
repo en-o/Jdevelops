@@ -37,7 +37,7 @@ public class CheckPlatformService {
      * 检查接口的使用范围是否能跟token中的返回对应上
      */
     public void checkApiPlatform() {
-        List<PlatformConstant> platformConstants = JwtService.getPlatformConstantExpires(token);
+        List<String> platformConstants = JwtService.getPlatformConstantExpires(token);
         if (method.isAnnotationPresent(ApiPlatform.class)) {
             if (!jwtListExistAnnotationMethod(platformConstants, method)) {
                 throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
@@ -54,11 +54,11 @@ public class CheckPlatformService {
     /**
      * 检查方法
      */
-    private boolean jwtListExistAnnotationMethod(List<PlatformConstant> platformConstants,
+    private boolean jwtListExistAnnotationMethod(List<String> platformConstants,
                                                  Method method) {
         ApiPlatform annotation = method.getAnnotation(ApiPlatform.class);
-        for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (annotationPlatform.contains(platformConstants)) {
+        for (String annotationPlatform : annotation.platform()) {
+            if (platformConstants.contains(annotationPlatform)) {
                 return true;
             }
         }
@@ -68,11 +68,11 @@ public class CheckPlatformService {
     /**
      * 检查类
      */
-    private boolean jwtListExistAnnotationMethodClasses(List<PlatformConstant> platformConstants,
+    private boolean jwtListExistAnnotationMethodClasses(List<String> platformConstants,
                                                         Class<?> controllerClass) {
         ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
-        for (PlatformConstant annotationPlatform : annotation.platform()) {
-            if (annotationPlatform.contains(platformConstants)) {
+        for (String annotationPlatform : annotation.platform()) {
+            if (platformConstants.contains(annotationPlatform)) {
                 return true;
             }
         }
