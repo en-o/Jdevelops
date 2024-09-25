@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jwt.standalone.util;
 
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import com.alibaba.fastjson2.JSON;

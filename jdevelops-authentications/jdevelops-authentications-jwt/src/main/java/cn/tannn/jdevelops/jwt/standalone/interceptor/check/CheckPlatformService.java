@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jwt.standalone.interceptor.check;
 
 
 import cn.tannn.jdevelops.annotations.web.authentication.ApiPlatform;
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.jwt.standalone.exception.PermissionsException;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import org.slf4j.Logger;

@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.utils.jwt.core;
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
 import cn.tannn.jdevelops.utils.jwt.exception.TokenCode;

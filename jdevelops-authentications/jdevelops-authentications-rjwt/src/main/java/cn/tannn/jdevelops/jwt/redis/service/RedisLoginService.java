@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.jwt.redis.service;
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.exception.built.TokenException;
 import cn.tannn.jdevelops.jwt.redis.entity.only.StorageToken;
 import cn.tannn.jdevelops.jwt.redis.entity.sign.RedisSignEntity;
