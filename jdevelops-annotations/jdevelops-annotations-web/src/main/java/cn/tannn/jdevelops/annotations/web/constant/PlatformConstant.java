@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.annotations.web.constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,5 +36,18 @@ public interface PlatformConstant {
      */
     String  DASHBOARD="DASHBOARD";
 
+    /**
+     * 所有的枚举，如果前端这个数据而且还加入了新的参数,那就 all().add(*);
+     * @return PlatformConstant
+     */
+    static List<String>  all(){
+        List<String> all = new ArrayList<String>();
+        all.add(DASHBOARD);
+        all.add(APPLET);
+        all.add(WEB_H5);
+        all.add(WEB_ADMIN);
+        all.add(COMMON);
+        return all;
+    }
 
 }
