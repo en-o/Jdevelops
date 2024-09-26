@@ -1,9 +1,11 @@
 package cn.tannn.jdevelops.utils.core.file;
 
+import cn.hutool.core.io.FileTypeUtil;
 import cn.tannn.jdevelops.utils.core.file.files.FileReader;
 import cn.tannn.jdevelops.utils.core.file.files.FileWriter;
 import cn.tannn.jdevelops.utils.core.list.CollectionUtil;
 import cn.tannn.jdevelops.utils.core.thread.ThreadUtils;
+import org.apache.commons.io.FileExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -483,6 +485,58 @@ public class FileUtil {
 			}
 		} catch (IOException e) {
 			LOG.error("isValidFileType zip Error reading");
+		}
+		return false;
+	}
+
+	/**
+	 * 验证文件格式是否在白名单里
+	 *
+	 * @param file        MultipartFile
+	 * @param whiteSuffix 文件后缀白名单(没有. )
+	 * @return
+	 * @throws IOException
+	 */
+	public static void isValidFileTypeThrow(MultipartFile file, List<String> whiteSuffix) throws IOException {
+		if(!isValidFileType(file, whiteSuffix)){
+			throw new FileExistsException("文件格式不合法");
+		}
+	}
+
+	/**
+	 * 验证文件格式是否在白名单里
+	 *
+	 * @param file        MultipartFile
+	 * @param whiteSuffix 文件后缀白名单(没有. )
+	 * @return true 在
+	 * @throws IOException
+	 */
+	public static boolean isValidFileType(MultipartFile file, List<String> whiteSuffix) throws IOException {
+		String fileType = FileTypeUtil.getType(file.getInputStream());
+		if(whiteSuffix==null || whiteSuffix.isEmpty()){
+			return true;
+		}
+		for (String type : whiteSuffix) {
+			if (type.equalsIgnoreCase(fileType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 验证文件格式是否是指定格式
+	 *
+	 * @param file       MultipartFile
+	 * @param fileSuffix 文件后缀(没有. )
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean isValidFileType(MultipartFile file, String fileSuffix) throws IOException {
+		String fileType = FileTypeUtil.getType(file.getInputStream());
+		LOG.info("isValidFileType:{}", fileType);
+		if (fileSuffix.equalsIgnoreCase(fileType)) {
+			return true;
 		}
 		return false;
 	}
