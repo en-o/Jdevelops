@@ -512,7 +512,7 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	public static boolean isValidFileType(MultipartFile file, List<String> whiteSuffix) throws IOException {
-		String fileType = FileTypeUtil.getType(file.getInputStream());
+		String fileType = FileTypeUtil.getType(file.getInputStream(),true);
 		if(whiteSuffix==null || whiteSuffix.isEmpty()){
 			return true;
 		}
@@ -533,7 +533,7 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	public static boolean isValidFileType(MultipartFile file, String fileSuffix) throws IOException {
-		String fileType = FileTypeUtil.getType(file.getInputStream());
+		String fileType = FileTypeUtil.getType(file.getInputStream(),true);
 		LOG.info("isValidFileType:{}", fileType);
 		if (fileSuffix.equalsIgnoreCase(fileType)) {
 			return true;
