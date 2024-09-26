@@ -6,8 +6,10 @@ import cn.tannn.jdevelops.jwt.standalone.exception.PermissionsException;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import static cn.tannn.jdevelops.utils.jwt.exception.TokenCode.UNAUTHENTICATED_PLATFORM;
@@ -21,7 +23,7 @@ import static cn.tannn.jdevelops.utils.jwt.exception.TokenCode.UNAUTHENTICATED_P
 public class CheckPlatformService {
 
     private static final Logger logger_global = LoggerFactory.getLogger(CheckPlatformService.class);
-
+    public static AntPathMatcher antPathMatcher = new AntPathMatcher();
     private final String token;
     private final Method method;
     private final Class<?> controllerClass;
@@ -34,17 +36,25 @@ public class CheckPlatformService {
 
     /**
      * 检查接口的使用范围是否能跟token中的返回对应上
+     * @param servletPath 当前接口路径
      */
-    public void checkApiPlatform() {
+    public void checkApiPlatform(String servletPath) {
+        logger_global.debug("Checking API Platform servletPath {}", servletPath);
         List<String> platformConstants = JwtService.getPlatformConstantExpires(token);
         if (method.isAnnotationPresent(ApiPlatform.class)) {
             if (!jwtListExistAnnotationMethod(platformConstants, method)) {
                 throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
             }
-        } else if (controllerClass.isAnnotationPresent(ApiPlatform.class)
-                   && (!jwtListExistAnnotationMethodClasses(platformConstants, controllerClass))) {
-            throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
-
+        } else if (controllerClass.isAnnotationPresent(ApiPlatform.class)){
+            ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
+            // 过滤 掉不需要检查的接口
+            if(Arrays.stream(annotation.filter()).noneMatch(e -> antPathMatcher.match(e, servletPath))){
+                if(!jwtListExistAnnotationMethodClasses(annotation.platform(), platformConstants)){
+                    throw new PermissionsException(UNAUTHENTICATED_PLATFORM);
+                }
+            }else{
+                logger_global.debug("permit through Platform servletPath {}", servletPath);
+            }
         }
 
     }
@@ -65,12 +75,14 @@ public class CheckPlatformService {
     }
 
     /**
-     * 检查类
+     * 检查类、
+     * @param platform 接口支持的平台
+     * @param platformConstants 当前用户拥有的平台
+     * @return true 当前接口支持的平台在用户拥有的平台中
      */
-    private boolean jwtListExistAnnotationMethodClasses(List<String> platformConstants,
-                                                        Class<?> controllerClass) {
-        ApiPlatform annotation = controllerClass.getAnnotation(ApiPlatform.class);
-        for (String annotationPlatform : annotation.platform()) {
+    private boolean jwtListExistAnnotationMethodClasses(String[] platform,
+                                                        List<String> platformConstants) {
+        for (String annotationPlatform : platform) {
             if (platformConstants.contains(annotationPlatform)) {
                 return true;
             }

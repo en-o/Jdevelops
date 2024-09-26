@@ -108,7 +108,7 @@ public class CheckTokenService {
 
         // 验证接口是否允许被调用
         if (Boolean.TRUE.equals(jwtConfig.getVerifyPlatform())) {
-            checkPlatform.checkApiPlatform();
+            checkPlatform.checkApiPlatform(request.getServletPath());
         }
         // 验证用户状态
         checkUser.checkUserStatus(token);

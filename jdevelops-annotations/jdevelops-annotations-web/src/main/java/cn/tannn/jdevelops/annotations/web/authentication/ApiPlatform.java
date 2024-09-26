@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.annotations.web.authentication;
 
 
 import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
+import org.springframework.util.AntPathMatcher;
 
 import java.lang.annotation.*;
 
@@ -22,4 +23,11 @@ public @interface ApiPlatform {
      * @see PlatformConstant
      */
     String[] platform() default {PlatformConstant.COMMON};
+
+
+    /**
+     * 注解到类的时候过滤用的 [不需要拦截的接口路径]
+     * 规则判断用的 {@link AntPathMatcher}， <a href="https://www.yuque.com/tanning/mbquef/vv5ddq#paozE">所以可以使用他的规则进行填写</a>
+     */
+    String[] filter() default {};
 }
