@@ -11,6 +11,7 @@ import cn.tannn.cat.file.sdk.core.minio.MinioOperate;
 import cn.tannn.cat.file.sdk.core.qiniu.QiNiuOperate;
 import cn.tannn.cat.file.sdk.exception.FileException;
 import cn.tannn.jdevelops.files.sdk.config.OssConfig;
+import cn.tannn.jdevelops.files.sdk.util.FileFilter;
 import cn.tannn.jdevelops.files.sdk.util.UUIDUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -136,6 +138,10 @@ public  class DefFileOperateService implements FileOperateService {
      * @throws IOException IOException
      */
     private FileIndex upload(UploadFile upload,FileStorage storage) throws IOException {
+        List<String> filter = ossConfig.getFilter();
+        if(!filter.isEmpty()){
+            FileFilter.isValidFileTypeThrow(upload.getFile(), filter);
+        }
         FileIndex fileIndex;
         if (storage.localConfig()) {
             fileIndex = localOperate.uploadFile(upload, storage);
