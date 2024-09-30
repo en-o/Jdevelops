@@ -66,7 +66,7 @@ public class FileFilter {
      * 增加文件类型映射<br>
      * 如果已经存在将覆盖之前的映射
      *
-     * @param fileStreamHexHead 文件流头部Hex信息
+     * @param fileStreamHexHead 文件流头部Hex信息 [bytesToHex(getMagicNumber())]
      * @param extName           文件扩展名
      * @return 之前已经存在的文件扩展名
      */
@@ -176,25 +176,19 @@ public class FileFilter {
     /**
      * 获取魔数 byte
      */
-    private static byte[] getMagicNumber(InputStream fis) throws IOException {
+    public static byte[] getMagicNumber(InputStream fis) throws IOException {
         byte[] buffer = new byte[READ_SIZE];
         int bytesRead = fis.read(buffer, 0, READ_SIZE);
         return Arrays.copyOf(buffer, bytesRead);
     }
 
-    /**
-     * 验证魔数 byte = map key
-     */
-    private static boolean startsWithBytes(byte[] source, byte[] match) {
-        return source.length >= match.length && Arrays.equals(Arrays.copyOfRange(source, 0, match.length), match);
-    }
 
     /**
      * byte[] 转 hex
      * @param bytes bytes
      * @return String
      */
-    private static String bytesToHex(byte[] bytes) {
+    public static String bytesToHex(byte[] bytes) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : bytes) {
             String hex = Integer.toHexString(0xff & b);
