@@ -11,6 +11,9 @@ import cn.tannn.jdevelops.files.sdk.config.properties.QiNiuProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * spirng  properties
  *
@@ -27,6 +30,11 @@ public class OssConfig {
      * @see StorageDict
      */
     private StorageDict master;
+
+    /**
+     * 指定上传文件类型 - 全局（接口未指定时使用）
+     */
+    private List<String> filter;
 
     /**
      * 配置
@@ -96,6 +104,13 @@ public class OssConfig {
         this.qiniu = qiniu;
     }
 
+    public List<String> getFilter() {
+        return filter == null ? new ArrayList<>() : filter;
+    }
+
+    public void setFilter(List<String> filter) {
+        this.filter = filter;
+    }
 
     /**
      * 获取 master 的  FileStorage

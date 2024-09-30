@@ -1,18 +1,20 @@
 package cn.tannn.jdevelops.utils.core.file;
 
+import cn.hutool.core.io.FileTypeUtil;
 import cn.tannn.jdevelops.utils.core.file.files.FileReader;
 import cn.tannn.jdevelops.utils.core.file.files.FileWriter;
 import cn.tannn.jdevelops.utils.core.list.CollectionUtil;
 import cn.tannn.jdevelops.utils.core.thread.ThreadUtils;
+import org.apache.commons.io.FileExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * 文件工具类
@@ -379,5 +381,163 @@ public class FileUtil {
 		}
 
 		return new BufferedReader(reader);
+	}
+
+
+	/**
+	 * 文件名称转 UUID
+	 *
+	 * @param file 文件名称 - 有后缀
+	 * @return UUID
+	 */
+	public static String getUUIDFile(String file) {
+		return UUID.randomUUID() + getExt(file);
+	}
+
+	/**
+	 * 文件名称转 UUID
+	 *
+	 * @param file 文件名称 - 无后缀
+	 * @return UUID
+	 */
+	public static String getUUIDFile2(String file) {
+		return UUID.randomUUID() + "";
+	}
+
+	/**
+	 * 文件扩展名（类型后缀
+	 *
+	 * @param originalName 文件名称
+	 * @return 后缀
+	 */
+	public static String getExt(String originalName) {
+		return originalName.substring(originalName.lastIndexOf("."));
+	}
+
+
+	/**
+	 * 文件排序
+	 *
+	 * @param files     files
+	 * @param ascending true:升序, false:降序
+	 */
+	public static void sortFiles(File[] files, boolean ascending) {
+		Comparator<File> comparator = Comparator.comparing(File::getName);
+		if (!ascending) {
+			comparator = comparator.reversed();
+		}
+		Arrays.sort(files, comparator);
+	}
+
+	/**
+	 * 验证文件是否是pdf或doc
+	 * @param file MultipartFile
+	 * @return true 是
+	 */
+	public static boolean isValidFileTypeByPDFDOC(MultipartFile file) {
+//        try (FileInputStream fis = new FileInputStream(file)) {
+		try (InputStream fis = file.getInputStream()) {
+			byte[] magic = new byte[4];
+			if (fis.read(magic) != magic.length) {
+				return false;
+			}
+
+			// 检查 PDF 魔数
+			if (magic[0] == (byte) 0x25 && magic[1] == (byte) 0x50 &&
+					magic[2] == (byte) 0x44 && magic[3] == (byte) 0x46) {
+				return true;
+			}
+
+			// 检查 DOC 魔数
+			if (magic[0] == (byte) 0xD0 && magic[1] == (byte) 0xCF &&
+					magic[2] == (byte) 0x11 && magic[3] == (byte) 0xE0) {
+				return true;
+			}
+
+			// 检查 DOCX 魔数 (实际上是 ZIP 文件的魔数)
+			if (magic[0] == (byte) 0x50 && magic[1] == (byte) 0x4B &&
+					magic[2] == (byte) 0x03 && magic[3] == (byte) 0x04) {
+				return isDocx(file);
+			}
+
+			return false;
+		} catch (IOException e) {
+			LOG.error("isValidFileType Error reading");
+			return false;
+		}
+	}
+
+	/**
+	 * 专门检查 DOCX 格式。这个方法查找 ZIP 文件中是否存在 word/document.xml 文件，这是 DOCX 文件的特征之一
+	 *
+	 * @param file file
+	 * @return boolean
+	 */
+	private static boolean isDocx(MultipartFile file) {
+//        try (FileInputStream fis = new FileInputStream(file);
+		try (InputStream fis = file.getInputStream();
+			 ZipInputStream zis = new ZipInputStream(fis)) {
+			ZipEntry entry;
+			while ((entry = zis.getNextEntry()) != null) {
+				if (entry.getName().equals("word/document.xml")) {
+					return true;
+				}
+			}
+		} catch (IOException e) {
+			LOG.error("isValidFileType zip Error reading");
+		}
+		return false;
+	}
+
+	/**
+	 * 验证文件格式是否在白名单里
+	 *
+	 * @param file        MultipartFile
+	 * @param whiteSuffix 文件后缀白名单(没有. )
+	 * @return
+	 * @throws IOException
+	 */
+	public static void isValidFileTypeThrow(MultipartFile file, List<String> whiteSuffix) throws IOException {
+		if(!isValidFileType(file, whiteSuffix)){
+			throw new FileExistsException("文件格式不合法");
+		}
+	}
+
+	/**
+	 * 验证文件格式是否在白名单里
+	 *
+	 * @param file        MultipartFile
+	 * @param whiteSuffix 文件后缀白名单(没有. )
+	 * @return true 在
+	 * @throws IOException
+	 */
+	public static boolean isValidFileType(MultipartFile file, List<String> whiteSuffix) throws IOException {
+		String fileType = FileTypeUtil.getType(file.getInputStream(),true);
+		if(whiteSuffix==null || whiteSuffix.isEmpty()){
+			return true;
+		}
+		for (String type : whiteSuffix) {
+			if (type.equalsIgnoreCase(fileType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 验证文件格式是否是指定格式
+	 *
+	 * @param file       MultipartFile
+	 * @param fileSuffix 文件后缀(没有. )
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean isValidFileType(MultipartFile file, String fileSuffix) throws IOException {
+		String fileType = FileTypeUtil.getType(file.getInputStream(),true);
+		LOG.info("isValidFileType:{}", fileType);
+		if (fileSuffix.equalsIgnoreCase(fileType)) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jwt.standalone.util;
 
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import com.alibaba.fastjson2.JSON;
@@ -39,28 +38,27 @@ public class ComonTest {
 
     @Test
     public void testEnumEq() {
-        List<PlatformConstant> platformConstants = Arrays.asList(COMMON, WEB_H5);
+        List<String> platformConstants = Arrays.asList(COMMON, WEB_H5);
 
         assertTrue(platformConstants.contains(COMMON));
-        assertFalse(platformConstants.contains(COMMON.name()));
         assertFalse(platformConstants.contains(WEB_ADMIN));
 
-        PlatformConstant[] platform = new PlatformConstant[2];
+        String[] platform = new String[2];
         platform[0] = COMMON;
         platform[1] = WEB_ADMIN;
         assertTrue(platformConstants.contains(platform[0]));
         assertFalse(platformConstants.contains(platform[1]));
-        for (PlatformConstant annotationPlatform : platform) {
-            if (annotationPlatform.contains(platformConstants)) {
-                System.out.println("annotationPlatform :" + annotationPlatform.name());
+        for (String annotationPlatform : platform) {
+            if (platformConstants.contains(annotationPlatform)) {
+                System.out.println("annotationPlatform :" + annotationPlatform);
             }
         }
 
         try {
-            String token = JwtService.generateToken(new SignEntity<>("tan", WEB_H5));
+            String token = JwtService.generateToken(SignEntity.initPlatform2("tan", WEB_H5));
             assertEquals(JwtService.getSubject(token), "tan");
             JwtService.getPlatformConstantExpires(token).forEach(plat -> {
-                System.out.println("jwt annotationPlatform:" + plat.name());
+                System.out.println("jwt annotationPlatform:" + plat);
             });
         } catch (Exception e) {
             e.printStackTrace();

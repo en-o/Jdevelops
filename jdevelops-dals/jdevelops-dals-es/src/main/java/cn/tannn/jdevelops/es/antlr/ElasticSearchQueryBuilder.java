@@ -17,7 +17,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
  */
 public class ElasticSearchQueryBuilder {
 
-    public Query buildQuery(String expression) {
+    /**
+     * 支持的表达式 '==' | '!=' | '>=' | '<=' | '>' | '<' | '+='（like）
+     * @param expression  像写sql一些构建es查询[e.g "title += \"论坚定理想信念（2023年）\" and years == 2021 "]
+     * @return Query
+     */
+    public static Query buildQuery(String expression) {
         ESLexer lexer = new ESLexer(CharStreams.fromString(expression));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ESParser parser = new ESParser(tokens);

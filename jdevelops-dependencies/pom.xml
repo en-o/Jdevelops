@@ -117,6 +117,11 @@
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-apis-jwt</artifactId>
+                <version>${jdevelops.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-apis-knife4j</artifactId>
                 <version>${jdevelops.api.version}</version>
             </dependency>
@@ -138,11 +143,6 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-apis-version</artifactId>
-                <version>${jdevelops.api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-apis-jwt</artifactId>
                 <version>${jdevelops.api.version}</version>
             </dependency>
 
@@ -186,9 +186,33 @@
             </dependency>
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-dals-quartz</artifactId>
+                <version>${jdevelops.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dals-redis</artifactId>
                 <version>${jdevelops.dal.version}</version>
             </dependency>
+
+
+            <!-- delays -->
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-core</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-jdk</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-delays-redis</artifactId>
+                <version>${jdevelops.delay.version}</version>
+            </dependency>
+
 
             <!-- events -->
             <dependency>
@@ -213,25 +237,6 @@
                 <artifactId>jdevelops-files-sdk</artifactId>
                 <version>${jdevelops.file.version}</version>
             </dependency>
-
-
-            <!-- delays -->
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-delays-core</artifactId>
-                <version>${jdevelops.delay.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-delays-jdk</artifactId>
-                <version>${jdevelops.delay.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-delays-redis</artifactId>
-                <version>${jdevelops.delay.version}</version>
-            </dependency>
-
 
             <!-- logs -->
             <dependency>

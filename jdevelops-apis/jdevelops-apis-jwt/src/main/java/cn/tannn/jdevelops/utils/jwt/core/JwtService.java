@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.utils.jwt.core;
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
 import cn.tannn.jdevelops.utils.jwt.exception.TokenCode;
@@ -89,11 +88,7 @@ public class JwtService {
         // 处理 #getPlatformConstantExpires(token) 时 java.lang.String cannot be cast to cn.jdevelops.util.jwt.constant.PlatformConstant 的问题
 
         if(null != sign.getPlatform() && !sign.getPlatform().isEmpty()){
-            List<String> enumStringList = new ArrayList<>();
-            for (PlatformConstant myEnum : sign.getPlatform()) {
-                enumStringList.add(myEnum.name());
-            }
-            claims.setClaim(PLATFORM, enumStringList);
+            claims.setClaim(PLATFORM,  sign.getPlatform());
         }
 
         claims.setClaim(SUBJECT, sign.getSubject());
@@ -318,23 +313,16 @@ public class JwtService {
      * @param token token
      * @return PlatformConstant
      */
-    public static List<PlatformConstant> getPlatformConstantExpires(String token) {
-        // 将字符串列表转换回枚举类型的列表
-        List<PlatformConstant> enumList = new ArrayList<>();
+    public static List<String> getPlatformConstantExpires(String token) {
         try {
             // 解析 JWT
             JwtClaims jwtClaims = parseJwt(token);
             // 从Claims中获取存储的枚举类型的列表的字符串表示
-            List<String> enumStringList = jwtClaims.getClaimValue(PLATFORM,  List.class);
-            if (enumStringList != null) {
-                for (String enumString : enumStringList) {
-                    enumList.add(PlatformConstant.valueOf(enumString));
-                }
-            }
+            return jwtClaims.getClaimValue(PLATFORM,  List.class);
         } catch (Exception e) {
             logger.error("获取PLATFORM失败,所以返回空，将此功能废弃", e);
         }
-        return enumList;
+        return new ArrayList<>();
     }
 
     /**

@@ -186,7 +186,11 @@ public class JpaUtils {
             case BETWEEN:
                 return builder.between(expression, value[0].toString(), value[1].toString());
             case IN:
-                return expression.in(value);
+                if (value[0] instanceof List vals) {
+                    return expression.in(vals.toArray());
+                } else {
+                    return expression.in(value);
+                }
             case NOTIN:
                 return builder.not(expression.in(value));
             default:

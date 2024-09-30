@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jwt.redis.entity.sign;
 
 
-import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
 import cn.tannn.jdevelops.jwt.redis.entity.StorageUserRole;
 import cn.tannn.jdevelops.jwt.redis.entity.StorageUserState;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
@@ -51,7 +50,7 @@ public class RedisSignEntity<T> extends SignEntity<T> {
     public RedisSignEntity(String subject,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
-        super(subject);
+        super(subject, null,null);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
         this.userRole = new StorageUserRole(subject);
@@ -67,10 +66,10 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * @param onlyOnline   以前的是否会被挤下线
      */
     public RedisSignEntity(String subject,
-                           List<PlatformConstant> platform,
+                           List<String> platform,
                            Boolean alwaysOnline,
                            Boolean onlyOnline) {
-        super(subject, platform);
+        super(subject, platform,null);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
         this.userRole = new StorageUserRole(subject);
@@ -87,11 +86,11 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * @param userState 状态
      */
     public RedisSignEntity(String subject,
-                           List<PlatformConstant> platform,
+                           List<String> platform,
                            Boolean alwaysOnline,
                            Boolean onlyOnline,
                            StorageUserState userState) {
-        super(subject, platform);
+        super(subject, platform,null);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
         this.userRole = new StorageUserRole(subject);
@@ -109,12 +108,12 @@ public class RedisSignEntity<T> extends SignEntity<T> {
      * @param userState 状态
      */
     public RedisSignEntity(String subject,
-                           List<PlatformConstant> platform,
+                           List<String> platform,
                            Boolean alwaysOnline,
                            Boolean onlyOnline,
                            StorageUserRole userRole,
                            StorageUserState userState) {
-        super(subject, platform);
+        super(subject, platform,null);
         this.alwaysOnline = alwaysOnline;
         this.onlyOnline = onlyOnline;
         this.userRole = userRole;

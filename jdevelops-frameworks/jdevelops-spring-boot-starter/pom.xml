@@ -15,6 +15,9 @@
     <description>
         spring boot starter
     </description>
+    <properties>
+        <commons-codec.version>1.16.1</commons-codec.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -34,7 +37,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
         <!--jpa-->
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
@@ -85,6 +92,11 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
