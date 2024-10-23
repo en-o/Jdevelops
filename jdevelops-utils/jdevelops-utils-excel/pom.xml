@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-utils</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <artifactId>jdevelops-utils-http</artifactId>
+    <packaging>jar</packaging>
+    <name>jdevelops :: utils :: http</name>
+    <version>${revision}</version>
+    <description>
+        easyexcel 自己常用的一些方法抽取快速复用
+    </description>
+    <properties>
+       <easyexcel.version>4.0.3</easyexcel.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easyexcel.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

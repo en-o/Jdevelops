@@ -61,6 +61,7 @@
         <module>jdevelops-utils-http</module>
         <module>jdevelops-utils-spring</module>
         <module>jdevelops-utils-core</module>
+        <module>jdevelops-utils-excel</module>
     </modules>
 
 
