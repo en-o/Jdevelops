@@ -8,9 +8,9 @@
         <artifactId>jdevelops-utils</artifactId>
         <version>${revision}</version>
     </parent>
-    <artifactId>jdevelops-utils-http</artifactId>
+    <artifactId>jdevelops-utils-excel</artifactId>
     <packaging>jar</packaging>
-    <name>jdevelops :: utils :: http</name>
+    <name>jdevelops :: utils :: excel</name>
     <version>${revision}</version>
     <description>
         easyexcel 自己常用的一些方法抽取快速复用
