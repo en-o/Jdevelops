@@ -28,19 +28,19 @@ public class JwtWebUtilTest {
 
     {
         try {
-            SignEntity<JwtWebUtilBean> signEntity = new SignEntity<>("tan",  new JwtWebUtilBean("tan",10));
-            SignEntity<String> signEntityNull = new SignEntity<>("tan");
-            SignEntity<String> signEntityStr = new SignEntity<>("tan",  "tan");
-            SignEntity<Integer> signEntityInt = new SignEntity<>("tan",  1);
-            SignEntity<String[]> signEntityArrStr = new SignEntity<>("tan",  new String[]{"tan","tan"});
-            SignEntity<Integer[]> signEntityArrInt = new SignEntity<>("tan",  new Integer[]{1,2});
-            SignEntity<List<String>> signEntityListStr = new SignEntity<>("tan",  Arrays.asList("tan","ning"));
-            SignEntity<List<Integer>> signEntityListInt = new SignEntity<>("tan",  Arrays.asList(1,2));
-            SignEntity<List<JwtWebUtilBean>> signEntityListBean = new SignEntity<>("tan",  Arrays.asList(
+            SignEntity<JwtWebUtilBean> signEntity = SignEntity.initMap("tan",  new JwtWebUtilBean("tan",10));
+            SignEntity<String> signEntityNull = SignEntity.init("tan");
+            SignEntity<String> signEntityStr = SignEntity.initMap("tan",  "tan");
+            SignEntity<Integer> signEntityInt = SignEntity.initMap("tan",  1);
+            SignEntity<String[]> signEntityArrStr = SignEntity.initMap("tan",  new String[]{"tan","tan"});
+            SignEntity<Integer[]> signEntityArrInt = SignEntity.initMap("tan",  new Integer[]{1,2});
+            SignEntity<List<String>> signEntityListStr = SignEntity.initMap("tan",  Arrays.asList("tan","ning"));
+            SignEntity<List<Integer>> signEntityListInt = SignEntity.initMap("tan",  Arrays.asList(1,2));
+            SignEntity<List<JwtWebUtilBean>> signEntityListBean = SignEntity.initMap("tan",  Arrays.asList(
                     new JwtWebUtilBean("tan",10),
                     new JwtWebUtilBean("ning",11)
             ));
-            SignEntity<List<JwtWebUtilBeanComplex>> signEntityListBeanComplex = new SignEntity<>("tan",  Arrays.asList(
+            SignEntity<List<JwtWebUtilBeanComplex>> signEntityListBeanComplex = SignEntity.initMap("tan",  Arrays.asList(
                     new JwtWebUtilBeanComplex("tan",10, Arrays.asList("tan","ning"),
                             Arrays.asList(1,2),
                             Arrays.asList(
