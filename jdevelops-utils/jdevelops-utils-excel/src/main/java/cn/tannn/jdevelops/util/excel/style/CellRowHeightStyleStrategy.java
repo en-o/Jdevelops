@@ -3,8 +3,6 @@ package cn.tannn.jdevelops.util.excel.style;
 import com.alibaba.excel.write.style.row.AbstractRowHeightStyleStrategy;
 import org.apache.poi.ss.usermodel.Row;
 
-import java.util.Arrays;
-
 /**
  * 行高设置
  * <p> 设置表头的自动调整行高策略
