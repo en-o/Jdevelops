@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.util.excel;
 
 import cn.tannn.jdevelops.util.excel.handler.CellMenu;
 import cn.tannn.jdevelops.util.excel.model.HeaderMenuData;
+import com.alibaba.excel.annotation.ExcelProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +54,11 @@ public class ExcelService {
 
     /**
      * 表头新增填写须知
+     * <code>
+     *  <p> 这是自定义表头的用法，如果固定类的话用{@link  ExcelProperty#value()} 这个属性好像可以生成下面的效果
+     *  <p> e.g  @ExcelProperty(value = {"remake","姓名"}, index = 0) @ExcelProperty(value = {"remake","性别"}, index = 1)
+     *  <p> 上面的属性一样的固定值好像可以合并
+     * </code>
      *
      * @param remake 表说明   [会放到第一行]
      * @param fields 表字段集合 [会放到第二行]
