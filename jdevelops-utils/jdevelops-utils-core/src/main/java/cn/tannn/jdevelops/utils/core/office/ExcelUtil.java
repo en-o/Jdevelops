@@ -14,11 +14,13 @@ import java.util.regex.Pattern;
 
 /**
  * 表格工具类
+ * <p> 废弃了,新的在 jdevelops-utils-excel#ExcelService
  *
  * @author tnnn
  * @version V1.0
  * @date 2022-11-09 10:03
  */
+@Deprecated
 public class ExcelUtil {
     private static final Logger LOG = LoggerFactory.getLogger(StringCoding.class);
 
@@ -34,21 +36,20 @@ public class ExcelUtil {
         fields.forEach(field -> {
             List<String> header = new ArrayList<>();
             header.add(field);
-            results.add(concatHead(header, remake));
+            results.add(concatHead(remake, header));
         });
         return results;
     }
 
 
-
     /**
      * 填写须知
      *
-     * @param headContent 第二行的表头
-     * @param remake      第一行的备注
+     * @param remake      第一行[表说明]
+     * @param headContent 第二行[表字段]
      * @return concatHead
      */
-    public static List<String> concatHead(List<String> headContent, String remake) {
+    private static List<String> concatHead(String remake, List<String> headContent) {
         headContent.add(0, remake);
         return headContent;
     }
@@ -81,7 +82,7 @@ public class ExcelUtil {
             if (null != str && !str.trim().isEmpty()) {
                 // 第二步截取
                 if (str.length() > 25) {
-                     str.substring(0, 25);
+                    str.substring(0, 25);
                 }
                 // 第三步替换特殊字符
                 String regEx = "[：:\\\\/?*\\[\\]]";
