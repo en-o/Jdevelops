@@ -53,7 +53,7 @@ public class ExcelService {
     }
 
     /**
-     * 表头新增填写须知
+     * 表头新增填写须知 (如果要动态，那就自己处理一下fields，处理完成之后在调用当前方法就行了)
      * <code>
      *  <p> 这是自定义表头的用法，如果固定类的话用{@link  ExcelProperty#value()} 这个属性好像可以生成下面的效果
      *  <p> e.g  @ExcelProperty(value = {"remake","姓名"}, index = 0) @ExcelProperty(value = {"remake","性别"}, index = 1)
