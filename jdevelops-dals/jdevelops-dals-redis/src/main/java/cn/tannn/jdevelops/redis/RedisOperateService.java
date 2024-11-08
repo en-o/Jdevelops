@@ -160,6 +160,7 @@ public class RedisOperateService {
      * 删除缓存
      *
      * @param key 可以传一个值 或多个
+     *            <p> 文件夹的格式为： xx:xx:key </p>
      */
     public void del(String... key) {
         if (key != null && key.length > 0) {

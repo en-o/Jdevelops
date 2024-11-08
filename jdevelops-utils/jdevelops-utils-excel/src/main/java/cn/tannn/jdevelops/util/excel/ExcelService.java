@@ -1,36 +1,70 @@
-package cn.tannn.jdevelops.utils.core.office;
+package cn.tannn.jdevelops.util.excel;
 
-
-import cn.tannn.jdevelops.utils.core.string.StringCoding;
+import cn.tannn.jdevelops.util.excel.handler.CellMenu;
+import cn.tannn.jdevelops.util.excel.model.HeaderMenuData;
+import com.alibaba.excel.annotation.ExcelProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 表格工具类
- * <p> 废弃了,新的在 jdevelops-utils-excel#ExcelService
+ * excel相关功能
  *
- * @author tnnn
+ * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
- * @date 2022-11-09 10:03
+ * @date 2024/10/21 下午3:28
  */
-@Deprecated
-public class ExcelUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(StringCoding.class);
+public class ExcelService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ExcelService.class);
 
     /**
-     * 动态表头
-     *
-     * @param fields 字段集合 （注意数据跟表头要位置一致）
-     * @return 表头
+     * 请假状态
      */
-    public static List<List<String>> getHeaderByBean(List<String> fields, String remake) {
+    public static List<String> LEAVE_STATE = Arrays.asList("请假", "正常");
+    /**
+     * 用户类型
+     */
+    public static List<String> SCHOOL_STATE = Arrays.asList("本校", "校外");
+
+
+    /**
+     * 下拉数据
+     * <code>
+     * <p> EasyExcelFactory.write(responseHeader.getOutputStream(), Bean.class)
+     * <p> .registerWriteHandler(ExcelService.dropDownListLeaveState(6,LEAVE_STATE))
+     * </code>
+     *
+     * @param index     需要下拉数据的表头下标
+     * @param menuItems 列表数据
+     * @return CellMenu
+     */
+    public static CellMenu dropDownList(Integer index, List<String> menuItems) {
+        // 设置下拉
+        HeaderMenuData headerMenuData = new HeaderMenuData(index, menuItems);
+        return new CellMenu(headerMenuData);
+    }
+
+    /**
+     * 表头新增填写须知 (如果要动态，那就自己处理一下fields，处理完成之后在调用当前方法就行了)
+     * <code>
+     *  <p> 这是自定义表头的用法，如果固定类的话用{@link  ExcelProperty#value()} 这个属性好像可以生成下面的效果
+     *  <p> e.g  @ExcelProperty(value = {"remake","姓名"}, index = 0) @ExcelProperty(value = {"remake","性别"}, index = 1)
+     *  <p> 上面的属性一样的固定值好像可以合并
+     * </code>
+     *
+     * @param remake 表说明   [会放到第一行]
+     * @param fields 表字段集合 [会放到第二行]
+     * @return 表说明+表字段 = 表头
+     */
+    public static List<List<String>> writeHead(String remake, List<String> fields) {
         // ArrayList保证顺序
         List<List<String>> results = new ArrayList<>();
         fields.forEach(field -> {
@@ -40,7 +74,6 @@ public class ExcelUtil {
         });
         return results;
     }
-
 
     /**
      * 填写须知

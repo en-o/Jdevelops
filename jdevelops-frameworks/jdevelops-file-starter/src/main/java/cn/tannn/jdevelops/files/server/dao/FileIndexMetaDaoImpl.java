@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.files.server.dao;
 import cn.tannn.jdevelops.files.server.entity.FileIndexMeta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Optional;
  */
 public class FileIndexMetaDaoImpl extends SimpleJpaRepository<FileIndexMeta, Long> implements FileIndexMetaDao {
 
+    private static final Logger log = LoggerFactory.getLogger(FileIndexMetaDaoImpl.class);
     private final EntityManager entityManager;
 
     public FileIndexMetaDaoImpl(EntityManager entityManager) {
@@ -41,6 +44,21 @@ public class FileIndexMetaDaoImpl extends SimpleJpaRepository<FileIndexMeta, Lon
                 .setParameter("urlSuffix", urlSuffix)
                 .getSingleResult();
         return count > 0;
+    }
+
+    @Override
+    public Optional<FileIndexMeta> findByStorageIdAndUrlSuffix(Long storageId, String urlSuffix) {
+        try {
+            String jpql = "SELECT f FROM FileIndexMeta f WHERE f.storageId = :storageId AND f.urlSuffix = :urlSuffix";
+            FileIndexMeta meta = entityManager.createQuery(jpql, FileIndexMeta.class)
+                    .setParameter("storageId", storageId)
+                    .setParameter("urlSuffix", urlSuffix)
+                    .getSingleResult();
+            return Optional.ofNullable(meta);
+        }catch (Exception e){
+            log.error("Error findByStorageIdAndUrlSuffix ", e);
+            return Optional.empty();
+        }
     }
 
     @Override

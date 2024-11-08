@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * 文件操作
@@ -103,9 +104,8 @@ public class StartFileOperateServiceImpl implements StartFileOperateService {
     private FileIndexMeta saveFileIndexMeta(FileIndex fileIndex) throws IOException {
         //  判断重复，配置ID 和 path 重复的情况会清楚不在重复save
         FileIndexMeta fileIndexMeta = FileIndexMeta.toFileIndexMeta(fileIndex);
-        if (!fileIndexMetaDao.existsByStorageIdAndUrlSuffix(fileIndex.getStorageId(), fileIndex.getUrlSuffix())) {
-            fileIndexMeta = fileIndexMetaDao.save(fileIndexMeta);
-        }
-        return fileIndexMeta;
+        Optional<FileIndexMeta> exist
+                = fileIndexMetaDao.findByStorageIdAndUrlSuffix(fileIndex.getStorageId(), fileIndex.getUrlSuffix());
+        return exist.orElseGet(() -> fileIndexMetaDao.save(fileIndexMeta));
     }
 }

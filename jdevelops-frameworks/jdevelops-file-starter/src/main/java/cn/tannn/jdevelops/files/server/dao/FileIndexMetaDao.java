@@ -31,6 +31,16 @@ public  interface FileIndexMetaDao extends JpaBasicsRepository<FileIndexMeta, Lo
     boolean existsByStorageIdAndUrlSuffix(Long storageId, String urlSuffix);
 
     /**
+     * 判断是否存在
+     * @param storageId storageId
+     * @param urlSuffix urlSuffix
+     * @return true 存在
+     */
+    Optional<FileIndexMeta> findByStorageIdAndUrlSuffix(Long storageId, String urlSuffix);
+
+
+
+    /**
      * 查询存储记录
      * @param ids id
      * @return FileStorage

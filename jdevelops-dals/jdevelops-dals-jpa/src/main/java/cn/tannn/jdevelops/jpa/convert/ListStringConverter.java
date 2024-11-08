@@ -23,11 +23,17 @@ public class ListStringConverter implements AttributeConverter<List<String>, Str
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
+        if(attribute == null || attribute.isEmpty()){
+            return null;
+        }
         return JSON.toJSONString(attribute);
     }
 
     @Override
     public List<String> convertToEntityAttribute(String dbData) {
+        if(dbData == null || dbData.isEmpty()){
+            return null;
+        }
         return JSON.parseArray(dbData).toJavaList(String.class);
     }
 }
