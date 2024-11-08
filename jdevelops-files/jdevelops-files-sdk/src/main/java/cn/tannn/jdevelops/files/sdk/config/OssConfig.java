@@ -32,7 +32,7 @@ public class OssConfig {
     private StorageDict master;
 
     /**
-     * 指定上传文件类型 - 全局（接口未指定时使用）
+     * 指定上传文件类型 - 全局有效
      */
     private List<String> filter;
 
