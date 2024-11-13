@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  logging.config= classpath:logback-spring.xml -->
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒；当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态，默认值为false。 -->
+<!-- SPRINGBOOT 3.4 https://blog.csdn.net/u013737132/article/details/143064282。 -->
+<configuration
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd"
+        debug="false" scan="true" scanPeriod="10 second">
+
+    <!-- 配置日志输出目录文件夹以及进行重命名 -->
+    <property name="PROJECT" value="project" />
+    <property name="ROOT" value="logs/${PROJECT}/" />
+    <!-- 配置日志文件大小 -->
+    <property name="FILESIZE" value="50MB" />
+    <!-- 设置日志保留的时间，单位为天 -->
+    <property name="MAXHISTORY" value="7" />
+    <!--日志总大小布恩那个超过3g，达到该限制时，将删除最早的日志文件-->
+    <property name="TOTALSIZECAP" value="3GB" />
+    <!-- 格式化输出日期 -->
+    <timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss.SSS" />
+
+    <!-- 控制台打印 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="utf-8">
+            <!-- 格式化日志输出：
+             %-5level表示级别从左显示5个字符宽度，%d表示日期，%thread表示线程名，%m表示日志消息，%n是换行符
+             %logger{36}表示logger是class的全名，36表示限制最长字符
+            -->
+            <pattern>%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level)  |%green(%logger:%line) |%white(%msg%n)</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ERROR日志输出到文件  -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        </encoder>
+        <!-- 设置当前日志文档输出的级别，只记录ERROR级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 设置日志记录器的滚动策略，按日期和大小记录-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}%d/error.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>${FILESIZE}</maxFileSize>
+            <maxHistory>${MAXHISTORY}</maxHistory>
+            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>
+<!--            <cleanHistoryOnStart>true</cleanHistoryOnStart>-->
+        </rollingPolicy>
+    </appender>
+
+    <!-- WARN日志输出到文件 -->
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}%d/warn.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>${FILESIZE}</maxFileSize>
+            <maxHistory>${MAXHISTORY}</maxHistory>
+            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- INFO日志输出到文件 -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}%d/info.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>${FILESIZE}</maxFileSize>
+            <maxHistory>${MAXHISTORY}</maxHistory>
+            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- DEBUG日志输出到文件 -->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}%d/debug.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>${FILESIZE}</maxFileSize>
+            <maxHistory>${MAXHISTORY}</maxHistory>
+            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- TRACE日志输出到文件 -->
+    <appender name="TRACE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>TRACE</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT}%d/trace.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <maxFileSize>${FILESIZE}</maxFileSize>
+            <maxHistory>${MAXHISTORY}</maxHistory>
+            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+<!--    &lt;!&ndash; API日志输出到文件 &ndash;&gt;-->
+<!--    <appender name="APILOG" class="cn.tannn.jdevelops.logback.rolling.CustomApiLogRollingFileAppenderInput">-->
+<!--        <encoder charset="utf-8">-->
+<!--            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n</pattern>-->
+<!--        </encoder>-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>INFO</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${ROOT}%d/apilog.%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>-->
+<!--            <maxFileSize>${FILESIZE}</maxFileSize>-->
+<!--            <maxHistory>${MAXHISTORY}</maxHistory>-->
+<!--            <totalSizeCap>${TOTALSIZECAP}</totalSizeCap>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
+
+    <!-- 输出sql相关日志，不需要可删除；additivity：是否向上级loger传递打印信息，默认是true-->
+    <logger name="org.apache.ibatis" level="INFO" additivity="false" />
+    <logger name="org.mybatis.spring" level="INFO" additivity="false" />
+    <logger name="com.github.miemiedev.mybatis.paginator" level="INFO" additivity="false" />
+    <logger name="io.lettuce.core.protocol" level="INFO" additivity="false" />
+    <!-- nacos改变日志级别 -->
+    <logger name="com.alibaba.nacos" level="INFO"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.springframework.web.servlet.mvc" level="INFO"/>
+    <logger name="org.springframework.jdbc" level="INFO"/>
+    <logger name="org.springframework.orm.jpa" level="INFO"/>
+    <logger name="org.springframework.beans" level="INFO"/>
+
+
+    <springProfile name="dev">
+        <root level="debug">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+    <!--    非dev环境下-->
+    <springProfile name="!dev">
+        <!-- logger设置输出到文件，输出级别为info -->
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="DEBUG" />
+            <appender-ref ref="ERROR" />
+            <appender-ref ref="WARN" />
+            <appender-ref ref="INFO" />
+            <appender-ref ref="TRACE" />
+<!--            <appender-ref ref="APILOG" />-->
+        </root>
+    </springProfile>
+
+</configuration>
