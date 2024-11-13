@@ -1,11 +1,21 @@
 package cn.tannn.jdevelops.es.antlr;
 
+import cn.tannn.jdevelops.es.core.ElasticService;
+import cn.tannn.jdevelops.es.util.EsBasicsUtil;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ElasticSearchQueryBuilderTest {
+//
+//    @Autowired
+//    private ElasticService elasticService;
 
     @Test
     void buildQuery() {
@@ -28,7 +38,7 @@ class ElasticSearchQueryBuilderTest {
 //        request.index("zzz_news");
 //        request.query(query);
 //        EsBasicsUtil.setIncludesFields(request,"title,years");
-//        List<Map> maps = ElasticService.searchList(request.build(), Map.class);
+//        List<Map> maps = elasticService.searchList(request.build(), Map.class);
 //        maps.forEach(System.out::println);
     }
 }
