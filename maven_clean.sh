@@ -50,6 +50,9 @@ mvn clean  | tee -a logs.log
 cd ../jdevelops-authentications
 mvn clean  | tee -a authentications.log
 
+cd ../jdevelops-monitor
+mvn clean  | tee -a authentications.log
+
 
 cd ../jdevelops-dependencies
 mvn clean  | tee -a dependencies.log
