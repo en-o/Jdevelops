@@ -24,18 +24,18 @@ public class JdbcTemplateUtil {
      * 返回值为 String, Integer 基本类型时使用的方法
      *
      * @param jdbcTemplate     jdbcTemplate
-     * @param resultRawType    返回的类型 PS: List<String> 中的 List
-     * @param resolver         sql
+     * @param resultRawType    返回的类型 PS: List<String> 中的 List [通过这个判断是返回list还是sting还是map还是PageResult]
+     * @param resolverSql      他aop获取到的完整sql
      * @param resultActualType 返回的具体类型 PS: List<String> 中的 String
      * @param args             参数
      * @return Object 数据
      */
     public static Object getJdbcTemplateSql(JdbcTemplate jdbcTemplate,
                                             String resultRawType,
-                                            Object resolver,
+                                            Object resolverSql,
                                             String resultActualType,
                                             Object[] args) throws ClassNotFoundException {
-        String sql = resolver.toString();
+        String sql = resolverSql.toString();
         LOG.debug("jdbctemplate ========> sql {}", sql);
         if (JdbcUtils.isBasicType(resultRawType)) {
             return getJdbcTemplateSqlContextBaseType(jdbcTemplate,
