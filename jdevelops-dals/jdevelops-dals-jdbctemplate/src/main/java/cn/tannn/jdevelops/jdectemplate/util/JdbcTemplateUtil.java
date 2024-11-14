@@ -37,7 +37,7 @@ public class JdbcTemplateUtil {
                                             Object[] args) throws ClassNotFoundException {
         String sql = resolver.toString();
         LOG.debug("jdbctemplate ========> sql {}", sql);
-        if (isBasicType(resultRawType)) {
+        if (JdbcUtils.isBasicType(resultRawType)) {
             return getJdbcTemplateSqlContextBaseType(jdbcTemplate,
                     resultRawType, sql, resultActualType, args);
         }
@@ -98,10 +98,10 @@ public class JdbcTemplateUtil {
     /**
      * 分页
      *
-     * @param jdbcTemplate jdbcTemplate
-     * @param sql          sql
+     * @param jdbcTemplate     jdbcTemplate
+     * @param sql              sql
      * @param resultActualType 返回的具体类型
-     * @param args         参数
+     * @param args             参数
      * @return PageResult
      */
     private static PageResult<?> paging(JdbcTemplate jdbcTemplate
@@ -120,15 +120,15 @@ public class JdbcTemplateUtil {
         sqlb.append(" OFFSET ");
         sqlb.append(paging.getPageIndex() * paging.getPageSize());
         List<?> query;
-        if (isBasicType(resultActualType)) {
-            query = jdbcTemplate.queryForList(sqlb.toString(),  Class.forName(resultActualType));
+        if (JdbcUtils.isBasicType(resultActualType)) {
+            query = jdbcTemplate.queryForList(sqlb.toString(), Class.forName(resultActualType));
         } else {
             query = jdbcTemplate.query(sqlb.toString(), rowMapper(resultActualType));
         }
 
         return PageResult.page(paging.realPageIndex()
                 , paging.getPageSize()
-                , amount(jdbcTemplate, JdbcUtils.tableName(sql))
+                , amountSql(jdbcTemplate, sql)
                 , query);
     }
 
@@ -140,6 +140,21 @@ public class JdbcTemplateUtil {
         }
     }
 
+    /**
+     * 总数
+     *
+     * @param sql 查询的sql (这个sql是没有占位符的完整sql)
+     * @return 总数
+     */
+    private static Long amountSql(JdbcTemplate jdbcTemplate, String sql) {
+        try {
+            String countSql = "SELECT COUNT(*) " + JdbcUtils.extractFromClause(sql);
+            return jdbcTemplate.queryForObject(countSql, long.class);
+        } catch (Exception e) {
+            LOG.error("Error executing count {} ", sql, e);
+        }
+        return 0L;
+    }
 
     /**
      * 总数
@@ -157,14 +172,5 @@ public class JdbcTemplateUtil {
         return 0L;
     }
 
-    /**
-     * 判断是不是基础类型 （String, Integer ）
-     * @param resultType 类型
-     * @return boolean
-     */
-    private static boolean isBasicType(String resultType) {
-        return resultType.equals(String.class.getName())
-               || resultType.equals(Integer.class.getName());
-    }
 
 }
