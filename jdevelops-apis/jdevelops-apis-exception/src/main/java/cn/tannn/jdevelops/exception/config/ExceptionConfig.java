@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.exception.config;
 
 import cn.tannn.jdevelops.exception.enums.ValidationMessageFormat;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.MediaType;
 
 import java.util.Objects;
 
@@ -32,9 +33,10 @@ public class ExceptionConfig {
 
     /**
      * 设置 content-type
+     * @see MediaType
      * <p>默认 application/json;charset=UTF-8</p>
      */
-    private String httpServletResponseHeaderContentType;
+    private MediaType httpServletResponseHeaderContentType;
 
 
     /**
@@ -50,7 +52,7 @@ public class ExceptionConfig {
 
     public ExceptionConfig(Boolean logInput
             , Boolean httpServletResponseStatus
-            , String httpServletResponseHeaderContentType
+            , MediaType httpServletResponseHeaderContentType
             , ValidationMessageFormat validationMessage) {
         this.logInput = logInput;
         this.httpServletResponseStatus = httpServletResponseStatus;
@@ -87,11 +89,11 @@ public class ExceptionConfig {
         this.httpServletResponseStatus = httpServletResponseStatus;
     }
 
-    public String getHttpServletResponseHeaderContentType() {
-        return Objects.requireNonNullElse(httpServletResponseHeaderContentType,  "application/json;charset=UTF-8");
+    public MediaType getHttpServletResponseHeaderContentType() {
+        return Objects.requireNonNullElse(httpServletResponseHeaderContentType,  MediaType.APPLICATION_JSON);
     }
 
-    public void setHttpServletResponseHeaderContentType(String httpServletResponseHeaderContentType) {
+    public void setHttpServletResponseHeaderContentType(MediaType httpServletResponseHeaderContentType) {
         this.httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
     }
 

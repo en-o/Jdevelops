@@ -11,7 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -21,7 +26,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,15 +41,13 @@ import static cn.tannn.jdevelops.result.constant.ResultCode.SYS_ERROR;
  * @author tn
  */
 @RestControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler implements ResponseBodyAdvice<Object> {
 
     private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
     private static final String JSON_ERROR_INFO = "JSON parse error:";
     private static final String SEMICOLON = ";";
     private static final char BLANK = ' ';
     private static final int CUT_LENGTH = 20;
-
-    private static final String CONTENT_TYPE_HEADER_NAME = "content-type";
 
 
     @Resource
@@ -196,7 +201,7 @@ public class ControllerExceptionHandler {
     }
 
     private void responseConfigCustom(HttpServletResponse response, BusinessException e, int code) {
-        heander(response, e);
+        logInput(e);
         // 以自己设置的 http servlet response status 为主
         if (Boolean.TRUE.equals(e.getHttpServletResponseStatus())) {
             response.setStatus(code);
@@ -207,7 +212,7 @@ public class ControllerExceptionHandler {
 
 
     private void responseConfig(HttpServletResponse response, Exception e, int code) {
-        heander(response, e);
+        logInput(e);
         responseStatus(response, code);
     }
 
@@ -225,17 +230,48 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * 设置 response header
+     * 设置 log.error
      *
-     * @param response HttpServletResponse
-     * @param e        Exception
+     * @param e Exception
      */
-    private void heander(HttpServletResponse response, Exception e) {
+    private void logInput(Exception e) {
         if (Boolean.TRUE.equals(exceptionConfig.getLogInput())) {
             log.error(e.getMessage(), e);
         }
-        response.setHeader(CONTENT_TYPE_HEADER_NAME, exceptionConfig.getHttpServletResponseHeaderContentType());
     }
 
 
+    /**
+     * 控制beforeBodyWrite方法的执行范围
+     *
+     * @param returnType    当前请求的方法参数类型
+     * @param converterType 消息转换器的类型
+     * @return 决定是否对特定的请求应用beforeBodyWrite方法
+     */
+    @Override
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        Method method = returnType.getMethod();
+        // returnType = ControllerExceptionHandler 触发 beforeBodyWrite
+        return method != null && this.getClass().isAssignableFrom(method.getClass());
+    }
+
+    /**
+     * 响应体写入HTTP响应之前进行自定义处理
+     *
+     * @param body                  the body to be written
+     * @param returnType            the return type of the controller method
+     * @param selectedContentType   the content type selected through content negotiation
+     * @param selectedConverterType the converter type selected to write to the response
+     * @param request               the current request
+     * @param response              the current response
+     */
+    @Override
+    public Object beforeBodyWrite(Object body
+            , MethodParameter returnType
+            , MediaType selectedContentType
+            , Class<? extends HttpMessageConverter<?>> selectedConverterType
+            , ServerHttpRequest request, ServerHttpResponse response) {
+        response.getHeaders().setContentType(exceptionConfig.getHttpServletResponseHeaderContentType());
+        return body;
+    }
 }
