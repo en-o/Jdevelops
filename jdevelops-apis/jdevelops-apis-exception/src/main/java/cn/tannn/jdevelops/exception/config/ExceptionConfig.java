@@ -22,7 +22,7 @@ public class ExceptionConfig {
 
     /**
      * 是否设置 HttpServletResponse.status且跟自定义的code同步
-     *  <p>默认 false 不设置</p>
+     * <p>默认 false 不设置</p>
      */
     private Boolean httpServletResponseStatus;
 
@@ -33,9 +33,9 @@ public class ExceptionConfig {
     private String httpServletResponseHeaderContentType;
 
 
-
     /**
      * 处理validation异常提示格式 默认{@link ValidationMessageFormat#FIELD_MESSAGE}
+     *
      * @see ValidationMessageFormat
      */
     private ValidationMessageFormat validationMessage;
@@ -44,23 +44,28 @@ public class ExceptionConfig {
     public ExceptionConfig() {
     }
 
-    public ExceptionConfig(Boolean logInput, Boolean httpServletResponseStatus, String httpServletResponseHeaderContentType) {
+    public ExceptionConfig(Boolean logInput
+            , Boolean httpServletResponseStatus
+            , String httpServletResponseHeaderContentType
+            , ValidationMessageFormat validationMessage) {
         this.logInput = logInput;
         this.httpServletResponseStatus = httpServletResponseStatus;
         this.httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
+        this.validationMessage = validationMessage;
     }
 
     @Override
     public String toString() {
         return "ExceptionConfig{" +
                 "logInput=" + logInput +
-                ", HttpServletResponseStatus=" + httpServletResponseStatus +
-                ", HttpServletResponseHeaderContentType='" + httpServletResponseHeaderContentType + '\'' +
+                ", httpServletResponseStatus=" + httpServletResponseStatus +
+                ", httpServletResponseHeaderContentType='" + httpServletResponseHeaderContentType + '\'' +
+                ", validationMessage=" + validationMessage +
                 '}';
     }
 
     public Boolean getLogInput() {
-        if(null==logInput){
+        if (null == logInput) {
             return true;
         }
         return logInput;
@@ -87,7 +92,7 @@ public class ExceptionConfig {
     }
 
     public ValidationMessageFormat getValidationMessage() {
-        return validationMessage == null?ValidationMessageFormat.FIELD_MESSAGE:validationMessage;
+        return validationMessage == null ? ValidationMessageFormat.FIELD_MESSAGE : validationMessage;
     }
 
     public void setValidationMessage(ValidationMessageFormat validationMessage) {
