@@ -44,7 +44,6 @@ public class ControllerExceptionHandler {
 
     private static final String CONTENT_TYPE_HEADER_NAME = "content-type";
 
-    private static final String APPLICATION_JSON_UTF8_VALUE = "application/json;charset=UTF-8";
 
     @Resource
     private ExceptionConfig exceptionConfig;

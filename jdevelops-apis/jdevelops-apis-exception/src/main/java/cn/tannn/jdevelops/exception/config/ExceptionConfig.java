@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Objects;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 
 /**
@@ -16,6 +15,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  */
 @ConfigurationProperties(prefix = "jdevelops.exception")
 public class ExceptionConfig {
+
 
     /**
      * 日志打印 (默认级别为ERROR)
@@ -88,7 +88,7 @@ public class ExceptionConfig {
     }
 
     public String getHttpServletResponseHeaderContentType() {
-        return Objects.requireNonNullElse(httpServletResponseHeaderContentType, APPLICATION_JSON_UTF8_VALUE);
+        return Objects.requireNonNullElse(httpServletResponseHeaderContentType,  "application/json;charset=UTF-8");
     }
 
     public void setHttpServletResponseHeaderContentType(String httpServletResponseHeaderContentType) {
