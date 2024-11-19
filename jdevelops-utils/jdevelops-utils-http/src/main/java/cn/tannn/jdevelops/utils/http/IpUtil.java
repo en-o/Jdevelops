@@ -81,9 +81,14 @@ public class IpUtil {
      */
     public static String getPoxyIpEnhance(HttpServletRequest request) {
         for (String header : IP_HEADER_CANDIDATES) {
-            String ip = request.getHeader(header);
-            if (ip != null && !ip.isEmpty() && !UNKNOWN.equalsIgnoreCase(ip)) {
-                return extractFirstIp(ip);
+            try {
+                String ip = request.getHeader(header);
+                if (ip != null && !ip.isEmpty() && !UNKNOWN.equalsIgnoreCase(ip)) {
+                    return extractFirstIp(ip);
+                }
+            } catch (Exception e) {
+                LOG.error("ip获取失败", e);
+                return "127.0.0.1";
             }
         }
         // 如果无法通过 header 获取，则使用 getRemoteAddr
@@ -95,6 +100,7 @@ public class IpUtil {
 
     /**
      * 截取IP
+     *
      * @param ip 逗号隔开的ip
      * @return 第一位IP
      */
