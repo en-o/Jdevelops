@@ -14,21 +14,30 @@ public class ExceptionConfig {
 
     /**
      * 日志打印 (默认级别为ERROR)
-     * 默认true 打印
+     * <p>默认true 打印</p>
      */
     private Boolean logInput;
 
 
     /**
      * 是否设置 HttpServletResponse.status且跟自定义的code同步
-     *  默认 false 不设置
+     *  <p>默认 false 不设置</p>
      */
     private Boolean httpServletResponseStatus;
 
     /**
-     * 设置 content-type 默认 application/json;charset=UTF-8
+     * 设置 content-type
+     * <p>默认 application/json;charset=UTF-8</p>
      */
     private String httpServletResponseHeaderContentType;
+
+
+    /**
+     * 处理validation异常提示格式
+     * <p>true:字段+message [默认] </p>
+     * <p>false:message </p>
+     */
+    private Boolean validationMessage;
 
 
     public ExceptionConfig() {
@@ -61,10 +70,7 @@ public class ExceptionConfig {
     }
 
     public Boolean getHttpServletResponseStatus() {
-        if(null== httpServletResponseStatus){
-            return false;
-        }
-        return httpServletResponseStatus;
+        return httpServletResponseStatus != null && httpServletResponseStatus;
     }
 
     public void setHttpServletResponseStatus(Boolean httpServletResponseStatus) {
@@ -77,5 +83,13 @@ public class ExceptionConfig {
 
     public void setHttpServletResponseHeaderContentType(String httpServletResponseHeaderContentType) {
         this.httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
+    }
+
+    public Boolean getValidationMessage() {
+        return validationMessage == null || validationMessage;
+    }
+
+    public void setValidationMessage(Boolean validationMessage) {
+        this.validationMessage = validationMessage;
     }
 }

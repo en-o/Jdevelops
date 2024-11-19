@@ -39,7 +39,7 @@ public class ControllerExceptionHandler {
     private static final String JSON_ERROR_INFO = "JSON parse error:";
     private static final String SEMICOLON = ";";
     private static final char BLANK = ' ';
-    private static final int CUT_LENGTH = 100;
+    private static final int CUT_LENGTH = 20;
 
     private static final String CONTENT_TYPE_HEADER_NAME = "content-type";
 
@@ -50,7 +50,7 @@ public class ControllerExceptionHandler {
 
 
     /**
-     * 处理自定义异常
+     * 处理自定义异常 - BusinessException
      *
      * @param e 异常
      * @return 返回异常信息
@@ -63,7 +63,7 @@ public class ControllerExceptionHandler {
 
 
     /**
-     * 处理自定义异常
+     * 处理自定义异常 - ServiceException
      *
      * @param e 异常
      * @return 返回异常信息
@@ -73,6 +73,7 @@ public class ControllerExceptionHandler {
         responseConfig(response, e, e.getCode());
         return ExceptionResultWrap.result(e.getCode(), e.getMessage());
     }
+
     /**
      * 404 拦截必须在配置文件加这个
      * <pre>
@@ -85,10 +86,13 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object exceptionHandler(NoHandlerFoundException e, HttpServletResponse response) {
-        responseConfig(response, e,403);
+        responseConfig(response, e, 403);
         return ExceptionResultWrap.result(403, "路径不存在，请检查路径是否正确");
     }
 
+    /**
+     * 空指针处理
+     */
     @ExceptionHandler(NullPointerException.class)
     public Object handleNullPointerException(NullPointerException e, HttpServletResponse response) {
         responseConfig(response, e, SYS_ERROR.getCode());
@@ -96,13 +100,18 @@ public class ControllerExceptionHandler {
         return ExceptionResultWrap.result(SYS_ERROR.getCode(), "暂时无法获取数据");
     }
 
+    /**
+     * 请求方式处理
+     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletResponse response) {
         responseConfig(response, e, SYS_ERROR.getCode());
-        return ExceptionResultWrap.result(SYS_ERROR.getCode(), "请求方式不对 - get post ");
+        return ExceptionResultWrap.result(SYS_ERROR.getCode(), "请求方式不对 - 请检查接口 method 是 get/post/put/delete ");
     }
 
-
+    /**
+     * 数据异常处理
+     */
     @ExceptionHandler
     public Object exceptionHandler(HttpMessageNotReadableException e, HttpServletResponse response) {
         responseConfig(response, e, SYS_ERROR.getCode());
@@ -111,12 +120,14 @@ public class ControllerExceptionHandler {
                 Objects.nonNull(jsonErrorMsg =
                         dealWithJsonExceptionError(e.getLocalizedMessage()))) {
             return ExceptionResultWrap.result(ParamCode.JSON_ERROR.getCode(), "请求参数格式错误,请检查。错误消息：" + jsonErrorMsg);
-
         }
+        log.warn("消息不可读：", e);
         return ExceptionResultWrap.result(ParamCode.MESSAGE_NO_READING.getCode(), "消息不可读：" + StringUtils.substring(e.getMessage(), 0, CUT_LENGTH));
     }
 
-
+    /**
+     * validation错误处理
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object exception(MethodArgumentNotValidException e, HttpServletResponse response) {
         responseConfig(response, e, SYS_ERROR.getCode());
@@ -125,17 +136,17 @@ public class ControllerExceptionHandler {
         StringBuilder sb = new StringBuilder();
         allErrors.forEach(objectError -> {
             FieldError fieldError = (FieldError) objectError;
-            sb.append(";").append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
+//            log.warn("validation feild: {} , message: {}", fieldError.getField(), fieldError.getDefaultMessage());
+            if (exceptionConfig.getValidationMessage()) {
+                sb.append(";").append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
+            } else {
+                sb.append(";").append(fieldError.getDefaultMessage());
+            }
         });
-        String message = sb.length() > 0 ? sb.substring(1) : sb.toString();
+        String message = !sb.isEmpty() ? sb.substring(1) : sb.toString();
         return ExceptionResultWrap.result(ParamCode.CHECK_ERROR.getCode(), message);
     }
 
-    @ExceptionHandler(Exception.class)
-    public Object handleException(Exception e, HttpServletResponse response) {
-        responseConfig(response, e, SYS_ERROR.getCode());
-        return ExceptionResultWrap.result(e);
-    }
 
     @ExceptionHandler(RuntimeException.class)
     public Object handleRuntimeException(RuntimeException e, HttpServletResponse response) {
@@ -156,6 +167,11 @@ public class ControllerExceptionHandler {
         return ExceptionResultWrap.result(SYS_ERROR.getCode(), resqStr.toString());
     }
 
+    @ExceptionHandler(Exception.class)
+    public Object handleException(Exception e, HttpServletResponse response) {
+        responseConfig(response, e, SYS_ERROR.getCode());
+        return ExceptionResultWrap.result(e);
+    }
 
     /**
      * 针对性处理JsonException,友好返回异常信息
@@ -181,7 +197,7 @@ public class ControllerExceptionHandler {
         // 以自己设置的 http servlet response status 为主
         if (Boolean.TRUE.equals(e.getHttpServletResponseStatus())) {
             response.setStatus(code);
-        }else {
+        } else {
             responseStatus(response, code);
         }
     }
@@ -195,8 +211,9 @@ public class ControllerExceptionHandler {
 
     /**
      * 设置 response status
+     *
      * @param response HttpServletResponse
-     * @param code code
+     * @param code     code
      */
     private void responseStatus(HttpServletResponse response, int code) {
         if (Boolean.TRUE.equals(exceptionConfig.getHttpServletResponseStatus())) {
@@ -206,8 +223,9 @@ public class ControllerExceptionHandler {
 
     /**
      * 设置 response header
+     *
      * @param response HttpServletResponse
-     * @param e Exception
+     * @param e        Exception
      */
     private void heander(HttpServletResponse response, Exception e) {
         if (Boolean.TRUE.equals(exceptionConfig.getLogInput())) {
