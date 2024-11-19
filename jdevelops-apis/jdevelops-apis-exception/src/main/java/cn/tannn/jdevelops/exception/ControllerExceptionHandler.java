@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.exception;
 
 import cn.tannn.jdevelops.exception.built.BusinessException;
 import cn.tannn.jdevelops.exception.config.ExceptionConfig;
+import cn.tannn.jdevelops.exception.enums.ValidationMessageFormat;
 import cn.tannn.jdevelops.result.constant.ParamCode;
 import cn.tannn.jdevelops.result.exception.ExceptionResultWrap;
 import cn.tannn.jdevelops.result.exception.ServiceException;
@@ -134,15 +135,18 @@ public class ControllerExceptionHandler {
         BindingResult bindingResult = e.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         StringBuilder sb = new StringBuilder();
-        allErrors.forEach(objectError -> {
+        for (ObjectError objectError : allErrors) {
             FieldError fieldError = (FieldError) objectError;
-//            log.warn("validation feild: {} , message: {}", fieldError.getField(), fieldError.getDefaultMessage());
-            if (exceptionConfig.getValidationMessage()) {
+            ValidationMessageFormat validationMessage = exceptionConfig.getValidationMessage();
+            if (Objects.requireNonNull(validationMessage) == ValidationMessageFormat.FIELD_MESSAGE) {
                 sb.append(";").append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
-            } else {
+            } else if (validationMessage == ValidationMessageFormat.MESSAGE) {
                 sb.append(";").append(fieldError.getDefaultMessage());
+            } else if (validationMessage == ValidationMessageFormat.ONLY_ONE) {
+                return ExceptionResultWrap.result(ParamCode.CHECK_ERROR.getCode(), fieldError.getDefaultMessage());
             }
-        });
+        }
+
         String message = !sb.isEmpty() ? sb.substring(1) : sb.toString();
         return ExceptionResultWrap.result(ParamCode.CHECK_ERROR.getCode(), message);
     }

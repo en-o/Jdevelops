@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.exception.config;
 
+import cn.tannn.jdevelops.exception.enums.ValidationMessageFormat;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 
@@ -32,12 +33,12 @@ public class ExceptionConfig {
     private String httpServletResponseHeaderContentType;
 
 
+
     /**
-     * 处理validation异常提示格式
-     * <p>true:字段+message [默认] </p>
-     * <p>false:message </p>
+     * 处理validation异常提示格式 默认{@link ValidationMessageFormat#FIELD_MESSAGE}
+     * @see ValidationMessageFormat
      */
-    private Boolean validationMessage;
+    private ValidationMessageFormat validationMessage;
 
 
     public ExceptionConfig() {
@@ -85,11 +86,11 @@ public class ExceptionConfig {
         this.httpServletResponseHeaderContentType = httpServletResponseHeaderContentType;
     }
 
-    public Boolean getValidationMessage() {
-        return validationMessage == null || validationMessage;
+    public ValidationMessageFormat getValidationMessage() {
+        return validationMessage == null?ValidationMessageFormat.FIELD_MESSAGE:validationMessage;
     }
 
-    public void setValidationMessage(Boolean validationMessage) {
+    public void setValidationMessage(ValidationMessageFormat validationMessage) {
         this.validationMessage = validationMessage;
     }
 }
