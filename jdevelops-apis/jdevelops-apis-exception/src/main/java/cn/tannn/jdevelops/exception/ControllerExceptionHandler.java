@@ -250,9 +250,8 @@ public class ControllerExceptionHandler implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        Method method = returnType.getMethod();
-        // returnType = ControllerExceptionHandler 触发 beforeBodyWrite
-        return method != null && this.getClass().isAssignableFrom(method.getClass());
+        // returnType = ControllerExceptionHandler 触发
+        return this.getClass().isAssignableFrom(returnType.getContainingClass());
     }
 
     /**
