@@ -235,12 +235,7 @@ public class ControllerExceptionHandler {
         if (Boolean.TRUE.equals(exceptionConfig.getLogInput())) {
             log.error(e.getMessage(), e);
         }
-
-        if (null == exceptionConfig.getHttpServletResponseHeaderContentType()) {
-            response.setHeader(CONTENT_TYPE_HEADER_NAME, APPLICATION_JSON_UTF8_VALUE);
-        } else {
-            response.setHeader(CONTENT_TYPE_HEADER_NAME, exceptionConfig.getHttpServletResponseHeaderContentType());
-        }
+        response.setHeader(CONTENT_TYPE_HEADER_NAME, exceptionConfig.getHttpServletResponseHeaderContentType());
     }
 
 

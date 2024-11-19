@@ -3,6 +3,10 @@ package cn.tannn.jdevelops.exception.config;
 import cn.tannn.jdevelops.exception.enums.ValidationMessageFormat;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Objects;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+
 
 /**
  * 异常配置
@@ -84,7 +88,7 @@ public class ExceptionConfig {
     }
 
     public String getHttpServletResponseHeaderContentType() {
-        return httpServletResponseHeaderContentType;
+        return Objects.requireNonNullElse(httpServletResponseHeaderContentType, APPLICATION_JSON_UTF8_VALUE);
     }
 
     public void setHttpServletResponseHeaderContentType(String httpServletResponseHeaderContentType) {
