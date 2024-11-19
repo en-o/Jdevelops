@@ -8,6 +8,7 @@
         <artifactId>jdevelops-frameworks</artifactId>
         <version>${revision}</version>
     </parent>
+
     <artifactId>jdevelops-cas-starter</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: cas :: starter</name>
