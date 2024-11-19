@@ -61,6 +61,7 @@
         <module>jdevelops-file-starter</module>
         <module>jdevelops-quartz-quick-starter</module>
         <module>jdevelops-pf4j-spring-starter</module>
+        <module>jdevelops-cas-starter</module>
     </modules>
 
 
