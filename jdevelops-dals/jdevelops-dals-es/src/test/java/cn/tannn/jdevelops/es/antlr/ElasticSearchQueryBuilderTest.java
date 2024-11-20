@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ElasticSearchQueryBuilderTest {
+//
+//    @Autowired
+//    private ElasticService elasticService;
 
     @Test
     void buildQuery() {
@@ -28,7 +31,7 @@ class ElasticSearchQueryBuilderTest {
 //        request.index("zzz_news");
 //        request.query(query);
 //        EsBasicsUtil.setIncludesFields(request,"title,years");
-//        List<Map> maps = ElasticService.searchList(request.build(), Map.class);
+//        List<Map> maps = elasticService.searchList(request.build(), Map.class);
 //        maps.forEach(System.out::println);
     }
 }

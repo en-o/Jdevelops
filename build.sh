@@ -52,6 +52,8 @@ mvn clean package install -Dmaven.test.skip=true | tee -a files.log
 cd ../jdevelops-authentications
 mvn clean package install -Dmaven.test.skip=true | tee -a authentications.log
 
+cd ../jdevelops-monitor
+mvn clean package install -Dmaven.test.skip=true | tee -a frameworks.log
 
 cd ../jdevelops-dependencies
 mvn clean package install -Dmaven.test.skip=true | tee -a dependencies.log
