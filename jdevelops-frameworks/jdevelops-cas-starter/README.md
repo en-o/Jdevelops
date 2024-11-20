@@ -29,8 +29,8 @@ public class LoginController {
     @Operation(summary = "第一步：前端统一认证登录按钮出发的请求接口", description = "统一认证")
     @ApiOperationSupport(order = 1)
     public void loginCasWeb(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        CasConfig casConfig = casService.getCasConfig();
-        String loginUrl = casConfig.fullLoginUrl() + "?service=" + casConfig.jRedirect();
+        // 可以自定义 ，参考这个方法写就行了
+        String loginUrl = casService.redirectCasAddress();
         response.sendRedirect(loginUrl);
     }
 
@@ -80,18 +80,11 @@ public class LoginController {
     @GetMapping("/logout")
     public ResultVO<String> logout(HttpServletResponse response, HttpServletRequest request) throws IOException {
         redisLoginService.loginOut(request);
-        // 清除后端会话
-        request.getSession().invalidate();
-        casService.loginOut(request, response);
-        //        // 重定向到 CAS 的登出接口
-        CasConfig casConfig = casService.getCasConfig();
-        // 本地调式用的，前端判断data是否为空，空就不 location.href
-        if (Boolean.TRUE.equals(casConfig.getDescription())) {
-            return ResultVO.success("退出成功",
-                    casConfig.fullLogoutUrl() + "?service=" + casConfig.logoutRedirect());
-        } else {
-            return ResultVO.successMessage("退出成功");
-        }
+        // 可以自定义 ，参考这个方法写就行了
+        redisLoginService.loginOut(request);
+        String loginOut = casService.loginOut(request, response);
+        // 前端根据 data值是否为空进行判断是否跳转
+        return ResultVO.success("退出成功",loginOut);
     }
 }
 ```
