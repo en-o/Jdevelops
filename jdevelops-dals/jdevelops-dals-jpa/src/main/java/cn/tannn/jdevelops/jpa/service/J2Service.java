@@ -19,10 +19,12 @@ import jakarta.persistence.Id;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * jpa公共service
@@ -282,4 +284,18 @@ public interface J2Service<B> {
      * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
     <T> Page<B>  findPage(T req,  Pagings pageable, Sorteds sort);
+
+
+
+    /**
+     * Returns entities matching the given {@link Specification} applying the {@code queryFunction} that defines the query
+     * and its result type.
+     *
+     * @param spec must not be null.
+     * @param queryFunction the query function defining projection, sorting, and the result type
+     *                      <p>  q -> q.as(UserProjection.class).all() </p>
+     * @return all entities matching the given Example.
+     * @since 3.0
+     */
+    <S extends B, R> R findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
 }

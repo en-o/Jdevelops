@@ -17,11 +17,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 /**
@@ -244,5 +246,10 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
             }
             return commonDao.findAll(selectRegionBean, pageable.pageable(sort));
         }
+    }
+
+    @Override
+    public <S extends B, R> R findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return commonDao.findBy(spec, queryFunction);
     }
 }
