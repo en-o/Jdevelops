@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.result.request.Paging;
 import cn.tannn.jdevelops.result.response.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -61,7 +62,11 @@ public class JdbcTemplateUtil {
         if (rvt.isAssignableFrom(List.class)) {
             return jdbcTemplate.queryForList(sql, query);
         } else {
-            return jdbcTemplate.queryForObject(sql, query);
+            try {
+                return jdbcTemplate.queryForObject(sql, query);
+            }catch (EmptyResultDataAccessException e){
+                return null;
+            }
         }
     }
 
@@ -93,7 +98,11 @@ public class JdbcTemplateUtil {
             }
             return paging(jdbcTemplate, sql, resultActualType, paging);
         } else {
-            return jdbcTemplate.queryForObject(sql, JdbcUtils.rowMapper(resultActualType));
+            try {
+                return jdbcTemplate.queryForObject(sql, JdbcUtils.rowMapper(resultActualType));
+            }catch (EmptyResultDataAccessException e){
+                return null;
+            }
         }
     }
 
