@@ -176,7 +176,7 @@ public class JdbcTemplateUtil {
         }
         return PageResult.page(paging.realPageIndex()
                 , paging.getPageSize()
-                , amountSql(jdbcTemplate, sql)
+                , amountSql(jdbcTemplate, sql, args)
                 , query);
     }
 
@@ -205,7 +205,7 @@ public class JdbcTemplateUtil {
      * @param args 参数
      * @return 总数
      */
-    public Long amountSql(JdbcTemplate jdbcTemplate, String sql, Object... args) {
+    public static Long amountSql(JdbcTemplate jdbcTemplate, String sql, Object... args) {
         try {
             String countSql = "SELECT COUNT(*) " + JdbcUtils.extractFromClause(sql);
             // 获取总记录数
