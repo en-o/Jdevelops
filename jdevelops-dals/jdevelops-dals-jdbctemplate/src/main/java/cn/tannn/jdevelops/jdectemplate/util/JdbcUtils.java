@@ -101,4 +101,19 @@ public class JdbcUtils {
             return new BeanPropertyRowMapper<>(resultActualType);
         }
     }
+
+    /**
+     * 验证类型 返回对应的 RowMapper
+     * @param resultActualType 类型 class
+     * @param <T> 泛型类型
+     * @return RowMapper<T>
+     */
+    public static <T> RowMapper<T> rowMapper2(Class<T> resultActualType) {
+        if (resultActualType.isAssignableFrom(Integer.class)) {
+            // 强制转换为泛型类型 T
+            return (RowMapper<T>) new SingleColumnRowMapper<>(Integer.class);
+        } else {
+            return new BeanPropertyRowMapper<>(resultActualType);
+        }
+    }
 }

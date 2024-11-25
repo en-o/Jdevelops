@@ -150,9 +150,9 @@ public class JdbcTemplateUtil {
      * @param args             sql里占位符的参数 (不含有分页参数)
      * @return PageResult
      */
-    public static PageResult<?> paging(JdbcTemplate jdbcTemplate
+    public static <T> PageResult<T>  paging(JdbcTemplate jdbcTemplate
             , String sql
-            , Class<?> resultActualType
+            , Class<T> resultActualType
             , Paging paging
             , Object... args) {
         StringBuilder sqlb = new StringBuilder(sql);
@@ -160,18 +160,18 @@ public class JdbcTemplateUtil {
         sqlb.append(paging.getPageSize());
         sqlb.append(" OFFSET ");
         sqlb.append(paging.getPageIndex() * paging.getPageSize());
-        List<?> query;
+        List<T> query;
         if (args == null) {
             if (JdbcUtils.isBasicType(resultActualType)) {
                 query = jdbcTemplate.queryForList(sqlb.toString(), resultActualType);
             } else {
-                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper(resultActualType));
+                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper2(resultActualType));
             }
         } else {
             if (JdbcUtils.isBasicType(resultActualType)) {
                 query = jdbcTemplate.queryForList(sqlb.toString(), resultActualType, args);
             } else {
-                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper(resultActualType), args);
+                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper2(resultActualType), args);
             }
         }
         return PageResult.page(paging.realPageIndex()
