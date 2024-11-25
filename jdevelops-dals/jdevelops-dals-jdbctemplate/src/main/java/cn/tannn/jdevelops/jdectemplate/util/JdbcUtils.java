@@ -1,5 +1,9 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +44,18 @@ public class JdbcUtils {
 
 
     /**
+     * 判断是不是基础类型 （String, Integer ）
+     *
+     * @param resultType 类型
+     * @return boolean
+     */
+    public static boolean isBasicType( Class<?> resultType) {
+        return resultType.isAssignableFrom(String.class)
+                || resultType.isAssignableFrom(Integer.class);
+    }
+
+
+    /**
      * 返回 sql 的 from
      *
      * @param sql sql
@@ -54,6 +70,35 @@ public class JdbcUtils {
             return sql.substring(fromIndex);
         } else {
             return null; // 如果没有找到 FROM 关键字，则返回 null
+        }
+    }
+
+
+    /**
+     * 验证类型 返回对应的 RowMapper
+     * @param resultActualType 类型 class.getName
+     * @return RowMapper
+     * @throws ClassNotFoundException ClassNotFoundException
+     */
+    public static RowMapper<?> rowMapper(String resultActualType) throws ClassNotFoundException {
+        if (resultActualType.equals(Integer.class.getName())) {
+            return new SingleColumnRowMapper<>(Integer.class);
+        } else {
+            return new BeanPropertyRowMapper<>(Class.forName(resultActualType));
+        }
+    }
+
+
+    /**
+     * 验证类型 返回对应的 RowMapper
+     * @param resultActualType 类型 clas
+     * @return RowMapper
+     */
+    public static RowMapper<?> rowMapper( Class<?> resultActualType){
+        if (resultActualType.isAssignableFrom(Integer.class)) {
+            return new SingleColumnRowMapper<>(Integer.class);
+        } else {
+            return new BeanPropertyRowMapper<>(resultActualType);
         }
     }
 }

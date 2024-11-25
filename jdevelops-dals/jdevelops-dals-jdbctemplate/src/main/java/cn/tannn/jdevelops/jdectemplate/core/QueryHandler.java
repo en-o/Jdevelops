@@ -52,7 +52,8 @@ public class QueryHandler implements InvocationHandler {
             String resultRawType;
             // 返回对象 - bean
             String resultActualType;
-            Object resolver = AnnotationParse.newInstance().resolver(method, args, sql);
+            // 填充占位符，获取真实的sql
+            Object resolverSql = AnnotationParse.newInstance().resolver(method, args, sql);
             if(method.getGenericReturnType() instanceof ParameterizedType){
                 ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
                  resultRawType = genericReturnType.getRawType().getTypeName();
@@ -65,7 +66,7 @@ public class QueryHandler implements InvocationHandler {
                 LOG.debug("jdbctemplate ========> resultRawType : {},  resultActualType:{}", resultRawType,  resultActualType);
             }
             return getJdbcTemplateSql(jdbcTemplate,
-                    resultRawType, resolver, resultActualType, args);
+                    resultRawType, resolverSql, resultActualType, args);
         }
         return null;
     }

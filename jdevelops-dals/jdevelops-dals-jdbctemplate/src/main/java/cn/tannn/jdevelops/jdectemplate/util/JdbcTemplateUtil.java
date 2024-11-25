@@ -4,10 +4,7 @@ import cn.tannn.jdevelops.result.request.Paging;
 import cn.tannn.jdevelops.result.response.PageResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class JdbcTemplateUtil {
      * @param resultRawType    返回的类型 PS: List<String> 中的 List [通过这个判断是返回list还是sting还是map还是PageResult]
      * @param resolverSql      他aop获取到的完整sql
      * @param resultActualType 返回的具体类型 PS: List<String> 中的 String
-     * @param args             参数
+     * @param args             所有查询参数,[除了分页其他的参数已经被解析到sql里了]
      * @return Object 数据
      */
     public static Object getJdbcTemplateSql(JdbcTemplate jdbcTemplate,
@@ -39,7 +36,7 @@ public class JdbcTemplateUtil {
         LOG.debug("jdbctemplate ========> sql {}", sql);
         if (JdbcUtils.isBasicType(resultRawType)) {
             return getJdbcTemplateSqlContextBaseType(jdbcTemplate,
-                    resultRawType, sql, resultActualType, args);
+                    resultRawType, sql, resultActualType);
         }
         return getJdbcTemplateSqlContextMapType(jdbcTemplate,
                 resultRawType, sql, resultActualType, args);
@@ -58,8 +55,7 @@ public class JdbcTemplateUtil {
     public static Object getJdbcTemplateSqlContextBaseType(JdbcTemplate jdbcTemplate,
                                                            String resultRawType,
                                                            String sql,
-                                                           String resultActualType,
-                                                           Object[] args) throws ClassNotFoundException {
+                                                           String resultActualType) throws ClassNotFoundException {
         Class<?> rvt = Class.forName(resultRawType);
         Class<?> query = Class.forName(resultActualType);
         if (rvt.isAssignableFrom(List.class)) {
@@ -87,11 +83,17 @@ public class JdbcTemplateUtil {
             , Object[] args) throws ClassNotFoundException {
         Class<?> rvt = Class.forName(resultRawType);
         if (rvt.isAssignableFrom(List.class)) {
-            return jdbcTemplate.query(sql, rowMapper(resultActualType));
+            return jdbcTemplate.query(sql, JdbcUtils.rowMapper(resultActualType));
         } else if (rvt.isAssignableFrom(PageResult.class)) {
-            return paging(jdbcTemplate, sql, resultActualType, args);
+            Paging paging = new Paging();
+            for (Object arg : args) {
+                if (arg instanceof Paging) {
+                    paging = (Paging) arg;
+                }
+            }
+            return paging(jdbcTemplate, sql, resultActualType, paging);
         } else {
-            return jdbcTemplate.queryForObject(sql, rowMapper(resultActualType));
+            return jdbcTemplate.queryForObject(sql, JdbcUtils.rowMapper(resultActualType));
         }
     }
 
@@ -99,21 +101,15 @@ public class JdbcTemplateUtil {
      * 分页
      *
      * @param jdbcTemplate     jdbcTemplate
-     * @param sql              sql
+     * @param sql              sql [处理好占位符的完整sql]
      * @param resultActualType 返回的具体类型
-     * @param args             参数
+     * @param paging           分页参数
      * @return PageResult
      */
     private static PageResult<?> paging(JdbcTemplate jdbcTemplate
             , String sql
             , String resultActualType
-            , Object[] args) throws ClassNotFoundException {
-        Paging paging = new Paging();
-        for (Object arg : args) {
-            if (arg instanceof Paging) {
-                paging = (Paging) arg;
-            }
-        }
+            , Paging paging) throws ClassNotFoundException {
         StringBuilder sqlb = new StringBuilder(sql);
         sqlb.append(" LIMIT ");
         sqlb.append(paging.getPageSize());
@@ -123,7 +119,7 @@ public class JdbcTemplateUtil {
         if (JdbcUtils.isBasicType(resultActualType)) {
             query = jdbcTemplate.queryForList(sqlb.toString(), Class.forName(resultActualType));
         } else {
-            query = jdbcTemplate.query(sqlb.toString(), rowMapper(resultActualType));
+            query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper(resultActualType));
         }
 
         return PageResult.page(paging.realPageIndex()
@@ -132,13 +128,47 @@ public class JdbcTemplateUtil {
                 , query);
     }
 
-    private static RowMapper<?> rowMapper(String resultActualType) throws ClassNotFoundException {
-        if (resultActualType.equals(Integer.class.getName())) {
-            return new SingleColumnRowMapper<>(Integer.class);
+
+    /**
+     * 分页
+     *
+     * @param jdbcTemplate     jdbcTemplate
+     * @param sql              sql[存在占位符的sql]
+     * @param resultActualType 返回的具体类型
+     * @param paging           分页参数
+     * @param args             sql里占位符的参数 (不含有分页参数)
+     * @return PageResult
+     */
+    public static PageResult<?> paging(JdbcTemplate jdbcTemplate
+            , String sql
+            , Class<?> resultActualType
+            , Paging paging
+            , Object... args) {
+        StringBuilder sqlb = new StringBuilder(sql);
+        sqlb.append(" LIMIT ");
+        sqlb.append(paging.getPageSize());
+        sqlb.append(" OFFSET ");
+        sqlb.append(paging.getPageIndex() * paging.getPageSize());
+        List<?> query;
+        if (args == null) {
+            if (JdbcUtils.isBasicType(resultActualType)) {
+                query = jdbcTemplate.queryForList(sqlb.toString(), resultActualType);
+            } else {
+                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper(resultActualType));
+            }
         } else {
-            return new BeanPropertyRowMapper<>(Class.forName(resultActualType));
+            if (JdbcUtils.isBasicType(resultActualType)) {
+                query = jdbcTemplate.queryForList(sqlb.toString(), resultActualType, args);
+            } else {
+                query = jdbcTemplate.query(sqlb.toString(), JdbcUtils.rowMapper(resultActualType), args);
+            }
         }
+        return PageResult.page(paging.realPageIndex()
+                , paging.getPageSize()
+                , amountSql(jdbcTemplate, sql)
+                , query);
     }
+
 
     /**
      * 总数
@@ -146,10 +176,29 @@ public class JdbcTemplateUtil {
      * @param sql 查询的sql (这个sql是没有占位符的完整sql)
      * @return 总数
      */
-    private static Long amountSql(JdbcTemplate jdbcTemplate, String sql) {
+    public static Long amountSql(JdbcTemplate jdbcTemplate, String sql) {
         try {
             String countSql = "SELECT COUNT(*) " + JdbcUtils.extractFromClause(sql);
             return jdbcTemplate.queryForObject(countSql, long.class);
+        } catch (Exception e) {
+            LOG.error("Error executing count {} ", sql, e);
+        }
+        return 0L;
+    }
+
+
+    /**
+     * 总数
+     *
+     * @param sql  查询的sql (这个sql是有占位符的完整sql)
+     * @param args 参数
+     * @return 总数
+     */
+    public Long amountSql(JdbcTemplate jdbcTemplate, String sql, Object... args) {
+        try {
+            String countSql = "SELECT COUNT(*) " + JdbcUtils.extractFromClause(sql);
+            // 获取总记录数
+            return jdbcTemplate.queryForObject(countSql, long.class, args);
         } catch (Exception e) {
             LOG.error("Error executing count {} ", sql, e);
         }
@@ -161,7 +210,8 @@ public class JdbcTemplateUtil {
      *
      * @return 总数
      */
-    private static Long amount(JdbcTemplate jdbcTemplate, String tableName) {
+    @Deprecated
+    public static Long amount(JdbcTemplate jdbcTemplate, String tableName) {
         try {
             // 获取总记录数
             String countSql = "SELECT COUNT(*) FROM " + tableName;
