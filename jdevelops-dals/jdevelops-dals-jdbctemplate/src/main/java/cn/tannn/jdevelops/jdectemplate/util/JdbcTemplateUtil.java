@@ -64,7 +64,8 @@ public class JdbcTemplateUtil {
         } else {
             try {
                 return jdbcTemplate.queryForObject(sql, query);
-            }catch (EmptyResultDataAccessException e){
+            } catch (EmptyResultDataAccessException e) {
+                LOG.warn("ResultData data empty", e);
                 return null;
             }
         }
@@ -100,7 +101,8 @@ public class JdbcTemplateUtil {
         } else {
             try {
                 return jdbcTemplate.queryForObject(sql, JdbcUtils.rowMapper(resultActualType));
-            }catch (EmptyResultDataAccessException e){
+            } catch (EmptyResultDataAccessException e) {
+                LOG.warn("ResultData data empty", e);
                 return null;
             }
         }
