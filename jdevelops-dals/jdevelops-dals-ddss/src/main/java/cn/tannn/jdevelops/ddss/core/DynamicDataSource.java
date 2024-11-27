@@ -63,7 +63,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      * 移除数据源
      * @param deleteDbName 移除源
      */
-    public static void refreshDataSource(String deleteDbName) {
+    public static void deleteDataSource(String deleteDbName) {
         // 删除数据源源
         DynamicDataSourceUtil.closeDbName(deleteDbName);
         DynamicDataSource.targetDataSources.remove(deleteDbName);

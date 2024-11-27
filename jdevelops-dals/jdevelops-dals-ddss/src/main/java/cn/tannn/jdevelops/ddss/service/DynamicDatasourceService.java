@@ -78,7 +78,7 @@ public class DynamicDatasourceService {
         if(enable == 1){
             DynamicDataSource.setDataSource(datasourceName);
         }else {
-            DynamicDataSource.refreshDataSource(datasourceName);
+            DynamicDataSource.deleteDataSource(datasourceName);
         }
         return update;
     }
@@ -134,7 +134,7 @@ public class DynamicDatasourceService {
         // 根据数据源名称删除数据源
         jdbcTemplate.update("delete from " + dynamicDataSourceProperties.getTableName() + " where datasource_name = ? ", new Object[]{datasourceName});
         // 刷新项目中的数据源连接
-        DynamicDataSource.refreshDataSource(datasourceName);
+        DynamicDataSource.deleteDataSource(datasourceName);
     }
 
 
