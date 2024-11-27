@@ -240,8 +240,8 @@ public class DynamicDatasourceService {
             data.setDatasourcePassword(existing.getDatasourcePassword());
         }
 
-        data.setRemark(ObjectUtils.isNotBlank(update.getDriverClassName()) ? update.getDriverClassName() : existing.getDriverClassName());
-        data.setDriverClassName(ObjectUtils.isNotBlank(update.getRemark()) ? update.getRemark() : existing.getRemark());
+        data.setRemark(ObjectUtils.isNotBlank(update.getRemark()) ? update.getRemark() : existing.getRemark());
+        data.setDriverClassName(ObjectUtils.isNotBlank(update.getDriverClassName()) ? update.getDriverClassName() : existing.getDriverClassName());
         data.setEnable(existing.getEnable());
         return data;
     }
