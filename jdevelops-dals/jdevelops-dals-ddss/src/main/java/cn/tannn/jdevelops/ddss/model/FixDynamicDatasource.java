@@ -1,22 +1,18 @@
 package cn.tannn.jdevelops.ddss.model;
 
-
-import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import cn.tannn.jdevelops.ddss.exception.DynamicDataSourceException;
 
 /**
- * 数据源元信息
+ * 数据源
  *
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2023/9/15 12:00
  */
 
-public class DynamicDatasourceEntity implements RowMapper<DynamicDatasourceEntity> {
+public class FixDynamicDatasource {
 
     /**
-     * 数据源名称(主键)
+     * 数据源名称
      */
     String datasourceName;
 
@@ -40,38 +36,16 @@ public class DynamicDatasourceEntity implements RowMapper<DynamicDatasourceEntit
      */
     String remark;
 
-
     /**
      * 数据库驱动
      */
     String driverClassName;
 
-    /**
-     * 是否启用[0:禁用 1:启用]
-     */
-    Integer enable;
-
-
-    @Override
-    public DynamicDatasourceEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-        DynamicDatasourceEntity datasourceEntity = new DynamicDatasourceEntity();
-        datasourceEntity.setDatasourceName(rs.getString("datasource_name"));
-        datasourceEntity.setDatasourceUrl(rs.getString("datasource_url"));
-        datasourceEntity.setDatasourceUsername(rs.getString("datasource_username"));
-        datasourceEntity.setDatasourcePassword(rs.getString("datasource_password"));
-        datasourceEntity.setDriverClassName(rs.getString("driver_class_name"));
-        datasourceEntity.setEnable(rs.getInt("enable"));
-        datasourceEntity.setRemark(rs.getString("remark"));
-        return datasourceEntity;
-    }
-
-
-    public boolean isEnable() {
-        return enable==1;
-    }
-
 
     public String getDatasourceName() {
+        if(datasourceName == null || datasourceName.trim().isEmpty()){
+            throw new DynamicDataSourceException("数据名不允许为空");
+        }
         return datasourceName;
     }
 
@@ -119,24 +93,15 @@ public class DynamicDatasourceEntity implements RowMapper<DynamicDatasourceEntit
         this.driverClassName = driverClassName;
     }
 
-    public Integer getEnable() {
-        return enable;
-    }
-
-    public void setEnable(Integer enable) {
-        this.enable = enable;
-    }
-
     @Override
     public String toString() {
-        return "DyDatasourceEntity{" +
+        return "AddDyDatasource{" +
                 "datasourceName='" + datasourceName + '\'' +
                 ", datasourceUrl='" + datasourceUrl + '\'' +
                 ", datasourceUsername='" + datasourceUsername + '\'' +
                 ", datasourcePassword='" + datasourcePassword + '\'' +
                 ", remark='" + remark + '\'' +
                 ", driverClassName='" + driverClassName + '\'' +
-                ", enable=" + enable +
                 '}';
     }
 }
