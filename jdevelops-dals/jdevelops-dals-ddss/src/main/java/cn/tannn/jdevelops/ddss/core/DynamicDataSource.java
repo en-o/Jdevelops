@@ -60,7 +60,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     }
 
     /**
-     * 刷新数据源
+     * 移除数据源
      * @param deleteDbName 移除源
      */
     public static void refreshDataSource(String deleteDbName) {
@@ -71,5 +71,16 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         DynamicDataSource dynamicDataSource = DynamicSpringBeanUtil.getBean(DynamicDataSource.class);
         //使得修改后的targetDataSources生效
         dynamicDataSource.afterPropertiesSet();
+    }
+
+    /**
+     *  更新数据源
+     * @param dbName 更新源
+     */
+    public static void renewalDataSource(String dbName) {
+        // 删除数据源源
+        DynamicDataSourceUtil.closeDbName(dbName);
+        DynamicDataSource.targetDataSources.remove(dbName);
+        setDataSource(dbName);
     }
 }

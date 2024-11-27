@@ -75,7 +75,11 @@ public class DynamicDatasourceService {
         String sql = "UPDATE " + dynamicDataSourceProperties.getTableName() + " SET enable = ? WHERE datasource_name = ?";
         int update = jdbcTemplate.update(sql, enable, datasourceName);
         // 刷新项目中的数据源连接
-        DynamicDataSource.refreshDataSource(datasourceName);
+        if(enable == 1){
+            DynamicDataSource.setDataSource(datasourceName);
+        }else {
+            DynamicDataSource.refreshDataSource(datasourceName);
+        }
         return update;
     }
 
@@ -206,7 +210,7 @@ public class DynamicDatasourceService {
                 mergedEntity.getDatasourceName()
         );
         // 刷新项目中的数据源连接
-        DynamicDataSource.refreshDataSource(mergedEntity.getDatasourceName());
+        DynamicDataSource.renewalDataSource(mergedEntity.getDatasourceName());
         return update;
     }
 
