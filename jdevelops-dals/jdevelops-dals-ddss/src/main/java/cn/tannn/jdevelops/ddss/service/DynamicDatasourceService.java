@@ -180,7 +180,6 @@ public class DynamicDatasourceService {
      * @param dataSourceEntity 待更新的数据源实体
      * @return 更新影响的行数
      */
-    @Transactional
     public int updateDataSource(FixDynamicDatasource dataSourceEntity) throws InvalidKeyException {
         // 先查询是否存在
         DynamicDatasourceEntity existingDataSource = findDyDatasourceEntity(dataSourceEntity.getDatasourceName());
