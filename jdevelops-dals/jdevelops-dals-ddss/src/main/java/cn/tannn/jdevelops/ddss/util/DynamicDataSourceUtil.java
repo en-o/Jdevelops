@@ -57,7 +57,7 @@ public class DynamicDataSourceUtil {
                 // 缓存起来就不用每次查库了 [47行]
                 DataSourceCachePool.putCacheBasicDataSource(dbName, dataSource);
             } else {
-                throw DynamicDataSourceException.specialMessage("动态数据源连接失败,数据源可能被移除，dbName：" + dbName);
+                throw DynamicDataSourceException.specialMessage("动态数据源连接失败,数据源可能被移除/禁用，dbName：" + dbName);
             }
             logger.info("--------getDbSourceBydbName------------------创建DB数据库连接-------------------");
             return dataSource;
