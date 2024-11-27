@@ -5,10 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.SecureRandom;
 
 /**
  * @author <a href="https://tannn.cn/">tan</a>
@@ -126,10 +128,11 @@ public class ObjectUtils {
             byte[] encryptedWithIv = Base64.decodeBase64(code);
             byte[] iv = new byte[12];
             byte[] encrypted = new byte[encryptedWithIv.length - 12];
+            // 将一个数组[encryptedWithIv]中的元素复制到另一个数组[iv]中
             System.arraycopy(encryptedWithIv, 0, iv, 0, iv.length);
             System.arraycopy(encryptedWithIv, iv.length, encrypted, 0, encrypted.length);
-            GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
-            cipher.init(Cipher.DECRYPT_MODE, skySpec, gcmSpec);
+            GCMParameterSpec gcmSpec2 = new GCMParameterSpec(128, iv);
+            cipher.init(Cipher.DECRYPT_MODE, skySpec, gcmSpec2);
             byte[] original = cipher.doFinal(encrypted);
             return new String(original, StandardCharsets.UTF_8);
         } catch (Exception ex) {
@@ -139,7 +142,7 @@ public class ObjectUtils {
     }
 
     /**
-     * 加密
+     * 加密 - 注意每次加密都是不一样的，但是每个都可以解密
      *
      * @param code 带加密的字符串
      * @param salt 解密的盐(16位)
