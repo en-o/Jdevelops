@@ -5,10 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
+import java.security.SecureRandom;
 
 /**
  * @author <a href="https://tannn.cn/">tan</a>
@@ -119,11 +120,18 @@ public class ObjectUtils {
         try {
             byte[] raw = salt.getBytes(StandardCharsets.US_ASCII);
             SecretKeySpec skySpec = new SecretKeySpec(raw, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            IvParameterSpec iv = new IvParameterSpec(IV_PARAMETER.getBytes());
-            cipher.init(Cipher.DECRYPT_MODE, skySpec, iv);
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            GCMParameterSpec gcmSpec = new GCMParameterSpec(128, IV_PARAMETER.getBytes());
+            cipher.init(Cipher.DECRYPT_MODE, skySpec, gcmSpec);
             // 先用base64解密
-            byte[] encrypted = Base64.decodeBase64(code);
+            byte[] encryptedWithIv = Base64.decodeBase64(code);
+            byte[] iv = new byte[12];
+            byte[] encrypted = new byte[encryptedWithIv.length - 12];
+            // 将一个数组[encryptedWithIv]中的元素复制到另一个数组[iv]中
+            System.arraycopy(encryptedWithIv, 0, iv, 0, iv.length);
+            System.arraycopy(encryptedWithIv, iv.length, encrypted, 0, encrypted.length);
+            GCMParameterSpec gcmSpec2 = new GCMParameterSpec(128, iv);
+            cipher.init(Cipher.DECRYPT_MODE, skySpec, gcmSpec2);
             byte[] original = cipher.doFinal(encrypted);
             return new String(original, StandardCharsets.UTF_8);
         } catch (Exception ex) {
@@ -133,7 +141,7 @@ public class ObjectUtils {
     }
 
     /**
-     * 加密
+     * 加密 - 注意每次加密都是不一样的，但是每个都可以解密
      *
      * @param code 带加密的字符串
      * @param salt 解密的盐(16位)
@@ -144,15 +152,22 @@ public class ObjectUtils {
             throw new InvalidKeyException("salt必须满足16位");
         }
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             byte[] raw = salt.getBytes();
             SecretKeySpec skySpec = new SecretKeySpec(raw, "AES");
-            // 使用CBC模式，需要一个向量iv，可增加加密算法的强度
-            IvParameterSpec iv = new IvParameterSpec(IV_PARAMETER.getBytes());
-            cipher.init(Cipher.ENCRYPT_MODE, skySpec, iv);
+            // 使用GCM模式，需要一个随机向量iv
+            byte[] iv = new byte[12];
+            SecureRandom secureRandom = new SecureRandom();
+            secureRandom.nextBytes(iv);
+            GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
+            cipher.init(Cipher.ENCRYPT_MODE, skySpec, gcmSpec);
             byte[] encrypted = cipher.doFinal(code.getBytes(StandardCharsets.UTF_8));
+            // 将IV和加密数据一起编码
+            byte[] encryptedWithIv = new byte[iv.length + encrypted.length];
+            System.arraycopy(iv, 0, encryptedWithIv, 0, iv.length);
+            System.arraycopy(encrypted, 0, encryptedWithIv, iv.length, encrypted.length);
             // 此处使用BASE64做转码。
-            return Base64.encodeBase64String(encrypted);
+            return Base64.encodeBase64String(encryptedWithIv);
         } catch (Exception e) {
             LOG.error("加密失败", e);
         }

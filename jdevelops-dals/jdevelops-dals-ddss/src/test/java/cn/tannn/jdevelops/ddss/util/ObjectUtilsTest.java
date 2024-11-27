@@ -13,12 +13,15 @@ class ObjectUtilsTest {
 
     @Test
     public void testDecryptAES() throws InvalidKeyException {
-        assertEquals(ObjectUtils.decryptAES("ly60culHXDlTLDmPaS8iag==", salt),"hello");
+        assertEquals(ObjectUtils.decryptAES("Lk6g7NuERgUwGRiM6dpdB5Wp27u+2dlnY1IIVWRf9CV2", salt),"hello");
+        assertEquals(ObjectUtils.decryptAES("hyaSvU4Hv0s6GNKButON2zKOJqUkJK7tbPL8HN7Fm5D3", salt),"hello");
     }
 
     @Test
     public void testEncryptAES() throws InvalidKeyException {
-        assertEquals(ObjectUtils.encryptAES("hello", salt),"ly60culHXDlTLDmPaS8iag==");
+        String hello = ObjectUtils.encryptAES("hello", salt);
+        String decryptAES = ObjectUtils.decryptAES(hello, salt);
+        assertEquals(decryptAES,"hello");
     }
 
 }
