@@ -38,7 +38,7 @@ public class DynamicDatasourceController {
     }
 
     @Operation(summary = "修改数据源")
-    @GetMapping("fix")
+    @PostMapping("fix")
     public ResultVO<List<DynamicDatasourceEntity>> fix(@RequestBody FixDynamicDatasource fix) {
         dynamicDatasourceService.updateDataSource(fix);
         return ResultVO.successMessage("修改数据源成功");
