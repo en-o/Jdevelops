@@ -73,7 +73,10 @@ public class DynamicDatasourceService {
      */
     public int updateDataSourceStatus(String datasourceName, int enable) {
         String sql = "UPDATE " + dynamicDataSourceProperties.getTableName() + " SET enable = ? WHERE datasource_name = ?";
-        return jdbcTemplate.update(sql, enable, datasourceName);
+        int update = jdbcTemplate.update(sql, enable, datasourceName);
+        // 刷新项目中的数据源连接
+        DynamicDataSource.refreshDataSource(datasourceName);
+        return update;
     }
 
 
@@ -193,15 +196,18 @@ public class DynamicDatasourceService {
                 "remark = ? " +
                 "WHERE datasource_name = ?";
 
-        return jdbcTemplate.update(
+        int update = jdbcTemplate.update(
                 sql,
                 mergedEntity.getDatasourceUrl(),
-                mergedEntity.getDatasourceName(),
+                mergedEntity.getDatasourceUsername(),
                 mergedEntity.getDatasourcePassword(),
                 mergedEntity.getDriverClassName(),
                 mergedEntity.getRemark(),
                 mergedEntity.getDatasourceName()
         );
+        // 刷新项目中的数据源连接
+        DynamicDataSource.refreshDataSource(mergedEntity.getDatasourceName());
+        return update;
     }
 
     /**
@@ -216,7 +222,7 @@ public class DynamicDatasourceService {
         // 主键不允许更新
         data.setDatasourceName(existing.getDatasourceName());
         data.setDatasourceUrl(ObjectUtils.isNotBlank(update.getDatasourceUrl()) ? update.getDatasourceUrl() : existing.getDatasourceUrl());
-        data.setDatasourceUsername(ObjectUtils.isNotBlank(update.getDatasourceName()) ? update.getDatasourceName() : existing.getDatasourceName());
+        data.setDatasourceUsername(ObjectUtils.isNotBlank(update.getDatasourceUsername()) ? update.getDatasourceUsername() : existing.getDatasourceUsername());
         data.setDatasourcePassword(ObjectUtils.isNotBlank(update.getDatasourcePassword()) ? update.getDatasourcePassword() : existing.getDatasourcePassword());
         data.setRemark(ObjectUtils.isNotBlank(update.getDriverClassName()) ? update.getDriverClassName() : existing.getDriverClassName());
         data.setDriverClassName(ObjectUtils.isNotBlank(update.getRemark()) ? update.getRemark() : existing.getRemark());
