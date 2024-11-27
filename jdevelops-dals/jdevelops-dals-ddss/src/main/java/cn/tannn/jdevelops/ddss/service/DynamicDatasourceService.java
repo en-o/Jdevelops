@@ -181,7 +181,7 @@ public class DynamicDatasourceService {
      * @return 更新影响的行数
      */
     @Transactional
-    public int updateDataSource(FixDynamicDatasource dataSourceEntity) {
+    public int updateDataSource(FixDynamicDatasource dataSourceEntity) throws InvalidKeyException {
         // 先查询是否存在
         DynamicDatasourceEntity existingDataSource = findDyDatasourceEntity(dataSourceEntity.getDatasourceName());
         if (existingDataSource == null) {
@@ -221,13 +221,26 @@ public class DynamicDatasourceService {
      * @param update   待更新的数据源
      * @return 合并后的数据源实体
      */
-    private DynamicDatasourceEntity mergeDataSource(DynamicDatasourceEntity existing, FixDynamicDatasource update) {
+    private DynamicDatasourceEntity mergeDataSource(DynamicDatasourceEntity existing, FixDynamicDatasource update) throws InvalidKeyException {
         DynamicDatasourceEntity data = new DynamicDatasourceEntity();
         // 主键不允许更新
         data.setDatasourceName(existing.getDatasourceName());
         data.setDatasourceUrl(ObjectUtils.isNotBlank(update.getDatasourceUrl()) ? update.getDatasourceUrl() : existing.getDatasourceUrl());
-        data.setDatasourceUsername(ObjectUtils.isNotBlank(update.getDatasourceUsername()) ? update.getDatasourceUsername() : existing.getDatasourceUsername());
-        data.setDatasourcePassword(ObjectUtils.isNotBlank(update.getDatasourcePassword()) ? update.getDatasourcePassword() : existing.getDatasourcePassword());
+
+        if(ObjectUtils.isNotBlank(update.getDatasourceUsername())){
+            String username = ObjectUtils.encryptAES(update.getDatasourceUsername(), dynamicDataSourceProperties.getSalt());
+            data.setDatasourceUsername(username);
+        }else {
+            data.setDatasourceUsername(existing.getDatasourceUsername());
+        }
+
+        if(ObjectUtils.isNotBlank(update.getDatasourcePassword())){
+            String password = ObjectUtils.encryptAES(update.getDatasourcePassword(), dynamicDataSourceProperties.getSalt());
+            data.setDatasourcePassword(password);
+        }else {
+            data.setDatasourcePassword(existing.getDatasourcePassword());
+        }
+
         data.setRemark(ObjectUtils.isNotBlank(update.getDriverClassName()) ? update.getDriverClassName() : existing.getDriverClassName());
         data.setDriverClassName(ObjectUtils.isNotBlank(update.getRemark()) ? update.getRemark() : existing.getRemark());
         data.setEnable(existing.getEnable());
