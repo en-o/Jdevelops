@@ -102,7 +102,7 @@ public class ApiRSAUtils {
     public static byte[] encryptByPublicKey(byte[] data, String publicKey) throws Exception {
         //base64格式的key字符串转Key对象
         Key publicK = KeyFactory.getInstance(KEY_ALGORITHM).generatePublic(new X509EncodedKeySpec(Base64.decodeBase64(publicKey)));
-        Cipher cipher = Cipher.getInstance(ALGORITHMS);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, publicK);
         //分段进行加密操作
         return encryptAndDecryptOfSubsection(data, cipher, MAX_ENCRYPT_BLOCK);
@@ -117,7 +117,7 @@ public class ApiRSAUtils {
     public static byte[] pubKeyDec(byte[] data, String publicKey) throws Exception {
         //base64格式的key字符串转Key对象
         Key privateK = KeyFactory.getInstance(KEY_ALGORITHM).generatePublic(new X509EncodedKeySpec(Base64.decodeBase64(publicKey)));
-        Cipher cipher = Cipher.getInstance(ALGORITHMS);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         cipher.init(Cipher.DECRYPT_MODE, privateK);
 
         //分段进行解密操作
@@ -135,7 +135,7 @@ public class ApiRSAUtils {
 
         //base64格式的key字符串转Key对象
         Key publicK = KeyFactory.getInstance(KEY_ALGORITHM).generatePrivate(new PKCS8EncodedKeySpec(Base64.decodeBase64(privateKey)));
-        Cipher cipher = Cipher.getInstance(ALGORITHMS);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, publicK);
 
         //分段进行加密操作
