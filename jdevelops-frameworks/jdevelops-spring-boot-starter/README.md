@@ -64,7 +64,10 @@ public ResultVO<LoginVO> login(@RequestBody @Valid ApiEncryptRes encryptData
 
 0. 安装依赖
 ```shell
-npm install jsencrypt crypto-js
+# 4.2.0
+npm install crypto-js
+# 1.3.1
+npm install node-forge
 ```
 1. 引入加解密工具类
 [encryption.js](encryption.js)
