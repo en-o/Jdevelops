@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @see https://blog.csdn.net/weixin_45973634/article/details/136022834
  */
@@ -33,6 +35,7 @@ class ApiSecurityUtilsTest {
         // 服务端：解密数据
         String decrypt = ApiSecurityUtils.decrypt(encryptData.getAesKeyByRsa(), encryptData.getData(), privateKey);
         System.out.println("服务端工作：解密数据: " + decrypt);
+        assertEquals("{\"password\":\"password\",\"username\":\"admin\"}",decrypt);
         Map basicsLogin = JSON.to(Map.class, decrypt);
         System.out.println("服务端工作JSON：" + basicsLogin);
     }
