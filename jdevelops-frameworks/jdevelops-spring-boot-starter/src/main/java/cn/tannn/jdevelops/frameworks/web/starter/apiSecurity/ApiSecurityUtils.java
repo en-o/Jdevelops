@@ -45,6 +45,7 @@ public class ApiSecurityUtils {
         String aesKeyByRsa = Base64.encodeBase64String(ApiRSAUtils.encryptByPublicKey(aesKey.getBytes(), frontPublicKey));
         apiEncryptRes.setAesKeyByRsa(aesKeyByRsa);
         apiEncryptRes.setData(data);
+        apiEncryptRes.setFrontPublicKey(frontPublicKey);
         return apiEncryptRes;
     }
 
