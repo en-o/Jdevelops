@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.frameworks.web.starter.apiSecurity;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -29,7 +30,7 @@ public class ApiAESUtils {
      * 算法名称/加密模式/数据填充方式
      * 默认：AES/ECB/PKCS5Padding
      */
-    private static final String ALGORITHMS = "AES/ECB/PKCS5Padding";
+    private static final String ALGORITHMS = "AES/CBC/PKCS5Padding";
 
     /**
      * 后端AES的key，由静态代码块赋值
@@ -80,11 +81,20 @@ public class ApiAESUtils {
     public static String encrypt(String content, String encryptKey) throws Exception {
         //设置Cipher对象
         Cipher cipher = Cipher.getInstance(ALGORITHMS);
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(encryptKey.getBytes(), KEY_ALGORITHM));
+        byte[] iv = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(iv);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(encryptKey.getBytes(), KEY_ALGORITHM), ivParameterSpec);
 
         //调用doFinal
+        byte[] encryptedBytes = cipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
+        byte[] encryptedWithIv = new byte[iv.length + encryptedBytes.length];
+        System.arraycopy(iv, 0, encryptedWithIv, 0, iv.length);
+        System.arraycopy(encryptedBytes, 0, encryptedWithIv, iv.length, encryptedBytes.length);
+
         // 转base64
-        return Base64.encodeBase64String(cipher.doFinal(content.getBytes(StandardCharsets.UTF_8)));
+        return Base64.encodeBase64String(encryptedWithIv);
 
     }
 
@@ -101,9 +111,15 @@ public class ApiAESUtils {
 
         //设置Cipher对象
         Cipher cipher = Cipher.getInstance(ALGORITHMS);
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(decryptKey.getBytes(), KEY_ALGORITHM));
+        byte[] iv = new byte[16];
+        System.arraycopy(decodeBase64, 0, iv, 0, iv.length);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        byte[] encryptedBytes = new byte[decodeBase64.length - iv.length];
+        System.arraycopy(decodeBase64, iv.length, encryptedBytes, 0, encryptedBytes.length);
+
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(decryptKey.getBytes(), KEY_ALGORITHM), ivParameterSpec);
         //调用doFinal解密
-        return new String(cipher.doFinal(decodeBase64));
+        return new String(cipher.doFinal(encryptedBytes));
 
 }
 }

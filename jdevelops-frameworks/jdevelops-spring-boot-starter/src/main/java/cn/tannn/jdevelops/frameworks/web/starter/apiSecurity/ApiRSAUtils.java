@@ -29,7 +29,7 @@ public class ApiRSAUtils {
      * 算法名称/加密模式/数据填充方式
      * 默认：RSA/ECB/PKCS1Padding
      */
-    private static final String ALGORITHMS = "RSA/ECB/PKCS1Padding";
+    private static final String ALGORITHMS = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
 
     /**
      * RSA最大加密明文大小

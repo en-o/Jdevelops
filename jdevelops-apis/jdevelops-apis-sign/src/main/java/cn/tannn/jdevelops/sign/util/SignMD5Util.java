@@ -22,7 +22,6 @@ public class SignMD5Util {
 
     private final static Integer THIRTY_TWO = 32;
     public static final String MD_5 = "md5";
-
     public static String encrypt(String plainText) {
         return encrypt(plainText,true);
     }
