@@ -21,7 +21,7 @@ import java.util.Map;
 public class SignMD5Util {
 
     private final static Integer THIRTY_TWO = 32;
-    public static final String MD_5 = "md5";
+    public static final String SHA_256 = "SHA-256";
 
     public static String encrypt(String plainText) {
         return encrypt(plainText,true);
@@ -39,7 +39,7 @@ public class SignMD5Util {
         }
         byte[] secretBytes ;
         try {
-            secretBytes = MessageDigest.getInstance(MD_5).digest(
+            secretBytes = MessageDigest.getInstance(SHA_256).digest(
                     plainText.getBytes(StandardCharsets.UTF_8)  );
         } catch (Exception e) {
             throw new SignException("没有md5这个算法！",e);
