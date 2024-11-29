@@ -96,6 +96,13 @@ public class SwaggerProperties {
      */
     private Boolean securitySchemeDefault;
 
+    /**
+     * swagger配置生效，默认true[生效]
+     * <p>占坑 SwaggerConfig 的 ConditionalOnProperty#jdevelops.swagger.enabled</p>
+     * <p> 功能等于  knife4j.production=true</p>
+     */
+    private Boolean enabled;
+
 
     @Override
     public String toString() {
@@ -113,6 +120,7 @@ public class SwaggerProperties {
                 ", displayName='" + displayName + '\'' +
                 ", swaggerSecuritySchemes=" + swaggerSecuritySchemes +
                 ", securitySchemeDefault=" + securitySchemeDefault +
+                ", enabled=" + enabled +
                 '}';
     }
 
@@ -284,5 +292,15 @@ public class SwaggerProperties {
         this.securitySchemeDefault = securitySchemeDefault;
     }
 
+    public Boolean getEnabled() {
+        return enabled == null || enabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        if(enabled == null){
+            this.enabled = true;
+        }else {
+            this.enabled = enabled;
+        }
+    }
 }

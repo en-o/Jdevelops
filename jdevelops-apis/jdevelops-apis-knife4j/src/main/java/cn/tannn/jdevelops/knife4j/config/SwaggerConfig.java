@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -33,6 +34,7 @@ import static cn.tannn.jdevelops.knife4j.core.util.SwaggerUtil.buildSecuritySche
 @ConditionalOnWebApplication
 @Import({ConsoleConfig.class, SwaggerProperties.class, SwaggerSecurityScheme.class})
 @ConditionalOnClass({OpenAPI.class})
+@ConditionalOnProperty(name = "jdevelops.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class SwaggerConfig {
 
     /**
