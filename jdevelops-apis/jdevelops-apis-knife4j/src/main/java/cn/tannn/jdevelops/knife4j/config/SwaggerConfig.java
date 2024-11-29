@@ -34,7 +34,7 @@ import static cn.tannn.jdevelops.knife4j.core.util.SwaggerUtil.buildSecuritySche
 @ConditionalOnWebApplication
 @Import({ConsoleConfig.class, SwaggerProperties.class, SwaggerSecurityScheme.class})
 @ConditionalOnClass({OpenAPI.class})
-@ConditionalOnProperty(name = "jdevelops.swagger.enabled", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(name = "jdevelops.swagger.enabled", havingValue = "true", matchIfMissing = true)
 public class SwaggerConfig {
 
     /**
