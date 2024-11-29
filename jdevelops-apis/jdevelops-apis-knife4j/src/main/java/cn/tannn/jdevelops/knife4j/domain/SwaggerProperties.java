@@ -3,7 +3,6 @@ package cn.tannn.jdevelops.knife4j.domain;
 
 import cn.tannn.jdevelops.knife4j.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -266,7 +265,7 @@ public class SwaggerProperties {
             }
         } else if (Boolean.TRUE.equals(getSecuritySchemeDefault())) {
             //  那 Security == true
-            List<SwaggerSecurityScheme> collect = swaggerSecuritySchemes.stream().filter(SwaggerSecurityScheme::getSecurity).collect(Collectors.toList());
+            List<SwaggerSecurityScheme> collect = swaggerSecuritySchemes.stream().filter(SwaggerSecurityScheme::getSecurity).toList();
             // 设置的都没有效果,那就设置一个默认，（securitySchemeDefault == ture）
             if (collect.isEmpty()) {
                 return Collections.singletonList(new SwaggerSecurityScheme(new SecurityScheme()
