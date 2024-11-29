@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.knife4j.domain;
 
 import cn.tannn.jdevelops.knife4j.core.entity.SwaggerSecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
@@ -97,11 +98,11 @@ public class SwaggerProperties {
     private Boolean securitySchemeDefault;
 
     /**
-     * swagger配置生效，默认true[生效]
-     * <p>占坑 SwaggerConfig 的 ConditionalOnProperty#jdevelops.swagger.enabled</p>
-     * <p> 功能等于  knife4j.production=true</p>
+     * swagger控制台输出配置生效，默认true[生效]
+     * <p>占坑 ConsoleConfig 的 ConditionalOnProperty#jdevelops.swagger.console.enabled</p>
      */
-    private Boolean enabled;
+    @Value("${jdevelops.swagger.console.enabled:true}")
+    private Boolean consoleEnabled;
 
 
     @Override
@@ -120,7 +121,7 @@ public class SwaggerProperties {
                 ", displayName='" + displayName + '\'' +
                 ", swaggerSecuritySchemes=" + swaggerSecuritySchemes +
                 ", securitySchemeDefault=" + securitySchemeDefault +
-                ", enabled=" + enabled +
+                ", consoleEnabled=" + consoleEnabled +
                 '}';
     }
 
@@ -292,15 +293,16 @@ public class SwaggerProperties {
         this.securitySchemeDefault = securitySchemeDefault;
     }
 
-    public Boolean getEnabled() {
-        return enabled == null || enabled;
+    public Boolean getConsoleEnabled() {
+        return consoleEnabled == null || consoleEnabled;
     }
 
-    public void setEnabled(Boolean enabled) {
-        if(enabled == null){
-            this.enabled = true;
+    public void setConsoleEnabled(Boolean consoleEnabled) {
+        if(consoleEnabled == null){
+            this.consoleEnabled = true;
         }else {
-            this.enabled = enabled;
+            this.consoleEnabled = consoleEnabled;
         }
     }
+
 }
