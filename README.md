@@ -11,7 +11,7 @@
         <img src='https://img.shields.io/github/license/en-o/Jdevelops' alt='license'/>
     </a>
     <a target="_blank" href="https://www.yuque.com/tanning/yg9ipo">
-        <img src='https://img.shields.io/badge/JDK-1.8.0_281+-green.svg' alt='jdk'/>
+        <img src='https://img.shields.io/badge/JDK-17+-green.svg' alt='jdk'/>
     </a>
     <a target="_blank" href="https://www.yuque.com/tanning/yg9ipo">
         <img src='https://img.shields.io/github/stars/en-o/Jdevelops' alt='stars'/>
@@ -20,7 +20,7 @@
         <img src='https://img.shields.io/github/issues/en-o/Jdevelops' alt='issues'/>
     </a>
     <a target="_blank" href="https://www.yuque.com/tanning/yg9ipo">
-        <img src='	https://img.shields.io/github/forks/en-o/Jdevelops' alt='forks'/>
+        <img src='https://img.shields.io/github/forks/en-o/Jdevelops' alt='forks'/>
     </a>
 </div>
 
