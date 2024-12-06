@@ -22,7 +22,7 @@ public class Sorted implements Serializable {
      * 排序字段 (可多字段[1-5])
      * 默认id
      */
-    @Schema(description = "排序字段（实体的有效字段）", defaultValue = "id", example = "id")
+    @Schema(description = "排序字段（实体的有效字段）")
     @Size(max = 5, message = "排序字段超出了阈值")
     private String[] orderBy;
 

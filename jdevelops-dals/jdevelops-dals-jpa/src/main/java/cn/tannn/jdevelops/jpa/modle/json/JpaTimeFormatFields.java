@@ -41,7 +41,7 @@ public class JpaTimeFormatFields<T> extends BaseFields<T> {
     @Access(AccessType.PROPERTY)
     @Comment("创建日期")
     @Override
-    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreateTime() {
         return super.getCreateTime();
     }
@@ -56,7 +56,7 @@ public class JpaTimeFormatFields<T> extends BaseFields<T> {
     @Access(AccessType.PROPERTY)
     @Comment("更新日期")
     @Override
-    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getUpdateTime() {
         return super.getUpdateTime();
     }
