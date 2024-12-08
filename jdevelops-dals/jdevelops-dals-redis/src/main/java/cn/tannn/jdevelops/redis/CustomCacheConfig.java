@@ -6,22 +6,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
 import java.util.Arrays;
-
 
 /**
  * 自定义缓存读写机制CachingConfigurerSupport
@@ -31,10 +29,11 @@ import java.util.Arrays;
  */
 @EnableCaching
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class CustomCacheConfig {
+public class CustomCacheConfig extends CachingConfigurerSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomCacheConfig.class);
 
+    @Override
     @Bean
     public KeyGenerator keyGenerator() {
         return (target, method, params) -> {
@@ -49,50 +48,47 @@ public class CustomCacheConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
         // 设置序列化
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
+        ObjectMapper om = new ObjectMapper();
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(om,Object.class);
         // 配置redisTemplate
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
-        // value序列化
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        RedisSerializer<?> stringSerializer = new StringRedisSerializer();
+        // key序列化
+        redisTemplate.setKeySerializer(stringSerializer);
         // value序列化
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         // Hash key序列化
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(stringSerializer);
         // Hash value序列化
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
 
-        // Check connection
+        // PING
         if (isConnected(redisTemplate)) {
-            LOG.info("Redis initialized at {}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
+            LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
         } else {
-            LOG.error("Redis connection failed! Please check the Redis server and configuration.");
+            LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
         }
         return redisTemplate;
     }
 
+
+    /**
+     * 验证 redis是否连接
+     *
+     * @return boolean
+     */
     private boolean isConnected(RedisTemplate<String, Object> redisTemplate) {
         try {
             String pong = redisTemplate.execute(RedisConnectionCommands::ping);
             return "PONG".equals(pong);
         } catch (Exception e) {
-            LOG.error("Redis connection failed: {}", e.getMessage());
+            LOG.error("redis连接失败 ==========> {}", e.getMessage());
             return false;
         }
     }
 
-    @Bean
-    public RedisCacheManager cacheManager(LettuceConnectionFactory lettuceConnectionFactory) {
-        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10))  // Example TTL
-                .disableCachingNullValues();  // Disable caching null values
-
-        return RedisCacheManager.builder(lettuceConnectionFactory)
-                .cacheDefaults(cacheConfig)
-                .build();
-    }
 }
