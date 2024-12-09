@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import io.lettuce.core.RedisConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -67,10 +68,28 @@ public class CustomCacheConfig extends CachingConfigurerSupport {
         redisTemplate.afterPropertiesSet();
 
         // PING
-        if (isConnected(redisTemplate)) {
-            LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
-        } else {
-            LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
+//        if (isConnected(redisTemplate)) {
+//            LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
+//        } else {
+//            System.exit(1);
+//            LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
+//        }
+        try {
+            if (!isConnected(redisTemplate)) {
+                LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
+                throw new RedisConnectionException("Redis连接失败");
+            }
+            LOG.info("Redis缓存初始化成功 - 主机: {}, 端口: {}",
+                    lettuceConnectionFactory.getHostName(),
+                    lettuceConnectionFactory.getPort());
+        } catch (RedisConnectionException e) {
+            LOG.error("Redis连接初始化错误: {}", e.getMessage(), e);
+            // 根据具体应用场景选择处理方式
+            // 1. 优雅降级
+            // 2. 使用本地缓存
+            // 3. 重试连接
+            // 4. 通知运维
+            throw new RedisConnectionException("Redis初始化失败", e);
         }
         return redisTemplate;
     }
