@@ -67,13 +67,6 @@ public class CustomCacheConfig extends CachingConfigurerSupport {
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
 
-        // PING
-//        if (isConnected(redisTemplate)) {
-//            LOG.info("redis缓存初始化->{}:{}", lettuceConnectionFactory.getHostName(), lettuceConnectionFactory.getPort());
-//        } else {
-//            System.exit(1);
-//            LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
-//        }
         try {
             if (!isConnected(redisTemplate)) {
                 LOG.error("redis连接失败！请检查redis客户端是否启动成功/redis配置信息是否正确");
