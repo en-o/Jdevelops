@@ -116,4 +116,23 @@ public class JdbcUtils {
             return new BeanPropertyRowMapper<>(resultActualType);
         }
     }
+
+
+
+
+    /**
+     * 获取并移除数组中的第一个元素。
+     *
+     * @param array 要操作的数组
+     * @return 第一个元素，如果数组为空则返回null
+     */
+    public static <T> T removeFirstElement(T[] array) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        T firstElement = array[0];
+        T[] newArray = (T[]) new Object[array.length - 1];
+        System.arraycopy(array, 1, newArray, 0, array.length - 1);
+        return firstElement;
+    }
 }
