@@ -2,13 +2,7 @@ package cn.tannn.jdevelops.jdectemplate.util;
 
 import cn.tannn.jdevelops.jdectemplate.enums.SelectType;
 import cn.tannn.jdevelops.result.request.Paging;
-import cn.tannn.jdevelops.result.response.PageResult;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.util.List;
-
-import static cn.tannn.jdevelops.jdectemplate.util.JdbcUtils.insertFirstElement;
 
 /**
  * 工具类 【InteriorJdbcTemplateUtil 这个的整理版本】
