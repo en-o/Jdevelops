@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
-import static cn.tannn.jdevelops.jdectemplate.util.JdbcTemplateUtil.getJdbcTemplateSql;
+import static cn.tannn.jdevelops.jdectemplate.util.InteriorJdbcTemplateUtil.getJdbcTemplateSql;
 
 /**
  * 动态代理
