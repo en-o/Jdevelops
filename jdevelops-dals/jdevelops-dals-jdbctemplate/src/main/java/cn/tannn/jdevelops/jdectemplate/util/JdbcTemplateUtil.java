@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jdectemplate.util;
 
 import cn.tannn.jdevelops.jdectemplate.enums.SelectType;
 import cn.tannn.jdevelops.result.request.Paging;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
