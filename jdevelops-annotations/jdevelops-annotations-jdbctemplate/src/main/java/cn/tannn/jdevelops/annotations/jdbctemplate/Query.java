@@ -19,7 +19,7 @@ public @interface Query {
 
 
     /**
-     * 吞掉异常 - [只是查询异常]
+     * 吞掉异常 - [只是查询异常] 目前跟内部的EmptyResultDataAccessException处理是一样的，后续考虑这个功能扩大比如返回一个空对象
      * @return 默认false
      */
     boolean tryc() default false;
