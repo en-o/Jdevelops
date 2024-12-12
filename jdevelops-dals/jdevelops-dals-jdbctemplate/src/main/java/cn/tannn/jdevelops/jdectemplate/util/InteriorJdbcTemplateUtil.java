@@ -15,8 +15,8 @@ import java.util.List;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/24 下午1:44
  */
-public class JdbcTemplateUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(JdbcTemplateUtil.class);
+public class InteriorJdbcTemplateUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(InteriorJdbcTemplateUtil.class);
 
     /**
      * 返回值为 String, Integer 基本类型时使用的方法
