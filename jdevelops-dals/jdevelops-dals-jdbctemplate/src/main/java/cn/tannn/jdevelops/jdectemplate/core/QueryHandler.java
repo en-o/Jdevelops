@@ -36,16 +36,18 @@ public class QueryHandler implements InvocationHandler {
             LOG.debug("jdbctemplate ========> Executing query for method: {}", method.getName());
             Annotation ann = method.getAnnotation(annotation);
             String sql = null;
+            boolean tryc = false;
 
             if (ann instanceof Query) {
                 Query q = (Query) ann;
                 sql = q.value();
+                tryc = q.tryc();
             }
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("jdbctemplate ========> query sql : {},  args:{}", sql,  args);
+                LOG.debug("jdbctemplate ========> query sql : {},  args:{}", sql, args);
             }
-            if ( sql == null) {
+            if (sql == null) {
                 return null;
             }
             // 返回对象 - List
@@ -54,19 +56,29 @@ public class QueryHandler implements InvocationHandler {
             String resultActualType;
             // 填充占位符，获取真实的sql
             Object resolverSql = AnnotationParse.newInstance().resolver(method, args, sql);
-            if(method.getGenericReturnType() instanceof ParameterizedType){
+            if (method.getGenericReturnType() instanceof ParameterizedType) {
                 ParameterizedType genericReturnType = (ParameterizedType) method.getGenericReturnType();
-                 resultRawType = genericReturnType.getRawType().getTypeName();
-                 resultActualType = genericReturnType.getActualTypeArguments()[0].getTypeName();
-            }else {
+                resultRawType = genericReturnType.getRawType().getTypeName();
+                resultActualType = genericReturnType.getActualTypeArguments()[0].getTypeName();
+            } else {
                 resultRawType = method.getGenericReturnType().getTypeName();
                 resultActualType = resultRawType;
             }
             if (LOG.isDebugEnabled()) {
-                LOG.debug("jdbctemplate ========> resultRawType : {},  resultActualType:{}", resultRawType,  resultActualType);
+                LOG.debug("jdbctemplate ========> resultRawType : {},  resultActualType:{}", resultRawType, resultActualType);
             }
-            return getJdbcTemplateSql(jdbcTemplate,
-                    resultRawType, resolverSql, resultActualType, args);
+            if (tryc) {
+                try {
+                    return getJdbcTemplateSql(jdbcTemplate,
+                            resultRawType, resolverSql, resultActualType, args);
+                } catch (Exception e) {
+                    LOG.error("主动抛出sql异常", e);
+                    return null;
+                }
+            }else {
+                return getJdbcTemplateSql(jdbcTemplate,
+                        resultRawType, resolverSql, resultActualType, args);
+            }
         }
         return null;
     }
