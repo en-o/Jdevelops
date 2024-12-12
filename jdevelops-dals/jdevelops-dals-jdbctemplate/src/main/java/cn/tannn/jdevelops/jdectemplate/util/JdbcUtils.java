@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,5 +135,23 @@ public class JdbcUtils {
         T[] newArray = (T[]) new Object[array.length - 1];
         System.arraycopy(array, 1, newArray, 0, array.length - 1);
         return firstElement;
+    }
+
+    /**
+     * 将元素插入到数组的第一个位置。
+     *
+     * @param originalArray 原始数组
+     * @param newElement    要插入的新元素
+     * @return 包含新元素的新数组
+     */
+    public static <T> T[] insertFirstElement(T[] originalArray, T newElement) {
+        if (originalArray == null) {
+            throw new IllegalArgumentException("Original array must not be null");
+        }
+        int length = originalArray.length;
+        T[] newArray = (T[]) Array.newInstance(originalArray.getClass().getComponentType(), length + 1);
+        System.arraycopy(originalArray, 0, newArray, 1, length);
+        newArray[0] = newElement;
+        return newArray;
     }
 }
