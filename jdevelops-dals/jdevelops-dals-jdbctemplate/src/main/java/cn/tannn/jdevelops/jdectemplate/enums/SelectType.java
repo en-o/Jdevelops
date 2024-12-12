@@ -18,7 +18,18 @@ public enum SelectType {
     PAGE,
 
     /**
-     * only data 查询
+     * MAP
      */
-    MAP
+    MAP,
+
+    /**
+     * 数组  这种[1,2,3]
+     */
+    ARRAYS,
+
+    /**
+     * 只有一个数据，如： 就返回一个 数字，字符串 [ARRAYS脱掉组只留一个]
+     */
+    ONLY;
+
 }
