@@ -17,6 +17,8 @@ public class JdbcTemplateUtil {
     /**
      * 查询
      *
+     * <> 如果sql自己组装好了参数，那args就可以不用传了， page除外必须传一个分页 </>
+     *
      * @param jdbcTemplate jdbcTemplate
      * @param selectType   查询方式{@link SelectType}
      * @param bean         数据类型
