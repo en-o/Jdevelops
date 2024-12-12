@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/21 下午3:07
  */
-@ConditionalOnWebApplication
 public class JdbcConfiguration {
 
     @Bean
