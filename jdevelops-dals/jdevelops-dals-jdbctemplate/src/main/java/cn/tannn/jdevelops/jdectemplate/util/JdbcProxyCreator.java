@@ -56,35 +56,37 @@ public class JdbcProxyCreator {
         // 代理设置
         beanDefinitions.forEach(beanDefinition -> {
             Object bean = AnnotationScanner.getBean(context, beanDefinition);
-            List<Field> fields = AnnotationScanner.findAnnotatedField(bean.getClass(), JdbcTemplate.class);
-            fields.forEach(field -> {
-                LOG.info("dals-jdbctemplate field ===> {}", field.getName());
-                try {
-                    // 为获取到的属性对象生成 jdbcTemplate代理
-                    // 属性对象
-                    Class<?> service = field.getType();
-                    // 属性对象全限定名称
-                    String serviceName = service.getCanonicalName();
-                    // 查询缓存 - 由于会被多个地方用到，所有这里处理以就行了，后面再用直接取
-                    Object proxy = cache_local.get(serviceName);
-                    if (proxy == null) {
-                        // 创建代理
-                        proxy = createQueryProxy(service, jdbcTemplate, annotation);
-                        cache_local.put(serviceName, proxy);
+            if (bean != null) {
+                List<Field> fields = AnnotationScanner.findAnnotatedField(bean.getClass(), JdbcTemplate.class);
+                fields.forEach(field -> {
+                    LOG.info("dals-jdbctemplate field ===> {}", field.getName());
+                    try {
+                        // 为获取到的属性对象生成 jdbcTemplate代理
+                        // 属性对象
+                        Class<?> service = field.getType();
+                        // 属性对象全限定名称
+                        String serviceName = service.getCanonicalName();
+                        // 查询缓存 - 由于会被多个地方用到，所有这里处理以就行了，后面再用直接取
+                        Object proxy = cache_local.get(serviceName);
+                        if (proxy == null) {
+                            // 创建代理
+                            proxy = createQueryProxy(service, jdbcTemplate, annotation);
+                            cache_local.put(serviceName, proxy);
+                        }
+                        // 使用的关键
+                        // 将实现对象加载到当前属性字段里去
+                        field.setAccessible(true);
+                        field.set(bean, proxy);
+                    } catch (IllegalAccessException e) {
+                        throw new JdbcTemplateException(e, 6, "proxy_create_error");
                     }
-                    // 使用的关键
-                    // 将实现对象加载到当前属性字段里去
-                    field.setAccessible(true);
-                    field.set(bean, proxy);
-                } catch (IllegalAccessException  e) {
-                    throw new JdbcTemplateException(e, 6, "proxy_create_error");
-                }
-            });
+                });
+            } else {
+                LOG.warn("beanDefinition find error {}", beanDefinition.getBeanClassName());
+            }
         });
 
     }
-
-
 
 
 }
