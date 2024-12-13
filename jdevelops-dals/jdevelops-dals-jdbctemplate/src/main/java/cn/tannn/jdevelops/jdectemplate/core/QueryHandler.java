@@ -14,7 +14,8 @@ import java.lang.reflect.ParameterizedType;
 import static cn.tannn.jdevelops.jdectemplate.util.InteriorJdbcTemplateUtil.getJdbcTemplateSql;
 
 /**
- * 动态代理
+ * 动态代理 - 完成 jdbcTemplate query请求的处理
+ * <p> InvocationHandler 是Java中用于实现动态代理的一个接口 </p>
  */
 public class QueryHandler implements InvocationHandler {
 
