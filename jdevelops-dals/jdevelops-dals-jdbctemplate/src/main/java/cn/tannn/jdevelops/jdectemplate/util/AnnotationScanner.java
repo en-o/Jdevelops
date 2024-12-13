@@ -149,6 +149,7 @@ public class AnnotationScanner {
         Object bean = null;
         try {
             String beanName = beanDefinition.getBeanClassName();
+            // beanDefinition.getSource().toString().contains("test-classes")
             if (applicationContext.containsBean(beanName)) {
                 // 如果该名称在上下文中已注册,则使用该名称获取实例
                 bean = applicationContext.getBean(beanName);
