@@ -181,4 +181,16 @@ public class AnnotationScanner {
             throw new JdbcTemplateException(e, 12, "class_not_exists");
         }
     }
+
+    /**
+     * 判断类是否是测试类
+      * @param clazz clazz
+     * @return true 是
+     */
+    private static boolean isTestClass(Class<?> clazz) {
+        // 判断是否有 Spring Boot 测试相关的注解
+        return clazz.isAnnotationPresent(org.springframework.boot.test.context.SpringBootTest.class) ||
+                clazz.isAnnotationPresent(org.junit.jupiter.api.Test.class) ||
+                clazz.isAnnotationPresent(org.springframework.boot.test.context.TestConfiguration.class);
+    }
 }
