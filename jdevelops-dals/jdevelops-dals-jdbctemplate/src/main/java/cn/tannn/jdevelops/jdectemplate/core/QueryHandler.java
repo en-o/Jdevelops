@@ -21,11 +21,17 @@ public class QueryHandler implements InvocationHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueryHandler.class);
 
-
+    /**
+     * 目标对象，即实际执行方法的对象
+     */
+    private final Object target;
     private final JdbcTemplate jdbcTemplate;
     private final Class<? extends Annotation> annotation;
 
-    public QueryHandler(JdbcTemplate jdbcTemplate, Class<? extends Annotation> annotation) {
+    public QueryHandler(Object target
+            , JdbcTemplate jdbcTemplate
+            , Class<? extends Annotation> annotation) {
+        this.target = target;
         this.jdbcTemplate = jdbcTemplate;
         this.annotation = annotation;
     }
@@ -80,7 +86,8 @@ public class QueryHandler implements InvocationHandler {
                 return getJdbcTemplateSql(jdbcTemplate,
                         resultRawType, resolverSql, resultActualType, args);
             }
+        }else {
+            return method.invoke(target, args);
         }
-        return null;
     }
 }

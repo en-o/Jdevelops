@@ -35,7 +35,7 @@ public class JdbcTemplateException extends RuntimeException {
         this.msg = message;
     }
 
-    public JdbcTemplateException(Integer code, String message, Throwable cause) {
+    public JdbcTemplateException(Throwable cause, Integer code, String message) {
         super(message, cause);
         this.code = code;
         this.msg = message;
