@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -25,10 +26,11 @@ import java.util.Set;
  */
 public class AnnotationScanner {
     private static final Logger LOG = LoggerFactory.getLogger(JdbcProxyCreator.class);
+
     /**
      * 查找所有带有指定注解的类。
      *
-     * @param basePackage      要扫描的基础包
+     * @param basePackage       要扫描的基础包
      * @param annotationClasses 要查找的注解类列表
      * @return 包含注解的类集合
      */
@@ -43,11 +45,11 @@ public class AnnotationScanner {
     }
 
 
-
     /**
      * 查找所有带有指定注解的类。
      * <p> 默认扫描{@link Controller} {@link Service} {@link Component} </p>
-     * @param basePackage      要扫描的基础包
+     *
+     * @param basePackage 要扫描的基础包
      * @return 包含注解的类集合
      */
     public static Set<Class<?>> defClassesAnnotatedWithAny(String basePackage) {
@@ -63,7 +65,7 @@ public class AnnotationScanner {
     /**
      * 查找所有带有指定注解的字段。
      *
-     * @param basePackage      要扫描的基础包
+     * @param basePackage       要扫描的基础包
      * @param annotationClasses 要查找的注解类列表
      * @return 包含注解的字段集合
      */
@@ -100,8 +102,6 @@ public class AnnotationScanner {
     }
 
 
-
-
     /**
      * 扫描指定路径下的类 （必须要是 spring bean里的容器
      *
@@ -114,11 +114,18 @@ public class AnnotationScanner {
         // 扫描指定路径 , true 扫描spring 注解 @Component, @Repository, @Service, and @Controller
         ClassPathScanningCandidateComponentProvider provider =
                 new ClassPathScanningCandidateComponentProvider(false);
-        // rpc的接口调用一般只会出现在这几个spring注解之下, 如何自定义注解的会加大开发复杂度
+        // 调用一般只会出现在这几个spring注解之下, 如何自定义注解的会加大开发复杂度
         provider.addIncludeFilter(new AnnotationTypeFilter(Component.class));
         provider.addIncludeFilter(new AnnotationTypeFilter(Service.class));
         provider.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
         provider.addIncludeFilter(new AnnotationTypeFilter(Bean.class));
+        provider.addIncludeFilter(new AnnotationTypeFilter(Configuration.class));
+        try {
+            provider.addIncludeFilter(new AnnotationTypeFilter(org.springframework.boot.test.context.SpringBootTest.class));
+            provider.addIncludeFilter(new AnnotationTypeFilter(org.springframework.boot.test.context.TestConfiguration.class));
+        } catch (Exception e) {
+            LOG.warn("no import spring-boot-starter-test");
+        }
         for (String scanPackage : scanPackages) {
             Set<BeanDefinition> candidateComponents = provider.findCandidateComponents(scanPackage);
             if (candidateComponents.isEmpty()) {
@@ -140,18 +147,22 @@ public class AnnotationScanner {
      */
     public static Object getBean(ApplicationContext applicationContext, BeanDefinition beanDefinition) {
         Object bean = null;
-        String beanName = beanDefinition.getBeanClassName();
-        if (applicationContext.containsBean(beanName)) {
-            // 如果该名称在上下文中已注册,则使用该名称获取实例
-            bean = applicationContext.getBean(beanName);
-        } else {
-            // 否则,使用 getBeanNamesForType 获取该类型的所有 Bean 名称
-            String[] beanNames = applicationContext
-                    .getBeanNamesForType(getBeanClassFromDefinition(beanDefinition));
-            if (beanNames.length > 0) {
-                // 如果存在该类型的 Bean,则使用第一个名称获取实例
-                bean = applicationContext.getBean(beanNames[0]);
+        try {
+            String beanName = beanDefinition.getBeanClassName();
+            if (applicationContext.containsBean(beanName)) {
+                // 如果该名称在上下文中已注册,则使用该名称获取实例
+                bean = applicationContext.getBean(beanName);
+            } else {
+                // 否则,使用 getBeanNamesForType 获取该类型的所有 Bean 名称
+                String[] beanNames = applicationContext
+                        .getBeanNamesForType(getBeanClassFromDefinition(beanDefinition));
+                if (beanNames.length > 0) {
+                    // 如果存在该类型的 Bean,则使用第一个名称获取实例
+                    bean = applicationContext.getBean(beanNames[0]);
+                }
             }
+        } catch (Exception e) {
+            LOG.error("jdbc proxy scanner getBean error", e);
         }
         return bean;
     }
