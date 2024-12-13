@@ -1,7 +1,10 @@
 package cn.tannn.jdevelops.annotations.jdbctemplate;
 
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 当前功能的主注解，用于配合 查询 删除 更新 新增 注解
