@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,6 @@ public class JdbcProxyCreator {
      * 创建jdbc查询代理
      */
     public static void jdbcSelectProxy(ApplicationContext context
-            , Class<? extends Annotation> annotation
             , org.springframework.jdbc.core.JdbcTemplate jdbcTemplate
             , String basePackage) {
 
@@ -71,7 +69,7 @@ public class JdbcProxyCreator {
                         Object proxy = cache_local.get(serviceName);
                         if (proxy == null) {
                             // 创建代理
-                            proxy = createQueryProxy(service, jdbcTemplate, annotation);
+                            proxy = createQueryProxy(service, jdbcTemplate);
                             cache_local.put(serviceName, proxy);
                         }
                         // 使用的关键

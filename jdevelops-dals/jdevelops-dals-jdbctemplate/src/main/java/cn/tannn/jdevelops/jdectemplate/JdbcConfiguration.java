@@ -26,7 +26,6 @@ public class JdbcConfiguration {
             , JdbcTemplate jdbcTemplate
             , JdbcTemplateConfig jdbcTemplateConfig) {
         return x -> JdbcProxyCreator.jdbcSelectProxy(context
-                , Query.class
                 , jdbcTemplate, jdbcTemplateConfig.getBasePackage());
     }
 
