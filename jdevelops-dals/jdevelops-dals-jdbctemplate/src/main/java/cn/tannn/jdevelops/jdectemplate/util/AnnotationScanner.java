@@ -25,7 +25,7 @@ import java.util.Set;
  * 注解扫描器
  */
 public class AnnotationScanner {
-    private static final Logger LOG = LoggerFactory.getLogger(JdbcProxyCreator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AnnotationScanner.class);
 
     /**
      * 查找所有带有指定注解的类。
@@ -120,12 +120,6 @@ public class AnnotationScanner {
         provider.addIncludeFilter(new AnnotationTypeFilter(Controller.class));
         provider.addIncludeFilter(new AnnotationTypeFilter(Bean.class));
         provider.addIncludeFilter(new AnnotationTypeFilter(Configuration.class));
-        try {
-            provider.addIncludeFilter(new AnnotationTypeFilter(org.springframework.boot.test.context.SpringBootTest.class));
-            provider.addIncludeFilter(new AnnotationTypeFilter(org.springframework.boot.test.context.TestConfiguration.class));
-        } catch (Exception e) {
-            LOG.warn("no import spring-boot-starter-test");
-        }
         for (String scanPackage : scanPackages) {
             Set<BeanDefinition> candidateComponents = provider.findCandidateComponents(scanPackage);
             if (candidateComponents.isEmpty()) {

@@ -1,7 +1,8 @@
-package cn.tannn.jdevelops.jdectemplate.util;
+package cn.tannn.jdevelops.jdectemplate.core;
 
 import cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate;
 import cn.tannn.jdevelops.jdectemplate.exception.JdbcTemplateException;
+import cn.tannn.jdevelops.jdectemplate.util.AnnotationScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
