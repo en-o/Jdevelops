@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 
@@ -85,7 +86,7 @@ public class JdbcUtils {
         if (resultActualType.equals(Integer.class.getName())) {
             return new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(Class.forName(resultActualType));
+            return new DataClassRowMapper<>(Class.forName(resultActualType));
         }
     }
 
@@ -99,7 +100,7 @@ public class JdbcUtils {
         if (resultActualType.isAssignableFrom(Integer.class)) {
             return new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(resultActualType);
+            return new DataClassRowMapper<>(resultActualType);
         }
     }
 
@@ -114,7 +115,7 @@ public class JdbcUtils {
             // 强制转换为泛型类型 T
             return (RowMapper<T>) new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(resultActualType);
+            return new DataClassRowMapper<>(resultActualType);
         }
     }
 
