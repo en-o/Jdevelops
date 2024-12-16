@@ -3,7 +3,8 @@ package cn.tannn.jdevelops.jdectemplate.util;
 import cn.tannn.jdevelops.jdectemplate.util.bean.TestDemoImpl;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MethodUtilsTest {
 
