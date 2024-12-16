@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.lang.annotation.Annotation;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -21,7 +22,7 @@ public class JdbcProxyMethodInterceptor implements InvocationHandler {
     /**
      * 目标对象，即实际执行方法的对象
      */
-    private final Object target;
+    private final Class<?> target;
     private final JdbcTemplate jdbcTemplate;
     private final Class<? extends Annotation> annotation;
 
@@ -30,7 +31,7 @@ public class JdbcProxyMethodInterceptor implements InvocationHandler {
      * @param jdbcTemplate {@link JdbcTemplate}
      * @param annotation 目标注解 {@link Query}
      */
-    public JdbcProxyMethodInterceptor(Object target
+    public JdbcProxyMethodInterceptor(Class<?> target
             , JdbcTemplate jdbcTemplate
             , Class<? extends Annotation> annotation) {
         this.target = target;
@@ -46,7 +47,8 @@ public class JdbcProxyMethodInterceptor implements InvocationHandler {
         // todo 后期在这里处理 query install delete update 的选择
         if(ann ==  null){
             LOG.info("正常方法：{}，不需要代理",method.getName());
-            return method.invoke(target, args);
+            Object object = target.getDeclaredConstructor().newInstance();
+            return target.getMethod(method.getName()).invoke(object, args);
         }else if (ann instanceof Query query) {
             return ProxyCoreFun.query(query, jdbcTemplate, method, args);
         }else {
