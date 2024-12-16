@@ -13,8 +13,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JdbcTemplateConfig {
 
     /**
-     * 扫描[实体类包]包路径[包含子路径] e.g com.text [他会扫描这个路径下所有的类包括子路径的类]
-     * <p> 扫描被标记{@link cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate}的类
+     * 扫描包路径[包含子路径] e.g com.text [他会扫描这个路径下所有的类包括子路径的类]
+     * <p> 扫描被标记{@link cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate}的字段
+     * <p> 建议扫描直接项目根包
      */
     String basePackage;
 

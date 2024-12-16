@@ -1,9 +1,10 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,7 +85,7 @@ public class JdbcUtils {
         if (resultActualType.equals(Integer.class.getName())) {
             return new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(Class.forName(resultActualType));
+            return new DataClassRowMapper<>(Class.forName(resultActualType));
         }
     }
 
@@ -98,7 +99,7 @@ public class JdbcUtils {
         if (resultActualType.isAssignableFrom(Integer.class)) {
             return new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(resultActualType);
+            return new DataClassRowMapper<>(resultActualType);
         }
     }
 
@@ -113,7 +114,44 @@ public class JdbcUtils {
             // 强制转换为泛型类型 T
             return (RowMapper<T>) new SingleColumnRowMapper<>(Integer.class);
         } else {
-            return new BeanPropertyRowMapper<>(resultActualType);
+            return new DataClassRowMapper<>(resultActualType);
         }
+    }
+
+
+
+
+    /**
+     * 获取并移除数组中的第一个元素。
+     *
+     * @param array 要操作的数组
+     * @return 第一个元素，如果数组为空则返回null
+     */
+    public static <T> T removeFirstElement(T[] array) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+        T firstElement = array[0];
+        T[] newArray = (T[]) new Object[array.length - 1];
+        System.arraycopy(array, 1, newArray, 0, array.length - 1);
+        return firstElement;
+    }
+
+    /**
+     * 将元素插入到数组的第一个位置。
+     *
+     * @param originalArray 原始数组
+     * @param newElement    要插入的新元素
+     * @return 包含新元素的新数组
+     */
+    public static <T> T[] insertFirstElement(T[] originalArray, T newElement) {
+        if (originalArray == null) {
+            throw new IllegalArgumentException("Original array must not be null");
+        }
+        int length = originalArray.length;
+        T[] newArray = (T[]) Array.newInstance(originalArray.getClass().getComponentType(), length + 1);
+        System.arraycopy(originalArray, 0, newArray, 1, length);
+        newArray[0] = newElement;
+        return newArray;
     }
 }

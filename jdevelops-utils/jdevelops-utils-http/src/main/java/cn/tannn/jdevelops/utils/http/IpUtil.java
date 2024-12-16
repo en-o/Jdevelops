@@ -9,7 +9,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -227,4 +232,127 @@ public class IpUtil {
     public static String getIpAddr() throws IOException {
         return InetAddress.getLocalHost().getHostAddress();
     }
+
+    /**
+     * ipv4 正则
+     */
+    private static final Pattern IPV4_PATTERN =
+            Pattern.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+    /**
+     * ip段 正则
+     */
+    private static final Pattern IP_RANGE_PATTERN =
+            Pattern.compile("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))-((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([0-9]{1,3}))$");
+
+    /**
+     * IP段解析
+     * @param ipRange ip段 [e.g 192.168.1.1-10]
+     * @return ip 组
+     * @throws UnknownHostException UnknownHostException
+     */
+    public static List<String> parseIpRange(String ipRange) throws UnknownHostException {
+        List<String> ipList = new ArrayList<>();
+
+        // 分割IP段字符串
+        String[] parts = ipRange.split("-");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid IP range format");
+        }
+
+        String startIpStr = parts[0].trim();
+        String endPart = parts[1].trim();
+
+        InetAddress startIp = InetAddress.getByName(startIpStr);
+        byte[] startBytes = startIp.getAddress();
+
+        int endIndex;
+        try {
+            // 尝试将endPart解析为整数，表示最后一个字节的值
+            endIndex = Integer.parseInt(endPart);
+            if (endIndex < 0 || endIndex > 255) {
+                throw new IllegalArgumentException("End index out of valid range (0-255)");
+            }
+            // 构造结束IP的字节数组
+            byte[] endBytes = Arrays.copyOf(startBytes, startBytes.length);
+            endBytes[endBytes.length - 1] = (byte) endIndex;
+            InetAddress endIp = InetAddress.getByAddress(endBytes);
+
+            long startLong = ipToLong(startIp);
+            long endLong = ipToLong(endIp);
+
+            if (startLong > endLong) {
+                throw new IllegalArgumentException("Start IP must be less than or equal to End IP");
+            }
+
+            for (long i = startLong; i <= endLong; i++) {
+                ipList.add(longToIp(i));
+            }
+        } catch (NumberFormatException e) {
+            // 如果endPart不是整数，则尝试将其解析为完整的IP地址
+            InetAddress endIp = InetAddress.getByName(endPart);
+            byte[] endBytes = endIp.getAddress();
+
+            long startLong = ipToLong(startIp);
+            long endLong = ipToLong(endIp);
+
+            if (startLong > endLong) {
+                throw new IllegalArgumentException("Start IP must be less than or equal to End IP");
+            }
+
+            for (long i = startLong; i <= endLong; i++) {
+                ipList.add(longToIp(i));
+            }
+        }
+        return ipList;
+    }
+
+
+    /**
+     * 验证ip
+     * @param ip ip
+     * @return true 正确的ip
+     */
+    public static boolean isValidIpV4(String ip) {
+        return IPV4_PATTERN.matcher(ip).matches();
+    }
+
+    /**
+     * 验证是ip还是ip段
+     * @param input ip/ip段
+     * @return 0:ip,1:ip段,2:非法输入
+     */
+    public static int validateIpOrRange(String input) {
+        Matcher ipMatcher = IPV4_PATTERN.matcher(input);
+        Matcher rangeMatcher = IP_RANGE_PATTERN.matcher(input);
+        if (ipMatcher.matches()) {
+            return 0;
+        } else if (rangeMatcher.matches()) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    private static long ipToLong(InetAddress ip) {
+        byte[] octets = ip.getAddress();
+        long result = 0;
+        for (byte b : octets) {
+            result <<= 8;
+            result |= b & 0xff;
+        }
+        return result;
+    }
+
+    private static String longToIp(long ip) {
+        StringBuilder sb = new StringBuilder(15);
+        for (int i = 0; i < 4; i++) {
+            sb.insert(0, Long.toString(ip & 0xff));
+            if (i < 3) {
+                sb.insert(0, '.');
+            }
+            ip >>= 8;
+        }
+        return sb.toString();
+    }
+
 }
