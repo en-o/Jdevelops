@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.jdectemplate;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
 import cn.tannn.jdevelops.jdectemplate.config.JdbcTemplateConfig;
 import cn.tannn.jdevelops.jdectemplate.core.JdbcProxyCreator;
 import org.springframework.boot.ApplicationRunner;
