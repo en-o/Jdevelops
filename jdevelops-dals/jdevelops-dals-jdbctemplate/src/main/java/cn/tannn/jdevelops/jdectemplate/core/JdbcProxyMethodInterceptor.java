@@ -26,7 +26,7 @@ public class JdbcProxyMethodInterceptor implements InvocationHandler {
     private final Class<? extends Annotation> annotation;
 
     /**
-     * @param target 目标类
+     * @param target 目标类 - 实现类，用于 接口和实现类共存的时候对其他方法的跳过
      * @param jdbcTemplate {@link JdbcTemplate}
      * @param annotation 目标注解 {@link Query}
      */
