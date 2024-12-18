@@ -469,7 +469,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> in(Expression<? extends U> expression, Object... value) {
-        predicates.add(expression.in(value));
+        if (value[0] instanceof List vals) {
+            predicates.add(expression.in(vals.toArray()));
+        }else {
+            predicates.add(expression.in(value));
+        }
         return this;
     }
 
@@ -512,7 +516,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> notIn(Expression<? extends U> expression, Object... value) {
-        predicates.add(expression.in(value).not());
+        if (value[0] instanceof List vals) {
+            predicates.add(expression.in(vals.toArray()).not());
+        }else {
+            predicates.add(expression.in(value).not());
+        }
         return this;
     }
 

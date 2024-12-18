@@ -192,7 +192,11 @@ public class JpaUtils {
                     return expression.in(value);
                 }
             case NOTIN:
-                return builder.not(expression.in(value));
+                if (value[0] instanceof List vals) {
+                    return builder.not(expression.in(vals.toArray()));
+                } else {
+                    return builder.not(expression.in(value));
+                }
             default:
                 LOG.warn("占不支持的表达式: {}", operator);
                 return null;
