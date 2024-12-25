@@ -9,8 +9,12 @@ package cn.tannn.jdevelops.log.audit.constant;
  */
 public enum UniqueIndexType {
     MYSQL,
-
     ES,
-
-
+    SQLSERVER,
+    ORACLE,
+    POSTGRESQL ,
+    REDIS,
+    MONGODB,
+    SQLITE,
+    DB2,
 }
