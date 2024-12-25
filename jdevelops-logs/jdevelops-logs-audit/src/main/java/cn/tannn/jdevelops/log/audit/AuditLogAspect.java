@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.log.audit;
 
 import cn.tannn.jdevelops.log.audit.annotations.AuditLog;
-
 import cn.tannn.jdevelops.log.audit.service.AuditSave;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

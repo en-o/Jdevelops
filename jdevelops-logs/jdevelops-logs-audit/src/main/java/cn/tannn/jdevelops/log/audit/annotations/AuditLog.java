@@ -1,8 +1,9 @@
 package cn.tannn.jdevelops.log.audit.annotations;
 
-import com.sunway.rdpi.logs.constant.AuditLogDescription;
-import com.sunway.rdpi.logs.constant.OperationalAuditType;
-import com.sunway.rdpi.logs.constant.OperationalType;
+
+import cn.tannn.jdevelops.log.audit.constant.AuditLogDescription;
+import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
+import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 
 import java.lang.annotation.*;
 
