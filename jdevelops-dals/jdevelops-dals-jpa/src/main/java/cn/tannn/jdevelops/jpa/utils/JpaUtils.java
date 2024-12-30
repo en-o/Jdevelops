@@ -335,7 +335,11 @@ public class JpaUtils {
             } else if (result.getOperator() == Predicate.BooleanOperator.OR
                     && current.getOperator() == Predicate.BooleanOperator.AND) {
                 // 前面 or 后面 and,  result, current 用result的or连接 并重置为current的and
-                result = criteriaBuilder.and(criteriaBuilder.or(result, current));
+                if(result.getExpressions().size()>1){
+                    result = criteriaBuilder.and(result, current);
+                }else {
+                    result = criteriaBuilder.and(criteriaBuilder.or(result, current));
+                }
             } else if (result.getOperator() == Predicate.BooleanOperator.AND
                     && current.getOperator() == Predicate.BooleanOperator.OR) {
                 // 跟第三个判断反着来
