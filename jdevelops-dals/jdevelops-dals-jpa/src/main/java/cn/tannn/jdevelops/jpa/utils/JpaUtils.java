@@ -332,8 +332,7 @@ public class JpaUtils {
                     && current.getOperator() == Predicate.BooleanOperator.OR) {
                 // 前后都是or
                 result = criteriaBuilder.or(result, current);
-            } else if (result.getOperator() == Predicate.BooleanOperator.OR || current.getOperator() == Predicate.BooleanOperator.OR) {
-                // 前后有一个是 OR，且另一个是 AND，则先将 OR 和 AND 的条件结合，再使用 AND
+            } else if (current.getOperator() == Predicate.BooleanOperator.OR) {
                 result = criteriaBuilder.and(criteriaBuilder.or(result, current));
             }else {
                 // 默认and
