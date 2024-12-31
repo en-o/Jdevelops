@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.jwt.standalone.util;
 
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.module.LoginJwtExtendInfo;
+import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -22,5 +23,16 @@ public class UserUtil {
     public static LoginJwtExtendInfo getUserInfo(HttpServletRequest request) {
         String token = JwtWebUtil.getToken(request);
         return JwtService.getLoginJwtExtendInfoExpires(token);
+    }
+
+    /**
+     * 获得 LoginJwtExtendInfo
+     *
+     * @param request HttpServletRequest
+     * @return LoginJwtExtendInfo
+     */
+    public static SignEntity<LoginJwtExtendInfo> getSignInfo(HttpServletRequest request) {
+        return JwtWebUtil.getTokenBySignEntity(request,
+                LoginJwtExtendInfo.class);
     }
 }

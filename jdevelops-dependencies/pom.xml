@@ -249,7 +249,11 @@
                 <artifactId>jdevelops-logs-p6spy</artifactId>
                 <version>${jdevelops.log.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-logs-audit</artifactId>
+                <version>${jdevelops.log.version}</version>
+            </dependency>
 
             <!-- monitor -->
             <dependency>

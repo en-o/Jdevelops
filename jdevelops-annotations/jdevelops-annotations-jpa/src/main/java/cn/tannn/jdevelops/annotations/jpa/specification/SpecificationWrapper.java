@@ -61,14 +61,13 @@ public class SpecificationWrapper<B> {
         }
         SpecificationWrapper<B> specification = new SpecificationWrapper<>(root, query, builder);
         CriteriaBuilder newBuilder = specification.getBuilder();
-        // 根据isConnect参数选择创建conjunction（and）或disjunction（or）谓词
-        Predicate predicate = isConnect ? newBuilder.conjunction() : newBuilder.disjunction();
         // 执行操作符提供的逻辑，用于构建查询条件 (operator 里面是处理过程，specification 是数据体
         operator.accept(specification);
-        // 线程安全地将构建的谓词添加到predicates列表中
-        synchronized (predicates) {
-            predicate.getExpressions().addAll(specification.getPredicates());
-            predicates.add(predicate);
+        List<Predicate> ps = specification.getPredicates();
+        if(isConnect){
+            predicates.add( newBuilder.and(ps.toArray(new Predicate[0])));
+        }else {
+            predicates.add( newBuilder.or(ps.toArray(new Predicate[0])));
         }
         return this;
     }
@@ -469,7 +468,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> in(Expression<? extends U> expression, Object... value) {
-        predicates.add(expression.in(value));
+        if (value[0] instanceof List vals) {
+            predicates.add(expression.in(vals.toArray()));
+        }else {
+            predicates.add(expression.in(value));
+        }
         return this;
     }
 
@@ -512,7 +515,11 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> notIn(Expression<? extends U> expression, Object... value) {
-        predicates.add(expression.in(value).not());
+        if (value[0] instanceof List vals) {
+            predicates.add(expression.in(vals.toArray()).not());
+        }else {
+            predicates.add(expression.in(value).not());
+        }
         return this;
     }
 
