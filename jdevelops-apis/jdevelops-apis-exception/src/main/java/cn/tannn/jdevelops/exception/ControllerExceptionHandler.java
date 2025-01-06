@@ -65,6 +65,12 @@ public class ControllerExceptionHandler implements ResponseBodyAdvice<Object> {
         return ExceptionResultWrap.result(e.getCode(), e.getErrorMessage());
     }
 
+    /**
+     * spring data 处理
+     * @param ex
+     * @param response
+     * @return
+     */
     @ExceptionHandler(org.springframework.dao.DataAccessException.class)
     public Object handleSQLException(org.springframework.dao.DataAccessException ex, HttpServletResponse response) {
         log.error("SQL exception occurred");
