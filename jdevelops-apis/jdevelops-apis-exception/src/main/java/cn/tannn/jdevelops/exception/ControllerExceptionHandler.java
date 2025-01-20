@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,12 +69,12 @@ public class ControllerExceptionHandler implements ResponseBodyAdvice<Object> {
 
     /**
      * spring data 处理
-     * @param ex
-     * @param response
-     * @return
+     * @param ex sql
+     * @param response HttpServletResponse
+     * @return ExceptionResultWrap
      */
-    @ExceptionHandler(org.springframework.dao.DataAccessException.class)
-    public Object handleSQLException(org.springframework.dao.DataAccessException ex, HttpServletResponse response) {
+    @ExceptionHandler({DataAccessException.class, SQLException.class})
+    public Object handleSQLException(DataAccessException ex, HttpServletResponse response) {
         log.error("SQL exception occurred");
         responseConfig(response, ex, SYS_ERROR.getCode());
         return ExceptionResultWrap.result(SYS_ERROR.getCode(), "数据库操作失败，请稍后再试");
