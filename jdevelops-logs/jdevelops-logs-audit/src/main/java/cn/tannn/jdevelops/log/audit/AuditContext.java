@@ -11,9 +11,6 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.*;
-import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 
@@ -23,13 +20,6 @@ import java.util.Arrays;
  * @author <a href="https://tannn.cn/">tan</a>
  * @date 2024/12/23 12:00
  */
-@Getter
-@Setter
-@ToString
-@Slf4j
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
 public class AuditContext {
 
     /**
@@ -92,6 +82,23 @@ public class AuditContext {
      */
     private String operatorName;
 
+
+    public AuditContext() {
+    }
+
+    public AuditContext(String auditType, String operationalType, String uniqueCode, String uniqueIndex, UniqueIndexType uniqueIndexType, String dataTitle, JSONObject originalData, JSONObject targetData, String description, String operatorNo, String operatorName) {
+        this.auditType = auditType;
+        this.operationalType = operationalType;
+        this.uniqueCode = uniqueCode;
+        this.uniqueIndex = uniqueIndex;
+        this.uniqueIndexType = uniqueIndexType;
+        this.dataTitle = dataTitle;
+        this.originalData = originalData;
+        this.targetData = targetData;
+        this.description = description;
+        this.operatorNo = operatorNo;
+        this.operatorName = operatorName;
+    }
 
 
 
@@ -193,6 +200,126 @@ public class AuditContext {
         this.originalData = JSONObject.parseObject(
                 JSON.toJSONString(original, filter)
         );
+        return this;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        return "AuditContext{" +
+                "auditType='" + auditType + '\'' +
+                ", operationalType='" + operationalType + '\'' +
+                ", uniqueCode='" + uniqueCode + '\'' +
+                ", uniqueIndex='" + uniqueIndex + '\'' +
+                ", uniqueIndexType=" + uniqueIndexType +
+                ", dataTitle='" + dataTitle + '\'' +
+                ", originalData=" + originalData +
+                ", targetData=" + targetData +
+                ", description='" + description + '\'' +
+                ", operatorNo='" + operatorNo + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                '}';
+    }
+
+
+    public String getAuditType() {
+        return auditType;
+    }
+
+    public AuditContext setAuditType(String auditType) {
+        this.auditType = auditType;
+        return this;
+    }
+
+    public String getOperationalType() {
+        return operationalType;
+    }
+
+    public AuditContext setOperationalType(String operationalType) {
+        this.operationalType = operationalType;
+        return this;
+    }
+
+    public String getUniqueCode() {
+        return uniqueCode;
+    }
+
+    public AuditContext setUniqueCode(String uniqueCode) {
+        this.uniqueCode = uniqueCode;
+        return this;
+    }
+
+    public String getUniqueIndex() {
+        return uniqueIndex;
+    }
+
+    public AuditContext setUniqueIndex(String uniqueIndex) {
+        this.uniqueIndex = uniqueIndex;
+        return this;
+    }
+
+    public UniqueIndexType getUniqueIndexType() {
+        return uniqueIndexType;
+    }
+
+    public AuditContext setUniqueIndexType(UniqueIndexType uniqueIndexType) {
+        this.uniqueIndexType = uniqueIndexType;
+        return this;
+    }
+
+    public String getDataTitle() {
+        return dataTitle;
+    }
+
+    public AuditContext setDataTitle(String dataTitle) {
+        this.dataTitle = dataTitle;
+        return this;
+    }
+
+    public JSONObject getOriginalData() {
+        return originalData;
+    }
+
+    public AuditContext setOriginalData(JSONObject originalData) {
+        this.originalData = originalData;
+        return this;
+    }
+
+    public JSONObject getTargetData() {
+        return targetData;
+    }
+
+    public AuditContext setTargetData(JSONObject targetData) {
+        this.targetData = targetData;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public AuditContext setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getOperatorNo() {
+        return operatorNo;
+    }
+
+    public AuditContext setOperatorNo(String operatorNo) {
+        this.operatorNo = operatorNo;
+        return this;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public AuditContext setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
         return this;
     }
 }

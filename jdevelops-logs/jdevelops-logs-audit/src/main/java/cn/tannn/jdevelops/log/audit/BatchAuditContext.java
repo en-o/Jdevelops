@@ -1,28 +1,20 @@
 package cn.tannn.jdevelops.log.audit;
 
 import cn.tannn.jdevelops.log.audit.annotations.AuditLog;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
-@Slf4j
-@NoArgsConstructor
-@Accessors(chain = true)
+
 public class BatchAuditContext {
     private final List<AuditContext> contexts = new ArrayList<>();
     private String auditType;
     private String operationType;
     private String description;
 
+    public BatchAuditContext() {
+    }
 
     public BatchAuditContext(String auditType, String operationType, String description) {
         this.auditType = auditType;
@@ -42,5 +34,47 @@ public class BatchAuditContext {
         context.setOperationalType(this.operationType);
         context.setDescription(this.description);
         contexts.add(context);
+    }
+
+    public List<AuditContext> getContexts() {
+        return contexts;
+    }
+
+
+    public String getAuditType() {
+        return auditType;
+    }
+
+    public BatchAuditContext setAuditType(String auditType) {
+        this.auditType = auditType;
+        return this;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public BatchAuditContext setOperationType(String operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BatchAuditContext setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "BatchAuditContext{" +
+                "contexts=" + contexts +
+                ", auditType='" + auditType + '\'' +
+                ", operationType='" + operationType + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
