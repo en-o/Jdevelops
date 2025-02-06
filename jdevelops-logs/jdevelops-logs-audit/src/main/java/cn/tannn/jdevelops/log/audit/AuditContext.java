@@ -99,7 +99,6 @@ public class AuditContext {
     }
 
 
-
     /**
      * @param auditType       {@link OperationalAuditType}
      * @param operationalType {@link OperationalType}
@@ -129,7 +128,6 @@ public class AuditContext {
     }
 
 
-
     /**
      * 追加操作者
      */
@@ -150,12 +148,13 @@ public class AuditContext {
 
     /**
      * 设置： targetData
-     * @param target 数据bean
+     *
+     * @param target      数据bean
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext targetJson(Object target, String... filterField) {
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if(filterField.length>0){
+        if (filterField.length > 0) {
             filter.getExcludes().addAll(Arrays.asList(filterField));
         }
         this.targetData = JSONObject.parseObject(
@@ -174,12 +173,13 @@ public class AuditContext {
 
     /**
      * 设置： originalData
-     * @param original 数据bean
+     *
+     * @param original    数据bean
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext originalJson(Object original, String... filterField) {
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if(filterField.length>0){
+        if (filterField.length > 0) {
             filter.getExcludes().addAll(Arrays.asList(filterField));
         }
         this.originalData = JSONObject.parseObject(
@@ -187,8 +187,6 @@ public class AuditContext {
         );
         return this;
     }
-
-
 
 
     @Override
@@ -213,6 +211,9 @@ public class AuditContext {
         return auditType;
     }
 
+    /**
+     * @param auditType 审计类型 {@link OperationalAuditType}
+     */
     public AuditContext setAuditType(String auditType) {
         this.auditType = auditType;
         return this;
@@ -222,6 +223,9 @@ public class AuditContext {
         return operationalType;
     }
 
+    /**
+     * @param operationalType 操作类型 {@link OperationalType}
+     */
     public AuditContext setOperationalType(String operationalType) {
         this.operationalType = operationalType;
         return this;
@@ -231,6 +235,9 @@ public class AuditContext {
         return uniqueCode;
     }
 
+    /**
+     * @param uniqueCode 被操作数据的唯一值 [id/code/no,从数据源决定][请绑定审计类型，以审计类型溯源，如跟用户相关这里就尽量写用户的唯一值]
+     */
     public AuditContext setUniqueCode(String uniqueCode) {
         this.uniqueCode = uniqueCode;
         return this;
@@ -240,6 +247,9 @@ public class AuditContext {
         return uniqueIndex;
     }
 
+    /**
+     * @param uniqueIndex 被操作数据的元数据存储索引[数据库=表名，es=索引名] {@link OperationalAuditIndex},[请绑定审计类型，以审计类型溯源，如跟用户相关这里就尽量写用户的唯一值]
+     */
     public AuditContext setUniqueIndex(String uniqueIndex) {
         this.uniqueIndex = uniqueIndex;
         return this;
@@ -249,6 +259,9 @@ public class AuditContext {
         return uniqueIndexType;
     }
 
+    /**
+     * @param uniqueIndexType uniqueIndex的类型
+     */
     public AuditContext setUniqueIndexType(UniqueIndexType uniqueIndexType) {
         this.uniqueIndexType = uniqueIndexType;
         return this;
@@ -258,6 +271,9 @@ public class AuditContext {
         return dataTitle;
     }
 
+    /**
+     * @param dataTitle 被操作数据的名字
+     */
     public AuditContext setDataTitle(String dataTitle) {
         this.dataTitle = dataTitle;
         return this;
@@ -267,6 +283,9 @@ public class AuditContext {
         return originalData;
     }
 
+    /**
+     * @param originalData 旧数据快照[json]
+     */
     public AuditContext setOriginalData(JSONObject originalData) {
         this.originalData = originalData;
         return this;
@@ -276,6 +295,9 @@ public class AuditContext {
         return targetData;
     }
 
+    /**
+     * @param targetData 新数据快照[json]
+     */
     public AuditContext setTargetData(JSONObject targetData) {
         this.targetData = targetData;
         return this;
@@ -285,6 +307,9 @@ public class AuditContext {
         return description;
     }
 
+    /**
+     * @param description 备注
+     */
     public AuditContext setDescription(String description) {
         this.description = description;
         return this;
@@ -294,6 +319,9 @@ public class AuditContext {
         return operatorNo;
     }
 
+    /**
+     * @param operatorNo 操作者登录名
+     */
     public AuditContext setOperatorNo(String operatorNo) {
         this.operatorNo = operatorNo;
         return this;
@@ -303,6 +331,9 @@ public class AuditContext {
         return operatorName;
     }
 
+    /**
+     * @param operatorName 操作者姓名
+     */
     public AuditContext setOperatorName(String operatorName) {
         this.operatorName = operatorName;
         return this;

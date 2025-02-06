@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.log.audit;
 
 import cn.tannn.jdevelops.log.audit.annotations.AuditLog;
+import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
+import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 
 
 import java.util.ArrayList;
@@ -16,6 +18,11 @@ public class BatchAuditContext {
     public BatchAuditContext() {
     }
 
+    /**
+     * @param auditType     审计类型 {@link OperationalAuditType}
+     * @param operationType 操作类型 {@link OperationalType}
+     * @param description   备注
+     */
     public BatchAuditContext(String auditType, String operationType, String description) {
         this.auditType = auditType;
         this.operationType = operationType;
@@ -45,6 +52,9 @@ public class BatchAuditContext {
         return auditType;
     }
 
+    /**
+     * @param auditType 审计类型 {@link OperationalAuditType}
+     */
     public BatchAuditContext setAuditType(String auditType) {
         this.auditType = auditType;
         return this;
@@ -54,6 +64,9 @@ public class BatchAuditContext {
         return operationType;
     }
 
+    /**
+     * @param operationType 操作类型 {@link OperationalType}
+     */
     public BatchAuditContext setOperationType(String operationType) {
         this.operationType = operationType;
         return this;
@@ -63,6 +76,9 @@ public class BatchAuditContext {
         return description;
     }
 
+    /**
+     * @param description 备注
+     */
     public BatchAuditContext setDescription(String description) {
         this.description = description;
         return this;
