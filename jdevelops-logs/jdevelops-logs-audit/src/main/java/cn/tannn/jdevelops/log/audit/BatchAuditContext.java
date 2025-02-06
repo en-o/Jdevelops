@@ -4,7 +4,6 @@ import cn.tannn.jdevelops.log.audit.annotations.AuditLog;
 import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
 import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

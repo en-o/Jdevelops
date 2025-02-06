@@ -8,7 +8,6 @@ import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
 
