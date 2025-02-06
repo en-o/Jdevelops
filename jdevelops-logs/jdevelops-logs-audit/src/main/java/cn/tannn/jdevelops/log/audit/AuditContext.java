@@ -1,12 +1,10 @@
 package cn.tannn.jdevelops.log.audit;
 
 
-import cn.tannn.jdevelops.jwt.standalone.util.UserUtil;
 import cn.tannn.jdevelops.log.audit.constant.OperationalAuditIndex;
 import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
 import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
-import cn.tannn.jdevelops.utils.jwt.module.LoginJwtExtendInfo;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
@@ -131,19 +129,6 @@ public class AuditContext {
     }
 
 
-
-    public AuditContext appendOptUser(HttpServletRequest request) {
-        LoginJwtExtendInfo userInfo = UserUtil.getUserInfo(request);
-        this.operatorName = userInfo.getUserName();
-        this.operatorNo = userInfo.getLoginName();
-        return this;
-    }
-
-    public AuditContext appendOptUser(LoginJwtExtendInfo userInfo) {
-        this.operatorName = userInfo.getUserName();
-        this.operatorNo = userInfo.getLoginName();
-        return this;
-    }
 
     /**
      * 追加操作者
