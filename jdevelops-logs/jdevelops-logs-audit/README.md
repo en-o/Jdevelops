@@ -1,3 +1,7 @@
+# 详细说明
+https://www.yuque.com/tanning/yg9ipo/qizz49ordc6xiwp2
+
+
 # 模块配置说明
 1. 数据入库配置，参考 AuditContext 的字段构建表结构-注意新增一个 id 字段，和 操作时间 字段
 2. 构建入库方法， 参考DefAuditSave 重新实现 AuditSave e.g `@Service public class DbAuditSave implements AuditSave{} `

@@ -1,12 +1,12 @@
 package cn.tannn.jdevelops.log.audit.service;
 
-import cn.hutool.core.date.DateTime;
 import cn.tannn.jdevelops.log.audit.AuditContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.scheduling.annotation.Async;
+
 
 /**
  * 保存，需要时重写里面的保存方法即可实现数据自定义存入
@@ -24,6 +24,6 @@ public class DefAuditSave implements AuditSave {
     @Override
     @Async("auditLogAsyncTaskExecutor")
     public void saveLog(AuditContext audit) {
-        LOG.info("{}审计日志默认输出:{}", DateTime.now(), audit.toString());
+        LOG.info("{}审计日志默认输出:{}", System.currentTimeMillis(), audit.toString());
     }
 }

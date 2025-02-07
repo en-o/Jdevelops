@@ -1,14 +1,17 @@
 package cn.tannn.jdevelops.log.audit;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * 基于 RequestContextHolder 的实现
  */
-@Slf4j
 public class AuditContextHolder {
+
+
+    private static final Logger log = LoggerFactory.getLogger(AuditContextHolder.class);
 
     private static final String AUDIT_CONTEXT_ATTRIBUTE = "AUDIT_CONTEXT";
     private static final String BATCH_AUDIT_CONTEXT_ATTRIBUTE = "BATCH_AUDIT_CONTEXT";

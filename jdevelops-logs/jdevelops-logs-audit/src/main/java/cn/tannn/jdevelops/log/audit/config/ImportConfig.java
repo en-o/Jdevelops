@@ -17,12 +17,11 @@ import org.springframework.context.annotation.Import;
 public class ImportConfig {
 
     /**
-     *  DefApiLogSave
-     * @return ApiLogSave
+     *  DefAuditSave
      */
     @Bean
     @ConditionalOnMissingBean(AuditSave.class)
-    public AuditSave apiLogSave(){
+    public AuditSave auditSave(){
         return new DefAuditSave();
     }
 

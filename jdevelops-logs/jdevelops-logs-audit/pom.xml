@@ -21,11 +21,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <scope>provided</scope>
@@ -44,12 +39,6 @@
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-aop</artifactId>
             <version>1.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.tannn.jdevelops</groupId>
-            <artifactId>jdevelops-authentications-jwt</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
