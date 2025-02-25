@@ -116,7 +116,7 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
             if (text.startsWith("\"") || text.startsWith("'")) {
                 return text.substring(1, text.length() - 1);
             }
-            // 对于 email 等特殊格式，直接返回
+            // 无引号字符串直接返回
             return text;
         } else if (ctx instanceof ESParser.IntValueContext ||
                 ctx instanceof ESParser.DecimalValueContext) {

@@ -170,7 +170,7 @@ public class ExpressionTest {
         void testNotExistsOperator() {
             Query query = queryBuilder.buildQuery("phone not exists");
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":{\"exists\":{\"field\":\"phone\"}}}}",
+                    "Query: {\"bool\":{\"must_not\":[{\"exists\":{\"field\":\"phone\"}}]}}",
                     query.toString()
             );
         }

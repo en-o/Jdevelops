@@ -37,4 +37,21 @@ field not exists
 
 // 复合查询
 (field1 == "value1" and field2 in ["a", "b"]) or field3 exists
+
+
+// 各种字符串格式都支持
+email == test@example.com
+email == "test@example.com"
+email == 'test@example.com'
+
+// 数组
+emails in [test1@example.com, "test2@example.com", 'test3@example.com']
+
+// 其他查询保持不变
+name == "John"
+age >= 18
+status exists
+tags not in ["deleted", "archived"]
+
+
 ```
