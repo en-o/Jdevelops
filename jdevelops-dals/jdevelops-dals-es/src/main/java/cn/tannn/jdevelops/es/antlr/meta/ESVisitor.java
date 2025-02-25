@@ -45,11 +45,19 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrExpression(ESParser.OrExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ESParser#comparison}.
+	 * Visit a parse tree produced by the {@code StandardComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComparison(ESParser.ComparisonContext ctx);
+	T visitStandardComparison(ESParser.StandardComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExistenceComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExistenceComparison(ESParser.ExistenceComparisonContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ESParser#operator}.
 	 * @param ctx the parse tree
@@ -57,9 +65,37 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ESParser#valueType}.
+	 * Visit a parse tree produced by the {@code StringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitValueType(ESParser.ValueTypeContext ctx);
+	T visitStringValue(ESParser.StringValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IntValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayValues}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayValues(ESParser.ArrayValuesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NullValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNullValue(ESParser.NullValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#arrayValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayValue(ESParser.ArrayValueContext ctx);
 }
