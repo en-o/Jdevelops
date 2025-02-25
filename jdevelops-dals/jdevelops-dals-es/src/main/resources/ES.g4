@@ -10,8 +10,8 @@ expression
     ;
 
 comparison
-    : IDENTIFIER operator valueType          # StandardComparison
-    | IDENTIFIER existsOperator             # ExistenceComparison
+    : IDENTIFIER operator value              # StandardComparison
+    | IDENTIFIER existsOperator              # ExistenceComparison
     ;
 
 // 显式定义 exists 操作符
@@ -33,6 +33,17 @@ NOT: 'not';
 // 修改标识符规则以支持更多字符
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 
+// 值的定义
+value: valueType;
+
+valueType
+    : STRING                                # StringValue
+    | INT                                   # IntValue
+    | DECIMAL                              # DecimalValue
+    | arrayValue                           # ArrayValues
+    | 'null'                               # NullValue
+    ;
+
 // 简化的字符串规则
 STRING
     : '"' (~["\r\n])* '"'     // 双引号字符串
@@ -42,7 +53,7 @@ STRING
 
 // 定义无引号字符串（可以包含email等格式）
 fragment UNQUOTED_STRING
-    : (~[ \t\r\n"'()[\],] | '@' | '.' | '-' | '+' | '%')+
+    : (~[ \t\r\n"'()[\],=] | '@' | '.' | '-' | '+' | '%')+
     ;
 
 INT: [0-9]+;
@@ -52,14 +63,6 @@ DECIMAL: INT '.' INT;
 ARRAY_START: '[';
 ARRAY_END: ']';
 COMMA: ',';
-
-valueType
-    : STRING                                # StringValue
-    | INT                                   # IntValue
-    | DECIMAL                              # DecimalValue
-    | arrayValue                           # ArrayValues
-    | 'null'                               # NullValue
-    ;
 
 arrayValue
     : ARRAY_START (STRING|INT|DECIMAL) (COMMA (STRING|INT|DECIMAL))* ARRAY_END
