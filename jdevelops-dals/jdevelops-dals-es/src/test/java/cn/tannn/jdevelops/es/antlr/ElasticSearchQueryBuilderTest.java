@@ -46,7 +46,13 @@ class ElasticSearchQueryBuilderTest {
         // 测试所有可能的字符串格式
         List<String> queries = List.of(
                 "name == \"tan4\"",
-                "name==tan1",
+                "name==123",
+                "name==tan1",                   // 不带引号
+                "name==abc123",                // 不带引号，含数字
+                "name==test_value",            // 不带引号，含下划线
+                "title==hello.world",          // 不带引号，含点号
+                "name == \"quoted value\"",     // 双引号
+                "name == 'single quoted'",      // 单引号
                 "name == tan2",
                 "name==\"tan3\"",
                 "name=='tan5'",

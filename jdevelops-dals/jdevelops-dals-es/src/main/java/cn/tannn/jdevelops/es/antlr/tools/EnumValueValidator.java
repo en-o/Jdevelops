@@ -24,6 +24,8 @@ public final class EnumValueValidator implements ValueValidator {
     @Override
     public boolean validate(String field, String value) throws ElasticsearchException {
         var allowed = allowedValues.get(field);
+        // allowed: [inactive, active]，value:inactive,active
+        System.out.println("allowed: "+allowed+"，value:"+ value);
         if (allowed != null && !allowed.contains(value)) {
             throw new ElasticsearchException("字段 '%s' 的值必须是以下之一: %s".formatted(field, allowed));
         }

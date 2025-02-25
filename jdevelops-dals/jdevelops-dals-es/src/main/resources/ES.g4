@@ -34,12 +34,23 @@ EXISTS: 'exists';
 NOT: 'not';
 
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-
+// 值类型处理器
 valueType
-    : STRING                              # StringValue
-    | NUMBER                             # NumberValue
-    | arrayValue                         # ArrayValues
-    | 'null'                             # NullValue
+    : quotedString                         # QuotedStringValue
+    | unquotedString                       # UnquotedStringValue
+    | INT                                  # IntValue
+    | DECIMAL                              # DecimalValue
+    | arrayValue                           # ArrayValues
+    | 'null'                               # NullValue
+    ;
+
+quotedString
+    : DOUBLE_QUOTED_STRING
+    | SINGLE_QUOTED_STRING
+    ;
+
+unquotedString
+    : UNQUOTED_STRING
     ;
 
 arrayValue
@@ -47,27 +58,17 @@ arrayValue
     ;
 
 value
-    : STRING
-    | NUMBER
+    : quotedString
+    | unquotedString
+    | INT
+    | DECIMAL
     ;
 
-fragment DIGIT: [0-9];
-NUMBER: DIGIT+ ('.' DIGIT+)?;
+// 词法规则
+DOUBLE_QUOTED_STRING: '"' (~["\r\n])* '"';
+SINGLE_QUOTED_STRING: '\'' (~['\r\n])* '\'';
+UNQUOTED_STRING: [a-zA-Z0-9@.+\-/%_]+;
+INT: [0-9]+;
+DECIMAL: INT '.' INT;
 
-// 修改STRING词法规则，统一处理带引号和不带引号的字符串
-STRING
-    : QUOTED_STRING     // 带引号的字符串
-    | UNQUOTED_STRING   // 不带引号的字符串
-    ;
-
-fragment QUOTED_STRING
-    : '"' (~["\r\n])* '"'
-    | '\'' (~['\r\n])* '\''
-    ;
-
-fragment UNQUOTED_STRING
-    : ~[ \t\r\n"'()[\],<>=!+~]+
-    ;
-
-// 忽略空白字符
 WS: [ \t\r\n]+ -> skip;

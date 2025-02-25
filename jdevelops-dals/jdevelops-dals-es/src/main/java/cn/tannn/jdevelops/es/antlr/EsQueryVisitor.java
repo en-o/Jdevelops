@@ -67,11 +67,7 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
     public Query visitStandardComparison(ESParser.StandardComparisonContext ctx) {
         String originalField = ctx.IDENTIFIER().getText();
         String field = fieldTransformer.transformField(originalField);
-
-        // 获取操作符
         String operator = ctx.operator().getText();
-
-        // 获取值
         String rawValue = getValueFromContext(ctx.valueType());
 
         // 验证值
@@ -108,29 +104,28 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
         return existsQuery;
     }
 
-
     private String getValueFromContext(ESParser.ValueTypeContext ctx) {
-        if (ctx instanceof ESParser.StringValueContext) {
+        if (ctx instanceof ESParser.QuotedStringValueContext) {
             String text = ctx.getText();
-            // 如果是带引号的字符串，去掉引号
-            if ((text.startsWith("\"") && text.endsWith("\"")) ||
-                    (text.startsWith("'") && text.endsWith("'"))) {
-                return text.substring(1, text.length() - 1);
-            }
-            return text;
-        } else if (ctx instanceof ESParser.NumberValueContext) {
+            // 移除引号
+            return text.substring(1, text.length() - 1);
+        } else if (ctx instanceof ESParser.UnquotedStringValueContext) {
+            // 直接返回不带引号的字符串
+            return ctx.getText();
+        } else if (ctx instanceof ESParser.IntValueContext ||
+                ctx instanceof ESParser.DecimalValueContext) {
             return ctx.getText();
         } else if (ctx instanceof ESParser.ArrayValuesContext arrayCtx) {
             List<String> values = new ArrayList<>();
-            ESParser.ArrayValueContext array = arrayCtx.arrayValue();
-            for (ESParser.ValueContext valueCtx : array.value()) {
-                String value = valueCtx.getText();
-                // 处理数组中的带引号字符串
-                if ((value.startsWith("\"") && value.endsWith("\"")) ||
-                        (value.startsWith("'") && value.endsWith("'"))) {
-                    value = value.substring(1, value.length() - 1);
+            for (ESParser.ValueContext valueCtx : arrayCtx.arrayValue().value()) {
+                if (valueCtx.quotedString() != null) {
+                    String text = valueCtx.quotedString().getText();
+                    values.add(text.substring(1, text.length() - 1));
+                } else if (valueCtx.unquotedString() != null) {
+                    values.add(valueCtx.unquotedString().getText());
+                } else {
+                    values.add(valueCtx.getText());
                 }
-                values.add(value);
             }
             return String.join(",", values);
         } else if (ctx instanceof ESParser.NullValueContext) {
