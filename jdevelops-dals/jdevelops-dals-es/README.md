@@ -54,4 +54,25 @@ status exists
 tags not in ["deleted", "archived"]
 
 
+
+// 不带引号
+name==tan
+name == tan
+
+// 双引号
+name=="tan"
+name == "tan"
+
+// 单引号
+name=='tan'
+name == 'tan'
+
+// email 格式
+email==user@example.com
+email == user@example.com
+
+// 数组格式
+tags in [tag1, "tag2", 'tag3']
+
+
 ```
