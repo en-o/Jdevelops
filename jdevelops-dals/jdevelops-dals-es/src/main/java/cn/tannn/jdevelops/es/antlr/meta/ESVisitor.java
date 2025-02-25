@@ -59,6 +59,20 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExistenceComparison(ESParser.ExistenceComparisonContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExistsOp(ESParser.NotExistsOpContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ESParser#operator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -78,6 +92,13 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecimalValue(ESParser.DecimalValueContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ArrayValues}
 	 * labeled alternative in {@link ESParser#valueType}.

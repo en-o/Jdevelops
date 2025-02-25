@@ -67,6 +67,20 @@ public class ESBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements ESV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitExistsOp(ESParser.ExistsOpContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNotExistsOp(ESParser.NotExistsOpContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitOperator(ESParser.OperatorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -82,6 +96,13 @@ public class ESBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements ESV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitIntValue(ESParser.IntValueContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDecimalValue(ESParser.DecimalValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -90,6 +90,30 @@ public interface ESListener extends ParseTreeListener {
 	 */
 	void exitExistenceComparison(ESParser.ExistenceComparisonContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExistsOp(ESParser.NotExistsOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExistsOp(ESParser.NotExistsOpContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ESParser#operator}.
 	 * @param ctx the parse tree
 	 */
@@ -123,6 +147,18 @@ public interface ESListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecimalValue(ESParser.DecimalValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecimalValue(ESParser.DecimalValueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ArrayValues}
 	 * labeled alternative in {@link ESParser#valueType}.

@@ -247,7 +247,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("字段名转换测试")
         void testFieldTransformation() {
-            Query query = queryBuilder.buildQuery("手机 == 13800138000");
+            Query query = queryBuilder.buildQuery("手机==13800138000");
             assertEquals(
                     "Query: {\"term\":{\"phone\":{\"value\":\"13800138000\"}}}",
                     query.toString()

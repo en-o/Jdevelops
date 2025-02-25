@@ -89,35 +89,46 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
     @Override
     public Query visitExistenceComparison(ESParser.ExistenceComparisonContext ctx) {
         String field = fieldTransformer.transformField(ctx.IDENTIFIER().getText());
-        boolean isExists = ctx.getText().endsWith("exists");
 
-        var existsQuery = new ExistsQuery.Builder().field(field).build()._toQuery();
+        // 使用 instanceof 来判断是否是 NotExistsOp
+        boolean isNotExists = ctx.existsOperator() instanceof ESParser.NotExistsOpContext;
 
-        if (isExists) {
-            return existsQuery;
-        } else {
+        var existsQuery = new ExistsQuery.Builder()
+                .field(field)
+                .build()
+                ._toQuery();
+
+        if (isNotExists) {
             return new BoolQuery.Builder()
                     .mustNot(existsQuery)
                     .build()
                     ._toQuery();
         }
+        return existsQuery;
     }
 
 
 
     private String getValueFromContext(ESParser.ValueTypeContext ctx) {
         if (ctx instanceof ESParser.StringValueContext) {
-            return ctx.getText().replaceAll("^\"|\"$", "");
-        } else if (ctx instanceof ESParser.IntValueContext) {
+            String text = ctx.getText();
+            // 如果是带引号的字符串，移除引号
+            if (text.startsWith("\"") || text.startsWith("'")) {
+                return text.substring(1, text.length() - 1);
+            }
+            // 对于 email 等特殊格式，直接返回
+            return text;
+        } else if (ctx instanceof ESParser.IntValueContext ||
+                ctx instanceof ESParser.DecimalValueContext) {
             return ctx.getText();
         } else if (ctx instanceof ESParser.ArrayValuesContext) {
-            // 处理数组值，移除括号并返回内部内容
-            return ctx.getText().replaceAll("^\\[|\\]$", "");
+            return ctx.getText().replaceAll("^\\[|]$", "");
         } else if (ctx instanceof ESParser.NullValueContext) {
             return null;
         }
         throw new IllegalArgumentException("Unsupported value type: " + ctx.getText());
     }
+
 
     private Query buildQueryFromOperator(String field, String operator, String value, ESParser.ValueTypeContext valueCtx) {
         return switch (operator) {

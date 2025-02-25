@@ -101,6 +101,30 @@ public class ESBaseListener implements ESListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExistsOp(ESParser.ExistsOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExistsOp(ESParser.ExistsOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNotExistsOp(ESParser.NotExistsOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotExistsOp(ESParser.NotExistsOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOperator(ESParser.OperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -132,6 +156,18 @@ public class ESBaseListener implements ESListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntValue(ESParser.IntValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDecimalValue(ESParser.DecimalValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDecimalValue(ESParser.DecimalValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
