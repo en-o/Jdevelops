@@ -10,7 +10,8 @@
 2. 构建好 ES.g4 结构
 3. 选择ES.g4文件，右击 GENERATE ANTLR Recognizer
 
-
+# 特别注意 
+字符串值必须使用单/双引号包裹，否则会报错
 
 # DSL 示例
 ```sql
@@ -40,12 +41,11 @@ field not exists
 
 
 // 各种字符串格式都支持
-email == test@example.com
 email == "test@example.com"
 email == 'test@example.com'
 
 // 数组
-emails in [test1@example.com, "test2@example.com", 'test3@example.com']
+emails in [ "test2@example.com", 'test3@example.com']
 
 // 其他查询保持不变
 name == "John"
@@ -55,9 +55,7 @@ tags not in ["deleted", "archived"]
 
 
 
-// 不带引号
-name==tan
-name == tan
+
 
 // 双引号
 name=="tan"
@@ -67,12 +65,8 @@ name == "tan"
 name=='tan'
 name == 'tan'
 
-// email 格式
-email==user@example.com
-email == user@example.com
-
 // 数组格式
-tags in [tag1, "tag2", 'tag3']
+tags in ['tag1', "tag2", 'tag3']
 
 
 ```
