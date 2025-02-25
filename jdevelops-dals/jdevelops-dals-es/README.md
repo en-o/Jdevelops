@@ -15,6 +15,7 @@
 
 # DSL 示例
 ```sql
+
 // 基本查询
 field == "value"
 field != "value"
@@ -31,10 +32,17 @@ field !~ "unwanted.*"
 // 数组查询
 field in ["value1", "value2"]
 field not in ["value3", "value4"]
+// e.g 
+emails in [ "test2@example.com", 'test3@example.com']
 
 // 存在性查询
 field exists
 field not exists
+// e.g 
+name == "John"
+age >= 18
+status exists
+tags not in ["deleted", "archived"]
 
 // 复合查询
 (field1 == "value1" and field2 in ["a", "b"]) or field3 exists
@@ -44,19 +52,6 @@ field not exists
 email == "test@example.com"
 email == 'test@example.com'
 
-// 数组
-emails in [ "test2@example.com", 'test3@example.com']
-
-// 其他查询保持不变
-name == "John"
-age >= 18
-status exists
-tags not in ["deleted", "archived"]
-
-
-
-
-
 // 双引号
 name=="tan"
 name == "tan"
@@ -64,9 +59,6 @@ name == "tan"
 // 单引号
 name=='tan'
 name == 'tan'
-
-// 数组格式
-tags in ['tag1', "tag2", 'tag3']
 
 
 ```
