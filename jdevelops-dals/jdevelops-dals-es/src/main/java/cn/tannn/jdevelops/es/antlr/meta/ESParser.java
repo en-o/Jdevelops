@@ -1,31 +1,28 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.1
+// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class ESParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
-		T__9=10, T__10=11, T__11=12, T__12=13, IDENTIFIER=14, STRING=15, INT=16,
-		WS=17;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
+		T__17=18, T__18=19, T__19=20, IDENTIFIER=21, STRING=22, INT=23, ARRAY=24, 
+		WS=25;
 	public static final int
-		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_operator = 3,
+		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_operator = 3, 
 		RULE_valueType = 4;
 	private static String[] makeRuleNames() {
 		return new String[] {
@@ -36,15 +33,17 @@ public class ESParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='",
-			"'>='", "'<='", "'>'", "'<'", "'+='"
+			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='", 
+			"'>='", "'<='", "'>'", "'<'", "'+='", "'=~'", "'!~'", "'in'", "'not in'", 
+			"'exists'", "'not exists'", "'null'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null,
-			null, null, "IDENTIFIER", "STRING", "INT", "WS"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, "IDENTIFIER", "STRING", 
+			"INT", "ARRAY", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -152,7 +151,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-
+	 
 		public ExpressionContext() { }
 		public void copyFrom(ExpressionContext ctx) {
 			super.copyFrom(ctx);
@@ -343,7 +342,7 @@ public class ESParser extends Parser {
 						}
 						break;
 					}
-					}
+					} 
 				}
 				setState(31);
 				_errHandler.sync(this);
@@ -447,7 +446,7 @@ public class ESParser extends Parser {
 			{
 			setState(36);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16256L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 1048448L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -472,6 +471,7 @@ public class ESParser extends Parser {
 	public static class ValueTypeContext extends ParserRuleContext {
 		public TerminalNode STRING() { return getToken(ESParser.STRING, 0); }
 		public TerminalNode INT() { return getToken(ESParser.INT, 0); }
+		public TerminalNode ARRAY() { return getToken(ESParser.ARRAY, 0); }
 		public ValueTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -500,7 +500,7 @@ public class ESParser extends Parser {
 			{
 			setState(38);
 			_la = _input.LA(1);
-			if ( !(_la==STRING || _la==INT) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 30408704L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -539,7 +539,7 @@ public class ESParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0011)\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0019)\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0001"+
 		"\u0000\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
 		"\u0001\u0001\u0001\u0001\u0001\u0003\u0001\u0014\b\u0001\u0001\u0001\u0001"+
@@ -547,25 +547,26 @@ public class ESParser extends Parser {
 		"\b\u0001\n\u0001\f\u0001\u001f\t\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
 		"\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
 		"\u0000\u0001\u0002\u0005\u0000\u0002\u0004\u0006\b\u0000\u0004\u0001\u0000"+
-		"\u0001\u0002\u0001\u0000\u0003\u0004\u0001\u0000\u0007\r\u0001\u0000\u000f"+
-		"\u0010&\u0000\n\u0001\u0000\u0000\u0000\u0002\u0013\u0001\u0000\u0000"+
-		"\u0000\u0004 \u0001\u0000\u0000\u0000\u0006$\u0001\u0000\u0000\u0000\b"+
-		"&\u0001\u0000\u0000\u0000\n\u000b\u0003\u0002\u0001\u0000\u000b\f\u0005"+
-		"\u0000\u0000\u0001\f\u0001\u0001\u0000\u0000\u0000\r\u000e\u0006\u0001"+
-		"\uffff\uffff\u0000\u000e\u000f\u0005\u0005\u0000\u0000\u000f\u0010\u0003"+
-		"\u0002\u0001\u0000\u0010\u0011\u0005\u0006\u0000\u0000\u0011\u0014\u0001"+
-		"\u0000\u0000\u0000\u0012\u0014\u0003\u0004\u0002\u0000\u0013\r\u0001\u0000"+
-		"\u0000\u0000\u0013\u0012\u0001\u0000\u0000\u0000\u0014\u001d\u0001\u0000"+
-		"\u0000\u0000\u0015\u0016\n\u0004\u0000\u0000\u0016\u0017\u0007\u0000\u0000"+
-		"\u0000\u0017\u001c\u0003\u0002\u0001\u0005\u0018\u0019\n\u0003\u0000\u0000"+
-		"\u0019\u001a\u0007\u0001\u0000\u0000\u001a\u001c\u0003\u0002\u0001\u0004"+
-		"\u001b\u0015\u0001\u0000\u0000\u0000\u001b\u0018\u0001\u0000\u0000\u0000"+
-		"\u001c\u001f\u0001\u0000\u0000\u0000\u001d\u001b\u0001\u0000\u0000\u0000"+
-		"\u001d\u001e\u0001\u0000\u0000\u0000\u001e\u0003\u0001\u0000\u0000\u0000"+
-		"\u001f\u001d\u0001\u0000\u0000\u0000 !\u0005\u000e\u0000\u0000!\"\u0003"+
-		"\u0006\u0003\u0000\"#\u0003\b\u0004\u0000#\u0005\u0001\u0000\u0000\u0000"+
-		"$%\u0007\u0002\u0000\u0000%\u0007\u0001\u0000\u0000\u0000&\'\u0007\u0003"+
-		"\u0000\u0000\'\t\u0001\u0000\u0000\u0000\u0003\u0013\u001b\u001d";
+		"\u0001\u0002\u0001\u0000\u0003\u0004\u0001\u0000\u0007\u0013\u0002\u0000"+
+		"\u0014\u0014\u0016\u0018&\u0000\n\u0001\u0000\u0000\u0000\u0002\u0013"+
+		"\u0001\u0000\u0000\u0000\u0004 \u0001\u0000\u0000\u0000\u0006$\u0001\u0000"+
+		"\u0000\u0000\b&\u0001\u0000\u0000\u0000\n\u000b\u0003\u0002\u0001\u0000"+
+		"\u000b\f\u0005\u0000\u0000\u0001\f\u0001\u0001\u0000\u0000\u0000\r\u000e"+
+		"\u0006\u0001\uffff\uffff\u0000\u000e\u000f\u0005\u0005\u0000\u0000\u000f"+
+		"\u0010\u0003\u0002\u0001\u0000\u0010\u0011\u0005\u0006\u0000\u0000\u0011"+
+		"\u0014\u0001\u0000\u0000\u0000\u0012\u0014\u0003\u0004\u0002\u0000\u0013"+
+		"\r\u0001\u0000\u0000\u0000\u0013\u0012\u0001\u0000\u0000\u0000\u0014\u001d"+
+		"\u0001\u0000\u0000\u0000\u0015\u0016\n\u0004\u0000\u0000\u0016\u0017\u0007"+
+		"\u0000\u0000\u0000\u0017\u001c\u0003\u0002\u0001\u0005\u0018\u0019\n\u0003"+
+		"\u0000\u0000\u0019\u001a\u0007\u0001\u0000\u0000\u001a\u001c\u0003\u0002"+
+		"\u0001\u0004\u001b\u0015\u0001\u0000\u0000\u0000\u001b\u0018\u0001\u0000"+
+		"\u0000\u0000\u001c\u001f\u0001\u0000\u0000\u0000\u001d\u001b\u0001\u0000"+
+		"\u0000\u0000\u001d\u001e\u0001\u0000\u0000\u0000\u001e\u0003\u0001\u0000"+
+		"\u0000\u0000\u001f\u001d\u0001\u0000\u0000\u0000 !\u0005\u0015\u0000\u0000"+
+		"!\"\u0003\u0006\u0003\u0000\"#\u0003\b\u0004\u0000#\u0005\u0001\u0000"+
+		"\u0000\u0000$%\u0007\u0002\u0000\u0000%\u0007\u0001\u0000\u0000\u0000"+
+		"&\'\u0007\u0003\u0000\u0000\'\t\u0001\u0000\u0000\u0000\u0003\u0013\u001b"+
+		"\u001d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

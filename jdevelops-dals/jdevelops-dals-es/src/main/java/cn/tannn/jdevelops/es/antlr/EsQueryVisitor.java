@@ -2,8 +2,12 @@ package cn.tannn.jdevelops.es.antlr;
 
 import cn.tannn.jdevelops.es.antlr.meta.ESBaseVisitor;
 import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
+import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.json.JsonData;
+
+import java.util.List;
 
 /**
  * 通过visitor模式实现的es查询的组装
@@ -14,71 +18,86 @@ import co.elastic.clients.json.JsonData;
  */
 public class EsQueryVisitor extends ESBaseVisitor<Query> {
 
+    private final FieldTransformer fieldTransformer;
+    private final List<ValueValidator> valueValidators;
+
+    public EsQueryVisitor(FieldTransformer fieldTransformer
+            , List<ValueValidator> valueValidators) {
+        this.fieldTransformer = fieldTransformer;
+        this.valueValidators = valueValidators;
+    }
+
     /**
      * 处理 and 表达式
+     *
      * @param ctx the parse tree
      */
     @Override
     public Query visitAndExpression(ESParser.AndExpressionContext ctx) {
-        BoolQuery.Builder boolQuery = new BoolQuery.Builder();
-        // and的左边
-        boolQuery.must(visit(ctx.expression(0)));
-        // and的右边
-        boolQuery.must(visit(ctx.expression(1)));
-        return boolQuery.build()._toQuery();
+        return new BoolQuery.Builder()
+                .must(visit(ctx.expression(0)))
+                .must(visit(ctx.expression(1)))
+                .build()
+                ._toQuery();
     }
 
     /**
      * 处理 or 表达式
+     *
      * @param ctx the parse tree
      */
     @Override
     public Query visitOrExpression(ESParser.OrExpressionContext ctx) {
-        BoolQuery.Builder boolQuery = new BoolQuery.Builder();
-        // or的左边
-        boolQuery.should(visit(ctx.expression(0)));
-        // or的右边
-        boolQuery.should(visit(ctx.expression(1)));
-        return boolQuery.build()._toQuery();
+        return new BoolQuery.Builder()
+                .should(visit(ctx.expression(0)))
+                .should(visit(ctx.expression(1)))
+                .build()
+                ._toQuery();
     }
 
     /**
-     *  表达式 [field op value]
+     * 表达式 [field op value]
+     *
      * @param ctx the parse tree
      */
     @Override
     public Query visitComparisonExpression(ESParser.ComparisonExpressionContext ctx) {
-        ESParser.ComparisonContext comparison = ctx.comparison();
-        String field = comparison.IDENTIFIER().getText();
+        var comparison = ctx.comparison();
+        String originalField = comparison.IDENTIFIER().getText();
+        String field = fieldTransformer.transformField(originalField);
         String value = comparison.value.getText().replaceAll("^\"|\"$", "");
-        String operator = comparison.op.getText();
-        switch (operator) {
-            case "==":
-                return TermQuery.of(r -> r.field(field).value(value))._toQuery();
-            case "!=":
-                return QueryBuilders.bool().mustNot(MatchPhraseQuery.of(pre -> pre.field(field).query(value))._toQuery()).build()._toQuery();
-            case ">=":
-                return RangeQuery.of(r -> r.field(field).gte(JsonData.of(value)))._toQuery();
-            case "<=":
-                return RangeQuery.of(r -> r.field(field).lte(JsonData.of(value)))._toQuery();
-            case ">":
-                return RangeQuery.of(r -> r.field(field).gt(JsonData.of(value)))._toQuery();
-            case "<":
-                return RangeQuery.of(r -> r.field(field).lt(JsonData.of(value)))._toQuery();
-            case "+=":
-                return MatchQuery.of(r -> r.field(field).query(value))._toQuery();
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
-        }
-    }
 
+        // 验证值
+        valueValidators.forEach(validator -> validator.validate(field, value));
+
+        return switch (comparison.op.getText()) {
+            case "==" -> new TermQuery.Builder().field(field).value(value).build()._toQuery();
+            case "!=" -> new BoolQuery.Builder()
+                    .mustNot(new MatchPhraseQuery.Builder().field(field).query(value).build()._toQuery())
+                    .build()._toQuery();
+            case ">=" -> new RangeQuery.Builder().field(field).gte(JsonData.of(value)).build()._toQuery();
+            case "<=" -> new RangeQuery.Builder().field(field).lte(JsonData.of(value)).build()._toQuery();
+            case ">" -> new RangeQuery.Builder().field(field).gt(JsonData.of(value)).build()._toQuery();
+            case "<" -> new RangeQuery.Builder().field(field).lt(JsonData.of(value)).build()._toQuery();
+            case "+=" -> new MatchQuery.Builder().field(field).query(value).build()._toQuery();
+            case "=~" -> new RegexpQuery.Builder().field(field).value(value).build()._toQuery();
+            case "!~" -> new BoolQuery.Builder()
+                    .mustNot(new RegexpQuery.Builder().field(field).value(value).build()._toQuery())
+                    .build()._toQuery();
+            case "exists" -> new ExistsQuery.Builder().field(field).build()._toQuery();
+            case "not exists" -> new BoolQuery.Builder()
+                    .mustNot(new ExistsQuery.Builder().field(field).build()._toQuery())
+                    .build()._toQuery();
+            default -> throw new IllegalArgumentException("未知的操作符: " + comparison.op.getText());
+        };
+    }
 
 
     /**
      * 处理嵌套 （括号）
+     *
      * @param ctx the parse tree
      */
-    @Override
     public Query visitParenthesizedExpression(ESParser.ParenthesizedExpressionContext ctx) {
         return visit(ctx.expression());
     }
