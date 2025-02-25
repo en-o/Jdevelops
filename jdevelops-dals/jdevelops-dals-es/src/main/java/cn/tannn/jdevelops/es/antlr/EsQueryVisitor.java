@@ -108,26 +108,23 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
     }
 
 
-
     private String getValueFromContext(ESParser.ValueTypeContext ctx) {
+        // 优化值处理逻辑
         if (ctx instanceof ESParser.QuotedStringValueContext ||
                 ctx instanceof ESParser.SingleQuotedStringValueContext) {
-            // 移除引号
             String text = ctx.getText();
             return text.substring(1, text.length() - 1);
-        } else if (ctx instanceof ESParser.BareStringValueContext) {
-            // 直接返回不带引号的字符串
-            return ctx.getText();
-        } else if (ctx instanceof ESParser.IntValueContext ||
+        } else if (ctx instanceof ESParser.BareStringValueContext ||
+                ctx instanceof ESParser.IntValueContext ||
                 ctx instanceof ESParser.DecimalValueContext) {
+            // 直接返回文本值，不需要特殊处理
             return ctx.getText();
         } else if (ctx instanceof ESParser.ArrayValuesContext arrayCtx) {
             List<String> values = new ArrayList<>();
             for (ESParser.ValueContext valueCtx : arrayCtx.arrayValue().value()) {
                 String value = valueCtx.getText();
-                // 如果是带引号的字符串，移除引号
-                if ((value.startsWith("\"") && value.endsWith("\"")) ||
-                        (value.startsWith("'") && value.endsWith("'"))) {
+                if (value.startsWith("\"") && value.endsWith("\"") ||
+                        value.startsWith("'") && value.endsWith("'")) {
                     value = value.substring(1, value.length() - 1);
                 }
                 values.add(value);
@@ -138,6 +135,8 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
         }
         throw new IllegalArgumentException("Unsupported value type: " + ctx.getText());
     }
+
+
     private Query buildQueryFromOperator(String field, String operator, String value, ESParser.ValueTypeContext valueCtx) {
         return switch (operator) {
             case "==" -> new TermQuery.Builder().field(field).value(value).build()._toQuery();
@@ -149,16 +148,33 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
             case ">" -> new RangeQuery.Builder().field(field).gt(JsonData.of(value)).build()._toQuery();
             case "<" -> new RangeQuery.Builder().field(field).lt(JsonData.of(value)).build()._toQuery();
             case "+=" -> new MatchQuery.Builder().field(field).query(value).build()._toQuery();
-            case "=~" -> new RegexpQuery.Builder().field(field).value(value).build()._toQuery();
-            case "!~" -> new BoolQuery.Builder()
-                    .mustNot(new RegexpQuery.Builder().field(field).value(value).build()._toQuery())
-                    .build()._toQuery();
+            case "=~" -> // 使用wildcard查询替代regexp查询，提供更好的模式匹配支持
+                    new WildcardQuery.Builder()
+                            .field(field)
+                            .wildcard(value)
+                            .caseInsensitive(true)  // 设置大小写不敏感
+                            .build()
+                            ._toQuery();
+            case "!~" -> {
+                // 对于否定的模式匹配，使用must_not + wildcard
+                var wildcardQuery = new WildcardQuery.Builder()
+                        .field(field)
+                        .wildcard(value)
+                        .caseInsensitive(true)
+                        .build()
+                        ._toQuery();
+
+                yield new BoolQuery.Builder()
+                        .mustNot(wildcardQuery)
+                        .build()
+                        ._toQuery();
+            }
             case "in" -> {
                 if (!(valueCtx instanceof ESParser.ArrayValuesContext)) {
                     throw new IllegalArgumentException("Operator 'in' requires an array value");
                 }
                 List<String> values = parseArrayValue(value);
-                yield new TermsQuery.Builder()
+                 yield new TermsQuery.Builder()
                         .field(field)
                         .terms(b -> b.value(convertToFieldValues(values)))
                         .build()
