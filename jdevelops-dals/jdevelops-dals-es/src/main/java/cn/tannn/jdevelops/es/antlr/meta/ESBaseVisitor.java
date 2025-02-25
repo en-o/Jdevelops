@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
+// Generated from D:/代码/self/Jdevelops开发工具集/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -88,7 +88,21 @@ public class ESBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements ESV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringValue(ESParser.StringValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitQuotedStringValue(ESParser.QuotedStringValueContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBareStringValue(ESParser.BareStringValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,4 +138,11 @@ public class ESBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements ESV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitArrayValue(ESParser.ArrayValueContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitValue(ESParser.ValueContext ctx) { return visitChildren(ctx); }
 }

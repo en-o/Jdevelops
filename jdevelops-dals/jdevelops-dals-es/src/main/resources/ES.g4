@@ -10,7 +10,7 @@ expression
     ;
 
 comparison
-    : IDENTIFIER operator value              # StandardComparison
+    : IDENTIFIER operator valueType          # StandardComparison
     | IDENTIFIER existsOperator              # ExistenceComparison
     ;
 
@@ -30,43 +30,43 @@ operator
 EXISTS: 'exists';
 NOT: 'not';
 
-// 修改标识符规则以支持更多字符
+// 标识符（字段名）
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 
-// 值的定义
-value: valueType;
-
+// 值类型
 valueType
-    : STRING                                # StringValue
-    | INT                                   # IntValue
-    | DECIMAL                              # DecimalValue
-    | arrayValue                           # ArrayValues
-    | 'null'                               # NullValue
+    : DOUBLE_QUOTED_STRING                # QuotedStringValue
+    | SINGLE_QUOTED_STRING                # SingleQuotedStringValue
+    | BARE_STRING                         # BareStringValue
+    | INT                                 # IntValue
+    | DECIMAL                            # DecimalValue
+    | arrayValue                         # ArrayValues
+    | 'null'                             # NullValue
     ;
 
-// 简化的字符串规则
-STRING
-    : '"' (~["\r\n])* '"'     // 双引号字符串
-    | '\'' (~['\r\n])* '\''   // 单引号字符串
-    | UNQUOTED_STRING         // 无引号字符串（包括email等格式）
+// 数组值
+arrayValue
+    : ARRAY_START value (COMMA value)* ARRAY_END
     ;
 
-// 定义无引号字符串（可以包含email等格式）
-fragment UNQUOTED_STRING
-    : (~[ \t\r\n"'()[\],=] | '@' | '.' | '-' | '+' | '%')+
+// 数组元素值
+value
+    : DOUBLE_QUOTED_STRING
+    | SINGLE_QUOTED_STRING
+    | BARE_STRING
+    | INT
+    | DECIMAL
     ;
 
+// 词法规则
+DOUBLE_QUOTED_STRING: '"' (~["\r\n])* '"';
+SINGLE_QUOTED_STRING: '\'' (~['\r\n])* '\'';
+BARE_STRING: [a-zA-Z0-9@.+\-/%_]+;
 INT: [0-9]+;
 DECIMAL: INT '.' INT;
-
-// 数组相关
 ARRAY_START: '[';
 ARRAY_END: ']';
 COMMA: ',';
-
-arrayValue
-    : ARRAY_START (STRING|INT|DECIMAL) (COMMA (STRING|INT|DECIMAL))* ARRAY_END
-    ;
 
 // 忽略空白字符
 WS: [ \t\r\n]+ -> skip;

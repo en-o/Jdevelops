@@ -110,26 +110,34 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
 
 
     private String getValueFromContext(ESParser.ValueTypeContext ctx) {
-        if (ctx instanceof ESParser.StringValueContext) {
+        if (ctx instanceof ESParser.QuotedStringValueContext ||
+                ctx instanceof ESParser.SingleQuotedStringValueContext) {
+            // 移除引号
             String text = ctx.getText();
-            // 如果是带引号的字符串，移除引号
-            if (text.startsWith("\"") || text.startsWith("'")) {
-                return text.substring(1, text.length() - 1);
-            }
-            // 无引号字符串直接返回
-            return text;
+            return text.substring(1, text.length() - 1);
+        } else if (ctx instanceof ESParser.BareStringValueContext) {
+            // 直接返回不带引号的字符串
+            return ctx.getText();
         } else if (ctx instanceof ESParser.IntValueContext ||
                 ctx instanceof ESParser.DecimalValueContext) {
             return ctx.getText();
-        } else if (ctx instanceof ESParser.ArrayValuesContext) {
-            return ctx.getText().replaceAll("^\\[|]$", "");
+        } else if (ctx instanceof ESParser.ArrayValuesContext arrayCtx) {
+            List<String> values = new ArrayList<>();
+            for (ESParser.ValueContext valueCtx : arrayCtx.arrayValue().value()) {
+                String value = valueCtx.getText();
+                // 如果是带引号的字符串，移除引号
+                if ((value.startsWith("\"") && value.endsWith("\"")) ||
+                        (value.startsWith("'") && value.endsWith("'"))) {
+                    value = value.substring(1, value.length() - 1);
+                }
+                values.add(value);
+            }
+            return String.join(",", values);
         } else if (ctx instanceof ESParser.NullValueContext) {
             return null;
         }
         throw new IllegalArgumentException("Unsupported value type: " + ctx.getText());
     }
-
-
     private Query buildQueryFromOperator(String field, String operator, String value, ESParser.ValueTypeContext valueCtx) {
         return switch (operator) {
             case "==" -> new TermQuery.Builder().field(field).value(value).build()._toQuery();

@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
+// Generated from D:/代码/self/Jdevelops开发工具集/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -124,17 +124,41 @@ public interface ESListener extends ParseTreeListener {
 	 */
 	void exitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code StringValue}
+	 * Enter a parse tree produced by the {@code QuotedStringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void enterStringValue(ESParser.StringValueContext ctx);
+	void enterQuotedStringValue(ESParser.QuotedStringValueContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code StringValue}
+	 * Exit a parse tree produced by the {@code QuotedStringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void exitStringValue(ESParser.StringValueContext ctx);
+	void exitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SingleQuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SingleQuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code BareStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterBareStringValue(ESParser.BareStringValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code BareStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitBareStringValue(ESParser.BareStringValueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code IntValue}
 	 * labeled alternative in {@link ESParser#valueType}.
@@ -193,4 +217,14 @@ public interface ESListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayValue(ESParser.ArrayValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue(ESParser.ValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue(ESParser.ValueContext ctx);
 }

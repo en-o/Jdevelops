@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
+// Generated from D:/代码/self/Jdevelops开发工具集/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -137,13 +137,37 @@ public class ESBaseListener implements ESListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStringValue(ESParser.StringValueContext ctx) { }
+	@Override public void enterQuotedStringValue(ESParser.QuotedStringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStringValue(ESParser.StringValueContext ctx) { }
+	@Override public void exitQuotedStringValue(ESParser.QuotedStringValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBareStringValue(ESParser.BareStringValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBareStringValue(ESParser.BareStringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -204,6 +228,18 @@ public class ESBaseListener implements ESListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayValue(ESParser.ArrayValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterValue(ESParser.ValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitValue(ESParser.ValueContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

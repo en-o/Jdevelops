@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
+// Generated from D:/代码/self/Jdevelops开发工具集/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -79,12 +79,26 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code StringValue}
+	 * Visit a parse tree produced by the {@code QuotedStringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringValue(ESParser.StringValueContext ctx);
+	T visitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleQuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BareStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBareStringValue(ESParser.BareStringValueContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code IntValue}
 	 * labeled alternative in {@link ESParser#valueType}.
@@ -119,4 +133,10 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArrayValue(ESParser.ArrayValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValue(ESParser.ValueContext ctx);
 }

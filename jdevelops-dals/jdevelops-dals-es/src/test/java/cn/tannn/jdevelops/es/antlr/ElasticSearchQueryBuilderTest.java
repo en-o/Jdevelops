@@ -6,16 +6,45 @@ import cn.tannn.jdevelops.es.exception.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ElasticSearchQueryBuilderTest {
 //
 //    @Autowired
 //    private ElasticService elasticService;
 
+
+    @Test
+    void buildQuotation() {
+
+        // 测试所有可能的字符串格式
+        List<String> queries = List.of(
+                "name==tan",
+                "name == tan",
+                "name==\"tan\"",
+                "name == \"tan\"",
+                "name=='tan'",
+                "name == 'tan'",
+                "email==user@example.com",
+                "email == user@example.com"
+        );
+        // 创建查询构建器
+        var queryBuilder = new ElasticSearchQueryBuilder.Builder()
+                .build();
+
+        for (String query : queries) {
+            Query result = queryBuilder.buildQuery(query);
+            assertTrue(result.toString().contains("\"value\":"),
+                    "Query should contain value for: " + query);
+        }
+        // 测试数组查询
+        Query arrayQuery = queryBuilder.buildQuery("tags in [tag1, \"tag2\", 'tag3']");
+        assertTrue(arrayQuery.toString().contains("\"terms\":"),
+                "Array query should use terms query");
+    }
 
     /**
      * 直接build
@@ -27,10 +56,9 @@ class ElasticSearchQueryBuilderTest {
                 .build();
         //  String expression = "title += \"论坚定理想信念（2023年）\" and years == 2021 ";
         String expression = "(name == \"tan\" and age >= 18 and (nick==\"s\" or zz==123)) OR (status == \"active\" and sex == 1 or title== \"sda\")";
-        Query query = queryBuilder.buildQuery(expression);
 //        System.out.println(query.toString());
         assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"bool\":{\"must\":[{\"term\":{\"name\":{\"value\":\"tan\"}}},{\"range\":{\"age\":{\"gte\":\"18\"}}}]}},{\"bool\":{\"should\":[{\"term\":{\"nick\":{\"value\":\"s\"}}},{\"term\":{\"zz\":{\"value\":\"123\"}}}]}}]}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"status\":{\"value\":\"active\"}}},{\"term\":{\"sex\":{\"value\":\"1\"}}}]}},{\"term\":{\"title\":{\"value\":\"sda\"}}}]}}]}}"
-                ,query.toString());
+                ,queryBuilder.buildQuery(expression).toString());
     }
 
 
