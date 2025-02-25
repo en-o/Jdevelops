@@ -70,7 +70,7 @@ public class ExpressionTest {
         void testNotEqualOperator() {
             Query query = queryBuilder.buildQuery("age != \"25\"");
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":[{\"term\":{\"age\":{\"query\":\"25\"}}}]}}",
+                    "Query: {\"bool\":{\"must_not\":[{\"term\":{\"age\":{\"value\":\"25\"}}}]}}",
                     query.toString()
             );
         }

@@ -33,7 +33,12 @@ operator
 EXISTS: 'exists';
 NOT: 'not';
 
-IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+// 修改IDENTIFIER支持中文字符
+IDENTIFIER: (CHINESE | [a-zA-Z_]) (CHINESE | [a-zA-Z0-9_])*;
+
+// 添加中文字符片段规则
+fragment CHINESE: [\u4e00-\u9fa5];
+
 // 值类型处理器
 valueType
     : quotedString                         # QuotedStringValue
@@ -67,7 +72,8 @@ value
 // 词法规则
 DOUBLE_QUOTED_STRING: '"' (~["\r\n])* '"';
 SINGLE_QUOTED_STRING: '\'' (~['\r\n])* '\'';
-UNQUOTED_STRING: [a-zA-Z0-9@.+\-/%_]+;
+// 修改UNQUOTED_STRING支持中文字符
+UNQUOTED_STRING: (CHINESE | [a-zA-Z0-9@.+\-/%_])+;
 INT: [0-9]+;
 DECIMAL: INT '.' INT;
 
