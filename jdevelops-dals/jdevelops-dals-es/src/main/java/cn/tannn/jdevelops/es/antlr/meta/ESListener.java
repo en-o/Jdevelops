@@ -124,65 +124,29 @@ public interface ESListener extends ParseTreeListener {
 	 */
 	void exitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code QuotedStringValue}
+	 * Enter a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void enterQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	void enterStringValue(ESParser.StringValueContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code QuotedStringValue}
+	 * Exit a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void exitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	void exitStringValue(ESParser.StringValueContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code SingleQuotedStringValue}
+	 * Enter a parse tree produced by the {@code NumberValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void enterSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
+	void enterNumberValue(ESParser.NumberValueContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code SingleQuotedStringValue}
+	 * Exit a parse tree produced by the {@code NumberValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void exitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code BareStringValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void enterBareStringValue(ESParser.BareStringValueContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code BareStringValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void exitBareStringValue(ESParser.BareStringValueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code IntValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntValue(ESParser.IntValueContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IntValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntValue(ESParser.IntValueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code DecimalValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void enterDecimalValue(ESParser.DecimalValueContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code DecimalValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 */
-	void exitDecimalValue(ESParser.DecimalValueContext ctx);
+	void exitNumberValue(ESParser.NumberValueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ArrayValues}
 	 * labeled alternative in {@link ESParser#valueType}.

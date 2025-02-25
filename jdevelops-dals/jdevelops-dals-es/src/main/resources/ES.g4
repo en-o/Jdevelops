@@ -36,37 +36,38 @@ NOT: 'not';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 
 valueType
-    : DOUBLE_QUOTED_STRING                # QuotedStringValue
-    | SINGLE_QUOTED_STRING                # SingleQuotedStringValue
-    | BARE_STRING                         # BareStringValue
-    | INT                                 # IntValue
-    | DECIMAL                            # DecimalValue
+    : STRING                              # StringValue
+    | NUMBER                             # NumberValue
     | arrayValue                         # ArrayValues
     | 'null'                             # NullValue
     ;
 
 arrayValue
-    : ARRAY_START value (COMMA value)* ARRAY_END
+    : '[' value (',' value)* ']'
     ;
 
 value
-    : DOUBLE_QUOTED_STRING
-    | SINGLE_QUOTED_STRING
-    | BARE_STRING
-    | INT
-    | DECIMAL
+    : STRING
+    | NUMBER
     ;
 
-//词法规则，让BARE_STRING支持更多字符
-DOUBLE_QUOTED_STRING: '"' (~["\r\n])* '"';
-SINGLE_QUOTED_STRING: '\'' (~['\r\n])* '\'';
-// BARE_STRING的定义，允许更多字符，但排除空格和特殊操作符
-BARE_STRING: ~[ \t\r\n"'()[\],<>=!+~]+;
-INT: [0-9]+;
-DECIMAL: INT '.' INT;
-ARRAY_START: '[';
-ARRAY_END: ']';
-COMMA: ',';
+fragment DIGIT: [0-9];
+NUMBER: DIGIT+ ('.' DIGIT+)?;
+
+// 修改STRING词法规则，统一处理带引号和不带引号的字符串
+STRING
+    : QUOTED_STRING     // 带引号的字符串
+    | UNQUOTED_STRING   // 不带引号的字符串
+    ;
+
+fragment QUOTED_STRING
+    : '"' (~["\r\n])* '"'
+    | '\'' (~['\r\n])* '\''
+    ;
+
+fragment UNQUOTED_STRING
+    : ~[ \t\r\n"'()[\],<>=!+~]+
+    ;
 
 // 忽略空白字符
 WS: [ \t\r\n]+ -> skip;

@@ -45,14 +45,14 @@ class ElasticSearchQueryBuilderTest {
 
         // 测试所有可能的字符串格式
         List<String> queries = List.of(
-                "name==tan",
-                "name == tan",
-                "name==\"tan\"",
-                "name == \"tan\"",
-                "name=='tan'",
-                "name == 'tan'",
-                "email==user@example.com",
-                "email == user@example.com"
+                "name == \"tan4\"",
+                "name==tan1",
+                "name == tan2",
+                "name==\"tan3\"",
+                "name=='tan5'",
+                "name == 'tan6'",
+                "email==user@example1.com",
+                "email == user@exampl2e.com"
         );
         // 创建查询构建器
         var queryBuilder = new ElasticSearchQueryBuilder.Builder()
@@ -60,6 +60,7 @@ class ElasticSearchQueryBuilderTest {
 
         for (String query : queries) {
             Query result = queryBuilder.buildQuery(query);
+            System.out.println(result);
             assertTrue(result.toString().contains("\"value\":"),
                     "Query should contain value for: " + query);
         }

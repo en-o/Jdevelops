@@ -137,61 +137,25 @@ public class ESBaseListener implements ESListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQuotedStringValue(ESParser.QuotedStringValueContext ctx) { }
+	@Override public void enterStringValue(ESParser.StringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitQuotedStringValue(ESParser.QuotedStringValueContext ctx) { }
+	@Override public void exitStringValue(ESParser.StringValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx) { }
+	@Override public void enterNumberValue(ESParser.NumberValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBareStringValue(ESParser.BareStringValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBareStringValue(ESParser.BareStringValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIntValue(ESParser.IntValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIntValue(ESParser.IntValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDecimalValue(ESParser.DecimalValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDecimalValue(ESParser.DecimalValueContext ctx) { }
+	@Override public void exitNumberValue(ESParser.NumberValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

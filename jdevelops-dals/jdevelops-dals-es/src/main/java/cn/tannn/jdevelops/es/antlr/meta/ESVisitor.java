@@ -79,40 +79,19 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code QuotedStringValue}
+	 * Visit a parse tree produced by the {@code StringValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	T visitStringValue(ESParser.StringValueContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SingleQuotedStringValue}
+	 * Visit a parse tree produced by the {@code NumberValue}
 	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSingleQuotedStringValue(ESParser.SingleQuotedStringValueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code BareStringValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBareStringValue(ESParser.BareStringValueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IntValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIntValue(ESParser.IntValueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code DecimalValue}
-	 * labeled alternative in {@link ESParser#valueType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDecimalValue(ESParser.DecimalValueContext ctx);
+	T visitNumberValue(ESParser.NumberValueContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ArrayValues}
 	 * labeled alternative in {@link ESParser#valueType}.

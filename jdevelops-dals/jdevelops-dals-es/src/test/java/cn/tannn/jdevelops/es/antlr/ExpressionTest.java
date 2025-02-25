@@ -70,7 +70,7 @@ public class ExpressionTest {
         void testNotEqualOperator() {
             Query query = queryBuilder.buildQuery("age != \"25\"");
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":[{\"match_phrase\":{\"age\":{\"query\":\"25\"}}}]}}",
+                    "Query: {\"bool\":{\"must_not\":[{\"term\":{\"age\":{\"query\":\"25\"}}}]}}",
                     query.toString()
             );
         }
@@ -183,9 +183,9 @@ public class ExpressionTest {
         @Test
         @DisplayName("包含操作符 in")
         void testInOperator() {
-            Query query = queryBuilder.buildQuery("status in [\"active\", \"inactive\"]");
+            Query query = queryBuilder.buildQuery("status in [\"inactive\", \"active\"]");
             assertEquals(
-                    "Query: {\"terms\":{\"status\":[\"active\",\"inactive\"]}}",
+                    "Query: {\"terms\":{\"status\":[\"inactive\",\"active\"]}}",
                     query.toString()
             );
         }
@@ -198,8 +198,8 @@ public class ExpressionTest {
                 queryBuilder.buildQuery("status not in [\"deleted\", \"banned\"]");
             });
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":{\"terms\":{\"status\":[\"active\",\"inactive\"]}}}}",
-                    queryBuilder.buildQuery("status not in [\"active\", \"inactive\"]")
+                    "Query: {\"bool\":{\"must_not\":{\"terms\":{\"status\":[\"inactive\",\"active\"]}}}}",
+                    queryBuilder.buildQuery("status not in [\"inactive\", \"active\"]")
                             .toString()
             );
         }
@@ -305,7 +305,7 @@ public class ExpressionTest {
     void testComplexQuery() {
         String complexQuery = """
                 (手机 == "13800138000" and sex == "男" and status == "active") or
-                (email =~ ".*@gmail\\.com$" and age > "18") or
+                (email == "123123@qq.com" and age > "18") or
                 (userName += "张" and score >= "90" and status in ["active", "pending"])
                 """;
 

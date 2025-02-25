@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.json.JsonData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -109,22 +110,24 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
 
 
     private String getValueFromContext(ESParser.ValueTypeContext ctx) {
-        // 优化值处理逻辑
-        if (ctx instanceof ESParser.QuotedStringValueContext ||
-                ctx instanceof ESParser.SingleQuotedStringValueContext) {
+        if (ctx instanceof ESParser.StringValueContext) {
             String text = ctx.getText();
-            return text.substring(1, text.length() - 1);
-        } else if (ctx instanceof ESParser.BareStringValueContext ||
-                ctx instanceof ESParser.IntValueContext ||
-                ctx instanceof ESParser.DecimalValueContext) {
-            // 直接返回文本值，不需要特殊处理
+            // 如果是带引号的字符串，去掉引号
+            if ((text.startsWith("\"") && text.endsWith("\"")) ||
+                    (text.startsWith("'") && text.endsWith("'"))) {
+                return text.substring(1, text.length() - 1);
+            }
+            return text;
+        } else if (ctx instanceof ESParser.NumberValueContext) {
             return ctx.getText();
         } else if (ctx instanceof ESParser.ArrayValuesContext arrayCtx) {
             List<String> values = new ArrayList<>();
-            for (ESParser.ValueContext valueCtx : arrayCtx.arrayValue().value()) {
+            ESParser.ArrayValueContext array = arrayCtx.arrayValue();
+            for (ESParser.ValueContext valueCtx : array.value()) {
                 String value = valueCtx.getText();
-                if (value.startsWith("\"") && value.endsWith("\"") ||
-                        value.startsWith("'") && value.endsWith("'")) {
+                // 处理数组中的带引号字符串
+                if ((value.startsWith("\"") && value.endsWith("\"")) ||
+                        (value.startsWith("'") && value.endsWith("'"))) {
                     value = value.substring(1, value.length() - 1);
                 }
                 values.add(value);
@@ -141,75 +144,51 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
         return switch (operator) {
             case "==" -> new TermQuery.Builder().field(field).value(value).build()._toQuery();
             case "!=" -> new BoolQuery.Builder()
-                    .mustNot(new MatchPhraseQuery.Builder().field(field).query(value).build()._toQuery())
+                    .mustNot(new TermQuery.Builder().field(field).value(value).build()._toQuery())
                     .build()._toQuery();
             case ">=" -> new RangeQuery.Builder().field(field).gte(JsonData.of(value)).build()._toQuery();
             case "<=" -> new RangeQuery.Builder().field(field).lte(JsonData.of(value)).build()._toQuery();
             case ">" -> new RangeQuery.Builder().field(field).gt(JsonData.of(value)).build()._toQuery();
             case "<" -> new RangeQuery.Builder().field(field).lt(JsonData.of(value)).build()._toQuery();
             case "+=" -> new MatchQuery.Builder().field(field).query(value).build()._toQuery();
-            case "=~" -> // 使用wildcard查询替代regexp查询，提供更好的模式匹配支持
-                    new WildcardQuery.Builder()
+            case "=~" -> new WildcardQuery.Builder() // 使用wildcard查询替代regexp查询，提供更好的模式匹配支持
+                    .field(field)
+                    .wildcard(value)
+                    .caseInsensitive(true)
+                    .build()
+                    ._toQuery();
+            case "!~" -> new BoolQuery.Builder()  // 对于否定的模式匹配，使用must_not + wildcard
+                    .mustNot(new WildcardQuery.Builder()
                             .field(field)
                             .wildcard(value)
-                            .caseInsensitive(true)  // 设置大小写不敏感
+                            .caseInsensitive(true)
                             .build()
-                            ._toQuery();
-            case "!~" -> {
-                // 对于否定的模式匹配，使用must_not + wildcard
-                var wildcardQuery = new WildcardQuery.Builder()
+                            ._toQuery())
+                    .build()
+                    ._toQuery();
+            case "in", "not in" -> {
+                if (!(valueCtx instanceof ESParser.ArrayValuesContext)) {
+                    throw new IllegalArgumentException("Operator '" + operator + "' requires an array value");
+                }
+                var termsQuery = new TermsQuery.Builder()
                         .field(field)
-                        .wildcard(value)
-                        .caseInsensitive(true)
+                        .terms(b -> b.value(convertToFieldValues(Arrays.asList(value.split(",")))))
                         .build()
                         ._toQuery();
 
-                yield new BoolQuery.Builder()
-                        .mustNot(wildcardQuery)
-                        .build()
-                        ._toQuery();
-            }
-            case "in" -> {
-                if (!(valueCtx instanceof ESParser.ArrayValuesContext)) {
-                    throw new IllegalArgumentException("Operator 'in' requires an array value");
+                if (operator.equals("in")) {
+                    yield termsQuery;
+                } else {
+                    yield new BoolQuery.Builder()
+                            .mustNot(termsQuery)
+                            .build()
+                            ._toQuery();
                 }
-                List<String> values = parseArrayValue(value);
-                 yield new TermsQuery.Builder()
-                        .field(field)
-                        .terms(b -> b.value(convertToFieldValues(values)))
-                        .build()
-                        ._toQuery();
-            }
-            case "not in" -> {
-                if (!(valueCtx instanceof ESParser.ArrayValuesContext)) {
-                    throw new IllegalArgumentException("Operator 'not in' requires an array value");
-                }
-                List<String> values = parseArrayValue(value);
-                yield new BoolQuery.Builder()
-                        .mustNot(new TermsQuery.Builder()
-                                .field(field)
-                                .terms(b -> b.value(convertToFieldValues(values)))
-                                .build()
-                                ._toQuery())
-                        .build()
-                        ._toQuery();
             }
             default -> throw new IllegalArgumentException("未知的操作符: " + operator);
         };
     }
 
-    private List<String> parseArrayValue(String arrayStr) {
-        List<String> values = new ArrayList<>();
-        String[] parts = arrayStr.split(",");
-        for (String part : parts) {
-            // 清理每个值的引号和空格
-            String cleanValue = part.trim().replaceAll("^\"|\"$", "");
-            if (!cleanValue.isEmpty()) {
-                values.add(cleanValue);
-            }
-        }
-        return values;
-    }
 
 
     /**
