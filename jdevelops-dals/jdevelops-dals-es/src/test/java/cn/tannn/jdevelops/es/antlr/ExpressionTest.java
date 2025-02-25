@@ -133,9 +133,9 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则匹配操作符 =~")
         void testRegexMatchOperator() {
-            Query query = queryBuilder.buildQuery("email=123@gmail.com");
+            Query query = queryBuilder.buildQuery("email==123@gmail.com");
             assertEquals(
-                    "Query: {\"regexp\":{\"email\":{\"value\":email =123@gmail.com}}}",
+                    "Query: {\"regexp\":{\"email\":{\"value\":email=123@gmail.com}}}",
                     query.toString()
             );
         }
@@ -143,11 +143,13 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则不匹配操作符 !~")
         void testRegexNotMatchOperator() {
-            Query query = queryBuilder.buildQuery("email=123gmail.com");
-            assertEquals(
-                    "Query: {\"regexp\":{\"email\":{\"value\":email =123@gmail.com}}}",
-                    query.toString()
-            );
+            Query query = queryBuilder.buildQuery("email==123gmail.com");
+            assertThrows(cn.tannn.jdevelops.es.exception.ElasticsearchException.class,()->{
+                assertEquals(
+                        "Query: {\"regexp\":{\"email\":{\"value\":email =123@gmail.com}}}",
+                        query.toString()
+                );
+            });
         }
     }
 
