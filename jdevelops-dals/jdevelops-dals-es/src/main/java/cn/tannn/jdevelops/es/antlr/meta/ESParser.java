@@ -19,9 +19,9 @@ public class ESParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, EXISTS=20, NOT=21, IN=22, NOTIN=23, IDENTIFIER=24, 
-		DOUBLE_QUOTED_STRING=25, SINGLE_QUOTED_STRING=26, UNQUOTED_STRING=27, 
-		INT=28, DECIMAL=29, WS=30;
+		T__17=18, T__18=19, T__19=20, EXISTS=21, NOT=22, IN=23, NOTIN=24, IDENTIFIER=25, 
+		DOUBLE_QUOTED_STRING=26, SINGLE_QUOTED_STRING=27, UNQUOTED_STRING=28, 
+		INT=29, DECIMAL=30, WS=31;
 	public static final int
 		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_existsOperator = 3, 
 		RULE_operator = 4, RULE_valueType = 5, RULE_quotedString = 6, RULE_unquotedString = 7, 
@@ -37,16 +37,16 @@ public class ESParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='", 
-			"'>='", "'<='", "'>'", "'<'", "'+='", "'=~'", "'!~'", "'null'", "'['", 
-			"','", "']'"
+			"'>='", "'<='", "'>'", "'<'", "'+='", "'=+'", "'=~'", "'!~'", "'null'", 
+			"'['", "','", "']'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, "EXISTS", "NOT", "IN", 
-			"NOTIN", "IDENTIFIER", "DOUBLE_QUOTED_STRING", "SINGLE_QUOTED_STRING", 
+			null, null, null, null, null, null, null, null, null, "EXISTS", "NOT", 
+			"IN", "NOTIN", "IDENTIFIER", "DOUBLE_QUOTED_STRING", "SINGLE_QUOTED_STRING", 
 			"UNQUOTED_STRING", "INT", "DECIMAL", "WS"
 		};
 	}
@@ -587,7 +587,7 @@ public class ESParser extends Parser {
 			{
 			setState(55);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 12648320L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 25296768L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -774,7 +774,7 @@ public class ESParser extends Parser {
 				match(DECIMAL);
 				}
 				break;
-			case T__16:
+			case T__17:
 				_localctx = new ArrayValuesContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
@@ -782,12 +782,12 @@ public class ESParser extends Parser {
 				arrayValue();
 				}
 				break;
-			case T__15:
+			case T__16:
 				_localctx = new NullValueContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(62);
-				match(T__15);
+				match(T__16);
 				}
 				break;
 			default:
@@ -936,17 +936,17 @@ public class ESParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(69);
-			match(T__16);
+			match(T__17);
 			setState(70);
 			value();
 			setState(75);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__17) {
+			while (_la==T__18) {
 				{
 				{
 				setState(71);
-				match(T__17);
+				match(T__18);
 				setState(72);
 				value();
 				}
@@ -956,7 +956,7 @@ public class ESParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(78);
-			match(T__18);
+			match(T__19);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1068,7 +1068,7 @@ public class ESParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u001eW\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u001fW\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
@@ -1083,7 +1083,7 @@ public class ESParser extends Parser {
 		"\bM\t\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0003\tU\b\t\u0001"+
 		"\t\u0000\u0001\u0002\n\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
 		"\u0000\u0004\u0001\u0000\u0001\u0002\u0001\u0000\u0003\u0004\u0002\u0000"+
-		"\u0007\u000f\u0016\u0017\u0001\u0000\u0019\u001aZ\u0000\u0014\u0001\u0000"+
+		"\u0007\u0010\u0017\u0018\u0001\u0000\u001a\u001bZ\u0000\u0014\u0001\u0000"+
 		"\u0000\u0000\u0002\u001d\u0001\u0000\u0000\u0000\u00040\u0001\u0000\u0000"+
 		"\u0000\u00065\u0001\u0000\u0000\u0000\b7\u0001\u0000\u0000\u0000\n?\u0001"+
 		"\u0000\u0000\u0000\fA\u0001\u0000\u0000\u0000\u000eC\u0001\u0000\u0000"+
@@ -1098,25 +1098,25 @@ public class ESParser extends Parser {
 		"\"#\n\u0003\u0000\u0000#$\u0007\u0001\u0000\u0000$&\u0003\u0002\u0001"+
 		"\u0004%\u001f\u0001\u0000\u0000\u0000%\"\u0001\u0000\u0000\u0000&)\u0001"+
 		"\u0000\u0000\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001\u0000\u0000\u0000"+
-		"(\u0003\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000\u0000*+\u0005\u0018"+
+		"(\u0003\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000\u0000*+\u0005\u0019"+
 		"\u0000\u0000+,\u0003\b\u0004\u0000,-\u0003\n\u0005\u0000-1\u0001\u0000"+
-		"\u0000\u0000./\u0005\u0018\u0000\u0000/1\u0003\u0006\u0003\u00000*\u0001"+
+		"\u0000\u0000./\u0005\u0019\u0000\u0000/1\u0003\u0006\u0003\u00000*\u0001"+
 		"\u0000\u0000\u00000.\u0001\u0000\u0000\u00001\u0005\u0001\u0000\u0000"+
-		"\u000026\u0005\u0014\u0000\u000034\u0005\u0015\u0000\u000046\u0005\u0014"+
+		"\u000026\u0005\u0015\u0000\u000034\u0005\u0016\u0000\u000046\u0005\u0015"+
 		"\u0000\u000052\u0001\u0000\u0000\u000053\u0001\u0000\u0000\u00006\u0007"+
 		"\u0001\u0000\u0000\u000078\u0007\u0002\u0000\u00008\t\u0001\u0000\u0000"+
-		"\u00009@\u0003\f\u0006\u0000:@\u0003\u000e\u0007\u0000;@\u0005\u001c\u0000"+
-		"\u0000<@\u0005\u001d\u0000\u0000=@\u0003\u0010\b\u0000>@\u0005\u0010\u0000"+
+		"\u00009@\u0003\f\u0006\u0000:@\u0003\u000e\u0007\u0000;@\u0005\u001d\u0000"+
+		"\u0000<@\u0005\u001e\u0000\u0000=@\u0003\u0010\b\u0000>@\u0005\u0011\u0000"+
 		"\u0000?9\u0001\u0000\u0000\u0000?:\u0001\u0000\u0000\u0000?;\u0001\u0000"+
 		"\u0000\u0000?<\u0001\u0000\u0000\u0000?=\u0001\u0000\u0000\u0000?>\u0001"+
 		"\u0000\u0000\u0000@\u000b\u0001\u0000\u0000\u0000AB\u0007\u0003\u0000"+
-		"\u0000B\r\u0001\u0000\u0000\u0000CD\u0005\u001b\u0000\u0000D\u000f\u0001"+
-		"\u0000\u0000\u0000EF\u0005\u0011\u0000\u0000FK\u0003\u0012\t\u0000GH\u0005"+
-		"\u0012\u0000\u0000HJ\u0003\u0012\t\u0000IG\u0001\u0000\u0000\u0000JM\u0001"+
+		"\u0000B\r\u0001\u0000\u0000\u0000CD\u0005\u001c\u0000\u0000D\u000f\u0001"+
+		"\u0000\u0000\u0000EF\u0005\u0012\u0000\u0000FK\u0003\u0012\t\u0000GH\u0005"+
+		"\u0013\u0000\u0000HJ\u0003\u0012\t\u0000IG\u0001\u0000\u0000\u0000JM\u0001"+
 		"\u0000\u0000\u0000KI\u0001\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000"+
-		"LN\u0001\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000NO\u0005\u0013\u0000"+
+		"LN\u0001\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000NO\u0005\u0014\u0000"+
 		"\u0000O\u0011\u0001\u0000\u0000\u0000PU\u0003\f\u0006\u0000QU\u0003\u000e"+
-		"\u0007\u0000RU\u0005\u001c\u0000\u0000SU\u0005\u001d\u0000\u0000TP\u0001"+
+		"\u0007\u0000RU\u0005\u001d\u0000\u0000SU\u0005\u001e\u0000\u0000TP\u0001"+
 		"\u0000\u0000\u0000TQ\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000\u0000"+
 		"TS\u0001\u0000\u0000\u0000U\u0013\u0001\u0000\u0000\u0000\b\u001d%\'0"+
 		"5?KT";

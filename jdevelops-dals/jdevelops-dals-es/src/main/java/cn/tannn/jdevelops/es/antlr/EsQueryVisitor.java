@@ -146,6 +146,7 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
             case ">" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.GT);
             case "<" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.LT);
             case "+=" -> EsQueryFun.buildMatchQuery(field, value);
+            case "=+" -> EsQueryFun.buildPrefixQuery(field, value);
             case "=~" -> EsQueryFun.buildRegexpQuery(field, value, false);
             case "!~" -> EsQueryFun.buildNotQuery(EsQueryFun.buildRegexpQuery(field, value, false));
             case "in", "not in" -> EsQueryFun.buildTermsQuery(field, value, valueCtx, lowerCase.equals("not in"));
