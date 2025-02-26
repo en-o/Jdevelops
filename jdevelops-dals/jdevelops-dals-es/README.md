@@ -60,5 +60,17 @@ name == "tan"
 name=='tan'
 name == 'tan'
 
+// 操作符支持大小写
+status not in ["deleted"]
+status NOT IN ["deleted"]
+status Not In ["deleted"]
+
+status in ["active", "pending"]
+status IN ["active", "pending"]
+status In ["active", "pending"]
+
+field exists
+field EXISTS
+field Exists
 
 ```

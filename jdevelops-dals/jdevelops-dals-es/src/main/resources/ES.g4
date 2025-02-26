@@ -27,11 +27,15 @@ existsOperator
 operator
     : '==' | '!=' | '>=' | '<=' | '>' | '<' | '+='
     | '=~' | '!~'
-    | 'in' | 'not in'
+    | IN                                    # InOp
+    | NOTIN                                 # NotInOp
     ;
 
-EXISTS: 'exists';
-NOT: 'not';
+// 关键字定义（支持大小写）
+EXISTS: [Ee][Xx][Ii][Ss][Tt][Ss];
+NOT: [Nn][Oo][Tt];
+IN: [Ii][Nn];
+NOTIN: [Nn][Oo][Tt][ ]+[Ii][Nn];
 
 // 修改IDENTIFIER支持中文字符
 IDENTIFIER: (CHINESE | [a-zA-Z_]) (CHINESE | [a-zA-Z0-9_])*;
@@ -44,9 +48,9 @@ valueType
     : quotedString                         # QuotedStringValue
     | unquotedString                       # UnquotedStringValue
     | INT                                  # IntValue
-    | DECIMAL                              # DecimalValue
-    | arrayValue                           # ArrayValues
-    | 'null'                               # NullValue
+    | DECIMAL                             # DecimalValue
+    | arrayValue                          # ArrayValues
+    | 'null'                              # NullValue
     ;
 
 quotedString
@@ -77,4 +81,5 @@ UNQUOTED_STRING: (CHINESE | [a-zA-Z0-9@.+\-/%_])+;
 INT: [0-9]+;
 DECIMAL: INT '.' INT;
 
+// 忽略空白字符
 WS: [ \t\r\n]+ -> skip;

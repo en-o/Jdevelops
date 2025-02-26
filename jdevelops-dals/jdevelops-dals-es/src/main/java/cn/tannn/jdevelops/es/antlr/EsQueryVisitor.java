@@ -137,7 +137,8 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
 
 
     private Query buildQueryFromOperator(String field, String operator, String value, ESParser.ValueTypeContext valueCtx) {
-        return switch (operator.toLowerCase()) {
+        String lowerCase = operator.toLowerCase();
+        return switch (lowerCase) {
             case "==" -> EsQueryFun.buildTermQuery(field, value);
             case "!=" -> EsQueryFun.buildNotQuery(EsQueryFun.buildTermQuery(field, value));
             case ">=" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.GTE);
@@ -147,8 +148,8 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
             case "+=" -> EsQueryFun.buildMatchQuery(field, value);
             case "=~" -> EsQueryFun.buildRegexpQuery(field, value, false);
             case "!~" -> EsQueryFun.buildNotQuery(EsQueryFun.buildRegexpQuery(field, value, false));
-            case "in", "not in" -> EsQueryFun.buildTermsQuery(field, value, valueCtx, operator.equals("not in"));
-            default -> throw new IllegalArgumentException("未知的操作符: " + operator);
+            case "in", "not in" -> EsQueryFun.buildTermsQuery(field, value, valueCtx, lowerCase.equals("not in"));
+            default -> throw new IllegalArgumentException("未知的操作符: " + lowerCase);
         };
     }
 

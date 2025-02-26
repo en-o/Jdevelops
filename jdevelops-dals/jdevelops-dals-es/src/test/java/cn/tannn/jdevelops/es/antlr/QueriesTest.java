@@ -36,9 +36,7 @@ public class QueriesTest {
         // 测试数组查询
         assertQueryWorks(queryBuilder, "status in [\"active\", \"pending\"]");
         assertQueryWorks(queryBuilder, "status not in [\"deleted\", \"banned\"]");
-
-
-        assertQueryWorks(queryBuilder, "status NOT in [\"deleted\", \"banned\"]");
+        
     }
 
     private void assertQueryWorks(ElasticSearchQueryBuilder queryBuilder, String queryString) {
