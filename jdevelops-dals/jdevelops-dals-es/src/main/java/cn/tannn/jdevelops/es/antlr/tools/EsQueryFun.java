@@ -52,7 +52,7 @@ public class EsQueryFun {
     }
 
     /**
-     * 构建模糊匹配查询
+     * 构建模糊匹配查询(text)
      */
     public static Query buildMatchQuery(String field, String value) {
         return new MatchQuery.Builder()
@@ -62,6 +62,12 @@ public class EsQueryFun {
                 ._toQuery();
     }
 
+    /**
+     * 模糊匹配 - 单词（keyword）前缀匹配，适用于不分词字段
+     */
+    public static Query buildPrefixQuery(String field, String value) {
+        return PrefixQuery.of(r -> r.field(field).value(value))._toQuery();
+    }
     /**
      * 构建正则表达式查询
      */
