@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * UrlService 用到的bean
+ * 获取所有接口信息的过滤器【 UrlService 用到的bean】
  * @author tn
  * @date 2020-09-30 16:58
  */
@@ -17,7 +17,7 @@ import java.util.Set;
 public class InterceptUrl {
 
     /**
-     * 不需要记录的url
+     * 不需要记录的url【接口地址】
      */
     private Set<String> excludePathPatterns = new HashSet<>();
 

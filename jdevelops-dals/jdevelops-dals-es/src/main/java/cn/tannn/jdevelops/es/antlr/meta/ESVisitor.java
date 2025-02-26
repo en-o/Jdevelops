@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.1
+// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -45,11 +45,33 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrExpression(ESParser.OrExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ESParser#comparison}.
+	 * Visit a parse tree produced by the {@code StandardComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComparison(ESParser.ComparisonContext ctx);
+	T visitStandardComparison(ESParser.StandardComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExistenceComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExistenceComparison(ESParser.ExistenceComparisonContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExistsOp(ESParser.NotExistsOpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ESParser#operator}.
 	 * @param ctx the parse tree
@@ -57,9 +79,69 @@ public interface ESVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ESParser#valueType}.
+	 * Visit a parse tree produced by the {@code QuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitValueType(ESParser.ValueTypeContext ctx);
+	T visitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code UnquotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnquotedStringValue(ESParser.UnquotedStringValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IntValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecimalValue(ESParser.DecimalValueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayValues}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayValues(ESParser.ArrayValuesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NullValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNullValue(ESParser.NullValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#quotedString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuotedString(ESParser.QuotedStringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#unquotedString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnquotedString(ESParser.UnquotedStringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#arrayValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayValue(ESParser.ArrayValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValue(ESParser.ValueContext ctx);
 }

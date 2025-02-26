@@ -72,14 +72,14 @@ public class UrlServiceImpl implements UrlService {
             if (!Objects.isNull(api)) {
                 builder.setGrouping(api.name());
             } else {
-                builder.setGrouping("请使用@Api说明接口");
+                builder.setGrouping("请使用@Tag说明接口");
             }
             //获取方法上注解以及注解值
             Operation methodAnnotation = method.getMethodAnnotation(Operation.class);
             if (!Objects.isNull(methodAnnotation)) {
                 builder.setDescription(methodAnnotation.description());
             } else {
-                builder.setDescription("请使用@ApiOperation说明接口");
+                builder.setDescription("请使用@Operation说明接口");
             }
             //获取url的Set集合，一个方法可能对应多个url
             try {

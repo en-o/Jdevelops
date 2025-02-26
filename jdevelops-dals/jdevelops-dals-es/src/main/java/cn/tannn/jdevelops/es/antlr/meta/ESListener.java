@@ -1,4 +1,4 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.1
+// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -66,15 +66,53 @@ public interface ESListener extends ParseTreeListener {
 	 */
 	void exitOrExpression(ESParser.OrExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ESParser#comparison}.
+	 * Enter a parse tree produced by the {@code StandardComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
 	 * @param ctx the parse tree
 	 */
-	void enterComparison(ESParser.ComparisonContext ctx);
+	void enterStandardComparison(ESParser.StandardComparisonContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ESParser#comparison}.
+	 * Exit a parse tree produced by the {@code StandardComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
 	 * @param ctx the parse tree
 	 */
-	void exitComparison(ESParser.ComparisonContext ctx);
+	void exitStandardComparison(ESParser.StandardComparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExistenceComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
+	 * @param ctx the parse tree
+	 */
+	void enterExistenceComparison(ESParser.ExistenceComparisonContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExistenceComparison}
+	 * labeled alternative in {@link ESParser#comparison}.
+	 * @param ctx the parse tree
+	 */
+	void exitExistenceComparison(ESParser.ExistenceComparisonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitExistsOp(ESParser.ExistsOpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExistsOp(ESParser.NotExistsOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NotExistsOp}
+	 * labeled alternative in {@link ESParser#existsOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExistsOp(ESParser.NotExistsOpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ESParser#operator}.
 	 * @param ctx the parse tree
@@ -86,13 +124,115 @@ public interface ESListener extends ParseTreeListener {
 	 */
 	void exitOperator(ESParser.OperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ESParser#valueType}.
+	 * Enter a parse tree produced by the {@code QuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void enterValueType(ESParser.ValueTypeContext ctx);
+	void enterQuotedStringValue(ESParser.QuotedStringValueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ESParser#valueType}.
+	 * Exit a parse tree produced by the {@code QuotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
 	 * @param ctx the parse tree
 	 */
-	void exitValueType(ESParser.ValueTypeContext ctx);
+	void exitQuotedStringValue(ESParser.QuotedStringValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnquotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnquotedStringValue(ESParser.UnquotedStringValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnquotedStringValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnquotedStringValue(ESParser.UnquotedStringValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code IntValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntValue(ESParser.IntValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecimalValue(ESParser.DecimalValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code DecimalValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecimalValue(ESParser.DecimalValueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ArrayValues}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayValues(ESParser.ArrayValuesContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayValues}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayValues(ESParser.ArrayValuesContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code NullValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void enterNullValue(ESParser.NullValueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code NullValue}
+	 * labeled alternative in {@link ESParser#valueType}.
+	 * @param ctx the parse tree
+	 */
+	void exitNullValue(ESParser.NullValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ESParser#quotedString}.
+	 * @param ctx the parse tree
+	 */
+	void enterQuotedString(ESParser.QuotedStringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ESParser#quotedString}.
+	 * @param ctx the parse tree
+	 */
+	void exitQuotedString(ESParser.QuotedStringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ESParser#unquotedString}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnquotedString(ESParser.UnquotedStringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ESParser#unquotedString}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnquotedString(ESParser.UnquotedStringContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ESParser#arrayValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayValue(ESParser.ArrayValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ESParser#arrayValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayValue(ESParser.ArrayValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue(ESParser.ValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ESParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue(ESParser.ValueContext ctx);
 }

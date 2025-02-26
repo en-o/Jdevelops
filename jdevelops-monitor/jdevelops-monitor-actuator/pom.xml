@@ -11,7 +11,7 @@
 
     <artifactId>jdevelops-monitor-actuator</artifactId>
     <packaging>jar</packaging>
-    <name>jdevelops :: logs :: p6spy</name>
+    <name>jdevelops :: monitor :: actuator</name>
     <description>
         spring-boot-starter-actuator
     </description>

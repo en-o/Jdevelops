@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 @Import(InterceptUrl.class)
 public class SwBeanRegister {
 
-    @ConditionalOnMissingBean(name = "urlService")
+    @ConditionalOnMissingBean(UrlService.class)
     @Bean
     public UrlService urlService(){
         return new UrlServiceImpl();
@@ -32,7 +32,7 @@ public class SwBeanRegister {
      * jdevelopsContext
      * @return JdevelopsContext
      */
-    @ConditionalOnMissingBean(name = "jdevelopsContext")
+    @ConditionalOnMissingBean(JdevelopsContext.class)
     @Bean
     public JdevelopsContext getJdevelopsContext(){
         return new JdevelopsContextForSpring();

@@ -1,50 +1,53 @@
-// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.1
+// Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
 package cn.tannn.jdevelops.es.antlr.meta;
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class ESParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
-		T__9=10, T__10=11, T__11=12, T__12=13, IDENTIFIER=14, STRING=15, INT=16,
-		WS=17;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
+		T__17=18, T__18=19, T__19=20, EXISTS=21, NOT=22, IN=23, NOTIN=24, IDENTIFIER=25, 
+		DOUBLE_QUOTED_STRING=26, SINGLE_QUOTED_STRING=27, UNQUOTED_STRING=28, 
+		INT=29, DECIMAL=30, WS=31;
 	public static final int
-		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_operator = 3,
-		RULE_valueType = 4;
+		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_existsOperator = 3, 
+		RULE_operator = 4, RULE_valueType = 5, RULE_quotedString = 6, RULE_unquotedString = 7, 
+		RULE_arrayValue = 8, RULE_value = 9;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"query", "expression", "comparison", "operator", "valueType"
+			"query", "expression", "comparison", "existsOperator", "operator", "valueType", 
+			"quotedString", "unquotedString", "arrayValue", "value"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='",
-			"'>='", "'<='", "'>'", "'<'", "'+='"
+			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='", 
+			"'>='", "'<='", "'>'", "'<'", "'+='", "'=+'", "'=~'", "'!~'", "'null'", 
+			"'['", "','", "']'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null,
-			null, null, "IDENTIFIER", "STRING", "INT", "WS"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, "EXISTS", "NOT", 
+			"IN", "NOTIN", "IDENTIFIER", "DOUBLE_QUOTED_STRING", "SINGLE_QUOTED_STRING", 
+			"UNQUOTED_STRING", "INT", "DECIMAL", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -129,9 +132,9 @@ public class ESParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(10);
+			setState(20);
 			expression(0);
-			setState(11);
+			setState(21);
 			match(EOF);
 			}
 		}
@@ -152,7 +155,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-
+	 
 		public ExpressionContext() { }
 		public void copyFrom(ExpressionContext ctx) {
 			super.copyFrom(ctx);
@@ -261,7 +264,7 @@ public class ESParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19);
+			setState(29);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__4:
@@ -270,11 +273,11 @@ public class ESParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(14);
+				setState(24);
 				match(T__4);
-				setState(15);
+				setState(25);
 				expression(0);
-				setState(16);
+				setState(26);
 				match(T__5);
 				}
 				break;
@@ -283,7 +286,7 @@ public class ESParser extends Parser {
 				_localctx = new ComparisonExpressionContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(18);
+				setState(28);
 				comparison();
 				}
 				break;
@@ -291,7 +294,7 @@ public class ESParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(29);
+			setState(39);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -299,16 +302,16 @@ public class ESParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(27);
+					setState(37);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 					case 1:
 						{
 						_localctx = new AndExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(21);
+						setState(31);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(22);
+						setState(32);
 						_la = _input.LA(1);
 						if ( !(_la==T__0 || _la==T__1) ) {
 						_errHandler.recoverInline(this);
@@ -318,7 +321,7 @@ public class ESParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(23);
+						setState(33);
 						expression(5);
 						}
 						break;
@@ -326,9 +329,9 @@ public class ESParser extends Parser {
 						{
 						_localctx = new OrExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(24);
+						setState(34);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(25);
+						setState(35);
 						_la = _input.LA(1);
 						if ( !(_la==T__2 || _la==T__3) ) {
 						_errHandler.recoverInline(this);
@@ -338,14 +341,14 @@ public class ESParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(26);
+						setState(36);
 						expression(4);
 						}
 						break;
 					}
-					}
+					} 
 				}
-				setState(31);
+				setState(41);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
@@ -364,8 +367,18 @@ public class ESParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ComparisonContext extends ParserRuleContext {
-		public OperatorContext op;
-		public ValueTypeContext value;
+		public ComparisonContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_comparison; }
+	 
+		public ComparisonContext() { }
+		public void copyFrom(ComparisonContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class StandardComparisonContext extends ComparisonContext {
 		public TerminalNode IDENTIFIER() { return getToken(ESParser.IDENTIFIER, 0); }
 		public OperatorContext operator() {
 			return getRuleContext(OperatorContext.class,0);
@@ -373,21 +386,39 @@ public class ESParser extends Parser {
 		public ValueTypeContext valueType() {
 			return getRuleContext(ValueTypeContext.class,0);
 		}
-		public ComparisonContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_comparison; }
+		public StandardComparisonContext(ComparisonContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ESListener ) ((ESListener)listener).enterComparison(this);
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterStandardComparison(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ESListener ) ((ESListener)listener).exitComparison(this);
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitStandardComparison(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitComparison(this);
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitStandardComparison(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ExistenceComparisonContext extends ComparisonContext {
+		public TerminalNode IDENTIFIER() { return getToken(ESParser.IDENTIFIER, 0); }
+		public ExistsOperatorContext existsOperator() {
+			return getRuleContext(ExistsOperatorContext.class,0);
+		}
+		public ExistenceComparisonContext(ComparisonContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterExistenceComparison(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitExistenceComparison(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitExistenceComparison(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -396,14 +427,121 @@ public class ESParser extends Parser {
 		ComparisonContext _localctx = new ComparisonContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_comparison);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(32);
-			match(IDENTIFIER);
-			setState(33);
-			((ComparisonContext)_localctx).op = operator();
-			setState(34);
-			((ComparisonContext)_localctx).value = valueType();
+			setState(48);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			case 1:
+				_localctx = new StandardComparisonContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(42);
+				match(IDENTIFIER);
+				setState(43);
+				operator();
+				setState(44);
+				valueType();
+				}
+				break;
+			case 2:
+				_localctx = new ExistenceComparisonContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(46);
+				match(IDENTIFIER);
+				setState(47);
+				existsOperator();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ExistsOperatorContext extends ParserRuleContext {
+		public ExistsOperatorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_existsOperator; }
+	 
+		public ExistsOperatorContext() { }
+		public void copyFrom(ExistsOperatorContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ExistsOpContext extends ExistsOperatorContext {
+		public TerminalNode EXISTS() { return getToken(ESParser.EXISTS, 0); }
+		public ExistsOpContext(ExistsOperatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterExistsOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitExistsOp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitExistsOp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NotExistsOpContext extends ExistsOperatorContext {
+		public TerminalNode NOT() { return getToken(ESParser.NOT, 0); }
+		public TerminalNode EXISTS() { return getToken(ESParser.EXISTS, 0); }
+		public NotExistsOpContext(ExistsOperatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterNotExistsOp(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitNotExistsOp(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitNotExistsOp(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ExistsOperatorContext existsOperator() throws RecognitionException {
+		ExistsOperatorContext _localctx = new ExistsOperatorContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_existsOperator);
+		try {
+			setState(53);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case EXISTS:
+				_localctx = new ExistsOpContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(50);
+				match(EXISTS);
+				}
+				break;
+			case NOT:
+				_localctx = new NotExistsOpContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(51);
+				match(NOT);
+				setState(52);
+				match(EXISTS);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -419,6 +557,8 @@ public class ESParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class OperatorContext extends ParserRuleContext {
+		public TerminalNode IN() { return getToken(ESParser.IN, 0); }
+		public TerminalNode NOTIN() { return getToken(ESParser.NOTIN, 0); }
 		public OperatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -440,14 +580,14 @@ public class ESParser extends Parser {
 
 	public final OperatorContext operator() throws RecognitionException {
 		OperatorContext _localctx = new OperatorContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_operator);
+		enterRule(_localctx, 8, RULE_operator);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(55);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 16256L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 25296768L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -470,37 +610,234 @@ public class ESParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ValueTypeContext extends ParserRuleContext {
-		public TerminalNode STRING() { return getToken(ESParser.STRING, 0); }
-		public TerminalNode INT() { return getToken(ESParser.INT, 0); }
 		public ValueTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_valueType; }
+	 
+		public ValueTypeContext() { }
+		public void copyFrom(ValueTypeContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NullValueContext extends ValueTypeContext {
+		public NullValueContext(ValueTypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ESListener ) ((ESListener)listener).enterValueType(this);
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterNullValue(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ESListener ) ((ESListener)listener).exitValueType(this);
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitNullValue(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitValueType(this);
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitNullValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class UnquotedStringValueContext extends ValueTypeContext {
+		public UnquotedStringContext unquotedString() {
+			return getRuleContext(UnquotedStringContext.class,0);
+		}
+		public UnquotedStringValueContext(ValueTypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterUnquotedStringValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitUnquotedStringValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitUnquotedStringValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class DecimalValueContext extends ValueTypeContext {
+		public TerminalNode DECIMAL() { return getToken(ESParser.DECIMAL, 0); }
+		public DecimalValueContext(ValueTypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterDecimalValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitDecimalValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitDecimalValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class QuotedStringValueContext extends ValueTypeContext {
+		public QuotedStringContext quotedString() {
+			return getRuleContext(QuotedStringContext.class,0);
+		}
+		public QuotedStringValueContext(ValueTypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterQuotedStringValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitQuotedStringValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitQuotedStringValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ArrayValuesContext extends ValueTypeContext {
+		public ArrayValueContext arrayValue() {
+			return getRuleContext(ArrayValueContext.class,0);
+		}
+		public ArrayValuesContext(ValueTypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterArrayValues(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitArrayValues(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitArrayValues(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class IntValueContext extends ValueTypeContext {
+		public TerminalNode INT() { return getToken(ESParser.INT, 0); }
+		public IntValueContext(ValueTypeContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterIntValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitIntValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitIntValue(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
 	public final ValueTypeContext valueType() throws RecognitionException {
 		ValueTypeContext _localctx = new ValueTypeContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_valueType);
+		enterRule(_localctx, 10, RULE_valueType);
+		try {
+			setState(63);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case DOUBLE_QUOTED_STRING:
+			case SINGLE_QUOTED_STRING:
+				_localctx = new QuotedStringValueContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(57);
+				quotedString();
+				}
+				break;
+			case UNQUOTED_STRING:
+				_localctx = new UnquotedStringValueContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(58);
+				unquotedString();
+				}
+				break;
+			case INT:
+				_localctx = new IntValueContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(59);
+				match(INT);
+				}
+				break;
+			case DECIMAL:
+				_localctx = new DecimalValueContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(60);
+				match(DECIMAL);
+				}
+				break;
+			case T__17:
+				_localctx = new ArrayValuesContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(61);
+				arrayValue();
+				}
+				break;
+			case T__16:
+				_localctx = new NullValueContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(62);
+				match(T__16);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class QuotedStringContext extends ParserRuleContext {
+		public TerminalNode DOUBLE_QUOTED_STRING() { return getToken(ESParser.DOUBLE_QUOTED_STRING, 0); }
+		public TerminalNode SINGLE_QUOTED_STRING() { return getToken(ESParser.SINGLE_QUOTED_STRING, 0); }
+		public QuotedStringContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_quotedString; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterQuotedString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitQuotedString(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitQuotedString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final QuotedStringContext quotedString() throws RecognitionException {
+		QuotedStringContext _localctx = new QuotedStringContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_quotedString);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(38);
+			setState(65);
 			_la = _input.LA(1);
-			if ( !(_la==STRING || _la==INT) ) {
+			if ( !(_la==DOUBLE_QUOTED_STRING || _la==SINGLE_QUOTED_STRING) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -508,6 +845,198 @@ public class ESParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class UnquotedStringContext extends ParserRuleContext {
+		public TerminalNode UNQUOTED_STRING() { return getToken(ESParser.UNQUOTED_STRING, 0); }
+		public UnquotedStringContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_unquotedString; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterUnquotedString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitUnquotedString(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitUnquotedString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final UnquotedStringContext unquotedString() throws RecognitionException {
+		UnquotedStringContext _localctx = new UnquotedStringContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_unquotedString);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(67);
+			match(UNQUOTED_STRING);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ArrayValueContext extends ParserRuleContext {
+		public List<ValueContext> value() {
+			return getRuleContexts(ValueContext.class);
+		}
+		public ValueContext value(int i) {
+			return getRuleContext(ValueContext.class,i);
+		}
+		public ArrayValueContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_arrayValue; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterArrayValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitArrayValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitArrayValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ArrayValueContext arrayValue() throws RecognitionException {
+		ArrayValueContext _localctx = new ArrayValueContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_arrayValue);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(69);
+			match(T__17);
+			setState(70);
+			value();
+			setState(75);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==T__18) {
+				{
+				{
+				setState(71);
+				match(T__18);
+				setState(72);
+				value();
+				}
+				}
+				setState(77);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(78);
+			match(T__19);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ValueContext extends ParserRuleContext {
+		public QuotedStringContext quotedString() {
+			return getRuleContext(QuotedStringContext.class,0);
+		}
+		public UnquotedStringContext unquotedString() {
+			return getRuleContext(UnquotedStringContext.class,0);
+		}
+		public TerminalNode INT() { return getToken(ESParser.INT, 0); }
+		public TerminalNode DECIMAL() { return getToken(ESParser.DECIMAL, 0); }
+		public ValueContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_value; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).enterValue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ESListener ) ((ESListener)listener).exitValue(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ESVisitor ) return ((ESVisitor<? extends T>)visitor).visitValue(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ValueContext value() throws RecognitionException {
+		ValueContext _localctx = new ValueContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_value);
+		try {
+			setState(84);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case DOUBLE_QUOTED_STRING:
+			case SINGLE_QUOTED_STRING:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(80);
+				quotedString();
+				}
+				break;
+			case UNQUOTED_STRING:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(81);
+				unquotedString();
+				}
+				break;
+			case INT:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(82);
+				match(INT);
+				}
+				break;
+			case DECIMAL:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(83);
+				match(DECIMAL);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -539,33 +1068,58 @@ public class ESParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0011)\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0001"+
-		"\u0000\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0003\u0001\u0014\b\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0005\u0001\u001c"+
-		"\b\u0001\n\u0001\f\u0001\u001f\t\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0000\u0001\u0002\u0005\u0000\u0002\u0004\u0006\b\u0000\u0004\u0001\u0000"+
-		"\u0001\u0002\u0001\u0000\u0003\u0004\u0001\u0000\u0007\r\u0001\u0000\u000f"+
-		"\u0010&\u0000\n\u0001\u0000\u0000\u0000\u0002\u0013\u0001\u0000\u0000"+
-		"\u0000\u0004 \u0001\u0000\u0000\u0000\u0006$\u0001\u0000\u0000\u0000\b"+
-		"&\u0001\u0000\u0000\u0000\n\u000b\u0003\u0002\u0001\u0000\u000b\f\u0005"+
-		"\u0000\u0000\u0001\f\u0001\u0001\u0000\u0000\u0000\r\u000e\u0006\u0001"+
-		"\uffff\uffff\u0000\u000e\u000f\u0005\u0005\u0000\u0000\u000f\u0010\u0003"+
-		"\u0002\u0001\u0000\u0010\u0011\u0005\u0006\u0000\u0000\u0011\u0014\u0001"+
-		"\u0000\u0000\u0000\u0012\u0014\u0003\u0004\u0002\u0000\u0013\r\u0001\u0000"+
-		"\u0000\u0000\u0013\u0012\u0001\u0000\u0000\u0000\u0014\u001d\u0001\u0000"+
-		"\u0000\u0000\u0015\u0016\n\u0004\u0000\u0000\u0016\u0017\u0007\u0000\u0000"+
-		"\u0000\u0017\u001c\u0003\u0002\u0001\u0005\u0018\u0019\n\u0003\u0000\u0000"+
-		"\u0019\u001a\u0007\u0001\u0000\u0000\u001a\u001c\u0003\u0002\u0001\u0004"+
-		"\u001b\u0015\u0001\u0000\u0000\u0000\u001b\u0018\u0001\u0000\u0000\u0000"+
-		"\u001c\u001f\u0001\u0000\u0000\u0000\u001d\u001b\u0001\u0000\u0000\u0000"+
-		"\u001d\u001e\u0001\u0000\u0000\u0000\u001e\u0003\u0001\u0000\u0000\u0000"+
-		"\u001f\u001d\u0001\u0000\u0000\u0000 !\u0005\u000e\u0000\u0000!\"\u0003"+
-		"\u0006\u0003\u0000\"#\u0003\b\u0004\u0000#\u0005\u0001\u0000\u0000\u0000"+
-		"$%\u0007\u0002\u0000\u0000%\u0007\u0001\u0000\u0000\u0000&\'\u0007\u0003"+
-		"\u0000\u0000\'\t\u0001\u0000\u0000\u0000\u0003\u0013\u001b\u001d";
+		"\u0004\u0001\u001fW\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
+		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
+		"\b\u0007\b\u0002\t\u0007\t\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001"+
+		"\u001e\b\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0005\u0001&\b\u0001\n\u0001\f\u0001)\t\u0001\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0003\u0002"+
+		"1\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u00036\b\u0003\u0001"+
+		"\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001"+
+		"\u0005\u0001\u0005\u0003\u0005@\b\u0005\u0001\u0006\u0001\u0006\u0001"+
+		"\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0005\bJ\b\b\n\b\f"+
+		"\bM\t\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0003\tU\b\t\u0001"+
+		"\t\u0000\u0001\u0002\n\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
+		"\u0000\u0004\u0001\u0000\u0001\u0002\u0001\u0000\u0003\u0004\u0002\u0000"+
+		"\u0007\u0010\u0017\u0018\u0001\u0000\u001a\u001bZ\u0000\u0014\u0001\u0000"+
+		"\u0000\u0000\u0002\u001d\u0001\u0000\u0000\u0000\u00040\u0001\u0000\u0000"+
+		"\u0000\u00065\u0001\u0000\u0000\u0000\b7\u0001\u0000\u0000\u0000\n?\u0001"+
+		"\u0000\u0000\u0000\fA\u0001\u0000\u0000\u0000\u000eC\u0001\u0000\u0000"+
+		"\u0000\u0010E\u0001\u0000\u0000\u0000\u0012T\u0001\u0000\u0000\u0000\u0014"+
+		"\u0015\u0003\u0002\u0001\u0000\u0015\u0016\u0005\u0000\u0000\u0001\u0016"+
+		"\u0001\u0001\u0000\u0000\u0000\u0017\u0018\u0006\u0001\uffff\uffff\u0000"+
+		"\u0018\u0019\u0005\u0005\u0000\u0000\u0019\u001a\u0003\u0002\u0001\u0000"+
+		"\u001a\u001b\u0005\u0006\u0000\u0000\u001b\u001e\u0001\u0000\u0000\u0000"+
+		"\u001c\u001e\u0003\u0004\u0002\u0000\u001d\u0017\u0001\u0000\u0000\u0000"+
+		"\u001d\u001c\u0001\u0000\u0000\u0000\u001e\'\u0001\u0000\u0000\u0000\u001f"+
+		" \n\u0004\u0000\u0000 !\u0007\u0000\u0000\u0000!&\u0003\u0002\u0001\u0005"+
+		"\"#\n\u0003\u0000\u0000#$\u0007\u0001\u0000\u0000$&\u0003\u0002\u0001"+
+		"\u0004%\u001f\u0001\u0000\u0000\u0000%\"\u0001\u0000\u0000\u0000&)\u0001"+
+		"\u0000\u0000\u0000\'%\u0001\u0000\u0000\u0000\'(\u0001\u0000\u0000\u0000"+
+		"(\u0003\u0001\u0000\u0000\u0000)\'\u0001\u0000\u0000\u0000*+\u0005\u0019"+
+		"\u0000\u0000+,\u0003\b\u0004\u0000,-\u0003\n\u0005\u0000-1\u0001\u0000"+
+		"\u0000\u0000./\u0005\u0019\u0000\u0000/1\u0003\u0006\u0003\u00000*\u0001"+
+		"\u0000\u0000\u00000.\u0001\u0000\u0000\u00001\u0005\u0001\u0000\u0000"+
+		"\u000026\u0005\u0015\u0000\u000034\u0005\u0016\u0000\u000046\u0005\u0015"+
+		"\u0000\u000052\u0001\u0000\u0000\u000053\u0001\u0000\u0000\u00006\u0007"+
+		"\u0001\u0000\u0000\u000078\u0007\u0002\u0000\u00008\t\u0001\u0000\u0000"+
+		"\u00009@\u0003\f\u0006\u0000:@\u0003\u000e\u0007\u0000;@\u0005\u001d\u0000"+
+		"\u0000<@\u0005\u001e\u0000\u0000=@\u0003\u0010\b\u0000>@\u0005\u0011\u0000"+
+		"\u0000?9\u0001\u0000\u0000\u0000?:\u0001\u0000\u0000\u0000?;\u0001\u0000"+
+		"\u0000\u0000?<\u0001\u0000\u0000\u0000?=\u0001\u0000\u0000\u0000?>\u0001"+
+		"\u0000\u0000\u0000@\u000b\u0001\u0000\u0000\u0000AB\u0007\u0003\u0000"+
+		"\u0000B\r\u0001\u0000\u0000\u0000CD\u0005\u001c\u0000\u0000D\u000f\u0001"+
+		"\u0000\u0000\u0000EF\u0005\u0012\u0000\u0000FK\u0003\u0012\t\u0000GH\u0005"+
+		"\u0013\u0000\u0000HJ\u0003\u0012\t\u0000IG\u0001\u0000\u0000\u0000JM\u0001"+
+		"\u0000\u0000\u0000KI\u0001\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000"+
+		"LN\u0001\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000NO\u0005\u0014\u0000"+
+		"\u0000O\u0011\u0001\u0000\u0000\u0000PU\u0003\f\u0006\u0000QU\u0003\u000e"+
+		"\u0007\u0000RU\u0005\u001d\u0000\u0000SU\u0005\u001e\u0000\u0000TP\u0001"+
+		"\u0000\u0000\u0000TQ\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000\u0000"+
+		"TS\u0001\u0000\u0000\u0000U\u0013\u0001\u0000\u0000\u0000\b\u001d%\'0"+
+		"5?KT";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
