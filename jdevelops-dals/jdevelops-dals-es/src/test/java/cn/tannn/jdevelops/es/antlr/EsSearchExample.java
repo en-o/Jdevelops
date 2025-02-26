@@ -27,7 +27,7 @@ public class EsSearchExample {
     @Resource
     private ElasticsearchClient client;
 
-    @Test
+//    @Test
     void requestEs() throws IOException {
         var queryBuilder = new ElasticSearchQueryBuilder.Builder().build();
         String expression = "title += \"论坚定理想信念（2023年）\" and years == 2021 ";
