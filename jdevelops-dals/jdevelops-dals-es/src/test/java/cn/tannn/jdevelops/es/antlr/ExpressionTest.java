@@ -133,9 +133,9 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则匹配操作符 =~")
         void testRegexMatchOperator() {
-            Query query = queryBuilder.buildQuery("email=~123@gmail.com");
+            Query query = queryBuilder.buildQuery("emails =~ \".*@gmail\\.com$\"");
             assertEquals(
-                    "Query: {\"wildcard\":{\"email\":{\"case_insensitive\":true,\"wildcard\":\"123@gmail.com\"}}}",
+                    "Query: {\"regexp\":{\"emails\":{\"case_insensitive\":true,\"value\":\".*@gmail\\\\.com$\"}}}",
                     query.toString()
             );
         }
@@ -143,9 +143,9 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则不匹配操作符 !~")
         void testRegexNotMatchOperator() {
-            Query query = queryBuilder.buildQuery("email!~123@gmail.com");
+            Query query = queryBuilder.buildQuery("emails !~ \".*@spam\\.com$\"");
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":[{\"wildcard\":{\"email\":{\"case_insensitive\":true,\"wildcard\":\"123@gmail.com\"}}}]}}",
+                    "Query: {\"bool\":{\"must_not\":[{\"regexp\":{\"emails\":{\"case_insensitive\":true,\"value\":\".*@spam\\\\.com$\"}}}]}}",
                     query.toString()
             );
         }
@@ -198,7 +198,7 @@ public class ExpressionTest {
                 queryBuilder.buildQuery("status not in [\"deleted\", \"banned\"]");
             });
             assertEquals(
-                    "Query: {\"bool\":{\"must_not\":{\"terms\":{\"status\":[\"inactive\",\"active\"]}}}}",
+                    "Query: {\"bool\":{\"must_not\":[{\"terms\":{\"status\":[\"inactive\",\"active\"]}}]}}",
                     queryBuilder.buildQuery("status not in [\"inactive\", \"active\"]")
                             .toString()
             );
@@ -306,7 +306,7 @@ public class ExpressionTest {
         String complexQuery = """
                 (手机 == "13800138000" and sex == "男" and status == "active") or
                 (email == "123123@qq.com" and age > "18") or
-                (userName += "张" and score >= "90" and status in ["active", "pending"])
+                (userName += "张" and score >= "90" and status in ["active"])
                 """;
 
         Query query = queryBuilder.buildQuery(complexQuery);

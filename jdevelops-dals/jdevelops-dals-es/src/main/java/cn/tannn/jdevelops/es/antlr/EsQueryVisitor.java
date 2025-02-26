@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.es.antlr;
 
 import cn.tannn.jdevelops.es.antlr.meta.ESBaseVisitor;
 import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.tools.EsQueryFun;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
 import co.elastic.clients.elasticsearch._types.FieldValue;
@@ -136,50 +137,17 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
 
 
     private Query buildQueryFromOperator(String field, String operator, String value, ESParser.ValueTypeContext valueCtx) {
-        return switch (operator) {
-            case "==" -> new TermQuery.Builder().field(field).value(value).build()._toQuery();
-            case "!=" -> new BoolQuery.Builder()
-                    .mustNot(new TermQuery.Builder().field(field).value(value).build()._toQuery())
-                    .build()._toQuery();
-            case ">=" -> new RangeQuery.Builder().field(field).gte(JsonData.of(value)).build()._toQuery();
-            case "<=" -> new RangeQuery.Builder().field(field).lte(JsonData.of(value)).build()._toQuery();
-            case ">" -> new RangeQuery.Builder().field(field).gt(JsonData.of(value)).build()._toQuery();
-            case "<" -> new RangeQuery.Builder().field(field).lt(JsonData.of(value)).build()._toQuery();
-            case "+=" -> new MatchQuery.Builder().field(field).query(value).build()._toQuery();
-            case "=~" -> new WildcardQuery.Builder() // 使用wildcard查询替代regexp查询，提供更好的模式匹配支持
-                    .field(field)
-                    .wildcard(value)
-                    .caseInsensitive(true)
-                    .build()
-                    ._toQuery();
-            case "!~" -> new BoolQuery.Builder()  // 对于否定的模式匹配，使用must_not + wildcard
-                    .mustNot(new WildcardQuery.Builder()
-                            .field(field)
-                            .wildcard(value)
-                            .caseInsensitive(true)
-                            .build()
-                            ._toQuery())
-                    .build()
-                    ._toQuery();
-            case "in", "not in" -> {
-                if (!(valueCtx instanceof ESParser.ArrayValuesContext)) {
-                    throw new IllegalArgumentException("Operator '" + operator + "' requires an array value");
-                }
-                var termsQuery = new TermsQuery.Builder()
-                        .field(field)
-                        .terms(b -> b.value(convertToFieldValues(Arrays.asList(value.split(",")))))
-                        .build()
-                        ._toQuery();
-
-                if (operator.equals("in")) {
-                    yield termsQuery;
-                } else {
-                    yield new BoolQuery.Builder()
-                            .mustNot(termsQuery)
-                            .build()
-                            ._toQuery();
-                }
-            }
+        return switch (operator.toLowerCase()) {
+            case "==" -> EsQueryFun.buildTermQuery(field, value);
+            case "!=" -> EsQueryFun.buildNotQuery(EsQueryFun.buildTermQuery(field, value));
+            case ">=" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.GTE);
+            case "<=" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.LTE);
+            case ">" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.GT);
+            case "<" -> EsQueryFun.buildRangeQuery(field, value, EsQueryFun.RangeType.LT);
+            case "+=" -> EsQueryFun.buildMatchQuery(field, value);
+            case "=~" -> EsQueryFun.buildRegexpQuery(field, value, false);
+            case "!~" -> EsQueryFun.buildNotQuery(EsQueryFun.buildRegexpQuery(field, value, false));
+            case "in", "not in" -> EsQueryFun.buildTermsQuery(field, value, valueCtx, operator.equals("not in"));
             default -> throw new IllegalArgumentException("未知的操作符: " + operator);
         };
     }
@@ -196,28 +164,7 @@ public class EsQueryVisitor extends ESBaseVisitor<Query> {
         return visit(ctx.expression());
     }
 
-    /**
-     * 将字符串列表转换为 FieldValue 列表
-     * @param values 字符串值列表
-     * @return FieldValue 列表
-     */
-    private List<FieldValue> convertToFieldValues(List<String> values) {
-        return values.stream()
-                .map(value -> {
-                    // 尝试将字符串解析为数字
-                    try {
-                        if (value.contains(".")) {
-                            return FieldValue.of(Double.parseDouble(value));
-                        } else {
-                            return FieldValue.of(Long.parseLong(value));
-                        }
-                    } catch (NumberFormatException e) {
-                        // 如果不是数字，则作为字符串处理
-                        return FieldValue.of(value);
-                    }
-                })
-                .toList();
-    }
+
 
 
 }

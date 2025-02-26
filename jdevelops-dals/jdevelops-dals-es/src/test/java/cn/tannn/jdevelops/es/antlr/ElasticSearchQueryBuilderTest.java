@@ -22,9 +22,11 @@ class ElasticSearchQueryBuilderTest {
 
         // 测试正则表达式匹配
         var regex = List.of(
-                "name=~.*test.*",
-                "email=~.*@gmail\\.com",
-                "title!~temp.*"
+                "name=~'.*test.*'",
+                "email=~'.*@gmail.com'",
+                "title!~'temp.*'",
+                "nickname!~'.?temp.$'",
+                "nickname!~'.temp?'"
         );
 
         for (String query : regex) {
@@ -36,7 +38,7 @@ class ElasticSearchQueryBuilderTest {
                 assertTrue(queryString.contains("\"must_not\""),
                         "Negative regex should use must_not for: " + query);
             }
-            assertTrue(queryString.contains("\"wildcard\""),
+            assertTrue(queryString.contains("\"regexp\""),
                     "Query should use wildcard for: " + query);
         }
     }
@@ -119,7 +121,7 @@ class ElasticSearchQueryBuilderTest {
                 .build();
 
         String expression = "(abc == \"13800138000\" and sex == \"男\") or (name =~ \".*张.*\")";
-        assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"phone\":{\"value\":\"13800138000\"}}},{\"term\":{\"sex\":{\"value\":\"男\"}}}]}},{\"wildcard\":{\"userName\":{\"case_insensitive\":true,\"wildcard\":\".*张.*\"}}}]}}"
+        assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"phone\":{\"value\":\"13800138000\"}}},{\"term\":{\"sex\":{\"value\":\"男\"}}}]}},{\"regexp\":{\"userName\":{\"case_insensitive\":true,\"value\":\".*张.*\"}}}]}}"
                 ,queryBuilder.buildQuery(expression).toString());
     }
 
