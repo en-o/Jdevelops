@@ -1,19 +1,37 @@
-# antlr ES.g4生产目录设置
+# ES_Upgrade.g4
+> 业务需求
+## antlr ES_Upgrade.g4生产目录设置
+> ![img.png](img.png)
+选择ES.g4文件，右击选择Configure ANTLR
+- output: ./src/main/java
+- package: cn.tannn.jdevelops.es.antlr.metaupgrade
+- language: Java
+
+## 生成 es 代码
+1. 配置好生产目录
+2. 构建好 ES_Upgrade.g4 结构
+3. 选择ES_Upgrade.g4文件，右击 GENERATE ANTLR Recognizer
+
+
+
+#  ES.g4
+> 测试规则，自己理解的需求规则
+## antlr ES.g4生产目录设置
 > ![img.png](img.png) 
 选择ES.g4文件，右击选择Configure ANTLR
 - output: ./src/main/java
 - package: cn.tannn.jdevelops.es.antlr.meta
 - language: Java
 
-# 生成 es 代码
+## 生成 es 代码
 1. 配置好生产目录
 2. 构建好 ES.g4 结构
 3. 选择ES.g4文件，右击 GENERATE ANTLR Recognizer
 
-# 特别注意 
+## 特别注意 
 字符串值必须使用单/双引号包裹，否则会报错
 
-# DSL 示例
+## DSL 示例
 ```sql
 
 // 基本查询
