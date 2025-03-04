@@ -44,6 +44,10 @@ public class LogConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(
+            value = "jdevelops.api.log.enabled",
+            havingValue = "true",
+            matchIfMissing = true)
     public GlobalApiLogPrint GlobalApiLogPrint(LogConfig logConfig){
         return new GlobalApiLogPrint(logConfig);
     }

@@ -24,10 +24,6 @@ import java.util.Optional;
  *
  * @author tan
  */
-@ConditionalOnProperty(
-        value = "jdevelops.api.log.enabled",
-        havingValue = "true",
-        matchIfMissing = true)
 @Order(1)
 public class GlobalApiLogPrint implements ApiBeforeInterceptor {
 
