@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 
 import java.util.Objects;
@@ -55,7 +54,7 @@ public class GlobalApiLogPrint implements ApiBeforeInterceptor {
             } catch (Exception e) {
                 logger.error("ApiLog注解查询失败 {}", e.getMessage());
             }
-            String requestParams = RequestUtil.requestParams(request);
+            String requestParams = "don't print params";
             if (!IpUtil.printParams(logConfig.getInterceptApis(), request.getRequestURI())) {
                 requestParams = RequestUtil.requestParams(request);
             }
