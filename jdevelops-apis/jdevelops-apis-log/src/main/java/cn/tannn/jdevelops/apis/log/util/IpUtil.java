@@ -3,9 +3,11 @@ package cn.tannn.jdevelops.apis.log.util;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Set;
 
 
 /**
@@ -18,7 +20,6 @@ public class IpUtil {
     static final String LOCALHOST = "localhost";
 
     static final String COMMA = ",";
-
 
 
     /***
@@ -81,5 +82,21 @@ public class IpUtil {
         return ip;
     }
 
-
+    /**
+     * 验证是否可以打印入参
+     * <p> 真 不需要打印
+     * <p> 假 需要打印
+     * @param interceptApi 需要不打印的入参的api
+     * @param api 当前请求的接口地址
+     * @return Boolean
+     */
+    public static Boolean printParams(Set<String> interceptApi
+            , String api){
+        if(null != interceptApi && !interceptApi.isEmpty() && api != null ) {
+            AntPathMatcher antPathMatcher = new AntPathMatcher();
+            return interceptApi.stream()
+                    .anyMatch(e ->antPathMatcher.match(e,api));
+        }
+        return false;
+    }
 }

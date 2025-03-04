@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.apis.log.config;
 
 import cn.tannn.jdevelops.apis.log.ApiLogSave;
 import cn.tannn.jdevelops.apis.log.DefApiLogSave;
+import cn.tannn.jdevelops.apis.log.GlobalApiLogPrint;
 import cn.tannn.jdevelops.apis.log.aspect.ApiLogAspectSave;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,4 +38,13 @@ public class LogConfiguration {
         return new ApiLogAspectSave(apiLogSave);
     }
 
+    @Bean
+    public LogConfig logConfig(){
+        return new LogConfig();
+    }
+
+    @Bean
+    public GlobalApiLogPrint GlobalApiLogPrint(LogConfig logConfig){
+        return new GlobalApiLogPrint(logConfig);
+    }
 }
