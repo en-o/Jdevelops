@@ -5,12 +5,11 @@ import cn.tannn.jdevelops.es.antlr.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.EsQueryFun;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
-import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import co.elastic.clients.json.JsonData;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.ExistsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
