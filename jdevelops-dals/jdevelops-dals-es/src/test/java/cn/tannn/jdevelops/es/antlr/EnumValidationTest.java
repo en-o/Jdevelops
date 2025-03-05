@@ -51,22 +51,22 @@ public class EnumValidationTest {
 
         // 测试有效的单值查询
         assertDoesNotThrow(() ->
-                queryBuilder.buildQuery("status == \"active\"")
+                queryBuilder.buildDemoQuery("status == \"active\"")
         );
 
         // 测试有效的数组查询
         assertDoesNotThrow(() ->
-                queryBuilder.buildQuery("status in [\"inactive\", \"active\"]")
+                queryBuilder.buildDemoQuery("status in [\"inactive\", \"active\"]")
         );
 
         // 测试无效值
         assertThrows(ElasticsearchException.class, () ->
-                queryBuilder.buildQuery("status == \"invalid\"")
+                queryBuilder.buildDemoQuery("status == \"invalid\"")
         );
 
         // 测试无效的数组值
         assertThrows(ElasticsearchException.class, () ->
-                queryBuilder.buildQuery("status in [\"active\", \"invalid\"]")
+                queryBuilder.buildDemoQuery("status in [\"active\", \"invalid\"]")
         );
     }
 }

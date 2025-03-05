@@ -29,7 +29,7 @@ public class EsSearchExample {
     void requestEs() throws IOException {
         var queryBuilder = new ElasticSearchQueryBuilder.Builder().build();
         String expression = "title += \"论坚定理想信念（2023年）\" and years == 2021 ";
-        Query query = queryBuilder.buildQuery(expression);
+        Query query = queryBuilder.buildDemoQuery(expression);
 
         System.err.println("============>"+query.toString());
 

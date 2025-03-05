@@ -40,7 +40,7 @@ public class QueriesTest {
     }
 
     private void assertQueryWorks(ElasticSearchQueryBuilder queryBuilder, String queryString) {
-        Query query = queryBuilder.buildQuery(queryString);
+        Query query = queryBuilder.buildDemoQuery(queryString);
         assertNotNull(query, "Query should not be null for: " + queryString);
         assertTrue(query.toString().length() > 0,
                 "Query should generate valid ES query string for: " + queryString);

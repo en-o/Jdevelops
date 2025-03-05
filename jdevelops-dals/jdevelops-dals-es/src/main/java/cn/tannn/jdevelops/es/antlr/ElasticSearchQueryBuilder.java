@@ -40,7 +40,7 @@ public class ElasticSearchQueryBuilder {
      * @param expression  像写sql一些构建es查询[e.g "title += \"论坚定理想信念（2023年）\" and years == 2021 "]
      * @return Query
      */
-    public Query buildQuery(String expression) {
+    public Query buildDemoQuery(String expression) {
         // 处理 没有引号的值数据 e.g name = tan -> name = 'tan'
         var lexer = new ESLexer(CharStreams.fromString(expression));
         var tokens = new CommonTokenStream(lexer);
@@ -48,6 +48,8 @@ public class ElasticSearchQueryBuilder {
         ParseTree tree = parser.expression();
         return new EsQueryVisitor(fieldTransformer, valueValidators).visit(tree);
     }
+
+
     /**
      * 构建器
      */
