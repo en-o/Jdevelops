@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.es.antlr;
 
-import cn.tannn.jdevelops.es.antlr.demo.ElasticSearchQueryBuilder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.Test;
 

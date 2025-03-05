@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.es.antlr;
 
-import cn.tannn.jdevelops.es.antlr.demo.ElasticSearchQueryBuilder;
 import cn.tannn.jdevelops.es.util.EsBasicsUtil;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;

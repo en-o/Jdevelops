@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.es.antlr;
 
-import cn.tannn.jdevelops.es.antlr.demo.ElasticSearchQueryBuilder;
 import cn.tannn.jdevelops.es.antlr.tools.EnumValueValidator;
 import cn.tannn.jdevelops.es.antlr.tools.RegexValueValidator;
 import cn.tannn.jdevelops.es.exception.ElasticsearchException;

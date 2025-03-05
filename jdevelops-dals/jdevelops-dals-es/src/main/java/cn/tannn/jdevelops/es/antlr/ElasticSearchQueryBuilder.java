@@ -1,6 +1,7 @@
-package cn.tannn.jdevelops.es.antlr.demo;
+package cn.tannn.jdevelops.es.antlr;
 
 
+import cn.tannn.jdevelops.es.antlr.demo.EsQueryVisitor;
 import cn.tannn.jdevelops.es.antlr.demo.meta.ESLexer;
 import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
