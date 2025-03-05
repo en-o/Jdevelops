@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.es.antlr.tools;
 
-import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.json.JsonData;

@@ -1,7 +1,7 @@
-package cn.tannn.jdevelops.es.antlr;
+package cn.tannn.jdevelops.es.antlr.demo;
 
-import cn.tannn.jdevelops.es.antlr.meta.ESBaseVisitor;
-import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESBaseVisitor;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.EsQueryFun;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;

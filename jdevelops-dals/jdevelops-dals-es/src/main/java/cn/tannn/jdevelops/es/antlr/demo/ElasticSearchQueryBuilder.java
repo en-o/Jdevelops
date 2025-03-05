@@ -1,8 +1,8 @@
-package cn.tannn.jdevelops.es.antlr;
+package cn.tannn.jdevelops.es.antlr.demo;
 
 
-import cn.tannn.jdevelops.es.antlr.meta.ESLexer;
-import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESLexer;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;

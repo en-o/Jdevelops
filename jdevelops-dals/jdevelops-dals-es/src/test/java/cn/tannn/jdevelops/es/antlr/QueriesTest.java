@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.es.antlr;
 
+import cn.tannn.jdevelops.es.antlr.demo.ElasticSearchQueryBuilder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ public class QueriesTest {
         // 测试数组查询
         assertQueryWorks(queryBuilder, "status in [\"active\", \"pending\"]");
         assertQueryWorks(queryBuilder, "status not in [\"deleted\", \"banned\"]");
-        
+
     }
 
     private void assertQueryWorks(ElasticSearchQueryBuilder queryBuilder, String queryString) {
