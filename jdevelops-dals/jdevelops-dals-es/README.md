@@ -4,7 +4,7 @@
 > ![img.png](img.png)
 选择ES.g4文件，右击选择Configure ANTLR
 - output: ./src/main/java
-- package: cn.tannn.jdevelops.es.antlr.metaupgrade
+- package: cn.tannn.jdevelops.es.antlr.business.meta
 - language: Java
 
 ## 生成 es 代码
@@ -20,7 +20,7 @@
 > ![img.png](img.png) 
 选择ES.g4文件，右击选择Configure ANTLR
 - output: ./src/main/java
-- package: cn.tannn.jdevelops.es.antlr.meta
+- package: cn.tannn.jdevelops.es.antlr.demo.meta
 - language: Java
 
 ## 生成 es 代码
