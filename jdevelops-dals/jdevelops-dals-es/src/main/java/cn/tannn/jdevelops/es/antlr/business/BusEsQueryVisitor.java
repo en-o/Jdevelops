@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.es.antlr.business;
 
 import cn.tannn.jdevelops.es.antlr.business.meta.ES_UpgradeBaseVisitor;
 import cn.tannn.jdevelops.es.antlr.business.meta.ES_UpgradeParser;
-import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;

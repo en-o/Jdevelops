@@ -2,15 +2,7 @@
 package cn.tannn.jdevelops.es.antlr.bus;
 
 import cn.tannn.jdevelops.es.antlr.ElasticSearchQueryBuilder;
-import cn.tannn.jdevelops.es.antlr.business.BusEsQueryVisitor;
-import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *  bus 测试
