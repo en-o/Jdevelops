@@ -20,10 +20,20 @@ import java.util.List;
  * @date 2024-08-14 09:40:44
  */
 public class EsQueryVisitor extends ESBaseVisitor<Query> {
-
+    /**
+     * 键转换
+     */
     private final FieldTransformer fieldTransformer;
+    /**
+     * 值验证
+     */
     private final List<ValueValidator> valueValidators;
 
+    /**
+     *
+     * @param fieldTransformer 键转换
+     * @param valueValidators 值验证
+     */
     public EsQueryVisitor(FieldTransformer fieldTransformer
             , List<ValueValidator> valueValidators) {
         this.fieldTransformer = fieldTransformer;
