@@ -23,5 +23,4 @@ class FileUtilTest {
         assertEquals(".txt", FileUtil.getExt("test.txt"));
     }
 
-
 }

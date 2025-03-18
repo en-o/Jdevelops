@@ -468,6 +468,60 @@ public class FileUtil {
 	}
 
 	/**
+	 * 验证文件是否是pdf,doc或压缩包(zip、rar、7z、tgz)
+	 * @param file MultipartFile
+	 * @return true 是
+	 */
+	public static boolean isValidFileTypeByPDFDOCZIP(MultipartFile file) {
+		try (InputStream fis = file.getInputStream()) {
+			byte[] magic = new byte[4];
+			if (fis.read(magic) != magic.length) {
+				return false;
+			}
+
+			// Check PDF magic number
+			if (magic[0] == (byte) 0x25 && magic[1] == (byte) 0x50 &&
+					magic[2] == (byte) 0x44 && magic[3] == (byte) 0x46) {
+				return true;
+			}
+
+			// Check DOC magic number
+			if (magic[0] == (byte) 0xD0 && magic[1] == (byte) 0xCF &&
+					magic[2] == (byte) 0x11 && magic[3] == (byte) 0xE0) {
+				return true;
+			}
+
+			// Check DOCX and ZIP magic number
+			if (magic[0] == (byte) 0x50 && magic[1] == (byte) 0x4B &&
+					magic[2] == (byte) 0x03 && magic[3] == (byte) 0x04) {
+				return true;
+			}
+
+			// Check RAR magic number
+			if (magic[0] == (byte) 0x52 && magic[1] == (byte) 0x61 &&
+					magic[2] == (byte) 0x72 && magic[3] == (byte) 0x21) {
+				return true;
+			}
+
+			// Check 7Z magic number
+			if (magic[0] == (byte) 0x37 && magic[1] == (byte) 0x7A &&
+					magic[2] == (byte) 0xBC && magic[3] == (byte) 0xAF) {
+				return true;
+			}
+
+			// Check TGZ magic number (GZIP)
+			if (magic[0] == (byte) 0x1F && magic[1] == (byte) 0x8B) {
+				return true;
+			}
+
+			return false;
+		} catch (IOException e) {
+			LOG.error("isValidFileType Error reading");
+			return false;
+		}
+	}
+
+	/**
 	 * 专门检查 DOCX 格式。这个方法查找 ZIP 文件中是否存在 word/document.xml 文件，这是 DOCX 文件的特征之一
 	 *
 	 * @param file file
