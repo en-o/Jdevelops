@@ -46,9 +46,9 @@ public class DynamicDatasourceController {
 
 
     @Operation(summary = "删除数据源")
-    @GetMapping("delete")
+    @GetMapping("delete/{datasourceName}")
     @Parameter(name = "datasourceName", description = "数据源名", required = true)
-    public ResultVO<String> delete(String datasourceName) {
+    public ResultVO<String> delete(@PathVariable("datasourceName") String datasourceName) {
         dynamicDatasourceService.delete(datasourceName);
         return ResultVO.successMessage("删除数据源成功");
     }
