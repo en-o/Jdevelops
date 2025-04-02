@@ -338,6 +338,12 @@ public class TimeFormatUtil {
             case SqlTimeFormat.MYSQL_FORMAT_DATETIME_SIMPLE_DAY:
                 format = TimeFormat.NORM_FORMAT_DATETIME_SIMPLE_SECOND;
                 break;
+            case SqlTimeFormat.MYSQL_FORMAT_WEEK:
+                format = TimeFormat.NORM_FORMAT_DATETIME_WEEK;
+                break;
+            case SqlTimeFormat.MYSQL_FORMAT_Y_WEEK:
+                format = TimeFormat.NORM_FORMAT_DATETIME_Y_WEEK;
+                break;
             default:
                 break;
         }
