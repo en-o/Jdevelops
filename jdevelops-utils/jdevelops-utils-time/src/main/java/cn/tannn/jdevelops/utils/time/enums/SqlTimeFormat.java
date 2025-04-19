@@ -34,11 +34,11 @@ public interface SqlTimeFormat {
     /**
      * 周数-年周 202501[年份+周数]
      */
-    String MYSQL_FORMAT_Y_WEEK = "%Y-%u'";
+    String MYSQL_FORMAT_Y_WEEK = "%Y-%u";
 
     /**
      * 周数
      */
-    String MYSQL_FORMAT_WEEK = "%u'";
+    String MYSQL_FORMAT_WEEK = "%u";
 
 }
