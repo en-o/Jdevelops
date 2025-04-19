@@ -187,7 +187,7 @@
                 <executions>
                     <execution>
                         <id>attach-javadocs</id> <!-- 这是执行的唯一标识 -->
-                        <phase>deploy</phase> <!-- 插件被绑定到 deploy 阶段 -->
+                        <phase>package</phase> <!-- 插件被绑定到 deploy 阶段 -->
                         <goals>
                             <goal>jar</goal> <!-- 目标是生成 javadoc.jar -->
                         </goals>
