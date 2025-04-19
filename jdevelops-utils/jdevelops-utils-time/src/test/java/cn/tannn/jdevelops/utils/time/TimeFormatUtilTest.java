@@ -159,12 +159,12 @@ class TimeFormatUtilTest {
 
     @Test
     void sqlTimeFormats() throws IllegalAccessException {
-        assertEquals("[%Y, %Y-%m, %Y-%m-%d, %Y-%m-%d %T, %T]",TimeFormatUtil.sqlTimeFormats().toString());
+        assertEquals("%Y, %Y-%m, %Y-%m-%d, %Y-%m-%d %T, %T, %Y-%u', %u']",TimeFormatUtil.sqlTimeFormats().toString());
     }
 
     @Test
     void mySqlFormats() throws IllegalAccessException {
-        assertEquals("[%Y, %Y-%m, %Y-%m-%d, %Y-%m-%d %T, %T]",TimeFormatUtil.mySqlFormats().toString());
+        assertEquals("[%Y, %Y-%m, %Y-%m-%d, %Y-%m-%d %T, %T, %Y-%u', %u']",TimeFormatUtil.mySqlFormats().toString());
     }
 
     @Test
