@@ -1,5 +1,5 @@
 // Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
-package cn.tannn.jdevelops.es.antlr.meta;
+package cn.tannn.jdevelops.es.antlr.demo.meta;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

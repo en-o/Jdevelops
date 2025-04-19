@@ -41,6 +41,11 @@ public interface TimeFormat {
 	String NORM_FORMAT_DATETIME_MONTH = "yyyy-MM";
 
 	/**
+	 * 格式  yyyy-ww  年周
+	 */
+	String NORM_FORMAT_DATETIME_Y_WEEK = "yyyy-ww";
+
+	/**
 	 * 格式  yyyy 年
 	 */
 	String NORM_FORMAT_DATETIME_YEAR = "yyyy";
@@ -190,6 +195,12 @@ public interface TimeFormat {
 	 * 格式  EEE MMM dd HH:mm:ss zzz yyyy
 	 */
 	String JDK_FORMAT_DATETIME = "EEE MMM dd HH:mm:ss zzz yyyy";
+
+
+	/**
+	 * 格式  ww  周
+	 */
+	String NORM_FORMAT_DATETIME_WEEK = "ww";
 
 
 }

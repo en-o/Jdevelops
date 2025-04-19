@@ -1,16 +1,15 @@
-package cn.tannn.jdevelops.es.antlr;
+package cn.tannn.jdevelops.es.antlr.demo;
 
-import cn.tannn.jdevelops.es.antlr.meta.ESBaseVisitor;
-import cn.tannn.jdevelops.es.antlr.meta.ESParser;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESBaseVisitor;
+import cn.tannn.jdevelops.es.antlr.demo.meta.ESParser;
 import cn.tannn.jdevelops.es.antlr.tools.EsQueryFun;
 import cn.tannn.jdevelops.es.antlr.tools.FieldTransformer;
 import cn.tannn.jdevelops.es.antlr.tools.ValueValidator;
-import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import co.elastic.clients.json.JsonData;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.ExistsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,10 +20,20 @@ import java.util.List;
  * @date 2024-08-14 09:40:44
  */
 public class EsQueryVisitor extends ESBaseVisitor<Query> {
-
+    /**
+     * 键转换
+     */
     private final FieldTransformer fieldTransformer;
+    /**
+     * 值验证
+     */
     private final List<ValueValidator> valueValidators;
 
+    /**
+     *
+     * @param fieldTransformer 键转换
+     * @param valueValidators 值验证
+     */
     public EsQueryVisitor(FieldTransformer fieldTransformer
             , List<ValueValidator> valueValidators) {
         this.fieldTransformer = fieldTransformer;

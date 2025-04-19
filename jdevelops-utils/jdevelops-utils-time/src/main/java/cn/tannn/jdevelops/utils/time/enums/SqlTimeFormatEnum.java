@@ -28,6 +28,16 @@ public enum SqlTimeFormatEnum {
      * 格式  mysql %T
      */
     MYSQL_FORMAT_DATETIME_SIMPLE_DAY(SqlTimeFormat.MYSQL_FORMAT_DATETIME_SIMPLE_DAY, "时分秒"),
+
+    /**
+     * 周  mysql %u
+     */
+    MYSQL_FORMAT_WEEK(SqlTimeFormat.MYSQL_FORMAT_WEEK, "周"),
+
+    /**
+     * 年周  mysql %Y-%u
+     */
+    MYSQL_FORMAT_Y_WEEK(SqlTimeFormat.MYSQL_FORMAT_Y_WEEK, "年周"),
     ;
 
     private final String format;

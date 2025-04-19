@@ -1,13 +1,17 @@
 // Generated from G:/tan/code/Jdevelops/jdevelops-dals/jdevelops-dals-es/src/main/resources/ES.g4 by ANTLR 4.13.2
-package cn.tannn.jdevelops.es.antlr.meta;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
+package cn.tannn.jdevelops.es.antlr.demo.meta;
+
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class ESParser extends Parser {
@@ -17,18 +21,18 @@ public class ESParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, T__19=20, EXISTS=21, NOT=22, IN=23, NOTIN=24, IDENTIFIER=25, 
-		DOUBLE_QUOTED_STRING=26, SINGLE_QUOTED_STRING=27, UNQUOTED_STRING=28, 
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17,
+		T__17=18, T__18=19, T__19=20, EXISTS=21, NOT=22, IN=23, NOTIN=24, IDENTIFIER=25,
+		DOUBLE_QUOTED_STRING=26, SINGLE_QUOTED_STRING=27, UNQUOTED_STRING=28,
 		INT=29, DECIMAL=30, WS=31;
 	public static final int
-		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_existsOperator = 3, 
-		RULE_operator = 4, RULE_valueType = 5, RULE_quotedString = 6, RULE_unquotedString = 7, 
+		RULE_query = 0, RULE_expression = 1, RULE_comparison = 2, RULE_existsOperator = 3,
+		RULE_operator = 4, RULE_valueType = 5, RULE_quotedString = 6, RULE_unquotedString = 7,
 		RULE_arrayValue = 8, RULE_value = 9;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"query", "expression", "comparison", "existsOperator", "operator", "valueType", 
+			"query", "expression", "comparison", "existsOperator", "operator", "valueType",
 			"quotedString", "unquotedString", "arrayValue", "value"
 		};
 	}
@@ -36,17 +40,17 @@ public class ESParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='", 
-			"'>='", "'<='", "'>'", "'<'", "'+='", "'=+'", "'=~'", "'!~'", "'null'", 
+			null, "'AND'", "'and'", "'OR'", "'or'", "'('", "')'", "'=='", "'!='",
+			"'>='", "'<='", "'>'", "'<'", "'+='", "'=+'", "'=~'", "'!~'", "'null'",
 			"'['", "','", "']'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, null, "EXISTS", "NOT", 
-			"IN", "NOTIN", "IDENTIFIER", "DOUBLE_QUOTED_STRING", "SINGLE_QUOTED_STRING", 
+			null, null, null, null, null, null, null, null, null, null, null, null,
+			null, null, null, null, null, null, null, null, null, "EXISTS", "NOT",
+			"IN", "NOTIN", "IDENTIFIER", "DOUBLE_QUOTED_STRING", "SINGLE_QUOTED_STRING",
 			"UNQUOTED_STRING", "INT", "DECIMAL", "WS"
 		};
 	}
@@ -155,7 +159,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-	 
+
 		public ExpressionContext() { }
 		public void copyFrom(ExpressionContext ctx) {
 			super.copyFrom(ctx);
@@ -346,7 +350,7 @@ public class ESParser extends Parser {
 						}
 						break;
 					}
-					} 
+					}
 				}
 				setState(41);
 				_errHandler.sync(this);
@@ -371,7 +375,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_comparison; }
-	 
+
 		public ComparisonContext() { }
 		public void copyFrom(ComparisonContext ctx) {
 			super.copyFrom(ctx);
@@ -471,7 +475,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_existsOperator; }
-	 
+
 		public ExistsOperatorContext() { }
 		public void copyFrom(ExistsOperatorContext ctx) {
 			super.copyFrom(ctx);
@@ -614,7 +618,7 @@ public class ESParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_valueType; }
-	 
+
 		public ValueTypeContext() { }
 		public void copyFrom(ValueTypeContext ctx) {
 			super.copyFrom(ctx);

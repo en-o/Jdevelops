@@ -30,7 +30,7 @@ class ElasticSearchQueryBuilderTest {
         );
 
         for (String query : regex) {
-            Query result = queryBuilder.buildQuery(query);
+            Query result = queryBuilder.buildDemoQuery(query);
             assertNotNull(result, "Regex query should not be null for: " + query);
             String queryString = result.toString();
             System.out.println("queryString = " + queryString);
@@ -67,13 +67,13 @@ class ElasticSearchQueryBuilderTest {
                 .build();
 
         for (String query : queries) {
-            Query result = queryBuilder.buildQuery(query);
+            Query result = queryBuilder.buildDemoQuery(query);
             System.out.println(result);
             assertTrue(result.toString().contains("\"value\":"),
                     "Query should contain value for: " + query);
         }
         // 测试数组查询
-        Query arrayQuery = queryBuilder.buildQuery("tags in [\"tag1\", \"tag2\", 'tag3']");
+        Query arrayQuery = queryBuilder.buildDemoQuery("tags in [\"tag1\", \"tag2\", 'tag3']");
         assertTrue(arrayQuery.toString().contains("\"terms\":"),
                 "Array query should use terms query");
     }
@@ -90,7 +90,7 @@ class ElasticSearchQueryBuilderTest {
         String expression = "(name == \"tan\" and age >= 18 and (nick==\"s\" or zz==123)) OR (status == \"active\" and sex == 1 or title== \"sda\")";
 //        System.out.println(query.toString());
         assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"bool\":{\"must\":[{\"term\":{\"name\":{\"value\":\"tan\"}}},{\"range\":{\"age\":{\"gte\":\"18\"}}}]}},{\"bool\":{\"should\":[{\"term\":{\"nick\":{\"value\":\"s\"}}},{\"term\":{\"zz\":{\"value\":\"123\"}}}]}}]}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"status\":{\"value\":\"active\"}}},{\"term\":{\"sex\":{\"value\":\"1\"}}}]}},{\"term\":{\"title\":{\"value\":\"sda\"}}}]}}]}}"
-                ,queryBuilder.buildQuery(expression).toString());
+                ,queryBuilder.buildDemoQuery(expression).toString());
     }
 
 
@@ -102,7 +102,7 @@ class ElasticSearchQueryBuilderTest {
         var queryBuilder = new ElasticSearchQueryBuilder.Builder()
                 .build();
        assertEquals("Query: {\"bool\":{\"must\":[{\"match\":{\"title\":{\"query\":\"论坚定理想信念（2023年）\"}}},{\"term\":{\"years\":{\"value\":\"2021\"}}}]}}"
-               , queryBuilder.buildQuery("title += \"论坚定理想信念（2023年）\" and years == 2021 ").toString());
+               , queryBuilder.buildDemoQuery("title += \"论坚定理想信念（2023年）\" and years == 2021 ").toString());
 
     }
 
@@ -122,7 +122,7 @@ class ElasticSearchQueryBuilderTest {
 
         String expression = "(abc == \"13800138000\" and sex == \"男\") or (name =~ \".*张.*\")";
         assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"phone\":{\"value\":\"13800138000\"}}},{\"term\":{\"sex\":{\"value\":\"男\"}}}]}},{\"regexp\":{\"userName\":{\"case_insensitive\":true,\"value\":\".*张.*\"}}}]}}"
-                ,queryBuilder.buildQuery(expression).toString());
+                ,queryBuilder.buildDemoQuery(expression).toString());
     }
 
 
@@ -141,11 +141,11 @@ class ElasticSearchQueryBuilderTest {
                 .build();
 
         assertThrows(ElasticsearchException.class, () -> {
-            queryBuilder.buildQuery("(abc == \"13800138000\" and sex == \"男\") or (name =~ \".*张.*\")");
+            queryBuilder.buildDemoQuery("(abc == \"13800138000\" and sex == \"男\") or (name =~ \".*张.*\")");
         });
 
         assertEquals("Query: {\"bool\":{\"must\":[{\"term\":{\"abc\":{\"value\":\"13800138000\"}}},{\"term\":{\"sex\":{\"value\":\"1\"}}}]}}"
-                ,queryBuilder.buildQuery("(abc == \"13800138000\" and sex == \"1\")").toString());
+                ,queryBuilder.buildDemoQuery("(abc == \"13800138000\" and sex == \"1\")").toString());
     }
 
 
@@ -163,7 +163,7 @@ class ElasticSearchQueryBuilderTest {
                 .build();
 
         assertThrows(ElasticsearchException.class, () -> {
-            queryBuilder.buildQuery("(phone == \"1380000\" and sex == \"男\") or (name =~ \".*张.*\")");
+            queryBuilder.buildDemoQuery("(phone == \"1380000\" and sex == \"男\") or (name =~ \".*张.*\")");
         });
 
     }
@@ -196,7 +196,7 @@ class ElasticSearchQueryBuilderTest {
 
         //  String expression = "title += \"论坚定理想信念（2023年）\" and years == 2021 ";
         String expression = "(name == \"tan\" and age >= 18 and (nick==\"s\" or zz==123)) OR (status == \"active\" and sex == 1 or title== \"sda\")";
-        Query query = queryBuilder.buildQuery(expression);
+        Query query = queryBuilder.buildDemoQuery(expression);
 //        System.out.println(query.toString());
         assertEquals("Query: {\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"bool\":{\"must\":[{\"term\":{\"userName\":{\"value\":\"tan\"}}},{\"range\":{\"age\":{\"gte\":\"18\"}}}]}},{\"bool\":{\"should\":[{\"term\":{\"nick\":{\"value\":\"s\"}}},{\"term\":{\"zz\":{\"value\":\"123\"}}}]}}]}},{\"bool\":{\"should\":[{\"bool\":{\"must\":[{\"term\":{\"status\":{\"value\":\"active\"}}},{\"term\":{\"sex\":{\"value\":\"1\"}}}]}},{\"term\":{\"title\":{\"value\":\"sda\"}}}]}}]}}"
                 ,query.toString());
@@ -204,13 +204,13 @@ class ElasticSearchQueryBuilderTest {
         // 测试 枚举验证
         String expressionRegex = "(abc == \"13800138000\" and sex == \"男\")";
         assertThrows(ElasticsearchException.class, () -> {
-            queryBuilder.buildQuery(expressionRegex);
+            queryBuilder.buildDemoQuery(expressionRegex);
         });
 
         // 测试 正则验证手机号
         String expressionRegex2 = "(abc == \"13800138\" and sex == \"1\") or (name =~ \".*张.*\")";
         assertThrows(ElasticsearchException.class, () -> {
-            queryBuilder.buildQuery(expressionRegex2);
+            queryBuilder.buildDemoQuery(expressionRegex2);
         });
     }
 

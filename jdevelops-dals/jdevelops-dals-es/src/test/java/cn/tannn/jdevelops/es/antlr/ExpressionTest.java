@@ -6,8 +6,8 @@ import cn.tannn.jdevelops.es.exception.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
@@ -58,7 +58,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("等于操作符 ==")
         void testEqualOperator() {
-            Query query = queryBuilder.buildQuery("userName == \"张三\"");
+            Query query = queryBuilder.buildDemoQuery("userName == \"张三\"");
             assertEquals(
                     "Query: {\"term\":{\"userName\":{\"value\":\"张三\"}}}",
                     query.toString()
@@ -68,7 +68,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("不等于操作符 !=")
         void testNotEqualOperator() {
-            Query query = queryBuilder.buildQuery("age != \"25\"");
+            Query query = queryBuilder.buildDemoQuery("age != \"25\"");
             assertEquals(
                     "Query: {\"bool\":{\"must_not\":[{\"term\":{\"age\":{\"value\":\"25\"}}}]}}",
                     query.toString()
@@ -78,7 +78,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("大于等于操作符 >=")
         void testGreaterThanOrEqualOperator() {
-            Query query = queryBuilder.buildQuery("age >= \"18\"");
+            Query query = queryBuilder.buildDemoQuery("age >= \"18\"");
             assertEquals(
                     "Query: {\"range\":{\"age\":{\"gte\":\"18\"}}}",
                     query.toString()
@@ -88,7 +88,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("小于等于操作符 <=")
         void testLessThanOrEqualOperator() {
-            Query query = queryBuilder.buildQuery("age <= \"60\"");
+            Query query = queryBuilder.buildDemoQuery("age <= \"60\"");
             assertEquals(
                     "Query: {\"range\":{\"age\":{\"lte\":\"60\"}}}",
                     query.toString()
@@ -98,7 +98,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("大于操作符 >")
         void testGreaterThanOperator() {
-            Query query = queryBuilder.buildQuery("score > \"90\"");
+            Query query = queryBuilder.buildDemoQuery("score > \"90\"");
             assertEquals(
                     "Query: {\"range\":{\"score\":{\"gt\":\"90\"}}}",
                     query.toString()
@@ -108,7 +108,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("小于操作符 <")
         void testLessThanOperator() {
-            Query query = queryBuilder.buildQuery("score < \"60\"");
+            Query query = queryBuilder.buildDemoQuery("score < \"60\"");
             assertEquals(
                     "Query: {\"range\":{\"score\":{\"lt\":\"60\"}}}",
                     query.toString()
@@ -118,7 +118,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("模糊匹配操作符 +=")
         void testLikeOperator() {
-            Query query = queryBuilder.buildQuery("description += \"测试\"");
+            Query query = queryBuilder.buildDemoQuery("description += \"测试\"");
             assertEquals(
                     "Query: {\"match\":{\"description\":{\"query\":\"测试\"}}}",
                     query.toString()
@@ -133,7 +133,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则匹配操作符 =~")
         void testRegexMatchOperator() {
-            Query query = queryBuilder.buildQuery("emails =~ \".*@gmail\\.com$\"");
+            Query query = queryBuilder.buildDemoQuery("emails =~ \".*@gmail\\.com$\"");
             assertEquals(
                     "Query: {\"regexp\":{\"emails\":{\"case_insensitive\":true,\"value\":\".*@gmail\\\\.com$\"}}}",
                     query.toString()
@@ -143,7 +143,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("正则不匹配操作符 !~")
         void testRegexNotMatchOperator() {
-            Query query = queryBuilder.buildQuery("emails !~ \".*@spam\\.com$\"");
+            Query query = queryBuilder.buildDemoQuery("emails !~ \".*@spam\\.com$\"");
             assertEquals(
                     "Query: {\"bool\":{\"must_not\":[{\"regexp\":{\"emails\":{\"case_insensitive\":true,\"value\":\".*@spam\\\\.com$\"}}}]}}",
                     query.toString()
@@ -158,7 +158,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("存在操作符 exists")
         void testExistsOperator() {
-            Query query = queryBuilder.buildQuery("phone exists");
+            Query query = queryBuilder.buildDemoQuery("phone exists");
             assertEquals(
                     "Query: {\"exists\":{\"field\":\"phone\"}}",
                     query.toString()
@@ -168,7 +168,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("不存在操作符 not exists")
         void testNotExistsOperator() {
-            Query query = queryBuilder.buildQuery("phone not exists");
+            Query query = queryBuilder.buildDemoQuery("phone not exists");
             assertEquals(
                     "Query: {\"bool\":{\"must_not\":[{\"exists\":{\"field\":\"phone\"}}]}}",
                     query.toString()
@@ -183,7 +183,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("包含操作符 in")
         void testInOperator() {
-            Query query = queryBuilder.buildQuery("status in [\"inactive\", \"active\"]");
+            Query query = queryBuilder.buildDemoQuery("status in [\"inactive\", \"active\"]");
             assertEquals(
                     "Query: {\"terms\":{\"status\":[\"inactive\",\"active\"]}}",
                     query.toString()
@@ -195,11 +195,11 @@ public class ExpressionTest {
         void testNotInOperator() {
 
             assertThrows(ElasticsearchException.class, () -> {
-                queryBuilder.buildQuery("status not in [\"deleted\", \"banned\"]");
+                queryBuilder.buildDemoQuery("status not in [\"deleted\", \"banned\"]");
             });
             assertEquals(
                     "Query: {\"bool\":{\"must_not\":[{\"terms\":{\"status\":[\"inactive\",\"active\"]}}]}}",
-                    queryBuilder.buildQuery("status not in [\"inactive\", \"active\"]")
+                    queryBuilder.buildDemoQuery("status not in [\"inactive\", \"active\"]")
                             .toString()
             );
         }
@@ -212,7 +212,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("AND 复合查询")
         void testAndCompoundQuery() {
-            Query query = queryBuilder.buildQuery(
+            Query query = queryBuilder.buildDemoQuery(
                     "age >= \"18\" and sex == \"男\" and (status == \"active\" or score > \"90\")"
             );
             assertEquals(
@@ -224,7 +224,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("OR 复合查询")
         void testOrCompoundQuery() {
-            Query query = queryBuilder.buildQuery(
+            Query query = queryBuilder.buildDemoQuery(
                     "status == \"active\" or (age >= \"18\" and sex == \"女\")"
             );
             assertEquals(
@@ -247,7 +247,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("字段名转换测试")
         void testFieldTransformation() {
-            Query query = queryBuilder.buildQuery("手机==13800138000");
+            Query query = queryBuilder.buildDemoQuery("手机==13800138000");
             assertEquals(
                     "Query: {\"term\":{\"phone\":{\"value\":\"13800138000\"}}}",
                     query.toString()
@@ -262,7 +262,7 @@ public class ExpressionTest {
         @Test
         @DisplayName("枚举值验证测试 - 有效值")
         void testEnumValidation_ValidValue() {
-            Query query = queryBuilder.buildQuery("sex == \"男\"");
+            Query query = queryBuilder.buildDemoQuery("sex == \"男\"");
             assertDoesNotThrow(() -> {
                 assertEquals(
                         "Query: {\"term\":{\"sex\":{\"value\":\"男\"}}}",
@@ -275,14 +275,14 @@ public class ExpressionTest {
         @DisplayName("枚举值验证测试 - 无效值")
         void testEnumValidation_InvalidValue() {
             assertThrows(ElasticsearchException.class, () ->
-                    queryBuilder.buildQuery("sex == \"未知\"")
+                    queryBuilder.buildDemoQuery("sex == \"未知\"")
             );
         }
 
         @Test
         @DisplayName("正则表达式验证测试 - 有效值")
         void testRegexValidation_ValidValue() {
-            Query query = queryBuilder.buildQuery("phone == \"13800138000\"");
+            Query query = queryBuilder.buildDemoQuery("phone == \"13800138000\"");
             assertDoesNotThrow(() -> {
                 assertEquals(
                         "Query: {\"term\":{\"phone\":{\"value\":\"13800138000\"}}}",
@@ -295,7 +295,7 @@ public class ExpressionTest {
         @DisplayName("正则表达式验证测试 - 无效值")
         void testRegexValidation_InvalidValue() {
             assertThrows(ElasticsearchException.class, () ->
-                    queryBuilder.buildQuery("phone == \"123\"")
+                    queryBuilder.buildDemoQuery("phone == \"123\"")
             );
         }
     }
@@ -309,7 +309,7 @@ public class ExpressionTest {
                 (userName += "张" and score >= "90" and status in ["active"])
                 """;
 
-        Query query = queryBuilder.buildQuery(complexQuery);
+        Query query = queryBuilder.buildDemoQuery(complexQuery);
         assertNotNull(query);
         assertTrue(query.toString().contains("\"bool\""));
         // 具体的断言可以根据实际的查询结果来编写

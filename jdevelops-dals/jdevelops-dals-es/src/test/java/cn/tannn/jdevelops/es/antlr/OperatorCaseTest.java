@@ -43,31 +43,31 @@ public class OperatorCaseTest {
         );
 
         // 验证所有 IN 查询生成相同的结果
-        Query firstInQuery = queryBuilder.buildQuery(inQueries.get(0));
+        Query firstInQuery = queryBuilder.buildDemoQuery(inQueries.get(0));
         inQueries.forEach(query ->
                 assertEquals(
                         firstInQuery.toString(),
-                        queryBuilder.buildQuery(query).toString(),
+                        queryBuilder.buildDemoQuery(query).toString(),
                         "IN operator should be case insensitive"
                 )
         );
 
         // 验证所有 NOT IN 查询生成相同的结果
-        Query firstNotInQuery = queryBuilder.buildQuery(notInQueries.get(0));
+        Query firstNotInQuery = queryBuilder.buildDemoQuery(notInQueries.get(0));
         notInQueries.forEach(query ->
                 assertEquals(
                         firstNotInQuery.toString(),
-                        queryBuilder.buildQuery(query).toString(),
+                        queryBuilder.buildDemoQuery(query).toString(),
                         "NOT IN operator should be case insensitive"
                 )
         );
 
         // 验证所有 EXISTS 查询生成相同的结果
-        Query firstExistsQuery = queryBuilder.buildQuery(existsQueries.get(0));
+        Query firstExistsQuery = queryBuilder.buildDemoQuery(existsQueries.get(0));
         existsQueries.forEach(query ->
                 assertEquals(
                         firstExistsQuery.toString(),
-                        queryBuilder.buildQuery(query).toString(),
+                        queryBuilder.buildDemoQuery(query).toString(),
                         "EXISTS operator should be case insensitive"
                 )
         );
@@ -79,17 +79,17 @@ public class OperatorCaseTest {
 
         // 测试中文字段名
         assertDoesNotThrow(() ->
-                queryBuilder.buildQuery("姓名 == \"张三\"")
+                queryBuilder.buildDemoQuery("姓名 == \"张三\"")
         );
 
         // 测试中文值
         assertDoesNotThrow(() ->
-                queryBuilder.buildQuery("status in [\"活跃\", \"暂停\"]")
+                queryBuilder.buildDemoQuery("status in [\"活跃\", \"暂停\"]")
         );
 
         // 测试中文字段名和值的组合
         assertDoesNotThrow(() ->
-                queryBuilder.buildQuery("状态 in [\"活跃\", \"暂停\"]")
+                queryBuilder.buildDemoQuery("状态 in [\"活跃\", \"暂停\"]")
         );
     }
 }
