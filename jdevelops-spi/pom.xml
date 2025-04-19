@@ -6,12 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-build</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
     <artifactId>jdevelops-spi</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>jdevelops :: spi</name>
     <description>
         Java SPI 机制详解： https://javaguide.cn/java/basis/spi.html
