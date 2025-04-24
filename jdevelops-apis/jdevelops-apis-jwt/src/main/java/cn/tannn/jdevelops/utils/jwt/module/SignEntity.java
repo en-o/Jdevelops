@@ -29,6 +29,14 @@ public class SignEntity<T> {
     List<String> platform;
 
     /**
+     * 用户身份凭证
+     * <p> 1. 用于多套用户体系时，存储的subject重复导致数据一次（两个用户体系登录名会重复）
+     * <p> 2. 为空忽略
+     * <p> 3. 不为空会将 identity 和 subject 进行拼接, 拼接字符为 __ ，【e.g identity__subject】
+     */
+    String identity;
+
+    /**
      * 其他信息数据最终会变成{map: jsonObject} 如果时map list的话会变成json
      */
     T map;
@@ -99,8 +107,13 @@ public class SignEntity<T> {
 
 
     public String getSubject() {
-        return subject;
+        if (identity == null || identity.isEmpty()) {
+            return subject;
+        } else {
+            return identity + "__" + subject;
+        }
     }
+
 
     public void setSubject(String subject) {
         this.subject = subject;
@@ -125,11 +138,37 @@ public class SignEntity<T> {
         this.platform = platform;
     }
 
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    /**
+     * 将 identity 从 subject 中删除
+     *
+     * @return  原生Subject
+     */
+    public String parsingSubject() {
+        if (getSubject() == null || getSubject().isEmpty()) {
+            return getSubject();
+        } else {
+            String[] split = getSubject().split("__");
+            if (split.length < 2) {
+                return split[0];
+            }
+            return split[1];
+        }
+    }
+
     @Override
     public String toString() {
         return "SignEntity{" +
                 "subject='" + subject + '\'' +
                 ", platform=" + platform +
+                ", identity='" + identity + '\'' +
                 ", map=" + map +
                 '}';
     }
