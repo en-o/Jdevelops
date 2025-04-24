@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-build</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>jdevelops :: build</name>
     <description>打包用的插件集合</description>
     <url>https://github.com/en-o/Jdevelops</url>
@@ -184,6 +184,15 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.7.0</version>
                 <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id> <!-- 这是执行的唯一标识 -->
+                        <phase>package</phase> <!-- 插件被绑定到 deploy 阶段 -->
+                        <goals>
+                            <goal>jar</goal> <!-- 目标是生成 javadoc.jar -->
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
                     <reportOutputDirectory>${project.reporting.outputDirectory}/apidocs</reportOutputDirectory>

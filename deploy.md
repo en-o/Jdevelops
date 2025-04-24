@@ -1,7 +1,8 @@
 # 发布版本
 > 只发布非SNAPSHOT版本
-1. 将 SNAPSHOT 版本修改成发布版（只改发布的版本号）
-2. 执行发版 `mvn clean deploy -P release`
+1. 请用 maven 3.9+
+2. 将 SNAPSHOT 版本修改成发布版（只改发布的版本号）
+3. 执行发版 `mvn clean deploy -P release`
 
 # 单独发版 （特殊发版）
 > 1. 有时候需要单独发版的时候就把下面的代码复制到自己的pom.xml里去
