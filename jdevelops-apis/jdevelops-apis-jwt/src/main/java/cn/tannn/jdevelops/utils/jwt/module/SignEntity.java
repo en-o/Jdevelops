@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.utils.jwt.module;
 
 
 import cn.tannn.jdevelops.annotations.web.constant.PlatformConstant;
+import cn.tannn.jdevelops.utils.jwt.util.JwtUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -152,15 +153,7 @@ public class SignEntity<T> {
      * @return  原生Subject
      */
     public String parsingSubject() {
-        if (getSubject() == null || getSubject().isEmpty()) {
-            return getSubject();
-        } else {
-            String[] split = getSubject().split("__");
-            if (split.length < 2) {
-                return split[0];
-            }
-            return split[1];
-        }
+        return JwtUtil.parsingSubject(getSubject());
     }
 
     @Override
