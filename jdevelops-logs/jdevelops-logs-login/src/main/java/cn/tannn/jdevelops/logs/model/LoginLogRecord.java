@@ -98,7 +98,7 @@ public class LoginLogRecord {
         if (loginLog != null) {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
-            this.logout = loginLog.login();
+            this.logout = !loginLog.login();
         }
         this.loginTime = LocalDateTime.now();
     }
