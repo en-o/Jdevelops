@@ -58,6 +58,7 @@
         <module>jdevelops-logs-logback</module>
         <module>jdevelops-logs-p6spy</module>
         <module>jdevelops-logs-audit</module>
+        <module>jdevelops-logs-login</module>
     </modules>
 
 
