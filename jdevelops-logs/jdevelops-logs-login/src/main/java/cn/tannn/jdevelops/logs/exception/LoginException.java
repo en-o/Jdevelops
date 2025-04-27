@@ -1,8 +1,5 @@
 package cn.tannn.jdevelops.logs.exception;
 
-
-import cn.tannn.jdevelops.result.exception.ExceptionCode;
-
 /**
  * 登录异常
  *
@@ -24,12 +21,6 @@ public class LoginException extends RuntimeException{
         super(message);
         this.msg = message;
         this.code = 500;
-    }
-
-    public LoginException(ExceptionCode resultCode) {
-        super(resultCode.getMessage());
-        this.msg = resultCode.getMessage();
-        this.code = resultCode.getCode();
     }
 
     public LoginException(Integer code, String message) {

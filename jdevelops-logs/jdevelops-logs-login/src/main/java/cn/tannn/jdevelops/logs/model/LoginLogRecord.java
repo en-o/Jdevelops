@@ -1,9 +1,15 @@
 package cn.tannn.jdevelops.logs.model;
 
 
+import cn.tannn.ip2region.sdk.IpRegionUtil;
+import cn.tannn.ip2region.sdk.IpUtil;
+import cn.tannn.ip2region.sdk.UserAgentUtil;
 import cn.tannn.jdevelops.logs.LoginLog;
 import cn.tannn.jdevelops.logs.aspect.LoginLogAspect;
 import cn.tannn.jdevelops.logs.enums.LoginType;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +40,12 @@ public class LoginLogRecord {
      */
     private Integer status;
 
+
+    /**
+     * true = 退出 ， false = 登录
+     */
+    private boolean logout;
+
     /**
      * 备注
      */
@@ -57,9 +69,81 @@ public class LoginLogRecord {
      */
     private LocalDateTime loginTime;
 
+    /**
+     * 解析表达式后获取的参数
+     */
+    private String expression;
+
+
+    /**
+     * 访问设备信息
+     */
+    private String userAgent;
+
+    /**
+     * 登录的IP
+     */
+    private String ipAddress;
+
+    /**
+     * ip归属地[国家-区域-省份-城市-ISP]
+     */
+    private String ipRegion;
+
+
+    public LoginLogRecord() {
+        this.loginTime = LocalDateTime.now();
+    }
+
+    public LoginLogRecord(LoginLog loginLog) {
+        if (loginLog != null) {
+            this.expression = loginLog.expression();
+            this.type = loginLog.type();
+            this.logout = loginLog.login();
+        }
+        this.loginTime = LocalDateTime.now();
+    }
+
+    public LoginLogRecord(String token
+            , HttpServletRequest request
+            , Integer status
+            , String description
+            , String tokenPlatform
+            , LoginLog loginLog) {
+        this.token = token;
+        this.request = request;
+        this.status = status;
+        this.description = description;
+        this.tokenPlatform = tokenPlatform;
+        this.loginTime = LocalDateTime.now();
+        if (loginLog != null) {
+            this.expression = loginLog.expression();
+            this.type = loginLog.type();
+            this.logout = loginLog.login();
+        }
+    }
+
+    public LoginLogRecord(String token
+            , HttpServletRequest request
+            , Integer status
+            , boolean logout
+            , String description
+            , String type
+            , String tokenPlatform
+            , String expression) {
+        this.token = token;
+        this.request = request;
+        this.status = status;
+        this.logout = logout;
+        this.description = description;
+        this.type = type;
+        this.tokenPlatform = tokenPlatform;
+        this.loginTime = LocalDateTime.now();
+        this.expression = expression;
+    }
 
     public void writeTokenPlatform(List<String> platform) {
-        if(platform != null && !platform.isEmpty()) {
+        if (platform != null && !platform.isEmpty()) {
             this.tokenPlatform = String.join(",", platform);
         }
     }
@@ -78,6 +162,25 @@ public class LoginLogRecord {
     }
 
     public void setRequest(HttpServletRequest request) {
+        if (request != null) {
+            try {
+                this.ipAddress = IpUtil.getPoxyIpEnhance(request);
+            } catch (Exception e) {
+                LOG.error("ip获取失败：{}",e.getMessage());
+            }
+            if(this.ipAddress!=null&&!this.ipAddress.isBlank()){
+                try {
+                    this.ipRegion = IpRegionUtil.getIpRegion(this.ipAddress);
+                } catch (Exception e) {
+                    LOG.error("ip归属地获取失败：{}",e.getMessage());
+                }
+                try {
+                    this.userAgent = UserAgentUtil.parseStr(request);
+                } catch (Exception e) {
+                    LOG.error("设备信息获取失败：{}",e.getMessage());
+                }
+            }
+        }
         this.request = request;
     }
 
@@ -114,10 +217,50 @@ public class LoginLogRecord {
     }
 
     public LocalDateTime getLoginTime() {
-        return loginTime==null? LocalDateTime.now() : loginTime;
+        return loginTime == null ? LocalDateTime.now() : loginTime;
     }
 
     public void setLoginTime(LocalDateTime loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public boolean isLogout() {
+        return logout;
+    }
+
+    public void setLogout(boolean logout) {
+        this.logout = logout;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getIpRegion() {
+        return ipRegion;
+    }
+
+    public void setIpRegion(String ipRegion) {
+        this.ipRegion = ipRegion;
     }
 }

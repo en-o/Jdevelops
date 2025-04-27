@@ -1,6 +1,11 @@
 package cn.tannn.jdevelops.logs.aspect;
 
 
+import cn.tannn.ip2region.sdk.IpUtil;
+import cn.tannn.jdevelops.logs.LoginLog;
+import cn.tannn.jdevelops.logs.model.LoginLogRecord;
+import cn.tannn.jdevelops.uitls.aop.JsonUtils;
+import cn.tannn.jdevelops.uitls.aop.reflect.AopReasolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.JoinPoint;
@@ -53,63 +58,54 @@ public class LoginLogAspect {
      */
     @AfterThrowing(value = "loginLog()", throwing = "ex")
     public void doAfterThrowing(JoinPoint jp, Exception ex) {
-        //保存日志
-        ApiMonitoring apiLog = new ApiMonitoring();
+
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) jp.getSignature();
         //获取切入点所在的方法
         Method method = signature.getMethod();
         /*key*/
-        ApiLog myLog = method.getAnnotation(ApiLog.class);
-        if (myLog != null) {
-            apiLog.setDescription(myLog.expression());
-            apiLog.setChineseApi(myLog.chineseApi());
-            apiLog.setLogType(myLog.type());
-        }
-        /*接口名*/
+        LoginLog myLog = method.getAnnotation(LoginLog.class);
+
+        //保存日志
+        LoginLogRecord apiLog = new LoginLogRecord(myLog);
+
+
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String requestUri = (request).getRequestURI();
-        apiLog.setApiUrl(requestUri);
-        apiLog.setCallType(2);
-        apiLog.setMethod(request.getMethod());
-        /* outParams and  status  */
-        apiLog.setStatus(false);
-        apiLog.setOutParams("接口调用出错");
-        /* callTime 调用时间  */
-        apiLog.setCallTime(System.currentTimeMillis());
-        /* callTime 调用时间  */
-        /*inParams    输入 */
-        apiLog.setInParams("");
-        apiLog.setExpression(expressionError);
-        /*inParams    输入 */
-        apiLog.setPoxyIp(IpUtil.httpRequestIp(request));
-        apiLogSave.saveLog(apiLog);
+        if (requestAttributes != null) {
+            apiLog.setRequest( requestAttributes.getRequest());
+        }
+        apiLog.setStatus(0);
+        apiLog.setTokenPlatform("");
+        apiLog.setToken("");
+        apiLog.setDescription(ex.getMessage());
+        // save
     }
 
     /**
      * 返回通知
      */
-    @AfterReturning(value = "apiLog()", returning = "rvt")
+    @AfterReturning(value = "loginLog()", returning = "rvt")
     public void saveSysLog(JoinPoint joinPoint, Object rvt) {
-        //保存日志
-        ApiMonitoring apiLog = new ApiMonitoring();
-
-        /*接口名*/
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
-        String requestUri = (request).getRequestURI();
-        apiLog.setApiUrl(requestUri);
-        apiLog.setMethod(request.getMethod());
-        apiLog.setCallType(1);
-
 
         //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         //获取切入点所在的方法
         Method method = signature.getMethod();
-        /*key*/
-        ApiLog myLog = method.getAnnotation(ApiLog.class);
+        LoginLog myLog = method.getAnnotation(LoginLog.class);
+        //保存日志
+        LoginLogRecord apiLog = new LoginLogRecord(myLog);
+
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
+            apiLog.setRequest( requestAttributes.getRequest());
+        }
+        apiLog.setStatus(0);
+        apiLog.setTokenPlatform("");
+        apiLog.setToken("");
+        apiLog.setDescription("正常");
+
+
+
         if (myLog == null || !myLog.enable()) {
             return;
         }
@@ -159,31 +155,9 @@ public class LoginLogAspect {
         }
 
 
-        /* callTime 调用时间  */
-        apiLog.setCallTime(System.currentTimeMillis());
-        /* callTime 调用时间  */
 
-
-        /*inParams    输入 */
-
-        if (myLog.logArgs()) {
-            //请求的参数
-            Object[] args = joinPoint.getArgs();
-            //将参数所在的数组转换成json
-            try {
-                // 过滤参数
-                List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
-                        && !(s instanceof HttpServletResponse)).collect(Collectors.toList());
-                String params = JsonUtils.toJson(argObjects);
-                apiLog.setInParams(params.contains("null") ? params.replaceAll("null", "") : params);
-            } catch (Exception e) {
-                LOG.error("解析入参失败", e);
-                apiLog.setInParams("");
-            }
-        }
         /*inParams    输入 */
         apiLog.setPoxyIp(IpUtil.httpRequestIp(request));
-        apiLogSave.saveLog(apiLog);
     }
 
 
