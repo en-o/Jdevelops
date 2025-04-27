@@ -5,7 +5,6 @@ import cn.tannn.ip2region.sdk.IpRegionUtil;
 import cn.tannn.ip2region.sdk.IpUtil;
 import cn.tannn.ip2region.sdk.UserAgentUtil;
 import cn.tannn.jdevelops.logs.LoginLog;
-import cn.tannn.jdevelops.logs.aspect.LoginLogAspect;
 import cn.tannn.jdevelops.logs.enums.LoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -262,5 +261,23 @@ public class LoginLogRecord {
 
     public void setIpRegion(String ipRegion) {
         this.ipRegion = ipRegion;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginLogRecord{" +
+                "token='" + token + '\'' +
+                ", request=" + request +
+                ", status=" + status +
+                ", logout=" + logout +
+                ", description='" + description + '\'' +
+                ", type='" + type + '\'' +
+                ", tokenPlatform='" + tokenPlatform + '\'' +
+                ", loginTime=" + loginTime +
+                ", expression='" + expression + '\'' +
+                ", userAgent='" + userAgent + '\'' +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", ipRegion='" + ipRegion + '\'' +
+                '}';
     }
 }
