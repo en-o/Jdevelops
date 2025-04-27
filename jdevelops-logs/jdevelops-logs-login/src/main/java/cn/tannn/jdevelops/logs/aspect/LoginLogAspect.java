@@ -100,6 +100,7 @@ public class LoginLogAspect {
         }
         apiLog.setStatus(1);
         apiLog.setTokenPlatform("");
+        // todo 续期的注释没有做，
         apiLog.setDescription("正常");
         apiLog.setLoginName(getLoginName(joinPoint, myLog.loginNameKey()));
         Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
