@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.logs;
 
-import cn.tannn.jdevelops.logs.enums.LoginType;
+import cn.tannn.jdevelops.logs.constant.LoginType;
 
 import java.lang.annotation.*;
 

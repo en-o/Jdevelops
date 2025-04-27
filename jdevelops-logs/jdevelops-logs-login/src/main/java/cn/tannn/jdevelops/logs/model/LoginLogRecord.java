@@ -5,7 +5,7 @@ import cn.tannn.ip2region.sdk.IpRegionUtil;
 import cn.tannn.ip2region.sdk.IpUtil;
 import cn.tannn.ip2region.sdk.UserAgentUtil;
 import cn.tannn.jdevelops.logs.LoginLog;
-import cn.tannn.jdevelops.logs.enums.LoginType;
+import cn.tannn.jdevelops.logs.constant.LoginType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
