@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.logs;
 
-
-
-import cn.tannn.jdevelops.apis.log.constants.OperateType;
+import cn.tannn.jdevelops.logs.enums.LoginType;
 
 import java.lang.annotation.*;
 
@@ -23,4 +21,14 @@ public @interface LoginLog {
      */
     boolean login() default true;
 
+    /**
+     * 登录类型
+     * @see LoginType
+     */
+   String type();
+
+    /**
+     * 表达式，可以用#{参数名} or #{bean.name} 取入参值
+     */
+    String expression() default "";
 }
