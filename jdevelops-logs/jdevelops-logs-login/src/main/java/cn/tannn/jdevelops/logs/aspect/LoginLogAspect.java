@@ -74,7 +74,7 @@ public class LoginLogAspect {
         }
         apiLog.setStatus(0);
         apiLog.setTokenPlatform("");
-        apiLog.setToken("");
+        apiLog.setLoginName("");
         apiLog.setDescription(ex.getMessage());
         // save
         loginLogSave.saveLog(apiLog);
@@ -100,8 +100,8 @@ public class LoginLogAspect {
         }
         apiLog.setStatus(1);
         apiLog.setTokenPlatform("");
-        apiLog.setToken("");
         apiLog.setDescription("正常");
+        apiLog.setLoginName("");
         Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
         if (null != expression) {
             expressionError = expression.toString();

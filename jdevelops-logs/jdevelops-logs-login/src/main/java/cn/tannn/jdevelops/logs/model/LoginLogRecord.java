@@ -25,11 +25,6 @@ public class LoginLogRecord {
 
 
     /**
-     * 登录token
-     */
-    private String token;
-
-    /**
      * 请求头
      */
     private HttpServletRequest request;
@@ -89,6 +84,11 @@ public class LoginLogRecord {
      */
     private String ipRegion;
 
+    /**
+     * 当前登录名
+     */
+    private String loginName;
+
 
     public LoginLogRecord() {
         this.loginTime = LocalDateTime.now();
@@ -108,13 +108,14 @@ public class LoginLogRecord {
             , Integer status
             , String description
             , String tokenPlatform
+            , String loginName
             , LoginLog loginLog) {
-        this.token = token;
         this.request = request;
         this.status = status;
         this.description = description;
         this.tokenPlatform = tokenPlatform;
         this.loginTime = LocalDateTime.now();
+        this.loginName = loginName;
         if (loginLog != null) {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
@@ -122,15 +123,15 @@ public class LoginLogRecord {
         }
     }
 
-    public LoginLogRecord(String token
-            , HttpServletRequest request
+    public LoginLogRecord(HttpServletRequest request
             , Integer status
             , boolean logout
             , String description
             , String type
             , String tokenPlatform
-            , String expression) {
-        this.token = token;
+            , String expression
+            , String loginName
+    ) {
         this.request = request;
         this.status = status;
         this.logout = logout;
@@ -139,21 +140,13 @@ public class LoginLogRecord {
         this.tokenPlatform = tokenPlatform;
         this.loginTime = LocalDateTime.now();
         this.expression = expression;
+        this.loginName = loginName;
     }
 
     public void writeTokenPlatform(List<String> platform) {
         if (platform != null && !platform.isEmpty()) {
             this.tokenPlatform = String.join(",", platform);
         }
-    }
-
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public HttpServletRequest getRequest() {
@@ -263,11 +256,18 @@ public class LoginLogRecord {
         this.ipRegion = ipRegion;
     }
 
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
     @Override
     public String toString() {
         return "LoginLogRecord{" +
-                "token='" + token + '\'' +
-                ", request=" + request +
+                "request=" + request +
                 ", status=" + status +
                 ", logout=" + logout +
                 ", description='" + description + '\'' +
@@ -278,6 +278,7 @@ public class LoginLogRecord {
                 ", userAgent='" + userAgent + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", ipRegion='" + ipRegion + '\'' +
+                ", loginName='" + loginName + '\'' +
                 '}';
     }
 }
