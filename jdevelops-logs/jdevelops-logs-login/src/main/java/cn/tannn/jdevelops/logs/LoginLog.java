@@ -31,4 +31,10 @@ public @interface LoginLog {
      * 表达式，可以用#{参数名} or #{bean.name} 取入参值
      */
     String expression() default "";
+
+    /**
+     * 登录名的参数名， 用于取值（map.get(loginNameKey)）
+     * @return  loginNameKey
+     */
+    String loginNameKey() default "loginName";
 }
