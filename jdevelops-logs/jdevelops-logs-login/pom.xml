@@ -6,11 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-logs</artifactId>
-        <version>${revision}</version>
+        <version>1.0.1</version>
     </parent>
     <artifactId>jdevelops-logs-login</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: logs :: login</name>
+    <version>1.0.1-SNAPSHOT</version>
     <description>登录日志</description>
     <dependencies>
         <dependency>
@@ -24,9 +25,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>cn.tannn</groupId>
+            <groupId>cn.tannn.cat</groupId>
             <artifactId>ip2region-sdk</artifactId>
-            <version>1.0.0</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
