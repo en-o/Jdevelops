@@ -11,6 +11,7 @@ import java.util.Map;
  * @date 2025/4/28 14:06
  */
 public class LoginContext {
+    private String requestId;
     private String userId;
     private String userNo;
     private String name;
@@ -18,10 +19,12 @@ public class LoginContext {
     private Map<String,Object> map;
 
 
-    public LoginContext() {
+    public LoginContext(String requestId) {
+        this.requestId = requestId;
     }
 
-    public LoginContext(String userId, String userNo, String name, String loginName, Map<String, Object> map) {
+    public LoginContext(String requestId, String userId, String userNo, String name, String loginName, Map<String, Object> map) {
+        this.requestId = requestId;
         this.userId = userId;
         this.userNo = userNo;
         this.name = name;
@@ -74,10 +77,19 @@ public class LoginContext {
         return this;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public String toString() {
         return "LoginContext{" +
-                "userId='" + userId + '\'' +
+                "requestId='" + requestId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", userNo='" + userNo + '\'' +
                 ", name='" + name + '\'' +
                 ", loginName='" + loginName + '\'' +

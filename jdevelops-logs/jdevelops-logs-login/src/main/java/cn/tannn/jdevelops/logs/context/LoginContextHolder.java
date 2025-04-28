@@ -2,34 +2,37 @@ package cn.tannn.jdevelops.logs.context;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.HashMap;
 
 public class LoginContextHolder {
     private static final Logger log = LoggerFactory.getLogger(LoginContextHolder.class);
 
-    private static final ThreadLocal<LoginContext> contextHolder = new ThreadLocal<>();
+    private static final String LOGIN_CONTEXT_ATTRIBUTE = "LOGIN_CONTEXT";
 
-    /**
-     * 初始化请求上下文
-     */
-    public static void initContext() {
-        if (contextHolder.get() == null) {
-            // 生成唯一请求ID
-            String requestId = RequestIdGenerator.generateRequestId(null);
-            contextHolder.set(new LoginContext());
-        }
-    }
 
 
     public static void setContext(LoginContext context) {
-        Assert.notNull(context, "LoginContext must not be null");
-        contextHolder.set(context);
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            log.error("No thread-bound request found: " +
+                    "Are you referring to request attributes outside of an actual web request, " +
+                    "or processing a request outside of the originally receiving thread?");
+        }else {
+            attributes.setAttribute(LOGIN_CONTEXT_ATTRIBUTE, context, RequestAttributes.SCOPE_REQUEST);
+        }
     }
 
     public static LoginContext getContext() {
-        LoginContext context = contextHolder.get();
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            throw new IllegalStateException("No thread-bound request found");
+        }
+        LoginContext context = (LoginContext) attributes.getAttribute(
+                LOGIN_CONTEXT_ATTRIBUTE,
+                RequestAttributes.SCOPE_REQUEST
+        );
         if (context == null) {
             log.error("No AuditContext found in current request");
         }
@@ -37,10 +40,14 @@ public class LoginContextHolder {
     }
 
     public static void clear() {
-        contextHolder.remove();
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            attributes.removeAttribute(LOGIN_CONTEXT_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
+        }
     }
 
-    public static boolean hasContext() {
-        return contextHolder.get() != null;
+    public static void initContext() {
+        String s = RequestIdGenerator.generateRequestId("");
+        LoginContextHolder.setContext(new LoginContext(s));
     }
 }

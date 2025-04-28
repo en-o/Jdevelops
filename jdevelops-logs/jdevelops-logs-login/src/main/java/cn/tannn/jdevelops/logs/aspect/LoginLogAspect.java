@@ -10,10 +10,8 @@ import cn.tannn.jdevelops.uitls.aop.reflect.AopReasolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +55,22 @@ public class LoginLogAspect {
      */
     @Pointcut("@annotation(cn.tannn.jdevelops.logs.LoginLog)")
     public void loginLog() {
-        // 初始化上下文
-        LoginContextHolder.initContext();
+
     }
 
+    @Around(value = "loginLog()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        try {
+            // 初始化上下文
+            LoginContextHolder.initContext();
+            return point.proceed();
+        } catch (Throwable e) {
+            LOG.error("初始化登录日志上下文失败");
+            throw e;
+        }finally {
+            LoginContextHolder.clear();
+        }
+    }
 
     /**
      * 异常通知
