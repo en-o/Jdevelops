@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.logs.aspect;
 
 
 import cn.tannn.jdevelops.logs.LoginLog;
+import cn.tannn.jdevelops.logs.context.LoginContextHolder;
 import cn.tannn.jdevelops.logs.model.InputParams;
 import cn.tannn.jdevelops.logs.model.LoginLogRecord;
 import cn.tannn.jdevelops.logs.service.LoginLogSave;
@@ -19,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,26 +65,33 @@ public class LoginLogAspect {
      */
     @AfterThrowing(value = "loginLog()", throwing = "ex")
     public void doAfterThrowing(JoinPoint jp, Exception ex) {
+        try {
+            //从切面织入点处通过反射机制获取织入点处的方法
+            MethodSignature signature = (MethodSignature) jp.getSignature();
+            //获取切入点所在的方法
+            Method method = signature.getMethod();
+            /*key*/
+            LoginLog myLog = method.getAnnotation(LoginLog.class);
 
-        //从切面织入点处通过反射机制获取织入点处的方法
-        MethodSignature signature = (MethodSignature) jp.getSignature();
-        //获取切入点所在的方法
-        Method method = signature.getMethod();
-        /*key*/
-        LoginLog myLog = method.getAnnotation(LoginLog.class);
+            //保存日志
+            LoginLogRecord apiLog = new LoginLogRecord(myLog);
 
-        //保存日志
-        LoginLogRecord apiLog = new LoginLogRecord(myLog);
-
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (requestAttributes != null) {
-            apiLog.setRequest( requestAttributes.getRequest());
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (requestAttributes != null) {
+                apiLog.setRequest( requestAttributes.getRequest());
+            }
+            apiLog.setStatus(0);
+            InputParams loginName = getLoginName(jp, myLog.loginNameKey());
+            apiLog.setLoginName(loginName.getLoginName());
+            apiLog.setDescription(ex.getMessage());
+            apiLog.setPlatform(loginName.getPlatform());
+            // save
+            loginLogSave.saveLog(apiLog);
+        }catch (Exception e){
+            LOG.error("LoginLogAspect error: {}", e.getMessage());
+        }finally {
+            LoginContextHolder.clear();
         }
-        apiLog.setStatus(0);
-        apiLog.setLoginName(getLoginName(jp, myLog.loginNameKey()).getLoginName());
-        apiLog.setDescription(ex.getMessage());
-        // save
-        loginLogSave.saveLog(apiLog);
     }
 
     /**
@@ -105,9 +112,10 @@ public class LoginLogAspect {
             apiLog.setRequest( requestAttributes.getRequest());
         }
         apiLog.setStatus(1);
-        // todo 续期的注释没有做，
         apiLog.setDescription("正常");
-        apiLog.setLoginName(getLoginName(joinPoint, myLog.loginNameKey()).getLoginName());
+        InputParams loginName = getLoginName(joinPoint, myLog.loginNameKey());
+        apiLog.setLoginName(loginName.getLoginName());
+        apiLog.setPlatform(loginName.getPlatform());
         Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
         if (null != expression) {
             expressionError = expression.toString();
