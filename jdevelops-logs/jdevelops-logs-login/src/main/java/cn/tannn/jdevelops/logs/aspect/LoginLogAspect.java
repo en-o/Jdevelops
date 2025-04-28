@@ -130,19 +130,24 @@ public class LoginLogAspect {
 
 
     public static InputParams getLoginName(JoinPoint joinPoint, String key) {
-        // 根据不同的类型提取参数
-        Map<String, Object> extractedParams = new HashMap<>();
-        // 2. Handle method arguments (including bean parameters)
-        Object[] args = joinPoint.getArgs();
-        // 过滤参数
-        List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
-                && !(s instanceof HttpServletResponse)).toList();
-        for (Object arg : argObjects) {
-            if (arg != null) {
-                extractParamsFromObject(arg, extractedParams);
-            }
-        }
-        return new InputParams(extractedParams.get(key),extractedParams.get("platform"));
+       try {
+           // 根据不同的类型提取参数
+           Map<String, Object> extractedParams = new HashMap<>();
+           // 2. Handle method arguments (including bean parameters)
+           Object[] args = joinPoint.getArgs();
+           // 过滤参数
+           List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
+                   && !(s instanceof HttpServletResponse)).toList();
+           for (Object arg : argObjects) {
+               if (arg != null) {
+                   extractParamsFromObject(arg, extractedParams);
+               }
+           }
+           return new InputParams(extractedParams.get(key),extractedParams.get("platform"));
+       }catch (Exception e){
+          LOG.error("LoginLogAspect getLoginName error: {}", e.getMessage());
+       }
+       return new InputParams();
     }
 
 
