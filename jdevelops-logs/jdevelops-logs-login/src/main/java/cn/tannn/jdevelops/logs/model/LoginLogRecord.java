@@ -283,4 +283,19 @@ public class LoginLogRecord {
                 ", loginName='" + loginName + '\'' +
                 '}';
     }
+
+
+    public String toStyle() {
+        return status + " | " +
+                logout + " | " +
+                '\'' + description + '\'' + " | " +
+                '\'' + type + '\'' + " | " +
+                '\'' + platform + '\'' + " | " +
+                loginTime + " | " +
+                '\'' + expression + '\'' + " | " +
+                '\'' + userAgent + '\'' + " | " +
+                '\'' + ipAddress + '\'' + " | " +
+                '\'' + ipRegion + '\'' + " | " +
+                '\'' + loginName + '\'';
+    }
 }
