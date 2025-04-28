@@ -14,6 +14,11 @@ public class InputParams {
     public InputParams() {
     }
 
+    public InputParams(Object loginName, Object platform) {
+        this.loginName = loginName!= null? loginName.toString() : null;
+        this.platform = platform!= null? platform.toString() : null;
+    }
+
     public InputParams(String loginName, String platform) {
         this.loginName = loginName;
         this.platform = platform;

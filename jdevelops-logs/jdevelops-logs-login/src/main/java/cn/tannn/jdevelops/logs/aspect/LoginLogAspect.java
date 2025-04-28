@@ -22,7 +22,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 登录日志记录
@@ -118,32 +120,45 @@ public class LoginLogAspect {
 
 
     public static InputParams getLoginName(JoinPoint joinPoint, String key) {
+        // 根据不同的类型提取参数
+        Map<String, Object> extractedParams = new HashMap<>();
+        // 2. Handle method arguments (including bean parameters)
         Object[] args = joinPoint.getArgs();
         // 过滤参数
         List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
                 && !(s instanceof HttpServletResponse)).toList();
-        InputParams inputParams = new InputParams();
-
-        argObjects.forEach(arg -> {
-            if (arg instanceof String vals) {
-                // 处理String类型参数
-                inputParams.setLoginName(vals);
-            } else if (arg != null && !arg.getClass().isPrimitive()) {
-                // 处理Bean对象
-                try {
-                    Field field = arg.getClass().getDeclaredField(key);
-                    field.setAccessible(true);
-                    inputParams.setLoginName(field.get(arg).toString());
-                    Field field2 = arg.getClass().getDeclaredField("platform");
-                    field2.setAccessible(true);
-                    inputParams.setPlatform(field2.get(arg).toString());
-                } catch (Exception e) {
-                    // 处理异常
-                    LOG.error("登录名获取失败");
-                }
+        for (Object arg : argObjects) {
+            if (arg != null) {
+                extractParamsFromObject(arg, extractedParams);
             }
-        });
-        return inputParams;
+        }
+        return new InputParams(extractedParams.get(key),extractedParams.get("platform"));
+    }
+
+
+    private  static void extractParamsFromObject(Object obj, Map<String, Object> params) {
+        try {
+            // Handle Map parameters
+            if (obj instanceof Map maps) {
+                params.putAll(maps);
+                return;
+            }
+            // Handle Bean parameters
+            Arrays.stream(obj.getClass().getDeclaredFields())
+                    .forEach(field -> {
+                        try {
+                            field.setAccessible(true);
+                            Object value = field.get(obj);
+                            if (value != null) {
+                                params.put(field.getName(), value);
+                            }
+                        } catch (IllegalAccessException e) {
+                            // Handle exception appropriately
+                        }
+                    });
+        } catch (Exception e) {
+            // Handle exception appropriately
+        }
     }
 
 
