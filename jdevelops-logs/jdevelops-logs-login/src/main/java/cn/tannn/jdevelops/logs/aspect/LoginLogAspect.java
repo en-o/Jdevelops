@@ -2,9 +2,12 @@ package cn.tannn.jdevelops.logs.aspect;
 
 
 import cn.tannn.jdevelops.logs.LoginLog;
+import cn.tannn.jdevelops.logs.model.InputParams;
 import cn.tannn.jdevelops.logs.model.LoginLogRecord;
 import cn.tannn.jdevelops.logs.service.LoginLogSave;
 import cn.tannn.jdevelops.uitls.aop.reflect.AopReasolver;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -18,6 +21,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 登录日志记录
@@ -74,8 +79,7 @@ public class LoginLogAspect {
             apiLog.setRequest( requestAttributes.getRequest());
         }
         apiLog.setStatus(0);
-        apiLog.setTokenPlatform("");
-        apiLog.setLoginName(getLoginName(jp, myLog.loginNameKey()));
+        apiLog.setLoginName(getLoginName(jp, myLog.loginNameKey()).getLoginName());
         apiLog.setDescription(ex.getMessage());
         // save
         loginLogSave.saveLog(apiLog);
@@ -99,10 +103,9 @@ public class LoginLogAspect {
             apiLog.setRequest( requestAttributes.getRequest());
         }
         apiLog.setStatus(1);
-        apiLog.setTokenPlatform("");
         // todo 续期的注释没有做，
         apiLog.setDescription("正常");
-        apiLog.setLoginName(getLoginName(joinPoint, myLog.loginNameKey()));
+        apiLog.setLoginName(getLoginName(joinPoint, myLog.loginNameKey()).getLoginName());
         Object expression = AopReasolver.newInstance().resolver(joinPoint, myLog.expression());
         if (null != expression) {
             expressionError = expression.toString();
@@ -114,26 +117,34 @@ public class LoginLogAspect {
     }
 
 
-    public static String getLoginName(JoinPoint joinPoint, String key) {
+    public static InputParams getLoginName(JoinPoint joinPoint, String key) {
         Object[] args = joinPoint.getArgs();
-        for (Object arg : args) {
+        // 过滤参数
+        List<Object> argObjects = Arrays.stream(args).filter(s -> !(s instanceof HttpServletRequest)
+                && !(s instanceof HttpServletResponse)).toList();
+        InputParams inputParams = new InputParams();
+
+        argObjects.forEach(arg -> {
             if (arg instanceof String vals) {
                 // 处理String类型参数
-                return vals;
+                inputParams.setLoginName(vals);
             } else if (arg != null && !arg.getClass().isPrimitive()) {
                 // 处理Bean对象
                 try {
                     Field field = arg.getClass().getDeclaredField(key);
                     field.setAccessible(true);
-                    Object value = field.get(arg);
-                    return value.toString();
+                    inputParams.setLoginName(field.get(arg).toString());
+                    Field field2 = arg.getClass().getDeclaredField("platform");
+                    field2.setAccessible(true);
+                    inputParams.setPlatform(field2.get(arg).toString());
                 } catch (Exception e) {
                     // 处理异常
                     LOG.error("登录名获取失败");
                 }
             }
-        }
-        return null;
+        });
+        return inputParams;
     }
+
 
 }

@@ -38,4 +38,12 @@ public @interface LoginLog {
      * @return  loginNameKey
      */
     String loginNameKey() default "loginName";
+
+    /**
+     * 登录平台【逗号隔开，一般不会有多个】
+     * <p> 登录参数中的 platform 值为准，如果是分开写的接口没有platform参数则使用这个</p>
+     * <p> 参数名写死 </p>
+     * @see cn.tannn.jdevelops.annotations.web.constant.PlatformConstant
+     */
+    String platform() default "WEB_ADMIN";
 }

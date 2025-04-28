@@ -56,7 +56,7 @@ public class LoginLogRecord {
     /**
      * 登录平台 (默认冲token里取)
      */
-    private String tokenPlatform;
+    private String platform;
 
     /**
      * 登录时间（yyyy-MM-dd HH:mm:ss）
@@ -99,6 +99,7 @@ public class LoginLogRecord {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
             this.logout = !loginLog.login();
+            this.platform = loginLog.platform();
         }
         this.loginTime = LocalDateTime.now();
     }
@@ -107,19 +108,20 @@ public class LoginLogRecord {
             , HttpServletRequest request
             , Integer status
             , String description
-            , String tokenPlatform
+            , String platform
             , String loginName
             , LoginLog loginLog) {
         this.request = request;
         this.status = status;
         this.description = description;
-        this.tokenPlatform = tokenPlatform;
+        this.platform = platform;
         this.loginTime = LocalDateTime.now();
         this.loginName = loginName;
         if (loginLog != null) {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
             this.logout = loginLog.login();
+            this.platform = loginLog.platform();
         }
     }
 
@@ -128,7 +130,7 @@ public class LoginLogRecord {
             , boolean logout
             , String description
             , String type
-            , String tokenPlatform
+            , String platform
             , String expression
             , String loginName
     ) {
@@ -137,7 +139,7 @@ public class LoginLogRecord {
         this.logout = logout;
         this.description = description;
         this.type = type;
-        this.tokenPlatform = tokenPlatform;
+        this.platform = platform;
         this.loginTime = LocalDateTime.now();
         this.expression = expression;
         this.loginName = loginName;
@@ -145,7 +147,7 @@ public class LoginLogRecord {
 
     public void writeTokenPlatform(List<String> platform) {
         if (platform != null && !platform.isEmpty()) {
-            this.tokenPlatform = String.join(",", platform);
+            this.platform = String.join(",", platform);
         }
     }
 
@@ -200,12 +202,12 @@ public class LoginLogRecord {
         this.type = type;
     }
 
-    public String getTokenPlatform() {
-        return tokenPlatform;
+    public String getPlatform() {
+        return platform;
     }
 
-    public void setTokenPlatform(String tokenPlatform) {
-        this.tokenPlatform = tokenPlatform;
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     public LocalDateTime getLoginTime() {
@@ -272,7 +274,7 @@ public class LoginLogRecord {
                 ", logout=" + logout +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
-                ", tokenPlatform='" + tokenPlatform + '\'' +
+                ", tokenPlatform='" + platform + '\'' +
                 ", loginTime=" + loginTime +
                 ", expression='" + expression + '\'' +
                 ", userAgent='" + userAgent + '\'' +
