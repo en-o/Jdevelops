@@ -50,6 +50,7 @@ public class LoginLogAspect {
     @Around("loginLogPointcut()")
     public Object aroundLoginLog(ProceedingJoinPoint point) throws Throwable {
         try {
+            LoginContextHolder.initContext();
             return point.proceed();
         } catch (Throwable e) {
             log.error("Login log context initialization failed", e);
@@ -67,7 +68,7 @@ public class LoginLogAspect {
             logRecord.setDescription(Optional.ofNullable(ex.getMessage())
                     .filter(StringUtils::hasText)
                     .orElse(DEFAULT_ERROR_MESSAGE));
-
+            logRecord.setLoginContext(LoginContextHolder.getContext());
             // Asynchronously save the log
             saveLogAsync(logRecord);
         } catch (Exception e) {
@@ -86,7 +87,7 @@ public class LoginLogAspect {
 
             // Handle expression evaluation
             handleExpression(joinPoint, logRecord);
-
+            logRecord.setLoginContext(LoginContextHolder.getContext());
             // Asynchronously save the log
             saveLogAsync(logRecord);
         } catch (Exception e) {

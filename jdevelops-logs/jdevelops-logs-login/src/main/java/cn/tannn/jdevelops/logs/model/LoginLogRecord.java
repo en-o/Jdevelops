@@ -6,6 +6,7 @@ import cn.tannn.ip2region.sdk.IpUtil;
 import cn.tannn.ip2region.sdk.UserAgentUtil;
 import cn.tannn.jdevelops.logs.LoginLog;
 import cn.tannn.jdevelops.logs.constant.LoginType;
+import cn.tannn.jdevelops.logs.context.LoginContext;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +89,11 @@ public class LoginLogRecord {
      * 当前登录名
      */
     private String loginName;
+
+    /**
+     * 上下文
+     */
+    private LoginContext loginContext;
 
 
     public LoginLogRecord() {
@@ -266,6 +272,14 @@ public class LoginLogRecord {
         this.loginName = loginName;
     }
 
+    public LoginContext getLoginContext() {
+        return loginContext;
+    }
+
+    public void setLoginContext(LoginContext loginContext) {
+        this.loginContext = loginContext;
+    }
+
     @Override
     public String toString() {
         return "LoginLogRecord{" +
@@ -274,16 +288,16 @@ public class LoginLogRecord {
                 ", logout=" + logout +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
-                ", tokenPlatform='" + platform + '\'' +
+                ", platform='" + platform + '\'' +
                 ", loginTime=" + loginTime +
                 ", expression='" + expression + '\'' +
                 ", userAgent='" + userAgent + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", ipRegion='" + ipRegion + '\'' +
                 ", loginName='" + loginName + '\'' +
+                ", loginContext=" + loginContext +
                 '}';
     }
-
 
     public String toStyle() {
         return status + " | " +
