@@ -57,6 +57,8 @@ public class LoginLogAspect {
      */
     @Pointcut("@annotation(cn.tannn.jdevelops.logs.LoginLog)")
     public void loginLog() {
+        // 初始化上下文
+        LoginContextHolder.initContext();
     }
 
 
