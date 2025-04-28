@@ -33,40 +33,45 @@ public class LoginContext {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public LoginContext setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getUserNo() {
         return userNo;
     }
 
-    public void setUserNo(String userNo) {
+    public LoginContext setUserNo(String userNo) {
         this.userNo = userNo;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public LoginContext setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getLoginName() {
         return loginName;
     }
 
-    public void setLoginName(String loginName) {
+    public LoginContext setLoginName(String loginName) {
         this.loginName = loginName;
+        return this;
     }
 
     public Map<String, Object> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, Object> map) {
+    public LoginContext setMap(Map<String, Object> map) {
         this.map = map;
+        return this;
     }
 
     @Override
