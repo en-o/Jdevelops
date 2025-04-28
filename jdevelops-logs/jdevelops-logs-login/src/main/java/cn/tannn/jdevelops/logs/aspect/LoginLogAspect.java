@@ -153,11 +153,12 @@ public class LoginLogAspect {
                                 params.put(field.getName(), value);
                             }
                         } catch (IllegalAccessException e) {
-                            // Handle exception appropriately
+                            LOG.error("Error accessing field: {}", field.getName(), e);
                         }
                     });
         } catch (Exception e) {
             // Handle exception appropriately
+            LOG.error("Error accessing field: {}", obj, e);
         }
     }
 
