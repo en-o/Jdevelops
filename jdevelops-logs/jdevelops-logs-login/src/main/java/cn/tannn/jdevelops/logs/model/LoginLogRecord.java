@@ -55,11 +55,6 @@ public class LoginLogRecord {
 
 
     /**
-     * 登录平台 (默认冲token里取)
-     */
-    private String platform;
-
-    /**
      * 登录时间（yyyy-MM-dd HH:mm:ss）
      */
     private LocalDateTime loginTime;
@@ -68,7 +63,6 @@ public class LoginLogRecord {
      * 解析表达式后获取的参数
      */
     private String expression;
-
 
     /**
      * 访问设备信息
@@ -86,11 +80,6 @@ public class LoginLogRecord {
     private String ipRegion;
 
     /**
-     * 当前登录名
-     */
-    private String loginName;
-
-    /**
      * 上下文
      */
     private LoginContext loginContext;
@@ -105,29 +94,23 @@ public class LoginLogRecord {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
             this.logout = !loginLog.login();
-            this.platform = loginLog.platform();
         }
         this.loginTime = LocalDateTime.now();
     }
 
-    public LoginLogRecord(String token
-            , HttpServletRequest request
+    public LoginLogRecord(
+            HttpServletRequest request
             , Integer status
             , String description
-            , String platform
-            , String loginName
             , LoginLog loginLog) {
         this.request = request;
         this.status = status;
         this.description = description;
-        this.platform = platform;
         this.loginTime = LocalDateTime.now();
-        this.loginName = loginName;
         if (loginLog != null) {
             this.expression = loginLog.expression();
             this.type = loginLog.type();
             this.logout = loginLog.login();
-            this.platform = loginLog.platform();
         }
     }
 
@@ -136,25 +119,15 @@ public class LoginLogRecord {
             , boolean logout
             , String description
             , String type
-            , String platform
             , String expression
-            , String loginName
     ) {
         this.request = request;
         this.status = status;
         this.logout = logout;
         this.description = description;
         this.type = type;
-        this.platform = platform;
         this.loginTime = LocalDateTime.now();
         this.expression = expression;
-        this.loginName = loginName;
-    }
-
-    public void writeTokenPlatform(List<String> platform) {
-        if (platform != null && !platform.isEmpty()) {
-            this.platform = String.join(",", platform);
-        }
     }
 
     public HttpServletRequest getRequest() {
@@ -166,18 +139,18 @@ public class LoginLogRecord {
             try {
                 this.ipAddress = IpUtil.getPoxyIpEnhance(request);
             } catch (Exception e) {
-                LOG.error("ip获取失败：{}",e.getMessage());
+                LOG.error("ip获取失败：{}", e.getMessage());
             }
-            if(this.ipAddress!=null&&!this.ipAddress.isBlank()){
+            if (this.ipAddress != null && !this.ipAddress.isBlank()) {
                 try {
                     this.ipRegion = IpRegionUtil.getIpRegion(this.ipAddress);
                 } catch (Exception e) {
-                    LOG.error("ip归属地获取失败：{}",e.getMessage());
+                    LOG.error("ip归属地获取失败：{}", e.getMessage());
                 }
                 try {
                     this.userAgent = UserAgentUtil.parseStr(request);
                 } catch (Exception e) {
-                    LOG.error("设备信息获取失败：{}",e.getMessage());
+                    LOG.error("设备信息获取失败：{}", e.getMessage());
                 }
             }
         }
@@ -206,14 +179,6 @@ public class LoginLogRecord {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
     public LocalDateTime getLoginTime() {
@@ -264,14 +229,6 @@ public class LoginLogRecord {
         this.ipRegion = ipRegion;
     }
 
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
     public LoginContext getLoginContext() {
         return loginContext;
     }
@@ -288,13 +245,11 @@ public class LoginLogRecord {
                 ", logout=" + logout +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
-                ", platform='" + platform + '\'' +
                 ", loginTime=" + loginTime +
                 ", expression='" + expression + '\'' +
                 ", userAgent='" + userAgent + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", ipRegion='" + ipRegion + '\'' +
-                ", loginName='" + loginName + '\'' +
                 ", loginContext=" + loginContext +
                 '}';
     }
@@ -304,12 +259,10 @@ public class LoginLogRecord {
                 logout + " | " +
                 '\'' + description + '\'' + " | " +
                 '\'' + type + '\'' + " | " +
-                '\'' + platform + '\'' + " | " +
                 loginTime + " | " +
                 '\'' + expression + '\'' + " | " +
                 '\'' + userAgent + '\'' + " | " +
                 '\'' + ipAddress + '\'' + " | " +
-                '\'' + ipRegion + '\'' + " | " +
-                '\'' + loginName + '\'';
+                '\'' + ipRegion + '\'';
     }
 }

@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.logs.context;
 
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,14 +16,17 @@ public class LoginContext {
     private String userId;
     private String userNo;
     private String name;
+
     /**
-     * 最终以这个为准
+     * 登录平台 (默认冲token里取,自己处理（request里)
      */
     private String platform;
+
     /**
-     * 最终以这个为准
+     * 当前登录名
      */
     private String loginName;
+
     private Map<String, Object> map;
 
 
@@ -30,7 +34,13 @@ public class LoginContext {
         this.requestId = requestId;
     }
 
-    public LoginContext(String requestId, String userId, String userNo, String name, String platform, String loginName, Map<String, Object> map) {
+    public LoginContext(String requestId
+            , String userId
+            , String userNo
+            , String name
+            , String platform
+            , String loginName
+            , Map<String, Object> map) {
         this.requestId = requestId;
         this.userId = userId;
         this.userNo = userNo;
@@ -99,6 +109,13 @@ public class LoginContext {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+
+    public void writeTokenPlatform(List<String> platform) {
+        if (platform != null && !platform.isEmpty()) {
+            this.platform = String.join(",", platform);
+        }
     }
 
     @Override

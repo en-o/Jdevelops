@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.logs.aspect;
 
 import cn.tannn.jdevelops.logs.LoginLog;
+import cn.tannn.jdevelops.logs.context.LoginContext;
 import cn.tannn.jdevelops.logs.context.LoginContextHolder;
 import cn.tannn.jdevelops.logs.model.InputParams;
 import cn.tannn.jdevelops.logs.model.LoginLogRecord;
@@ -87,7 +88,7 @@ public class LoginLogAspect {
 
             // Handle expression evaluation
             handleExpression(joinPoint, logRecord);
-            logRecord.setLoginContext(LoginContextHolder.getContext());
+
             // Asynchronously save the log
             saveLogAsync(logRecord);
         } catch (Exception e) {
@@ -102,10 +103,11 @@ public class LoginLogAspect {
 
         LoginLogRecord logRecord = new LoginLogRecord(loginLog);
         setRequestInfo(logRecord);
-
+        LoginContext loginContext = LoginContextHolder.getContext();
+        logRecord.setLoginContext(loginContext);
         InputParams loginInfo = extractLoginInfo(joinPoint, loginLog.loginNameKey());
-        logRecord.setLoginName(loginInfo.getLoginName());
-        logRecord.setPlatform(loginInfo.getPlatform());
+        loginContext.setLoginName(loginInfo.getLoginName());
+        loginContext.setPlatform(loginInfo.getPlatform());
 
         return logRecord;
     }
