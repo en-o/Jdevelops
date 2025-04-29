@@ -107,7 +107,7 @@ public class LoginLogAspect {
         logRecord.setLoginContext(loginContext);
         InputParams loginInfo = extractLoginInfo(joinPoint, loginLog.loginNameKey());
         loginContext.setLoginName(loginInfo.getLoginName());
-        loginContext.setPlatform(loginInfo.getPlatform());
+        loginContext.setPlatform(loginInfo.getPlatform() == null ? loginLog.platform() : loginInfo.getPlatform());
 
         return logRecord;
     }
