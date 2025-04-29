@@ -254,6 +254,11 @@
                 <artifactId>jdevelops-logs-audit</artifactId>
                 <version>${jdevelops.log.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-logs-login</artifactId>
+                <version>${jdevelops.log.version}</version>
+            </dependency>
 
             <!-- monitor -->
             <dependency>
