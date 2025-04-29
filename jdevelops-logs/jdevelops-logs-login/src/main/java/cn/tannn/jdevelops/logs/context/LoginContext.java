@@ -15,20 +15,28 @@ public class LoginContext {
     private String userId;
     private String userNo;
     private String name;
+    /**
+     * 最终以这个为准
+     */
+    private String platform;
+    /**
+     * 最终以这个为准
+     */
     private String loginName;
-    private Map<String,Object> map;
+    private Map<String, Object> map;
 
 
     public LoginContext(String requestId) {
         this.requestId = requestId;
     }
 
-    public LoginContext(String requestId, String userId, String userNo, String name, String loginName, Map<String, Object> map) {
+    public LoginContext(String requestId, String userId, String userNo, String name, String platform, String loginName, Map<String, Object> map) {
         this.requestId = requestId;
         this.userId = userId;
         this.userNo = userNo;
         this.name = name;
         this.loginName = loginName;
+        this.platform = platform;
         this.map = map;
     }
 
@@ -85,6 +93,14 @@ public class LoginContext {
         this.requestId = requestId;
     }
 
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
     @Override
     public String toString() {
         return "LoginContext{" +
@@ -92,6 +108,7 @@ public class LoginContext {
                 ", userId='" + userId + '\'' +
                 ", userNo='" + userNo + '\'' +
                 ", name='" + name + '\'' +
+                ", platform='" + platform + '\'' +
                 ", loginName='" + loginName + '\'' +
                 ", map=" + map +
                 '}';

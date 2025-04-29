@@ -34,7 +34,8 @@ public @interface LoginLog {
 
     /**
      * 登录名的参数名， 用于取值（map.get(loginNameKey)）
-     * <p> 如果是 String login(String loginName,String pwd) 这中方式，必须把 登录名参数放到最前面 </p>
+     * <p> 如果是 String login(String loginName,String pwd) 不支持这种 </p>
+     * <p> 只支持 String login(Bean login)  </p>
      * @return  loginNameKey
      */
     String loginNameKey() default "loginName";
