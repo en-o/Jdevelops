@@ -153,6 +153,19 @@ public class LoginContext {
         return this;
     }
 
+    /**
+     * 是否设置token, 配置项用于灵活控制
+     * @param token token
+     * @param storage true:存储到上下文中
+     * @return LoginContext
+     */
+    public LoginContext setToken(String token, boolean storage) {
+        if(storage){
+            this.token = token;
+        }
+        return this;
+    }
+
     @Override
     public String toString() {
         return "LoginContext{" +
