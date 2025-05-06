@@ -30,6 +30,10 @@ public class LoginContext {
      * 当前登录名
      */
     private String loginName;
+    /**
+     * 当前登录的token
+     */
+    private String token;
 
     private Map<String, Object> map;
 
@@ -140,6 +144,15 @@ public class LoginContext {
         return this;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public LoginContext setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "LoginContext{" +
@@ -150,6 +163,7 @@ public class LoginContext {
                 ", description='" + description + '\'' +
                 ", platform='" + platform + '\'' +
                 ", loginName='" + loginName + '\'' +
+                ", token='" + token + '\'' +
                 ", map=" + map +
                 '}';
     }
