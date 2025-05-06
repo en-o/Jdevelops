@@ -80,7 +80,7 @@ public class LoginLogRecord {
     private String ipRegion;
 
     /**
-     * 上下文
+     * 上下文， 注解设置的值最终都会以上下文设置的为准
      */
     private LoginContext loginContext;
 
