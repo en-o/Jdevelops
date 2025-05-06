@@ -28,7 +28,7 @@ public class LoginLogRecord {
     /**
      * 请求头
      */
-    private HttpServletRequest request;
+    private RequestInfo request;
 
     /**
      * 登录状态：0[失败],1[成功]
@@ -95,7 +95,7 @@ public class LoginLogRecord {
     }
 
     public LoginLogRecord(
-            HttpServletRequest request
+            RequestInfo request
             , Integer status
             , LoginLog loginLog) {
         this.request = request;
@@ -108,7 +108,7 @@ public class LoginLogRecord {
         }
     }
 
-    public LoginLogRecord(HttpServletRequest request
+    public LoginLogRecord(RequestInfo request
             , Integer status
             , boolean logout
             , String type
@@ -122,8 +122,17 @@ public class LoginLogRecord {
         this.expression = expression;
     }
 
-    public HttpServletRequest getRequest() {
+    public RequestInfo getRequest() {
         return request;
+    }
+
+
+    public void setRequestEx(Throwable error) {
+        // 异常处理
+        if (this.request != null) {
+            // 记录异常信息
+            this.request.addExtraInfo("error", error.getMessage());
+        }
     }
 
     public void setRequest(HttpServletRequest request) {
@@ -146,7 +155,8 @@ public class LoginLogRecord {
                 }
             }
         }
-        this.request = request;
+        // 在请求开始时就获取并保存请求信息
+        this.request = RequestInfo.from(request);
     }
 
     public Integer getStatus() {
