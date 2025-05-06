@@ -16,6 +16,10 @@ public class LoginContext {
     private String userId;
     private String userNo;
     private String name;
+    /**
+     * 登录备注
+     */
+    private String description;
 
     /**
      * 登录平台 (默认冲token里取,自己处理（request里)
@@ -40,6 +44,7 @@ public class LoginContext {
             , String name
             , String platform
             , String loginName
+            , String description
             , Map<String, Object> map) {
         this.requestId = requestId;
         this.userId = userId;
@@ -47,6 +52,7 @@ public class LoginContext {
         this.name = name;
         this.loginName = loginName;
         this.platform = platform;
+        this.description = description;
         this.map = map;
     }
 
@@ -99,16 +105,18 @@ public class LoginContext {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public LoginContext setRequestId(String requestId) {
         this.requestId = requestId;
+        return this;
     }
 
     public String getPlatform() {
         return platform;
     }
 
-    public void setPlatform(String platform) {
+    public LoginContext setPlatform(String platform) {
         this.platform = platform;
+        return this;
     }
 
 
@@ -118,6 +126,18 @@ public class LoginContext {
         }
     }
 
+    public String getDescription() {
+        if(null == description ){
+            return "正常";
+        }
+        return description;
+    }
+
+    public LoginContext setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "LoginContext{" +
@@ -125,6 +145,7 @@ public class LoginContext {
                 ", userId='" + userId + '\'' +
                 ", userNo='" + userNo + '\'' +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", platform='" + platform + '\'' +
                 ", loginName='" + loginName + '\'' +
                 ", map=" + map +

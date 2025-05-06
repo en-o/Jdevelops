@@ -41,10 +41,6 @@ public class LoginLogRecord {
      */
     private boolean logout;
 
-    /**
-     * 备注
-     */
-    private String description;
 
     /**
      * 登录类型
@@ -101,11 +97,9 @@ public class LoginLogRecord {
     public LoginLogRecord(
             HttpServletRequest request
             , Integer status
-            , String description
             , LoginLog loginLog) {
         this.request = request;
         this.status = status;
-        this.description = description;
         this.loginTime = LocalDateTime.now();
         if (loginLog != null) {
             this.expression = loginLog.expression();
@@ -117,14 +111,12 @@ public class LoginLogRecord {
     public LoginLogRecord(HttpServletRequest request
             , Integer status
             , boolean logout
-            , String description
             , String type
             , String expression
     ) {
         this.request = request;
         this.status = status;
         this.logout = logout;
-        this.description = description;
         this.type = type;
         this.loginTime = LocalDateTime.now();
         this.expression = expression;
@@ -165,13 +157,6 @@ public class LoginLogRecord {
         this.status = status;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getType() {
         return type;
@@ -243,7 +228,6 @@ public class LoginLogRecord {
                 "request=" + request +
                 ", status=" + status +
                 ", logout=" + logout +
-                ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", loginTime=" + loginTime +
                 ", expression='" + expression + '\'' +
@@ -257,7 +241,6 @@ public class LoginLogRecord {
     public String toStyle() {
         return status + " | " +
                 logout + " | " +
-                '\'' + description + '\'' + " | " +
                 '\'' + type + '\'' + " | " +
                 loginTime + " | " +
                 '\'' + expression + '\'' + " | " +

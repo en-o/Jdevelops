@@ -37,7 +37,7 @@ public class LoginLogAspect {
     private static final Logger log = LoggerFactory.getLogger(LoginLogAspect.class);
     private final LoginLogSave loginLogSave;
     private static final String DEFAULT_ERROR_MESSAGE = "System error occurred";
-    private static final String NORMAL_STATUS = "normal";
+
 
     public LoginLogAspect(LoginLogSave loginLogSave) {
         this.loginLogSave = loginLogSave;
@@ -66,11 +66,12 @@ public class LoginLogAspect {
         try {
             LoginLogRecord logRecord = createBaseLogRecord(jp);
             logRecord.setStatus(0);
-            logRecord.setDescription(Optional.ofNullable(ex.getMessage())
-                    .filter(StringUtils::hasText)
-                    .map(message -> message.length() > 100 ? message.substring(0, 99) : message)
-                    .orElse(DEFAULT_ERROR_MESSAGE));
-            logRecord.setLoginContext(LoginContextHolder.getContext());
+            LoginContext loginContext = LoginContextHolder.getContext()
+                    .setDescription(Optional.ofNullable(ex.getMessage())
+                            .filter(StringUtils::hasText)
+                            .map(message -> message.length() > 100 ? message.substring(0, 99) : message)
+                            .orElse(DEFAULT_ERROR_MESSAGE));
+            logRecord.setLoginContext(loginContext);
             // Asynchronously save the log
             saveLogAsync(logRecord);
         } catch (Exception e) {
@@ -85,8 +86,6 @@ public class LoginLogAspect {
         try {
             LoginLogRecord logRecord = createBaseLogRecord(joinPoint);
             logRecord.setStatus(1);
-            logRecord.setDescription(NORMAL_STATUS);
-
             // Handle expression evaluation
             handleExpression(joinPoint, logRecord);
 
