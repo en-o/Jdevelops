@@ -88,7 +88,9 @@ public class LoginContext {
     }
 
     public LoginContext setLoginName(String loginName) {
-        this.loginName = loginName;
+        if(loginName != null && !loginName.isEmpty()) {
+            this.loginName = loginName;
+        }
         return this;
     }
 
