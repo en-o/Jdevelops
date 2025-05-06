@@ -68,6 +68,7 @@ public class LoginLogAspect {
             logRecord.setStatus(0);
             logRecord.setDescription(Optional.ofNullable(ex.getMessage())
                     .filter(StringUtils::hasText)
+                    .map(message -> message.length() > 100 ? message.substring(0, 99) : message)
                     .orElse(DEFAULT_ERROR_MESSAGE));
             logRecord.setLoginContext(LoginContextHolder.getContext());
             // Asynchronously save the log
