@@ -64,7 +64,7 @@ public class LoginLogAspect {
     @AfterThrowing(value = "loginLogPointcut()", throwing = "ex")
     public void handleLoginException(JoinPoint jp, Exception ex) {
         try {
-            LoginLogRecord logRecord = createBaseLogRecord(jp);
+            LoginLogRecord logRecord = createBaseLogRecord(jp, false, ex);
             logRecord.setStatus(0);
             LoginContext loginContext = LoginContextHolder.getContext()
                     .setDescription(Optional.ofNullable(ex.getMessage())
@@ -84,7 +84,7 @@ public class LoginLogAspect {
     @AfterReturning(value = "loginLogPointcut()", returning = "result")
     public void handleSuccessfulLogin(JoinPoint joinPoint, Object result) {
         try {
-            LoginLogRecord logRecord = createBaseLogRecord(joinPoint);
+            LoginLogRecord logRecord = createBaseLogRecord(joinPoint, false, null);
             logRecord.setStatus(1);
             // Handle expression evaluation
             handleExpression(joinPoint, logRecord);
@@ -96,13 +96,16 @@ public class LoginLogAspect {
         }
     }
 
-    private LoginLogRecord createBaseLogRecord(JoinPoint joinPoint) {
+    private LoginLogRecord createBaseLogRecord(JoinPoint joinPoint, boolean exception, Exception ex) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         LoginLog loginLog = method.getAnnotation(LoginLog.class);
 
         LoginLogRecord logRecord = new LoginLogRecord(loginLog);
         setRequestInfo(logRecord);
+        if (exception) {
+            logRecord.setRequestEx(ex);
+        }
         LoginContext loginContext = LoginContextHolder.getContext();
         logRecord.setLoginContext(loginContext);
         InputParams loginInfo = extractLoginInfo(joinPoint, loginLog.loginNameKey());
