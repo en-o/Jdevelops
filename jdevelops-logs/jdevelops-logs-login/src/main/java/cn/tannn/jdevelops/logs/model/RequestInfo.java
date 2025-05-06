@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.logs.model;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.WebUtils;
@@ -19,6 +21,10 @@ import java.util.*;
  * @date 2025/5/6 11:27
  */
 public class RequestInfo {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginLogRecord.class);
+
+
     /**
      * 请求基本信息
      */
@@ -162,11 +168,10 @@ public class RequestInfo {
                 locales.add(localeEnum.nextElement());
             }
             info.setAcceptedLocales(locales);
-
-            return info;
         } catch (Exception e) {
-            throw new RuntimeException("构建RequestInfo失败", e);
+            LOG.error("构建RequestInfo失败", e);
         }
+        return info;
     }
 
     /**
