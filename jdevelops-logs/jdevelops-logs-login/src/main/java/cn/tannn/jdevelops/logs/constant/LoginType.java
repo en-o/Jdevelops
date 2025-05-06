@@ -25,8 +25,30 @@ public class LoginType {
     public static final String ADMIN_ACCOUNT_PASSWORD="管理端账号密码";
 
     /**
+     * 账号密码
+     */
+    public static final String ACCOUNT_PASSWORD="账号密码";
+
+    /**
      * 微信小程序
      */
     public static final String WECHAT_APPLET="微信小程序";
+
+    /**
+     * 管理端CAS
+     */
+    public static final String ADMIN_ACCOUNT_CAS = "管理端CAS";
+
+
+    /**
+     * 利用端CAS
+     */
+    public static final String WEB_ACCOUNT_CAS = "利用端CAS";
+
+    /**
+     * CAS
+     */
+    public static final String ACCOUNT_CAS = "CAS";
+
 
 }
