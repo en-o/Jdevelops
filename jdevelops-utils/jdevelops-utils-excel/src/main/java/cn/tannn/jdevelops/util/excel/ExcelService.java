@@ -82,7 +82,7 @@ public class ExcelService {
      * @param headContent 第二行[表字段]
      * @return concatHead
      */
-    private static List<String> concatHead(String remake, List<String> headContent) {
+    public static List<String> concatHead(String remake, List<String> headContent) {
         headContent.add(0, remake);
         return headContent;
     }
