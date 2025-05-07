@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.util.excel.style;
 
-import com.alibaba.excel.write.style.row.AbstractRowHeightStyleStrategy;
+import cn.idev.excel.write.style.row.AbstractRowHeightStyleStrategy;
 import org.apache.poi.ss.usermodel.Row;
 
 /**

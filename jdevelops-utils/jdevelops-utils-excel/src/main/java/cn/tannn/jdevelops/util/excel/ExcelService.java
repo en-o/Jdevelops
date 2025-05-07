@@ -1,8 +1,8 @@
 package cn.tannn.jdevelops.util.excel;
 
+import cn.idev.excel.annotation.ExcelProperty;
 import cn.tannn.jdevelops.util.excel.handler.CellMenu;
 import cn.tannn.jdevelops.util.excel.model.HeaderMenuData;
-import com.alibaba.excel.annotation.ExcelProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

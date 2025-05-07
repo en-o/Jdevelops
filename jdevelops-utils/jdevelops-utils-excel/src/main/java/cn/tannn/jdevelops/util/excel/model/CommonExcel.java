@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.util.excel.model;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
+
+import cn.idev.excel.annotation.ExcelIgnore;
 
 import java.util.Objects;
 

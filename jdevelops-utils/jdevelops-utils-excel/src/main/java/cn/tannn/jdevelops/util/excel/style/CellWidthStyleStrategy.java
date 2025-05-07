@@ -1,11 +1,11 @@
 package cn.tannn.jdevelops.util.excel.style;
 
-import com.alibaba.excel.enums.CellDataTypeEnum;
-import com.alibaba.excel.metadata.Head;
-import com.alibaba.excel.metadata.data.CellData;
-import com.alibaba.excel.metadata.data.WriteCellData;
-import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
-import com.alibaba.excel.write.style.column.AbstractColumnWidthStyleStrategy;
+import cn.idev.excel.enums.CellDataTypeEnum;
+import cn.idev.excel.metadata.Head;
+import cn.idev.excel.metadata.data.CellData;
+import cn.idev.excel.metadata.data.WriteCellData;
+import cn.idev.excel.write.metadata.holder.WriteSheetHolder;
+import cn.idev.excel.write.style.column.AbstractColumnWidthStyleStrategy;
 import org.apache.poi.ss.usermodel.Cell;
 
 import java.util.HashMap;
