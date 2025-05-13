@@ -16,6 +16,7 @@ public class LogConfig {
     /**
      * 禁用入参的打印[为空不禁止，]
      * <p>intercept-apis: ["/post/v1","/post/v2"]</p>
+     * <p>支持AntPathMatcher</p>
      */
     private Set<String> interceptApis = new HashSet<>();
 
