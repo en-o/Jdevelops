@@ -19,6 +19,12 @@ public enum FileMagic {
     // 特定 ZIP 子类型（JAR、WAR、DOCX、XLSX、PPTX）需要在确认为 ZIP 文件后检查 ZIP 内容。
     ZIP(new byte[][]{{(byte) 0x50, (byte) 0x4B, (byte) 0x03, (byte) 0x04}}, new int[]{0}), // PK\003\004 - 所有以下类型的通用魔数 + 通用 ZIP
 
+    // TAR (Tape 压缩文件 - checks for "ustar\0" at offset 257)
+    TAR(new byte[][]{
+            {(byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x61, (byte) 0x72, (byte) 0x00}, // ustar\0 (Ustar/POSIX)
+            {(byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x61, (byte) 0x72, (byte) 0x20}  // ustar  (GNU TAR)
+    }, new int[]{257, 257}), // Both patterns are checked at offset 257
+
     // RAR（Roshal 压缩文件）- 覆盖常见的旧版本和新版本
     RAR(new byte[][]{
             {(byte) 0x52, (byte) 0x61, (byte) 0x72, (byte) 0x21, (byte) 0x1A, (byte) 0x07, (byte) 0x00}, // Rar!\x1a\x07\x00 (RAR v1.5-v2.0)

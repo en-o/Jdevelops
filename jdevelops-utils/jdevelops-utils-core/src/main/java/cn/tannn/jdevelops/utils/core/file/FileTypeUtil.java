@@ -222,6 +222,14 @@ public class FileTypeUtil {
         return isValidFileMagic(file, EnumSet.of(FileMagic.ZIP));
     }
 
+
+    /**
+     * 验证文件是否为 Tar 压缩文件
+     */
+    public static boolean isValidTar(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.TAR));
+    }
+
     /**
      * 验证文件是否为 RAR 压缩文件（涵盖常见的旧版本和新版本）。
      */
@@ -340,6 +348,22 @@ public class FileTypeUtil {
     }
 
     /**
+     * 验证文件是否是压缩文件 (ZIP 子类型, TAR, RAR, 7z, TGZ).
+     */
+    public static boolean isValidAnyArchive(MultipartFile file) {
+        // Check non-ZIP archive types first
+        Set<FileMagic> nonZipArchives = EnumSet.of(FileMagic.TAR, FileMagic.RAR, FileMagic.SEVEN_Z, FileMagic.GZIP);
+        if (isValidFileMagic(file, nonZipArchives)) {
+            return true;
+        }
+
+        // 检查是否为任何有效的基于 ZIP 的类型（通用或特定）
+        return isValidGeneralZip(file);
+    }
+
+
+
+    /**
      * 验证文件是否为任何已识别的特定 ZIP 子类型（JAR、WAR、DOCX、XLSX、PPTX）
      * 或通用 ZIP。本质上是检查文件是否为有效的基于 ZIP 的文件。
      */
@@ -364,12 +388,17 @@ public class FileTypeUtil {
         return isValidGeneralZip(file);
     }
 
+
     /**
      * 验证文件是否为任何受支持的文件类型，基于魔数或 ZIP 检查。
      */
     public static boolean isValidSupportedType(MultipartFile file) {
-        // 检查非 ZIP 类型
-        Set<FileMagic> nonZipTypes = EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.XLS, FileMagic.RAR, FileMagic.SEVEN_Z, FileMagic.GZIP, FileMagic.MP4, FileMagic.MP3);
+        // Check non-ZIP types (including TAR, RAR, 7z, TGZ, MP4, MP3)
+        Set<FileMagic> nonZipTypes = EnumSet.of(
+                FileMagic.PDF, FileMagic.DOC, FileMagic.XLS,
+                FileMagic.TAR, FileMagic.RAR, FileMagic.SEVEN_Z, FileMagic.GZIP,
+                FileMagic.MP4, FileMagic.MP3
+        );
         if (isValidFileMagic(file, nonZipTypes)) {
             return true;
         }
