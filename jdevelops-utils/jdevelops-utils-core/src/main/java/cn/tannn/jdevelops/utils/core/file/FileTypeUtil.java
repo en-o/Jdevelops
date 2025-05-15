@@ -4,9 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * 文件类型工具类
@@ -18,134 +19,373 @@ import java.util.Set;
 public class FileTypeUtil {
 
     /**
-     * 通过读取文件的初始字节来确定其魔数是否与允许的类型之一匹配。
-     * 这是基于文件头的快速检查，并不能保证文件是格式良好的。
-     *
-     * @param file 要验证的 MultipartFile 对象。
-     * @param allowedTypes 一个包含允许文件类型的 FileType 枚举集合。
-     * @return 如果文件的魔数与允许的类型之一匹配，则返回 true，否则返回 false。
+     * Helper method to check if a portion of the file's magic bytes matches a pattern at a specific offset.
      */
-    public static boolean isValidFileType(MultipartFile file, Set<FileMagic> allowedTypes) {
+    private static boolean matchesMagicAtOffset(byte[] fileMagic, byte[] pattern, int offset) {
+        // Need at least enough bytes in fileMagic to cover the pattern at the given offset
+        if (fileMagic.length < offset + pattern.length) {
+            return false;
+        }
+        for (int i = 0; i < pattern.length; i++) {
+            if (fileMagic[offset + i] != pattern[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Reads the initial bytes of a file and checks if its magic number(s) match any of the allowed types.
+     * This method supports checking magic numbers at different offsets.
+     * This is a quick check based on file headers and does not guarantee a well-formed file.
+     * This method *does not* differentiate between specific ZIP subtypes (like docx, xlsx, jar, etc.).
+     * Use determineSpecificZipType for that after confirming it's a general ZIP.
+     *
+     * @param file         The MultipartFile to validate.
+     * @param allowedTypes A set of FileMagic enums representing the allowed file types.
+     * @return true if the file's magic number matches any of the allowed types at the correct offset, false otherwise.
+     */
+    public static boolean isValidFileMagic(MultipartFile file, Set<FileMagic> allowedTypes) {
         if (file == null || file.isEmpty() || allowedTypes == null || allowedTypes.isEmpty()) {
-            // 优雅地处理空或空输入
+            // Handle null or empty inputs gracefully
             // LOG.warn("Validation called with null file, empty file, or empty allowed types set.");
             return false;
         }
 
-        // 确定我们需要读取的最大字节数，以覆盖所有允许的魔数
+        // Determine the maximum number of bytes we need to read to cover all allowed magic number checks
         int maxBytesToRead = 0;
         for (FileMagic type : allowedTypes) {
             if (type != null) {
-                maxBytesToRead = Math.max(maxBytesToRead, type.getMaxMagicLength());
+                maxBytesToRead = Math.max(maxBytesToRead, type.getMaxRequiredLength());
             }
         }
 
-        // 如果没有提供有效的类型，则返回 false
+        // If no valid types were provided (e.g., set was empty or contained only nulls)
         if (maxBytesToRead == 0) {
-            // LOG.warn("Validation called with allowed types set containing only nulls or no valid types.");
+            // LOG.warn("Validation called with allowed types set containing only nulls or no valid types requiring bytes.");
             return false;
         }
 
-        // 从文件中读取初始字节
-        byte[] fileMagic = new byte[maxBytesToRead];
-        try (InputStream fis = file.getInputStream()) {
-            int bytesRead = fis.read(fileMagic);
 
+        // Read the initial bytes from the file
+        byte[] fileMagic = new byte[maxBytesToRead];
+        int bytesRead;
+        try (InputStream fis = file.getInputStream()) {
+            bytesRead = fis.read(fileMagic);
             if (bytesRead == -1) {
-                // 文件为空
+                // File is empty
                 // LOG.warn("File is empty, no bytes read.");
                 return false;
             }
-
-            // 如果读取的字节数少于 maxBytesToRead，则截断缓冲区
-            if (bytesRead < maxBytesToRead) {
-                fileMagic = Arrays.copyOf(fileMagic, bytesRead);
-            }
+            // No need to truncate here, matchesMagicAtOffset handles buffer length implicitly
 
         } catch (IOException e) {
             // LOG.error("Error reading file input stream for magic number check", e);
             return false;
         }
 
-        // 检查读取的魔数是否与允许的类型之一匹配
+        // Check if the read magic number matches any of the allowed types at the correct offset
         for (FileMagic allowedType : allowedTypes) {
-            if (allowedType == null) continue; // 跳过集合中的空条目
+            if (allowedType == null) continue; // Skip null entries in the set
 
-            for (byte[] magicPattern : allowedType.getMagicNumbers()) {
-                // 确保我们读取的字节数足以匹配该模式
-                if (fileMagic.length >= magicPattern.length) {
-                    boolean matches = true;
-                    for (int i = 0; i < magicPattern.length; i++) {
-                        if (fileMagic[i] != magicPattern[i]) {
-                            matches = false;
-                            break;
-                        }
-                    }
-                    if (matches) {
-                        return true; // 找到匹配项
-                    }
+            byte[][] patterns = allowedType.getMagicPatterns();
+            int[] offsets = allowedType.getOffsets();
+
+            for (int i = 0; i < patterns.length; i++) {
+                byte[] pattern = patterns[i];
+                int offset = offsets[i];
+
+                if (matchesMagicAtOffset(fileMagic, pattern, offset)) {
+                    return true; // Found a match
                 }
             }
         }
 
-        // 在允许的类型中未找到匹配项
+        // No match found among allowed types
         return false;
     }
 
+
     /**
-     * 验证文件是否为 PDF。
+     * Checks the file's initial bytes to confirm it's a general ZIP format.
+     * This is the first step before determining a specific ZIP subtype.
+     */
+    public static boolean isGeneralZipFormat(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.ZIP));
+    }
+
+
+    /**
+     * Attempts to determine the specific subtype of a ZIP-based file
+     * (.zip, .jar, .war, .docx, .xlsx, .pptx) by inspecting its internal structure.
+     * This method assumes the file has already been confirmed to be a general ZIP format
+     * using isGeneralZipFormat or isValidFileMagic including FileMagic.ZIP.
+     *
+     * @param file The MultipartFile to analyze.
+     * @return The determined ZipSubMagic, or UNKNOWN if analysis fails or no known subtype is found.
+     */
+    public static ZipSubMagic determineSpecificZipType(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            // LOG.warn("determineSpecificZipType called with null or empty file.");
+            return ZipSubMagic.UNKNOWN;
+        }
+
+        // Optional: Add a check here if it's actually a ZIP first,
+        // although the method contract implies it should be.
+        // if (!isGeneralZipFormat(file)) {
+        //     LOG.warn("determineSpecificZipType called on a file that is not a general ZIP format.");
+        //     return ZipSubMagic.UNKNOWN;
+        // }
+
+
+        boolean foundManifest = false;
+        boolean foundWebInf = false;
+        boolean foundWordDir = false;
+        boolean foundXlDir = false;
+        boolean foundPptDir = false;
+
+        try (InputStream is = file.getInputStream();
+             ZipInputStream zis = new ZipInputStream(is)) {
+
+            ZipEntry entry;
+            // Iterate through entries, stop if we find indicators for a specific type
+            while ((entry = zis.getNextEntry()) != null) {
+                String entryName = entry.getName();
+
+                // Use the helper from the enum to classify entries
+                ZipSubMagic entrySubType = ZipSubMagic.determineFromEntry(entryName);
+
+                switch (entrySubType) {
+                    case DOCX:
+                        foundWordDir = true;
+                        break;
+                    case XLSX:
+                        foundXlDir = true;
+                        break;
+                    case PPTX:
+                        foundPptDir = true;
+                        break;
+                    case JAR:
+                        foundManifest = true;
+                        break; // Found META-INF/MANIFEST.MF
+                    case WAR:
+                        foundWebInf = true;
+                        break;   // Found WEB-INF/
+                    case UNKNOWN: // Continue checking other entries
+                        break;
+                    default:
+                        // Should not happen with current ZipSubMagic.determineFromEntry
+                        break;
+                }
+
+                // Optimization: If we've found indicators for the most specific types,
+                // we can potentially stop scanning early.
+                if (foundWordDir || foundXlDir || foundPptDir || (foundManifest && foundWebInf)) {
+                    break;
+                }
+
+                zis.closeEntry(); // Close the current entry before moving to the next
+            }
+
+        } catch (IOException e) {
+            // LOG.error("Error reading ZIP file entries", e);
+            return ZipSubMagic.UNKNOWN; // Error reading implies unknown type
+        }
+
+        // Determine the final subtype based on what was found
+        return ZipSubMagic.finalizeSubType(foundManifest, foundWebInf, foundWordDir, foundXlDir, foundPptDir);
+    }
+
+
+    // --- Convenience methods for common combinations or single types ---
+    // Note: These use EnumSet.of for one or more types, or EnumSet.allOf for all supported types.
+
+    /**
+     * Validates if the file is a PDF.
      */
     public static boolean isValidPdf(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.PDF));
+        return isValidFileMagic(file, EnumSet.of(FileMagic.PDF));
     }
 
     /**
-     * 验证文件是否为传统 DOC（Word 97-2003）。
+     * Validates if the file is a traditional DOC (Word 97-2003).
      */
     public static boolean isValidDoc(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.DOC));
+        return isValidFileMagic(file, EnumSet.of(FileMagic.DOC));
     }
 
     /**
-     * 验证文件是否为 ZIP 归档文件（包括 DOCX、XLSX、PPTX 等）。
+     * Validates if the file is a traditional XLS (Excel 97-2003).
      */
-    public static boolean isValidZip(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.ZIP));
+    public static boolean isValidXls(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.XLS));
     }
 
     /**
-     * 验证文件是否为 RAR 归档文件（涵盖常见的旧版本和新版本）。
+     * Validates if the file is a general ZIP format (does not differentiate subtypes like docx, jar, etc.).
+     */
+    public static boolean isValidGeneralZip(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.ZIP));
+    }
+
+    /**
+     * Validates if the file is a RAR archive (covers common older and newer versions).
      */
     public static boolean isValidRAR(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.RAR, FileMagic.RAR_NEW));
+        return isValidFileMagic(file, EnumSet.of(FileMagic.RAR));
     }
 
     /**
-     * 验证文件是否为 7z 归档文件。
+     * Validates if the file is a 7z archive.
      */
     public static boolean isValid7z(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.SEVEN_Z));
+        return isValidFileMagic(file, EnumSet.of(FileMagic.SEVEN_Z));
     }
 
     /**
-     * 验证文件是否为 TGZ 归档文件（检查 GZIP 头）。
+     * Validates if the file is a TGZ archive (checks for GZIP header).
      */
     public static boolean isValidTgz(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.GZIP));
+        return isValidFileMagic(file, EnumSet.of(FileMagic.GZIP));
     }
 
     /**
-     * 验证文件是否为 PDF、DOC 或任何支持的基于 ZIP 的类型（ZIP、DOCX、XLSX、PPTX）。
+     * Validates if the file is an MP4 video.
      */
-    public static boolean isValidPdfDocZip(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.ZIP));
+    public static boolean isValidMp4(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.MP4));
     }
 
     /**
-     * 验证文件是否为 PDF、DOC 或任何支持的归档类型（ZIP、RAR、7z、TGZ）。
-     * 这更接近原始方法的意图，尽管使用 GZIP 枚举来表示 TGZ。
+     * Validates if the file is an MP3 audio file (checks for ID3 or frame header).
      */
-    public static boolean isValidPdfDocArchive(MultipartFile file) {
-        return isValidFileType(file, EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.ZIP, FileMagic.RAR, FileMagic.RAR_NEW, FileMagic.SEVEN_Z, FileMagic.GZIP));
+    public static boolean isValidMp3(MultipartFile file) {
+        return isValidFileMagic(file, EnumSet.of(FileMagic.MP3));
+    }
+
+
+    // --- Methods for validating specific ZIP subtypes ---
+
+    /**
+     * Validates if the file is specifically a DOCX file by checking internal ZIP structure.
+     * This also confirms it's a general ZIP format.
+     */
+    public static boolean isValidDocx(MultipartFile file) {
+        return isGeneralZipFormat(file) && determineSpecificZipType(file) == ZipSubMagic.DOCX;
+    }
+
+    /**
+     * Validates if the file is specifically an XLSX file by checking internal ZIP structure.
+     * This also confirms it's a general ZIP format.
+     */
+    public static boolean isValidXlsx(MultipartFile file) {
+        return isGeneralZipFormat(file) && determineSpecificZipType(file) == ZipSubMagic.XLSX;
+    }
+
+    /**
+     * Validates if the file is specifically a PPTX file by checking internal ZIP structure.
+     * This also confirms it's a general ZIP format.
+     */
+    public static boolean isValidPptx(MultipartFile file) {
+        return isGeneralZipFormat(file) && determineSpecificZipType(file) == ZipSubMagic.PPTX;
+    }
+
+    /**
+     * Validates if the file is specifically a JAR file by checking internal ZIP structure (presence of MANIFEST.MF).
+     * This also confirms it's a general ZIP format. Note: This check might classify WARs as JARs if the WAR check isn't prioritized internally.
+     */
+    public static boolean isValidJar(MultipartFile file) {
+        // Check general ZIP format first, then the specific subtype
+        boolean isZip = isGeneralZipFormat(file);
+        if (!isZip) return false;
+
+        ZipSubMagic subtype = determineSpecificZipType(file);
+        // Return true if it's classified as JAR, but *not* WAR (as WAR is a more specific JAR)
+        return subtype == ZipSubMagic.JAR; // determineSpecificZipType handles the WAR vs JAR logic
+    }
+
+    /**
+     * Validates if the file is specifically a WAR file by checking internal ZIP structure (presence of WEB-INF/).
+     * This also confirms it's a general ZIP format.
+     */
+    public static boolean isValidWar(MultipartFile file) {
+        return isGeneralZipFormat(file) && determineSpecificZipType(file) == ZipSubMagic.WAR;
+    }
+
+    /**
+     * Validates if the file is specifically a *generic* ZIP file (not a recognized subtype like docx, jar, etc.).
+     * This confirms it's a general ZIP format and no specific subtype indicators were found.
+     */
+    public static boolean isValidOnlyGenericZip(MultipartFile file) {
+        boolean isZip = isGeneralZipFormat(file);
+        if (!isZip) return false;
+
+        ZipSubMagic subtype = determineSpecificZipType(file);
+        return subtype == ZipSubMagic.ZIP;
+    }
+
+
+    // --- Convenience methods for combining specific ZIP subtypes ---
+
+    /**
+     * Validates if the file is specifically a DOCX, XLSX, or PPTX file.
+     */
+    public static boolean isValidOoxmlDocument(MultipartFile file) {
+        boolean isZip = isGeneralZipFormat(file);
+        if (!isZip) return false;
+        ZipSubMagic subtype = determineSpecificZipType(file);
+        return subtype == ZipSubMagic.DOCX || subtype == ZipSubMagic.XLSX || subtype == ZipSubMagic.PPTX;
+    }
+
+    /**
+     * Validates if the file is specifically a JAR or WAR file.
+     */
+    public static boolean isValidJavaArchive(MultipartFile file) {
+        boolean isZip = isGeneralZipFormat(file);
+        if (!isZip) return false;
+        ZipSubMagic subtype = determineSpecificZipType(file);
+        return subtype == ZipSubMagic.JAR || subtype == ZipSubMagic.WAR;
+    }
+
+    /**
+     * Validates if the file is any recognized specific ZIP subtype (JAR, WAR, DOCX, XLSX, PPTX)
+     * or a generic ZIP. Essentially checks if it's a valid ZIP-based file.
+     */
+    public static boolean isValidAnyZipBasedFile(MultipartFile file) {
+        // Simply checking the general ZIP magic is sufficient for this purpose
+        return isValidGeneralZip(file);
+    }
+
+
+    // --- Convenience methods including a mix of types ---
+
+    /**
+     * Validates if the file is a PDF, traditional DOC/XLS, or any specific ZIP subtype (DOCX, XLSX, PPTX, JAR, WAR, Generic ZIP).
+     */
+    public static boolean isValidDocumentOrSpreadsheetOrArchive(MultipartFile file) {
+        // Check non-ZIP types first
+        Set<FileMagic> nonZipTypes = EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.XLS, FileMagic.RAR, FileMagic.SEVEN_Z, FileMagic.GZIP);
+        if (isValidFileMagic(file, nonZipTypes)) {
+            return true;
+        }
+
+        // If not a non-ZIP type, check if it's any valid ZIP-based type
+        return isValidGeneralZip(file);
+    }
+
+
+    /**
+     * Validates if the file is any of the supported file types based on magic number or ZIP inspection.
+     */
+    public static boolean isValidSupportedType(MultipartFile file) {
+        // Check non-ZIP types
+        Set<FileMagic> nonZipTypes = EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.XLS, FileMagic.RAR, FileMagic.SEVEN_Z, FileMagic.GZIP, FileMagic.MP4, FileMagic.MP3);
+        if (isValidFileMagic(file, nonZipTypes)) {
+            return true;
+        }
+
+        // Check if it's any valid ZIP-based type (generic or specific)
+        return isValidGeneralZip(file);
     }
 }
