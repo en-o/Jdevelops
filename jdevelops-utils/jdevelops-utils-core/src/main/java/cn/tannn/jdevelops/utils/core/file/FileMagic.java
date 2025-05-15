@@ -3,53 +3,52 @@ package cn.tannn.jdevelops.utils.core.file;
 /**
  * 文件魔数
  *
- * @author <a href="https://t.tannn.cn/">tan</a>
+ * @author tan
  * @version V1.0
  * @date 2025/5/15 11:55
  */
 public enum FileMagic {
-    // Documents and Spreadsheets
+    // 文档和电子表格
     PDF(new byte[][]{{(byte) 0x25, (byte) 0x50, (byte) 0x44, (byte) 0x46}}, new int[]{0}), // %PDF
-    // OLE Compound File Binary Format (used by old .doc, .xls, .ppt)
+    // OLE 复合文件二进制格式（用于旧版 .doc、.xls、.ppt）
     DOC(new byte[][]{{(byte) 0xD0, (byte) 0xCF, (byte) 0x11, (byte) 0xE0, (byte) 0xA1, (byte) 0xB1, (byte) 0x1A, (byte) 0xE1}}, new int[]{0}), // D0 CF 11 E0 A1 B1 1A E1
-    // XLS (Old Excel - uses the same magic number as DOC)
-    XLS(new byte[][]{{(byte) 0xD0, (byte) 0xCF, (byte) 0x11, (byte) 0xE0, (byte) 0xA1, (byte) 0xB1, (byte) 0x1A, (byte) 0xE1}}, new int[]{0}), // Alias for DOC magic
+    // XLS（旧版 Excel - 使用与 DOC 相同的魔数）
+    XLS(new byte[][]{{(byte) 0xD0, (byte) 0xCF, (byte) 0x11, (byte) 0xE0, (byte) 0xA1, (byte) 0xB1, (byte) 0x1A, (byte) 0xE1}}, new int[]{0}), // DOC 魔数的别名
 
-    // Archives (and OOXML formats like .docx, .xlsx, .pptx, .jar) - Checked for general ZIP magic
-    // Specific ZIP subtypes (JAR, WAR, DOCX, XLSX, PPTX) require inspecting ZIP contents *after*
-    // this magic number check confirms it's a ZIP file.
-    ZIP(new byte[][]{{(byte) 0x50, (byte) 0x4B, (byte) 0x03, (byte) 0x04}}, new int[]{0}), // PK\003\004 - Base magic for all types below + generic ZIP
+    // 压缩文件（以及 OOXML 格式，如 .docx、.xlsx、.pptx、.jar）- 检查通用 ZIP 魔数
+    // 特定 ZIP 子类型（JAR、WAR、DOCX、XLSX、PPTX）需要在确认为 ZIP 文件后检查 ZIP 内容。
+    ZIP(new byte[][]{{(byte) 0x50, (byte) 0x4B, (byte) 0x03, (byte) 0x04}}, new int[]{0}), // PK\003\004 - 所有以下类型的通用魔数 + 通用 ZIP
 
-    // RAR (Roshal Archive) - Covers common older and newer versions
+    // RAR（Roshal 压缩文件）- 覆盖常见的旧版本和新版本
     RAR(new byte[][]{
             {(byte) 0x52, (byte) 0x61, (byte) 0x72, (byte) 0x21, (byte) 0x1A, (byte) 0x07, (byte) 0x00}, // Rar!\x1a\x07\x00 (RAR v1.5-v2.0)
             {(byte) 0x52, (byte) 0x61, (byte) 0x72, (byte) 0x21, (byte) 0x1A, (byte) 0x07, (byte) 0x01, (byte) 0x00} // Rar!\x1a\x07\x01\x00 (RAR v5+)
     }, new int[]{0, 0}),
-    // 7Z (7z Archive)
+    // 7Z（7z 压缩文件）
     SEVEN_Z(new byte[][]{{(byte) 0x37, (byte) 0x7A, (byte) 0xBC, (byte) 0xAF, (byte) 0x27, (byte) 0x1C}}, new int[]{0}), // 7z\xBC\xAF\x27\x1C
-    // TGZ (GZIP compressed TAR archive - the magic number is for GZIP)
+    // TGZ（GZIP 压缩的 TAR 压缩文件 - 魔数是 GZIP 的）
     GZIP(new byte[][]{{(byte) 0x1F, (byte) 0x8B}}, new int[]{0}), // 1F 8B
 
-    // Audio and Video
-    // MP4 (ISO Base Media File Format - checks for 'ftyp' box header usually at offset 4)
-    MP4(new byte[][]{{(byte) 0x66, (byte) 0x74, (byte) 0x79, (byte) 0x70}}, new int[]{4}), // ftyp at offset 4
-    // MP3 (MPEG Audio Layer 3 - checks for ID3 tag or common frame sync word at the start)
+    // 音频和视频
+    // MP4（ISO 基础媒体文件格式 - 检查通常位于偏移量 4 的 'ftyp' 箱头）
+    MP4(new byte[][]{{(byte) 0x66, (byte) 0x74, (byte) 0x79, (byte) 0x70}}, new int[]{4}), // ftyp 在偏移量 4
+    // MP3（MPEG 音频层 3 - 检查开头的 ID3 标签或常见的帧同步字）
     MP3(new byte[][]{
-            {(byte) 0x49, (byte) 0x44, (byte) 0x33}, // ID3 tag
-            {(byte) 0xFF, (byte) 0xFB}             // Common MPEG Layer 3 frame sync word
-    }, new int[]{0, 0}); // Both ID3 and sync word are checked from offset 0
+            {(byte) 0x49, (byte) 0x44, (byte) 0x33}, // ID3 标签
+            {(byte) 0xFF, (byte) 0xFB}             // 常见的 MPEG 层 3 帧同步字
+    }, new int[]{0, 0}); // ID3 和同步字都从偏移量 0 开始检查
 
-    // --- File types that cannot be reliably validated by magic number ---
-    // TEXT (.txt, .csv, .log, etc.) - No standard magic number, can start with any text.
-    // SQL (.sql) - Plain text scripts, no standard magic number.
-    // MD (.md) - Markdown, plain text, no standard magic number.
+    // --- 无法通过魔数可靠验证的文件类型 ---
+    // TEXT（.txt、.csv、.log 等）- 没有标准魔数，可以以任何文本开头。
+    // SQL（.sql）- 纯文本脚本，没有标准魔数。
+    // MD（.md）- Markdown，纯文本，没有标准魔数。
 
     private final byte[][] magicPatterns;
-    private final int[] offsets; // Offset for each magic pattern
+    private final int[] offsets; // 每个魔数模式的偏移量
 
     FileMagic(byte[][] magicPatterns, int[] offsets) {
         if (magicPatterns.length != offsets.length) {
-            throw new IllegalArgumentException("Number of magic patterns must match number of offsets");
+            throw new IllegalArgumentException("魔数模式的数量必须与偏移量的数量匹配");
         }
         this.magicPatterns = magicPatterns;
         this.offsets = offsets;
@@ -64,8 +63,7 @@ public enum FileMagic {
     }
 
     /**
-     * Calculates the maximum number of bytes required to read
-     * to check all magic patterns for this file type, considering offsets.
+     * 计算检查此文件类型的所有魔数模式所需的最字节数，考虑偏移量。
      */
     public int getMaxRequiredLength() {
         int maxLen = 0;
@@ -79,8 +77,7 @@ public enum FileMagic {
     }
 
     /**
-     * Calculates the maximum number of bytes required to read
-     * across *all* defined FileTypes to perform their magic number checks.
+     * 计算所有定义的 FileTypes 中执行魔数检查所需的最字节数。
      */
     public static int getMaxOverallRequiredLength() {
         int maxLen = 0;
