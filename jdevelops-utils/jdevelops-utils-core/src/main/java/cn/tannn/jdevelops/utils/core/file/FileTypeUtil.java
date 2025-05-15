@@ -9,7 +9,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * 文件类型
+ * 文件类型工具类
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
@@ -17,23 +17,22 @@ import java.util.Set;
  */
 public class FileTypeUtil {
 
-
     /**
-     * Reads the initial bytes of a file to determine if its magic number matches any of the allowed types.
-     * This is a quick check based on file headers and does not guarantee a well-formed file.
+     * 通过读取文件的初始字节来确定其魔数是否与允许的类型之一匹配。
+     * 这是基于文件头的快速检查，并不能保证文件是格式良好的。
      *
-     * @param file The MultipartFile to validate.
-     * @param allowedTypes A set of FileType enums representing the allowed file types.
-     * @return true if the file's magic number matches any of the allowed types, false otherwise.
+     * @param file 要验证的 MultipartFile 对象。
+     * @param allowedTypes 一个包含允许文件类型的 FileType 枚举集合。
+     * @return 如果文件的魔数与允许的类型之一匹配，则返回 true，否则返回 false。
      */
     public static boolean isValidFileType(MultipartFile file, Set<FileMagic> allowedTypes) {
         if (file == null || file.isEmpty() || allowedTypes == null || allowedTypes.isEmpty()) {
-            // Handle null or empty inputs gracefully
+            // 优雅地处理空或空输入
             // LOG.warn("Validation called with null file, empty file, or empty allowed types set.");
             return false;
         }
 
-        // Determine the maximum number of bytes we need to read to cover all allowed magic numbers
+        // 确定我们需要读取的最大字节数，以覆盖所有允许的魔数
         int maxBytesToRead = 0;
         for (FileMagic type : allowedTypes) {
             if (type != null) {
@@ -41,24 +40,24 @@ public class FileTypeUtil {
             }
         }
 
-        // If no valid types were provided, return false
+        // 如果没有提供有效的类型，则返回 false
         if (maxBytesToRead == 0) {
             // LOG.warn("Validation called with allowed types set containing only nulls or no valid types.");
             return false;
         }
 
-        // Read the initial bytes from the file
+        // 从文件中读取初始字节
         byte[] fileMagic = new byte[maxBytesToRead];
         try (InputStream fis = file.getInputStream()) {
             int bytesRead = fis.read(fileMagic);
 
             if (bytesRead == -1) {
-                // File is empty
+                // 文件为空
                 // LOG.warn("File is empty, no bytes read.");
                 return false;
             }
 
-            // Truncate the buffer if less than maxBytesToRead were read
+            // 如果读取的字节数少于 maxBytesToRead，则截断缓冲区
             if (bytesRead < maxBytesToRead) {
                 fileMagic = Arrays.copyOf(fileMagic, bytesRead);
             }
@@ -68,12 +67,12 @@ public class FileTypeUtil {
             return false;
         }
 
-        // Check if the read magic number matches any of the allowed types
+        // 检查读取的魔数是否与允许的类型之一匹配
         for (FileMagic allowedType : allowedTypes) {
-            if (allowedType == null) continue; // Skip null entries in the set
+            if (allowedType == null) continue; // 跳过集合中的空条目
 
             for (byte[] magicPattern : allowedType.getMagicNumbers()) {
-                // Ensure we have enough bytes read to match the pattern
+                // 确保我们读取的字节数足以匹配该模式
                 if (fileMagic.length >= magicPattern.length) {
                     boolean matches = true;
                     for (int i = 0; i < magicPattern.length; i++) {
@@ -83,72 +82,70 @@ public class FileTypeUtil {
                         }
                     }
                     if (matches) {
-                        return true; // Found a match
+                        return true; // 找到匹配项
                     }
                 }
             }
         }
 
-        // No match found among allowed types
+        // 在允许的类型中未找到匹配项
         return false;
     }
 
     /**
-     * Validates if the file is a PDF.
+     * 验证文件是否为 PDF。
      */
     public static boolean isValidPdf(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.PDF));
     }
 
     /**
-     * Validates if the file is a traditional DOC (Word 97-2003).
+     * 验证文件是否为传统 DOC（Word 97-2003）。
      */
     public static boolean isValidDoc(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.DOC));
     }
 
     /**
-     * Validates if the file is a ZIP archive (includes DOCX, XLSX, PPTX, etc.).
+     * 验证文件是否为 ZIP 归档文件（包括 DOCX、XLSX、PPTX 等）。
      */
     public static boolean isValidZip(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.ZIP));
     }
 
     /**
-     * Validates if the file is a RAR archive (covers common older and newer versions).
+     * 验证文件是否为 RAR 归档文件（涵盖常见的旧版本和新版本）。
      */
     public static boolean isValidRAR(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.RAR, FileMagic.RAR_NEW));
     }
 
     /**
-     * Validates if the file is a 7z archive.
+     * 验证文件是否为 7z 归档文件。
      */
     public static boolean isValid7z(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.SEVEN_Z));
     }
 
     /**
-     * Validates if the file is a TGZ archive (checks for GZIP header).
+     * 验证文件是否为 TGZ 归档文件（检查 GZIP 头）。
      */
     public static boolean isValidTgz(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.GZIP));
     }
 
-
     /**
-     * Validates if the file is a PDF, DOC, or any supported ZIP-based type (ZIP, DOCX, XLSX, PPTX).
+     * 验证文件是否为 PDF、DOC 或任何支持的基于 ZIP 的类型（ZIP、DOCX、XLSX、PPTX）。
      */
     public static boolean isValidPdfDocZip(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.ZIP));
     }
 
     /**
-     * Validates if the file is a PDF, DOC, or any supported archive type (ZIP, RAR, 7z, TGZ).
-     * This mirrors the original method's intent more closely, though using GZIP enum for TGZ.
+     * 验证文件是否为 PDF、DOC 或任何支持的归档类型（ZIP、RAR、7z、TGZ）。
+     * 这更接近原始方法的意图，尽管使用 GZIP 枚举来表示 TGZ。
      */
     public static boolean isValidPdfDocArchive(MultipartFile file) {
         return isValidFileType(file, EnumSet.of(FileMagic.PDF, FileMagic.DOC, FileMagic.ZIP, FileMagic.RAR, FileMagic.RAR_NEW, FileMagic.SEVEN_Z, FileMagic.GZIP));
     }
-
 }
