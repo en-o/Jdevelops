@@ -21,4 +21,10 @@ public class OperationalAuditIndex {
      */
     public static final String TABLE_TB_CUSTOMER = "tb_customer";
 
+
+    /**
+     * 菜单表
+     */
+    public static final String TABLE_TB_MENU = "tb_menu";
+
 }
