@@ -13,6 +13,7 @@ public class BatchAuditContext {
     private String auditType;
     private String operationType;
     private String description;
+    private Integer customType;
 
     public BatchAuditContext() {
     }
@@ -32,6 +33,7 @@ public class BatchAuditContext {
         this.auditType = auditLog.auditType();
         this.operationType = auditLog.operationType();
         this.description = auditLog.description();
+        this.customType = auditLog.customType();
     }
 
     public void addContext(AuditContext context) {
@@ -44,6 +46,9 @@ public class BatchAuditContext {
         }
         if(context.getDescription() == null) {
             context.setDescription(this.description);
+        }
+        if(context.getCustomType() == null) {
+            context.setCustomType(this.customType);
         }
         contexts.add(context);
     }
@@ -89,6 +94,15 @@ public class BatchAuditContext {
         return this;
     }
 
+    public Integer getCustomType() {
+        return customType;
+    }
+
+    public BatchAuditContext setCustomType(Integer customType) {
+        this.customType = customType;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BatchAuditContext{" +
@@ -96,6 +110,7 @@ public class BatchAuditContext {
                 ", auditType='" + auditType + '\'' +
                 ", operationType='" + operationType + '\'' +
                 ", description='" + description + '\'' +
+                ", customType=" + customType +
                 '}';
     }
 }

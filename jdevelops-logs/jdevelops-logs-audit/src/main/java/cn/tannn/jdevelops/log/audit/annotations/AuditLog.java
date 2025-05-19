@@ -35,4 +35,9 @@ public @interface AuditLog {
      * @return 描述
      */
     String description() default "";
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    int customType() default 1;
 }

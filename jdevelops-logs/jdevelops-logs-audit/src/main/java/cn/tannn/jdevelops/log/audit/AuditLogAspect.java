@@ -33,6 +33,7 @@ public class AuditLogAspect {
                 AuditContext context = new AuditContext()
                         .setAuditType(auditLog.auditType())
                         .setOperationalType(auditLog.operationType())
+                        .setCustomType(auditLog.customType())
                         .setDescription(auditLog.description());
                 AuditContextHolder.setContext(context);
             }
