@@ -64,6 +64,9 @@ public class SpecificationWrapper<B> {
         // 执行操作符提供的逻辑，用于构建查询条件 (operator 里面是处理过程，specification 是数据体
         operator.accept(specification);
         List<Predicate> ps = specification.getPredicates();
+        if(ps.isEmpty()){
+            return this;
+        }
         if(isConnect){
             predicates.add( newBuilder.and(ps.toArray(new Predicate[0])));
         }else {
