@@ -36,9 +36,15 @@ public class BatchAuditContext {
 
     public void addContext(AuditContext context) {
         // 确保每个Context都有基础信息
-        context.setAuditType(this.auditType);
-        context.setOperationalType(this.operationType);
-        context.setDescription(this.description);
+        if(context.getAuditType() == null) {
+            context.setAuditType(this.auditType);
+        }
+        if(context.getOperationalType() == null) {
+            context.setOperationalType(this.operationType);
+        }
+        if(context.getDescription() == null) {
+            context.setDescription(this.description);
+        }
         contexts.add(context);
     }
 
