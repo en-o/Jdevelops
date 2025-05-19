@@ -80,6 +80,18 @@ public class AuditContext {
     private String operatorName;
 
 
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    private Integer customType;
+
+
+    /**
+     * 平台
+     */
+    private String platform;
+
+
     public AuditContext() {
     }
 
@@ -186,25 +198,6 @@ public class AuditContext {
         );
         return this;
     }
-
-
-    @Override
-    public String toString() {
-        return "AuditContext{" +
-                "auditType='" + auditType + '\'' +
-                ", operationalType='" + operationalType + '\'' +
-                ", uniqueCode='" + uniqueCode + '\'' +
-                ", uniqueIndex='" + uniqueIndex + '\'' +
-                ", uniqueIndexType=" + uniqueIndexType +
-                ", dataTitle='" + dataTitle + '\'' +
-                ", originalData=" + originalData +
-                ", targetData=" + targetData +
-                ", description='" + description + '\'' +
-                ", operatorNo='" + operatorNo + '\'' +
-                ", operatorName='" + operatorName + '\'' +
-                '}';
-    }
-
 
     public String getAuditType() {
         return auditType;
@@ -336,5 +329,56 @@ public class AuditContext {
     public AuditContext setOperatorName(String operatorName) {
         this.operatorName = operatorName;
         return this;
+    }
+
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    public AuditContext setPlatform(String platform) {
+        this.platform = platform;
+        return this;
+    }
+
+    /**
+     * 平台
+     */
+    public Integer getCustomType() {
+        return customType;
+    }
+
+    /**
+     * 平台
+     */
+    public AuditContext setCustomType(Integer customType) {
+        this.customType = customType;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditContext{" +
+                "auditType='" + auditType + '\'' +
+                ", operationalType='" + operationalType + '\'' +
+                ", uniqueCode='" + uniqueCode + '\'' +
+                ", uniqueIndex='" + uniqueIndex + '\'' +
+                ", uniqueIndexType=" + uniqueIndexType +
+                ", dataTitle='" + dataTitle + '\'' +
+                ", originalData=" + originalData +
+                ", targetData=" + targetData +
+                ", description='" + description + '\'' +
+                ", operatorNo='" + operatorNo + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", customType=" + customType +
+                ", platform='" + platform + '\'' +
+                '}';
     }
 }
