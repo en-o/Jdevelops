@@ -56,7 +56,6 @@ public class AuditLogAspect {
                 // 处理批量审计日志
                 BatchAuditContext batchContext = AuditContextHolder.getBatchContext();
                 batchContext.getContexts().forEach(apiLogSave::saveLog);
-                AuditContextHolder.clearBatch();
             }else {
                 // 处理单个审计日志
                 AuditContext context = AuditContextHolder.getContext();
@@ -67,7 +66,11 @@ public class AuditLogAspect {
         } catch (Exception e) {
             log.error("审计日志记录失败", e);
         } finally {
-            AuditContextHolder.clear();
+            if (!auditLog.batch()) {
+                AuditContextHolder.clear();
+            }else {
+                AuditContextHolder.clearBatch();
+            }
         }
     }
 }
