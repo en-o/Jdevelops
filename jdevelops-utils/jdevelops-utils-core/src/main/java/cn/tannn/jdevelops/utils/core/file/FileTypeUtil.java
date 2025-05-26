@@ -4,8 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.EnumSet;
-import java.util.Set;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -32,6 +33,34 @@ public class FileTypeUtil {
             }
         }
         return true;
+    }
+
+    /**
+     * 安全地读取输入流的字节数据，处理可能的IO异常
+     */
+    private static byte[] safeReadBytes(InputStream inputStream, int maxBytes) {
+        byte[] buffer = new byte[maxBytes];
+        int totalBytesRead = 0;
+
+        try {
+            int bytesRead;
+            while (totalBytesRead < maxBytes &&
+                    (bytesRead = inputStream.read(buffer, totalBytesRead, maxBytes - totalBytesRead)) != -1) {
+                totalBytesRead += bytesRead;
+            }
+
+            // 如果读取的字节数少于预期，创建一个适当大小的数组
+            if (totalBytesRead < maxBytes) {
+                byte[] actualBuffer = new byte[totalBytesRead];
+                System.arraycopy(buffer, 0, actualBuffer, 0, totalBytesRead);
+                return actualBuffer;
+            }
+
+            return buffer;
+        } catch (IOException e) {
+            // 返回空数组而不是null，避免后续空指针异常
+            return new byte[0];
+        }
     }
 
     /**
@@ -67,17 +96,14 @@ public class FileTypeUtil {
         }
 
         // 从文件中读取初始字节
-        byte[] fileMagic = new byte[maxBytesToRead];
-        int bytesRead;
+        byte[] fileMagic;
         try (InputStream fis = file.getInputStream()) {
-            bytesRead = fis.read(fileMagic);
-            if (bytesRead == -1) {
-                // 文件为空
-                // LOG.warn("File is empty, no bytes read.");
+            fileMagic = safeReadBytes(fis, maxBytesToRead);
+            if (fileMagic.length == 0) {
+                // 文件为空或读取失败
+                // LOG.warn("File is empty or failed to read bytes.");
                 return false;
             }
-            // 不需要在这里截断，matchesMagicAtOffset 方法会隐式处理缓冲区长度
-
         } catch (IOException e) {
             // LOG.error("Error reading file input stream for magic number check", e);
             return false;
@@ -126,69 +152,156 @@ public class FileTypeUtil {
             return ZipSubMagic.UNKNOWN;
         }
 
-        // 可选：在这里添加检查，确认文件是否真的是 ZIP 格式，
-        // 尽管方法约定意味着它应该是。
-        // if (!isGeneralZipFormat(file)) {
-        //     LOG.warn("determineSpecificZipType called on a file that is not a general ZIP format.");
-        //     return ZipSubMagic.UNKNOWN;
-        // }
-
         boolean foundManifest = false;
         boolean foundWebInf = false;
         boolean foundWordDir = false;
         boolean foundXlDir = false;
         boolean foundPptDir = false;
 
-        try (InputStream is = file.getInputStream();
-             ZipInputStream zis = new ZipInputStream(is)) {
+        // 使用try-with-resources确保资源正确关闭
+        try (InputStream is = file.getInputStream()) {
+            // 创建ZipInputStream时不指定字符集，使用默认处理
+            // 对于损坏的ZIP文件，我们需要更安全的处理方式
+            ZipInputStream zis = null;
+            try {
+                zis = new ZipInputStream(is, StandardCharsets.UTF_8);
 
-            ZipEntry entry;
-            // 遍历条目，如果找到特定类型的指示器，则停止
-            while ((entry = zis.getNextEntry()) != null) {
-                String entryName = entry.getName();
+                ZipEntry entry;
+                int entryCount = 0;
+                final int MAX_ENTRIES = 1000; // 防止ZIP炸弹攻击
 
-                // 使用枚举中的辅助方法对条目进行分类
-                ZipSubMagic entrySubType = ZipSubMagic.determineFromEntry(entryName);
+                // 遍历条目，如果找到特定类型的指示器，则停止
+                while ((entry = zis.getNextEntry()) != null && entryCount < MAX_ENTRIES) {
+                    entryCount++;
 
-                switch (entrySubType) {
-                    case DOCX:
-                        foundWordDir = true;
-                        break;
-                    case XLSX:
-                        foundXlDir = true;
-                        break;
-                    case PPTX:
-                        foundPptDir = true;
-                        break;
-                    case JAR:
-                        foundManifest = true;
-                        break; // 找到 META-INF/MANIFEST.MF
-                    case WAR:
-                        foundWebInf = true;
-                        break;   // 找到 WEB-INF/
-                    case UNKNOWN: // 继续检查其他条目
-                        break;
-                    default:
-                        // 当前 ZipSubMagic.determineFromEntry 不应该出现这种情况
-                        break;
+                    try {
+                        String entryName = entry.getName();
+
+                        // 检查条目名是否为null或包含非法字符
+                        if (entryName == null || entryName.trim().isEmpty()) {
+                            continue;
+                        }
+
+                        // 防止路径遍历攻击
+                        if (entryName.contains("..") || entryName.startsWith("/")) {
+                            continue;
+                        }
+
+                        // 使用枚举中的辅助方法对条目进行分类
+                        ZipSubMagic entrySubType = ZipSubMagic.determineFromEntry(entryName);
+
+                        switch (entrySubType) {
+                            case DOCX:
+                                foundWordDir = true;
+                                break;
+                            case XLSX:
+                                foundXlDir = true;
+                                break;
+                            case PPTX:
+                                foundPptDir = true;
+                                break;
+                            case JAR:
+                                foundManifest = true;
+                                break; // 找到 META-INF/MANIFEST.MF
+                            case WAR:
+                                foundWebInf = true;
+                                break;   // 找到 WEB-INF/
+                            case UNKNOWN: // 继续检查其他条目
+                                break;
+                            default:
+                                // 当前 ZipSubMagic.determineFromEntry 不应该出现这种情况
+                                break;
+                        }
+
+                        // 优化：如果已经找到最具体类型的指示器，
+                        // 我们可以提前停止扫描。
+                        if (foundWordDir || foundXlDir || foundPptDir || (foundManifest && foundWebInf)) {
+                            break;
+                        }
+
+                    } catch (Exception entryException) {
+                        // 处理单个条目的异常，继续处理其他条目
+                        // LOG.warn("Error processing ZIP entry: " + entry.getName(), entryException);
+                        continue;
+                    } finally {
+                        // 安全地关闭当前条目
+                        try {
+                            zis.closeEntry();
+                        } catch (IOException closeException) {
+                            // 忽略关闭异常，继续处理
+                        }
+                    }
                 }
 
-                // 优化：如果已经找到最具体类型的指示器，
-                // 我们可以提前停止扫描。
-                if (foundWordDir || foundXlDir || foundPptDir || (foundManifest && foundWebInf)) {
-                    break;
+            } catch (Exception zipException) {
+                // 处理ZIP流创建或读取异常
+                // LOG.error("Error creating or reading ZIP stream", zipException);
+                return ZipSubMagic.UNKNOWN;
+            } finally {
+                // 确保ZipInputStream被正确关闭
+                if (zis != null) {
+                    try {
+                        zis.close();
+                    } catch (IOException closeException) {
+                        // 忽略关闭异常
+                    }
                 }
-
-                zis.closeEntry(); // 在移动到下一个条目之前关闭当前条目
             }
 
         } catch (IOException e) {
-            // LOG.error("Error reading ZIP file entries", e);
+            // LOG.error("Error reading file input stream", e);
             return ZipSubMagic.UNKNOWN; // 读取错误意味着未知类型
         }
 
         // 根据找到的内容确定最终的子类型
         return ZipSubMagic.finalizeSubType(foundManifest, foundWebInf, foundWordDir, foundXlDir, foundPptDir);
+    }
+
+
+    /**
+     * 通过尝试使用多种字符编码读取 ZIP 文件来验证该文件的有效性。
+     * @param file The MultipartFile to validate
+     * @return 包含成功字符集以及文件是否有效的映射表
+     */
+    public static Map<String, Object> validateZipWithEncodings(MultipartFile file) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("isValid", false);
+        result.put("charset", null);
+
+        List<Charset> charsets = Arrays.asList(
+                StandardCharsets.UTF_8,
+                StandardCharsets.ISO_8859_1,
+                Charset.forName("GBK"),
+                Charset.forName("GB2312"),
+                StandardCharsets.UTF_16
+        );
+
+        for (Charset charset : charsets) {
+            try (InputStream is = file.getInputStream();
+                 ZipInputStream zis = new ZipInputStream(is, charset)) {
+
+                ZipEntry entry;
+                while ((entry = zis.getNextEntry()) != null) {
+                    // Verify entry name can be properly encoded/decoded
+                    String entryName = entry.getName();
+                    byte[] bytes = entryName.getBytes(charset);
+                    String decoded = new String(bytes, charset);
+
+                    if (entryName.equals(decoded)) {
+                        result.put("isValid", true);
+                        result.put("charset", charset.name());
+                        return result;
+                    }
+
+                    zis.closeEntry();
+                }
+            } catch (Exception e) {
+                // Try next charset if this one fails
+                continue;
+            }
+        }
+
+        return result;
     }
 
     // --- 常见组合或单个类型的便捷方法 ---
@@ -221,7 +334,6 @@ public class FileTypeUtil {
     public static boolean isValidGeneralZip(MultipartFile file) {
         return isValidFileMagic(file, EnumSet.of(FileMagic.ZIP));
     }
-
 
     /**
      * 验证文件是否为 Tar 压缩文件
@@ -325,6 +437,30 @@ public class FileTypeUtil {
         return subtype == ZipSubMagic.ZIP;
     }
 
+
+    /**
+     * 验证文件是否为特定的 *通用* ZIP 文件（不是 docx、jar 等已识别的子类型）。
+     * 这会确认文件为通用 ZIP 格式且未找到特定子类型的指示器。
+     */
+    public static boolean isValidOnlyGenericZipEncodings(MultipartFile file) {
+        // First validate if it's a ZIP file
+        if (!isValidGeneralZip(file)) {
+            return false;
+        }
+
+        // Then check with multiple encodings
+        Map<String, Object> validationResult = validateZipWithEncodings(file);
+        if (!(boolean)validationResult.get("isValid")) {
+            // Handle invalid ZIP file
+            return false;
+        }
+
+        // Use the detected charset for further processing
+        String charset = (String)validationResult.get("charset");
+        // Process the ZIP file with the detected charset
+        return true;
+    }
+
     // --- 包含特定 ZIP 子类型的便捷方法 ---
 
     /**
@@ -361,8 +497,6 @@ public class FileTypeUtil {
         return isValidGeneralZip(file);
     }
 
-
-
     /**
      * 验证文件是否为任何已识别的特定 ZIP 子类型（JAR、WAR、DOCX、XLSX、PPTX）
      * 或通用 ZIP。本质上是检查文件是否为有效的基于 ZIP 的文件。
@@ -388,7 +522,6 @@ public class FileTypeUtil {
         return isValidGeneralZip(file);
     }
 
-
     /**
      * 验证文件是否为任何受支持的文件类型，基于魔数或 ZIP 检查。
      */
@@ -405,5 +538,26 @@ public class FileTypeUtil {
 
         // 检查是否为任何有效的基于 ZIP 的类型（通用或特定）
         return isValidGeneralZip(file);
+    }
+
+
+
+
+    /**
+     * 获取文件类型信息
+     * @param file
+     * @return type,extension
+     */
+    public static Map<String,String> fileTypeInfo(MultipartFile file) {
+        HashMap<String, String> res = new HashMap<>();
+        // 获取文件类型信息
+        for (FileMagic type : FileMagic.values()) {
+            if (FileTypeUtil.isValidFileMagic(file, EnumSet.of(type))) {
+                res.put("type", type.getDescription());
+                res.put("extension", Arrays.toString(type.getCommonExtensions()));
+                break;
+            }
+        }
+        return res;
     }
 }
