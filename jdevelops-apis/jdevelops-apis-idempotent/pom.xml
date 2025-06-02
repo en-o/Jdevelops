@@ -11,6 +11,7 @@
     <artifactId>jdevelops-apis-idempotent</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: apis :: idempotent</name>
+    <version>1.0.1.1</version>
     <description>
         接口幂等
     </description>

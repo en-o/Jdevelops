@@ -12,6 +12,7 @@
     <artifactId>jdevelops-annotations-jpa</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: annotations :: jpa</name>
+    <version>1.0.1.1</version>
     <description>
         jpa 相关的注解 [考虑参数实体跟主体项目分离时轻量导包]
     </description>
