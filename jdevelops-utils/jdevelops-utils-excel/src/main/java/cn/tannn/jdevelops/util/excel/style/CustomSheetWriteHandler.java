@@ -54,16 +54,18 @@ public class CustomSheetWriteHandler implements SheetWriteHandler {
         Workbook workbook = writeWorkbookHolder.getCachedWorkbook();
         SXSSFSheet sheet = (SXSSFSheet) writeSheetHolder.getSheet();
         if(appoint){
-            CellStyle cellStyle = workbook.createCellStyle();
-            cellStyle.setDataFormat((short) 49); // 设置为文本格式
-            sheet.setDefaultColumnStyle(column, cellStyle); // 将整列设置为文本格式
+            style(workbook, sheet, column);
         }else {
             for (int i = 0; i < column; i++) {
-                CellStyle cellStyle = workbook.createCellStyle();
-                cellStyle.setDataFormat((short) 49); // 设置为文本格式
-                sheet.setDefaultColumnStyle(i, cellStyle); // 将整列设置为文本格式
+                style(workbook, sheet, i);
             }
         }
+    }
 
+    private static void style(Workbook workbook, SXSSFSheet sheet, int column) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setDataFormat((short) 49); // 设置为文本格式
+        sheet.setDefaultColumnStyle(column, cellStyle); // 将整列设置为文本格式
+        //  cellStyle.setWrapText(true);
     }
 }
