@@ -25,7 +25,7 @@ public class LoginLogImportConfig {
 
     @Bean
     @ConditionalOnBean(LoginLogSave.class)
-    public LoginLogAspect auditLogAspect(LoginLogSave loginLogSave){
+    public LoginLogAspect loginLogAspect(LoginLogSave loginLogSave){
         return new LoginLogAspect(loginLogSave);
     }
 
