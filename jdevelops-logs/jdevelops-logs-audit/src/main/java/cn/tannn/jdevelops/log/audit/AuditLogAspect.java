@@ -23,14 +23,16 @@ public class AuditLogAspect {
     @Around("@annotation(auditLog)")
     public Object around(ProceedingJoinPoint point, AuditLog auditLog) throws Throwable {
         boolean isBatch = auditLog.batch();
+        AuditContext context = null;
+        BatchAuditContext batchContext = null;
         try {
             // 初始化审计上下文
             if (isBatch) {
-                BatchAuditContext batchContext = new BatchAuditContext(auditLog);
+                 batchContext = new BatchAuditContext(auditLog);
                 AuditContextHolder.setBatchContext(batchContext);
             } else {
                 // 单个操作初始化
-                AuditContext context = new AuditContext()
+                context = new AuditContext()
                         .setAuditType(auditLog.auditType())
                         .setOperationalType(auditLog.operationType())
                         .setCustomType(auditLog.customType())
@@ -40,6 +42,12 @@ public class AuditLogAspect {
             return point.proceed();
         } catch (Throwable e) {
             log.error("初始化审计上下文失败");
+            // 设置失败状态
+            if (isBatch && batchContext != null) {
+                batchContext.getContexts().forEach(ctx -> ctx.setStatus(false));
+            } else if (context != null) {
+                context.setStatus(false);
+            }
             throw e;
         }finally {
             if (!isBatch) {

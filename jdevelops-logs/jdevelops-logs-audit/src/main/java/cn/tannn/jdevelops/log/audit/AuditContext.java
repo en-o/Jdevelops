@@ -87,12 +87,18 @@ public class AuditContext {
 
 
     /**
-     * 平台
+     * 操作平台/数据所属平台
      */
     private String platform;
 
+    /**
+     * 操作状态
+     */
+    private Boolean status;
+
 
     public AuditContext() {
+        this.status = true; // 默认操作成功
     }
 
     public AuditContext(String auditType, String operationalType, String uniqueCode, String uniqueIndex, UniqueIndexType uniqueIndexType, String dataTitle, JSONObject originalData, JSONObject targetData, String description, String operatorNo, String operatorName) {
@@ -363,6 +369,14 @@ public class AuditContext {
         return this;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "AuditContext{" +
@@ -379,6 +393,7 @@ public class AuditContext {
                 ", operatorName='" + operatorName + '\'' +
                 ", customType=" + customType +
                 ", platform='" + platform + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
