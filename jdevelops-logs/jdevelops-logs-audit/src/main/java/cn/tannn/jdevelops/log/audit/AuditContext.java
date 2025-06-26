@@ -5,11 +5,13 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalAuditIndex;
 import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
 import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
+import cn.tannn.jdevelops.log.audit.util.JsonUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * 数据审计日志记录
@@ -159,7 +161,7 @@ public class AuditContext {
      * 设置： targetData
      */
     public AuditContext targetJson(Object target) {
-        this.targetData = JSONObject.from(target);
+        this.targetData = JsonUtil.convertToJsonObject(target);
         return this;
     }
 
@@ -170,13 +172,7 @@ public class AuditContext {
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext targetJson(Object target, String... filterField) {
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if (filterField.length > 0) {
-            filter.getExcludes().addAll(Arrays.asList(filterField));
-        }
-        this.targetData = JSONObject.parseObject(
-                JSON.toJSONString(target, filter)
-        );
+        this.targetData = JsonUtil.convertToJsonObjectWithFilter(target, filterField);
         return this;
     }
 
@@ -184,7 +180,7 @@ public class AuditContext {
      * 设置： originalData
      */
     public AuditContext originalJson(Object original) {
-        this.originalData = JSONObject.from(original);
+        this.originalData = JsonUtil.convertToJsonObject(original);
         return this;
     }
 
@@ -195,15 +191,10 @@ public class AuditContext {
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext originalJson(Object original, String... filterField) {
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if (filterField.length > 0) {
-            filter.getExcludes().addAll(Arrays.asList(filterField));
-        }
-        this.originalData = JSONObject.parseObject(
-                JSON.toJSONString(original, filter)
-        );
+        this.originalData = JsonUtil.convertToJsonObjectWithFilter(original, filterField);
         return this;
     }
+
 
     public String getAuditType() {
         return auditType;
