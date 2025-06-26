@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.files.sdk.config.properties;
 import cn.tannn.cat.file.sdk.bean.FileStorage;
 import cn.tannn.cat.file.sdk.config.MinioConfig;
 import cn.tannn.cat.file.sdk.enums.StorageDict;
+import cn.tannn.jdevelops.files.sdk.constants.PropertiesId;
 import com.alibaba.fastjson2.JSONObject;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -22,7 +23,7 @@ public class MinioProperties {
 
 
     public Long getId() {
-        return 3L;
+        return PropertiesId.MINIO_ID;
     }
 
     public String getName() {
