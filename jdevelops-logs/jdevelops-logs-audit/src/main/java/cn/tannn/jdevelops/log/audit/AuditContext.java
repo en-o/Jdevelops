@@ -6,12 +6,7 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
 import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
 import cn.tannn.jdevelops.log.audit.util.JsonUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * 数据审计日志记录
