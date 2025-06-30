@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
-
 /**
  * 登录限制
  *
@@ -43,23 +42,34 @@ public class LoginLimitService {
 
     /**
      * 错误验证（放在登录接口第一行）
-     * @param username 登录名
+     *
+     * @param username       登录名
      * @param responseStatus 是否修改 http请求的status[默认false都是200, true=403],不是返回的json的status
+     * @param limit          密码错误次数(默认取配置文件)
      */
-    public void verify(String username, boolean responseStatus) {
+    public void verify(String username, boolean responseStatus, int limit) {
         LOG.debug("===> verify login error sum ...");
         String redisFolder = getRedisFolder(username);
         Object loginLimit = redisTemplate.boundHashOps(redisFolder).get(username);
         if (Objects.nonNull(loginLimit)) {
             int loginLimitInt = (int) loginLimit;
-            Integer limit = loginLimitConfig.getLimit();
-            if(loginLimitInt >= limit){
+            if (loginLimitInt >= limit) {
                 LOG.debug("===> login  error  login sum {}, limit sum {}", loginLimit, limit);
                 throw new LoginLimitException(new ExceptionCode(403, "频繁登录请稍后再试")).setHttpServletResponseStatus(responseStatus);
             }
         }
     }
 
+
+    /**
+     * 错误验证（放在登录接口第一行）
+     *
+     * @param username       登录名
+     * @param responseStatus 是否修改 http请求的status[默认false都是200, true=403],不是返回的json的status
+     */
+    public void verify(String username, boolean responseStatus) {
+        verify(username, responseStatus, loginLimitConfig.getLimit());
+    }
 
 
     /**
@@ -91,14 +101,15 @@ public class LoginLimitService {
      * @return folderName:key
      */
     private String getRedisFolder(String username) {
-        return loginLimitConfig.getPrefix()+":"+REDIS_USER_LIMIT_FOLDER + ":" + username;
+        return loginLimitConfig.getPrefix() + ":" + REDIS_USER_LIMIT_FOLDER + ":" + username;
     }
 
     /**
      * 获取配置信息
+     *
      * @return LoginLimitConfig
      */
-    private LoginLimitConfig loginLimitConfig(){
+    private LoginLimitConfig loginLimitConfig() {
         return loginLimitConfig;
     }
 }

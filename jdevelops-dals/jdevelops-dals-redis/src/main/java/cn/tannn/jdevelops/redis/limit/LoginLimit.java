@@ -35,10 +35,10 @@ public @interface LoginLimit {
     /**
      * 密码错误次数
      * <pr>
-     * 默认5
+     *  ps： -1表示使用全局的配置参数 {@link LoginLimitConfig#getLimit()} ()}
      * </pr>
      */
-    int limit() default 5;
+    int limit() default -1;
 
     /**
      * SpEL表达式，用于获取参数值
