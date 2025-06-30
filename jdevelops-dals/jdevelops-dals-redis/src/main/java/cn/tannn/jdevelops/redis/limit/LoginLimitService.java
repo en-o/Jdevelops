@@ -94,4 +94,11 @@ public class LoginLimitService {
         return loginLimitConfig.getPrefix()+":"+REDIS_USER_LIMIT_FOLDER + ":" + username;
     }
 
+    /**
+     * 获取配置信息
+     * @return LoginLimitConfig
+     */
+    private LoginLimitConfig loginLimitConfig(){
+        return loginLimitConfig;
+    }
 }
