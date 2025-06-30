@@ -44,5 +44,5 @@ public @interface LoginLimit {
      * SpEL表达式，用于获取参数值
      * 例如：#username 或 #user.username
      */
-    String spel() default "";
+    String spel() default "login.loginName";
 }
