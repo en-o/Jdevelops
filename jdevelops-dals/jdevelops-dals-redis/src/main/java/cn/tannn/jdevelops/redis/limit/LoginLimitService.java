@@ -78,6 +78,17 @@ public class LoginLimitService {
      * @param username 登录名
      */
     public void limit(String username) {
+        limit(username,loginLimitConfig.getExpireTime());
+    }
+
+
+    /**
+     * 错误记录 （放在错误调用里）
+     *
+     * @param username 登录名
+     * @param expireTime 过期时间/毫秒
+     */
+    public void limit(String username, long expireTime) {
         String redisFolder = getRedisFolder(username);
         Object loginLimit = redisTemplate.boundHashOps(redisFolder).get(username);
         if (Objects.isNull(loginLimit)) {
@@ -90,7 +101,7 @@ public class LoginLimitService {
         }
         LOG.debug("===> record login error  user: {} ", username);
         // 设置过期时间（秒
-        redisTemplate.expire(redisFolder, loginLimitConfig.getExpireTime(), TimeUnit.MILLISECONDS);
+        redisTemplate.expire(redisFolder, expireTime, TimeUnit.MILLISECONDS);
     }
 
 
