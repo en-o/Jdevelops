@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 import javax.security.auth.login.LoginException;
 import java.util.Objects;
 
+/**
+ * 等解决了加密传输的问题在继续
+ */
 //@Aspect
 //@Component
 //@Order(1)
