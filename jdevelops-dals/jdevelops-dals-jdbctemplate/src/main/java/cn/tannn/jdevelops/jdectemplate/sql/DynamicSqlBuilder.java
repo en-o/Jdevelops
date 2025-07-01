@@ -481,7 +481,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param limit 限制数量
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addLimit(Integer offset, Integer limit) {
+    public DynamicSqlBuilder limit(Integer offset, Integer limit) {
         if (limit != null && limit > 0) {
             sql.append(" LIMIT ");
             if (mode == ParameterMode.POSITIONAL) {
@@ -512,7 +512,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
     public DynamicSqlBuilder addPagination(Integer pageNum, Integer pageSize) {
         if (pageNum != null && pageSize != null && pageNum > 0 && pageSize > 0) {
             int offset = (pageNum - 1) * pageSize;
-            return addLimit(offset, pageSize);
+            return limit(offset, pageSize);
         }
         return this;
     }
