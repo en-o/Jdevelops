@@ -379,13 +379,13 @@ public class AuditContext {
     /**
      * 截断过长的错误消息
      */
-    private String truncateMessage(String message) {
-        if (message == null) {
+    public String truncateMessage() {
+        if (this.failMessage == null) {
             return null;
         }
-        return message.length() > 200
-                ? message.substring(0, 200) + "..."
-                : message;
+        return this.failMessage.length() > 200
+                ? this.failMessage.substring(0, 200) + "..."
+                : this.failMessage;
     }
 
     @Override
