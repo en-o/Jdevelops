@@ -11,6 +11,12 @@ import java.util.List;
 /**
  * 灵活的动态SQL构建工具类
  * 支持位置参数和命名参数两种模式
+ * <pre>
+     List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new BeanPropertyRowMapper<>(User.class));
+ * </pre>
+ * <pre>
+    List<DynamicSqlBuilderSpringTest.User> result = jdbcTemplate.query(builder.getSql(),builder.getPositionalParams(),new BeanPropertyRowMapper<>(DynamicSqlBuilderSpringTest.User.class));
+ * </pre>
  */
 public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
