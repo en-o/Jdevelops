@@ -370,7 +370,7 @@ class DynamicSqlBuilderTest {
         void shouldCreateGroupByWithHaving() {
             builder.eq("status", "active")
                     .addGroupBy("department")
-                    .addHaving("COUNT(*) > 5")
+                    .having("COUNT(*) > 5")
                     .orderBy("department");
 
             String expected = "SELECT * FROM users WHERE status = ? GROUP BY department HAVING COUNT(*) > 5 ORDER BY department";
@@ -392,7 +392,7 @@ class DynamicSqlBuilderTest {
                     .in("location", Arrays.asList("NY", "LA"))
                     .between("salary", 50000, 100000)
                     .addGroupBy("department")
-                    .addHaving("AVG(salary) > 60000")
+                    .having("AVG(salary) > 60000")
                     .orderBy("department ASC")
                     .addPagination(1, 10);
 

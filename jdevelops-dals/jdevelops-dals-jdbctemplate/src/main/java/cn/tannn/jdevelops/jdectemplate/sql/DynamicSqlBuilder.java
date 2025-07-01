@@ -468,7 +468,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param having HAVING条件
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addHaving(String having) {
+    public DynamicSqlBuilder having(String having) {
         if (having != null && !having.trim().isEmpty()) {
             sql.append(" HAVING ").append(having);
         }
