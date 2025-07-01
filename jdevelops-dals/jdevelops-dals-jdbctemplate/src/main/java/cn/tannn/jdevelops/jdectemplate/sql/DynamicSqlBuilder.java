@@ -209,7 +209,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param values IN条件值列表
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addInCondition(String column, List<?> values) {
+    public DynamicSqlBuilder in(String column, List<?> values) {
         if (!isValidColumn(column) || values == null || values.isEmpty()) {
             return this;
         }
@@ -242,7 +242,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param values IN条件值列表
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addInCondition(String column, String paramName, List<?> values) {
+    public DynamicSqlBuilder in(String column, String paramName, List<?> values) {
         if (!isValidColumn(column) || values == null || values.isEmpty()) {
             return this;
         }
@@ -255,7 +255,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             sql.append(column).append(" IN (:").append(paramName).append(")");
             namedParams.addValue(paramName, values);
         } else {
-            return addInCondition(column, values);
+            return in(column, values);
         }
 
         if (inOrGroup) {

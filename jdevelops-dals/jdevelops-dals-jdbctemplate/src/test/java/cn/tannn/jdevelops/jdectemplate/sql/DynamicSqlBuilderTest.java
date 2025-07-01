@@ -258,7 +258,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create IN condition")
         void shouldCreateInCondition() {
             List<Integer> ages = Arrays.asList(18, 19, 20);
-            builder.addInCondition("age", ages);
+            builder.in("age", ages);
 
             String expected = "SELECT * FROM users WHERE age IN (?, ?, ?)";
             assertEquals(expected, builder.getSql());
@@ -389,7 +389,7 @@ class DynamicSqlBuilderTest {
             builder.eq("status", "active")
                     .or(or -> or.eq("department", "IT")
                             .eq("role", "admin"))
-                    .addInCondition("location", Arrays.asList("NY", "LA"))
+                    .in("location", Arrays.asList("NY", "LA"))
                     .between("salary", 50000, 100000)
                     .addGroupBy("department")
                     .addHaving("AVG(salary) > 60000")
@@ -549,8 +549,8 @@ class DynamicSqlBuilderTest {
             List<Integer> ages = Arrays.asList(20, 25, 30);
             List<String> names = Arrays.asList("John", "Jane", "Joe");
 
-            builder.addInCondition("age", ages)
-                    .addInCondition("name", names);
+            builder.in("age", ages)
+                    .in("name", names);
 
             String expected = "SELECT * FROM users WHERE age IN (20, 25, 30) AND " +
                     "name IN ('John', 'Jane', 'Joe')";
@@ -586,7 +586,7 @@ class DynamicSqlBuilderTest {
             builder.eq("status", "active")
                     .or(or -> or.eq("age", 18)
                             .eq("role", "admin"))
-                    .addInCondition("department", Arrays.asList("IT", "HR"))
+                    .in("department", Arrays.asList("IT", "HR"))
                     .between("salary", 5000, 10000);
 
             String expected = "SELECT * FROM users WHERE status = 'active' AND " +
