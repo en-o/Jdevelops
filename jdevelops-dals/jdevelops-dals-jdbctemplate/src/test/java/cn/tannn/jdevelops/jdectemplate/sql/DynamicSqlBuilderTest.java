@@ -58,7 +58,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create IS NULL condition")
         void shouldCreateIsNullCondition() {
-            builder.addIsNullCondition("deleted_at");
+            builder.isNull("deleted_at");
 
             assertEquals("SELECT * FROM users WHERE deleted_at IS NULL", builder.getSql());
             assertEquals(0, builder.getPositionalParams().length);
@@ -599,7 +599,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should handle NULL values in native SQL")
         void shouldHandleNullValuesInNativeSql() {
             builder.eq("name", "John")
-                    .addIsNullCondition("deleted_at")
+                    .isNull("deleted_at")
                     .addDynamicCondition("status", null, NullHandleStrategy.NULL_AS_IS_NULL);
 
             String expected = "SELECT * FROM users WHERE name = 'John' AND " +

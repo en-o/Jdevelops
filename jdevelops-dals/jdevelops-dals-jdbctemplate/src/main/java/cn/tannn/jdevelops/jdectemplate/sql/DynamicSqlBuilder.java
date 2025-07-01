@@ -351,7 +351,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param column 列名
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addIsNullCondition(String column) {
+    public DynamicSqlBuilder isNull(String column) {
         if (!isValidColumn(column)) {
             return this;
         }
@@ -683,7 +683,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             switch (nullStrategy) {
                 case NULL_AS_IS_NULL:
                 case NULL_AND_EMPTY_AS_IS_NULL:
-                    return addIsNullCondition(column);
+                    return isNull(column);
                 case NULL_AS_IS_NOT_NULL:
                 case NULL_AND_EMPTY_AS_IS_NOT_NULL:
                     return addIsNotNullCondition(column);
@@ -696,7 +696,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             switch (nullStrategy) {
                 case EMPTY_AS_IS_NULL:
                 case NULL_AND_EMPTY_AS_IS_NULL:
-                    return addIsNullCondition(column);
+                    return isNull(column);
                 case EMPTY_AS_IS_NOT_NULL:
                 case NULL_AND_EMPTY_AS_IS_NOT_NULL:
                     return addIsNotNullCondition(column);
@@ -844,7 +844,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             switch (nullStrategy) {
                 case NULL_AS_IS_NULL:
                 case NULL_AND_EMPTY_AS_IS_NULL:
-                    return addIsNullCondition(column);
+                    return isNull(column);
                 case NULL_AS_IS_NOT_NULL:
                 case NULL_AND_EMPTY_AS_IS_NOT_NULL:
                     return addIsNotNullCondition(column);
@@ -858,7 +858,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             switch (nullStrategy) {
                 case EMPTY_AS_IS_NULL:
                 case NULL_AND_EMPTY_AS_IS_NULL:
-                    return addIsNullCondition(column);
+                    return isNull(column);
                 case EMPTY_AS_IS_NOT_NULL:
                 case NULL_AND_EMPTY_AS_IS_NOT_NULL:
                     return addIsNotNullCondition(column);
