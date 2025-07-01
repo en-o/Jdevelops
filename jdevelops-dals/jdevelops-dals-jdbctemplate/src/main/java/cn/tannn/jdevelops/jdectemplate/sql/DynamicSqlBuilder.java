@@ -271,7 +271,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param endValue 范围结束值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addBetweenCondition(String column, Object startValue, Object endValue) {
+    public DynamicSqlBuilder between(String column, Object startValue, Object endValue) {
         if (!isValidColumn(column)) {
             return this;
         }
@@ -310,8 +310,8 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param endValue 范围结束值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addBetweenCondition(String column, String startParamName, Object startValue,
-                                                String endParamName, Object endValue) {
+    public DynamicSqlBuilder between(String column, String startParamName, Object startValue,
+                                     String endParamName, Object endValue) {
         if (!isValidColumn(column)) {
             return this;
         }
@@ -341,7 +341,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
                 return op(column, "<=", endParamName, endValue);
             }
         } else {
-            return addBetweenCondition(column, startValue, endValue);
+            return between(column, startValue, endValue);
         }
         return this;
     }

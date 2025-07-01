@@ -268,7 +268,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create BETWEEN condition")
         void shouldCreateBetweenCondition() {
-            builder.addBetweenCondition("age", 18, 25);
+            builder.between("age", 18, 25);
 
             String expected = "SELECT * FROM users WHERE age BETWEEN ? AND ?";
             assertEquals(expected, builder.getSql());
@@ -278,8 +278,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create partial BETWEEN condition")
         void shouldCreatePartialBetweenCondition() {
-            builder.addBetweenCondition("age", 18, null)
-                    .addBetweenCondition("salary", null, 5000);
+            builder.between("age", 18, null)
+                    .between("salary", null, 5000);
 
             String expected = "SELECT * FROM users WHERE age >= ? AND salary <= ?";
             assertEquals(expected, builder.getSql());
@@ -390,7 +390,7 @@ class DynamicSqlBuilderTest {
                     .or(or -> or.eq("department", "IT")
                             .eq("role", "admin"))
                     .addInCondition("location", Arrays.asList("NY", "LA"))
-                    .addBetweenCondition("salary", 50000, 100000)
+                    .between("salary", 50000, 100000)
                     .addGroupBy("department")
                     .addHaving("AVG(salary) > 60000")
                     .addOrderBy("department ASC")
@@ -587,7 +587,7 @@ class DynamicSqlBuilderTest {
                     .or(or -> or.eq("age", 18)
                             .eq("role", "admin"))
                     .addInCondition("department", Arrays.asList("IT", "HR"))
-                    .addBetweenCondition("salary", 5000, 10000);
+                    .between("salary", 5000, 10000);
 
             String expected = "SELECT * FROM users WHERE status = 'active' AND " +
                     "(age = 18 OR role = 'admin') AND " +
