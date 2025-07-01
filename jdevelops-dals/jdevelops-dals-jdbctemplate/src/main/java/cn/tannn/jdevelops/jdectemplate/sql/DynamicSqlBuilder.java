@@ -152,7 +152,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value LIKE条件值（自动添加%通配符）
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addLikeCondition(String column, String value) {
+    public DynamicSqlBuilder like(String column, String value) {
         if (!isValidColumn(column) || !isValidValue(value)) {
             return this;
         }
@@ -181,7 +181,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value LIKE条件值（自动添加%通配符）
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addLikeCondition(String column, String paramName, String value) {
+    public DynamicSqlBuilder like(String column, String paramName, String value) {
         if (!isValidColumn(column) || !isValidValue(value)) {
             return this;
         }
@@ -194,7 +194,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             sql.append(column).append(" LIKE :").append(paramName);
             namedParams.addValue(paramName, "%" + value + "%");
         } else {
-            return addLikeCondition(column, value);
+            return like(column, value);
         }
 
         if (inOrGroup) {
@@ -869,7 +869,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         }
 
         // 正常添加LIKE条件
-        return addLikeCondition(column, value);
+        return like(column, value);
     }
 
     /**

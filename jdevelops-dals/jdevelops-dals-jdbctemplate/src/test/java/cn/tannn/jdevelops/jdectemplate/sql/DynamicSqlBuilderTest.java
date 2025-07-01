@@ -289,7 +289,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create LIKE conditions with different patterns")
         void shouldCreateDifferentLikePatterns() {
-            builder.addLikeCondition("name", "John")
+            builder.like("name", "John")
                     .addLeftLikeCondition("email", "test")
                     .addRightLikeCondition("phone", "123");
 
@@ -322,7 +322,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle multiple LIKE patterns in combination")
         void shouldHandleMultipleLikePatternsInCombination() {
-            builder.addLikeCondition("email", "test")           // 包含匹配
+            builder.like("email", "test")           // 包含匹配
                     .addLeftLikeCondition("name", "John")        // 左匹配
                     .addRightLikeCondition("phone", "123");      // 右匹配
 
@@ -471,7 +471,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should combine different LIKE conditions")
         void shouldCombineDifferentLikeConditions() {
-            builder.addLikeCondition("description", "test")          // 包含匹配 %test%
+            builder.like("description", "test")          // 包含匹配 %test%
                     .addLeftLikeCondition("name", "John")             // 左匹配 John%
                     .addRightLikeCondition("email", "example.com")    // 右匹配 %example.com
                     .addDynamicLikeCondition("title", "manager");     // 动态LIKE %manager%
@@ -560,7 +560,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should generate native SQL with LIKE conditions")
         void shouldGenerateNativeSqlWithLikeConditions() {
-            builder.addLikeCondition("name", "John")
+            builder.like("name", "John")
                     .addLeftLikeCondition("email", "test")
                     .addRightLikeCondition("phone", "123");
 
