@@ -29,7 +29,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create basic equals condition with positional parameters")
         void shouldCreateBasicEqualsCondition() {
-            builder.addCondition("name", "John");
+            builder.eq("name", "John");
 
             assertEquals("SELECT * FROM users WHERE name = ?", builder.getSql());
             assertArrayEquals(new Object[]{"John"}, builder.getPositionalParams());
@@ -38,8 +38,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create multiple AND conditions")
         void shouldCreateMultipleAndConditions() {
-            builder.addCondition("name", "John")
-                    .addCondition("age", 25);
+            builder.eq("name", "John")
+                    .eq("age", 25);
 
             assertEquals("SELECT * FROM users WHERE name = ? AND age = ?", builder.getSql());
             assertArrayEquals(new Object[]{"John", 25}, builder.getPositionalParams());
@@ -48,8 +48,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle null values properly")
         void shouldHandleNullValues() {
-            builder.addCondition("name", null)
-                    .addCondition("age", 25);
+            builder.eq("name", null)
+                    .eq("age", 25);
 
             assertEquals("SELECT * FROM users WHERE age = ?", builder.getSql());
             assertArrayEquals(new Object[]{25}, builder.getPositionalParams());
@@ -79,7 +79,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create basic equals condition with named parameters")
         void shouldCreateBasicNamedCondition() {
-            namedBuilder.addCondition("name", "userName", "John");
+            namedBuilder.eq("name", "userName", "John");
 
             assertEquals("SELECT * FROM users WHERE name = :userName", namedBuilder.getSql());
             assertEquals("John", namedBuilder.getNamedParams().getValue("userName"));
@@ -88,8 +88,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create multiple AND conditions with named parameters")
         void shouldCreateMultipleNamedConditions() {
-            namedBuilder.addCondition("name", "userName", "John")
-                    .addCondition("age", "userAge", 25);
+            namedBuilder.eq("name", "userName", "John")
+                    .eq("age", "userAge", 25);
 
             String expectedSql = "SELECT * FROM users WHERE name = :userName AND age = :userAge";
             assertEquals(expectedSql, namedBuilder.getSql());
@@ -107,10 +107,10 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create complex OR conditions")
         void shouldCreateComplexOrConditions() {
-            builder.addCondition("status", "active")
-                    .or(or -> or.addCondition("age", 18)
-                            .addCondition("role", "admin"))
-                    .addCondition("deleted", false);
+            builder.eq("status", "active")
+                    .or(or -> or.eq("age", 18)
+                            .eq("role", "admin"))
+                    .eq("deleted", false);
 
             String expected = "SELECT * FROM users WHERE status = ? AND (age = ? OR role = ?) AND deleted = ?";
             assertEquals(expected, builder.getSql());
@@ -120,11 +120,11 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create nested OR conditions")
         void shouldCreateNestedOrConditions() {
-            builder.addCondition("status", "active")
-                    .or(or -> or.addCondition("age", 18)
-                            .or(nested -> nested.addCondition("role", "admin")
-                                    .addCondition("department", "IT")))
-                    .addCondition("deleted", false);
+            builder.eq("status", "active")
+                    .or(or -> or.eq("age", 18)
+                            .or(nested -> nested.eq("role", "admin")
+                                    .eq("department", "IT")))
+                    .eq("deleted", false);
 
             String expected = "SELECT * FROM users WHERE status = ? AND (age = ? OR (role = ? OR department = ?)) AND deleted = ?";
             assertEquals(expected, builder.getSql());
@@ -135,13 +135,13 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create OR condition group")
         void shouldCreateOrConditionGroup() {
             DynamicSqlBuilder builder1 = new DynamicSqlBuilder("SELECT 1")
-                    .addCondition("age", 18);
+                    .eq("age", 18);
             DynamicSqlBuilder builder2 = new DynamicSqlBuilder("SELECT 1")
-                    .addCondition("role", "admin");
+                    .eq("role", "admin");
 
-            builder.addCondition("status", "active")
+            builder.eq("status", "active")
                     .addOrConditionGroup(builder1, builder2)
-                    .addCondition("deleted", false);
+                    .eq("deleted", false);
 
             String expected = "SELECT * FROM users WHERE status = ? AND (age = ? OR role = ?) AND deleted = ?";
             assertEquals(expected, builder.getSql());
@@ -156,7 +156,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should add pagination with LIMIT")
         void shouldAddPagination() {
-            builder.addCondition("status", "active")
+            builder.eq("status", "active")
                     .addPagination(2, 10);
 
             String expected = "SELECT * FROM users WHERE status = ? LIMIT ?, ?";
@@ -167,7 +167,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should add pagination with ORDER BY")
         void shouldAddPaginationWithOrderBy() {
-            builder.addCondition("status", "active")
+            builder.eq("status", "active")
                     .addOrderBy("name DESC")
                     .addPagination(2, 10);
 
@@ -342,8 +342,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should reset conditions")
         void shouldResetConditions() {
-            builder.addCondition("name", "John")
-                    .addCondition("age", 25)
+            builder.eq("name", "John")
+                    .eq("age", 25)
                     .reset();
 
             assertEquals(BASE_SQL, builder.getSql());
@@ -354,7 +354,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should switch to named mode")
         void shouldSwitchToNamedMode() {
             builder.switchToNamedMode()
-                    .addCondition("name", "userName", "John");
+                    .eq("name", "userName", "John");
 
             assertEquals("SELECT * FROM users WHERE name = :userName", builder.getSql());
             assertEquals("John", builder.getNamedParams().getValue("userName"));
@@ -368,7 +368,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create GROUP BY with HAVING")
         void shouldCreateGroupByWithHaving() {
-            builder.addCondition("status", "active")
+            builder.eq("status", "active")
                     .addGroupBy("department")
                     .addHaving("COUNT(*) > 5")
                     .addOrderBy("department");
@@ -386,9 +386,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create complex query with multiple features")
         void shouldCreateComplexQuery() {
-            builder.addCondition("status", "active")
-                    .or(or -> or.addCondition("department", "IT")
-                            .addCondition("role", "admin"))
+            builder.eq("status", "active")
+                    .or(or -> or.eq("department", "IT")
+                            .eq("role", "admin"))
                     .addInCondition("location", Arrays.asList("NY", "LA"))
                     .addBetweenCondition("salary", 50000, 100000)
                     .addGroupBy("department")
@@ -523,8 +523,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should generate native SQL with basic conditions")
         void shouldGenerateNativeSqlWithBasicConditions() {
-            builder.addCondition("name", "John")
-                    .addCondition("age", 25);
+            builder.eq("name", "John")
+                    .eq("age", 25);
 
             String expected = "SELECT * FROM users WHERE name = 'John' AND age = 25";
             assertEquals(expected, builder.getNativeSql());
@@ -534,9 +534,9 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should generate native SQL with different data types")
         void shouldGenerateNativeSqlWithDifferentTypes() {
             java.util.Date date = java.sql.Timestamp.valueOf("2025-07-01 13:45:24");
-            builder.addCondition("name", "O'Connor")  // 测试字符串转义
-                    .addCondition("active", true)
-                    .addCondition("created_at", date);
+            builder.eq("name", "O'Connor")  // 测试字符串转义
+                    .eq("active", true)
+                    .eq("created_at", date);
 
             String expected = "SELECT * FROM users WHERE name = 'O''Connor' AND active = 1 " +
                     "AND created_at = '2025-07-01 13:45:24'";
@@ -573,8 +573,8 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should generate native SQL with named parameters")
         void shouldGenerateNativeSqlWithNamedParameters() {
             DynamicSqlBuilder namedBuilder = new DynamicSqlBuilder(BASE_SQL, ParameterMode.NAMED);
-            namedBuilder.addCondition("name", "userName", "John")
-                    .addCondition("age", "userAge", 25);
+            namedBuilder.eq("name", "userName", "John")
+                    .eq("age", "userAge", 25);
 
             String expected = "SELECT * FROM users WHERE name = 'John' AND age = 25";
             assertEquals(expected, namedBuilder.getNativeSql());
@@ -583,9 +583,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should generate native SQL with complex conditions")
         void shouldGenerateNativeSqlWithComplexConditions() {
-            builder.addCondition("status", "active")
-                    .or(or -> or.addCondition("age", 18)
-                            .addCondition("role", "admin"))
+            builder.eq("status", "active")
+                    .or(or -> or.eq("age", 18)
+                            .eq("role", "admin"))
                     .addInCondition("department", Arrays.asList("IT", "HR"))
                     .addBetweenCondition("salary", 5000, 10000);
 
@@ -598,7 +598,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle NULL values in native SQL")
         void shouldHandleNullValuesInNativeSql() {
-            builder.addCondition("name", "John")
+            builder.eq("name", "John")
                     .addIsNullCondition("deleted_at")
                     .addDynamicCondition("status", null, NullHandleStrategy.NULL_AS_IS_NULL);
 
@@ -610,7 +610,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should generate native SQL with pagination")
         void shouldGenerateNativeSqlWithPagination() {
-            builder.addCondition("status", "active")
+            builder.eq("status", "active")
                     .addOrderBy("name DESC")
                     .addPagination(2, 10);
 
