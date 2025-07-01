@@ -291,7 +291,7 @@ class DynamicSqlBuilderTest {
         void shouldCreateDifferentLikePatterns() {
             builder.like("name", "John")
                     .leftLike("email", "test")
-                    .addRightLikeCondition("phone", "123");
+                    .rightLike("phone", "123");
 
             String expected = "SELECT * FROM users WHERE name LIKE ? AND email LIKE ? AND phone LIKE ?";
             assertEquals(expected, builder.getSql());
@@ -324,7 +324,7 @@ class DynamicSqlBuilderTest {
         void shouldHandleMultipleLikePatternsInCombination() {
             builder.like("email", "test")           // 包含匹配
                     .leftLike("name", "John")        // 左匹配
-                    .addRightLikeCondition("phone", "123");      // 右匹配
+                    .rightLike("phone", "123");      // 右匹配
 
             String expected = "SELECT * FROM users WHERE email LIKE ? AND name LIKE ? AND phone LIKE ?";
             assertEquals(expected, builder.getSql());
@@ -416,7 +416,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create RIGHT LIKE condition with positional parameters")
         void shouldCreateRightLikeCondition() {
-            builder.addRightLikeCondition("email", "example.com");
+            builder.rightLike("email", "example.com");
 
             String expected = "SELECT * FROM users WHERE email LIKE ?";
             assertEquals(expected, builder.getSql());
@@ -427,7 +427,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create RIGHT LIKE condition with named parameters")
         void shouldCreateRightLikeConditionWithNamedParams() {
             DynamicSqlBuilder namedBuilder = new DynamicSqlBuilder(BASE_SQL, ParameterMode.NAMED);
-            namedBuilder.addRightLikeCondition("email", "emailParam", "example.com");
+            namedBuilder.rightLike("email", "emailParam", "example.com");
 
             String expected = "SELECT * FROM users WHERE email LIKE :emailParam";
             assertEquals(expected, namedBuilder.getSql());
@@ -437,8 +437,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle null and empty values in RIGHT LIKE condition")
         void shouldHandleNullAndEmptyInRightLike() {
-            builder.addRightLikeCondition("email", (String)null)
-                    .addRightLikeCondition("name", "");
+            builder.rightLike("email", (String)null)
+                    .rightLike("name", "");
 
             assertEquals(BASE_SQL, builder.getSql());
             assertEquals(0, builder.getPositionalParams().length);
@@ -473,7 +473,7 @@ class DynamicSqlBuilderTest {
         void shouldCombineDifferentLikeConditions() {
             builder.like("description", "test")          // 包含匹配 %test%
                     .leftLike("name", "John")             // 左匹配 John%
-                    .addRightLikeCondition("email", "example.com")    // 右匹配 %example.com
+                    .rightLike("email", "example.com")    // 右匹配 %example.com
                     .addDynamicLikeCondition("title", "manager");     // 动态LIKE %manager%
 
             String expected = "SELECT * FROM users WHERE description LIKE ? AND name LIKE ? " +
@@ -562,7 +562,7 @@ class DynamicSqlBuilderTest {
         void shouldGenerateNativeSqlWithLikeConditions() {
             builder.like("name", "John")
                     .leftLike("email", "test")
-                    .addRightLikeCondition("phone", "123");
+                    .rightLike("phone", "123");
 
             String expected = "SELECT * FROM users WHERE name LIKE '%John%' AND " +
                     "email LIKE 'test%' AND phone LIKE '%123'";
