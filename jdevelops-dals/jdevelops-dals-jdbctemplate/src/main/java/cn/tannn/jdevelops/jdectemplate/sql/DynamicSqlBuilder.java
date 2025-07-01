@@ -522,7 +522,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param condition 自定义SQL条件片段
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addCustomCondition(String condition) {
+    public DynamicSqlBuilder custom(String condition) {
         if (condition != null && !condition.trim().isEmpty()) {
             appendWhereOrAnd();
             sql.append(condition);
