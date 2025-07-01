@@ -444,7 +444,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param orderBy 排序字段和方向（如"id DESC"）
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addOrderBy(String orderBy) {
+    public DynamicSqlBuilder orderBy(String orderBy) {
         if (orderBy != null && !orderBy.trim().isEmpty()) {
             sql.append(" ORDER BY ").append(orderBy);
         }

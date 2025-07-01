@@ -168,7 +168,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should add pagination with ORDER BY")
         void shouldAddPaginationWithOrderBy() {
             builder.eq("status", "active")
-                    .addOrderBy("name DESC")
+                    .orderBy("name DESC")
                     .addPagination(2, 10);
 
             String expected = "SELECT * FROM users WHERE status = ? ORDER BY name DESC LIMIT ?, ?";
@@ -371,7 +371,7 @@ class DynamicSqlBuilderTest {
             builder.eq("status", "active")
                     .addGroupBy("department")
                     .addHaving("COUNT(*) > 5")
-                    .addOrderBy("department");
+                    .orderBy("department");
 
             String expected = "SELECT * FROM users WHERE status = ? GROUP BY department HAVING COUNT(*) > 5 ORDER BY department";
             assertEquals(expected, builder.getSql());
@@ -393,7 +393,7 @@ class DynamicSqlBuilderTest {
                     .between("salary", 50000, 100000)
                     .addGroupBy("department")
                     .addHaving("AVG(salary) > 60000")
-                    .addOrderBy("department ASC")
+                    .orderBy("department ASC")
                     .addPagination(1, 10);
 
             String expected = "SELECT * FROM users WHERE status = ? AND (department = ? OR role = ?) AND " +
@@ -611,7 +611,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should generate native SQL with pagination")
         void shouldGenerateNativeSqlWithPagination() {
             builder.eq("status", "active")
-                    .addOrderBy("name DESC")
+                    .orderBy("name DESC")
                     .addPagination(2, 10);
 
             String expected = "SELECT * FROM users WHERE status = 'active' " +
