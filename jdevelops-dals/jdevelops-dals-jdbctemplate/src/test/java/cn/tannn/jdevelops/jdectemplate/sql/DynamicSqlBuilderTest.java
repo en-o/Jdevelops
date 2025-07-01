@@ -290,7 +290,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create LIKE conditions with different patterns")
         void shouldCreateDifferentLikePatterns() {
             builder.like("name", "John")
-                    .addLeftLikeCondition("email", "test")
+                    .leftLike("email", "test")
                     .addRightLikeCondition("phone", "123");
 
             String expected = "SELECT * FROM users WHERE name LIKE ? AND email LIKE ? AND phone LIKE ?";
@@ -301,7 +301,7 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should create LEFT LIKE conditions")
         void shouldCreateLeftLikeConditions() {
-            builder.addLeftLikeCondition("name", "John");
+            builder.leftLike("name", "John");
 
             String expected = "SELECT * FROM users WHERE name LIKE ?";
             assertEquals(expected, builder.getSql());
@@ -312,7 +312,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create LEFT LIKE conditions with named parameters")
         void shouldCreateLeftLikeConditionsWithNamedParameters() {
             DynamicSqlBuilder namedBuilder = new DynamicSqlBuilder(BASE_SQL, ParameterMode.NAMED);
-            namedBuilder.addLeftLikeCondition("name", "userName", "John");
+            namedBuilder.leftLike("name", "userName", "John");
 
             String expected = "SELECT * FROM users WHERE name LIKE :userName";
             assertEquals(expected, namedBuilder.getSql());
@@ -323,7 +323,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should handle multiple LIKE patterns in combination")
         void shouldHandleMultipleLikePatternsInCombination() {
             builder.like("email", "test")           // 包含匹配
-                    .addLeftLikeCondition("name", "John")        // 左匹配
+                    .leftLike("name", "John")        // 左匹配
                     .addRightLikeCondition("phone", "123");      // 右匹配
 
             String expected = "SELECT * FROM users WHERE email LIKE ? AND name LIKE ? AND phone LIKE ?";
@@ -472,7 +472,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should combine different LIKE conditions")
         void shouldCombineDifferentLikeConditions() {
             builder.like("description", "test")          // 包含匹配 %test%
-                    .addLeftLikeCondition("name", "John")             // 左匹配 John%
+                    .leftLike("name", "John")             // 左匹配 John%
                     .addRightLikeCondition("email", "example.com")    // 右匹配 %example.com
                     .addDynamicLikeCondition("title", "manager");     // 动态LIKE %manager%
 
@@ -561,7 +561,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should generate native SQL with LIKE conditions")
         void shouldGenerateNativeSqlWithLikeConditions() {
             builder.like("name", "John")
-                    .addLeftLikeCondition("email", "test")
+                    .leftLike("email", "test")
                     .addRightLikeCondition("phone", "123");
 
             String expected = "SELECT * FROM users WHERE name LIKE '%John%' AND " +

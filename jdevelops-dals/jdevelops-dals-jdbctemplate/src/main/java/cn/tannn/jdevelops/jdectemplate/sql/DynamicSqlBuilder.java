@@ -715,7 +715,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value LEFT LIKE条件值（自动添加右侧%通配符）
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addLeftLikeCondition(String column, String value) {
+    public DynamicSqlBuilder leftLike(String column, String value) {
         if (!isValidColumn(column) || !StringUtils.hasText(value)) {
             return this;
         }
@@ -744,7 +744,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value LEFT LIKE条件值（自动添加右侧%通配符）
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addLeftLikeCondition(String column, String paramName, String value) {
+    public DynamicSqlBuilder leftLike(String column, String paramName, String value) {
         if (!isValidColumn(column) || !StringUtils.hasText(value)) {
             return this;
         }
@@ -757,7 +757,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             sql.append(column).append(" LIKE :").append(paramName);
             namedParams.addValue(paramName, value + "%");
         } else {
-            return addLeftLikeCondition(column, value);
+            return leftLike(column, value);
         }
 
         if (inOrGroup) {
