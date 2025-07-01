@@ -669,7 +669,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param nullStrategy 空值处理策略
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addDynamicCondition(String column, Object value, NullHandleStrategy nullStrategy) {
+    public DynamicSqlBuilder dynamicEq(String column, Object value, NullHandleStrategy nullStrategy) {
         if (!isValidColumn(column)) {
             return this;
         }

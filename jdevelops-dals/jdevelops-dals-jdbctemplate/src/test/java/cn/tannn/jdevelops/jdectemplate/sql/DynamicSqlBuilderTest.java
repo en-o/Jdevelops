@@ -184,9 +184,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle dynamic conditions based on null strategy")
         void shouldHandleDynamicConditions() {
-            builder.addDynamicCondition("name", "John", NullHandleStrategy.IGNORE)
-                    .addDynamicCondition("age", null, NullHandleStrategy.NULL_AS_IS_NULL)
-                    .addDynamicCondition("email", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
+            builder.dynamicEq("name", "John", NullHandleStrategy.IGNORE)
+                    .dynamicEq("age", null, NullHandleStrategy.NULL_AS_IS_NULL)
+                    .dynamicEq("email", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
 
             String expected = "SELECT * FROM users WHERE name = ? AND age IS NULL AND email IS NULL";
             assertEquals(expected, builder.getSql());
@@ -209,29 +209,29 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should handle all null strategies correctly")
         void shouldHandleAllNullStrategies() {
             // Test NULL_AS_IS_NULL
-            builder.addDynamicCondition("field1", null, NullHandleStrategy.NULL_AS_IS_NULL);
+            builder.dynamicEq("field1", null, NullHandleStrategy.NULL_AS_IS_NULL);
             assertEquals("SELECT * FROM users WHERE field1 IS NULL", builder.getSql());
             builder.reset();
 
             // Test NULL_AS_IS_NOT_NULL
-            builder.addDynamicCondition("field1", null, NullHandleStrategy.NULL_AS_IS_NOT_NULL);
+            builder.dynamicEq("field1", null, NullHandleStrategy.NULL_AS_IS_NOT_NULL);
             assertEquals("SELECT * FROM users WHERE field1 IS NOT NULL", builder.getSql());
             builder.reset();
 
             // Test EMPTY_AS_IS_NULL with empty string
-            builder.addDynamicCondition("field1", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
+            builder.dynamicEq("field1", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
             assertEquals("SELECT * FROM users WHERE field1 IS NULL", builder.getSql());
             builder.reset();
 
             // Test NULL_AND_EMPTY_AS_IS_NULL with both null and empty
-            builder.addDynamicCondition("field1", null, NullHandleStrategy.NULL_AND_EMPTY_AS_IS_NULL)
-                    .addDynamicCondition("field2", "", NullHandleStrategy.NULL_AND_EMPTY_AS_IS_NULL);
+            builder.dynamicEq("field1", null, NullHandleStrategy.NULL_AND_EMPTY_AS_IS_NULL)
+                    .dynamicEq("field2", "", NullHandleStrategy.NULL_AND_EMPTY_AS_IS_NULL);
             assertEquals("SELECT * FROM users WHERE field1 IS NULL AND field2 IS NULL", builder.getSql());
             builder.reset();
 
             // Test IGNORE strategy
-            builder.addDynamicCondition("field1", null, NullHandleStrategy.IGNORE)
-                    .addDynamicCondition("field2", "value", NullHandleStrategy.IGNORE);
+            builder.dynamicEq("field1", null, NullHandleStrategy.IGNORE)
+                    .dynamicEq("field2", "value", NullHandleStrategy.IGNORE);
             assertEquals("SELECT * FROM users WHERE field2 = ?", builder.getSql());
             assertArrayEquals(new Object[]{"value"}, builder.getPositionalParams());
         }
@@ -239,9 +239,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle dynamic conditions with different types")
         void shouldHandleDynamicConditionsWithDifferentTypes() {
-            builder.addDynamicCondition("intField", 123, NullHandleStrategy.IGNORE)
-                    .addDynamicCondition("boolField", true, NullHandleStrategy.IGNORE)
-                    .addDynamicCondition("doubleField", 45.67, NullHandleStrategy.IGNORE);
+            builder.dynamicEq("intField", 123, NullHandleStrategy.IGNORE)
+                    .dynamicEq("boolField", true, NullHandleStrategy.IGNORE)
+                    .dynamicEq("doubleField", 45.67, NullHandleStrategy.IGNORE);
 
             String expected = "SELECT * FROM users WHERE intField = ? AND boolField = ? AND doubleField = ?";
             assertEquals(expected, builder.getSql());
@@ -600,7 +600,7 @@ class DynamicSqlBuilderTest {
         void shouldHandleNullValuesInNativeSql() {
             builder.eq("name", "John")
                     .isNull("deleted_at")
-                    .addDynamicCondition("status", null, NullHandleStrategy.NULL_AS_IS_NULL);
+                    .dynamicEq("status", null, NullHandleStrategy.NULL_AS_IS_NULL);
 
             String expected = "SELECT * FROM users WHERE name = 'John' AND " +
                     "deleted_at IS NULL AND status IS NULL";
