@@ -515,4 +515,108 @@ class DynamicSqlBuilderTest {
             assertArrayEquals(new Object[]{"%John%"}, builder.getPositionalParams());
         }
     }
+
+    @Nested
+    @DisplayName("Native SQL Tests")
+    class NativeSqlTests {
+
+        @Test
+        @DisplayName("Should generate native SQL with basic conditions")
+        void shouldGenerateNativeSqlWithBasicConditions() {
+            builder.addCondition("name", "John")
+                    .addCondition("age", 25);
+
+            String expected = "SELECT * FROM users WHERE name = 'John' AND age = 25";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with different data types")
+        void shouldGenerateNativeSqlWithDifferentTypes() {
+            java.util.Date date = java.sql.Timestamp.valueOf("2025-07-01 13:45:24");
+            builder.addCondition("name", "O'Connor")  // 测试字符串转义
+                    .addCondition("active", true)
+                    .addCondition("created_at", date);
+
+            String expected = "SELECT * FROM users WHERE name = 'O''Connor' AND active = 1 " +
+                    "AND created_at = '2025-07-01 13:45:24'";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with IN conditions")
+        void shouldGenerateNativeSqlWithInConditions() {
+            List<Integer> ages = Arrays.asList(20, 25, 30);
+            List<String> names = Arrays.asList("John", "Jane", "Joe");
+
+            builder.addInCondition("age", ages)
+                    .addInCondition("name", names);
+
+            String expected = "SELECT * FROM users WHERE age IN (20, 25, 30) AND " +
+                    "name IN ('John', 'Jane', 'Joe')";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with LIKE conditions")
+        void shouldGenerateNativeSqlWithLikeConditions() {
+            builder.addLikeCondition("name", "John")
+                    .addLeftLikeCondition("email", "test")
+                    .addRightLikeCondition("phone", "123");
+
+            String expected = "SELECT * FROM users WHERE name LIKE '%John%' AND " +
+                    "email LIKE 'test%' AND phone LIKE '%123'";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with named parameters")
+        void shouldGenerateNativeSqlWithNamedParameters() {
+            DynamicSqlBuilder namedBuilder = new DynamicSqlBuilder(BASE_SQL, ParameterMode.NAMED);
+            namedBuilder.addCondition("name", "userName", "John")
+                    .addCondition("age", "userAge", 25);
+
+            String expected = "SELECT * FROM users WHERE name = 'John' AND age = 25";
+            assertEquals(expected, namedBuilder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with complex conditions")
+        void shouldGenerateNativeSqlWithComplexConditions() {
+            builder.addCondition("status", "active")
+                    .or(or -> or.addCondition("age", 18)
+                            .addCondition("role", "admin"))
+                    .addInCondition("department", Arrays.asList("IT", "HR"))
+                    .addBetweenCondition("salary", 5000, 10000);
+
+            String expected = "SELECT * FROM users WHERE status = 'active' AND " +
+                    "(age = 18 OR role = 'admin') AND " +
+                    "department IN ('IT', 'HR') AND salary BETWEEN 5000 AND 10000";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should handle NULL values in native SQL")
+        void shouldHandleNullValuesInNativeSql() {
+            builder.addCondition("name", "John")
+                    .addIsNullCondition("deleted_at")
+                    .addDynamicCondition("status", null, NullHandleStrategy.NULL_AS_IS_NULL);
+
+            String expected = "SELECT * FROM users WHERE name = 'John' AND " +
+                    "deleted_at IS NULL AND status IS NULL";
+            assertEquals(expected, builder.getNativeSql());
+        }
+
+        @Test
+        @DisplayName("Should generate native SQL with pagination")
+        void shouldGenerateNativeSqlWithPagination() {
+            builder.addCondition("status", "active")
+                    .addOrderBy("name DESC")
+                    .addPagination(2, 10);
+
+            String expected = "SELECT * FROM users WHERE status = 'active' " +
+                    "ORDER BY name DESC LIMIT 10, 10";
+            assertEquals(expected, builder.getNativeSql());
+        }
+    }
 }
