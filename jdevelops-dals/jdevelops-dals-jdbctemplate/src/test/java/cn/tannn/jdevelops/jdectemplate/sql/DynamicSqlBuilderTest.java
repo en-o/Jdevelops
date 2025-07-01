@@ -196,9 +196,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle dynamic LIKE conditions")
         void shouldHandleDynamicLikeConditions() {
-            builder.addDynamicLikeCondition("name", "John")
-                    .addDynamicLikeCondition("email", null)
-                    .addDynamicLikeCondition("phone", "");
+            builder.dynamicLike("name", "John")
+                    .dynamicLike("email", null)
+                    .dynamicLike("phone", "");
 
             String expected = "SELECT * FROM users WHERE name LIKE ?";
             assertEquals(expected, builder.getSql());
@@ -448,22 +448,22 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create dynamic LIKE condition with different null strategies")
         void shouldCreateDynamicLikeConditionWithNullStrategies() {
             // Test NULL_AS_IS_NULL strategy
-            builder.addDynamicLikeCondition("email", null, NullHandleStrategy.NULL_AS_IS_NULL);
+            builder.dynamicLike("email", null, NullHandleStrategy.NULL_AS_IS_NULL);
             assertEquals("SELECT * FROM users WHERE email IS NULL", builder.getSql());
             builder.reset();
 
             // Test NULL_AS_IS_NOT_NULL strategy
-            builder.addDynamicLikeCondition("email", null, NullHandleStrategy.NULL_AS_IS_NOT_NULL);
+            builder.dynamicLike("email", null, NullHandleStrategy.NULL_AS_IS_NOT_NULL);
             assertEquals("SELECT * FROM users WHERE email IS NOT NULL", builder.getSql());
             builder.reset();
 
             // Test EMPTY_AS_IS_NULL strategy
-            builder.addDynamicLikeCondition("email", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
+            builder.dynamicLike("email", "", NullHandleStrategy.EMPTY_AS_IS_NULL);
             assertEquals("SELECT * FROM users WHERE email IS NULL", builder.getSql());
             builder.reset();
 
             // Test normal case
-            builder.addDynamicLikeCondition("email", "test", NullHandleStrategy.IGNORE);
+            builder.dynamicLike("email", "test", NullHandleStrategy.IGNORE);
             assertEquals("SELECT * FROM users WHERE email LIKE ?", builder.getSql());
             assertArrayEquals(new Object[]{"%test%"}, builder.getPositionalParams());
         }
@@ -474,7 +474,7 @@ class DynamicSqlBuilderTest {
             builder.like("description", "test")          // 包含匹配 %test%
                     .leftLike("name", "John")             // 左匹配 John%
                     .rightLike("email", "example.com")    // 右匹配 %example.com
-                    .addDynamicLikeCondition("title", "manager");     // 动态LIKE %manager%
+                    .dynamicLike("title", "manager");     // 动态LIKE %manager%
 
             String expected = "SELECT * FROM users WHERE description LIKE ? AND name LIKE ? " +
                     "AND email LIKE ? AND title LIKE ?";
@@ -492,8 +492,8 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should handle dynamic LIKE conditions in OR group")
         void shouldHandleDynamicLikeConditionsInOrGroup() {
-            builder.or(or -> or.addDynamicLikeCondition("name", "John")
-                    .addDynamicLikeCondition("email", "example"));
+            builder.or(or -> or.dynamicLike("name", "John")
+                    .dynamicLike("email", "example"));
 
             String expected = "SELECT * FROM users WHERE (name LIKE ? OR email LIKE ?)";
             assertEquals(expected, builder.getSql());
@@ -506,9 +506,9 @@ class DynamicSqlBuilderTest {
         @Test
         @DisplayName("Should ignore invalid values in dynamic LIKE conditions")
         void shouldIgnoreInvalidValuesInDynamicLike() {
-            builder.addDynamicLikeCondition("name", "John")
-                    .addDynamicLikeCondition("email", null)
-                    .addDynamicLikeCondition("phone", "");
+            builder.dynamicLike("name", "John")
+                    .dynamicLike("email", null)
+                    .dynamicLike("phone", "");
 
             String expected = "SELECT * FROM users WHERE name LIKE ?";
             assertEquals(expected, builder.getSql());

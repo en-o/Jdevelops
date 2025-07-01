@@ -830,7 +830,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param nullStrategy 空值处理策略
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addDynamicLikeCondition(String column, String value, NullHandleStrategy nullStrategy) {
+    public DynamicSqlBuilder dynamicLike(String column, String value, NullHandleStrategy nullStrategy) {
         if (!isValidColumn(column)) {
             return this;
         }
@@ -878,8 +878,8 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value LIKE条件值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addDynamicLikeCondition(String column, String value) {
-        return addDynamicLikeCondition(column, value, NullHandleStrategy.IGNORE);
+    public DynamicSqlBuilder dynamicLike(String column, String value) {
+        return dynamicLike(column, value, NullHandleStrategy.IGNORE);
     }
 
 
