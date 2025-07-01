@@ -509,7 +509,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param pageSize 每页数量
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addPagination(Integer pageNum, Integer pageSize) {
+    public DynamicSqlBuilder page(Integer pageNum, Integer pageSize) {
         if (pageNum != null && pageSize != null && pageNum > 0 && pageSize > 0) {
             int offset = (pageNum - 1) * pageSize;
             return limit(offset, pageSize);
