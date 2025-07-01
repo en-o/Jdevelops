@@ -95,7 +95,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value 条件值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addConditionWithOperator(String column, String operator, Object value) {
+    public DynamicSqlBuilder op(String column, String operator, Object value) {
         if (!isValidColumn(column) || !isValidOperator(operator) || !isValidValue(value)) {
             return this;
         }
@@ -124,7 +124,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value 条件值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addConditionWithOperator(String column, String operator, String paramName, Object value) {
+    public DynamicSqlBuilder op(String column, String operator, String paramName, Object value) {
         if (!isValidColumn(column) || !isValidOperator(operator) || !isValidValue(value)) {
             return this;
         }
@@ -137,7 +137,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             sql.append(column).append(" ").append(operator).append(" :").append(paramName);
             namedParams.addValue(paramName, value);
         } else {
-            return addConditionWithOperator(column, operator, value);
+            return op(column, operator, value);
         }
 
         if (inOrGroup) {
@@ -294,9 +294,9 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
                 orGroupHasConditions = true;
             }
         } else if (startValue != null) {
-            return addConditionWithOperator(column, ">=", startValue);
+            return op(column, ">=", startValue);
         } else if (endValue != null) {
-            return addConditionWithOperator(column, "<=", endValue);
+            return op(column, "<=", endValue);
         }
         return this;
     }
@@ -333,12 +333,12 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
                 if (!isValidParamName(startParamName)) {
                     throw new IllegalArgumentException("Start parameter name cannot be null or empty in named mode");
                 }
-                return addConditionWithOperator(column, ">=", startParamName, startValue);
+                return op(column, ">=", startParamName, startValue);
             } else if (endValue != null) {
                 if (!isValidParamName(endParamName)) {
                     throw new IllegalArgumentException("End parameter name cannot be null or empty in named mode");
                 }
-                return addConditionWithOperator(column, "<=", endParamName, endValue);
+                return op(column, "<=", endParamName, endValue);
             }
         } else {
             return addBetweenCondition(column, startValue, endValue);
