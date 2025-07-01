@@ -387,7 +387,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param builders 包含多个条件的DynamicSqlBuilder数组
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addOrConditionGroup(DynamicSqlBuilder... builders) {
+    public DynamicSqlBuilder orGroup(DynamicSqlBuilder... builders) {
         if (builders == null || builders.length == 0) {
             return this;
         }

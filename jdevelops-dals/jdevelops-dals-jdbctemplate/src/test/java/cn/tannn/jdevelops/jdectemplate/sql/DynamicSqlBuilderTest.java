@@ -140,7 +140,7 @@ class DynamicSqlBuilderTest {
                     .eq("role", "admin");
 
             builder.eq("status", "active")
-                    .addOrConditionGroup(builder1, builder2)
+                    .orGroup(builder1, builder2)
                     .eq("deleted", false);
 
             String expected = "SELECT * FROM users WHERE status = ? AND (age = ? OR role = ?) AND deleted = ?";
