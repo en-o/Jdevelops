@@ -38,10 +38,11 @@ public class AuditLogAspect {
             saveAuditLogs(isBatch);
             return result;
         } catch (Throwable e) {
-            log.error("审计日志处理失败: {}", e.getMessage(), e);
+            String eMessage = e.getMessage();
+            log.error("审计日志处理失败: {}", eMessage, e);
 
             // 标记操作失败
-            markOperationAsFailed(isBatch);
+            markOperationAsFailed(isBatch,eMessage);
 
             // 尝试保存失败的审计日志
             tryToSaveFailedAuditLogs(isBatch);
@@ -133,15 +134,19 @@ public class AuditLogAspect {
     /**
      * 标记操作为失败状态
      */
-    private void markOperationAsFailed(boolean isBatch) {
+    private void markOperationAsFailed(boolean isBatch, String eMessage) {
         try {
             if (isBatch) {
                 BatchAuditContext batchContext = AuditContextHolder.getBatchContext();
-                batchContext.getContexts().forEach(ctx -> ctx.setStatus(false));
+                batchContext.getContexts().forEach(ctx -> {
+                    ctx.setStatus(false);
+                    ctx.setFailMessage(eMessage);
+                });
             } else {
                 AuditContext context = AuditContextHolder.getContext();
                 if (context != null) {
                     context.setStatus(false);
+                    context.setFailMessage(eMessage);
                 }
             }
         } catch (Exception e) {

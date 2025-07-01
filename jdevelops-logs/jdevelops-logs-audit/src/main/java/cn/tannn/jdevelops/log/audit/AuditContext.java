@@ -94,6 +94,11 @@ public class AuditContext {
     private Boolean status;
 
 
+    /**
+     * 错误信息
+     */
+    private String failMessage;
+
     public AuditContext() {
         this.status = true; // 默认操作成功
     }
@@ -363,6 +368,26 @@ public class AuditContext {
         this.status = status;
     }
 
+    public String getFailMessage() {
+        return failMessage;
+    }
+
+    public void setFailMessage(String failMessage) {
+        this.failMessage = failMessage;
+    }
+
+    /**
+     * 截断过长的错误消息
+     */
+    private String truncateMessage(String message) {
+        if (message == null) {
+            return null;
+        }
+        return message.length() > 200
+                ? message.substring(0, 200) + "..."
+                : message;
+    }
+
     @Override
     public String toString() {
         return "AuditContext{" +
@@ -380,6 +405,7 @@ public class AuditContext {
                 ", customType=" + customType +
                 ", platform='" + platform + '\'' +
                 ", status=" + status +
+                ", failMessage='" + failMessage + '\'' +
                 '}';
     }
 }
