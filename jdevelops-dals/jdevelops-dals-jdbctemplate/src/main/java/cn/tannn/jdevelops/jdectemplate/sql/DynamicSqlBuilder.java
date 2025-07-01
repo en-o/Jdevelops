@@ -577,7 +577,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value 条件值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addOrCondition(String column, Object value) {
+    public DynamicSqlBuilder orEq(String column, Object value) {
         if (!isValidColumn(column) || !isValidValue(value)) {
             return this;
         }
@@ -605,7 +605,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param value 条件值
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addOrCondition(String column, String paramName, Object value) {
+    public DynamicSqlBuilder orEq(String column, String paramName, Object value) {
         if (!isValidColumn(column) || !isValidValue(value)) {
             return this;
         }
@@ -618,7 +618,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             sql.append(column).append(" = :").append(paramName);
             namedParams.addValue(paramName, value);
         } else {
-            return addOrCondition(column, value);
+            return orEq(column, value);
         }
         return this;
     }
