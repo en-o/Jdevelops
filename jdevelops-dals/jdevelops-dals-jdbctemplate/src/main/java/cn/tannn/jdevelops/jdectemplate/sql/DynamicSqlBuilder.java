@@ -375,7 +375,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @param column 列名
      * @return 当前对象（用于链式调用）
      */
-    public DynamicSqlBuilder addIsNotNullCondition(String column) {
+    public DynamicSqlBuilder isNotNull(String column) {
         if (!isValidColumn(column)) {
             return this;
         }
@@ -688,7 +688,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         if (value == null) {
             return switch (nullStrategy) {
                 case NULL_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
-                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> isNotNull(column);
                 default -> this;
             };
         }
@@ -696,7 +696,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         if (value instanceof String && !StringUtils.hasText((String) value)) {
             return switch (nullStrategy) {
                 case EMPTY_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
-                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> isNotNull(column);
                 default -> this;
             };
         }
@@ -839,7 +839,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         if (value == null) {
             return switch (nullStrategy) {
                 case NULL_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
-                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> isNotNull(column);
                 default -> this;
             };
         }
@@ -847,7 +847,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         if (!StringUtils.hasText(value)) {
             return switch (nullStrategy) {
                 case EMPTY_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
-                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> isNotNull(column);
                 default -> this;
             };
         }
