@@ -509,6 +509,22 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         return this;
     }
 
+
+    /**
+     * 添加分页参数 （注意pageNum）
+     * @param pageNum 页码（从0开始）
+     * @param pageSize 每页数量
+     * @return 当前对象（用于链式调用）
+     */
+    public DynamicSqlBuilder pageZero(Integer pageNum, Integer pageSize) {
+        if (pageNum != null && pageSize != null && pageNum >= 0 && pageSize > 0) {
+            int offset = pageNum * pageSize;
+            return limit(offset, pageSize);
+        }
+        return this;
+    }
+
+
     /**
      * 添加分页参数
      * @param pageNum 页码（从1开始）
