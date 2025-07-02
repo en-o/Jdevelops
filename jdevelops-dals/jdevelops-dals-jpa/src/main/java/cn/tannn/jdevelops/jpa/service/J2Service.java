@@ -287,15 +287,36 @@ public interface J2Service<B> {
 
 
 
+
     /**
-     * Returns entities matching the given {@link Specification} applying the {@code queryFunction} that defines the query
-     * and its result type.
+     * 分页-查询
      *
-     * @param spec must not be null.
-     * @param queryFunction the query function defining projection, sorting, and the result type
-     *                      <p>  q -> q.as(UserProjection.class).all() </p>
-     * @return all entities matching the given Example.
-     * @since 3.0
+     * @param select     {@link Specification}
+     * @param pageable 分页 {@link PagingSorteds}
+     * @return page  如果想要处理成接口能返回的请使用{@link JpaPageResult#toPage(Page)}
      */
-    <S extends B, R> R findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
+    Page<B> findPage(Specification<B> select, Pageable pageable);
+
+
+    /**
+     * 根据指定的查询条件和查询函数执行自定义查询
+     *
+     * @param spec 用于查询的条件构造器，不能为 null
+     * @param queryFunction 自定义查询函数，用于定义查询行为和返回结果类型
+     *                      <p>  q -> q.as(UserProjection.class).all() </p>
+     * @param <S> 实体类型,必须是当前实体 B 的子类
+     * @param <R> 查询返回结果类型
+     * @return 返回查询函数定义的结果类型
+     *
+     * 示例:
+     * <pre>{@code
+     * // 查询单个结果
+     * Optional<Entity> result = findBy(spec, q -> q.oneValue());
+     *
+     * // 查询列表并限制结果数量
+     * List<Entity> result = findBy(spec, q -> q.limit(10).all());
+     * }</pre>
+     */
+    <S extends B, R> R  findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
+
 }
