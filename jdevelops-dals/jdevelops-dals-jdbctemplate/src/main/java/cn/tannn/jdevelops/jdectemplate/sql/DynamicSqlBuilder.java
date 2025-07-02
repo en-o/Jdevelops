@@ -556,6 +556,38 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
     }
 
     /**
+     * 添加命名参数
+     * @param name 参数名
+     * @param value 参数值
+     * @return 当前对象
+     */
+    public DynamicSqlBuilder addNamedParam(String name, Object value) {
+        if (mode != ParameterMode.NAMED) {
+            throw new IllegalStateException("Can only add named parameters in NAMED mode");
+        }
+        if (!isValidParamName(name)) {
+            throw new IllegalArgumentException("Parameter name cannot be null or empty");
+        }
+        namedParams.addValue(name, value);
+        return this;
+    }
+
+    /**
+     * 添加位置参数 注意一定要紧跟需要设置值的sql
+     * @param value 参数值
+     * @return 当前对象（用于链式调用）
+     */
+    public DynamicSqlBuilder addParam(Object value) {
+        if (mode != ParameterMode.POSITIONAL) {
+            throw new IllegalStateException("Can only add positional parameters in POSITIONAL mode");
+        }
+        if (value != null) {
+            positionalParams.add(value);
+        }
+        return this;
+    }
+
+    /**
      * 添加OR条件表达式
      * @param orExpression OR表达式的lambda函数
      * @return 当前对象（用于链式调用）
@@ -937,8 +969,10 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         }
 
         // 处理不同类型的值
-        if (value instanceof String) {
-            return "'" + escapeString((String) value) + "'";
+        // 处理不同类型的值
+        if (value instanceof String || value instanceof Character) {
+            // 确保字符串类型被单引号包裹
+            return "'" + escapeString(value.toString()) + "'";
         } else if (value instanceof java.util.Date) {
             return "'" + formatDate((java.util.Date) value) + "'";
         } else if (value instanceof java.time.temporal.Temporal) {
@@ -949,8 +983,12 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             return formatCollection((Collection<?>) value);
         } else if (value instanceof Object[]) {
             return formatCollection(Arrays.asList((Object[]) value));
-        } else {
+        } else if (value instanceof Number) {
+            // 数字类型直接返回字符串形式
             return value.toString();
+        } else {
+            // 其他类型都当作字符串处理并用单引号包裹
+            return "'" + escapeString(value.toString()) + "'";
         }
     }
 
