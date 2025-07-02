@@ -257,7 +257,7 @@ public class J2ServiceImpl<R extends JpaBasicsRepository<B, ID>, B, ID> implemen
 
 
     @Override
-    public <S extends B, R> R  findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends B, C> C  findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, C> queryFunction) {
         return commonDao.findBy(spec, queryFunction);
     }
 

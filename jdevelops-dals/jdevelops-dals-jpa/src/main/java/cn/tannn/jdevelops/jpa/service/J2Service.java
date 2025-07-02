@@ -305,7 +305,7 @@ public interface J2Service<B> {
      * @param queryFunction 自定义查询函数，用于定义查询行为和返回结果类型
      *                      <p>  q -> q.as(UserProjection.class).all() </p>
      * @param <S> 实体类型,必须是当前实体 B 的子类
-     * @param <R> 查询返回结果类型
+     * @param <C> 查询返回结果类型
      * @return 返回查询函数定义的结果类型
      *
      * 示例:
@@ -317,6 +317,6 @@ public interface J2Service<B> {
      * List<Entity> result = findBy(spec, q -> q.limit(10).all());
      * }</pre>
      */
-    <S extends B, R> R  findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
+    <S extends B, C> C  findBy(Specification<B> spec, Function<FluentQuery.FetchableFluentQuery<S>, C> queryFunction);
 
 }
