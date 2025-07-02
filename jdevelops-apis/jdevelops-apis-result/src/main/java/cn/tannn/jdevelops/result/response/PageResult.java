@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.result.response;
 
+import cn.tannn.jdevelops.result.request.Paging;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -73,6 +74,29 @@ public class PageResult<B> implements Serializable {
 		tResourcePageUtil.setRows(rows);
 		return tResourcePageUtil;
 	}
+
+	/**
+	 * @param page {@link Paging}
+	 * @param total     总记录数
+	 * @param rows      数据
+	 * @param <T>       t
+	 * @return ResourcePage
+	 */
+	public static <T> PageResult<T> page(Paging page,
+										 Long total,
+										 List<T> rows) {
+		Integer pageSize = page.getPageSize();
+		PageResult<T> tResourcePageUtil = new PageResult<>();
+		tResourcePageUtil.setCurrentPage(page.getPageIndex());
+		tResourcePageUtil.setPageSize(pageSize);
+		// 计算总页码
+		Integer totalPage = Math.toIntExact((total + pageSize - 1) / pageSize);
+		tResourcePageUtil.setTotalPages(totalPage);
+		tResourcePageUtil.setTotal(total);
+		tResourcePageUtil.setRows(rows);
+		return tResourcePageUtil;
+	}
+
 
 	/**
 	 * @param pageIndex 当前页
