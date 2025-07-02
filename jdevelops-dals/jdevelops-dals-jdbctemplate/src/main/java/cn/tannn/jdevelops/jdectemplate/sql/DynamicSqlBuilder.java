@@ -651,7 +651,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         int whereIndex = currentSql.toUpperCase().indexOf(" WHERE ");
         if (whereIndex > 0) {
             sql.setLength(0);
-            sql.append(currentSql.substring(0, whereIndex));
+            sql.append(currentSql, 0, whereIndex);
         }
 
         if (mode == ParameterMode.POSITIONAL && positionalParams != null) {
@@ -686,29 +686,19 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
         // 根据策略处理null和空值
         if (value == null) {
-            switch (nullStrategy) {
-                case NULL_AS_IS_NULL:
-                case NULL_AND_EMPTY_AS_IS_NULL:
-                    return isNull(column);
-                case NULL_AS_IS_NOT_NULL:
-                case NULL_AND_EMPTY_AS_IS_NOT_NULL:
-                    return addIsNotNullCondition(column);
-                default:
-                    return this;
-            }
+            return switch (nullStrategy) {
+                case NULL_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
+                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                default -> this;
+            };
         }
 
         if (value instanceof String && !StringUtils.hasText((String) value)) {
-            switch (nullStrategy) {
-                case EMPTY_AS_IS_NULL:
-                case NULL_AND_EMPTY_AS_IS_NULL:
-                    return isNull(column);
-                case EMPTY_AS_IS_NOT_NULL:
-                case NULL_AND_EMPTY_AS_IS_NOT_NULL:
-                    return addIsNotNullCondition(column);
-                default:
-                    return this;
-            }
+            return switch (nullStrategy) {
+                case EMPTY_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
+                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                default -> this;
+            };
         }
 
         // 正常添加条件
@@ -847,31 +837,19 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
         // 根据策略处理null和空值
         if (value == null) {
-            switch (nullStrategy) {
-                case NULL_AS_IS_NULL:
-                case NULL_AND_EMPTY_AS_IS_NULL:
-                    return isNull(column);
-                case NULL_AS_IS_NOT_NULL:
-                case NULL_AND_EMPTY_AS_IS_NOT_NULL:
-                    return addIsNotNullCondition(column);
-                case IGNORE:
-                default:
-                    return this;
-            }
+            return switch (nullStrategy) {
+                case NULL_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
+                case NULL_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                default -> this;
+            };
         }
 
         if (!StringUtils.hasText(value)) {
-            switch (nullStrategy) {
-                case EMPTY_AS_IS_NULL:
-                case NULL_AND_EMPTY_AS_IS_NULL:
-                    return isNull(column);
-                case EMPTY_AS_IS_NOT_NULL:
-                case NULL_AND_EMPTY_AS_IS_NOT_NULL:
-                    return addIsNotNullCondition(column);
-                case IGNORE:
-                default:
-                    return this;
-            }
+            return switch (nullStrategy) {
+                case EMPTY_AS_IS_NULL, NULL_AND_EMPTY_AS_IS_NULL -> isNull(column);
+                case EMPTY_AS_IS_NOT_NULL, NULL_AND_EMPTY_AS_IS_NOT_NULL -> addIsNotNullCondition(column);
+                default -> this;
+            };
         }
 
         // 正常添加LIKE条件
