@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.result.response;
 
 import cn.tannn.jdevelops.result.request.Paging;
+import cn.tannn.jdevelops.result.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -13,6 +15,7 @@ import java.util.List;
  * @date 2019年1月17日
  */
 @Schema(description = "分页查询返回的指定对象")
+@JsonView(Views.Public.class)
 public class PageResult<B> implements Serializable {
 
 	/**

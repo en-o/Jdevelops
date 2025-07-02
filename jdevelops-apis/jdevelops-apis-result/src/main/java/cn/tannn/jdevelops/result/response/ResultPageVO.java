@@ -3,7 +3,9 @@ package cn.tannn.jdevelops.result.response;
 import cn.tannn.jdevelops.result.constant.ResultCode;
 import cn.tannn.jdevelops.result.exception.ExceptionCode;
 import cn.tannn.jdevelops.result.exception.ServiceException;
+import cn.tannn.jdevelops.result.views.Views;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/5/8 上午10:59
  */
+@JsonView(Views.Public.class)
 @Schema(description = "分页全局结果集")
 public class ResultPageVO <B,P extends PageResult<B>> extends ResultBasics{
 

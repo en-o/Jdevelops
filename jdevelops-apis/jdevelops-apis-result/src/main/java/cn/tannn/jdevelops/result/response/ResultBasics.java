@@ -4,7 +4,9 @@ package cn.tannn.jdevelops.result.response;
 import cn.tannn.jdevelops.result.constant.ResultCode;
 import cn.tannn.jdevelops.result.exception.ServiceException;
 import cn.tannn.jdevelops.result.utils.StrUtils;
+import cn.tannn.jdevelops.result.views.Views;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.yomahub.tlog.context.TLogContext;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
@@ -18,6 +20,7 @@ import java.io.Serializable;
  * @version V1.0
  * @date 2023-03-19 14:13
  */
+@JsonView(Views.Public.class)
 public class ResultBasics implements Serializable {
     /**
      * 返回结果状态码
