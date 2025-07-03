@@ -967,14 +967,14 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         if (mode == ParameterMode.POSITIONAL) {
             // 处理位置参数
             for (Object param : getPositionalParams()) {
-                sqlString = replaceFirstPlaceholder(sqlString, param);
+                sqlString = SqlUtil.replaceFirstPlaceholder(sqlString, param);
             }
         } else {
             // 处理命名参数
             MapSqlParameterSource params = getNamedParams();
             for (String paramName : params.getParameterNames()) {
                 Object value = params.getValue(paramName);
-                sqlString = sqlString.replace(":" + paramName, formatValue(value));
+                sqlString = sqlString.replace(":" + paramName,  SqlUtil.formatValue(value));
             }
         }
 
@@ -1043,97 +1043,4 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
 
 
-    /**
-     * 替换第一个问号占位符
-     *
-     * @param sql   SQL语句
-     * @param value 参数值
-     * @return 替换后的SQL语句
-     */
-    private String replaceFirstPlaceholder(String sql, Object value) {
-        int index = sql.indexOf('?');
-        if (index == -1) {
-            return sql;
-        }
-        return sql.substring(0, index) + formatValue(value) + sql.substring(index + 1);
-    }
-
-    /**
-     * 格式化参数值
-     *
-     * @param value 参数值
-     * @return 格式化后的字符串
-     */
-    private String formatValue(Object value) {
-        if (value == null) {
-            return "NULL";
-        }
-
-        // 处理不同类型的值
-        // 处理不同类型的值
-        if (value instanceof String || value instanceof Character) {
-            // 确保字符串类型被单引号包裹
-            return "'" + escapeString(value.toString()) + "'";
-        } else if (value instanceof java.util.Date) {
-            return "'" + formatDate((java.util.Date) value) + "'";
-        } else if (value instanceof java.time.temporal.Temporal) {
-            return "'" + value + "'";
-        } else if (value instanceof Boolean) {
-            return ((Boolean) value) ? "1" : "0";
-        } else if (value instanceof Collection<?>) {
-            return formatCollection((Collection<?>) value);
-        } else if (value instanceof Object[]) {
-            return formatCollection(Arrays.asList((Object[]) value));
-        } else if (value instanceof Number) {
-            // 数字类型直接返回字符串形式
-            return value.toString();
-        } else {
-            // 其他类型都当作字符串处理并用单引号包裹
-            return "'" + escapeString(value.toString()) + "'";
-        }
-    }
-
-    /**
-     * 转义字符串中的特殊字符
-     *
-     * @param str 原始字符串
-     * @return 转义后的字符串
-     */
-    private String escapeString(String str) {
-        return str.replace("'", "''")
-                .replace("\\", "\\\\");
-    }
-
-    /**
-     * 格式化日期对象
-     *
-     * @param date 日期对象
-     * @return 格式化的日期字符串
-     */
-    private String formatDate(java.util.Date date) {
-        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-    }
-
-    /**
-     * 格式化集合
-     *
-     * @param collection 集合对象
-     * @return 格式化的字符串
-     */
-    private String formatCollection(Collection<?> collection) {
-        if (collection.isEmpty()) {
-            return "()";
-        }
-        StringBuilder sb = new StringBuilder("(");
-        boolean first = true;
-        for (Object item : collection) {
-            if (!first) {
-                sb.append(", ");
-            }
-            sb.append(formatValue(item));
-            first = false;
-        }
-        sb.append(")");
-        return sb.toString();
-    }
 }
