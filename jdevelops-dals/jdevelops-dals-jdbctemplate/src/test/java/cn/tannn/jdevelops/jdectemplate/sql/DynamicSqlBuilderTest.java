@@ -619,4 +619,126 @@ class DynamicSqlBuilderTest {
             assertEquals(expected, builder.getNativeSql());
         }
     }
+
+    @Nested
+    @DisplayName("Count Query Tests")
+    class CountQueryTests {
+
+        @Test
+        @DisplayName("Should build basic count query")
+        void shouldBuildBasicCountQuery() {
+            builder.eq("status", "active");
+            DynamicSqlBuilder countBuilder = builder.buildCountSql();
+
+            assertEquals(
+                    "SELECT COUNT(*) FROM users WHERE status = ?",
+                    countBuilder.getSql()
+            );
+            assertArrayEquals(new Object[]{"active"}, countBuilder.getPositionalParams());
+        }
+
+        @Test
+        @DisplayName("Should remove ORDER BY when building count query")
+        void shouldRemoveOrderByInCountQuery() {
+            builder.eq("status", "active")
+                    .orderBy("name DESC");
+
+            DynamicSqlBuilder countBuilder = builder.buildCountSql();
+
+            assertEquals(
+                    "SELECT COUNT(*) FROM users WHERE status = ?",
+                    countBuilder.getSql()
+            );
+            assertArrayEquals(new Object[]{"active"}, countBuilder.getPositionalParams());
+        }
+
+        @Test
+        @DisplayName("Should remove LIMIT when building count query")
+        void shouldRemoveLimitInCountQuery() {
+            builder.eq("status", "active")
+                    .page(2, 10);
+
+            DynamicSqlBuilder countBuilder = builder.buildCountSql();
+
+            assertEquals(
+                    "SELECT COUNT(*) FROM users WHERE status = ?",
+                    countBuilder.getSql()
+            );
+            assertArrayEquals(new Object[]{"active"}, countBuilder.getPositionalParams());
+        }
+
+        @Test
+        @DisplayName("Should maintain named parameters in count query")
+        void shouldMaintainNamedParametersInCountQuery() {
+            DynamicSqlBuilder namedBuilder = new DynamicSqlBuilder(BASE_SQL, ParameterMode.NAMED);
+            namedBuilder.eq("status", "statusParam", "active")
+                    .orderBy("name DESC")
+                    .page(2, 10);
+
+            DynamicSqlBuilder countBuilder = namedBuilder.buildCountSql();
+
+            assertEquals(
+                    "SELECT COUNT(*) FROM users WHERE status = :statusParam",
+                    countBuilder.getSql()
+            );
+            assertEquals("active", countBuilder.getNamedParams().getValue("statusParam"));
+        }
+
+        @Test
+        @DisplayName("Should throw exception for invalid SQL in count query")
+        void shouldThrowExceptionForInvalidSql() {
+            DynamicSqlBuilder invalidBuilder = new DynamicSqlBuilder("INVALID SQL");
+
+            IllegalStateException exception = assertThrows(
+                    IllegalStateException.class,
+                    invalidBuilder::buildCountSql
+            );
+            assertEquals("Invalid SQL statement for count query", exception.getMessage());
+        }
+    }
+
+    @Nested
+    @DisplayName("Base Query SQL Tests")
+    class BaseQuerySqlTests {
+
+        @Test
+        @DisplayName("Should get base query without ORDER BY")
+        void shouldGetBaseQueryWithoutOrderBy() {
+            builder.eq("status", "active")
+                    .orderBy("name DESC");
+
+            String baseQuery = builder.getBaseQuerySql();
+            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
+        }
+
+        @Test
+        @DisplayName("Should get base query without LIMIT")
+        void shouldGetBaseQueryWithoutLimit() {
+            builder.eq("status", "active")
+                    .page(2, 10);
+
+            String baseQuery = builder.getBaseQuerySql();
+            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
+        }
+
+        @Test
+        @DisplayName("Should get base query without ORDER BY and LIMIT")
+        void shouldGetBaseQueryWithoutOrderByAndLimit() {
+            builder.eq("status", "active")
+                    .orderBy("name DESC")
+                    .page(2, 10);
+
+            String baseQuery = builder.getBaseQuerySql();
+            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
+        }
+
+        @Test
+        @DisplayName("Should return original SQL when no ORDER BY or LIMIT exists")
+        void shouldReturnOriginalSqlWhenNoOrderByOrLimit() {
+            builder.eq("status", "active");
+
+            String baseQuery = builder.getBaseQuerySql();
+            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
+        }
+    }
 }
