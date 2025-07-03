@@ -993,50 +993,39 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
     public DynamicSqlBuilder buildCountSql() {
         String currentSql = this.sql.toString();
 
-        // 提取SELECT ... FROM之间的内容
-        int fromIndex = currentSql.toLowerCase().indexOf(" from ");
+        // 查找主查询的FROM位置
+        int fromIndex = SqlUtil.findFromIndex(currentSql);
         if (fromIndex == -1) {
-            throw new IllegalStateException("Invalid SQL statement for count query");
+            throw new IllegalStateException("Invalid SQL statement for count query - FROM keyword not found");
         }
 
+        // 提取FROM及其后面的部分
+        String fromClause = currentSql.substring(fromIndex);
+
         // 移除ORDER BY子句(如果存在)
-        String countSql = currentSql.substring(fromIndex);
-        int orderByIndex = countSql.toLowerCase().indexOf(" order by ");
+        int orderByIndex = SqlUtil.findOrderByIndex(fromClause);
         if (orderByIndex != -1) {
-            countSql = countSql.substring(0, orderByIndex);
+            fromClause = fromClause.substring(0, orderByIndex);
         }
 
         // 移除LIMIT子句(如果存在)
-        int limitIndex = countSql.toLowerCase().indexOf(" limit ");
+        int limitIndex = SqlUtil.findLimitIndex(fromClause);
         if (limitIndex != -1) {
-            countSql = countSql.substring(0, limitIndex);
+            fromClause = fromClause.substring(0, limitIndex);
         }
 
-        // 构建新的COUNT查询
-        String finalCountSql = "SELECT COUNT(*)" + countSql;
+        // 构建新的COUNT查询，去除多余空格
+        String finalCountSql = "SELECT COUNT(*)" + fromClause;
 
         // 创建新的构建器并复制参数(排除ORDER BY和LIMIT相关的参数)
         DynamicSqlBuilder countBuilder = new DynamicSqlBuilder(finalCountSql, this.mode);
 
         // 计算需要排除的参数个数
-        int excludeParams = 0;
-
-        // 检查原SQL中是否有LIMIT子句并计算需要排除的参数个数
-        String originalSql = this.sql.toString();
-        int originalLimitIndex = originalSql.toLowerCase().indexOf(" limit ");
-        if (originalLimitIndex != -1) {
-            String limitClause = originalSql.substring(originalLimitIndex);
-            // 检查是否包含offset参数(LIMIT offset, count格式)
-            if (limitClause.contains(",")) {
-                excludeParams = 2; // offset和limit两个参数
-            } else {
-                excludeParams = 1; // 只有limit参数
-            }
-        }
+        int excludeParams = SqlUtil.calculateExcludeParams(currentSql);
 
         // 复制参数(排除LIMIT相关参数)
         if (this.mode == ParameterMode.POSITIONAL && this.positionalParams != null) {
-            int paramCount = this.positionalParams.size() - excludeParams;
+            int paramCount = Math.max(0, this.positionalParams.size() - excludeParams);
             for (int i = 0; i < paramCount; i++) {
                 countBuilder.positionalParams.add(this.positionalParams.get(i));
             }
@@ -1053,29 +1042,6 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
     }
 
 
-    /**
-     * 从当前SQL中获取不含ORDER BY和LIMIT的基础查询部分
-     * <p>SELECT * FROM table_name</p>
-     *
-     * @return 基础查询SQL
-     */
-    public String getBaseQuerySql() {
-        String currentSql = this.sql.toString();
-
-        // 移除ORDER BY子句(如果存在)
-        int orderByIndex = currentSql.toLowerCase().indexOf(" order by ");
-        if (orderByIndex != -1) {
-            currentSql = currentSql.substring(0, orderByIndex);
-        }
-
-        // 移除LIMIT子句(如果存在)
-        int limitIndex = currentSql.toLowerCase().indexOf(" limit ");
-        if (limitIndex != -1) {
-            currentSql = currentSql.substring(0, limitIndex);
-        }
-
-        return currentSql;
-    }
 
     /**
      * 替换第一个问号占位符

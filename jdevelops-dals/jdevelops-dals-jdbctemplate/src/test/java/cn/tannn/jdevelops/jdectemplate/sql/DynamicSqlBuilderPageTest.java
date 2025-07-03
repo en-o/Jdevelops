@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DynamicSqlBuilderPageDemo {
 
-
+//
 //    void demo() {
 //        AccountPage page = new AccountPage();
 ////        page.setLoginName("ADMIN");
@@ -25,9 +25,9 @@ class DynamicSqlBuilderPageDemo {
 //                , new DataClassRowMapper<>(AccountFull2.class));
 //
 //        query.forEach(System.out::println);
-//        Long queried =  jdbcTemplate.queryForObject(builder.getSql(), builder.getNamedParams()
+//        Long queried = jdbcTemplate.queryForObject(builder.buildCountSql().getSql(), builder.getNamedParams()
 //                , Long.class);
-//        System.out.println("总数："+queried);
+//        System.out.println("总数：" + queried);
 //    }
 
 

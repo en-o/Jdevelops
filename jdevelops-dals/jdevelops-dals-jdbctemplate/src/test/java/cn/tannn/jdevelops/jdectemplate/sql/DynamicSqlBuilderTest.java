@@ -693,52 +693,8 @@ class DynamicSqlBuilderTest {
                     IllegalStateException.class,
                     invalidBuilder::buildCountSql
             );
-            assertEquals("Invalid SQL statement for count query", exception.getMessage());
+            assertEquals("Invalid SQL statement for count query - FROM keyword not found", exception.getMessage());
         }
     }
 
-    @Nested
-    @DisplayName("Base Query SQL Tests")
-    class BaseQuerySqlTests {
-
-        @Test
-        @DisplayName("Should get base query without ORDER BY")
-        void shouldGetBaseQueryWithoutOrderBy() {
-            builder.eq("status", "active")
-                    .orderBy("name DESC");
-
-            String baseQuery = builder.getBaseQuerySql();
-            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
-        }
-
-        @Test
-        @DisplayName("Should get base query without LIMIT")
-        void shouldGetBaseQueryWithoutLimit() {
-            builder.eq("status", "active")
-                    .page(2, 10);
-
-            String baseQuery = builder.getBaseQuerySql();
-            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
-        }
-
-        @Test
-        @DisplayName("Should get base query without ORDER BY and LIMIT")
-        void shouldGetBaseQueryWithoutOrderByAndLimit() {
-            builder.eq("status", "active")
-                    .orderBy("name DESC")
-                    .page(2, 10);
-
-            String baseQuery = builder.getBaseQuerySql();
-            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
-        }
-
-        @Test
-        @DisplayName("Should return original SQL when no ORDER BY or LIMIT exists")
-        void shouldReturnOriginalSqlWhenNoOrderByOrLimit() {
-            builder.eq("status", "active");
-
-            String baseQuery = builder.getBaseQuerySql();
-            assertEquals("SELECT * FROM users WHERE status = ?", baseQuery);
-        }
-    }
 }
