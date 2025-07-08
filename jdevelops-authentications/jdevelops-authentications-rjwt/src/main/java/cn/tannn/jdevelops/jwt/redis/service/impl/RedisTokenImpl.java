@@ -54,7 +54,7 @@ public class RedisTokenImpl implements RedisToken {
             redisTemplate.persist(loginRedisFolder);
         } else {
             // 设置过期时间（ 小时
-            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
+            redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), jwtConfig.getLoginExpireTimeUnit());
         }
     }
 
@@ -74,7 +74,7 @@ public class RedisTokenImpl implements RedisToken {
                 Long ttl = redisTemplate.getExpire(loginRedisFolder);
                 if (ttl == null || ttl < 120) {
                     // 设置过期时间（毫秒
-                    redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), TimeUnit.HOURS);
+                    redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), jwtConfig.getLoginExpireTimeUnit());
                 }
 
             }

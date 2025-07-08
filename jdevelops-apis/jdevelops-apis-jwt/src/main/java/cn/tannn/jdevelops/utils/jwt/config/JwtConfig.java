@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * jwt秘钥跟过期时间
@@ -31,13 +32,17 @@ public class JwtConfig {
      */
     private long expireTime;
 
-
     /**
-     * token redis 时间
-     * 默认  过期时间为一天 (单位:小时)
+     * token redis过期时间
+     * 默认  过期时间为一天 (默认单位:小时)
      *
      */
     private long loginExpireTime;
+
+    /**
+     * token redis过期时间单位（默认小时）
+     */
+    private TimeUnit loginExpireTimeUnit;
 
     /**
      *  是否开启从cookie中获取token(顺序为： Header -> Parameter -> Cookies)
@@ -113,7 +118,7 @@ public class JwtConfig {
     }
 
     public long getExpireTime() {
-        if(loginExpireTime<=0){
+        if(expireTime<=0){
             return 24;
         }else {
             return expireTime;
@@ -131,6 +136,15 @@ public class JwtConfig {
             return loginExpireTime;
         }
     }
+
+    public TimeUnit getLoginExpireTimeUnit() {
+        return loginExpireTimeUnit==null?TimeUnit.HOURS:loginExpireTimeUnit;
+    }
+
+    public void setLoginExpireTimeUnit(TimeUnit loginExpireTimeUnit) {
+        this.loginExpireTimeUnit = loginExpireTimeUnit;
+    }
+
 
     public void setLoginExpireTime(long loginExpireTime) {
         this.loginExpireTime = loginExpireTime;
@@ -215,6 +229,7 @@ public class JwtConfig {
                 "tokenSecret='" + tokenSecret + '\'' +
                 ", expireTime=" + expireTime +
                 ", loginExpireTime=" + loginExpireTime +
+                ", loginExpireTimeUnit=" + loginExpireTimeUnit +
                 ", cookie=" + cookie +
                 ", tokenName='" + tokenName + '\'' +
                 ", issuer='" + issuer + '\'' +
