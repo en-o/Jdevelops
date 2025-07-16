@@ -448,8 +448,8 @@ public final class JsonUtils {
             JsonNode root = mapper.readTree(jsonStr);
             JsonNode current = navigateToNode(root, path);
 
-            if (current == null || current.isNull()) {
-                return null;
+            if (current == null) {
+                throw new IllegalArgumentException("无效路径: " + path);
             }
 
             return mapper.treeToValue(current, type);
