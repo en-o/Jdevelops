@@ -47,43 +47,89 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * JsonUtils.
+ * JSON工具类
+ * 提供JSON序列化、反序列化和路径解析功能
  *
- * @author xiaoyu
+ * @author tan
  */
 public final class JsonUtils {
 
+    // ObjectMapper实例，用于JSON处理
     private static ObjectMapper mapper = new ObjectMapper();
 
+    // 日志记录器
     private static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
+    // 数组索引匹配的正则表达式模式，用于解析如"field[0]"格式的路径
+    private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("^(.+?)\\[(\\d+)\\]$");
+
     static {
+        // 配置Java时间模块，用于处理Java 8时间API
         JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        // 配置LocalDateTime序列化格式为 "yyyy-MM-dd HH:mm:ss"
+        javaTimeModule.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        // 配置LocalDate序列化格式为 "yyyy-MM-dd"
+        javaTimeModule.addSerializer(LocalDate.class,
+                new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        // 配置LocalTime序列化格式为 "HH:mm:ss"
+        javaTimeModule.addSerializer(LocalTime.class,
+                new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        // 配置LocalDateTime反序列化格式为 "yyyy-MM-dd HH:mm:ss"
+        javaTimeModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        // 配置LocalDate反序列化格式为 "yyyy-MM-dd"
+        javaTimeModule.addDeserializer(LocalDate.class,
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        // 配置LocalTime反序列化格式为 "HH:mm:ss"
+        javaTimeModule.addDeserializer(LocalTime.class,
+                new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        // 配置过滤器提供器，用于在序列化时过滤掉"class"属性
         FilterProvider filterProvider = new SimpleFilterProvider()
                 .addFilter("classFilter", SimpleBeanPropertyFilter.serializeAllExcept("class"));
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
-                .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-                .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
-                .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
-                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-                .setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
-                .registerModule(javaTimeModule)
-                .setFilterProvider(filterProvider);
 
+        // 配置ObjectMapper的各种特性
+        mapper
+                // 禁用遇到未知属性时抛出异常，增强容错性
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+                // 允许JSON中包含注释
+                .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
+
+                // 允许JSON中的字段名不使用引号
+                .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+
+                // 允许JSON中使用单引号
+                .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
+
+                // 允许JSON中包含未转义的控制字符
+                .configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true)
+
+                // 设置属性命名策略为下划线格式（snake_case），自动转换驼峰命名
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+
+                // 设置日期格式为 "yyyy-MM-dd HH:mm:ss"
+                .setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+
+                // 注册Java时间模块
+                .registerModule(javaTimeModule)
+
+                // 设置过滤器提供器
+                .setFilterProvider(filterProvider);
     }
 
     /**
-     * To json string.
+     * 将对象转换为JSON字符串
      *
-     * @param object the object
-     * @return the string
+     * @param object 要转换的对象
+     * @return JSON字符串，转换失败时返回"{}"
      */
     public static String toJson(final Object object) {
         try {
@@ -95,10 +141,11 @@ public final class JsonUtils {
     }
 
     /**
-     * Remove class object.
+     * 从对象中移除class属性
+     * 主要用于处理Map类型的对象，递归移除其中的class字段
      *
-     * @param object the object
-     * @return the object
+     * @param object 要处理的对象
+     * @return 处理后的对象
      */
     public static Object removeClass(final Object object) {
         if (object instanceof Map) {
@@ -115,10 +162,10 @@ public final class JsonUtils {
         }
     }
 
-
-    private static final Pattern ARRAY_INDEX_PATTERN = Pattern.compile("^(.+?)\\[(\\d+)\\]$");
     /**
-     * JSON解析器
+     * JSON路径解析器
+     * 支持复杂的JSON路径解析，包括嵌套对象和数组索引
+     *
      * @param jsonStr JSON字符串
      * @param path 需要解析的路径，支持嵌套对象和数组索引（如：data.users[0].name）
      * @param type 解析后的类型
@@ -156,6 +203,8 @@ public final class JsonUtils {
 
     /**
      * 根据路径导航到指定节点
+     * 将路径按"."分割，逐级访问JSON节点
+     *
      * @param root 根节点
      * @param path 路径
      * @return 目标节点
@@ -180,6 +229,10 @@ public final class JsonUtils {
 
     /**
      * 处理单个路径段
+     * 支持两种格式：
+     * 1. 普通字段：直接获取字段值
+     * 2. 数组索引：field[index]格式，先获取数组字段，再获取指定索引的元素
+     *
      * @param node 当前节点
      * @param segment 路径段
      * @return 处理后的节点
@@ -203,5 +256,4 @@ public final class JsonUtils {
             return node.get(segment);
         }
     }
-
 }
