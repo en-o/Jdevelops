@@ -7,7 +7,9 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 多条数据保存
+ */
 public class BatchAuditContext {
     private final List<AuditContext> contexts = new ArrayList<>();
     private String auditType;
