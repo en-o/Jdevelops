@@ -168,28 +168,28 @@ public class DynamicSqlBuilderFactory {
 
         switch (queryType) {
             case EQ:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.eq(columnName, paramName, value);
                 } else {
                     builder.dynamicEq(columnName, value, nullStrategy);
                 }
                 break;
             case LIKE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.like(columnName, paramName, value.toString());
                 } else {
                     builder.dynamicLike(columnName, value.toString(), nullStrategy);
                 }
                 break;
             case LEFT_LIKE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.leftLike(columnName, paramName, value.toString());
                 } else {
                     builder.leftLike(columnName, value.toString());
                 }
                 break;
             case RIGHT_LIKE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.rightLike(columnName, paramName, value.toString());
                 } else {
                     builder.rightLike(columnName, value.toString());
@@ -198,7 +198,7 @@ public class DynamicSqlBuilderFactory {
             case IN:
                 if (value instanceof Collection) {
                     List<?> list = new ArrayList<>((Collection<?>) value);
-                    if (paramName != null) {
+                    if (paramName != null && !paramName.isEmpty()) {
                         builder.in(columnName, paramName, list);
                     } else {
                         builder.in(columnName, list);
@@ -206,43 +206,43 @@ public class DynamicSqlBuilderFactory {
                 }
                 break;
             case GT:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, ">", paramName, value);
                 } else {
                     builder.op(columnName, ">", value);
                 }
                 break;
             case GE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, ">=", paramName, value);
                 } else {
                     builder.op(columnName, ">=", value);
                 }
                 break;
             case LT:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, "<", paramName, value);
                 } else {
                     builder.op(columnName, "<", value);
                 }
                 break;
             case LE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, "<=", paramName, value);
                 } else {
                     builder.op(columnName, "<=", value);
                 }
                 break;
             case NE:
-                if (paramName != null) {
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, "!=", paramName, value);
                 } else {
                     builder.op(columnName, "!=", value);
                 }
                 break;
             case CUSTOM:
-                String operator = columnAnnotation != null ? columnAnnotation.operator() : "=";
-                if (paramName != null) {
+                String operator = columnAnnotation.operator();
+                if (paramName != null && !paramName.isEmpty()) {
                     builder.op(columnName, operator, paramName, value);
                 } else {
                     builder.op(columnName, operator, value);
