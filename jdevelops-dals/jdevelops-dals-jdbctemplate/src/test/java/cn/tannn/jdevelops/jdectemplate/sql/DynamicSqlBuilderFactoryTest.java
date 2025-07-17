@@ -25,11 +25,18 @@ public class DynamicSqlBuilderFactoryTest {
 
         // 构建SQL
         DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query);
+        // SELECT a.login_name, a.name, a.gender, a.status, a.create_time, a.create_time, b.masked_phone
+        // FROM tb_account a LEFT JOIN tb_account_sensitive b ON b.user_id = a.id WHERE login_name = :login_name1 AND name LIKE :nameLike2
+        // AND status IN (:statusList3) AND b.masked_phone LIKE :bmasked_phoneLike4 ORDER BY a.id DESC LIMIT :offset, :limit
         System.out.println("sql: "+builder.getSql());
         System.out.println("native: "+builder.getNativeSql());
 
 
         builder.orderBy("a.name desc");
+        // SELECT a.login_name, a.name, a.gender, a.status, a.create_time, a.create_time, b.masked_phone
+        // FROM tb_account a LEFT JOIN tb_account_sensitive b ON b.user_id = a.id WHERE login_name = :login_name1 AND name
+        // LIKE :nameLike2 AND status IN (:statusList3)
+        // AND b.masked_phone LIKE :bmasked_phoneLike4 ORDER BY a.id DESC, a.name desc LIMIT :offset, :limit
         System.out.println("追加sql: "+builder.getSql());
         System.out.println("追加native: "+builder.getNativeSql());
 
