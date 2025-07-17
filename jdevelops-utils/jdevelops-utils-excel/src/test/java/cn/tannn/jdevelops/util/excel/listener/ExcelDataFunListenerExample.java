@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.util.excel.listener;
 
 import cn.idev.excel.EasyExcel;
+import cn.idev.excel.FastExcel;
 import cn.tannn.jdevelops.util.excel.listener.ExcelDataFunListener;
 import cn.tannn.jdevelops.util.excel.model.CommonExcel;
 import org.slf4j.Logger;
@@ -36,7 +37,11 @@ public class ExcelDataFunListenerExample {
         //   .headRowNumber(1) 设置头行数
         // 读取Excel文件
         EasyExcel.read(fileName, UserData.class, listener).sheet().doRead();
-
+//        FastExcel.read(file.getInputStream())
+//                .head(UserData.class)
+//                .registerReadListener(listener)
+//                .headRowNumber(1)
+//                .sheet().doReadSync();
         LOG.info("Excel读取完成，总计处理: {} 行", listener.getProcessedCount());
     }
 
