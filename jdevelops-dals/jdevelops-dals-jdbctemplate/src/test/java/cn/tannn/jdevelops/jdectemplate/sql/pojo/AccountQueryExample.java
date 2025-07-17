@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.jdectemplate.sql.pojo;
 
 import cn.tannn.jdevelops.jdectemplate.annotations.*;
 import cn.tannn.jdevelops.jdectemplate.enums.JoinType;
-import cn.tannn.jdevelops.jdectemplate.enums.NullHandleStrategy;
+import cn.tannn.jdevelops.jdectemplate.sql.NullHandleStrategy;
 import cn.tannn.jdevelops.jdectemplate.enums.PageType;
 import cn.tannn.jdevelops.jdectemplate.enums.QueryType;
 

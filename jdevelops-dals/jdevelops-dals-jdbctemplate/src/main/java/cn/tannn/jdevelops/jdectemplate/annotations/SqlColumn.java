@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.annotations;
 
 import cn.tannn.jdevelops.jdectemplate.enums.QueryType;
-import cn.tannn.jdevelops.jdectemplate.enums.NullHandleStrategy;
+import cn.tannn.jdevelops.jdectemplate.sql.NullHandleStrategy;
 
 import java.lang.annotation.*;
 
