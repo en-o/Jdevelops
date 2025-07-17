@@ -248,6 +248,15 @@ public class DynamicSqlBuilderFactory {
                     builder.op(columnName, operator, value);
                 }
                 break;
+            case BETWEEN:
+                String valueStr = value.toString();
+                String[] split = valueStr.split(",");
+                if (paramName != null && !paramName.isEmpty()) {
+                    builder.between(columnName, paramName,split[0], paramName, split[split.length-1]);
+                } else {
+                    builder.between(columnName, split[0],split[split.length-1]);
+                }
+                break;
         }
     }
 
