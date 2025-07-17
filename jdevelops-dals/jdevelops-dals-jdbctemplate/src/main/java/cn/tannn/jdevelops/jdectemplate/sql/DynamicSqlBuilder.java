@@ -5,12 +5,25 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 灵活的动态SQL构建工具类
  * <p> 支持位置参数和命名参数两种模式
- * <p>  sql 一定要顺序构建，比如 builder.orderBy()之后才是 builder.pageZero()，要不然会报错。我是顺序组装的
+ * <p>  sql 一定要顺序构建，比如 builder.orderBy()之后才是 builder.pageZero()，要不然会报错。我是顺序组装的（我好像解决了这个问题）
+ * <pre> sql书写顺序
+     SELECT [DISTINCT] 列名或表达式
+     FROM 表名
+     [JOIN 表名 ON 连接条件]
+     [WHERE 条件]
+     [GROUP BY 分组列]
+     [HAVING 分组后条件]
+     [ORDER BY 排序列 [ASC|DESC]]
+     [LIMIT/OFFSET 分页限制]
+ * </pre>
  * <pre>
  * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new BeanPropertyRowMapper<>(User.class));
  * </pre>
@@ -467,37 +480,94 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      * @return 当前对象（用于链式调用）
      */
     public DynamicSqlBuilder orderBy(String orderBy) {
-        if (orderBy != null && !orderBy.trim().isEmpty()) {
-            String currentSql = sql.toString().toUpperCase();
-
-            // 找到LIMIT位置（如果存在）
-            int limitIndex = currentSql.lastIndexOf(" LIMIT ");
-            if (limitIndex != -1) {
-                // 分离LIMIT部分
-                String limitClause = sql.substring(limitIndex);
-                sql.setLength(limitIndex);
-
-                // 添加ORDER BY
-                if (currentSql.contains(" ORDER BY ")) {
-                    sql.append(", ");
-                } else {
-                    sql.append(" ORDER BY ");
-                }
-                sql.append(orderBy);
-
-                // 重新添加LIMIT部分
-                sql.append(limitClause);
-            } else {
-                // 没有LIMIT子句，正常添加ORDER BY
-                if (currentSql.contains(" ORDER BY ")) {
-                    sql.append(", ");
-                } else {
-                    sql.append(" ORDER BY ");
-                }
-                sql.append(orderBy);
-            }
+        if (orderBy == null || orderBy.trim().isEmpty()) {
+            return this;
         }
+
+        String trimmedOrderBy = orderBy.trim();
+        String currentSql = sql.toString();
+
+        // 查找关键位置（从后往前查找以提高效率）
+        int limitIndex = SqlUtil.findLastIgnoreCase(currentSql, " LIMIT ");
+        int orderByIndex = SqlUtil.findLastIgnoreCase(currentSql, " ORDER BY ");
+
+        if (limitIndex != -1) {
+            // 存在LIMIT子句，需要在LIMIT之前插入ORDER BY
+            handleOrderByWithLimit(currentSql, trimmedOrderBy, limitIndex, orderByIndex);
+        } else if (orderByIndex != -1) {
+            // 存在ORDER BY但无LIMIT，直接追加
+            sql.append(", ").append(trimmedOrderBy);
+        } else {
+            // 不存在ORDER BY，添加新的ORDER BY子句
+            sql.append(" ORDER BY ").append(trimmedOrderBy);
+        }
+
         return this;
+    }
+
+
+    /**
+     * 添加多个ORDER BY子句
+     *
+     * @param orderBys 排序字段数组
+     * @return 当前对象（用于链式调用）
+     */
+    public DynamicSqlBuilder orderBy(String... orderBys) {
+        if (orderBys == null || orderBys.length == 0) {
+            return this;
+        }
+
+        // 过滤空值并连接
+        String orderByClause = Arrays.stream(orderBys)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(", "));
+
+        if (!orderByClause.isEmpty()) {
+            return orderBy(orderByClause);
+        }
+
+        return this;
+    }
+
+    /**
+     * 便捷的排序方法，支持字段名和排序方向
+     *
+     * @param column 排序字段
+     * @param direction 排序方向（ASC/DESC）
+     * @return 当前对象（用于链式调用）
+     */
+    public DynamicSqlBuilder orderBy(String column, String direction) {
+        if (column == null || column.trim().isEmpty()) {
+            return this;
+        }
+
+        String dir = (direction == null || direction.trim().isEmpty()) ? "ASC" : direction.trim();
+        String orderByClause = column.trim() + " " + dir;
+        return orderBy(orderByClause);
+    }
+
+    /**
+     * 处理存在LIMIT子句的情况
+     */
+    private void handleOrderByWithLimit(String currentSql, String orderBy, int limitIndex, int orderByIndex) {
+        // 提取LIMIT子句
+        String limitClause = currentSql.substring(limitIndex);
+
+        // 临时移除LIMIT子句
+        sql.setLength(limitIndex);
+
+        if (orderByIndex != -1 && orderByIndex < limitIndex) {
+            // ORDER BY存在且在LIMIT之前，追加到ORDER BY
+            sql.append(", ").append(orderBy);
+        } else {
+            // ORDER BY不存在或在LIMIT之后（异常情况），添加新的ORDER BY
+            sql.append(" ORDER BY ").append(orderBy);
+        }
+
+        // 重新添加LIMIT子句
+        sql.append(limitClause);
     }
 
     /**

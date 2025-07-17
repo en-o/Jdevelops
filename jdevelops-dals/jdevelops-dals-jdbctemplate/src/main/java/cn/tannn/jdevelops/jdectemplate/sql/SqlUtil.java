@@ -208,4 +208,34 @@ public class SqlUtil {
         sb.append(")");
         return sb.toString();
     }
+
+
+    /**
+     * 忽略大小写查找最后一个匹配位置
+     * 避免重复的toUpperCase()调用
+     * @param source 源字符串
+     * @param target 目标字段
+     * @return  如果未找到匹配位置，否则返回最后一个匹配位置的索引
+     */
+    public static int findLastIgnoreCase(String source, String target) {
+        if (source == null || target == null) {
+            return -1;
+        }
+
+        int sourceLen = source.length();
+        int targetLen = target.length();
+
+        if (targetLen > sourceLen) {
+            return -1;
+        }
+
+        // 从后往前查找
+        for (int i = sourceLen - targetLen; i >= 0; i--) {
+            if (source.regionMatches(true, i, target, 0, targetLen)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

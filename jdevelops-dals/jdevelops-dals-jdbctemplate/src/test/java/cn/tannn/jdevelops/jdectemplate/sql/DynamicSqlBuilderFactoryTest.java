@@ -29,7 +29,7 @@ public class DynamicSqlBuilderFactoryTest {
         System.out.println("native: "+builder.getNativeSql());
 
 
-        builder.orderBy("name desc");
+        builder.orderBy("a.name desc");
         System.out.println("追加sql: "+builder.getSql());
         System.out.println("追加native: "+builder.getNativeSql());
 
