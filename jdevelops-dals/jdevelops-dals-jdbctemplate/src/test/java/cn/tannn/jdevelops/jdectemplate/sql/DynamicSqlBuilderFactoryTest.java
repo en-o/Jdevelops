@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.jdectemplate.sql;
 
 import cn.tannn.jdevelops.jdectemplate.sql.pojo.AccountQueryExample;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.DataClassRowMapper;
 
 import java.util.Arrays;
 
