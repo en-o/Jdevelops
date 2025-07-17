@@ -38,6 +38,6 @@ public class ExcelDataListener<T extends CommonExcel> implements ReadListener<T>
 
 	@Override
 	public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-
+		LOG.info("所有数据解析完成！");
 	}
 }
