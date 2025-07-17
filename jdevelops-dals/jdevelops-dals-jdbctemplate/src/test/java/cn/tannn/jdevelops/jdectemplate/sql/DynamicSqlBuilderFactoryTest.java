@@ -20,6 +20,7 @@ public class DynamicSqlBuilderFactoryTest {
         query.setLoginName("admin");
         query.setName("张三");
         query.setStatus(Arrays.asList(1, 2));
+        query.setPhone("123");
         query.setPageIndex(0);
         query.setPageSize(10);
 
