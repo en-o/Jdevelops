@@ -99,8 +99,14 @@ public class AuditContext {
      */
     private String failMessage;
 
+    /**
+     * 是否批量
+     */
+    boolean batch;
+
     public AuditContext() {
         this.status = true; // 默认操作成功
+        this.batch = false; // 默认单条操作
     }
 
     public AuditContext(String auditType, String operationalType, String uniqueCode, String uniqueIndex, UniqueIndexType uniqueIndexType, String dataTitle, JSONObject originalData, JSONObject targetData, String description, String operatorNo, String operatorName) {
@@ -388,6 +394,14 @@ public class AuditContext {
                 : this.failMessage;
     }
 
+    public boolean isBatch() {
+        return batch;
+    }
+
+    public void setBatch(boolean batch) {
+        this.batch = batch;
+    }
+
     @Override
     public String toString() {
         return "AuditContext{" +
@@ -406,6 +420,7 @@ public class AuditContext {
                 ", platform='" + platform + '\'' +
                 ", status=" + status +
                 ", failMessage='" + failMessage + '\'' +
+                ", batch=" + batch +
                 '}';
     }
 }
