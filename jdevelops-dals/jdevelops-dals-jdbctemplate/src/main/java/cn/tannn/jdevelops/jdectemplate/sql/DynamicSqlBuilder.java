@@ -10,7 +10,8 @@ import java.util.List;
 
 /**
  * 灵活的动态SQL构建工具类
- * 支持位置参数和命名参数两种模式
+ * <p> 支持位置参数和命名参数两种模式
+ * <p>  sql 一定要顺序构建，比如 builder.orderBy()之后才是 builder.pageZero()，要不然会报错。我是顺序组装的
  * <pre>
  * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new BeanPropertyRowMapper<>(User.class));
  * </pre>
