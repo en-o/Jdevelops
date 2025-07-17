@@ -468,7 +468,34 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
      */
     public DynamicSqlBuilder orderBy(String orderBy) {
         if (orderBy != null && !orderBy.trim().isEmpty()) {
-            sql.append(" ORDER BY ").append(orderBy);
+            String currentSql = sql.toString().toUpperCase();
+
+            // 找到LIMIT位置（如果存在）
+            int limitIndex = currentSql.lastIndexOf(" LIMIT ");
+            if (limitIndex != -1) {
+                // 分离LIMIT部分
+                String limitClause = sql.substring(limitIndex);
+                sql.setLength(limitIndex);
+
+                // 添加ORDER BY
+                if (currentSql.contains(" ORDER BY ")) {
+                    sql.append(", ");
+                } else {
+                    sql.append(" ORDER BY ");
+                }
+                sql.append(orderBy);
+
+                // 重新添加LIMIT部分
+                sql.append(limitClause);
+            } else {
+                // 没有LIMIT子句，正常添加ORDER BY
+                if (currentSql.contains(" ORDER BY ")) {
+                    sql.append(", ");
+                } else {
+                    sql.append(" ORDER BY ");
+                }
+                sql.append(orderBy);
+            }
         }
         return this;
     }

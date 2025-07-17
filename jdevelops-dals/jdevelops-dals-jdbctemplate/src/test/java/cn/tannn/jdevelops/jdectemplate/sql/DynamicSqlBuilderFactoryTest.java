@@ -25,8 +25,14 @@ public class DynamicSqlBuilderFactoryTest {
 
         // 构建SQL
         DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query);
-        System.out.println(builder.getSql());
-        System.out.println(builder.getNativeSql());
+        System.out.println("sql: "+builder.getSql());
+        System.out.println("native: "+builder.getNativeSql());
+
+
+        builder.orderBy("name desc");
+        System.out.println("追加sql: "+builder.getSql());
+        System.out.println("追加native: "+builder.getNativeSql());
+
 //        // 执行查询
 //        List<Account> accounts = namedParameterJdbcTemplate.query(
 //                builder.getSql(),
