@@ -48,6 +48,9 @@ public class AccountQueryExample {
     @SqlColumn(name = "masked_phone", tableAlias = "b", queryType = QueryType.LIKE)
     private String phone;
 
+    @SqlColumn(tableAlias = "b", queryType = QueryType.BETWEEN)
+    private String times;
+
     @SqlPage(type = PageType.PAGE_INDEX)
     private Integer pageIndex;
 
@@ -129,5 +132,13 @@ public class AccountQueryExample {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getTimes() {
+        return times;
+    }
+
+    public void setTimes(String times) {
+        this.times = times;
     }
 }
