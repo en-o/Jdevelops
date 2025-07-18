@@ -13,17 +13,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 复杂表头
- * <code>
- * <p> ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write()
- * <p> //设置行高的策略
- * <p>.registerWriteHandler(new CellStyleStrategy(Arrays.asList(0, 1), new WriteCellStyle(), new WriteCellStyle()))
- * </code>
+ * Excel表格列宽自动调整策略
+ * 用于处理复杂表头的列宽设置，可自动根据内容调整列宽
+ *
+ * <p>使用示例：
+ * <pre>
+ * ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write()
+ *     .registerWriteHandler(new CellWidthStyleStrategy())
+ * </pre>
+ *
  * @author web
  */
 public class CellWidthStyleStrategy extends AbstractColumnWidthStyleStrategy {
+
+    /** 缓存每个sheet中每列的最大宽度 */
     private Map<Integer, Map<Integer, Integer>> CACHE = new HashMap<>();
 
+    /**
+     * 设置列宽
+     *
+     * @param writeSheetHolder Excel工作表持有者
+     * @param cellDataList 单元格数据列表
+     * @param cell 当前单元格
+     * @param head 表头信息
+     * @param relativeRowIndex 相对行索引(从0开始)
+     * @param isHead 是否是表头
+     */
     @Override
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<WriteCellData<?>> cellDataList, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
         Map<Integer, Integer> maxColumnWidthMap = CACHE.computeIfAbsent(writeSheetHolder.getSheetNo(), k -> new HashMap<>());
@@ -55,7 +70,7 @@ public class CellWidthStyleStrategy extends AbstractColumnWidthStyleStrategy {
         if (Boolean.TRUE.equals(isHead)) {
             return cell.getStringCellValue().getBytes().length;
         } else {
-            CellData cellData = cellDataList.get(0);
+            CellData<?> cellData = cellDataList.get(0);
             CellDataTypeEnum type = cellData.getType();
             if (type == null) {
                 return -1;
