@@ -12,19 +12,7 @@ import java.lang.reflect.Method;
 
 /**
  * 通用Excel转换器
- * <pre> 实现 ExcelConvertEnum 接口的枚举类可以直接使用此转换器。
-     public class LeaveStateConverter extends GenericExcelConverter {
-
-     public LeaveStateConverter() {
-     super(LeaveStateEnum.class);
-     }
-
-     // 或者直接使用工厂方法
-     public static GenericExcelConverter getInstance() {
-     return ExcelConverterFactory.getLeaveStateConverter();
-     }
- }
- * </pre>
+ *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2025/7/18 12:02
