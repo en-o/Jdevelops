@@ -1,7 +1,9 @@
 package cn.tannn.jdevelops.util.excel;
 
 import cn.idev.excel.annotation.ExcelProperty;
+import cn.idev.excel.write.handler.WriteHandler;
 import cn.tannn.jdevelops.util.excel.handler.CellMenu;
+import cn.tannn.jdevelops.util.excel.converter.DropDownListDef;
 import cn.tannn.jdevelops.util.excel.model.HeaderMenuData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,14 +26,6 @@ public class ExcelService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelService.class);
 
-    /**
-     * 请假状态
-     */
-    public static List<String> LEAVE_STATE = Arrays.asList("请假", "正常");
-    /**
-     * 用户类型
-     */
-    public static List<String> SCHOOL_STATE = Arrays.asList("本校", "校外");
 
 
     /**
@@ -50,6 +43,16 @@ public class ExcelService {
         // 设置下拉
         HeaderMenuData headerMenuData = new HeaderMenuData(index, menuItems);
         return new CellMenu(headerMenuData);
+    }
+
+    /**
+     * 下拉性别
+     * @param index 需要下拉数据的表头下标
+     * @return CellMenu
+     */
+    public WriteHandler dropDownListGender(int index) {
+        // 0[未知]，1[男性]，2[女性]
+        return dropDownList(index, DropDownListDef.SEX_STATE);
     }
 
     /**
