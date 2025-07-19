@@ -6,58 +6,51 @@ echo  " ==============当前maven环境 =============="
 
 
 cd jdevelops-build
-mvn clean  | tee -a build.log
-
+mvn clean
 
 cd ../jdevelops-parent
-mvn clean  | tee -a parent.log
+mvn clean
 
 cd ../jdevelops-annotations
-mvn clean  | tee -a annotations.log
+mvn clean
 
 cd ../jdevelops-spi
-mvn clean  | tee -a spi.log
+mvn clean
 
 cd ../jdevelops-utils
-mvn clean  | tee -a utils.log
+mvn clean
 
 cd ../jdevelops-webs
-mvn clean  | tee -a webs.log
+mvn clean
 
 cd ../jdevelops-apis
-mvn clean  | tee -a apis.log
-
+mvn clean
 
 cd ../jdevelops-dals
-mvn clean  | tee -a dals.log
+mvn clean
 
 cd ../jdevelops-delays
-mvn clean  | tee -a delays.log
-
+mvn clean
 
 cd ../jdevelops-events
-mvn clean  | tee -a events.log
-
-
+mvn clean
 
 cd ../jdevelops-files
-mvn clean  | tee -a files.log
-
+mvn clean
 
 cd ../jdevelops-logs
-mvn clean  | tee -a logs.log
+mvn clean
 
 cd ../jdevelops-authentications
-mvn clean  | tee -a authentications.log
+mvn clean
 
 cd ../jdevelops-monitor
-mvn clean  | tee -a authentications.log
-
+mvn clean
 
 cd ../jdevelops-dependencies
-mvn clean  | tee -a dependencies.log
+mvn clean
 
 cd ../jdevelops-frameworks
-mvn clean  | tee -a frameworks.log
+mvn clean
 
 read -n 1 -s -r -p "Press any key to continue..."

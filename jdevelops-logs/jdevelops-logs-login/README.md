@@ -6,7 +6,7 @@
 <dependency>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-logs-login</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 2. 设置ip2region

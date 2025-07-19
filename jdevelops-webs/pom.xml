@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
     <artifactId>jdevelops-webs</artifactId>
     <version>${revision}</version>
@@ -51,13 +51,12 @@
     </developers>
 
     <properties>
-        <revision>1.0.2-SNAPSHOT</revision>
+        <revision>1.0.2</revision>
     </properties>
 
     <modules>
         <module>jdevelops-webs-interceptor</module>
     </modules>
-
 
 
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->

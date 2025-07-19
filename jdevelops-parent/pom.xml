@@ -6,11 +6,11 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-build</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-parent</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>jdevelops :: parent</name>
     <description>
         jdevelops parent
