@@ -57,11 +57,11 @@
     </properties>
 
     <modules>
-        <module>jdevelops-spring-boot-starter</module>
         <module>jdevelops-file-starter</module>
         <module>jdevelops-quartz-quick-starter</module>
         <module>jdevelops-pf4j-spring-starter</module>
         <module>jdevelops-cas-starter</module>
+        <module>jdevelops-spring-boot-starter</module>
     </modules>
 
 
