@@ -27,7 +27,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-quartz</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
@@ -37,13 +37,13 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-jpa</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-result</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

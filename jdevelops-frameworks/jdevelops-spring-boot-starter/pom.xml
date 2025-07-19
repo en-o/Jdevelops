@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
     <name>jdevelops :: spring :: boot :: starter</name>
     <description>
-        spring boot starter
+        Spring Boot Starter for JDevelops framework
     </description>
     <properties>
         <commons-codec.version>1.16.1</commons-codec.version>
@@ -24,7 +24,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dependencies</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -93,6 +93,8 @@
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-time</artifactId>
         </dependency>
+
+        <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

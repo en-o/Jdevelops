@@ -1,5 +1,8 @@
 package cn.tannn.jdevelops.result.response;
 
+import cn.tannn.jdevelops.result.request.Paging;
+import cn.tannn.jdevelops.result.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -12,6 +15,7 @@ import java.util.List;
  * @date 2019年1月17日
  */
 @Schema(description = "分页查询返回的指定对象")
+@JsonView(Views.Public.class)
 public class PageResult<B> implements Serializable {
 
 	/**
@@ -73,6 +77,29 @@ public class PageResult<B> implements Serializable {
 		tResourcePageUtil.setRows(rows);
 		return tResourcePageUtil;
 	}
+
+	/**
+	 * @param page {@link Paging}
+	 * @param total     总记录数
+	 * @param rows      数据
+	 * @param <T>       t
+	 * @return ResourcePage
+	 */
+	public static <T> PageResult<T> page(Paging page,
+										 Long total,
+										 List<T> rows) {
+		Integer pageSize = page.getPageSize();
+		PageResult<T> tResourcePageUtil = new PageResult<>();
+		tResourcePageUtil.setCurrentPage(page.getPageIndex());
+		tResourcePageUtil.setPageSize(pageSize);
+		// 计算总页码
+		Integer totalPage = Math.toIntExact((total + pageSize - 1) / pageSize);
+		tResourcePageUtil.setTotalPages(totalPage);
+		tResourcePageUtil.setTotal(total);
+		tResourcePageUtil.setRows(rows);
+		return tResourcePageUtil;
+	}
+
 
 	/**
 	 * @param pageIndex 当前页

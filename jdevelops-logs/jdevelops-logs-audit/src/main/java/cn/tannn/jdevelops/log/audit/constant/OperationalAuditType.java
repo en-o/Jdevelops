@@ -20,4 +20,10 @@ public class OperationalAuditType {
      */
     public static final String user_dispose = "用户";
 
+
+    /**
+     * 菜单
+     */
+    public static final String menu_dispose = "菜单";
+
 }

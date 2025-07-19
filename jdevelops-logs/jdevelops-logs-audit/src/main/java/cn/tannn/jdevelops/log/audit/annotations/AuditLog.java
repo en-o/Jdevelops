@@ -25,7 +25,7 @@ public @interface AuditLog {
     String operationType();
 
     /**
-     * 是否批量
+     * 是否批量 这个不等于context中的 batch 他是标注是否接受list数据然后进行循环处理，默认是一条数据
      */
     boolean batch() default false;
 
@@ -35,4 +35,9 @@ public @interface AuditLog {
      * @return 描述
      */
     String description() default "";
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    int customType() default 1;
 }

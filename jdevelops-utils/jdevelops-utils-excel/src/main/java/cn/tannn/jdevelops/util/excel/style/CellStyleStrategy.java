@@ -1,11 +1,11 @@
 package cn.tannn.jdevelops.util.excel.style;
 
-import com.alibaba.excel.metadata.data.DataFormatData;
-import com.alibaba.excel.metadata.data.WriteCellData;
-import com.alibaba.excel.write.handler.context.CellWriteHandlerContext;
-import com.alibaba.excel.write.metadata.style.WriteCellStyle;
-import com.alibaba.excel.write.metadata.style.WriteFont;
-import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import cn.idev.excel.metadata.data.DataFormatData;
+import cn.idev.excel.metadata.data.WriteCellData;
+import cn.idev.excel.write.handler.context.CellWriteHandlerContext;
+import cn.idev.excel.write.metadata.style.WriteCellStyle;
+import cn.idev.excel.write.metadata.style.WriteFont;
+import cn.idev.excel.write.style.HorizontalCellStyleStrategy;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import java.util.List;
 
 /**
- * 单元格格式设置
+ * 单元格格式设置 （ 设置表头和填充内容的样式）
  * <p> 设置表头和填充内容的样式
  * <code>
  * <p> ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write()
@@ -53,6 +53,7 @@ public class CellStyleStrategy extends HorizontalCellStyleStrategy {
         // 获取字体实例
         WriteFont headWriteFont = new WriteFont();
         headWriteFont.setFontName("宋体");
+        // 根据行索引为不同级别的表头应用不同样式
         //表头不同处理
         if (columnIndexes.get(0).equals(context.getRowIndex())) {
             headWriteCellStyle.setFillForegroundColor(IndexedColors.WHITE.getIndex());

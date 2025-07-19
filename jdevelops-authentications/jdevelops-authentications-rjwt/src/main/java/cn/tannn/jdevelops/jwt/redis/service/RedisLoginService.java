@@ -136,7 +136,7 @@ public class RedisLoginService implements LoginService {
     @Override
     public void loginOut(HttpServletRequest request) {
         try {
-            String subject = JwtWebUtil.getTokenSubject(request);
+            String subject = JwtWebUtil.getTokenSubjectExpires(request);
             redisToken.remove(subject);
             redisUserState.remove(subject);
             redisUserRole.remove(subject);

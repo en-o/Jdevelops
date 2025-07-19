@@ -64,6 +64,9 @@ public class SpecificationWrapper<B> {
         // 执行操作符提供的逻辑，用于构建查询条件 (operator 里面是处理过程，specification 是数据体
         operator.accept(specification);
         List<Predicate> ps = specification.getPredicates();
+        if(ps.isEmpty()){
+            return this;
+        }
         if(isConnect){
             predicates.add( newBuilder.and(ps.toArray(new Predicate[0])));
         }else {
@@ -468,9 +471,16 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> in(Expression<? extends U> expression, Object... value) {
+        if(value==null){
+            return this;
+        }
         if (value[0] instanceof List vals) {
+            if(vals.isEmpty()){
+                return this;
+            }
             predicates.add(expression.in(vals.toArray()));
         }else {
+
             predicates.add(expression.in(value));
         }
         return this;
@@ -515,7 +525,13 @@ public class SpecificationWrapper<B> {
      * @return SpecificationWrapper
      */
     public <U> SpecificationWrapper<B> notIn(Expression<? extends U> expression, Object... value) {
+        if(value==null){
+            return this;
+        }
         if (value[0] instanceof List vals) {
+            if(vals.isEmpty()){
+                return this;
+            }
             predicates.add(expression.in(vals.toArray()).not());
         }else {
             predicates.add(expression.in(value).not());

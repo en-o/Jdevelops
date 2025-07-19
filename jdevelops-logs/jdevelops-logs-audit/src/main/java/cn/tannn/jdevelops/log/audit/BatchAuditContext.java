@@ -7,12 +7,15 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 多条数据保存
+ */
 public class BatchAuditContext {
     private final List<AuditContext> contexts = new ArrayList<>();
     private String auditType;
     private String operationType;
     private String description;
+    private Integer customType;
 
     public BatchAuditContext() {
     }
@@ -32,13 +35,23 @@ public class BatchAuditContext {
         this.auditType = auditLog.auditType();
         this.operationType = auditLog.operationType();
         this.description = auditLog.description();
+        this.customType = auditLog.customType();
     }
 
     public void addContext(AuditContext context) {
         // 确保每个Context都有基础信息
-        context.setAuditType(this.auditType);
-        context.setOperationalType(this.operationType);
-        context.setDescription(this.description);
+        if(context.getAuditType() == null) {
+            context.setAuditType(this.auditType);
+        }
+        if(context.getOperationalType() == null) {
+            context.setOperationalType(this.operationType);
+        }
+        if(context.getDescription() == null) {
+            context.setDescription(this.description);
+        }
+        if(context.getCustomType() == null) {
+            context.setCustomType(this.customType);
+        }
         contexts.add(context);
     }
 
@@ -83,6 +96,15 @@ public class BatchAuditContext {
         return this;
     }
 
+    public Integer getCustomType() {
+        return customType;
+    }
+
+    public BatchAuditContext setCustomType(Integer customType) {
+        this.customType = customType;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BatchAuditContext{" +
@@ -90,6 +112,7 @@ public class BatchAuditContext {
                 ", auditType='" + auditType + '\'' +
                 ", operationType='" + operationType + '\'' +
                 ", description='" + description + '\'' +
+                ", customType=" + customType +
                 '}';
     }
 }

@@ -86,7 +86,7 @@ class JwtServiceTest {
                 JwtService.getTokenByBean(token2, LoginJwtExtendInfo.class, HashMap.class).toString());
 
 
-        assertEquals("SignEntity{subject='tan', platform=[COMMON], map=LoginJwtExtendInfo{loginName='tan', userId='null', userNo='tan', userName='tan', phone='null', map={\"key\":\"tan\"}}}",
+        assertEquals("SignEntity{subject='tan', platform=[COMMON], identity='null', map=LoginJwtExtendInfo{loginName='tan', userId='null', userNo='tan', userName='tan', phone='null', map={\"key\":\"tan\"}}}",
                 JwtService.getTokenByBean(token2, SignEntity.class, LoginJwtExtendInfo.class).toString());
     }
 

@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-build</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>jdevelops :: build</name>
     <description>打包用的插件集合</description>
     <url>https://github.com/en-o/Jdevelops</url>

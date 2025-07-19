@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
     <artifactId>jdevelops-frameworks</artifactId>
     <version>${revision}</version>
@@ -53,15 +53,15 @@
     </developers>
 
     <properties>
-        <revision>1.0.1</revision>
+        <revision>1.0.2</revision>
     </properties>
 
     <modules>
-        <module>jdevelops-spring-boot-starter</module>
         <module>jdevelops-file-starter</module>
         <module>jdevelops-quartz-quick-starter</module>
         <module>jdevelops-pf4j-spring-starter</module>
         <module>jdevelops-cas-starter</module>
+        <module>jdevelops-spring-boot-starter</module>
     </modules>
 
 

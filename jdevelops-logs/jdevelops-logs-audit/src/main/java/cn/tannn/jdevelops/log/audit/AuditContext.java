@@ -5,11 +5,8 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalAuditIndex;
 import cn.tannn.jdevelops.log.audit.constant.OperationalAuditType;
 import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
-import com.alibaba.fastjson2.JSON;
+import cn.tannn.jdevelops.log.audit.util.JsonUtil;
 import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
-
-import java.util.Arrays;
 
 /**
  * 数据审计日志记录
@@ -80,7 +77,36 @@ public class AuditContext {
     private String operatorName;
 
 
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    private Integer customType;
+
+
+    /**
+     * 操作平台/数据所属平台
+     */
+    private String platform;
+
+    /**
+     * 操作状态
+     */
+    private Boolean status;
+
+
+    /**
+     * 错误信息
+     */
+    private String failMessage;
+
+    /**
+     * 是否批量
+     */
+    boolean batch;
+
     public AuditContext() {
+        this.status = true; // 默认操作成功
+        this.batch = false; // 默认单条操作
     }
 
     public AuditContext(String auditType, String operationalType, String uniqueCode, String uniqueIndex, UniqueIndexType uniqueIndexType, String dataTitle, JSONObject originalData, JSONObject targetData, String description, String operatorNo, String operatorName) {
@@ -141,7 +167,7 @@ public class AuditContext {
      * 设置： targetData
      */
     public AuditContext targetJson(Object target) {
-        this.targetData = JSONObject.from(target);
+        this.targetData = JsonUtil.convertToJsonObject(target);
         return this;
     }
 
@@ -152,13 +178,7 @@ public class AuditContext {
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext targetJson(Object target, String... filterField) {
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if (filterField.length > 0) {
-            filter.getExcludes().addAll(Arrays.asList(filterField));
-        }
-        this.targetData = JSONObject.parseObject(
-                JSON.toJSONString(target, filter)
-        );
+        this.targetData = JsonUtil.convertToJsonObjectWithFilter(target, filterField);
         return this;
     }
 
@@ -166,7 +186,7 @@ public class AuditContext {
      * 设置： originalData
      */
     public AuditContext originalJson(Object original) {
-        this.originalData = JSONObject.from(original);
+        this.originalData = JsonUtil.convertToJsonObject(original);
         return this;
     }
 
@@ -177,32 +197,8 @@ public class AuditContext {
      * @param filterField 需要过滤的字段  - 比如 密码
      */
     public AuditContext originalJson(Object original, String... filterField) {
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        if (filterField.length > 0) {
-            filter.getExcludes().addAll(Arrays.asList(filterField));
-        }
-        this.originalData = JSONObject.parseObject(
-                JSON.toJSONString(original, filter)
-        );
+        this.originalData = JsonUtil.convertToJsonObjectWithFilter(original, filterField);
         return this;
-    }
-
-
-    @Override
-    public String toString() {
-        return "AuditContext{" +
-                "auditType='" + auditType + '\'' +
-                ", operationalType='" + operationalType + '\'' +
-                ", uniqueCode='" + uniqueCode + '\'' +
-                ", uniqueIndex='" + uniqueIndex + '\'' +
-                ", uniqueIndexType=" + uniqueIndexType +
-                ", dataTitle='" + dataTitle + '\'' +
-                ", originalData=" + originalData +
-                ", targetData=" + targetData +
-                ", description='" + description + '\'' +
-                ", operatorNo='" + operatorNo + '\'' +
-                ", operatorName='" + operatorName + '\'' +
-                '}';
     }
 
 
@@ -336,5 +332,95 @@ public class AuditContext {
     public AuditContext setOperatorName(String operatorName) {
         this.operatorName = operatorName;
         return this;
+    }
+
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+
+    /**
+     * 自定义类型， 用于系统自主的一些判断条件
+     */
+    public AuditContext setPlatform(String platform) {
+        this.platform = platform;
+        return this;
+    }
+
+    /**
+     * 平台
+     */
+    public Integer getCustomType() {
+        return customType;
+    }
+
+    /**
+     * 平台
+     */
+    public AuditContext setCustomType(Integer customType) {
+        this.customType = customType;
+        return this;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getFailMessage() {
+        return failMessage;
+    }
+
+    public void setFailMessage(String failMessage) {
+        this.failMessage = failMessage;
+    }
+
+    /**
+     * 截断过长的错误消息
+     */
+    public String truncateMessage() {
+        if (this.failMessage == null) {
+            return null;
+        }
+        return this.failMessage.length() > 200
+                ? this.failMessage.substring(0, 200) + "..."
+                : this.failMessage;
+    }
+
+    public boolean isBatch() {
+        return batch;
+    }
+
+    public void setBatch(boolean batch) {
+        this.batch = batch;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditContext{" +
+                "auditType='" + auditType + '\'' +
+                ", operationalType='" + operationalType + '\'' +
+                ", uniqueCode='" + uniqueCode + '\'' +
+                ", uniqueIndex='" + uniqueIndex + '\'' +
+                ", uniqueIndexType=" + uniqueIndexType +
+                ", dataTitle='" + dataTitle + '\'' +
+                ", originalData=" + originalData +
+                ", targetData=" + targetData +
+                ", description='" + description + '\'' +
+                ", operatorNo='" + operatorNo + '\'' +
+                ", operatorName='" + operatorName + '\'' +
+                ", customType=" + customType +
+                ", platform='" + platform + '\'' +
+                ", status=" + status +
+                ", failMessage='" + failMessage + '\'' +
+                ", batch=" + batch +
+                '}';
     }
 }

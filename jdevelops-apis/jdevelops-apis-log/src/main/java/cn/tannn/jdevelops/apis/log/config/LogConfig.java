@@ -14,7 +14,9 @@ import java.util.Set;
 public class LogConfig {
 
     /**
-     * 拦截 为空拦截所有
+     * 禁用入参的打印[为空不禁止，]
+     * <p>intercept-apis: ["/post/v1","/post/v2"]</p>
+     * <p>支持AntPathMatcher</p>
      */
     private Set<String> interceptApis = new HashSet<>();
 

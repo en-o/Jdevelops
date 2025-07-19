@@ -70,4 +70,14 @@ public class StringCommon {
         return ret;
     }
 
+    /**
+     * 去除所有空格
+     * @param str 字符串
+     * @return  去除所有空格
+     */
+    public static String trimAll(String str) {
+        return str.replaceAll("\\s+", "");
+    }
+
+
 }
