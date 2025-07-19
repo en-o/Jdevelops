@@ -234,11 +234,11 @@ public class ComplexBuildCountSqlTest {
                .orderBy("u.department_id, u.salary DESC")
                .pageZero(0, 50);
 
+//        System.out.println(builder.getSql());
         DynamicSqlBuilder countBuilder = builder.buildCountSql();
         String countSql = countBuilder.getSql();
 
-        String expectedCountSql = "SELECT COUNT(*) FROM users u " +
-                                "WHERE u.salary >= ? AND u.department_id IS NOT NULL";
+        String expectedCountSql = "SELECT COUNT(*) FROM users u WHERE u.salary >= ? AND u.department_id IS NOT NULL";
 
         assertEquals(expectedCountSql, countSql);
         assertEquals(1, countBuilder.getPositionalParams().length);

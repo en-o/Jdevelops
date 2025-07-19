@@ -474,6 +474,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
     /**
      * 添加ORDER BY子句
+     * 改进版本：正确处理包含窗口函数、子查询的复杂SQL
      *
      * @param orderBy 排序字段和方向（如"id DESC"）
      * @return 当前对象（用于链式调用）
@@ -486,9 +487,9 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         String trimmedOrderBy = orderBy.trim();
         String currentSql = sql.toString();
 
-        // 查找关键位置（从后往前查找以提高效率）
-        int limitIndex = SqlUtil.findLastIgnoreCase(currentSql, " LIMIT ");
-        int orderByIndex = SqlUtil.findLastIgnoreCase(currentSql, " ORDER BY ");
+        // 使用改进的方法查找主查询的关键位置
+        int limitIndex = SqlUtil.findLimitIndex(currentSql);
+        int orderByIndex = SqlUtil.findOrderByIndex(currentSql);
 
         if (limitIndex != -1) {
             // 存在LIMIT子句，需要在LIMIT之前插入ORDER BY
@@ -503,7 +504,6 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
         return this;
     }
-
 
     /**
      * 添加多个ORDER BY子句
@@ -561,7 +561,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
             // ORDER BY存在且在LIMIT之前，追加到ORDER BY
             sql.append(", ").append(orderBy);
         } else {
-            // ORDER BY不存在或在LIMIT之后（异常情况），添加新的ORDER BY
+            // ORDER BY不存在，添加新的ORDER BY
             sql.append(" ORDER BY ").append(orderBy);
         }
 

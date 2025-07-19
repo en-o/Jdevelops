@@ -44,51 +44,65 @@ public class SqlUtil {
     }
 
     /**
-     * 查找ORDER BY的位置，避免子查询中的ORDER BY干扰
+     * 查找主查询ORDER BY的位置，避免子查询和窗口函数中的ORDER BY干扰
      */
     public static int findOrderByIndex(String sql) {
         String lowerSql = sql.toLowerCase();
-        int orderByIndex = -1;
         int parenthesesCount = 0;
+        boolean inOver = false;
 
-        for (int i = 0; i <= lowerSql.length() - 9; i++) {
+        // 从后往前查找，这样能更准确地找到主查询的ORDER BY
+        for (int i = lowerSql.length() - 9; i >= 0; i--) {
             char c = lowerSql.charAt(i);
 
-            if (c == '(') {
+            if (c == ')') {
                 parenthesesCount++;
-            } else if (c == ')') {
+            } else if (c == '(') {
                 parenthesesCount--;
-            } else if (parenthesesCount == 0 && lowerSql.substring(i, i + 9).equals(" order by")) {
-                orderByIndex = i;
-                break;
+            }
+
+            // 检查是否在OVER子句中
+            if (parenthesesCount == 0 && i >= 4 && lowerSql.substring(i - 4, i + 1).equals(" over")) {
+                inOver = true;
+            } else if (inOver && parenthesesCount == 0 && c == ')') {
+                inOver = false;
+            }
+
+            // 只在主查询级别且不在OVER子句中查找ORDER BY
+            if (parenthesesCount == 0 && !inOver && i + 9 <= lowerSql.length() &&
+                    lowerSql.substring(i, i + 9).equals(" order by")) {
+                return i;
             }
         }
 
-        return orderByIndex;
+        return -1;
     }
 
     /**
-     * 查找LIMIT的位置，避免子查询中的LIMIT干扰
+     * 查找主查询LIMIT的位置，避免子查询中的LIMIT干扰
      */
     public static int findLimitIndex(String sql) {
         String lowerSql = sql.toLowerCase();
-        int limitIndex = -1;
         int parenthesesCount = 0;
 
-        for (int i = 0; i <= lowerSql.length() - 6; i++) {
+        // 从后往前查找，确保找到的是主查询的LIMIT
+        for (int i = lowerSql.length() - 6; i >= 0; i--) {
             char c = lowerSql.charAt(i);
 
-            if (c == '(') {
+            if (c == ')') {
                 parenthesesCount++;
-            } else if (c == ')') {
+            } else if (c == '(') {
                 parenthesesCount--;
-            } else if (parenthesesCount == 0 && lowerSql.substring(i, i + 6).equals(" limit")) {
-                limitIndex = i;
-                break;
+            }
+
+            // 只在主查询级别查找LIMIT
+            if (parenthesesCount == 0 && i + 6 <= lowerSql.length() &&
+                    lowerSql.substring(i, i + 6).equals(" limit")) {
+                return i;
             }
         }
 
-        return limitIndex;
+        return -1;
     }
 
     /**
@@ -111,9 +125,6 @@ public class SqlUtil {
 
         return excludeParams;
     }
-
-
-
 
     /**
      * 替换第一个问号占位符
@@ -209,19 +220,27 @@ public class SqlUtil {
         return sb.toString();
     }
 
-
     /**
-     * 忽略大小写查找最后一个匹配位置
-     * 避免重复的toUpperCase()调用
+     * 忽略大小写查找最后一个匹配位置，考虑SQL语法结构
+     * 避免子查询、窗口函数等内部结构的干扰
+     *
      * @param source 源字符串
      * @param target 目标字段
-     * @return  如果未找到匹配位置，否则返回最后一个匹配位置的索引
+     * @return 如果未找到匹配位置返回-1，否则返回最后一个匹配位置的索引
      */
     public static int findLastIgnoreCase(String source, String target) {
         if (source == null || target == null) {
             return -1;
         }
 
+        // 对于ORDER BY和LIMIT这些关键字，使用专门的方法
+        if (" ORDER BY ".equalsIgnoreCase(target.trim())) {
+            return findOrderByIndex(source);
+        } else if (" LIMIT ".equalsIgnoreCase(target.trim())) {
+            return findLimitIndex(source);
+        }
+
+        // 对于其他情况，使用原来的逻辑
         int sourceLen = source.length();
         int targetLen = target.length();
 
