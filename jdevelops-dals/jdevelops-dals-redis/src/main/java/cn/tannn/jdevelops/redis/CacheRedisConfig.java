@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -28,19 +29,25 @@ import java.util.Map;
  * @author  tan
  **/
 @EnableCaching
+@ConditionalOnProperty(
+        name = "sunway.redis.cache.enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 public class CacheRedisConfig {
 
-    private final CustomCacheProperties customCacheProperties;
-
-    public CacheRedisConfig(CustomCacheProperties customCacheProperties) {
-        this.customCacheProperties = customCacheProperties;
-    }
 
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public CustomCacheProperties customCacheProperties() {
+        return new CustomCacheProperties();
+    }
+
+
+    @Bean
+    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory,CustomCacheProperties customCacheProperties) {
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(getDefaultCacheConfig())
-                .withInitialCacheConfigurations(getCacheConfigurations())
+                .withInitialCacheConfigurations(getCacheConfigurations(customCacheProperties))
                 .build();
     }
 
@@ -75,7 +82,7 @@ public class CacheRedisConfig {
     /**
      * 获取特定缓存配置
      */
-    private Map<String, RedisCacheConfiguration> getCacheConfigurations() {
+    private Map<String, RedisCacheConfiguration> getCacheConfigurations(CustomCacheProperties customCacheProperties) {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
         // 缓存配置
         customCacheProperties.getSpecs().forEach((cacheName, spec) -> {

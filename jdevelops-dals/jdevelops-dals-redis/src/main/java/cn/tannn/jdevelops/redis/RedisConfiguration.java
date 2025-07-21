@@ -1,8 +1,5 @@
 package cn.tannn.jdevelops.redis;
 
-import cn.tannn.jdevelops.redis.CacheRedisConfig;
-import cn.tannn.jdevelops.redis.RedisOperateService;
-import cn.tannn.jdevelops.redis.cache.CustomCacheProperties;
 import cn.tannn.jdevelops.redis.limit.LoginLimitConfig;
 import cn.tannn.jdevelops.redis.limit.LoginLimitService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -38,25 +35,13 @@ public class RedisConfiguration {
     public LoginLimitConfig loginLimitConfig() {
         return new LoginLimitConfig();
     }
-    @Bean
-    public CustomCacheProperties customCacheProperties() {
-        return new CustomCacheProperties();
-    }
+
 
     @Bean
     public LoginLimitService loginLimitService(LoginLimitConfig loginLimitConfig) {
         return new LoginLimitService(loginLimitConfig);
     }
 
-    @Bean
-    @ConditionalOnProperty(
-            name = "jdevelops.redis.cache.enabled",
-            havingValue = "true",
-            matchIfMissing = true
-    )
-    public CacheRedisConfig cacheRedisConfig(CustomCacheProperties customCacheProperties) {
-        return new CacheRedisConfig(customCacheProperties);
-    }
 
     @ConditionalOnProperty(
             name = "jdevelops.redis.enabled",

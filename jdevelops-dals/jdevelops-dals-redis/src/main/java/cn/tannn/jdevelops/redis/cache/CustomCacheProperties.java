@@ -29,6 +29,11 @@ public class CustomCacheProperties {
      */
     private Map<String, CacheSpec> specs;
 
+    /**
+     * 是否启用
+     */
+    private Boolean enabled;
+
 
     public static class CacheSpec {
         /**
@@ -77,10 +82,19 @@ public class CustomCacheProperties {
         this.specs = specs;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "CustomCacheProperties{" +
                 "specs=" + specs +
+                ", enabled=" + enabled +
                 '}';
     }
 }
