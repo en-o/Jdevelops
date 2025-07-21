@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author tnnn
  */
 @Component
+@Lazy
 public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);

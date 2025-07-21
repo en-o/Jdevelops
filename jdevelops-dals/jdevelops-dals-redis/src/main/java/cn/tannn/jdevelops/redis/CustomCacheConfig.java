@@ -29,7 +29,6 @@ import java.util.Arrays;
  * @date 2024-03-12 08:25
  */
 @EnableCaching
-@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CustomCacheConfig extends CachingConfigurerSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomCacheConfig.class);
