@@ -1,4 +1,5 @@
 package cn.tannn.jdevelops.autoschema;
+
 import cn.tannn.jdevelops.autoschema.constant.SchemaConstant;
 import cn.tannn.jdevelops.autoschema.properties.DataBaseProperties;
 import cn.tannn.jdevelops.autoschema.util.CustomSplitter;
@@ -6,15 +7,15 @@ import cn.tannn.jdevelops.autoschema.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.core.Ordered;
+import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -29,44 +30,43 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 执行数据库schema sql文件
  * @author tnnn
  */
-@Component
-@Lazy
-public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor, EnvironmentAware {
+public class DatabaseInitializer  implements BeanFactoryPostProcessor, EnvironmentAware, PriorityOrdered {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);
 
     private static final String PRE_FIX = "file:";
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
     private static final String AUTO_INITSCRIPT_PGSQL = " CREATE DATABASE  %s ;";
-
-    // 移除@Autowired，改用Environment方式获取bean
     private Environment environment;
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        try {
+            DataBaseProperties dbProps = fillAutoConfig(environment);
+            DataSourceProperties dataSourceProperties = fillDatabase(environment);
+            if (dbProps.getInitEnable()) {
+                LOG.info("开始执行数据库初始化...");
+                this.init(dataSourceProperties,dbProps);
+                LOG.info("数据库初始化完成");
+            }else {
+                LOG.debug("数据库初始化已禁用");
+            }
+        } catch (Exception e) {
+            LOG.warn("无法获取DataBaseProperties bean，跳过数据库初始化", e);
+        }
+    }
+
 
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
 
-
     @Override
-    public Object postProcessAfterInitialization(@NonNull final Object bean, final String beanName) throws BeansException {
-        if (bean instanceof DataSourceProperties) {
-            // 需要时从上下文中获取DataBaseProperties，而不是通过注入
-            try {
-                DataBaseProperties dbProps = fillAutoConfig(environment);
-                if (dbProps.getInitEnable()) {
-                    LOG.info("开始执行数据库初始化...");
-                    this.init((DataSourceProperties) bean,dbProps);
-                    LOG.info("数据库初始化完成");
-                }else {
-                    LOG.debug("数据库初始化已禁用");
-                }
-            } catch (Exception e) {
-                LOG.warn("无法获取DataBaseProperties bean，跳过数据库初始化", e);
-            }
-        }
-        return bean;
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
     }
+
 
     protected void init(final DataSourceProperties properties,DataBaseProperties dbProps) {
         try {
@@ -202,4 +202,6 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
                 .bind("spring.datasource", DataSourceProperties.class)
                 .orElseGet(DataSourceProperties::new);
     }
+
+
 }
