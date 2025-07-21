@@ -65,8 +65,8 @@
     <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
         <snapshotRepository>
-            <id>snapshots</id>
-            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
+            <id>ali-snapshots</id>
+            <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
@@ -77,14 +77,14 @@
     <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
     <repositories>
         <repository>
-            <id>snapshot</id>
+            <id>ali-snapshots</id>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <url>https://nexus.tannn.cn/repository/maven-snapshots/</url>
+            <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
         </repository>
     </repositories>
 
