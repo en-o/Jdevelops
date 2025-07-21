@@ -1,20 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package cn.tannn.jdevelops.autoschema;
 import cn.tannn.jdevelops.autoschema.constant.SchemaConstant;
 import cn.tannn.jdevelops.autoschema.properties.DataBaseProperties;
@@ -25,9 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -47,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 @Lazy
-public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
+public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor, EnvironmentAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);
 
@@ -55,12 +39,12 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
     private static final String AUTO_INITSCRIPT_PGSQL = " CREATE DATABASE  %s ;";
 
-    // 移除@Autowired，改用ApplicationContext方式获取bean
-    private ApplicationContext applicationContext;
+    // 移除@Autowired，改用Environment方式获取bean
+    private Environment environment;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 
 
@@ -69,10 +53,10 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
         if (bean instanceof DataSourceProperties) {
             // 需要时从上下文中获取DataBaseProperties，而不是通过注入
             try {
-                DataBaseProperties dataBaseProperties = applicationContext.getBean(DataBaseProperties.class);
-                if (dataBaseProperties.getInitEnable()) {
+                DataBaseProperties dbProps = fillAutoConfig(environment);
+                if (dbProps.getInitEnable()) {
                     LOG.info("开始执行数据库初始化...");
-                    this.init((DataSourceProperties) bean);
+                    this.init((DataSourceProperties) bean,dbProps);
                     LOG.info("数据库初始化完成");
                 }else {
                     LOG.debug("数据库初始化已禁用");
@@ -84,16 +68,7 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
         return bean;
     }
 
-    protected void init(final DataSourceProperties properties) {
-        // 从上下文中获取DataBaseProperties
-        DataBaseProperties dataBaseProperties;
-        try {
-            dataBaseProperties = applicationContext.getBean(DataBaseProperties.class);
-        } catch (Exception e) {
-            LOG.warn("无法获取DataBaseProperties bean", e);
-            return;
-        }
-
+    protected void init(final DataSourceProperties properties,DataBaseProperties dbProps) {
         try {
             // 如果配置文件中的jdbcUrl指定了shenyu数据库，则将其移除，
             // 因为执行SQL文件时不需要指定shenyu数据库，
@@ -125,7 +100,7 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
             LOG.warn("创建数据库 ==> execute auto schema url: {}, username: {}, password: {}, schemaName: {}",
                     jdbcUrl,properties.getUsername(), properties.getPassword(), schemaName);
 
-            this.execute(connection, schemaName, jdbcType, dataBaseProperties);
+            this.execute(connection, schemaName, jdbcType, dbProps);
         }catch (Exception e){
             LOG.warn("自动建库失败,请手动创建",e);
         }
@@ -201,5 +176,30 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor,
     private static Reader getResourceAsReaderStr(final String resource)  {
         InputStream inputStream = new ByteArrayInputStream(resource.getBytes(StandardCharsets.UTF_8));
         return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+    }
+
+
+    /**
+     * 零依赖地填充 DataBaseProperties
+     *
+     * @param env Environment
+     * @return 已填充的 DataBaseProperties
+     */
+    private static DataBaseProperties fillAutoConfig(Environment env) {
+        return Binder.get(env)
+                .bind("jdevelops.database", DataBaseProperties.class)
+                .orElseGet(DataBaseProperties::new);
+    }
+
+    /**
+     * 零依赖地填充 DataSourceProperties
+     *
+     * @param env Environment
+     * @return 已填充的 DataSourceProperties
+     */
+    private static DataSourceProperties fillDatabase(Environment env) {
+        return Binder.get(env)
+                .bind("spring.datasource", DataSourceProperties.class)
+                .orElseGet(DataSourceProperties::new);
     }
 }
