@@ -1,5 +1,8 @@
 package cn.tannn.jdevelops.redis;
 
+import cn.tannn.jdevelops.redis.CacheRedisConfig;
+import cn.tannn.jdevelops.redis.RedisOperateService;
+import cn.tannn.jdevelops.redis.cache.CustomCacheProperties;
 import cn.tannn.jdevelops.redis.limit.LoginLimitConfig;
 import cn.tannn.jdevelops.redis.limit.LoginLimitService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,22 +31,31 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 
 @ConditionalOnWebApplication
-@Import({
-        CustomCacheConfig.class
-})
 public class RedisConfiguration {
-
     private static final Logger LOG = LoggerFactory.getLogger(RedisConfiguration.class);
-
 
     @Bean
     public LoginLimitConfig loginLimitConfig() {
         return new LoginLimitConfig();
     }
+    @Bean
+    public CustomCacheProperties customCacheProperties() {
+        return new CustomCacheProperties();
+    }
 
     @Bean
     public LoginLimitService loginLimitService(LoginLimitConfig loginLimitConfig) {
         return new LoginLimitService(loginLimitConfig);
+    }
+
+    @Bean
+    @ConditionalOnProperty(
+            name = "jdevelops.redis.cache.enabled",
+            havingValue = "true",
+            matchIfMissing = true
+    )
+    public CacheRedisConfig cacheRedisConfig(CustomCacheProperties customCacheProperties) {
+        return new CacheRedisConfig(customCacheProperties);
     }
 
     @ConditionalOnProperty(
@@ -100,7 +111,6 @@ public class RedisConfiguration {
     }
 
 
-
     /**
      * 验证 redis是否连接
      *
@@ -115,4 +125,5 @@ public class RedisConfiguration {
             return false;
         }
     }
+
 }

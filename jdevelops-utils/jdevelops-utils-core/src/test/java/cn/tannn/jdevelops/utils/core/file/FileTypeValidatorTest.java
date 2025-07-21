@@ -1,6 +1,5 @@
 //package cn.tannn.jdevelops.utils.core.file;
 //
-//import com.sunway.conference.util.FileUtils;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.mock.web.MockMultipartFile;
 //
