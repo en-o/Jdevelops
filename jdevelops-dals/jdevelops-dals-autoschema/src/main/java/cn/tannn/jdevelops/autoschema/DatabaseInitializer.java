@@ -45,9 +45,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author tnnn
  */
 @Component
-public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
+public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor{
 
-    private static final Logger LOG = LoggerFactory.getLogger(LocalDataSourceLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);
 
     private static final String PRE_FIX = "file:";
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
@@ -56,10 +56,7 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
     // 移除@Autowired，改用ApplicationContext方式获取bean
     private ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+
 
     @Override
     public Object postProcessAfterInitialization(@NonNull final Object bean, final String beanName) throws BeansException {
