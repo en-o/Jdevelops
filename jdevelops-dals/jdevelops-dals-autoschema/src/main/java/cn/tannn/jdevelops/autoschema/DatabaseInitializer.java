@@ -65,7 +65,11 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor{
             try {
                 DataBaseProperties dataBaseProperties = applicationContext.getBean(DataBaseProperties.class);
                 if (dataBaseProperties.getInitEnable()) {
+                    LOG.info("开始执行数据库初始化...");
                     this.init((DataSourceProperties) bean);
+                    LOG.info("数据库初始化完成");
+                }else {
+                    LOG.debug("数据库初始化已禁用");
                 }
             } catch (Exception e) {
                 LOG.warn("无法获取DataBaseProperties bean，跳过数据库初始化", e);
