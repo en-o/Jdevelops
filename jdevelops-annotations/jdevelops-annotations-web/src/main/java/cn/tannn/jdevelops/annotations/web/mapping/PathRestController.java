@@ -22,10 +22,10 @@ import java.lang.annotation.*;
 @RestController
 @RequestMapping
 public @interface PathRestController {
-    @AliasFor("path")
+
+    @AliasFor(annotation = RequestMapping.class, attribute = "path")
     String[] value() default {};
 
-    @AliasFor("value")
+    @AliasFor(annotation = RequestMapping.class, attribute = "value")
     String[] path() default {};
 }
-
