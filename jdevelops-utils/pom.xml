@@ -9,7 +9,7 @@
         <version>1.0.2</version>
     </parent>
     <artifactId>jdevelops-utils</artifactId>
-    <version>${revision}</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>jdevelops :: utils </name>
     <description>utils</description>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.2</revision>
+        <revision>${project.version}</revision>
     </properties>
 
     <modules>

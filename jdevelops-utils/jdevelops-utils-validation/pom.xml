@@ -12,7 +12,6 @@
     <artifactId>jdevelops-utils-validation</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: validation</name>
-    <version>${revision}</version>
     <description>
         自定义有些常用的hibernate-validator,
         正则：https://any-rule.vercel.app/

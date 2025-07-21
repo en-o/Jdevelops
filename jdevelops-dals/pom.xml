@@ -9,7 +9,7 @@
         <version>1.0.2</version>
     </parent>
     <artifactId>jdevelops-dals</artifactId>
-    <version>${revision}</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>jdevelops :: dals </name>
     <description>数据库访问层（Data Access Layer）, JPA , mybaits</description>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.2</revision>
+        <revision>${project.version}</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>
