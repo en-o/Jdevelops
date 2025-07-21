@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author tnnn
  */
 @Component
-public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor{
+public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseInitializer.class);
 
@@ -56,6 +56,10 @@ public class DatabaseInitializer implements InstantiationAwareBeanPostProcessor{
     // 移除@Autowired，改用ApplicationContext方式获取bean
     private ApplicationContext applicationContext;
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
 
     @Override
