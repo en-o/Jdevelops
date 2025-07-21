@@ -23,9 +23,10 @@ import cn.tannn.jdevelops.autoschema.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -40,11 +41,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * for execute schema sql file.
+ * 执行数据库schema sql文件
  * @author tnnn
  */
 @Component
-public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcessor {
+public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcessor, ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(LocalDataSourceLoader.class);
 
@@ -52,22 +53,44 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
     private static final String AUTO_INITSCRIPT_MYSQL = "CREATE DATABASE  IF NOT EXISTS  `%s`  DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;";
     private static final String AUTO_INITSCRIPT_PGSQL = " CREATE DATABASE  %s ;";
 
-    @Autowired
-    private DataBaseProperties dataBaseProperties;
+    // 移除@Autowired，改用ApplicationContext方式获取bean
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     @Override
     public Object postProcessAfterInitialization(@NonNull final Object bean, final String beanName) throws BeansException {
-        if ((bean instanceof DataSourceProperties) && dataBaseProperties.getInitEnable()) {
-            this.init((DataSourceProperties) bean);
+        if (bean instanceof DataSourceProperties) {
+            // 需要时从上下文中获取DataBaseProperties，而不是通过注入
+            try {
+                DataBaseProperties dataBaseProperties = applicationContext.getBean(DataBaseProperties.class);
+                if (dataBaseProperties.getInitEnable()) {
+                    this.init((DataSourceProperties) bean);
+                }
+            } catch (Exception e) {
+                LOG.warn("无法获取DataBaseProperties bean，跳过数据库初始化", e);
+            }
         }
         return bean;
     }
 
     protected void init(final DataSourceProperties properties) {
+        // 从上下文中获取DataBaseProperties
+        DataBaseProperties dataBaseProperties;
         try {
-            // If jdbcUrl in the configuration file specifies the shenyu database, it is removed,
-            // because the shenyu database does not need to be specified when executing the SQL file,
-            // otherwise the shenyu database will be disconnected when the shenyu database does not exist
+            dataBaseProperties = applicationContext.getBean(DataBaseProperties.class);
+        } catch (Exception e) {
+            LOG.warn("无法获取DataBaseProperties bean", e);
+            return;
+        }
+
+        try {
+            // 如果配置文件中的jdbcUrl指定了shenyu数据库，则将其移除，
+            // 因为执行SQL文件时不需要指定shenyu数据库，
+            // 否则当shenyu数据库不存在时，shenyu数据库将断开连接
             String url = properties.getUrl();
             StringBuilder sb = new StringBuilder(url);
             String sub1 = url.substring(0, !url.contains("?") ? url.length() : url.indexOf("?") - 1);
@@ -95,13 +118,13 @@ public class LocalDataSourceLoader implements InstantiationAwareBeanPostProcesso
             LOG.warn("创建数据库 ==> execute auto schema url: {}, username: {}, password: {}, schemaName: {}",
                     jdbcUrl,properties.getUsername(), properties.getPassword(), schemaName);
 
-            this.execute(connection, schemaName, jdbcType);
+            this.execute(connection, schemaName, jdbcType, dataBaseProperties);
         }catch (Exception e){
             LOG.warn("自动建库失败,请手动创建",e);
         }
     }
 
-    private void execute(final Connection conn, final String schemaName, AtomicInteger jdbcType) throws Exception {
+    private void execute(final Connection conn, final String schemaName, AtomicInteger jdbcType, DataBaseProperties dataBaseProperties) throws Exception {
         ScriptRunner runner = new ScriptRunner(conn);
         // doesn't print logger
         runner.setLogWriter(null);
