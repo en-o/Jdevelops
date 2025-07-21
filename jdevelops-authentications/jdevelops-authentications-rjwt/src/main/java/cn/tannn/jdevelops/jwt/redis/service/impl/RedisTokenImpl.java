@@ -72,12 +72,16 @@ public class RedisTokenImpl implements RedisToken {
             } else {
                 // 获取 key 的剩余生存时间 /s
                 Long ttl = redisTemplate.getExpire(loginRedisFolder);
-                if (ttl == null || ttl < 120) {
+                if (ttl < 120) {
                     LOG.warn("{}用户的token即将过期，重新设置过期时间", subject);
                     // 设置过期时间（毫秒
-                    redisTemplate.expire(loginRedisFolder, jwtConfig.getLoginExpireTime(), jwtConfig.getLoginExpireTimeUnit());
+                    boolean success = redisTemplate.expire(loginRedisFolder,
+                            jwtConfig.getLoginExpireTime(),
+                            jwtConfig.getLoginExpireTimeUnit());
+                    if (!success) {
+                        LOG.error("更新{}用户token过期时间失败", subject);
+                    }
                 }
-
             }
         }
     }
