@@ -9,6 +9,16 @@ import java.util.Map;
  * use:
  <pre>
     &#064;Cacheable(value  = "specs.key", keyGenerator = "cacheKeyGenerator")
+
+ redis:
+     cache:
+         specs:
+             userCache:
+                 ttlMinutes: 10
+                 prefix: user
+             productCache:
+                 ttlMinutes: 60
+                 prefix: product
  </pre>
  */
 @ConfigurationProperties(prefix = "jdevelops.redis.cache")
