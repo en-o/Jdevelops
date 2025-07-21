@@ -7,12 +7,10 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import io.lettuce.core.RedisConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.redis.connection.RedisConnectionCommands;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,7 +27,7 @@ import java.util.Arrays;
  * @date 2024-03-12 08:25
  */
 @EnableCaching
-public class CustomCacheConfig extends CachingConfigurerSupport {
+public class CustomCacheConfig  implements CachingConfigurer {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomCacheConfig.class);
 
