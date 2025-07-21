@@ -70,9 +70,15 @@ public class RedisTokenImpl implements RedisToken {
             if (Boolean.TRUE.equals(tokenRedis.getAlwaysOnline())) {
                 LOG.warn("{}用户是永久在线用户，不需要刷新", subject);
             } else {
-                // 获取 key 的剩余生存时间 /s
-                Long ttl = redisTemplate.getExpire(loginRedisFolder);
-                if (ttl < 120) {
+                // 获取 key 的剩余生存时间 /分钟
+                long ttl = 0L;
+                try {
+                    ttl = redisTemplate.getExpire(loginRedisFolder, TimeUnit.MINUTES);
+                }catch (Exception e){
+                    LOG.error("获取{}用户的token剩余时间失败", subject, e);
+                }
+                // 两分钟内的菜会被刷新
+                if (ttl < 2) {
                     LOG.warn("{}用户的token即将过期，重新设置过期时间", subject);
                     // 设置过期时间（毫秒
                     boolean success = redisTemplate.expire(loginRedisFolder,
