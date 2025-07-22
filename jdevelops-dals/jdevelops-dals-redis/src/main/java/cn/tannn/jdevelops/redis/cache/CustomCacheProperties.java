@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Map;
 
 /**
- * use:
+ * use: 如果为会有一个默认10十分钟名称叫：jdevelops_defTen 的缓存
  <pre>
     &#064;Cacheable(value  = "specs.key", keyGenerator = "cacheKeyGenerator")
 

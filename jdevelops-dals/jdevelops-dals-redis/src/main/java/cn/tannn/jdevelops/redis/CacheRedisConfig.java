@@ -96,6 +96,16 @@ public class CacheRedisConfig {
                     .disableCachingNullValues();
             cacheConfigurations.put(cacheName, config);
         });
+        if(cacheConfigurations.isEmpty()){
+            cacheConfigurations.put("jdevelops_defTen",  RedisCacheConfiguration.defaultCacheConfig()
+                    .prefixCacheNameWith("jdevelops_defTen:")
+                    .entryTtl(Duration.ofMinutes(10))
+                    .serializeKeysWith(RedisSerializationContext.SerializationPair
+                            .fromSerializer(new StringRedisSerializer()))
+                    .serializeValuesWith(RedisSerializationContext.SerializationPair
+                            .fromSerializer(createJacksonSerializer()))
+                    .disableCachingNullValues());
+        }
         return cacheConfigurations;
     }
 
