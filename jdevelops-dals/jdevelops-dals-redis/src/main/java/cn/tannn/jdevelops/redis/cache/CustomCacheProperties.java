@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.redis.cache;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -75,7 +76,7 @@ public class CustomCacheProperties {
 
 
     public Map<String, CacheSpec> getSpecs() {
-        return specs;
+        return specs==null?new HashMap<>():specs;
     }
 
     public void setSpecs(Map<String, CacheSpec> specs) {

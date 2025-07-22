@@ -84,6 +84,14 @@ public class CacheRedisConfig {
      */
     private Map<String, RedisCacheConfiguration> getCacheConfigurations(CustomCacheProperties customCacheProperties) {
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+        cacheConfigurations.put("jdevelops_defTen",  RedisCacheConfiguration.defaultCacheConfig()
+                .prefixCacheNameWith("jdevelops_defTen:")
+                .entryTtl(Duration.ofMinutes(10))
+                .serializeKeysWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(createJacksonSerializer()))
+                .disableCachingNullValues());
         // 缓存配置
         customCacheProperties.getSpecs().forEach((cacheName, spec) -> {
             RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
@@ -96,16 +104,6 @@ public class CacheRedisConfig {
                     .disableCachingNullValues();
             cacheConfigurations.put(cacheName, config);
         });
-        if(cacheConfigurations.isEmpty()){
-            cacheConfigurations.put("jdevelops_defTen",  RedisCacheConfiguration.defaultCacheConfig()
-                    .prefixCacheNameWith("jdevelops_defTen:")
-                    .entryTtl(Duration.ofMinutes(10))
-                    .serializeKeysWith(RedisSerializationContext.SerializationPair
-                            .fromSerializer(new StringRedisSerializer()))
-                    .serializeValuesWith(RedisSerializationContext.SerializationPair
-                            .fromSerializer(createJacksonSerializer()))
-                    .disableCachingNullValues());
-        }
         return cacheConfigurations;
     }
 
