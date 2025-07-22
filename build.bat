@@ -7,7 +7,7 @@ REM 设置Maven路径，请根据实际情况修改
 REM 使用 jdk 17+
 REM 建议使用 maven 3.6.3
 REM 主要网络环境
-set "MAVEN_HOME=C:\work\tool\maven\apache-maven-3.9.1_noedit"
+set "MAVEN_HOME=C:\tools\maven\apache-maven-3.6.3"
 set "MVN_CMD=%MAVEN_HOME%\bin\mvn.cmd"
 
 REM 设置构建参数
