@@ -48,8 +48,12 @@ public class AuditContextHolder {
         );
 
         // IP设置
-        if (context != null && attributes instanceof ServletRequestAttributes servletAttributes) {
-            context.setAccessIp(IpUtil.getPoxyIpEnhance(servletAttributes.getRequest()));
+        try {
+            if (context != null && attributes instanceof ServletRequestAttributes servletAttributes) {
+                context.setAccessIp(IpUtil.getPoxyIpEnhance(servletAttributes.getRequest()));
+            }
+        }catch (Exception e){
+            log.error("Failed to get context from request attributes", e);
         }
 
         if (context == null) {
