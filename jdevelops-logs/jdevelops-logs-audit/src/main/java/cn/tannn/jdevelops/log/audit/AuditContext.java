@@ -7,7 +7,6 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
 import cn.tannn.jdevelops.log.audit.util.JsonUtil;
 import com.alibaba.fastjson2.JSONObject;
-
 /**
  * 数据审计日志记录
  *
@@ -102,7 +101,7 @@ public class AuditContext {
     /**
      * 是否批量
      */
-    boolean batch;
+    private boolean batch;
 
     public AuditContext() {
         this.status = true; // 默认操作成功
