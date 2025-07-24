@@ -103,6 +103,13 @@ public class AuditContext {
      */
     private boolean batch;
 
+
+    /**
+     * 访问IP
+     */
+    private String accessIp;
+
+
     public AuditContext() {
         this.status = true; // 默认操作成功
         this.batch = false; // 默认单条操作
@@ -401,6 +408,14 @@ public class AuditContext {
         this.batch = batch;
     }
 
+    public String getAccessIp() {
+        return accessIp;
+    }
+
+    public void setAccessIp(String accessIp) {
+        this.accessIp = accessIp;
+    }
+
     @Override
     public String toString() {
         return "AuditContext{" +
@@ -420,6 +435,7 @@ public class AuditContext {
                 ", status=" + status +
                 ", failMessage='" + failMessage + '\'' +
                 ", batch=" + batch +
+                ", accessIp='" + accessIp + '\'' +
                 '}';
     }
 }
