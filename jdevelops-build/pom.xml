@@ -74,15 +74,28 @@
 
     <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
     <repositories>
+        <!-- 快照仓库：阿里云私有仓库 -->
         <repository>
             <id>ali-snapshots</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
+            <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <!-- 发布仓库：Maven Central -->
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
