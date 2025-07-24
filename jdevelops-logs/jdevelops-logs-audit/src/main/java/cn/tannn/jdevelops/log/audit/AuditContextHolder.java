@@ -1,9 +1,11 @@
 package cn.tannn.jdevelops.log.audit;
 
+import cn.tannn.jdevelops.log.audit.util.IpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * 基于 RequestContextHolder 的实现
@@ -39,14 +41,21 @@ public class AuditContextHolder {
         if (attributes == null) {
             throw new IllegalStateException("No thread-bound request found");
         }
+
         AuditContext context = (AuditContext) attributes.getAttribute(
                 AUDIT_CONTEXT_ATTRIBUTE,
                 RequestAttributes.SCOPE_REQUEST
         );
+
+        // IP设置
+        if (context != null && attributes instanceof ServletRequestAttributes servletAttributes) {
+            context.setAccessIp(IpUtil.getPoxyIpEnhance(servletAttributes.getRequest()));
+        }
+
         if (context == null) {
             log.error("No AuditContext found in current request");
-
         }
+
         return context;
     }
 

@@ -2,16 +2,11 @@ package cn.tannn.jdevelops.log.audit;
 
 import cn.tannn.jdevelops.log.audit.annotations.AuditLog;
 import cn.tannn.jdevelops.log.audit.service.AuditSave;
-import cn.tannn.jdevelops.log.audit.util.IpUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.Optional;
 
 /**
  * 审计日志切面
@@ -83,18 +78,11 @@ public class AuditLogAspect {
      * 创建单个审计上下文
      */
     private AuditContext createSingleAuditContext(AuditLog auditLog) {
-        AuditContext auditContext = new AuditContext()
+        return new AuditContext()
                 .setAuditType(auditLog.auditType())
                 .setOperationalType(auditLog.operationType())
                 .setCustomType(auditLog.customType())
                 .setDescription(auditLog.description());
-        Optional.ofNullable(RequestContextHolder.getRequestAttributes())
-                .map(attrs -> (ServletRequestAttributes) attrs)
-                .map(ServletRequestAttributes::getRequest)
-                .ifPresent(request -> {
-                    auditContext.setAccessIp(IpUtil.getPoxyIpEnhance(request));
-                });
-        return auditContext;
     }
 
     /**
