@@ -18,6 +18,11 @@ public class SchemaConstant {
     public static final String POSTGRESQL = "postgresql";
 
     /**
+     * kingbase8
+     */
+    public static final String KINGBASE8 = "kingbase8";
+
+    /**
      * oracle
      */
     public static final String ORACLE = "oracle";

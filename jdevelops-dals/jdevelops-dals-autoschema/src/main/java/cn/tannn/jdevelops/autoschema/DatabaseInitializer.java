@@ -91,6 +91,13 @@ public class DatabaseInitializer  implements BeanFactoryPostProcessor, Environme
                     ||jdbcUrlPrefix.contains(SchemaConstant.MYSQL)) {
                 connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
                 jdbcType.set(2);
+            } else if (properties.getDriverClassName().contains(SchemaConstant.KINGBASE8)
+                    ||jdbcUrlPrefix.contains(SchemaConstant.KINGBASE8)) {
+                jdbcUrl = jdbcUrl.contains("?")?jdbcUrl.substring(0,jdbcUrl.indexOf("?")):jdbcUrl;
+                // 金仓默认存在的库
+                jdbcUrl +="/test";
+                connection = DriverManager.getConnection(jdbcUrl, properties.getUsername(), properties.getPassword());
+                jdbcType.set(3);
             } else {
                 LOG.warn("暂不支持此类型数据库自动创建数据库:" + properties.getDriverClassName());
                 return;
@@ -106,6 +113,9 @@ public class DatabaseInitializer  implements BeanFactoryPostProcessor, Environme
         }
     }
 
+    /**
+     * @param jdbcType 1 pgsql, 2 mysql,3 kingbase8
+     */
     private void execute(final Connection conn, final String schemaName, AtomicInteger jdbcType, DataBaseProperties dataBaseProperties) throws Exception {
         ScriptRunner runner = new ScriptRunner(conn);
         // doesn't print logger
@@ -114,7 +124,9 @@ public class DatabaseInitializer  implements BeanFactoryPostProcessor, Environme
         String initScript = dataBaseProperties.getInitScript();
         if (SchemaConstant.AUTO.equalsIgnoreCase(initScript) || StringUtil.isBlank(initScript)) {
             switch (jdbcType.get()) {
-                case 1:
+                case 1: // pgsql
+                case 3: // kingbase8
+                    // Kingbase8是基于PostgreSQL开发的
                     // 请查看示例 https://gist.github.com/retanoj/5fd369524a18ab68a4fe7ac5e0d121e8
                     String checkSchema = new StringBuilder().append("select count(*) as isok from pg_cataLOG.pg_database where datname = '").append(schemaName).append("' ;").toString();
                     Statement statement = conn.createStatement();
@@ -187,7 +199,7 @@ public class DatabaseInitializer  implements BeanFactoryPostProcessor, Environme
      */
     private static DataBaseProperties fillAutoConfig(Environment env) {
         return Binder.get(env)
-                .bind("jdevelops.database", DataBaseProperties.class)
+                .bind("sunway.database", DataBaseProperties.class)
                 .orElseGet(DataBaseProperties::new);
     }
 
