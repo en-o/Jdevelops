@@ -24,7 +24,7 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-dependencies</artifactId>
-                <version>1.0.2</version>
+                <version>1.0.2-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
