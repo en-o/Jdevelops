@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.jpa.convert;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 /**
  * JOSN
@@ -16,7 +18,10 @@ import jakarta.persistence.Converter;
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2024/7/16 下午2:45
+ * @see JdbcTypeCode#value()
+ * @see SqlTypes#JSON
  */
+@Deprecated
 @Converter(autoApply = true)
 public class JsonObjectConverter implements AttributeConverter<JSONObject, String> {
     @Override
