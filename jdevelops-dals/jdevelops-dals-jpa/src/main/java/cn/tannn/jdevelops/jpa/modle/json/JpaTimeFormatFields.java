@@ -37,7 +37,7 @@ public class JpaTimeFormatFields<T> extends BaseFields<T> {
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
      */
     @CreatedDate
-    @Column(columnDefinition = "timestamp")
+    @Column(columnDefinition = "timestamp", updatable = false)
     @Access(AccessType.PROPERTY)
     @Comment("创建日期")
     @Override
