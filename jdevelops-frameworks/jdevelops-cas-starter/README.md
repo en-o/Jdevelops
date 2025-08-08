@@ -40,8 +40,9 @@ public class LoginController {
     @Operation(summary = "第二步：统一认证成功后的跳转地址", description = "cas票据认证")
     @ApiOperationSupport(order = 2)
     public void loginCas(HttpServletResponse response, HttpServletRequest request, String ticket) throws IOException {
-        System.out.println(request.getParameter("flag"));
-        JsonObject userJson = casService.verifyTicket(ticket);
+        String flag = request.getParameter("flag");
+        // 如果flag=null会自己处理
+        JsonObject userJson = casService.verifyTicket(ticket, flag);
         CasConfig casConfig = casService.getCasConfig();
         String teacherNo = userJson.get("user_no").getAsString();
         Customer customer = customerService

@@ -34,8 +34,18 @@ public class CasServiceImpl implements CasService {
 
     @Override
     public JsonObject verifyTicket(String ticket) throws IOException {
+        return verifyTicket(ticket,null);
+    }
+
+    @Override
+    public JsonObject verifyTicket(String ticket, String flag) throws IOException {
         try {
-            String verifyRedirect = casConfig.jRedirect();
+            String verifyRedirect;
+            if(flag == null){
+                verifyRedirect = casConfig.jRedirect();
+            }else {
+                verifyRedirect = casConfig.jRedirect()+"?flag=" + flag;
+            }
             String ticketValidateUrl = casConfig.fullValidateUrl() + "?service=" + verifyRedirect + "&ticket=" + ticket;
             String userStr = OkHttpTools.DEF().get(ticketValidateUrl);
             log.error("单独登录验证票据返回的数据：{}", userStr);
