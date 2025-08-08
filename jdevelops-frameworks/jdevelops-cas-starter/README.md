@@ -31,6 +31,8 @@ public class LoginController {
     public void loginCasWeb(HttpServletResponse response, HttpServletRequest request) throws IOException {
         // 可以自定义 ，参考这个方法写就行了
         String loginUrl = casService.redirectCasAddress();
+        // flag区分用户属性 ，在下面的loginCas可以获取到
+//        String loginUrl = casService.redirectCasAddress(1);
         response.sendRedirect(loginUrl);
     }
 
@@ -38,6 +40,7 @@ public class LoginController {
     @Operation(summary = "第二步：统一认证成功后的跳转地址", description = "cas票据认证")
     @ApiOperationSupport(order = 2)
     public void loginCas(HttpServletResponse response, HttpServletRequest request, String ticket) throws IOException {
+        System.out.println(request.getParameter("flag"));
         JsonObject userJson = casService.verifyTicket(ticket);
         CasConfig casConfig = casService.getCasConfig();
         String teacherNo = userJson.get("user_no").getAsString();
