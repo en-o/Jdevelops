@@ -57,7 +57,12 @@ public class CasServiceImpl implements CasService {
     }
 
     @Override
-    public String redirectCasAddress() {
+    public String redirectCasAddress(int flag) {
+        return casConfig.fullLoginUrl() + "?service=" + casConfig.jRedirect()+"?flag=" + flag;
+    }
+
+    @Override
+    public String redirectCasAddress() throws IOException {
         return casConfig.fullLoginUrl() + "?service=" + casConfig.jRedirect();
     }
 

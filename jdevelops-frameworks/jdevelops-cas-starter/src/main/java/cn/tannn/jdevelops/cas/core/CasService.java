@@ -42,8 +42,14 @@ public interface CasService {
 
     /**
      * cas 重定向地址
-     *
-     * @return 可以直接（response.sendRedirect(loginUrl);）
+     * @param flag 用户标识，标识信息自己记录，比如0表示系统用户，1表示平台用户等
+     * @return 可以直接（response.sendRedirect(redirectCasAddress());）
+     */
+    String redirectCasAddress(int flag) throws IOException;
+
+    /**
+     * cas 重定向地址 兼容原来的方法 - 没有flag表示不需要标识用户
+     * @return 可以直接（response.sendRedirect(redirectCasAddress());）
      */
     String redirectCasAddress() throws IOException;
 

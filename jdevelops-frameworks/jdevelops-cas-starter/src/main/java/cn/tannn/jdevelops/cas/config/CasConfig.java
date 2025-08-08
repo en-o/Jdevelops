@@ -199,8 +199,10 @@ public class CasConfig {
 
     /**
      * 统一认证成功后的跳转地址的票据认证完整地址
+     * <p>后端必须要有/login/cas接口，这个接口不允许自定义必须</p>
      */
     public String jRedirect() {
+        // 按道理应该是 callback 历史原有原有不想改了
         return apiUrlPrefix + "/login/cas";
     }
 
