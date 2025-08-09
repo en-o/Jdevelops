@@ -175,7 +175,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         fileIndex.setBucketPath(bucketPath);
         fileIndex.setUrlSuffix(urlSuffix);
         fileIndex.setType(type);
-        fileIndex.setSize(size);
+        fileIndex.setSize(Long.valueOf(null==size?"0":size));
         fileIndex.setSizeUnit(sizeUnit);
         return fileIndex;
     }
@@ -196,7 +196,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         indexMeta.setBucketPath(fileIndex.getBucketPath());
         indexMeta.setUrlSuffix(fileIndex.getUrlSuffix());
         indexMeta.setType(fileIndex.getType());
-        indexMeta.setSize(fileIndex.getSize());
+        indexMeta.setSize(fileIndex.getSize()==null?"0":fileIndex.getSize()+"");
         indexMeta.setSizeUnit(fileIndex.getSizeUnit());
         return indexMeta;
     }
