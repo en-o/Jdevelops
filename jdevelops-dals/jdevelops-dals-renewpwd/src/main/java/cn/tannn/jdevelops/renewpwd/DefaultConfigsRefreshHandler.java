@@ -105,7 +105,9 @@ public class DefaultConfigsRefreshHandler implements ConfigsRefreshHandler, Appl
                 log.warn("[renewpwd] 刷新数据源 Bean 失败: {}", beanName, e);
             }
         }
-
+        Set<String> targetBeanTypes = new HashSet<>();
+        targetBeanTypes.add("javax.sql.DataSource");
+        targetBeanTypes.add("org.springframework.jdbc.core.JdbcTemplate");
         // 刷新各种数据相关 Bean
         refreshBeansByClassName(beanFactory, "org.springframework.jdbc.core.JdbcTemplate", "JdbcTemplate");
         refreshBeansByClassName(beanFactory, "org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate", "NamedParameterJdbcTemplate");
