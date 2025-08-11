@@ -106,21 +106,43 @@ public class DefaultConfigsRefreshHandler implements ConfigsRefreshHandler, Appl
             }
         }
 
-        // 同时刷新 JdbcTemplate（如果存在）
-        String[] jdbcTemplateBeans = applicationContext.getBeanNamesForType(
-                org.springframework.jdbc.core.JdbcTemplate.class);
+        // 刷新各种数据相关 Bean
+        refreshBeansByClassName(beanFactory, "org.springframework.jdbc.core.JdbcTemplate", "JdbcTemplate");
+        refreshBeansByClassName(beanFactory, "org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate", "NamedParameterJdbcTemplate");
+        refreshBeansByClassName(beanFactory, "org.mybatis.spring.SqlSessionTemplate", "SqlSessionTemplate");
 
-        for (String beanName : jdbcTemplateBeans) {
-            try {
-                if (beanFactory.containsSingleton(beanName)) {
-                    beanFactory.destroySingleton(beanName);
-                    log.info("[renewpwd] 标记 JdbcTemplate Bean 需要重新创建: {}", beanName);
+    }
+
+
+    /**
+     * 动态刷新指定类型的 Bean
+     * @param beanFactory Bean 工厂
+     * @param className 要刷新的类名
+     * @param displayName 用于日志显示的名称
+     */
+    private void refreshBeansByClassName(DefaultListableBeanFactory beanFactory, String className, String displayName) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            String[] beanNames = applicationContext.getBeanNamesForType(clazz);
+
+            for (String beanName : beanNames) {
+                try {
+                    if (beanFactory.containsSingleton(beanName)) {
+                        beanFactory.destroySingleton(beanName);
+                        log.info("[renewpwd] 标记 {} Bean 需要重新创建: {}", displayName, beanName);
+                    }
+                } catch (Exception e) {
+                    log.warn("[renewpwd] 刷新 {} Bean 失败: {}", displayName, beanName, e);
                 }
-            } catch (Exception e) {
-                log.warn("[renewpwd] 刷新 JdbcTemplate Bean 失败: {}", beanName, e);
             }
+        } catch (ClassNotFoundException e) {
+            log.debug("[renewpwd] {} 类不存在，跳过刷新", displayName);
+        } catch (Exception e) {
+            log.warn("[renewpwd] 刷新 {} Bean 过程中出现异常", displayName, e);
         }
     }
+
+
 
     /**
      * 优雅关闭数据源
