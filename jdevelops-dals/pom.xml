@@ -65,6 +65,8 @@
         <module>jdevelops-dals-autoschema</module>
         <module>jdevelops-dals-jdbctemplate</module>
         <module>jdevelops-dals-quartz</module>
+        <!--在密码过期前自动续命-->
+        <module>jdevelops-dals-renewpwd</module>
     </modules>
 
 
