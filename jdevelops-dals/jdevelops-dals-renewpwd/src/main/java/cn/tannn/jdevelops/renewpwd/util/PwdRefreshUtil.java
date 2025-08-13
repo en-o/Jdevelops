@@ -21,11 +21,19 @@ public class PwdRefreshUtil {
      * 验证数据源配置是否有效
      */
     public static boolean validateDatasourceConfig(ConfigurableEnvironment environment ) {
+        String password = environment.getProperty("spring.datasource.password");
+        return validateDatasourceConfig(environment,password);
+    }
+
+
+    /**
+     * 验证数据源配置是否有效
+     */
+    public static boolean validateDatasourceConfig(ConfigurableEnvironment environment,String password) {
         try {
 
             String url = environment.getProperty("spring.datasource.url");
             String username = environment.getProperty("spring.datasource.username");
-            String password = environment.getProperty("spring.datasource.password");
             String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
 
             log.debug("[renewpwd] 数据源配置: url={}, username={}, password={}",

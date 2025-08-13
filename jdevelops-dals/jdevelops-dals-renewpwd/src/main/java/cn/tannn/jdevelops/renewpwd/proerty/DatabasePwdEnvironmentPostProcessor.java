@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.renewpwd.proerty;
 
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
+import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.EnvironmentAware;
@@ -24,8 +25,13 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = ENV.getProperty("jdevelops.renewpwd.backupPassword");
         // 这里需要判断怎么算是启用
-        if(backupPassword != null){
-            password = backupPassword;
+        // 我用连接判断了，反正就两个
+        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password)){
+            if(PwdRefreshUtil.validateDatasourceConfig(ENV,backupPassword)){
+                password = backupPassword;
+            }else {
+                throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
+            }
         }
 
         // 需要解密
