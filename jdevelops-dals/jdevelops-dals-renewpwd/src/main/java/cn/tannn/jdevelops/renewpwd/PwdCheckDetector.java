@@ -1,5 +1,15 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
+import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 /**
  * 密码探测器
  *
@@ -8,22 +18,24 @@ package cn.tannn.jdevelops.renewpwd;
  * 具体的密码检测逻辑需通过重写 checkPwdExpire() 方法实现。
  *
  * <pre>
- * &#47;**
- *  * 自定义密码检测器示例
- *  *&#47;
- * public class MyPwdCheckDetector extends PwdCheckDetector {
- *     &#64;Override
- *     protected void checkPwdExpire() {
- *         // 这里实现数据库密码过期检测逻辑
- *         // 例如：用JDBC查询密码有效期
- *     }
- * }
- *
- * // 使用方式
- * MyPwdCheckDetector detector = new MyPwdCheckDetector();
- * detector.start();   // 启动检测
- * // detector.stop(); // 停止检测
- * // detector.restart(); // 重启检测
+ * // 用法示例
+ * PwdCheckDetector detector = new PwdCheckDetector(
+ *     () -> {
+ *         // 查询数据库，返回 PwdExpireInfo
+ *         return new PwdExpireInfo(
+ *             "主密码",
+ *             "新密码",
+ *             true,
+ *             LocalDateTime.now().plusMinutes(15)
+ *         );
+ *     },
+ *     info -> {
+ *         // 密码修复过程回调，可记录日志或通知
+ *         System.out.println("已修复密码类型: " + info.getType());
+ *     },
+ *     renewPwdRefresh // 你的 RenewPwdRefresh 实例
+ * );
+ * detector.start();
  * </pre>
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
@@ -31,7 +43,7 @@ package cn.tannn.jdevelops.renewpwd;
  * @date 2025/8/13 16:27
  */
 public class PwdCheckDetector {
-
+    private static final Logger log = LoggerFactory.getLogger(PwdCheckDetector.class);
     /**
      * 控制线程运行状态的标志
      */
@@ -41,6 +53,28 @@ public class PwdCheckDetector {
      * 探测线程对象
      */
     private Thread detectorThread;
+
+    /**
+     * 密码过期信息提供者
+     * 通过 Supplier 接口获取密码过期信息。
+     * 具体实现由调用方提供，通常是查询数据库或其他数据源。
+     */
+    private final Supplier<PwdExpireInfo> pwdExpireSupplier;
+
+    /* * 密码修复操作
+     * 通过 Consumer 接口处理密码修复逻辑。
+     * 具体实现由调用方提供，通常是更新数据库中的密码。
+     */
+    private final Consumer<PwdExpireInfo> onFixPassword;
+
+    private final RenewPwdRefresh renewPwdRefresh;
+
+    public PwdCheckDetector(Supplier<PwdExpireInfo> pwdExpireSupplier, Consumer<PwdExpireInfo> onFixPassword, RenewPwdRefresh renewPwdRefresh) {
+        this.pwdExpireSupplier = pwdExpireSupplier;
+        this.onFixPassword = onFixPassword;
+        this.renewPwdRefresh = renewPwdRefresh;
+    }
+
 
     /**
      * 启动探测线程
@@ -89,12 +123,23 @@ public class PwdCheckDetector {
     }
 
     /**
-     * 密码过期检测逻辑
-     * 需由业务实现，负责查询数据库判断密码是否即将过期。
-     * 可使用 JDBC、MyBatis、JPA、JdbcTemplate 等方式。
+     * 检查密码是否即将过期，并自动续期
      */
     protected void checkPwdExpire() {
-        // TODO: 查询数据库，判断密码是否即将过期
-        // 可用JDBC/MyBatis/JPA/JdbcTemplate等
+        PwdExpireInfo pwdInfos = pwdExpireSupplier.get();
+        if (pwdInfos != null && pwdInfos.getExpireTime() != null) {
+            LocalDateTime now = LocalDateTime.now();
+
+            // 触发时间点：密码过期前10分钟
+            LocalDateTime triggerTime = pwdInfos.getExpireTime().minusMinutes(10);
+            if (now.isAfter(triggerTime) && pwdInfos.isExpireSoon()) {
+                renewPwdRefresh.fixPassword(pwdInfos.getNewPassword());
+                if (onFixPassword != null) {
+                    onFixPassword.accept(pwdInfos);
+                }
+            }else {
+                log.info("当前密码未到期或不需要续期，当前时间: {}, 过期时间: {}", now, pwdInfos.getExpireTime());
+            }
+        }
     }
 }
