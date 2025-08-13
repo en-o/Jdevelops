@@ -21,6 +21,12 @@ public class PasswordPool {
     private String backupPassword;
 
 
+    /**
+     * 是否启用密码虚续命，以配置文件为准
+     */
+    private String enabled;
+
+
     public String getBackupPassword() {
         return backupPassword;
     }
@@ -37,5 +43,21 @@ public class PasswordPool {
      */
     public boolean isValid() {
         return  backupPassword != null && !backupPassword.isEmpty();
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "PasswordPool{" +
+                "backupPassword='" + backupPassword + '\'' +
+                ", enabled='" + enabled + '\'' +
+                '}';
     }
 }
