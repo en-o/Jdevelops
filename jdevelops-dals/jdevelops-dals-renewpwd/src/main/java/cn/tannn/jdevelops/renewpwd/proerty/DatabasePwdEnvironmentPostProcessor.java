@@ -1,5 +1,6 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.proerty;
 
+import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.EnvironmentAware;

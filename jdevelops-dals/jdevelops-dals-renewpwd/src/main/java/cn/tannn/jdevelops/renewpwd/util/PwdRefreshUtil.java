@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
+import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,8 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
     private final  Environment environment;
     private final ConfigurationPropertiesRebinder rebinder;
     private final RefreshScope refreshScope;
-    @Autowired
-    private  RenewPasswordService renewPasswordService;
+    @Autowired(required = false)
+    private RenewPasswordService renewPasswordService;
 
     private static final Logger log = LoggerFactory.getLogger(DefaultRenewPwdRefresh.class);
 
@@ -42,6 +44,10 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     @Override
     public void fixPassword(String newPassword, List<String> beanNames) {
+        if(renewPasswordService == null){
+            log.error("renewPasswordService is null");
+            return;
+        }
         // 如果是数据源相关配置变更，需要先验证连接
         if (!validateDatasourceBeforeRefresh()) {
             log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");

@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.proerty;
 
 import org.springframework.core.env.EnumerablePropertySource;
 

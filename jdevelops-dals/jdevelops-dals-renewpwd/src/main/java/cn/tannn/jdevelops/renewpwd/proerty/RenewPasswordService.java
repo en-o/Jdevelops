@@ -1,4 +1,6 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.proerty;
+
+import cn.tannn.jdevelops.renewpwd.pojo.PwdConfigChangeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +21,7 @@ public class RenewPasswordService {
     /**
      * 初始化配置
      */
-    void initialize(String password) {
+    public void initialize(String password) {
         // 初始化配置
         HashMap<String, String> configMap = new HashMap<>();
         configMap.put("spring.datasource.password", password);
@@ -38,10 +40,4 @@ public class RenewPasswordService {
         return config.get(name);
     }
 
-    /**
-     * 配置变更通知
-     */
-    public void onChange(PwdConfigChangeEvent event){
-
-    };
 }

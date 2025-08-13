@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.pojo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

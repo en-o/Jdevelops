@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.renewpwd;
+package cn.tannn.jdevelops.renewpwd.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
