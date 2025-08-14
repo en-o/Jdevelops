@@ -20,11 +20,10 @@ public class PasswordPool {
      */
     private String backupPassword;
 
-
     /**
-     * 是否启用密码虚续命，以配置文件为准
+     * 是否启用密码虚续命，以配置文件为准-这里只是为空编写配置的时候有提示，具体在RenewpwdRegister#isRefreshEnabled
      */
-    private String enabled;
+    private Boolean enabled;
 
 
     public String getBackupPassword() {
@@ -45,11 +44,11 @@ public class PasswordPool {
         return  backupPassword != null && !backupPassword.isEmpty();
     }
 
-    public String getEnabled() {
-        return enabled;
+    public Boolean getEnabled() {
+        return enabled != null && enabled;
     }
 
-    public void setEnabled(String enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
