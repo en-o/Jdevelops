@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 配置刷新工具类

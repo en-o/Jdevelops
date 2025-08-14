@@ -2,9 +2,6 @@ package cn.tannn.jdevelops.renewpwd.pojo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 密码池 - 只在两个密码之间切换
  *

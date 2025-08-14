@@ -1,7 +1,5 @@
 package cn.tannn.jdevelops.renewpwd.proerty;
 
-import cn.tannn.jdevelops.renewpwd.pojo.PwdConfigChangeEvent;
-
 import java.util.HashMap;
 import java.util.Map;
 
