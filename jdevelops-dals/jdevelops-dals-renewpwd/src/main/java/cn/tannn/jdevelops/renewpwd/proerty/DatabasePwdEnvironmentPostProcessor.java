@@ -44,7 +44,10 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             Binder binder = Binder.get(environment);
             PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
-            backupPassword = decryptPassword(passwordPool.getBackupPassword());
+            String panduannull = passwordPool.getBackupPassword();
+            if(panduannull!=null&&!panduannull.isBlank()){
+                backupPassword = decryptPassword(passwordPool.getBackupPassword());
+            }
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
                 log.warn("{}，使用datasource的密码进行处理", e.getMessage());
