@@ -45,7 +45,7 @@ public class PwdRefreshUtil {
                 return false;
             }
             // 创建临时连接测试
-            return testDatabaseConnection(url, username, currentPassword, backupPassword, driverClassName);
+            return testDatabaseConnection(url, username,  driverClassName, currentPassword, backupPassword);
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
             return false;
