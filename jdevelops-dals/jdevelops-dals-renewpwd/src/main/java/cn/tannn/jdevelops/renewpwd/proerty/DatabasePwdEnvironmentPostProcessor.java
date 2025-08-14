@@ -31,11 +31,14 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = password;
+
+        password = decryptPassword(password);
+
         try {
             Binder binder = Binder.get(environment);
             PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
-            backupPassword = passwordPool.getBackupPassword();
+            backupPassword = decryptPassword(passwordPool.getBackupPassword());
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
                 log.warn("{}，使用datasource的密码进行处理", e.getMessage());
@@ -52,11 +55,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             }
         }
 
-        // 需要解密
-        if (password != null && password.startsWith("ENC(")) {
-            String encrypted = password.substring(4, password.length() - 1);
-            password = AESUtil.decrypt(encrypted);
-        }
         RenewPasswordService configService = new RenewPasswordService();
         configService.initialize(password);
         // 将实例注册到Spring容器中，确保是单例
@@ -71,10 +69,27 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     }
 
 
+
+
+
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
 
+
+    /**
+     * 解密密码
+     * @param password 密码字符
+     * @return 解密的
+     */
+    private static String decryptPassword(String password) {
+        // 需要解密
+        if (password != null && password.startsWith("ENC(")) {
+            String encrypted = password.substring(4, password.length() - 1);
+            password = AESUtil.decrypt(encrypted);
+        }
+        return password;
+    }
 
 }
