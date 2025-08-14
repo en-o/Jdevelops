@@ -46,7 +46,11 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
        }
 
         if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password, backupPassword)){
-            throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
+            if(PwdRefreshUtil.validateDatasourceConfig(ENV,backupPassword,password)){
+                password = backupPassword;
+            }else {
+                throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
+            }
         }
 
         // 需要解密

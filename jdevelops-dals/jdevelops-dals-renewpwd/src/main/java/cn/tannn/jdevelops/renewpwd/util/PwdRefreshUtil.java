@@ -44,10 +44,8 @@ public class PwdRefreshUtil {
                         url, username, currentPassword != null ? "***" : "null");
                 return false;
             }
-
             // 创建临时连接测试
             return testDatabaseConnection(url, username, currentPassword, backupPassword, driverClassName);
-
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
             return false;
@@ -97,7 +95,7 @@ public class PwdRefreshUtil {
             // SELECT * FROM performance_schema.events_errors_summary_global_by_error  where error_number = 'vendorCode'
             if (vendorCode == 1045) {
                 log.error("[renewpwd] 数据库连接验证失败，可能是用户名或密码错误: {}", e.getMessage());
-                return testDatabaseConnection(url, username, backupPassword, currentPassword, driverClassName);
+                return false;
             } else if (vendorCode == 1820 || vendorCode == 1862) {
                 log.error("[renewpwd] 数据库连接验证失败，密码已过期必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
                 // 我这里就不替换里面了，用原来的密码再改一次
