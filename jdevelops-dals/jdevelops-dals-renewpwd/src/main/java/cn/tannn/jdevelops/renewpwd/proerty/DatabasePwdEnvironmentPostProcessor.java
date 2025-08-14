@@ -26,29 +26,28 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     private Environment environment;
 
 
-
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
         ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = password;
-       try {
-           Binder binder = Binder.get(environment);
-           PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
-                   .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
+        try {
+            Binder binder = Binder.get(environment);
+            PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
+                    .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
             backupPassword = passwordPool.getBackupPassword();
-       }catch (Exception e){
-           if( e instanceof IllegalStateException){
-               log.warn("{}，使用datasource的密码进行处理",e.getMessage());
-           }else {
-               log.warn("没有配置密码池，使用datasource的密码进行处理");
-           }
-       }
-
-        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password, backupPassword)){
-            if(PwdRefreshUtil.validateDatasourceConfig(ENV,backupPassword,password)){
+        } catch (Exception e) {
+            if (e instanceof IllegalStateException) {
+                log.warn("{}，使用datasource的密码进行处理", e.getMessage());
+            } else {
+                log.warn("没有配置密码池，使用datasource的密码进行处理");
+            }
+        }
+        // 一共就两个，我这里就这样弄了，如果是2+ 目前还没找到标记当前的方法
+        if (!PwdRefreshUtil.validateDatasourceConfig(ENV, password, backupPassword)) {
+            if (PwdRefreshUtil.validateDatasourceConfig(ENV, backupPassword, password)) {
                 password = backupPassword;
-            }else {
+            } else {
                 throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
             }
         }
