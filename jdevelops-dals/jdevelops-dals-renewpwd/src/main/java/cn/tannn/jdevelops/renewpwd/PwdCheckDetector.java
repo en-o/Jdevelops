@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -217,34 +218,15 @@ public class PwdCheckDetector implements AutoCloseable {
             // 1. 查询密码过期信息
             PwdExpireInfo pwdInfo = queryPwdExpireInfo();
 
-            if (pwdInfo == null || pwdInfo.getExpireTime() == null) {
+            if (pwdInfo == null || !pwdInfo.isCurrentIsExpireSoon()) {
                 // 查询失败或数据无效，使用重试间隔重新调度
                 log.warn("查询密码过期信息失败或账户没设置过期，{}分钟后重试", retryIntervalMinutes);
                 scheduleRetry();
-                return;
-            }
-
-            // 2. 计算触发延迟时间
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime triggerTime = pwdInfo.getExpireTime().minusMinutes(triggerBeforeExpireMinutes);
-
-            if (now.isAfter(triggerTime)) {
+            } else {
                 // 触发时间已到，立即执行
                 log.info("触发时间已到，立即执行密码处理流程");
                 scheduler.submit(() -> safeExecutePasswordFlow(pwdInfo));
-            } else {
-                // 计算延迟时间并调度
-                long delayMinutes = ChronoUnit.MINUTES.between(now, triggerTime);
-                log.info("密码将在 {} 分钟后触发处理，触发时间: {}", delayMinutes, triggerTime);
-
-                // 延迟调度,在离过期还有 triggerBeforeExpireMinutes 分钟时触发
-                scheduler.schedule(
-                        () -> safeExecutePasswordFlow(pwdInfo),
-                        delayMinutes,
-                        TimeUnit.MINUTES
-                );
             }
-
         } catch (Exception e) {
             log.error("调度下一次检查时发生异常", e);
             scheduleRetry();
@@ -257,8 +239,8 @@ public class PwdCheckDetector implements AutoCloseable {
     private PwdExpireInfo queryPwdExpireInfo() {
         try {
             PwdExpireInfo pwdInfo = pwdExpireSupplier.get();
-            if (pwdInfo != null && pwdInfo.getExpireTime() != null) {
-                log.debug("查询到密码过期信息，过期时间: {}", pwdInfo.getExpireTime());
+            if (pwdInfo != null && pwdInfo.isCurrentIsExpireSoon()) {
+                log.debug("查询到密码过期信息，需要进行密码重置,当前时间：{}", LocalDateTime.now());
             }
             return pwdInfo;
         } catch (Exception e) {
@@ -289,7 +271,7 @@ public class PwdCheckDetector implements AutoCloseable {
      * 流程：处理方法 → 刷新方法 → 重新开始循环
      */
     private void executePasswordFlow(PwdExpireInfo pwdInfo) {
-        log.info("开始执行密码处理流程，密码过期时间: {}", pwdInfo.getExpireTime());
+        log.info("密码过期 - 开始执行密码处理流程，当前时间: {}", LocalDateTime.now());
 
         try {
             // 1. 执行处理方法

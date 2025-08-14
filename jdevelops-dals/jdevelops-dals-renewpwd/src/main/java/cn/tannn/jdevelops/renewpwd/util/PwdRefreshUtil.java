@@ -20,39 +20,35 @@ public class PwdRefreshUtil {
 
 
     private static final Logger log = LoggerFactory.getLogger(PwdRefreshUtil.class);
-    /**
-     * 密码池
-     */
-    private static List<String> passwords;
 
 
     /**
      * 验证数据源配置是否有效
      * @param environment  ConfigurableEnvironment
-     * @param masterPassword 当前密码
+     * @param currentPassword 当前密码
      * @param backupPassword 密码池（用于重置密码的密码组） 当前还没有用
      */
     public static boolean validateDatasourceConfig(ConfigurableEnvironment environment
-            , String masterPassword, List<String> backupPassword) {
+            , String currentPassword, String backupPassword) {
         try {
             // 暂时还不知道怎么处理，这个用来修改密码用的，但是修改之后不知道怎么将修改之后的通知回去，在第二次启动项目的时候不用主密码而是用修改之后的密码
-            passwords = backupPassword.isEmpty()? Collections.singletonList(masterPassword) : backupPassword;
+            backupPassword = backupPassword.isEmpty()? currentPassword : backupPassword;
 
             String url = environment.getProperty("spring.datasource.url");
             String username = environment.getProperty("spring.datasource.username");
             String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
 
             log.debug("[renewpwd] 数据源配置: url={}, username={}, password={}",
-                    url, username, masterPassword);
+                    url, username, currentPassword);
 
-            if (url == null || username == null || masterPassword == null) {
+            if (url == null || username == null || currentPassword == null) {
                 log.warn("[renewpwd] 数据源配置不完整: url={}, username={}, password={}",
-                        url, username, masterPassword != null ? "***" : "null");
+                        url, username, currentPassword != null ? "***" : "null");
                 return false;
             }
 
             // 创建临时连接测试
-            return testDatabaseConnection(url, username, masterPassword, driverClassName);
+            return testDatabaseConnection(url, username, currentPassword, backupPassword, driverClassName);
 
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
@@ -64,7 +60,12 @@ public class PwdRefreshUtil {
     /**
      * 测试数据库连接是否有效
      */
-    public static boolean testDatabaseConnection(String url, String username, String password, String driverClassName) {
+    public static boolean testDatabaseConnection(String url
+            , String username
+            , String driverClassName
+            , String currentPassword
+            , String backupPassword
+    ) {
         java.sql.Connection connection = null;
         try {
             // 加载数据库驱动
@@ -77,7 +78,7 @@ public class PwdRefreshUtil {
             // 设置连接超时时间
             java.util.Properties props = new java.util.Properties();
             props.setProperty("user", username);
-            props.setProperty("password", password);
+            props.setProperty("password", currentPassword);
             props.setProperty("connectTimeout", "5000"); // 5秒连接超时
             props.setProperty("socketTimeout", "5000");   // 5秒socket超时
 
@@ -98,10 +99,11 @@ public class PwdRefreshUtil {
             // SELECT * FROM performance_schema.events_errors_summary_global_by_error  where error_number = 'vendorCode'
             if (vendorCode == 1045) {
                 log.error("[renewpwd] 数据库连接验证失败，可能是用户名或密码错误: {}", e.getMessage());
+                return testDatabaseConnection(url, username, backupPassword, currentPassword, driverClassName);
             } else if (vendorCode == 1820 || vendorCode == 1862) {
                 log.error("[renewpwd] 数据库连接验证失败，密码已过期必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
                 // 我这里就不替换里面了，用原来的密码再改一次
-                return updateUserPassword(url, username, password, passwords.get(0), driverClassName);
+                return updateUserPassword(url, username, currentPassword, backupPassword, driverClassName);
             } else {
                 log.error("[renewpwd] 数据库连接验证失败: {}", e.getMessage());
             }

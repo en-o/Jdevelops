@@ -37,12 +37,12 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
         ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
         String password = ENV.getProperty("spring.datasource.password");
-        List<String> passwords = new ArrayList<>();
+        String backupPassword = password;
        try {
            Binder binder = Binder.get(environment);
            PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
                    .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
-           passwords = passwordPool.getPasswords();
+            backupPassword = passwordPool.getBackupPassword();
        }catch (Exception e){
            if( e instanceof IllegalStateException){
                log.warn("{}，使用datasource的密码进行处理",e.getMessage());
@@ -51,7 +51,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
            }
        }
 
-        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password,passwords)){
+        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password, backupPassword)){
             throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
         }
 

@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
+import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
-    private final  Environment environment;
+    private final Environment environment;
     private final ConfigurationPropertiesRebinder rebinder;
     private final RefreshScope refreshScope;
     @Autowired(required = false)
@@ -37,19 +39,18 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     @Override
     public void fixPassword(String newPassword) {
-        fixPassword(newPassword,List.of("dataSource"));
+        fixPassword(newPassword, List.of("dataSource"));
     }
-
 
 
     @Override
     public void fixPassword(String newPassword, List<String> beanNames) {
-        if(renewPasswordService == null){
+        if (renewPasswordService == null) {
             log.error("renewPasswordService is null");
             return;
         }
         // 如果是数据源相关配置变更，需要先验证连接
-        if (!validateDatasourceBeforeRefresh(newPassword)) {
+        if (!validateDatasourceBeforeRefresh(newPassword, newPassword)) {
             log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");
             return;
         }
@@ -65,14 +66,16 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     /**
      * 在刷新数据源Bean之前验证数据库连接
-     * @param newPassword 数据库新密码
+     *
+     * @param currentPassword 数据库新密码
+     * @param backupPassword  备份密码
      * @return 验证是否通过
      */
-    private boolean validateDatasourceBeforeRefresh(String newPassword) {
+    private boolean validateDatasourceBeforeRefresh(String currentPassword, String backupPassword) {
         try {
             // 获取当前环境中的数据源配置
             ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
-            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV,newPassword,List.of(newPassword));
+            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV, currentPassword, backupPassword);
 
             if (isValid) {
                 log.info("[renewpwd] 数据源配置验证成功");

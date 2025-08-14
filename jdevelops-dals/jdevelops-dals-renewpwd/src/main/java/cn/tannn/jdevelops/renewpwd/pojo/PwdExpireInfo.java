@@ -1,40 +1,39 @@
 package cn.tannn.jdevelops.renewpwd.pojo;
 
-import java.time.LocalDateTime;
-
 /**
  * 密码过期信息
  */
 public class PwdExpireInfo {
     /**
-     * 新密码
+     * 新密码密码
      */
     private final String newPassword;
-    /**
-     * 旧密码(当前使用中)是否10分钟内过期
-     */
-    private final boolean expireSoon;
-    /**
-     * 旧密码(当前使用中)过期时间
-     */
-    private final LocalDateTime expireTime;
 
-    public PwdExpireInfo(String newPassword, boolean expireSoon, LocalDateTime expireTime) {
+
+    /**
+     * 当前密码是否过期
+     */
+    private final boolean currentIsExpireSoon;
+
+    public PwdExpireInfo(String newPassword, boolean currentIsExpireSoon) {
         this.newPassword = newPassword;
-        this.expireSoon = expireSoon;
-        this.expireTime = expireTime;
+        this.currentIsExpireSoon = currentIsExpireSoon;
     }
-
 
     public String getNewPassword() {
         return newPassword;
     }
 
-    public boolean isExpireSoon() {
-        return expireSoon;
+
+    public boolean isCurrentIsExpireSoon() {
+        return currentIsExpireSoon;
     }
 
-    public LocalDateTime getExpireTime() {
-        return expireTime;
+    @Override
+    public String toString() {
+        return "PwdExpireInfo{" +
+                "newPassword='" + newPassword + '\'' +
+                ", currentIsExpireSoon=" + currentIsExpireSoon +
+                '}';
     }
 }
