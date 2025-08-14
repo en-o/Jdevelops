@@ -55,7 +55,7 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar {
             return (Boolean) attributes.get("enable");
         }
         // 默认启用
-        return true;
+        return false;
     }
 
     private Environment getEnvironment(BeanDefinitionRegistry registry) {
