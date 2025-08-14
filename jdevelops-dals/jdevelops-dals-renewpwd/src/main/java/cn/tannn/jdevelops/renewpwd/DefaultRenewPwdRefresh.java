@@ -49,7 +49,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             return;
         }
         // 如果是数据源相关配置变更，需要先验证连接
-        if (!validateDatasourceBeforeRefresh()) {
+        if (!validateDatasourceBeforeRefresh(newPassword)) {
             log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");
             return;
         }
@@ -65,13 +65,14 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     /**
      * 在刷新数据源Bean之前验证数据库连接
+     * @param password 数据库密码
      * @return 验证是否通过
      */
-    private boolean validateDatasourceBeforeRefresh() {
+    private boolean validateDatasourceBeforeRefresh(String password) {
         try {
             // 获取当前环境中的数据源配置
             ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
-            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV);
+            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV,password,List.of(password));
 
             if (isValid) {
                 log.info("[renewpwd] 数据源配置验证成功");

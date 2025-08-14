@@ -1,13 +1,24 @@
 package cn.tannn.jdevelops.renewpwd.proerty;
 
+import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 数据库密码处理器 - 启动时对密码进行处理
@@ -17,24 +28,31 @@ import org.springframework.core.env.Environment;
 public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
     private final static String PROPERTY_SOURCES = "renewpwdConfigPropertySources";
     private final static String PROPERTY_SOURCE = "renewpwdConfigPropertySource";
+    private static final Logger log = LoggerFactory.getLogger(DatabasePwdEnvironmentPostProcessor.class);
     private Environment environment;
+
+
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
         ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
         String password = ENV.getProperty("spring.datasource.password");
-        String backupPassword = ENV.getProperty("jdevelops.renewpwd.backupPassword");
-        if (backupPassword == null) {
-            backupPassword = ENV.getProperty("jdevelops.renewpwd.backup-password");
-        }
-        // 这里需要判断怎么算是启用
-        // 我用连接判断了，反正就两个
-        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password)){
-            if(PwdRefreshUtil.validateDatasourceConfig(ENV,backupPassword)){
-                password = backupPassword;
-            }else {
-                throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
-            }
+        List<String> passwords = new ArrayList<>();
+       try {
+           Binder binder = Binder.get(environment);
+           PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
+                   .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
+           passwords = passwordPool.getPasswords();
+       }catch (Exception e){
+           if( e instanceof IllegalStateException){
+               log.warn("{}，使用datasource的密码进行处理",e.getMessage());
+           }else {
+               log.warn("没有配置密码池，使用datasource的密码进行处理");
+           }
+       }
+
+        if(!PwdRefreshUtil.validateDatasourceConfig(ENV,password,passwords)){
+            throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
         }
 
         // 需要解密

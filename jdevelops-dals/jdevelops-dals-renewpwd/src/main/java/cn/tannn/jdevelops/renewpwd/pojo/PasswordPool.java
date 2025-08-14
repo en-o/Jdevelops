@@ -16,7 +16,6 @@ import java.util.List;
 public class PasswordPool {
     /**
      * 密码组,DatabasePwdEnvironmentPostProcessor#postProcessBeanFactory
-     * <p>如果设置必须将主密码设置为第一个</p>
      * <p>如果空，这使用datasource中的密码进行处理所有事情</p>
      * <p>如果不为空，主密码登录失败就会从密码组里挑选密码进行重试或重置</p>
      * <p> 如果需要加密请使用：ENC(你的密码)</p>
@@ -25,6 +24,7 @@ public class PasswordPool {
 
     /**
      * 是否启用密码虚续命，以配置文件为准-这里只是为空编写配置的时候有提示，具体在RenewpwdRegister#isRefreshEnabled
+     * <p>这个可以控制注解中的enabled，这不代表不写注解，注解必须写</p>
      */
     private Boolean enabled;
 
