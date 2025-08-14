@@ -16,9 +16,14 @@ import java.text.MessageFormat;
  */
 public class PwdRefreshUtil {
 
+    private static PasswordUpdateListener passwordUpdateListener;
 
     private static final Logger log = LoggerFactory.getLogger(PwdRefreshUtil.class);
 
+
+    public static void setPasswordUpdateListener(PasswordUpdateListener listener) {
+        passwordUpdateListener = listener;
+    }
 
     /**
      * 验证数据源配置是否有效
@@ -198,6 +203,9 @@ public class PwdRefreshUtil {
             log.info("[renewpwd] 开始验证新密码");
             if (testNewPassword(url, username, newPassword, driverClassName)) {
                 log.info("[renewpwd] 新密码验证成功，过期密码已更新");
+                if (passwordUpdateListener != null) {
+                    passwordUpdateListener.onPasswordUpdated(newPassword);
+                }
                 return true;
             } else {
                 log.error("[renewpwd] 新密码验证失败");

@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.renewpwd.proerty;
 
 import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
+import cn.tannn.jdevelops.renewpwd.util.PasswordUpdateListener;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,13 @@ import org.springframework.core.env.Environment;
  * <P> 1. 使用密码池密码 </P>
  * <P> 2. 密码解密 </P>
  */
-public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
+public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware, PasswordUpdateListener {
+
     private final static String PROPERTY_SOURCES = "renewpwdConfigPropertySources";
     private final static String PROPERTY_SOURCE = "renewpwdConfigPropertySource";
     private static final Logger log = LoggerFactory.getLogger(DatabasePwdEnvironmentPostProcessor.class);
     private Environment environment;
-
+    private RenewPasswordService configService;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
@@ -55,10 +57,13 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             }
         }
 
-        RenewPasswordService configService = new RenewPasswordService();
+        configService = new RenewPasswordService();
         configService.initialize(password);
         // 将实例注册到Spring容器中，确保是单例
         beanFactory.registerSingleton("renewPasswordService", configService);
+
+        // 注册监听器
+        PwdRefreshUtil.setPasswordUpdateListener(this);
 
         // 构建spring 配置格式- 配置源的集成机制
         RenewpwdPropertySource propertySource = new RenewpwdPropertySource(PROPERTY_SOURCES, configService);
@@ -92,4 +97,11 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         return password;
     }
 
+    @Override
+    public void onPasswordUpdated(String newPassword) {
+        log.info("[renewpwd] 收到密码更新通知，重新初始化RenewPasswordService");
+        if (configService != null) {
+            configService.initialize(newPassword);
+        }
+    }
 }
