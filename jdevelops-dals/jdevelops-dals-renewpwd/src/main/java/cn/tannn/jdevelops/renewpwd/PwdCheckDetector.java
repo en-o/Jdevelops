@@ -219,7 +219,7 @@ public class PwdCheckDetector implements AutoCloseable {
 
             if (pwdInfo == null || pwdInfo.getExpireTime() == null) {
                 // 查询失败或数据无效，使用重试间隔重新调度
-                log.warn("查询密码过期信息失败或数据无效，{}分钟后重试", retryIntervalMinutes);
+                log.warn("查询密码过期信息失败或账户没设置过期，{}分钟后重试", retryIntervalMinutes);
                 scheduleRetry();
                 return;
             }
