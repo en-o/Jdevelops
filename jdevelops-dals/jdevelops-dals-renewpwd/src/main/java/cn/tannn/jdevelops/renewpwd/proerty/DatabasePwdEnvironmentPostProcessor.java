@@ -25,7 +25,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = ENV.getProperty("jdevelops.renewpwd.backupPassword");
         if (backupPassword == null) {
-            backupPassword = ENV.getProperty("jdevelops.renewpwd.backup_password");
+            backupPassword = ENV.getProperty("jdevelops.renewpwd.backup-password");
         }
         // 这里需要判断怎么算是启用
         // 我用连接判断了，反正就两个
