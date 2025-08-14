@@ -81,12 +81,7 @@ public class PwdCheckDetector implements AutoCloseable {
     private final RenewPwdRefresh renewPwdRefresh;
 
     /**
-     * 触发续期的提前时间（分钟）
-     */
-    private final int triggerBeforeExpireMinutes;
-
-    /**
-     * 查询失败时的重试间隔（分钟）
+     *  查询失败/或者暂未过期时的重试间隔（分钟）
      */
     private final int retryIntervalMinutes;
 
@@ -94,7 +89,6 @@ public class PwdCheckDetector implements AutoCloseable {
         this.pwdExpireSupplier = builder.pwdExpireSupplier;
         this.onFixPassword = builder.onFixPassword;
         this.renewPwdRefresh = builder.renewPwdRefresh;
-        this.triggerBeforeExpireMinutes = builder.triggerBeforeExpireMinutes;
         this.retryIntervalMinutes = builder.retryIntervalMinutes;
 
         // 验证必要参数
@@ -114,7 +108,7 @@ public class PwdCheckDetector implements AutoCloseable {
      */
     public synchronized boolean start() {
         if (!running.compareAndSet(false, true)) {
-            log.warn("密码触发器已经在运行中");
+            log.warn("密码续命触发器已经在运行中");
             return false;
         }
 
@@ -133,17 +127,17 @@ public class PwdCheckDetector implements AutoCloseable {
             // 立即开始第一次查询和调度（简化版：直接开始循环，不需要保存ScheduledFuture）
             scheduleNextCheck();
 
-            log.info("密码延迟触发器已启动，提前触发时间: {} 分钟", triggerBeforeExpireMinutes);
+            log.info("密码续命触发器已启动，每隔 {} 分钟触发一次", retryIntervalMinutes);
             return true;
 
         } catch (Exception e) {
             running.set(false);
-            log.error("启动密码触发器失败", e);
+            log.error("启动密码续命触发器失败", e);
             if (scheduler != null) {
                 scheduler.shutdown();
                 scheduler = null;
             }
-            throw new RuntimeException("启动密码触发器失败", e);
+            throw new RuntimeException("启动密码续命触发器失败", e);
         }
     }
 
@@ -152,7 +146,7 @@ public class PwdCheckDetector implements AutoCloseable {
      */
     public synchronized boolean stop() {
         if (!running.compareAndSet(true, false)) {
-            log.debug("密码触发器已经停止");
+            log.debug("密码续命触发器已经停止");
             return false;
         }
 
@@ -164,7 +158,7 @@ public class PwdCheckDetector implements AutoCloseable {
                 try {
                     if (!scheduler.awaitTermination(30, TimeUnit.SECONDS)) {
                         scheduler.shutdownNow();
-                        log.warn("强制关闭密码触发器调度器");
+                        log.warn("强制关闭密码续命触发器调度器");
                     }
                 } catch (InterruptedException e) {
                     scheduler.shutdownNow();
@@ -173,11 +167,11 @@ public class PwdCheckDetector implements AutoCloseable {
                 scheduler = null;
             }
 
-            log.info("密码触发器已停止");
+            log.info("密码续命触发器已停止");
             return true;
 
         } catch (Exception e) {
-            log.error("停止密码触发器时发生异常", e);
+            log.error("停止密码续命触发器时发生异常", e);
             return false;
         }
     }
@@ -186,7 +180,7 @@ public class PwdCheckDetector implements AutoCloseable {
      * 重启触发器
      */
     public synchronized boolean restart() {
-        log.info("正在重启密码触发器...");
+        log.info("正在重启密码续命触发器...");
         stop();
         try {
             Thread.sleep(100);
@@ -204,8 +198,8 @@ public class PwdCheckDetector implements AutoCloseable {
     }
 
     /**
-     * 调度下一次检查
-     * 这是整个触发器的核心循环方法（简化版：使用递归调度方式）
+     * 调度下一次检查 (使用递归调度方式)
+     * 这是整个触发器的核心循环方法
      */
     private void scheduleNextCheck() {
         if (!running.get()) {
@@ -311,13 +305,6 @@ public class PwdCheckDetector implements AutoCloseable {
         stop();
     }
 
-    /**
-     * 获取当前配置信息
-     */
-    public String getConfigInfo() {
-        return String.format("提前触发时间: %d分钟, 重试间隔: %d分钟, 运行状态: %s",
-                triggerBeforeExpireMinutes, retryIntervalMinutes, isRunning() ? "运行中" : "已停止");
-    }
 
     /**
      * 创建构建器
