@@ -122,6 +122,7 @@ public class PwdCheckDetector implements AutoCloseable {
         try {
             // 创建单线程调度器
             scheduler = new ScheduledThreadPoolExecutor(1, r -> {
+                // 创建线程时设置名称和异常处理
                 Thread thread = new Thread(r, "PwdCheckDetector-Thread");
                 // 守护线程，确保应用退出时可以自动结束且不会被jvm回收
                 thread.setDaemon(true);
