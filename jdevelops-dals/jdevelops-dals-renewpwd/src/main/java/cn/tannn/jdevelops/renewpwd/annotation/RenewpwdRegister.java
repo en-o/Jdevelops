@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
@@ -21,9 +22,16 @@ import java.util.Optional;
  * @version V1.0
  * @date 2025/8/13 16:32
  */
-public class RenewpwdRegister implements ImportBeanDefinitionRegistrar {
+public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware {
 
     private static final Logger log = LoggerFactory.getLogger(RenewpwdRegister.class);
+
+    private Environment environment;
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata
@@ -41,8 +49,6 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar {
 
 
     private boolean isRefreshEnabled(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        // 从Environment获取配置 (优先级最高)
-        Environment environment = getEnvironment(registry);
         if (environment != null) {
             String configValue = environment.getProperty("jdevelops.renewpwd.enabled");
             if (configValue != null) {
@@ -56,13 +62,6 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar {
         }
         // 默认启用
         return false;
-    }
-
-    private Environment getEnvironment(BeanDefinitionRegistry registry) {
-        if (registry instanceof org.springframework.context.support.GenericApplicationContext) {
-            return ((org.springframework.context.support.GenericApplicationContext) registry).getEnvironment();
-        }
-        return null;
     }
 
 
