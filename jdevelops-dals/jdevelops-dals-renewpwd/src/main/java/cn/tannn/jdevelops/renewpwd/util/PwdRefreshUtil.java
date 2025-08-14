@@ -94,10 +94,10 @@ public class PwdRefreshUtil {
             // SELECT * FROM performance_schema.events_errors_summary_global_by_error  where error_number = 'vendorCode'
             if(vendorCode == 1045){
                 log.error("[renewpwd] 数据库连接验证失败，可能是用户名或密码错误: {}", e.getMessage());
-            } else if (vendorCode == 1862) {
-                log.warn("[renewpwd] 数据库连接验证失败，必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
+            } else if (vendorCode == 1820 || vendorCode == 1862) {
+                log.error("[renewpwd] 数据库连接验证失败，密码已过期必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
                 // 我这里就不替换里面了，用原来的密码再改一次
-                return updateUserPassword(url, username, password, password, driverClassName);
+                return updateUserPassword(url, username, password, password,  driverClassName);
             }else {
                 log.error("[renewpwd] 数据库连接验证失败: {}", e.getMessage());
             }
@@ -136,39 +136,65 @@ public class PwdRefreshUtil {
         java.sql.ResultSet resultSet = null;
 
         try {
-            log.info("[renewpwd] 开始更新用户密码: username={}", username);
+            log.info("[renewpwd] 开始更新过期密码: username={}", username);
 
-            // 使用管理员权限连接或使用当前用户连接
+
+            // 配置连接属性以支持过期密码
             java.util.Properties props = new java.util.Properties();
             props.setProperty("user", username);
             props.setProperty("password", currentPassword);
             props.setProperty("connectTimeout", "5000");
             props.setProperty("socketTimeout", "5000");
 
-            connection = java.sql.DriverManager.getConnection(url, props);
-            statement = connection.createStatement();
-
-            // 查询当前用户的主机信息
-            String currentUserHost = getCurrentUserHost(statement);
-            if (currentUserHost == null) {
-                log.error("[renewpwd] 无法获取当前用户的主机信息");
-                return false;
+            // 关键配置：允许使用过期密码连接
+            props.setProperty("disconnectOnExpiredPasswords", "false");
+            // 或者在URL中添加参数也可以
+            String connectionUrl = url;
+            if (!url.contains("disconnectOnExpiredPasswords")) {
+                connectionUrl = url + (url.contains("?") ? "&" : "?") +
+                        "disconnectOnExpiredPasswords=false";
             }
 
-            log.info("[renewpwd] 当前用户主机信息: {}@{}", username, currentUserHost);
+            log.info("[renewpwd] 尝试使用过期密码连接数据库");
+            connection = java.sql.DriverManager.getConnection(connectionUrl, props);
 
-            // 执行ALTER USER命令，使用实际的主机名
-            String alterUserSQL = String.format("ALTER USER '%s'@'%s' IDENTIFIED BY '%s'",
-                    username, currentUserHost, newPassword);
+            // 检查连接是否处于受限模式（只能执行密码更改）
+            log.info("[renewpwd] 连接成功，开始密码更新流程");
 
-            log.debug("[renewpwd] 执行SQL: ALTER USER '{}' @'{}' IDENTIFIED BY '***'", username, currentUserHost);
-            statement.executeUpdate(alterUserSQL);
+            statement = connection.createStatement();
 
-            log.info("[renewpwd] 用户密码更新成功: username={}@{}", username, currentUserHost);
+            // 在过期密码模式下，优先尝试SET PASSWORD语句（更简单）
+            String setPasswordSQL = String.format("SET PASSWORD = PASSWORD('%s')", newPassword);
+
+            try {
+                log.debug("[renewpwd] 尝试执行: SET PASSWORD = PASSWORD('***')");
+                statement.executeUpdate(setPasswordSQL);
+                log.info("[renewpwd] 使用SET PASSWORD更新密码成功");
+            } catch (java.sql.SQLException e) {
+                log.warn("[renewpwd] SET PASSWORD失败，尝试ALTER USER方式: {}", e.getMessage());
+
+                // 如果SET PASSWORD失败，尝试ALTER USER
+                // 首先获取当前用户信息
+                String currentUserHost = getCurrentUserHostForExpiredPassword(statement, username);
+
+                String alterUserSQL = String.format("ALTER USER '%s'@'%s' IDENTIFIED BY '%s'",
+                        username, currentUserHost, newPassword);
+
+                log.debug("[renewpwd] 执行SQL: ALTER USER '{}' @'{}' IDENTIFIED BY '***'", username, currentUserHost);
+                statement.executeUpdate(alterUserSQL);
+                log.info("[renewpwd] 使用ALTER USER更新密码成功: username={}@{}", username, currentUserHost);
+            }
+
+            // 关闭当前连接，准备用新密码测试
+            statement.close();
+            connection.close();
+            connection = null;
+            statement = null;
 
             // 验证新密码是否生效
+            log.info("[renewpwd] 开始验证新密码");
             if (testNewPassword(url, username, newPassword, driverClassName)) {
-                log.info("[renewpwd] 新密码验证成功");
+                log.info("[renewpwd] 新密码验证成功，过期密码已更新");
                 return true;
             } else {
                 log.error("[renewpwd] 新密码验证失败");
@@ -200,43 +226,69 @@ public class PwdRefreshUtil {
 
 
     /**
-     * 获取当前用户的主机信息
-     * 使用CURRENT_USER()函数获取MySQL实际匹配的用户@主机
+     * 获取过期密码情况下的当前用户主机信息
+     * 专门处理密码过期时的用户信息查询
      */
-    private static String getCurrentUserHost(java.sql.Statement statement) {
+    private static String getCurrentUserHostForExpiredPassword(java.sql.Statement statement, String username) {
         java.sql.ResultSet resultSet = null;
         try {
-            // 使用CURRENT_USER()获取当前用户的完整信息
-            resultSet = statement.executeQuery("SELECT CURRENT_USER()");
+            // 在过期密码模式下，某些查询可能受限，先尝试简单的查询
+            try {
+                resultSet = statement.executeQuery("SELECT CURRENT_USER()");
 
-            if (resultSet.next()) {
-                String currentUser = resultSet.getString(1);
-                // CURRENT_USER() 返回格式为 'username@hostname'
-                // 提取主机部分
-                if (currentUser != null && currentUser.contains("@")) {
-                    String host = currentUser.split("@")[1];
-                    log.debug("[renewpwd] 获取到当前用户主机: {}", host);
-                    return host;
+                if (resultSet.next()) {
+                    String currentUser = resultSet.getString(1);
+                    if (currentUser != null && currentUser.contains("@")) {
+                        String host = currentUser.split("@")[1];
+                        log.debug("[renewpwd] 在过期密码模式下获取到用户主机: {}", host);
+                        return host;
+                    }
+                }
+            } catch (java.sql.SQLException e) {
+                log.warn("[renewpwd] 过期密码模式下无法执行CURRENT_USER(): {}", e.getMessage());
+            } finally {
+                if (resultSet != null) {
+                    try {
+                        resultSet.close();
+                    } catch (java.sql.SQLException e) {
+                        // ignore
+                    }
                 }
             }
 
-            // 备用方法：从mysql.user表查询
-            log.warn("[renewpwd] CURRENT_USER()方法失败，尝试从mysql.user表查询");
-            return getUserHostFromTable(statement);
-
-        } catch (java.sql.SQLException e) {
-            log.warn("[renewpwd] 获取当前用户主机信息失败: {}", e.getMessage());
-            // 备用方法：从mysql.user表查询
-            return getUserHostFromTable(statement);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (java.sql.SQLException e) {
-                    log.debug("[renewpwd] 关闭ResultSet失败", e);
+            // 如果上面的方法失败，尝试USER()函数
+            try {
+                resultSet = statement.executeQuery("SELECT USER()");
+                if (resultSet.next()) {
+                    String user = resultSet.getString(1);
+                    if (user != null && user.contains("@")) {
+                        // USER() 返回的是连接用户信息，取主机部分
+                        String connectHost = user.split("@")[1];
+                        log.debug("[renewpwd] 从USER()获取连接主机: {}", connectHost);
+                        // 对于过期密码情况，通常使用 % 通配符是最安全的选择
+                        // 因为无法查询mysql.user表来确定精确匹配
+                        return "%";
+                    }
+                }
+            } catch (java.sql.SQLException e) {
+                log.warn("[renewpwd] 过期密码模式下无法执行USER(): {}", e.getMessage());
+            } finally {
+                if (resultSet != null) {
+                    try {
+                        resultSet.close();
+                    } catch (java.sql.SQLException e) {
+                        // ignore
+                    }
                 }
             }
+
+        } catch (Exception e) {
+            log.error("[renewpwd] 获取过期密码用户主机信息异常", e);
         }
+
+        // 默认返回通配符，这在大多数情况下都能工作
+        log.info("[renewpwd] 无法确定具体主机，在过期密码模式下使用通配符 %");
+        return "%";
     }
 
     /**
@@ -295,7 +347,6 @@ public class PwdRefreshUtil {
         log.warn("[renewpwd] 无法确定具体主机，使用通配符 %");
         return "%";
     }
-
 
     /**
      * 测试新密码是否有效
