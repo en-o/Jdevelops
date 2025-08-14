@@ -1,145 +1,408 @@
 package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
-import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * 密码探测器
+ * 密码延迟触发器（简化版）
  *
- * 用于定时检测数据库账户密码是否即将过期。
- * 通过自定义线程实现可控（启动、关闭、重启）的定时检测。
- * 具体的密码检测逻辑需通过重写 checkPwdExpire() 方法实现。
+ * 基于数据驱动的延迟触发器，根据查询到的密码过期信息动态计算触发时间。
+ * 工作流程：
+ * 1. 查询密码过期信息
+ * 2. 计算触发时间（过期时间 - 提前触发时间）
+ * 3. 延迟到触发时间后执行处理方法
+ * 4. 执行密码刷新
+ * 5. 重新开始查询，如此循环
+ *
+ * 简化说明：
+ * - 移除了ScheduledFuture的复杂性，使用递归调度方式
+ * - 保持非阻塞特性，不会影响其他线程
+ * - 代码更简洁，逻辑更清晰
  *
  * <pre>
  * // 用法示例
- * PwdCheckDetector detector = new PwdCheckDetector(
- *     () -> {
- *         // 查询数据库，返回 PwdExpireInfo
- *         return new PwdExpireInfo(
- *             "主密码",
- *             "新密码",
- *             true,
- *             LocalDateTime.now().plusMinutes(15)
- *         );
- *     },
- *     info -> {
- *         // 密码修复过程回调，可记录日志或通知
- *         System.out.println("已修复密码类型: " + info.getType());
- *     },
- *     renewPwdRefresh // 你的 RenewPwdRefresh 实例
- * );
- * detector.start();
+ * try (PwdCheckDetector detector = PwdCheckDetector.builder()
+ *     .pwdExpireSupplier(() -> {
+ *         // 查询数据库获取密码过期信息
+ *         return databaseService.getPwdExpireInfo();
+ *     })
+ *     .onFixPassword(pwdInfo -> {
+ *         // 更新数据库密码
+ *         databaseService.updatePassword(pwdInfo);
+ *     })
+ *     .renewPwdRefresh(applicationRefreshService)
+ *     .triggerBeforeExpireMinutes(30) // 提前30分钟触发
+ *     .build()) {
+ *     detector.start();
+ *     // 触发器会自动循环运行
+ * }
  * </pre>
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
- * @version V1.0
+ * @version V3.0
  * @date 2025/8/13 16:27
  */
-public class PwdCheckDetector {
+public class PwdCheckDetector implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(PwdCheckDetector.class);
-    /**
-     * 控制线程运行状态的标志
-     */
-    private volatile boolean running = false;
 
     /**
-     * 探测线程对象
+     * 控制运行状态的原子布尔值
      */
-    private Thread detectorThread;
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     /**
-     * 密码过期信息提供者
-     * 通过 Supplier 接口获取密码过期信息。
-     * 具体实现由调用方提供，通常是查询数据库或其他数据源。
+     * 定时执行服务
+     * 注意：简化版本中移除了ScheduledFuture，直接使用递归调度
+     */
+    private ScheduledExecutorService scheduler;
+
+    /**
+     * 密码过期信息查询方法
      */
     private final Supplier<PwdExpireInfo> pwdExpireSupplier;
 
-    /* * 密码修复操作
-     * 通过 Consumer 接口处理密码修复逻辑。
-     * 具体实现由调用方提供，通常是更新数据库中的密码。
+    /**
+     * 密码处理方法 - 在触发时间到达后执行
      */
     private final Consumer<PwdExpireInfo> onFixPassword;
 
+    /**
+     * 密码刷新服务 - 在处理方法执行后调用
+     */
     private final RenewPwdRefresh renewPwdRefresh;
 
-    public PwdCheckDetector(Supplier<PwdExpireInfo> pwdExpireSupplier, Consumer<PwdExpireInfo> onFixPassword, RenewPwdRefresh renewPwdRefresh) {
-        this.pwdExpireSupplier = pwdExpireSupplier;
-        this.onFixPassword = onFixPassword;
-        this.renewPwdRefresh = renewPwdRefresh;
-    }
-
+    /**
+     * 触发续期的提前时间（分钟）
+     */
+    private final int triggerBeforeExpireMinutes;
 
     /**
-     * 启动探测线程
-     * 若已启动则不重复启动。
-     * 线程每分钟执行一次密码过期检测逻辑。
+     * 查询失败时的重试间隔（分钟）
      */
-    public synchronized void start() {
-        if (running) return;
-        running = true;
-        detectorThread = new Thread(() -> {
-            while (running) {
-                try {
-                    // 执行密码过期检测
-                    checkPwdExpire();
-                    // 每分钟执行一次
-                    Thread.sleep(60_000);
-                } catch (InterruptedException e) {
-                    // 响应中断，安全退出
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }, "PwdCheckDetector-Thread");
-        // 设置为守护线程，随主程序退出
-        detectorThread.setDaemon(true);
-        detectorThread.start();
-    }
+    private final int retryIntervalMinutes;
 
-    /**
-     * 停止探测线程
-     * 设置 running 为 false，并中断线程。
-     */
-    public synchronized void stop() {
-        running = false;
-        if (detectorThread != null) {
-            detectorThread.interrupt();
+    private PwdCheckDetector(Builder builder) {
+        this.pwdExpireSupplier = builder.pwdExpireSupplier;
+        this.onFixPassword = builder.onFixPassword;
+        this.renewPwdRefresh = builder.renewPwdRefresh;
+        this.triggerBeforeExpireMinutes = builder.triggerBeforeExpireMinutes;
+        this.retryIntervalMinutes = builder.retryIntervalMinutes;
+
+        // 验证必要参数
+        if (this.renewPwdRefresh == null) {
+            throw new IllegalArgumentException("renewPwdRefresh cannot be null");
+        }
+        if (this.pwdExpireSupplier == null) {
+            throw new IllegalArgumentException("pwdExpireSupplier cannot be null");
+        }
+        if (this.onFixPassword == null) {
+            throw new IllegalArgumentException("onFixPassword cannot be null");
         }
     }
 
     /**
-     * 重启探测线程
-     * 先停止再启动。
+     * 启动触发器
      */
-    public synchronized void restart() {
-        stop();
-        start();
+    public synchronized boolean start() {
+        if (!running.compareAndSet(false, true)) {
+            log.warn("密码触发器已经在运行中");
+            return false;
+        }
+
+        try {
+            // 创建单线程调度器
+            scheduler = new ScheduledThreadPoolExecutor(1, r -> {
+                Thread thread = new Thread(r, "PwdCheckDetector-Thread");
+                // 守护线程，确保应用退出时可以自动结束且不会被jvm回收
+                thread.setDaemon(true);
+                thread.setUncaughtExceptionHandler((t, e) ->
+                        log.error("密码触发器线程异常", e));
+                return thread;
+            });
+
+            // 立即开始第一次查询和调度（简化版：直接开始循环，不需要保存ScheduledFuture）
+            scheduleNextCheck();
+
+            log.info("密码延迟触发器已启动，提前触发时间: {} 分钟", triggerBeforeExpireMinutes);
+            return true;
+
+        } catch (Exception e) {
+            running.set(false);
+            log.error("启动密码触发器失败", e);
+            if (scheduler != null) {
+                scheduler.shutdown();
+                scheduler = null;
+            }
+            throw new RuntimeException("启动密码触发器失败", e);
+        }
     }
 
     /**
-     * 检查密码是否即将过期，并自动续期
+     * 停止触发器
      */
-    protected void checkPwdExpire() {
-        PwdExpireInfo pwdInfos = pwdExpireSupplier.get();
-        if (pwdInfos != null && pwdInfos.getExpireTime() != null) {
-            LocalDateTime now = LocalDateTime.now();
+    public synchronized boolean stop() {
+        if (!running.compareAndSet(true, false)) {
+            log.debug("密码触发器已经停止");
+            return false;
+        }
 
-            // 触发时间点：密码过期前10分钟
-            LocalDateTime triggerTime = pwdInfos.getExpireTime().minusMinutes(10);
-            if (now.isAfter(triggerTime) && pwdInfos.isExpireSoon()) {
-                renewPwdRefresh.fixPassword(pwdInfos.getNewPassword());
-                if (onFixPassword != null) {
-                    onFixPassword.accept(pwdInfos);
+        try {
+            // 简化版本：不需要取消具体任务，直接关闭调度器即可
+            // 关闭调度器
+            if (scheduler != null && !scheduler.isShutdown()) {
+                scheduler.shutdown();
+                try {
+                    if (!scheduler.awaitTermination(30, TimeUnit.SECONDS)) {
+                        scheduler.shutdownNow();
+                        log.warn("强制关闭密码触发器调度器");
+                    }
+                } catch (InterruptedException e) {
+                    scheduler.shutdownNow();
+                    Thread.currentThread().interrupt();
                 }
-            }else {
-                log.info("当前密码未到期或不需要续期，当前时间: {}, 过期时间: {}", now, pwdInfos.getExpireTime());
+                scheduler = null;
             }
+
+            log.info("密码触发器已停止");
+            return true;
+
+        } catch (Exception e) {
+            log.error("停止密码触发器时发生异常", e);
+            return false;
+        }
+    }
+
+    /**
+     * 重启触发器
+     */
+    public synchronized boolean restart() {
+        log.info("正在重启密码触发器...");
+        stop();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return start();
+    }
+
+    /**
+     * 检查触发器是否正在运行
+     */
+    public boolean isRunning() {
+        return running.get() && scheduler != null && !scheduler.isShutdown();
+    }
+
+    /**
+     * 调度下一次检查
+     * 这是整个触发器的核心循环方法（简化版：使用递归调度方式）
+     */
+    private void scheduleNextCheck() {
+        if (!running.get()) {
+            return;
+        }
+
+        try {
+            // 1. 查询密码过期信息
+            PwdExpireInfo pwdInfo = queryPwdExpireInfo();
+
+            if (pwdInfo == null || pwdInfo.getExpireTime() == null) {
+                // 查询失败或数据无效，使用重试间隔重新调度
+                log.warn("查询密码过期信息失败或数据无效，{}分钟后重试", retryIntervalMinutes);
+                scheduleRetry();
+                return;
+            }
+
+            // 2. 计算触发延迟时间
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime triggerTime = pwdInfo.getExpireTime().minusMinutes(triggerBeforeExpireMinutes);
+
+            if (now.isAfter(triggerTime)) {
+                // 触发时间已到，立即执行
+                log.info("触发时间已到，立即执行密码处理流程");
+                scheduler.submit(() -> safeExecutePasswordFlow(pwdInfo));
+            } else {
+                // 计算延迟时间并调度
+                long delayMinutes = ChronoUnit.MINUTES.between(now, triggerTime);
+                log.info("密码将在 {} 分钟后触发处理，触发时间: {}", delayMinutes, triggerTime);
+
+                // 延迟调度,在离过期还有 triggerBeforeExpireMinutes 分钟时触发
+                scheduler.schedule(
+                        () -> safeExecutePasswordFlow(pwdInfo),
+                        delayMinutes,
+                        TimeUnit.MINUTES
+                );
+            }
+
+        } catch (Exception e) {
+            log.error("调度下一次检查时发生异常", e);
+            scheduleRetry();
+        }
+    }
+
+    /**
+     * 查询密码过期信息（带异常处理）
+     */
+    private PwdExpireInfo queryPwdExpireInfo() {
+        try {
+            PwdExpireInfo pwdInfo = pwdExpireSupplier.get();
+            if (pwdInfo != null && pwdInfo.getExpireTime() != null) {
+                log.debug("查询到密码过期信息，过期时间: {}", pwdInfo.getExpireTime());
+            }
+            return pwdInfo;
+        } catch (Exception e) {
+            log.error("查询密码过期信息时发生异常", e);
+            return null;
+        }
+    }
+
+    /**
+     * 安全执行密码处理流程
+     */
+    private void safeExecutePasswordFlow(PwdExpireInfo pwdInfo) {
+        try {
+            executePasswordFlow(pwdInfo);
+        } catch (Exception e) {
+            log.error("执行密码处理流程时发生异常", e);
+        } finally {
+            // 无论成功还是失败，都要继续下一轮循环
+            if (running.get()) {
+                log.info("密码处理流程完成，开始下一轮查询调度");
+                scheduleNextCheck();
+            }
+        }
+    }
+
+    /**
+     * 执行密码处理流程
+     * 流程：处理方法 → 刷新方法 → 重新开始循环
+     */
+    private void executePasswordFlow(PwdExpireInfo pwdInfo) {
+        log.info("开始执行密码处理流程，密码过期时间: {}", pwdInfo.getExpireTime());
+
+        try {
+            // 1. 执行处理方法
+            log.info("执行密码处理方法");
+            onFixPassword.accept(pwdInfo);
+            log.info("密码处理方法执行完成");
+
+            // 2. 执行刷新方法
+            log.info("执行密码刷新");
+            renewPwdRefresh.fixPassword(pwdInfo.getNewPassword());
+            log.info("密码刷新完成");
+
+        } catch (Exception e) {
+            log.error("密码处理流程执行失败", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 调度重试
+     */
+    private void scheduleRetry() {
+        if (!running.get()) {
+            return;
+        }
+        // 简化版：不需要保存ScheduledFuture引用
+        scheduler.schedule(
+                this::scheduleNextCheck,
+                retryIntervalMinutes,
+                TimeUnit.MINUTES
+        );
+    }
+
+    /**
+     * 实现 AutoCloseable 接口
+     */
+    @Override
+    public void close() {
+        stop();
+    }
+
+    /**
+     * 获取当前配置信息
+     */
+    public String getConfigInfo() {
+        return String.format("提前触发时间: %d分钟, 重试间隔: %d分钟, 运行状态: %s",
+                triggerBeforeExpireMinutes, retryIntervalMinutes, isRunning() ? "运行中" : "已停止");
+    }
+
+    /**
+     * 创建构建器
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * 构建器类
+     */
+    public static class Builder {
+        private Supplier<PwdExpireInfo> pwdExpireSupplier;
+        private Consumer<PwdExpireInfo> onFixPassword;
+        private RenewPwdRefresh renewPwdRefresh;
+        private int triggerBeforeExpireMinutes = 10; // 默认提前10分钟触发
+        private int retryIntervalMinutes = 5; // 默认查询失败5分钟后重试
+
+        /**
+         * 设置密码过期信息查询方法
+         */
+        public Builder pwdExpireSupplier(Supplier<PwdExpireInfo> supplier) {
+            this.pwdExpireSupplier = supplier;
+            return this;
+        }
+
+        /**
+         * 设置密码处理方法 - 在触发时间到达后执行
+         */
+        public Builder onFixPassword(Consumer<PwdExpireInfo> consumer) {
+            this.onFixPassword = consumer;
+            return this;
+        }
+
+        /**
+         * 设置密码刷新服务 - 在处理方法执行后调用
+         */
+        public Builder renewPwdRefresh(RenewPwdRefresh renewPwdRefresh) {
+            this.renewPwdRefresh = renewPwdRefresh;
+            return this;
+        }
+
+        /**
+         * 设置提前触发时间（分钟）
+         */
+        public Builder triggerBeforeExpireMinutes(int minutes) {
+            if (minutes < 0) {
+                throw new IllegalArgumentException("提前触发时间不能为负数");
+            }
+            this.triggerBeforeExpireMinutes = minutes;
+            return this;
+        }
+
+        /**
+         * 设置查询失败时的重试间隔（分钟）
+         */
+        public Builder retryIntervalMinutes(int minutes) {
+            if (minutes <= 0) {
+                throw new IllegalArgumentException("重试间隔必须大于0");
+            }
+            this.retryIntervalMinutes = minutes;
+            return this;
+        }
+
+        public PwdCheckDetector build() {
+            return new PwdCheckDetector(this);
         }
     }
 }
