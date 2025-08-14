@@ -65,14 +65,14 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     /**
      * 在刷新数据源Bean之前验证数据库连接
-     * @param password 数据库密码
+     * @param newPassword 数据库新密码
      * @return 验证是否通过
      */
-    private boolean validateDatasourceBeforeRefresh(String password) {
+    private boolean validateDatasourceBeforeRefresh(String newPassword) {
         try {
             // 获取当前环境中的数据源配置
             ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
-            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV,password,List.of(password));
+            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV,newPassword,List.of(newPassword));
 
             if (isValid) {
                 log.info("[renewpwd] 数据源配置验证成功");

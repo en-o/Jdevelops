@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,8 +35,8 @@ public class PwdRefreshUtil {
     public static boolean validateDatasourceConfig(ConfigurableEnvironment environment
             , String masterPassword, List<String> backupPassword) {
         try {
-            // 暂时还不知道怎么出，这个用来修改密码用的，但是修改之后不知道怎么将修改之后的通知回去，在第二次启动项目的时候不用主密码而是用修改之后的密码
-            passwords = backupPassword;
+            // 暂时还不知道怎么处理，这个用来修改密码用的，但是修改之后不知道怎么将修改之后的通知回去，在第二次启动项目的时候不用主密码而是用修改之后的密码
+            passwords = backupPassword.isEmpty()? Collections.singletonList(masterPassword) : backupPassword;
 
             String url = environment.getProperty("spring.datasource.url");
             String username = environment.getProperty("spring.datasource.username");
@@ -100,7 +101,7 @@ public class PwdRefreshUtil {
             } else if (vendorCode == 1820 || vendorCode == 1862) {
                 log.error("[renewpwd] 数据库连接验证失败，密码已过期必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
                 // 我这里就不替换里面了，用原来的密码再改一次
-                return updateUserPassword(url, username, password, password, driverClassName);
+                return updateUserPassword(url, username, password, passwords.get(0), driverClassName);
             } else {
                 log.error("[renewpwd] 数据库连接验证失败: {}", e.getMessage());
             }
