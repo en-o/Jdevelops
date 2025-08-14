@@ -63,6 +63,8 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         beanFactory.registerSingleton("renewPasswordService", configService);
 
         // 注册监听器
+        // 将当前的 DatabasePwdEnvironmentPostProcessor 实例（实现了 PasswordUpdateListener 接口）注册为密码更新事件的监听器
+        // 这样当 PwdRefreshUtil 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
         PwdRefreshUtil.setPasswordUpdateListener(this);
 
         // 构建spring 配置格式- 配置源的集成机制
