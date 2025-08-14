@@ -1,7 +1,5 @@
 package cn.tannn.jdevelops.renewpwd;
 
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
-import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
