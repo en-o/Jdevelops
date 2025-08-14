@@ -34,7 +34,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         // 将当前的 DatabasePwdEnvironmentPostProcessor 实例（实现了 PasswordUpdateListener 接口）注册为密码更新事件的监听器
         // 这样当 PwdRefreshUtil 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
         PwdRefreshUtil.setPasswordUpdateListener(this);
-
         ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = password;
@@ -62,8 +61,10 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             }
         }
 
-        configService = new RenewPasswordService();
-        configService.initialize(password);
+        if (configService ==  null) {
+            configService = new RenewPasswordService();
+            configService.initialize(password);
+        }
         // 将实例注册到Spring容器中，确保是单例
         beanFactory.registerSingleton("renewPasswordService", configService);
 
@@ -105,6 +106,9 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     public void onPasswordUpdated(String newPassword) {
         log.info("[renewpwd] 收到密码更新通知，重新初始化RenewPasswordService");
         if (configService != null) {
+            configService.initialize(newPassword);
+        }else {
+            configService = new RenewPasswordService();
             configService.initialize(newPassword);
         }
     }
