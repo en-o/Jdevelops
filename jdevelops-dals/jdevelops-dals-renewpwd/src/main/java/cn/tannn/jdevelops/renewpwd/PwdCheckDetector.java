@@ -9,7 +9,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -32,15 +31,11 @@ import java.util.function.Supplier;
  * // 用法示例
  * try (PwdCheckDetector detector = PwdCheckDetector.builder()
  *     .pwdExpireSupplier(() -> {
- *         // 查询数据库获取密码过期信息
+ *         // 查询数据库获取密码过期信息，会拿到信息之后进行处理
  *         return databaseService.getPwdExpireInfo();
  *     })
- *     .onFixPassword(pwdInfo -> {
- *         // 更新数据库密码
- *         databaseService.updatePassword(pwdInfo);
- *     })
  *     .renewPwdRefresh(applicationRefreshService)
- *     .triggerBeforeExpireMinutes(30) // 提前30分钟触发
+ *     .retryIntervalMinutes(5) // 探测间隔，默认5分钟
  *     .build()) {
  *     detector.start();
  *     // 触发器会自动循环运行
@@ -66,14 +61,10 @@ public class PwdCheckDetector implements AutoCloseable {
     private ScheduledExecutorService scheduler;
 
     /**
-     * 密码过期信息查询方法
+     * 密码过期信息查询方法 和 处理方法
      */
     private final Supplier<PwdExpireInfo> pwdExpireSupplier;
 
-    /**
-     * 密码处理方法 - 在触发时间到达后执行
-     */
-    private final Consumer<PwdExpireInfo> onFixPassword;
 
     /**
      * 密码刷新服务 - 在处理方法执行后调用
@@ -87,7 +78,6 @@ public class PwdCheckDetector implements AutoCloseable {
 
     private PwdCheckDetector(Builder builder) {
         this.pwdExpireSupplier = builder.pwdExpireSupplier;
-        this.onFixPassword = builder.onFixPassword;
         this.renewPwdRefresh = builder.renewPwdRefresh;
         this.retryIntervalMinutes = builder.retryIntervalMinutes;
 
@@ -97,9 +87,6 @@ public class PwdCheckDetector implements AutoCloseable {
         }
         if (this.pwdExpireSupplier == null) {
             throw new IllegalArgumentException("pwdExpireSupplier cannot be null");
-        }
-        if (this.onFixPassword == null) {
-            throw new IllegalArgumentException("onFixPassword cannot be null");
         }
     }
 
@@ -266,16 +253,9 @@ public class PwdCheckDetector implements AutoCloseable {
         log.info("密码过期 - 开始执行密码处理流程，当前时间: {}", LocalDateTime.now());
 
         try {
-            // 1. 执行处理方法
-            log.info("执行密码处理方法");
-            onFixPassword.accept(pwdInfo);
-            log.info("密码处理方法执行完成");
-
-            // 2. 执行刷新方法
-            log.info("执行密码刷新");
+            log.info("执行上下文环境配置刷新和数据库密码更新");
             renewPwdRefresh.fixPassword(pwdInfo.getNewPassword());
-            log.info("密码刷新完成");
-
+            log.info("完成上下文环境配置刷新和数据库密码更新");
         } catch (Exception e) {
             log.error("密码处理流程执行失败", e);
             throw e;
@@ -318,24 +298,14 @@ public class PwdCheckDetector implements AutoCloseable {
      */
     public static class Builder {
         private Supplier<PwdExpireInfo> pwdExpireSupplier;
-        private Consumer<PwdExpireInfo> onFixPassword;
         private RenewPwdRefresh renewPwdRefresh;
-        private int triggerBeforeExpireMinutes = 10; // 默认提前10分钟触发
         private int retryIntervalMinutes = 5; // 默认查询失败5分钟后重试
 
         /**
-         * 设置密码过期信息查询方法
+         * 设置密码过期信息查询和处理方法
          */
         public Builder pwdExpireSupplier(Supplier<PwdExpireInfo> supplier) {
             this.pwdExpireSupplier = supplier;
-            return this;
-        }
-
-        /**
-         * 设置密码处理方法 - 在触发时间到达后执行
-         */
-        public Builder onFixPassword(Consumer<PwdExpireInfo> consumer) {
-            this.onFixPassword = consumer;
             return this;
         }
 
@@ -344,17 +314,6 @@ public class PwdCheckDetector implements AutoCloseable {
          */
         public Builder renewPwdRefresh(RenewPwdRefresh renewPwdRefresh) {
             this.renewPwdRefresh = renewPwdRefresh;
-            return this;
-        }
-
-        /**
-         * 设置提前触发时间（分钟）
-         */
-        public Builder triggerBeforeExpireMinutes(int minutes) {
-            if (minutes < 0) {
-                throw new IllegalArgumentException("提前触发时间不能为负数");
-            }
-            this.triggerBeforeExpireMinutes = minutes;
             return this;
         }
 
