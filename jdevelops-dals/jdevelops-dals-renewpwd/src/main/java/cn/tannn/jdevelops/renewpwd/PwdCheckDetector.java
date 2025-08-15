@@ -3,6 +3,9 @@ package cn.tannn.jdevelops.renewpwd;
 import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.ScheduledExecutorService;
@@ -29,8 +32,6 @@ import java.util.function.Supplier;
  *
  * <pre>
  * // 用法示例
- * &#064;Autowired(required  = false)
- * private RenewPwdRefresh renewPwdRefresh;
  *
  * &#064;Override
  * public void run(ApplicationArguments args) throws Exception {
@@ -39,7 +40,6 @@ import java.util.function.Supplier;
  *			// 这里的当前密码可能不是spring.datasource.password，看怎么处理一下
  *			.pwdExpireSupplier(() -> new PwdExpireInfo(currentPassword, checkPassword()))
  *		    // .retryIntervalMinutes(5) // 探测间隔，默认5分钟
- *		    .renewPwdRefresh(renewPwdRefresh)
  *			.build()) {
  *		// 触发器会自动循环运行
  *		detector.start();
@@ -54,7 +54,7 @@ import java.util.function.Supplier;
  * @version V3.0
  * @date 2025/8/13 16:27
  */
-public class PwdCheckDetector implements AutoCloseable {
+public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(PwdCheckDetector.class);
 
     /**
@@ -73,26 +73,23 @@ public class PwdCheckDetector implements AutoCloseable {
      */
     private final Supplier<PwdExpireInfo> pwdExpireSupplier;
 
-
-    /**
-     * 密码刷新服务 - 在处理方法执行后调用
-     */
-    private final RenewPwdRefresh renewPwdRefresh;
-
     /**
      *  查询失败/或者暂未过期时的重试间隔（分钟）
      */
     private final int retryIntervalMinutes;
 
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
     private PwdCheckDetector(Builder builder) {
         this.pwdExpireSupplier = builder.pwdExpireSupplier;
-        this.renewPwdRefresh = builder.renewPwdRefresh;
         this.retryIntervalMinutes = builder.retryIntervalMinutes;
 
         // 验证必要参数
-        if (this.renewPwdRefresh == null) {
-            throw new IllegalArgumentException("renewPwdRefresh cannot be null");
-        }
         if (this.pwdExpireSupplier == null) {
             throw new IllegalArgumentException("pwdExpireSupplier cannot be null");
         }
@@ -262,7 +259,7 @@ public class PwdCheckDetector implements AutoCloseable {
 
         try {
             log.info("执行上下文环境配置刷新和数据库密码更新");
-            renewPwdRefresh.fixPassword(pwdInfo.getNewPassword());
+            applicationContext.getBean(RenewPwdRefresh.class).fixPassword(pwdInfo.getNewPassword());
             log.info("完成上下文环境配置刷新和数据库密码更新");
         } catch (Exception e) {
             log.error("密码处理流程执行失败", e);
@@ -301,12 +298,13 @@ public class PwdCheckDetector implements AutoCloseable {
         return new Builder();
     }
 
+
+
     /**
      * 构建器类
      */
     public static class Builder {
         private Supplier<PwdExpireInfo> pwdExpireSupplier;
-        private RenewPwdRefresh renewPwdRefresh;
         private int retryIntervalMinutes = 5; // 默认查询失败5分钟后重试
 
         /**
@@ -314,14 +312,6 @@ public class PwdCheckDetector implements AutoCloseable {
          */
         public Builder pwdExpireSupplier(Supplier<PwdExpireInfo> supplier) {
             this.pwdExpireSupplier = supplier;
-            return this;
-        }
-
-        /**
-         * 设置密码刷新服务 - 在处理方法执行后调用
-         */
-        public Builder renewPwdRefresh(RenewPwdRefresh renewPwdRefresh) {
-            this.renewPwdRefresh = renewPwdRefresh;
             return this;
         }
 
