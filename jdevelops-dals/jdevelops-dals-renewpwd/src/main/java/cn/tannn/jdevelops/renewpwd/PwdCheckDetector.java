@@ -1,8 +1,11 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.annotation.EnableRenewpwd;
 import cn.tannn.jdevelops.renewpwd.exception.StopDetectorException;
+import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
 import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
 import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
+import cn.tannn.jdevelops.renewpwd.util.RenewpwdEnableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -106,6 +109,11 @@ public class PwdCheckDetector implements AutoCloseable {
      * 启动触发器（自动注册关闭钩子）
      */
     public synchronized boolean start() {
+
+        if(!RenewpwdEnableUtils.isRenewpwdEnabled(applicationContext)){
+            log.warn("密码续命触发器未启用，请检查配置");
+            return false;
+        }
         if (!running.compareAndSet(false, true)) {
             log.warn("密码续命触发器已经在运行中");
             return false;
