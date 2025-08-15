@@ -5,6 +5,7 @@ import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.HikariConfigStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,7 @@ public class RenewpwdDataSourceConfig {
     @Bean
     @Primary
     @RefreshScope
+    @ConditionalOnBean(DataSourceConfigStrategy.class)
     public DataSource dataSource(DataSourceProperties properties) {
 
         DataSource dataSource = properties

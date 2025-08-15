@@ -12,6 +12,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 
@@ -26,7 +27,7 @@ import java.util.Optional;
  * @version V1.0
  * @date 2025/8/13 16:32
  */
-public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware {
+public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, EnvironmentAware, Ordered {
 
     private static final Logger log = LoggerFactory.getLogger(RenewpwdRegister.class);
 
@@ -43,10 +44,10 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, Environm
 
         // 只有在启用refresh时才注册 tconfig 相关的处理器
         if (RenewpwdEnableUtils.isRenewpwdEnabled(environment, importingClassMetadata)) {
+            registerClass(registry, RenewpwdDataSourceConfig.class);
             registerClass(registry, DatabasePwdEnvironmentPostProcessor.class);
             registerClass(registry, DefaultRenewPwdRefresh.class);
             registerClass(registry, BuiltInDataSourceStrategiesConfig.class);
-            registerClass(registry, RenewpwdDataSourceConfig.class);
             log.info("TConfig is enabled, register property sources processor and value processor");
         } else {
             log.warn("TConfig is disabled, skip registration");
@@ -71,5 +72,10 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, Environm
         AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder
                 .genericBeanDefinition(aClass).getBeanDefinition();
         registry.registerBeanDefinition(aClass.getName(), beanDefinition);
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE; // 确保在自动配置之后执行
     }
 }
