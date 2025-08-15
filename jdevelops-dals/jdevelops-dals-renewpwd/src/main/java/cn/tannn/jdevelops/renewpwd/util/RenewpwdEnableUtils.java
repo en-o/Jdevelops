@@ -25,13 +25,6 @@ public class RenewpwdEnableUtils {
         if (configValue != null) {
             return Boolean.parseBoolean(configValue);
         }
-        // 2. PasswordPool bean
-        try {
-            PasswordPool config = context.getBean(PasswordPool.class);
-            return config.getEnabled();
-        } catch (Exception e) {
-            log.warn("PasswordPool bean not found or not enabled, defaulting to false,{}", e.getMessage());
-        }
         // 3. 注解配置 从配置类上获取注解信息
         return getAnnotationEnabledFromConfigClasses(context);
     }
