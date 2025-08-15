@@ -201,10 +201,8 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         try {
             // 1. 查询密码过期信息
             PwdExpireInfo pwdInfo = queryPwdExpireInfo();
-
             if (pwdInfo == null || !pwdInfo.isCurrentIsExpireSoon()) {
-                // 查询失败或数据无效，使用重试间隔重新调度
-                log.warn("查询密码过期信息失败或账户没设置过期，{}分钟后重试", retryIntervalMinutes);
+                log.warn("数据库密码未过期，继续下一次探测，探测间隔：{}分钟", retryIntervalMinutes);
                 scheduleRetry();
             } else {
                 // 触发时间已到，立即执行
