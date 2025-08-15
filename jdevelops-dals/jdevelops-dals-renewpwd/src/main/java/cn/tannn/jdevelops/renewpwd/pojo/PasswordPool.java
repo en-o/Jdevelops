@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.renewpwd.pojo;
 
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * 密码池 - 只在两个密码之间切换
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @version V1.0
  * @date 2025/8/11 14:54
  */
+@Component("renewpwdPasswordPool")
 @ConfigurationProperties(prefix = "jdevelops.renewpwd")
 public class PasswordPool {
     /**

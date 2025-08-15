@@ -126,7 +126,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
 
         // 直接注册修改后的PasswordPool实例为单例Bean
         // 如果已存在同名Bean，registerSingleton会覆盖它
-        beanFactory.registerSingleton("passwordPool", passwordPool);
+        beanFactory.registerSingleton("renewpwdPasswordPool", passwordPool);
         log.info("[renewpwd] PasswordPool已注册为全局单例Bean，masterPassword修改全局有效");
     }
 
