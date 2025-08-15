@@ -17,9 +17,11 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * 数据源配置类，使用策略模式处理不同类型的数据源配置
  * 通过 @RefreshScope 实现动态刷新
+ * - ⚠ 引入依赖就会强行被注册这个类。
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class)

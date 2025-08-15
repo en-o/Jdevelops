@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.renewpwd;
 
-import cn.tannn.jdevelops.renewpwd.annotation.EnableRenewpwd;
 import cn.tannn.jdevelops.renewpwd.exception.StopDetectorException;
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
 import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
 import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
 import cn.tannn.jdevelops.renewpwd.util.RenewpwdEnableUtils;

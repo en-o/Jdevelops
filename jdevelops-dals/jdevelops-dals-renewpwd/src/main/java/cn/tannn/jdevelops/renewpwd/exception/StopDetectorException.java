@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.exception;
 
 
-import java.util.Objects;
-
 /**
  *
  * @author tan

@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.renewpwd.annotation;
 
 import cn.tannn.jdevelops.renewpwd.DefaultRenewPwdRefresh;
 import cn.tannn.jdevelops.renewpwd.proerty.DatabasePwdEnvironmentPostProcessor;
-import cn.tannn.jdevelops.renewpwd.refresh.RenewpwdDataSourceConfig;
 import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.BuiltInDataSourceStrategiesConfig;
 import cn.tannn.jdevelops.renewpwd.util.RenewpwdEnableUtils;
 import org.slf4j.Logger;
@@ -44,7 +43,6 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, Environm
 
         // 只有在启用refresh时才注册 tconfig 相关的处理器
         if (RenewpwdEnableUtils.isRenewpwdEnabled(environment, importingClassMetadata)) {
-            registerClass(registry, RenewpwdDataSourceConfig.class);
             registerClass(registry, DatabasePwdEnvironmentPostProcessor.class);
             registerClass(registry, DefaultRenewPwdRefresh.class);
             registerClass(registry, BuiltInDataSourceStrategiesConfig.class);
