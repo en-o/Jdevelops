@@ -112,14 +112,15 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             PasswordPool passwordPool = applicationContext.getBean(PasswordPool.class);
 
-            // 获取当前密码并解密
+            // 获取当前密码并尝试解密
             String currentPassword = env.getProperty(DATASOURCE_PASSWORD_KEY, DEFAULT_PASSWORD);
             currentPassword = AESUtil.decryptPassword(currentPassword, passwordPool.getPwdEncryptKey());
 
+            // 获取备用密码和主密码
             String backPassword = passwordPool.getBackupPasswordDecrypt();
             String masterPassword = passwordPool.getMasterPassword();
 
-            // 防止spring.datasource.password被污染，即密码被改过
+            // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
 
             // 验证当前密码和备用密码的有效性
