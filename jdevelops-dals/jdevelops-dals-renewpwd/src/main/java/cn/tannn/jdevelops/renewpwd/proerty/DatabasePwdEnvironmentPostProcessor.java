@@ -14,88 +14,179 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 /**
  * 数据库密码处理器 - 启动时对密码进行处理
  * <P> 1. 使用密码池密码 </P>
  * <P> 2. 密码解密 </P>
+ * <P> 3. masterPassword为空时自动初始化 </P>
  */
-public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor
-        , EnvironmentAware, PasswordUpdateListener {
+public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor,
+        EnvironmentAware, PasswordUpdateListener {
 
-    private final static String PROPERTY_SOURCES = "renewpwdConfigPropertySources";
-    private final static String PROPERTY_SOURCE = "renewpwdConfigPropertySource";
+    private static final String PROPERTY_SOURCES = "renewpwdConfigPropertySources";
+    private static final String PROPERTY_SOURCE = "renewpwdConfigPropertySource";
+    private static final String DATASOURCE_PASSWORD_KEY = "spring.datasource.password";
+    private static final String RENEWPWD_CONFIG_KEY = "jdevelops.renewpwd";
     private static final Logger log = LoggerFactory.getLogger(DatabasePwdEnvironmentPostProcessor.class);
+
     private Environment environment;
     private RenewPasswordService configService;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-        // 注册监听器(先注册防止PwdRefreshUtil#passwordUpdateListener为空)
-        // 将当前的 DatabasePwdEnvironmentPostProcessor 实例（实现了 PasswordUpdateListener 接口）注册为密码更新事件的监听器
-        // 这样当 PwdRefreshUtil 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
-        PwdRefreshUtil.setPasswordUpdateListener(this);
-        ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
-        String password = ENV.getProperty("spring.datasource.password");
-        String backupPassword = password;
+        // 注册密码更新监听器
+        registerPasswordUpdateListener();
 
-        try {
-            Binder binder = Binder.get(environment);
-            PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
-                    .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
-            password = AESUtil.decryptPassword(password, passwordPool.getPwdEncryptKey());
-            String panduannull = passwordPool.getBackupPassword();
-            if (panduannull != null && !panduannull.isBlank()) {
-                backupPassword = passwordPool.getBackupPasswordDecrypt();
-            }
-        } catch (Exception e) {
-            if (e instanceof IllegalStateException) {
-                log.warn("{}，使用datasource的密码进行处理", e.getMessage());
-            } else {
-                log.warn("没有密码续命相关配置，使用datasource的密码进行处理");
-            }
-            password = AESUtil.decryptPassword(password, null);
-        }
-        // 一共就两个，我这里就这样弄了，如果是2+ 目前还没找到标记当前的方法
-        if (!PwdRefreshUtil.validateDatasourceConfig(ENV, password, backupPassword)) {
-            if (PwdRefreshUtil.validateDatasourceConfig(ENV, backupPassword, password)) {
-                password = backupPassword;
-            } else {
-                throw new RuntimeException("数据库密码配置错误，请检查配置文件或环境变量");
-            }
-        }
+        ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
+        String originalPassword = env.getProperty(DATASOURCE_PASSWORD_KEY);
 
-        if (configService == null) {
-            configService = new RenewPasswordService();
-            configService.initialize(password);
-        }
-        // 将实例注册到Spring容器中，确保是单例
+        // 处理密码配置
+        PasswordConfig passwordConfig = processPasswordConfiguration(originalPassword);
+
+        // 验证和选择有效密码
+        String validPassword = selectValidPassword(env, passwordConfig);
+
+        // 初始化配置服务
+        initializeConfigService(validPassword);
+
+        // 注册服务到Spring容器
         beanFactory.registerSingleton("renewPasswordService", configService);
 
+        // 设置属性源
+        setupPropertySource(env);
+    }
 
-        // 构建spring 配置格式- 配置源的集成机制
+    /**
+     * 注册密码更新监听器
+     * <p> 注册监听器(先注册防止PwdRefreshUtil#passwordUpdateListener为空)
+     * <p> 将当前的 DatabasePwdEnvironmentPostProcessor 实例（实现了 PasswordUpdateListener 接口）注册为密码更新事件的监听器
+     * <p> 这样当 PwdRefreshUtil 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
+     *
+     */
+    private void registerPasswordUpdateListener() {
+        // 先注册防止PwdRefreshUtil#passwordUpdateListener为空
+        PwdRefreshUtil.setPasswordUpdateListener(this);
+        log.debug("[renewpwd] 密码更新监听器注册完成");
+    }
+
+    /**
+     * 处理密码配置
+     */
+    private PasswordConfig processPasswordConfiguration(String originalPassword) {
+        try {
+            Binder binder = Binder.get(environment);
+            PasswordPool passwordPool = binder.bind(RENEWPWD_CONFIG_KEY, Bindable.of(PasswordPool.class))
+                    .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
+            // 初始化masterPassword如果为空
+            initializeMasterPasswordIfEmpty(passwordPool, originalPassword);
+
+            return new PasswordConfig(
+                    AESUtil.decryptPassword(originalPassword, passwordPool.getPwdEncryptKey()),
+                    determineBackupPassword(passwordPool, originalPassword),
+                    passwordPool
+            );
+        } catch (Exception e) {
+            log.warn("密码续命配置处理异常: {}，使用默认密码处理", e.getMessage());
+            return new PasswordConfig(
+                    AESUtil.decryptPassword(originalPassword, null),
+                    originalPassword,
+                    null
+            );
+        }
+    }
+
+    /**
+     * 初始化masterPassword如果为空
+     */
+    private void initializeMasterPasswordIfEmpty(PasswordPool passwordPool, String originalPassword) {
+        if (!StringUtils.hasText(passwordPool.getMasterPassword())) {
+            log.info("[renewpwd] masterPassword为空，使用数据源密码进行初始化");
+            // 这里需要解密后的密码来设置masterPassword
+            String decryptedPassword = AESUtil.decryptPassword(originalPassword, passwordPool.getPwdEncryptKey());
+            passwordPool.setMasterPassword(decryptedPassword);
+            log.info("[renewpwd] masterPassword初始化完成");
+        }
+    }
+
+    /**
+     * 确定备用密码
+     */
+    private String determineBackupPassword(PasswordPool passwordPool, String originalPassword) {
+        String backupPassword = passwordPool.getBackupPassword();
+        if (StringUtils.hasText(backupPassword)) {
+            return passwordPool.getBackupPasswordDecrypt();
+        }
+        return originalPassword;
+    }
+
+    /**
+     * 选择有效的密码
+     */
+    private String selectValidPassword(ConfigurableEnvironment env, PasswordConfig config) {
+        // 首先尝试主密码
+        if (PwdRefreshUtil.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword)) {
+            log.info("[renewpwd] 使用主密码连接数据库成功");
+            return config.primaryPassword;
+        }
+
+        // 主密码失效，尝试备用密码
+        if (PwdRefreshUtil.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword)) {
+            log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
+            return config.backupPassword;
+        }
+
+        // 两个密码都无效
+        throw new RuntimeException("数据库密码配置错误，主密码和备用密码都无法连接数据库，请检查配置文件或环境变量");
+    }
+
+    /**
+     * 初始化配置服务
+     */
+    private void initializeConfigService(String password) {
+        if (configService == null) {
+            configService = new RenewPasswordService();
+        }
+        configService.initialize(password);
+        log.info("[renewpwd] RenewPasswordService初始化完成");
+    }
+
+    /**
+     * 设置属性源
+     */
+    private void setupPropertySource(ConfigurableEnvironment env) {
         RenewpwdPropertySource propertySource = new RenewpwdPropertySource(PROPERTY_SOURCES, configService);
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE);
         composite.addPropertySource(propertySource);
-        // 将配置中心得到属性置顶(拥有更高的优先级
-        ENV.getPropertySources().addFirst(composite);
+        // 将配置中心得到属性置顶(拥有更高的优先级)
+        env.getPropertySources().addFirst(composite);
+        log.debug("[renewpwd] 属性源设置完成");
     }
-
 
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
 
-
     @Override
     public void onPasswordUpdated(String newPassword) {
         log.info("[renewpwd] 收到密码更新通知，重新初始化RenewPasswordService");
-        if (configService != null) {
-            configService.initialize(newPassword);
-        } else {
-            configService = new RenewPasswordService();
-            configService.initialize(newPassword);
+        initializeConfigService(newPassword);
+    }
+
+    /**
+     * 密码配置内部类
+     */
+    private static class PasswordConfig {
+        final String primaryPassword;
+        final String backupPassword;
+        final PasswordPool passwordPool;
+
+        PasswordConfig(String primaryPassword, String backupPassword, PasswordPool passwordPool) {
+            this.primaryPassword = primaryPassword;
+            this.backupPassword = backupPassword;
+            this.passwordPool = passwordPool;
         }
     }
 }
