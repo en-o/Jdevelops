@@ -15,44 +15,40 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
- * 密码延迟触发器（简化版）
+ * 密码续命探测器
  *
- * 基于数据驱动的延迟触发器，根据查询到的密码过期信息动态计算触发时间。
- * 工作流程：
- * 1. 查询密码过期信息
- * 2. 计算触发时间（过期时间 - 提前触发时间）
- * 3. 延迟到触发时间后执行处理方法
- * 4. 执行密码刷新
- * 5. 重新开始查询，如此循环
+ * <p> 基于数据驱动的触发器，根据查询到的密码过期信息进行触发。
+ * <p> 工作流程：
+ * <p> 1. 查询密码过期信息
+ * <p> 3. 判断是否需要需要触发，不需要触发进行下一次探测
+ * <p> 4. 执行密码刷新
+ * <p> 5. 重新开始查询，如此循环
  *
- * 简化说明：
- * - 移除了ScheduledFuture的复杂性，使用递归调度方式
- * - 保持非阻塞特性，不会影响其他线程
- * - 代码更简洁，逻辑更清晰
+ * <p> 自管理特性：
+ * <p> - 自动注册JVM关闭钩子，确保应用退出时线程被正确关闭
+ * <p> - 无需手动调用stop()方法
+ * <p> - 创建后直接start()即可
  *
  * <pre>
  * // 用法示例
- *
  * &#064;Override
  * public void run(ApplicationArguments args) throws Exception {
- *	 log.info("密码续命触发器启动");
- *	 try (PwdCheckDetector detector = PwdCheckDetector.builder()
- *			// 这里的当前密码可能不是spring.datasource.password，看怎么处理一下
+ *	try {
+ *	    log.info("密码续命触发器启动");
+ *	    PwdCheckDetector detector = PwdCheckDetector.builder()
  *			.pwdExpireSupplier(() -> new PwdExpireInfo(currentPassword, checkPassword()))
- *		    // .retryIntervalMinutes(5) // 探测间隔，默认5分钟
- *			.build()) {
- *		// 触发器会自动循环运行
- *		detector.start();
+ *		    .retryIntervalMinutes(5)// 探测间隔，默认5分钟
+ *			.build();
+ *	    detector.start(); // 启动后会自动管理生命周期
  *	 } catch (Exception e) {
  *		log.error("密码续命触发器启动失败", e);
  *	 }
- *	 checkPassword();
  * }
  * </pre>
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
- * @version V3.0
- * @date 2025/8/13 16:27
+ * @version V4.0
+ * @date 2025/8/15 16:27
  */
 public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(PwdCheckDetector.class);
@@ -63,18 +59,22 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     /**
+     * 关闭钩子是否已注册
+     */
+    private final AtomicBoolean shutdownHookRegistered = new AtomicBoolean(false);
+
+    /**
      * 定时执行服务
-     * 注意：简化版本中移除了ScheduledFuture，直接使用递归调度
      */
     private ScheduledExecutorService scheduler;
 
     /**
-     * 密码过期信息查询方法 和 处理方法
+     * 自行注册密码过期查询方法
      */
     private final Supplier<PwdExpireInfo> pwdExpireSupplier;
 
     /**
-     *  查询失败/或者暂未过期时的重试间隔（分钟）
+     * 查询失败/或者暂未过期时的重试间隔（分钟）
      */
     private final int retryIntervalMinutes;
 
@@ -96,7 +96,7 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
     }
 
     /**
-     * 启动触发器
+     * 启动触发器（自动注册关闭钩子）
      */
     public synchronized boolean start() {
         if (!running.compareAndSet(false, true)) {
@@ -107,19 +107,21 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         try {
             // 创建单线程调度器
             scheduler = new ScheduledThreadPoolExecutor(1, r -> {
-                // 创建线程时设置名称和异常处理
                 Thread thread = new Thread(r, "PwdCheckDetector-Thread");
-                // 守护线程，确保应用退出时可以自动结束且不会被jvm回收
-                thread.setDaemon(true);
+                // 非守护线程，JVM 会等待所有非守护线程完成后才退出，确保任务完成
+                thread.setDaemon(false);
                 thread.setUncaughtExceptionHandler((t, e) ->
                         log.error("密码触发器线程异常", e));
                 return thread;
             });
 
-            // 立即开始第一次查询和调度（简化版：直接开始循环，不需要保存ScheduledFuture）
+            // 注册JVM关闭钩子（只注册一次）
+            registerShutdownHook();
+
+            // 立即开始第一次查询和调度
             scheduleNextCheck();
 
-            log.info("密码续命触发器已启动，每隔 {} 分钟触发一次", retryIntervalMinutes);
+            log.info("密码续命触发器已启动，每隔 {} 分钟触发一次，已自动注册关闭钩子", retryIntervalMinutes);
             return true;
 
         } catch (Exception e) {
@@ -134,25 +136,44 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
     }
 
     /**
-     * 停止触发器
+     * 注册JVM关闭钩子（自动管理生命周期的核心）
+     */
+    private void registerShutdownHook() {
+        if (shutdownHookRegistered.compareAndSet(false, true)) {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                log.info("JVM正在关闭，自动停止密码续命触发器...");
+                internalStop();
+            }, "PwdCheckDetector-ShutdownHook"));
+            log.debug("已注册JVM关闭钩子");
+        }
+    }
+
+    /**
+     * 停止触发器（公共方法，也可以手动调用）
      */
     public synchronized boolean stop() {
+        return internalStop();
+    }
+
+    /**
+     * 内部停止方法
+     */
+    private synchronized boolean internalStop() {
         if (!running.compareAndSet(true, false)) {
-            log.debug("密码续命触发器已经停止");
+            log.debug("密码续命触发器已经停止或未启动");
             return false;
         }
 
         try {
-            // 简化版本：不需要取消具体任务，直接关闭调度器即可
-            // 关闭调度器
             if (scheduler != null && !scheduler.isShutdown()) {
                 scheduler.shutdown();
                 try {
-                    if (!scheduler.awaitTermination(30, TimeUnit.SECONDS)) {
+                    if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
+                        log.warn("等待任务结束超时，强制关闭调度器");
                         scheduler.shutdownNow();
-                        log.warn("强制关闭密码续命触发器调度器");
                     }
                 } catch (InterruptedException e) {
+                    log.warn("等待任务结束被中断，强制关闭调度器");
                     scheduler.shutdownNow();
                     Thread.currentThread().interrupt();
                 }
@@ -173,7 +194,7 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
      */
     public synchronized boolean restart() {
         log.info("正在重启密码续命触发器...");
-        stop();
+        internalStop();
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -191,7 +212,6 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
 
     /**
      * 调度下一次检查 (使用递归调度方式)
-     * 这是整个触发器的核心循环方法
      */
     private void scheduleNextCheck() {
         if (!running.get()) {
@@ -201,6 +221,7 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         try {
             // 1. 查询密码过期信息
             PwdExpireInfo pwdInfo = queryPwdExpireInfo();
+
             if (pwdInfo == null || !pwdInfo.isCurrentIsExpireSoon()) {
                 log.warn("数据库密码未过期，继续下一次探测，探测间隔：{}分钟", retryIntervalMinutes);
                 scheduleRetry();
@@ -250,7 +271,6 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
 
     /**
      * 执行密码处理流程
-     * 流程：处理方法 → 刷新方法 → 重新开始循环
      */
     private void executePasswordFlow(PwdExpireInfo pwdInfo) {
         log.info("密码过期 - 开始执行密码处理流程，当前时间: {}", LocalDateTime.now());
@@ -272,7 +292,6 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         if (!running.get()) {
             return;
         }
-        // 简化版：不需要保存ScheduledFuture引用
         scheduler.schedule(
                 this::scheduleNextCheck,
                 retryIntervalMinutes,
@@ -285,9 +304,8 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
      */
     @Override
     public void close() {
-        stop();
+        internalStop();
     }
-
 
     /**
      * 创建构建器
@@ -296,17 +314,21 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         return new Builder();
     }
 
-
-
     /**
      * 构建器类
      */
     public static class Builder {
+        /**
+         * 自行注册密码过期查询方法
+         */
         private Supplier<PwdExpireInfo> pwdExpireSupplier;
-        private int retryIntervalMinutes = 5; // 默认查询失败5分钟后重试
+        /**
+         * 查询失败/或者暂未过期时的重试间隔（分钟）默认5分钟
+         */
+        private int retryIntervalMinutes = 5;
 
         /**
-         * 设置密码过期信息查询和处理方法
+         * 自行注册密码过期查询方法
          */
         public Builder pwdExpireSupplier(Supplier<PwdExpireInfo> supplier) {
             this.pwdExpireSupplier = supplier;
@@ -314,7 +336,7 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         }
 
         /**
-         * 设置查询失败时的重试间隔（分钟）
+         * 查询失败/或者暂未过期时的重试间隔（分钟）默认5分钟
          */
         public Builder retryIntervalMinutes(int minutes) {
             if (minutes <= 0) {
