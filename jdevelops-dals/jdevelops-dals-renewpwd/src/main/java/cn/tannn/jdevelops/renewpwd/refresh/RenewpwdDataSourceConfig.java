@@ -24,7 +24,6 @@ import java.util.List;
  * - ⚠ 引入依赖就会强行被注册这个类。
  */
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureBefore(org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class)
 public class RenewpwdDataSourceConfig {
 
     private static final Logger log = LoggerFactory.getLogger(RenewpwdDataSourceConfig.class);
@@ -48,7 +47,6 @@ public class RenewpwdDataSourceConfig {
     @Bean
     @Primary
     @RefreshScope
-    @ConditionalOnBean(DataSourceConfigStrategy.class)
     public DataSource dataSource(DataSourceProperties properties) {
 
         DataSource dataSource = properties
