@@ -31,6 +31,8 @@ import java.util.function.Supplier;
  *
  * <pre>
  * // 用法示例
+ * &#064;Autowired
+ * private ApplicationContext applicationContext;
  * &#064;Override
  * public void run(ApplicationArguments args) throws Exception {
  *	try {
@@ -38,6 +40,7 @@ import java.util.function.Supplier;
  *	    PwdCheckDetector detector = PwdCheckDetector.builder()
  *			.pwdExpireSupplier(() -> new PwdExpireInfo(currentPassword, checkPassword()))
  *		    .retryIntervalMinutes(5)// 探测间隔，默认5分钟
+ *		    .applicationContext(applicationContext)
  *			.build();
  *	    detector.start(); // 启动后会自动管理生命周期
  *	 } catch (Exception e) {
