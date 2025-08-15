@@ -48,4 +48,20 @@ public class DatabaseUtils {
         }
         return deepest;
     }
+
+
+    /**
+     * 检查指定的类是否存在
+     * <p>用于判断某些数据库驱动是否存在</p>
+     * @param className 类名
+     * @return true 如果类存在，false 如果类不存在
+     */
+    public static boolean isClassPresent(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
 }

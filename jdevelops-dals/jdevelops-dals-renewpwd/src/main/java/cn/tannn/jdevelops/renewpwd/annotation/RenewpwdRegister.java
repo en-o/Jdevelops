@@ -2,6 +2,8 @@ package cn.tannn.jdevelops.renewpwd.annotation;
 
 import cn.tannn.jdevelops.renewpwd.DefaultRenewPwdRefresh;
 import cn.tannn.jdevelops.renewpwd.proerty.DatabasePwdEnvironmentPostProcessor;
+import cn.tannn.jdevelops.renewpwd.refresh.RenewpwdDataSourceConfig;
+import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.BuiltInDataSourceStrategiesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -41,6 +43,8 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, Environm
         if (isRefreshEnabled(importingClassMetadata, registry)) {
             registerClass(registry, DatabasePwdEnvironmentPostProcessor.class);
             registerClass(registry, DefaultRenewPwdRefresh.class);
+            registerClass(registry, BuiltInDataSourceStrategiesConfig.class);
+            registerClass(registry, RenewpwdDataSourceConfig.class);
             log.info("TConfig is enabled, register property sources processor and value processor");
         }else {
             log.warn("TConfig is disabled, skip registration");
