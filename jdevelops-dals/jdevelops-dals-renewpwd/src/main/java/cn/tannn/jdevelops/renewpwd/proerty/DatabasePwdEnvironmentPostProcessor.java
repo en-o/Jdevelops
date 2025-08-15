@@ -39,7 +39,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = password;
 
-
         try {
             Binder binder = Binder.get(environment);
             PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))

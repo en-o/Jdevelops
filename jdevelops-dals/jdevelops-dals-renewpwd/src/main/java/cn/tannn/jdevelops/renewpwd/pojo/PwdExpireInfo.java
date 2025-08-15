@@ -9,7 +9,7 @@ public class PwdExpireInfo {
      */
     private final boolean currentIsExpireSoon;
 
-    public PwdExpireInfo(String newPassword, boolean currentIsExpireSoon) {
+    public PwdExpireInfo(boolean currentIsExpireSoon) {
         this.currentIsExpireSoon = currentIsExpireSoon;
     }
 
