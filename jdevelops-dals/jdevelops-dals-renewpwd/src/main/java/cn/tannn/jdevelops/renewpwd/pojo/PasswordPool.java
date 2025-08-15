@@ -17,10 +17,8 @@ public class PasswordPool {
     /**
      * 备用密码,DatabasePwdEnvironmentPostProcessor#postProcessBeanFactory
      *
-     *  <p>备用密码用于在主密码失效或需要更换时使用</p>
-     *  <p>注意：此密码应当与主密码不同，且在使用时需要确保安全性</p>
-     *  <p>如果空，这使用datasource中的密码进行处理所有事情</p>
-     *  <p>如果不为空，主密码登录失败就会使用这个秘密。并且如果是密码过期会进行交替设置，主过期用备份，备份过期用主</p>
+     *  <p> 注意：此密码应当与主密码不同，且在使用时需要确保安全性</p>
+     *  <p> 如果不配置，默认使用数据源中的密码
      *  <p> 如果需要加密请使用：ENC(你的密码)</p>
      */
     private String backupPassword;
@@ -28,10 +26,11 @@ public class PasswordPool {
 
     /**
      * 主密码
-     * <p>作为基准密码
+     * <p>作为基准密码 跟数据源中的密码要保持一直（可以不配置
      * <p> 跟backupPassword进行轮换（取反）
-     * <p>如果不配置，默认使用数据源中的密码
+     * <p> 如果不配置，默认使用数据源中的密码
      * <p> DefaultRenewPwdRefresh#determineNewPasswordForExpiredCurrent
+     * <p> 如果需要加密请使用：ENC(你的密码)</p>
      */
     private String masterPassword;
 

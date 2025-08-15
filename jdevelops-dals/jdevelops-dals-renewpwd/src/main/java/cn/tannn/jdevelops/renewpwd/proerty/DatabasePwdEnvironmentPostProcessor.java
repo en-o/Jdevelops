@@ -85,7 +85,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
 
             // 初始化masterPassword如果为空，并确保全局有效
-            initializeMasterPasswordIfEmpty(passwordPool, originalPassword);
+            initializePasswordIfEmpty(passwordPool, originalPassword);
 
             // 将修改后的PasswordPool注册为Spring Bean，确保全局有效
             registerPasswordPoolAsGlobalBean(passwordPool, beanFactory);
@@ -108,12 +108,16 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     /**
      * 初始化masterPassword如果为空
      */
-    private void initializeMasterPasswordIfEmpty(PasswordPool passwordPool, String originalPassword) {
+    private void initializePasswordIfEmpty(PasswordPool passwordPool, String originalPassword) {
         if (!StringUtils.hasText(passwordPool.getMasterPassword())) {
             log.info("[renewpwd] masterPassword为空，使用数据源密码进行初始化");
-            // 解密密码来设置masterPassword
             passwordPool.setMasterPassword(originalPassword);
             log.info("[renewpwd] masterPassword初始化完成: {}", originalPassword);
+        }
+        if (!StringUtils.hasText(passwordPool.getBackupPassword())) {
+            log.info("[renewpwd] backupPassword为空，使用数据源密码进行初始化");
+            passwordPool.setMasterPassword(originalPassword);
+            log.info("[renewpwd] backupPassword初始化完成: {}", originalPassword);
         }
     }
 
