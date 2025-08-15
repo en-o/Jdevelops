@@ -265,7 +265,11 @@ public class PwdCheckDetector implements AutoCloseable {
             // 只有在成功执行后才继续下一轮循环
             if (running.get()) {
                 log.info("密码处理流程执行成功，开始下一轮查询调度");
-                scheduleNextCheck();
+                scheduler.schedule(
+                        this::scheduleNextCheck,
+                        30,
+                        TimeUnit.SECONDS
+                );
             }
         } catch (Exception e) {
             // 可以根据异常类型决定是否继续重试
