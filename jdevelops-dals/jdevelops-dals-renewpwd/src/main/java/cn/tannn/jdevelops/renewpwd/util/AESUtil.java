@@ -1,10 +1,14 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 public final class AESUtil {
+    private static final Logger log = LoggerFactory.getLogger(AESUtil.class);
 
     /**
      * 16 字节的密钥，可替换为自己的
@@ -107,6 +111,24 @@ public final class AESUtil {
      */
     private static void validateKey() {
         validateKey(KEY);
+    }
+
+
+
+    /**
+     * 解密密码
+     *
+     * @param password 密码字符
+     * @return 解密的
+     */
+    public static String decryptPassword(String password, String key) {
+        // 需要解密
+        if (password != null && password.startsWith("ENC(")) {
+            log.debug("数据库密码需要解密，正在解密...");
+            String encrypted = password.substring(4, password.length() - 1);
+            password = AESUtil.decrypt(encrypted, key);
+        }
+        return password;
     }
 
     /* 仅用于本地生成加密字符串 */

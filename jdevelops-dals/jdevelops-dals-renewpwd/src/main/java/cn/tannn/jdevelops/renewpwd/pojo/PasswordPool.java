@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.pojo;
 
+import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -22,6 +23,16 @@ public class PasswordPool {
      */
     private String backupPassword;
 
+
+    /**
+     * 主密码 - 只在两个密码之间切换，这里的作用就是防止spring.datasource.password被污染导致不知道当前运行密码是哪一个了
+     * <p>主密码用于正常的数据库连接和操作
+     * <p>如果不配置，默认使用数据源中的密码
+     * <p>主密码登录失败就会使用备用密码进行登录
+     * <p>如果主密码过期，备用密码会被设置
+     */
+    private String masterPassword;
+
     /**
      * 是否启用密码虚续命，以配置文件为准-这里只是为空编写配置的时候有提示，具体在RenewpwdRegister#isRefreshEnabled
      * <p>这个可以控制注解中的enabled，这不代表不写注解，注解必须写</p>
@@ -41,9 +52,26 @@ public class PasswordPool {
         return backupPassword;
     }
 
+    public String getBackupPasswordDecrypt() {
+        return AESUtil.decryptPassword(backupPassword, pwdEncryptKey);
+    }
+
     public void setBackupPassword(String backupPassword) {
         this.backupPassword = backupPassword;
     }
+
+    public String getMasterPassword() {
+        return masterPassword;
+    }
+
+    public String getMasterPasswordDecrypt() {
+        return AESUtil.decryptPassword(masterPassword, pwdEncryptKey);
+    }
+
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
+    }
+
 
     public Boolean getEnabled() {
         return enabled != null && enabled;
@@ -61,10 +89,12 @@ public class PasswordPool {
         this.pwdEncryptKey = pwdEncryptKey;
     }
 
+
     @Override
     public String toString() {
         return "PasswordPool{" +
                 "backupPassword='" + backupPassword + '\'' +
+                ", masterPassword='" + masterPassword + '\'' +
                 ", enabled=" + enabled +
                 ", pwdEncryptKey='" + pwdEncryptKey + '\'' +
                 '}';

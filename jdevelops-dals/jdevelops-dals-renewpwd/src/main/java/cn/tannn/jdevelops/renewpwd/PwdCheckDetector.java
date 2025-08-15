@@ -228,7 +228,7 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
             } else {
                 // 触发时间已到，立即执行
                 log.info("触发时间已到，立即执行密码处理流程");
-                scheduler.submit(() -> safeExecutePasswordFlow(pwdInfo));
+                scheduler.submit(this::safeExecutePasswordFlow);
             }
         } catch (Exception e) {
             log.error("调度下一次检查时发生异常", e);
@@ -255,9 +255,9 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
     /**
      * 安全执行密码处理流程
      */
-    private void safeExecutePasswordFlow(PwdExpireInfo pwdInfo) {
+    private void safeExecutePasswordFlow() {
         try {
-            executePasswordFlow(pwdInfo);
+            executePasswordFlow();
         } catch (Exception e) {
             log.error("执行密码处理流程时发生异常", e);
         } finally {
@@ -271,13 +271,14 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
 
     /**
      * 执行密码处理流程
+     * <p> 会根据当前上下文进行密码更新和配置刷新
      */
-    private void executePasswordFlow(PwdExpireInfo pwdInfo) {
+    private void executePasswordFlow() {
         log.info("密码过期 - 开始执行密码处理流程，当前时间: {}", LocalDateTime.now());
 
         try {
             log.info("执行上下文环境配置刷新和数据库密码更新");
-            applicationContext.getBean(RenewPwdRefresh.class).fixPassword(pwdInfo.getNewPassword());
+            applicationContext.getBean(RenewPwdRefresh.class).fixPassword();
             log.info("完成上下文环境配置刷新和数据库密码更新");
         } catch (Exception e) {
             log.error("密码处理流程执行失败", e);

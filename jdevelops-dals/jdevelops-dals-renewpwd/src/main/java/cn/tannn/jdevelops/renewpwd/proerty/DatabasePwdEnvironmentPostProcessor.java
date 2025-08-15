@@ -44,10 +44,10 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             Binder binder = Binder.get(environment);
             PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
-            password = decryptPassword(password, passwordPool.getPwdEncryptKey());
+            password = AESUtil.decryptPassword(password, passwordPool.getPwdEncryptKey());
             String panduannull = passwordPool.getBackupPassword();
             if (panduannull != null && !panduannull.isBlank()) {
-                backupPassword = decryptPassword(passwordPool.getBackupPassword(), passwordPool.getPwdEncryptKey());
+                backupPassword = AESUtil.decryptPassword(passwordPool.getBackupPassword(), passwordPool.getPwdEncryptKey());
             }
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
@@ -55,7 +55,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             } else {
                 log.warn("没有密码续命相关配置，使用datasource的密码进行处理");
             }
-            password = decryptPassword(password, null);
+            password = AESUtil.decryptPassword(password, null);
         }
         // 一共就两个，我这里就这样弄了，如果是2+ 目前还没找到标记当前的方法
         if (!PwdRefreshUtil.validateDatasourceConfig(ENV, password, backupPassword)) {
@@ -88,22 +88,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         this.environment = environment;
     }
 
-
-    /**
-     * 解密密码
-     *
-     * @param password 密码字符
-     * @return 解密的
-     */
-    private static String decryptPassword(String password, String key) {
-        // 需要解密
-        if (password != null && password.startsWith("ENC(")) {
-            log.debug("数据库密码需要解密，正在解密...");
-            String encrypted = password.substring(4, password.length() - 1);
-            password = AESUtil.decrypt(encrypted, key);
-        }
-        return password;
-    }
 
     @Override
     public void onPasswordUpdated(String newPassword) {

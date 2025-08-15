@@ -27,15 +27,17 @@ public class PwdRefreshUtil {
 
     /**
      * 验证数据源配置是否有效
-     * @param environment  ConfigurableEnvironment
+     *
+     * @param environment     ConfigurableEnvironment
      * @param currentPassword 当前密码
-     * @param backupPassword 密码池（用于重置密码的密码组） 当前还没有用
+     * @param backupPassword  密码已过期 (1862) 错误时，将数据库密码修改为备份密码
      */
     public static boolean validateDatasourceConfig(ConfigurableEnvironment environment
             , String currentPassword, String backupPassword) {
         try {
-            // 暂时还不知道怎么处理，这个用来修改密码用的，但是修改之后不知道怎么将修改之后的通知回去，在第二次启动项目的时候不用主密码而是用修改之后的密码
-            backupPassword = backupPassword.isEmpty()? currentPassword : backupPassword;
+
+            // 如果备份密码为空，则使用当前密码
+            backupPassword = backupPassword.isEmpty() ? currentPassword : backupPassword;
 
             String url = environment.getProperty("spring.datasource.url");
             String username = environment.getProperty("spring.datasource.username");
@@ -50,7 +52,7 @@ public class PwdRefreshUtil {
                 return false;
             }
             // 创建临时连接测试
-            return testDatabaseConnection(url, username,  driverClassName, currentPassword, backupPassword);
+            return testDatabaseConnection(url, username, driverClassName, currentPassword, backupPassword);
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
             return false;
@@ -60,6 +62,13 @@ public class PwdRefreshUtil {
 
     /**
      * 测试数据库连接是否有效
+     *
+     * @param url             数据库连接URL
+     * @param username        数据库用户名
+     * @param driverClassName 数据库驱动类名
+     * @param currentPassword 当前密码
+     * @param backupPassword  密码已过期 (1862) 错误时，将数据库密码修改为备份密码
+     * @return true 如果连接有效或密码已成功更新，false 如果连接无效或更新失败
      */
     public static boolean testDatabaseConnection(String url
             , String username
@@ -129,10 +138,49 @@ public class PwdRefreshUtil {
 
     /**
      * 更新用户密码
+     *
+     * @param environment        ConfigurableEnvironment
+     * @param connectionPassword 旧密码（进行连接验证）
+     * @param newPassword        新密码
+     */
+    public static boolean updateUserPassword(ConfigurableEnvironment environment
+            , String connectionPassword, String newPassword) {
+        try {
+            // 如果备份密码为空，则使用当前密码
+            newPassword = newPassword.isEmpty() ? connectionPassword : newPassword;
+
+            String url = environment.getProperty("spring.datasource.url");
+            String username = environment.getProperty("spring.datasource.username");
+            String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
+
+            log.debug("[renewpwd] 更新密码 - 数据源配置: url={}, username={}, password={}",
+                    url, username, connectionPassword);
+
+            if (url == null || username == null || newPassword == null) {
+                log.warn("[renewpwd]  更新密码 - 数据源配置不完整: url={}, username={}, password={}",
+                        url, username, connectionPassword != null ? "***" : "null");
+                return false;
+            }
+            log.error("[renewpwd] 密码已过期必须更改密码才能登录, 尝试更新密码");
+            return updateUserPassword(url, username, connectionPassword, newPassword, driverClassName);
+
+        } catch (Exception e) {
+            log.error("[renewpwd]  更新密码 - 验证数据源配置时发生异常", e);
+            return false;
+        }
+    }
+
+
+    /**
+     * 更新用户密码
      * 当检测到1862错误码时，执行ALTER USER命令更改密码
      *
-     * @param currentPassword 旧密码
-     * @param newPassword     新密码
+     * @param url             数据库连接URL
+     * @param username        数据库用户名
+     * @param currentPassword 旧密码 用于连接验证
+     * @param newPassword     新密码 用于更新
+     * @param driverClassName 数据库驱动类名
+     * @return true 如果密码更新成功并且新密码验证通过，false 如果更新失败或验证失败
      */
     private static boolean updateUserPassword(String url
             , String username
