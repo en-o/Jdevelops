@@ -262,9 +262,10 @@ public class PwdCheckDetector implements AutoCloseable {
             }
             return pwdInfo;
         } catch (Exception e) {
-            if(e.getCause() instanceof SQLException causeSqlException){
-                log.error("sql 操作异常", e.getMessage());
-                if(DatabaseUtils.isPasswordExpiredError(causeSqlException.getErrorCode(),driverClassName)){
+            SQLException firstSQLException = DatabaseUtils.findDeepestSQLException(e);
+            if(null!=firstSQLException){
+                log.error("sql 操作异常: {}", e.getMessage());
+                if(DatabaseUtils.isPasswordExpiredError(firstSQLException.getErrorCode(),driverClassName)){
                     return new PwdExpireInfo(true);
                 }
             }

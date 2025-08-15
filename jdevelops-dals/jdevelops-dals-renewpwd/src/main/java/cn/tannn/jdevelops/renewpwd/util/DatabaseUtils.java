@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.renewpwd.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
+
 /**
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
@@ -33,5 +35,17 @@ public class DatabaseUtils {
             log.warn("其他数据库暂未支持，当前驱动：{}", driverClassName);
         }
         return false;
+    }
+
+
+    public static SQLException findDeepestSQLException(Throwable e) {
+        SQLException deepest = null;
+        while (e != null) {
+            if (e instanceof SQLException sqlEx) {
+                deepest = sqlEx;      // 每次都覆盖，循环结束后就是最深层的
+            }
+            e = e.getCause();
+        }
+        return deepest;
     }
 }
