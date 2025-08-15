@@ -264,13 +264,22 @@ public class PwdCheckDetector implements AutoCloseable {
     private void safeExecutePasswordFlow() {
         try {
             executePasswordFlow();
-        } catch (Exception e) {
-            log.error("执行密码处理流程时发生异常", e);
-        } finally {
-            // 无论成功还是失败，都要继续下一轮循环
+            // 只有在成功执行后才继续下一轮循环
             if (running.get()) {
-                log.info("密码处理流程完成，开始下一轮查询调度");
+                log.info("密码处理流程执行成功，开始下一轮查询调度");
                 scheduleNextCheck();
+            }
+        } catch (Exception e) {
+            // 可以根据异常类型决定是否继续重试
+            if (isRetryableException(e)) {
+                log.warn("执行密码处理流程时发生可重试异常，继续下一轮调度", e);
+                if (running.get()) {
+                    scheduleNextCheck();
+                }
+            } else {
+                log.error("执行密码处理流程时发生严重异常，停止触发器", e);
+                // 发生严重异常时直接停止触发器
+                internalStop();
             }
         }
     }
@@ -312,6 +321,17 @@ public class PwdCheckDetector implements AutoCloseable {
     @Override
     public void close() {
         internalStop();
+    }
+
+    /**
+     * 判断异常是否可重试
+     * 可以根据具体业务需求自定义重试逻辑
+     */
+    private boolean isRetryableException(Exception e) {
+        // 示例：网络相关异常可以重试，业务逻辑异常不重试
+        // 可以根据实际需求调整
+        return e instanceof java.net.ConnectException
+                || e instanceof java.sql.SQLTransientException;
     }
 
     /**
@@ -370,4 +390,7 @@ public class PwdCheckDetector implements AutoCloseable {
             return new PwdCheckDetector(this);
         }
     }
+
+
+
 }
