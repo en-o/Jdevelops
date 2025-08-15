@@ -12,10 +12,10 @@ import org.springframework.cloud.context.scope.refresh.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-
-import static cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil.updateUserPassword;
+import java.util.Objects;
 
 /**
  * 默认密码续命处理实现
@@ -26,18 +26,25 @@ import static cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil.updateUserPassword
  */
 public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
+    private static final Logger log = LoggerFactory.getLogger(DefaultRenewPwdRefresh.class);
+    private static final String DEFAULT_PASSWORD = "123456";
+    // 默认刷新的bean name
+    private static final String DATASOURCE_BEAN_NAME = "dataSource";
+    // 当前使用的密码
+    private static final String DATASOURCE_PASSWORD_KEY = "spring.datasource.password";
+
     private final Environment environment;
     private final ApplicationContext applicationContext;
     private final ConfigurationPropertiesRebinder rebinder;
     private final RefreshScope refreshScope;
+
     @Autowired(required = false)
     private RenewPasswordService renewPasswordService;
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultRenewPwdRefresh.class);
-
-    public DefaultRenewPwdRefresh(Environment environment
-            , ApplicationContext applicationContext
-            , ConfigurationPropertiesRebinder rebinder, RefreshScope refreshScope) {
+    public DefaultRenewPwdRefresh(Environment environment,
+                                  ApplicationContext applicationContext,
+                                  ConfigurationPropertiesRebinder rebinder,
+                                  RefreshScope refreshScope) {
         this.environment = environment;
         this.applicationContext = applicationContext;
         this.rebinder = rebinder;
@@ -46,81 +53,96 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     @Override
     public void fixPassword() {
-        if (renewPasswordService == null) {
-            log.error("renewPasswordService is null");
+        if (validateService()) {
             return;
         }
-        // 获取当前环境中的数据源配置
-        ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
-        // 获取当前环境中的数据源配置
-        PasswordPool passwordPool = applicationContext.getBean(PasswordPool.class);
-        // 这个跟下面的逻辑不一样，
-        // 1. 调用这个一定是当前密码过期，所以我这里需要获取当前密码
-        String currentPassword = ENV.getProperty("spring.datasource.password","123456");
-        currentPassword = AESUtil.decryptPassword(currentPassword, passwordPool.getPwdEncryptKey());
 
-        String backPassword = passwordPool.getBackupPasswordDecrypt();
-        String masterPassword = passwordPool.getMasterPassword();
-
-        // 防止spring.datasource.password被污染，即密码被改过
-        String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
-        // 更新庄户密码
-        if (!updateUserPassword(ENV
-                , currentPassword
-                , backPassword)) {
-            log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");
+        String newPassword = determineNewPasswordForExpiredCurrent();
+        if (newPassword == null) {
+            log.warn("[renewpwd] 无法确定新密码，跳过刷新");
             return;
         }
-        renewPasswordService.initialize(newPassword);
-        log.info("[renewpwd] 开始刷新数据源配置");
-        // 1. 重新绑定所有 @ConfigurationProperties
-        rebinder.rebind();
-        log.info("[renewpwd] @ConfigurationProperties 重新绑定完成");
-        refreshScope.refresh("dataSource");
-        log.info("[renewpwd] 配置刷新完成");
+
+        executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
     }
 
     @Override
     public void fixPassword(String newPassword) {
-        fixPassword(newPassword,  List.of("dataSource"));
+        fixPassword(newPassword, List.of(DATASOURCE_BEAN_NAME));
     }
-
 
     @Override
     public void fixPassword(String newPassword, List<String> beanNames) {
-        if (renewPasswordService == null) {
-            log.error("renewPasswordService is null");
+        if (validateService() || Objects.isNull(newPassword)) {
             return;
         }
-        // 如果是数据源相关配置变更，需要先验证连接
-        if (!validateDatasourceBeforeRefresh(newPassword)) {
+
+        if (CollectionUtils.isEmpty(beanNames)) {
+            log.warn("[renewpwd] beanNames为空，跳过刷新");
+            return;
+        }
+
+        // 验证数据源配置
+        if (!validateDatasourceConfig(newPassword)) {
             log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");
             return;
         }
-        renewPasswordService.initialize(newPassword);
-        log.info("[renewpwd] 开始刷新数据源配置");
-        // 1. 重新绑定所有 @ConfigurationProperties
-        rebinder.rebind();
-        log.info("[renewpwd] @ConfigurationProperties 重新绑定完成");
-        beanNames.forEach(refreshScope::refresh);
-        log.info("[renewpwd] 配置刷新完成");
+
+        executePasswordRefresh(newPassword, beanNames);
     }
 
-
-
+    /**
+     * 验证服务是否可用
+     * @return true 如果服务不可用，false 如果服务可用
+     */
+    private boolean validateService() {
+        if (null == renewPasswordService) {
+            log.error("[renewpwd] renewPasswordService is null");
+            return true;
+        }
+        return false;
+    }
 
     /**
-     * 在刷新数据源Bean之前验证数据库连接
-     *
-     * @param newPassword  新密码
-     * @return 验证是否通过
+     * 为过期的当前密码确定新密码
+     * 当前密码过期时的密码切换逻辑
      */
-    private boolean validateDatasourceBeforeRefresh(String newPassword) {
+    private String determineNewPasswordForExpiredCurrent() {
         try {
-            // 获取当前环境中的数据源配置
-            ConfigurableEnvironment ENV = (ConfigurableEnvironment) environment;
+            ConfigurableEnvironment env = getConfigurableEnvironment();
+            PasswordPool passwordPool = applicationContext.getBean(PasswordPool.class);
+
+            // 获取当前密码并解密
+            String currentPassword = env.getProperty(DATASOURCE_PASSWORD_KEY, DEFAULT_PASSWORD);
+            currentPassword = AESUtil.decryptPassword(currentPassword, passwordPool.getPwdEncryptKey());
+
+            String backPassword = passwordPool.getBackupPasswordDecrypt();
+            String masterPassword = passwordPool.getMasterPassword();
+
+            // 防止spring.datasource.password被污染，即密码被改过
+            String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
+
+            // 验证当前密码和备用密码的有效性
+            if (!PwdRefreshUtil.updateUserPassword(env, currentPassword, backPassword)) {
+                log.error("[renewpwd] 用户密码更新验证失败");
+                return null;
+            }
+
+            return newPassword;
+        } catch (Exception e) {
+            log.error("[renewpwd] 确定新密码时发生异常: {}", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    /**
+     * 验证数据源配置
+     */
+    private boolean validateDatasourceConfig(String newPassword) {
+        try {
+            ConfigurableEnvironment env = getConfigurableEnvironment();
             // 既然是重置，当前密码是过期的也要用当前给定的密码进行重置，所以两个写一样
-            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(ENV, newPassword, newPassword);
+            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(env, newPassword, newPassword);
 
             if (isValid) {
                 log.info("[renewpwd] 数据源配置验证成功");
@@ -129,8 +151,45 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             }
             return isValid;
         } catch (Exception e) {
-            log.error("[renewpwd] 验证数据源配置时发生异常: {}", e.getMessage());
+            log.error("[renewpwd] 验证数据源配置时发生异常: {}", e.getMessage(), e);
             return false;
         }
+    }
+
+    /**
+     * 执行密码刷新操作 - 服务环境
+     */
+    private void executePasswordRefresh(String newPassword, List<String> beanNames) {
+        try {
+            // 初始化新密码
+            renewPasswordService.initialize(newPassword);
+            log.info("[renewpwd] 开始刷新数据源配置，新密码已初始化");
+
+            // 重新绑定所有 @ConfigurationProperties
+            rebinder.rebind();
+            log.info("[renewpwd] @ConfigurationProperties 重新绑定完成");
+
+            // 刷新指定的Bean
+            beanNames.forEach(beanName -> {
+                try {
+                    refreshScope.refresh(beanName);
+                    log.info("[renewpwd] Bean [{}] 刷新完成", beanName);
+                } catch (Exception e) {
+                    log.error("[renewpwd] Bean [{}] 刷新失败: {}", beanName, e.getMessage(), e);
+                }
+            });
+
+            log.info("[renewpwd] 配置刷新完成");
+        } catch (Exception e) {
+            log.error("[renewpwd] 执行密码刷新时发生异常: {}", e.getMessage(), e);
+            throw new RuntimeException("密码刷新失败", e);
+        }
+    }
+
+    /**
+     * 获取可配置环境对象
+     */
+    private ConfigurableEnvironment getConfigurableEnvironment() {
+        return (ConfigurableEnvironment) environment;
     }
 }
