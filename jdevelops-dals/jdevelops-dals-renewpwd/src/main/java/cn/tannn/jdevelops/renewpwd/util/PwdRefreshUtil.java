@@ -110,7 +110,7 @@ public class PwdRefreshUtil {
             if (vendorCode == 1045) {
                 log.error("[renewpwd] 数据库连接验证失败，可能是用户名或密码错误: {}", e.getMessage());
                 return false;
-            } else if (vendorCode == 1820 || vendorCode == 1862) {
+            } else if (DatabaseUtils.isPasswordExpiredError(vendorCode, driverClassName)) {
                 log.error("[renewpwd] 数据库连接验证失败，密码已过期必须更改密码才能登录: {}, 尝试更新密码", e.getMessage());
                 // 我这里就不替换里面了，用原来的密码再改一次
                 return updateUserPassword(url, username, currentPassword, backupPassword, driverClassName);

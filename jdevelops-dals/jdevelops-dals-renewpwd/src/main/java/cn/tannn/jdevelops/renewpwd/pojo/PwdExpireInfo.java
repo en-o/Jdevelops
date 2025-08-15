@@ -5,7 +5,7 @@ package cn.tannn.jdevelops.renewpwd.pojo;
  */
 public class PwdExpireInfo {
     /**
-     * 当前密码是否过期
+     * 当前密码是否过期 [true-过期，false-未过期]
      */
     private final boolean currentIsExpireSoon;
 

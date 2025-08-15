@@ -1,10 +1,13 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.exception.StopDetectorException;
 import cn.tannn.jdevelops.renewpwd.pojo.PwdExpireInfo;
+import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -235,8 +238,14 @@ public class PwdCheckDetector implements AutoCloseable {
                 scheduler.submit(this::safeExecutePasswordFlow);
             }
         } catch (Exception e) {
-            log.error("调度下一次检查时发生异常", e);
-            scheduleRetry();
+            if(e instanceof StopDetectorException) {
+                log.error("触发器停止运行", e);
+                internalStop();
+                return;
+            }else {
+                log.error("调度下一次检查时发生异常", e);
+                scheduleRetry();
+            }
         }
     }
 
@@ -244,6 +253,8 @@ public class PwdCheckDetector implements AutoCloseable {
      * 查询密码过期信息（带异常处理）
      */
     private PwdExpireInfo queryPwdExpireInfo() {
+        String driverClassName = applicationContext
+                .getEnvironment().getProperty("spring.datasource.driver-class-name");
         try {
             PwdExpireInfo pwdInfo = pwdExpireSupplier.get();
             if (pwdInfo != null && pwdInfo.isCurrentIsExpireSoon()) {
@@ -251,8 +262,13 @@ public class PwdCheckDetector implements AutoCloseable {
             }
             return pwdInfo;
         } catch (Exception e) {
-            log.error("查询密码过期信息时发生异常", e);
-            return null;
+            if(e.getCause() instanceof SQLException causeSqlException){
+                log.error("sql 操作异常", e.getMessage());
+                if(DatabaseUtils.isPasswordExpiredError(causeSqlException.getErrorCode(),driverClassName)){
+                    return new PwdExpireInfo(true);
+                }
+            }
+            throw new StopDetectorException("查询密码过期信息时发生异常，停止触发器", e);
         }
     }
 
