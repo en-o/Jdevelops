@@ -73,7 +73,9 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     }
 
     /**
-     * 处理密码配置
+     * 处理密码配置并确保全局有效
+     * @param originalPassword spring.datasource.password 的原始密码
+     * @param beanFactory ConfigurableListableBeanFactory
      */
     private PasswordConfig processPasswordConfiguration(String originalPassword,
                                                         ConfigurableListableBeanFactory beanFactory) {
@@ -110,9 +112,8 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         if (!StringUtils.hasText(passwordPool.getMasterPassword())) {
             log.info("[renewpwd] masterPassword为空，使用数据源密码进行初始化");
             // 解密密码来设置masterPassword
-            String decryptedPassword = AESUtil.decryptPassword(originalPassword, passwordPool.getPwdEncryptKey());
-            passwordPool.setMasterPassword(decryptedPassword);
-            log.info("[renewpwd] masterPassword初始化完成: {}", maskPassword(decryptedPassword));
+            passwordPool.setMasterPassword(originalPassword);
+            log.info("[renewpwd] masterPassword初始化完成: {}", originalPassword);
         }
     }
 
@@ -123,14 +124,8 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         // 保存全局实例的引用
         this.globalPasswordPool = passwordPool;
 
-        // 检查是否已经存在PasswordPool的Bean定义
-        if (beanFactory.containsBean("passwordPool")) {
-            // 如果已存在，移除旧的Bean定义
-            beanFactory.removeBeanDefinition("passwordPool");
-            log.debug("[renewpwd] 移除已存在的passwordPool Bean定义");
-        }
-
-        // 注册修改后的PasswordPool实例为单例Bean
+        // 直接注册修改后的PasswordPool实例为单例Bean
+        // 如果已存在同名Bean，registerSingleton会覆盖它
         beanFactory.registerSingleton("passwordPool", passwordPool);
         log.info("[renewpwd] PasswordPool已注册为全局单例Bean，masterPassword修改全局有效");
     }
@@ -178,7 +173,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     }
 
     /**
-     * 设置自定义属性源
+     * 设置属性源
      */
     private void setupPropertySource(ConfigurableEnvironment env) {
         RenewpwdPropertySource propertySource = new RenewpwdPropertySource(PROPERTY_SOURCES, configService);
@@ -198,16 +193,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     public void onPasswordUpdated(String newPassword) {
         log.info("[renewpwd] 收到密码更新通知，重新初始化RenewPasswordService");
         initializeConfigService(newPassword);
-    }
-
-    /**
-     * 密码掩码显示（用于日志安全）
-     */
-    private String maskPassword(String password) {
-        if (!StringUtils.hasText(password) || password.length() <= 4) {
-            return "****";
-        }
-        return password.substring(0, 2) + "****" + password.substring(password.length() - 2);
     }
 
     /**
