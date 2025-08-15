@@ -123,7 +123,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
 
             // 验证当前密码和备用密码的有效性
-            if (!PwdRefreshUtil.updateUserPassword(env, currentPassword, backPassword)) {
+            if (!PwdRefreshUtil.updateUserPassword(env, currentPassword, newPassword)) {
                 log.error("[renewpwd] 用户密码更新验证失败");
                 return null;
             }
