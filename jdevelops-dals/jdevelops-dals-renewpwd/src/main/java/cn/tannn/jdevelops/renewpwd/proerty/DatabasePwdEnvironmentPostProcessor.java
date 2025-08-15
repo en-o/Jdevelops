@@ -167,8 +167,8 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     private void initializeConfigService(String password) {
         if (configService == null) {
             configService = new RenewPasswordService();
+            configService.initialize(password);
         }
-        configService.initialize(password);
         log.info("[renewpwd] RenewPasswordService初始化完成");
     }
 
