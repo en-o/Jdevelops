@@ -29,6 +29,9 @@ import java.util.function.Supplier;
  *
  * <pre>
  * // 用法示例
+ * &#064;Autowired(required  = false)
+ * private RenewPwdRefresh renewPwdRefresh;
+ *
  * &#064;Override
  * public void run(ApplicationArguments args) throws Exception {
  *	 log.info("密码续命触发器启动");
@@ -36,6 +39,7 @@ import java.util.function.Supplier;
  *			// 这里的当前密码可能不是spring.datasource.password，看怎么处理一下
  *			.pwdExpireSupplier(() -> new PwdExpireInfo(currentPassword, checkPassword()))
  *		    // .retryIntervalMinutes(5) // 探测间隔，默认5分钟
+ *		    .renewPwdRefresh(renewPwdRefresh)
  *			.build()) {
  *		// 触发器会自动循环运行
  *		detector.start();
