@@ -47,7 +47,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             password = AESUtil.decryptPassword(password, passwordPool.getPwdEncryptKey());
             String panduannull = passwordPool.getBackupPassword();
             if (panduannull != null && !panduannull.isBlank()) {
-                backupPassword = AESUtil.decryptPassword(passwordPool.getBackupPassword(), passwordPool.getPwdEncryptKey());
+                backupPassword = passwordPool.getBackupPasswordDecrypt();
             }
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
