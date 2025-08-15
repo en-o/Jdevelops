@@ -27,13 +27,11 @@ public class PasswordPool {
 
 
     /**
-     * 主密码 - 只在两个密码之间切换，这里的作用就是防止spring.datasource.password被污染导致不知道当前运行密码是哪一个了
-     * <p>作为基准密码，用于判断当前 spring.datasource.password 是否被污染
-     * <p>在密码轮换时，通过对比 currentPassword 和 masterPassword 来决定下一个密码是什么
-     * <p>不应该随着密码更新而改变，保持稳定的基准值
+     * 主密码
+     * <p>作为基准密码
+     * <p> 跟backupPassword进行轮换（取反）
      * <p>如果不配置，默认使用数据源中的密码
-     * <p>主密码登录失败就会使用备用密码进行登录
-     * <p>如果主密码过期，备用密码会被设置
+     * <p> DefaultRenewPwdRefresh#determineNewPasswordForExpiredCurrent
      */
     private String masterPassword;
 
