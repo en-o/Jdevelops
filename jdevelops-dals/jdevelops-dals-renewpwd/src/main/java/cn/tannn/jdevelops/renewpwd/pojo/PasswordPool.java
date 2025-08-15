@@ -28,6 +28,14 @@ public class PasswordPool {
      */
     private Boolean enabled;
 
+    /**
+     * 密码加密密钥 - 可选
+     * <p>如果你的密码是加密的，请在这里配置解密密钥</p>
+     * <p>如果不配置，默认使用 AESUtil.KEY 作为解密密钥</p>
+     * <p>注意：确保密钥的安全性，不要将其暴露在公共代码库中</p>
+     */
+    private String pwdEncryptKey;
+
 
     public String getBackupPassword() {
         return backupPassword;
@@ -45,11 +53,20 @@ public class PasswordPool {
         this.enabled = enabled;
     }
 
+    public String getPwdEncryptKey() {
+        return pwdEncryptKey;
+    }
+
+    public void setPwdEncryptKey(String pwdEncryptKey) {
+        this.pwdEncryptKey = pwdEncryptKey;
+    }
+
     @Override
     public String toString() {
         return "PasswordPool{" +
                 "backupPassword='" + backupPassword + '\'' +
                 ", enabled=" + enabled +
+                ", pwdEncryptKey='" + pwdEncryptKey + '\'' +
                 '}';
     }
 }

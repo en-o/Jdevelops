@@ -20,7 +20,8 @@ import org.springframework.core.env.Environment;
  * <P> 1. 使用密码池密码 </P>
  * <P> 2. 密码解密 </P>
  */
-public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware, PasswordUpdateListener {
+public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProcessor
+        , EnvironmentAware, PasswordUpdateListener {
 
     private final static String PROPERTY_SOURCES = "renewpwdConfigPropertySources";
     private final static String PROPERTY_SOURCE = "renewpwdConfigPropertySource";
@@ -38,22 +39,23 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         String password = ENV.getProperty("spring.datasource.password");
         String backupPassword = password;
 
-        password = decryptPassword(password);
 
         try {
             Binder binder = Binder.get(environment);
             PasswordPool passwordPool = binder.bind("jdevelops.renewpwd", Bindable.of(PasswordPool.class))
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
+            password = decryptPassword(password, passwordPool.getPwdEncryptKey());
             String panduannull = passwordPool.getBackupPassword();
-            if(panduannull!=null&&!panduannull.isBlank()){
-                backupPassword = decryptPassword(passwordPool.getBackupPassword());
+            if (panduannull != null && !panduannull.isBlank()) {
+                backupPassword = decryptPassword(passwordPool.getBackupPassword(), passwordPool.getPwdEncryptKey());
             }
         } catch (Exception e) {
             if (e instanceof IllegalStateException) {
                 log.warn("{}，使用datasource的密码进行处理", e.getMessage());
             } else {
-                log.warn("没有配置密码池，使用datasource的密码进行处理");
+                log.warn("没有密码续命相关配置，使用datasource的密码进行处理");
             }
+            password = decryptPassword(password, null);
         }
         // 一共就两个，我这里就这样弄了，如果是2+ 目前还没找到标记当前的方法
         if (!PwdRefreshUtil.validateDatasourceConfig(ENV, password, backupPassword)) {
@@ -64,13 +66,12 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             }
         }
 
-        if (configService ==  null) {
+        if (configService == null) {
             configService = new RenewPasswordService();
             configService.initialize(password);
         }
         // 将实例注册到Spring容器中，确保是单例
         beanFactory.registerSingleton("renewPasswordService", configService);
-
 
 
         // 构建spring 配置格式- 配置源的集成机制
@@ -82,9 +83,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     }
 
 
-
-
-
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
@@ -93,14 +91,16 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
 
     /**
      * 解密密码
+     *
      * @param password 密码字符
      * @return 解密的
      */
-    private static String decryptPassword(String password) {
+    private static String decryptPassword(String password, String key) {
         // 需要解密
         if (password != null && password.startsWith("ENC(")) {
+            log.debug("数据库密码需要解密，正在解密...");
             String encrypted = password.substring(4, password.length() - 1);
-            password = AESUtil.decrypt(encrypted);
+            password = AESUtil.decrypt(encrypted, key);
         }
         return password;
     }
@@ -110,7 +110,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
         log.info("[renewpwd] 收到密码更新通知，重新初始化RenewPasswordService");
         if (configService != null) {
             configService.initialize(newPassword);
-        }else {
+        } else {
             configService = new RenewPasswordService();
             configService.initialize(newPassword);
         }
