@@ -29,16 +29,19 @@ import java.util.function.Supplier;
  *
  * <pre>
  * // 用法示例
- * try (PwdCheckDetector detector = PwdCheckDetector.builder()
- *     .pwdExpireSupplier(() -> {
- *         // 查询数据库获取密码过期信息，会拿到信息之后进行处理
- *         return databaseService.getPwdExpireInfo();
- *     })
- *     .renewPwdRefresh(applicationRefreshService)
- *     .retryIntervalMinutes(5) // 探测间隔，默认5分钟
- *     .build()) {
- *     detector.start();
- *     // 触发器会自动循环运行
+ * &#064;Override
+ * public void run(ApplicationArguments args) throws Exception {
+ *	 log.info("密码续命触发器启动");
+ *	 try (PwdCheckDetector detector = PwdCheckDetector.builder()
+ *			// 这里的当前密码可能不是spring.datasource.password，看怎么处理一下
+ *			.pwdExpireSupplier(() -> new PwdExpireInfo(currentPassword, checkPassword()))
+ *			.build()) {
+ *		// 触发器会自动循环运行
+ *		detector.start();
+ *	 } catch (Exception e) {
+ *		log.error("密码续命触发器启动失败", e);
+ *	 }
+ *	 checkPassword();
  * }
  * </pre>
  *
