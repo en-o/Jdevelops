@@ -50,7 +50,7 @@ import java.util.function.Supplier;
  * @version V4.0
  * @date 2025/8/15 16:27
  */
-public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware {
+public class PwdCheckDetector implements AutoCloseable {
     private static final Logger log = LoggerFactory.getLogger(PwdCheckDetector.class);
 
     /**
@@ -78,20 +78,23 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
      */
     private final int retryIntervalMinutes;
 
+    /**
+     * 上下文环境
+     */
     private ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 
     private PwdCheckDetector(Builder builder) {
         this.pwdExpireSupplier = builder.pwdExpireSupplier;
         this.retryIntervalMinutes = builder.retryIntervalMinutes;
+        this.applicationContext = builder.applicationContext;
 
         // 验证必要参数
         if (this.pwdExpireSupplier == null) {
             throw new IllegalArgumentException("pwdExpireSupplier cannot be null");
+        }
+        if (this.applicationContext == null) {
+            throw new IllegalArgumentException("applicationContext cannot be null");
         }
     }
 
@@ -329,10 +332,23 @@ public class PwdCheckDetector implements AutoCloseable, ApplicationContextAware 
         private int retryIntervalMinutes = 5;
 
         /**
+         * 上下文环境
+         */
+        private ApplicationContext applicationContext;
+
+        /**
          * 自行注册密码过期查询方法
          */
         public Builder pwdExpireSupplier(Supplier<PwdExpireInfo> supplier) {
             this.pwdExpireSupplier = supplier;
+            return this;
+        }
+
+        /**
+         * 上下文环境
+         */
+        public Builder applicationContext(ApplicationContext applicationContext) {
+            this.applicationContext = applicationContext;
             return this;
         }
 
