@@ -114,6 +114,7 @@ final class SQLExceptionHandlingHelper {
                                                  SQLException e, String operation) {
         log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getSQLState(), e.getErrorCode());
         if (DatabaseUtils.isPasswordError(e.getErrorCode(), proxy.getDriverClassName())) {
+            // 尝试使用备用密码连接
             RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).fixPassword();
         }
     }

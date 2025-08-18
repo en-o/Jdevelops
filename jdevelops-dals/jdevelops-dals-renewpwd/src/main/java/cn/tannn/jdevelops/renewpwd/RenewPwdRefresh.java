@@ -11,22 +11,12 @@ import java.util.List;
  */
 public interface RenewPwdRefresh {
     /**
-     * 重置数据库密码并生效 - 上下文取密码
+     * 修复过期密码并生效 - 上下文取密码
+     * <p> 用当前过期密码修改备用密码，备用密码没有则重置过期密码</p>
      */
     void fixPassword();
 
-    /**
-     * 重置数据库密码并生效
-     * @param newPassword 新密码 (不允许加密-如果是密文自己先处理)
-     */
-    void fixPassword(String newPassword);
 
-    /**
-     * 重置数据库密码并生效
-     * @param newPassword 新密码 (不允许加密-如果是密文自己先处理)
-     * @param beanNames 需要刷新的Bean名称列表 - 默认 dataSource
-     */
-    void fixPassword(String newPassword, List<String> beanNames);
 
 
 }

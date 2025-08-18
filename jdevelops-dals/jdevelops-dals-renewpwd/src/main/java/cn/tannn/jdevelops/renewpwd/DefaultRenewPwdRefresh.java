@@ -57,40 +57,17 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
         if (validateService()) {
             return;
         }
-
+        // 更新密码
         String newPassword = determineNewPasswordForExpiredCurrent();
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
             return;
         }
 
+        // 刷新spring上下文
         executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
     }
 
-    @Override
-    public void fixPassword(String newPassword) {
-        fixPassword(newPassword, List.of(DATASOURCE_BEAN_NAME));
-    }
-
-    @Override
-    public void fixPassword(String newPassword, List<String> beanNames) {
-        if (validateService() || Objects.isNull(newPassword)) {
-            return;
-        }
-
-        if (CollectionUtils.isEmpty(beanNames)) {
-            log.warn("[renewpwd] beanNames为空，跳过刷新");
-            return;
-        }
-
-        // 验证数据源配置
-        if (!validateDatasourceConfig(newPassword)) {
-            log.warn("[renewpwd] 数据源配置验证失败，跳过刷新");
-            return;
-        }
-
-        executePasswordRefresh(newPassword, beanNames);
-    }
 
     /**
      * 验证服务是否可用
@@ -107,6 +84,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
     /**
      * 为过期的当前密码确定新密码
      * 当前密码过期时的密码切换逻辑
+     * @return 当前连接用的密码
      */
     private String determineNewPasswordForExpiredCurrent() {
         try {
