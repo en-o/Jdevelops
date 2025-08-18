@@ -119,7 +119,8 @@ final class SQLExceptionHandlingHelper {
             RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword();
         } else {
             // getErrorCode == 0
-            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword();
+            log.warn("调试 pgsql 和 kingbase中");
+//            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword();
         }
     }
 
