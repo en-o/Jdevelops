@@ -5,7 +5,7 @@ import java.sql.CallableStatement;
 
 /**
  * CallableStatementProxyFactory
- * 用于创建 CallableStatement 的代理实例，拦截 SQL 执行和参数设置。
+ * 用于创建 数据库存储过程交互 的代理实例，拦截 SQL 执行和参数设置。
  * 实现全局异常处理和性能监控。
  */
 final class CallableStatementProxyFactory {

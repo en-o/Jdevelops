@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 /**
  * CallableStatementInvocationHandler
- * 负责拦截 CallableStatement 的方法调用，提供全局异常处理和性能监控。
+ * 负责拦截 数据库存储过程交互 的方法调用，提供全局异常处理和性能监控。
  * 通过代理模式确保存储过程调用的统一处理。
  */
 final class CallableStatementInvocationHandler implements InvocationHandler {
