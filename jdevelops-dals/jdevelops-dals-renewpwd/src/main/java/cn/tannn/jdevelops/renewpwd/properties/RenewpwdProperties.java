@@ -1,5 +1,6 @@
-package cn.tannn.jdevelops.renewpwd.pojo;
+package cn.tannn.jdevelops.renewpwd.properties;
 
+import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
  * @version V1.0
  * @date 2025/8/11 14:54
  */
-@Component("renewpwdPasswordPool")
+@Component("renewpwdProperties")
 @ConfigurationProperties(prefix = "jdevelops.renewpwd")
-public class PasswordPool {
+public class RenewpwdProperties {
     /**
      * 备用密码,DatabasePwdEnvironmentPostProcessor#postProcessBeanFactory
      *
@@ -94,7 +95,7 @@ public class PasswordPool {
 
     @Override
     public String toString() {
-        return "PasswordPool{" +
+        return "RenewpwdProperties{" +
                 "backupPassword='" + backupPassword + '\'' +
                 ", masterPassword='" + masterPassword + '\'' +
                 ", enabled=" + enabled +

@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.proerty;
 
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
+import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import cn.tannn.jdevelops.renewpwd.util.PasswordUpdateListener;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
@@ -33,7 +33,6 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
 
     private Environment environment;
     private RenewPasswordService configService;
-    private PasswordPool globalPasswordPool; // 保存全局的PasswordPool实例
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
@@ -81,19 +80,19 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
                                                         ConfigurableListableBeanFactory beanFactory) {
         try {
             Binder binder = Binder.get(environment);
-            PasswordPool passwordPool = binder.bind(RENEWPWD_CONFIG_KEY, Bindable.of(PasswordPool.class))
+            RenewpwdProperties renewpwdProperties = binder.bind(RENEWPWD_CONFIG_KEY, Bindable.of(RenewpwdProperties.class))
                     .orElseThrow(() -> new IllegalStateException("无法加载密码配置"));
 
             // 初始化masterPassword如果为空，并确保全局有效
-            initializePasswordIfEmpty(passwordPool, originalPassword);
+            initializePasswordIfEmpty(renewpwdProperties, originalPassword);
 
             // 将修改后的PasswordPool注册为Spring Bean，确保全局有效
-            registerPasswordPoolAsGlobalBean(passwordPool, beanFactory);
+            registerPasswordPoolAsGlobalBean(renewpwdProperties, beanFactory);
 
             return new PasswordConfig(
-                    AESUtil.decryptPassword(originalPassword, passwordPool.getPwdEncryptKey()),
-                    determineBackupPassword(passwordPool, originalPassword),
-                    passwordPool
+                    AESUtil.decryptPassword(originalPassword, renewpwdProperties.getPwdEncryptKey()),
+                    determineBackupPassword(renewpwdProperties, originalPassword),
+                    renewpwdProperties
             );
         } catch (Exception e) {
             log.warn("密码续命配置处理异常: {}，使用默认密码处理", e.getMessage());
@@ -108,15 +107,15 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     /**
      * 初始化masterPassword如果为空
      */
-    private void initializePasswordIfEmpty(PasswordPool passwordPool, String originalPassword) {
-        if (!StringUtils.hasText(passwordPool.getMasterPassword())) {
+    private void initializePasswordIfEmpty(RenewpwdProperties renewpwdProperties, String originalPassword) {
+        if (!StringUtils.hasText(renewpwdProperties.getMasterPassword())) {
             log.info("[renewpwd] masterPassword为空，使用数据源密码进行初始化");
-            passwordPool.setMasterPassword(originalPassword);
+            renewpwdProperties.setMasterPassword(originalPassword);
             log.info("[renewpwd] masterPassword初始化完成: {}", originalPassword);
         }
-        if (!StringUtils.hasText(passwordPool.getBackupPassword())) {
+        if (!StringUtils.hasText(renewpwdProperties.getBackupPassword())) {
             log.info("[renewpwd] backupPassword为空，使用数据源密码进行初始化");
-            passwordPool.setMasterPassword(originalPassword);
+            renewpwdProperties.setMasterPassword(originalPassword);
             log.info("[renewpwd] backupPassword初始化完成: {}", originalPassword);
         }
     }
@@ -124,23 +123,21 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     /**
      * 将PasswordPool注册为全局Bean，确保其他地方注入时能获取到修改后的实例
      */
-    private void registerPasswordPoolAsGlobalBean(PasswordPool passwordPool, ConfigurableListableBeanFactory beanFactory) {
-        // 保存全局实例的引用
-        this.globalPasswordPool = passwordPool;
+    private void registerPasswordPoolAsGlobalBean(RenewpwdProperties renewpwdProperties, ConfigurableListableBeanFactory beanFactory) {
 
         // 直接注册修改后的PasswordPool实例为单例Bean
         // 如果已存在同名Bean，registerSingleton会覆盖它
-        beanFactory.registerSingleton("renewpwdPasswordPool", passwordPool);
+        beanFactory.registerSingleton("renewpwdProperties", renewpwdProperties);
         log.info("[renewpwd] PasswordPool已注册为全局单例Bean，masterPassword修改全局有效");
     }
 
     /**
      * 确定备用密码
      */
-    private String determineBackupPassword(PasswordPool passwordPool, String originalPassword) {
-        String backupPassword = passwordPool.getBackupPassword();
+    private String determineBackupPassword(RenewpwdProperties renewpwdProperties, String originalPassword) {
+        String backupPassword = renewpwdProperties.getBackupPassword();
         if (StringUtils.hasText(backupPassword)) {
-            return passwordPool.getBackupPasswordDecrypt();
+            return renewpwdProperties.getBackupPasswordDecrypt();
         }
         return originalPassword;
     }
@@ -205,12 +202,12 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     private static class PasswordConfig {
         final String primaryPassword;
         final String backupPassword;
-        final PasswordPool passwordPool;
+        final RenewpwdProperties renewpwdProperties;
 
-        PasswordConfig(String primaryPassword, String backupPassword, PasswordPool passwordPool) {
+        PasswordConfig(String primaryPassword, String backupPassword, RenewpwdProperties renewpwdProperties) {
             this.primaryPassword = primaryPassword;
             this.backupPassword = backupPassword;
-            this.passwordPool = passwordPool;
+            this.renewpwdProperties = renewpwdProperties;
         }
     }
 }

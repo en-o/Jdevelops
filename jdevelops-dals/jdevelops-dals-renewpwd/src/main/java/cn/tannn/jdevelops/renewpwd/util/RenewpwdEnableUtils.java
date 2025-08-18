@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
 import cn.tannn.jdevelops.renewpwd.annotation.EnableRenewpwd;
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -17,7 +16,7 @@ public class RenewpwdEnableUtils {
 
     /**
      * 通过 ApplicationContext 判断是否启用 renewpwd
-     * 优先全局配置，再查 PasswordPool bean
+     * 优先全局配置，再查 RenewpwdProperties bean
      */
     public static boolean isRenewpwdEnabled(ApplicationContext context) {
         // 1. 优先全局配置

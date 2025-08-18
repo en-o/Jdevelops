@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
+import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public final class AESUtil {
      * <p> java -DAES_ENCRYPTION_KEY=your16bytekey123 -jar app.jar  </p>
      * <p> Linux/Mac  export AES_ENCRYPTION_KEY=your16bytekey123 </p>
      * <p> Windows set AES_ENCRYPTION_KEY=your16bytekey123 </p>
-     * <p> {@link PasswordPool#getPwdEncryptKey()}  } </p>
+     * <p> {@link RenewpwdProperties#getPwdEncryptKey()}  } </p>
      */
     private static final String KEY = System.getenv("AES_ENCRYPTION_KEY") != null
             ? System.getenv("AES_ENCRYPTION_KEY")

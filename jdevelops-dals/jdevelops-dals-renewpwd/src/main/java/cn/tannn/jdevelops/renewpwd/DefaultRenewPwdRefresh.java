@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.renewpwd;
 
-import cn.tannn.jdevelops.renewpwd.pojo.PasswordPool;
+import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
@@ -110,15 +110,15 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
     private String determineNewPasswordForExpiredCurrent() {
         try {
             ConfigurableEnvironment env = getConfigurableEnvironment();
-            PasswordPool passwordPool = applicationContext.getBean(PasswordPool.class);
+            RenewpwdProperties renewpwdProperties = applicationContext.getBean(RenewpwdProperties.class);
 
             // 获取当前密码并尝试解密
             String currentPassword = env.getProperty(DATASOURCE_PASSWORD_KEY, DEFAULT_PASSWORD);
-            currentPassword = AESUtil.decryptPassword(currentPassword, passwordPool.getPwdEncryptKey());
+            currentPassword = AESUtil.decryptPassword(currentPassword, renewpwdProperties.getPwdEncryptKey());
 
             // 获取备用密码和主密码
-            String backPassword = passwordPool.getBackupPasswordDecrypt();
-            String masterPassword = passwordPool.getMasterPassword();
+            String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
+            String masterPassword = renewpwdProperties.getMasterPassword();
 
             // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
