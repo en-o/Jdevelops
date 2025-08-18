@@ -172,6 +172,79 @@ public class ExecuteJdbcSql {
 
 
     /**
+     * 更新用户密码 - 强制更新
+     *
+     * @param environment        ConfigurableEnvironment
+     * @param newPassword        新密码
+     */
+    public static boolean updateUserPasswordForce(ConfigurableEnvironment environment
+            ,  String newPassword) {
+        java.sql.Connection connection = null;
+        java.sql.Statement statement = null;
+        try {
+            String url = environment.getProperty("spring.datasource.url");
+            String username = environment.getProperty("spring.datasource.username");
+            String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
+
+            log.debug("[renewpwd] 强制更新密码 - 数据源配置: url={}, username={}, password={}",
+                    url, username, newPassword);
+
+            if (url == null || username == null || newPassword == null) {
+                log.warn("[renewpwd]  强制更新密码 - 数据源配置不完整: url={}, username={}, password={}",
+                        url, username, newPassword != null ? "***" : "null");
+                return false;
+            }
+
+            log.info("[renewpwd] 开始更新强制更新密码: username={}", username);
+
+            // 配置连接属性以支持过期密码
+            java.util.Properties props = new java.util.Properties();
+            props.setProperty("user", username);
+            props.setProperty("password", newPassword);
+            props.setProperty("connectTimeout", "5000");
+            props.setProperty("socketTimeout", "5000");
+
+            // 关键配置：允许使用过期密码连接
+            props.setProperty("disconnectOnExpiredPasswords", "false");
+            // 或者在URL中添加参数也可以
+            String connectionUrl = url;
+            if (!url.contains("disconnectOnExpiredPasswords")) {
+                connectionUrl = url + (url.contains("?") ? "&" : "?") +
+                        "disconnectOnExpiredPasswords=false";
+            }
+
+            log.info("[renewpwd] 尝试使用新密码连接数据库");
+            connection = java.sql.DriverManager.getConnection(connectionUrl, props);
+
+            // 检查连接是否处于受限模式（只能执行密码更改）
+            log.info("[renewpwd] 连接成功，开始强制更新密码流程");
+
+            statement = connection.createStatement();
+
+            // 如果SET PASSWORD失败，尝试ALTER USER
+            // 首先获取当前用户信息
+            String currentUserHost = getCurrentUserHostForExpiredPassword(statement, username);
+            if(newPassword.isEmpty()) {
+                log.error("[renewpwd] 新密码不能为空");
+                return false;
+            }
+            String alterUserSQL = String.format("ALTER USER '%s'@'%s' IDENTIFIED BY '%s'",
+                    username, currentUserHost, newPassword);
+
+            log.debug("[renewpwd] 执行SQL: ALTER USER '{}' @'{}' IDENTIFIED BY '***'", username, currentUserHost);
+            statement.executeUpdate(alterUserSQL);
+            log.info("[renewpwd] 使用ALTER USER强制更新密码成功: username={}@{}", username, currentUserHost);
+
+            return true;
+
+        } catch (Exception e) {
+            log.error("[renewpwd]  强制更新密码 - 验证数据源配置时发生异常", e);
+            return false;
+        }
+    }
+
+
+    /**
      * 更新用户密码
      * 当检测到1862错误码时，执行ALTER USER命令更改密码
      *

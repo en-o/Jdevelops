@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
 /**
- * 密码池 - 只在两个密码之间切换
+ * 密码配置 - 只在两个密码之间切换
  *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0

@@ -16,6 +16,11 @@ public interface RenewPwdRefresh {
      */
     void fixPassword();
 
+    /**
+     * 修复错误密码并生效 - 上下文取密码
+     * <p> 当前连接错误的情况下，验证备份密码是否可用，可用则替换，不可用就不管了（备份密码没有也不管了）
+     */
+    void updatePassword();
 
 
 
