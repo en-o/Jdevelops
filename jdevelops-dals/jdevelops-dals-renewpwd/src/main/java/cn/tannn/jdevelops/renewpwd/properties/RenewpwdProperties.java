@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.renewpwd.properties;
 import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,7 +24,6 @@ public class RenewpwdProperties {
      *  <p> 如果需要加密请使用：ENC(你的密码)</p>
      */
     private String backupPassword;
-
 
     /**
      * 主密码
@@ -49,6 +49,12 @@ public class RenewpwdProperties {
      * <p>注意：确保密钥的安全性，不要将其暴露在公共代码库中</p>
      */
     private String pwdEncryptKey;
+
+    /**
+     * SQL异常处理配置属性类
+     */
+    @NestedConfigurationProperty
+    private SQLExceptionHandlingProperties exception;
 
 
     public String getBackupPassword() {
@@ -93,6 +99,14 @@ public class RenewpwdProperties {
     }
 
 
+    public SQLExceptionHandlingProperties getException() {
+        return exception==null? new SQLExceptionHandlingProperties() : exception;
+    }
+
+    public void setException(SQLExceptionHandlingProperties exception) {
+        this.exception = exception;
+    }
+
     @Override
     public String toString() {
         return "RenewpwdProperties{" +
@@ -100,6 +114,7 @@ public class RenewpwdProperties {
                 ", masterPassword='" + masterPassword + '\'' +
                 ", enabled=" + enabled +
                 ", pwdEncryptKey='" + pwdEncryptKey + '\'' +
+                ", exception=" + exception +
                 '}';
     }
 }

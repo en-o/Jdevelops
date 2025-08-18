@@ -1,2 +1,5 @@
 cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties
 cn.tannn.jdevelops.renewpwd.refresh.RenewpwdDataSourceConfig
+cn.tannn.jdevelops.renewpwd.actuator.SQLExceptionHandlingEndpoint
+cn.tannn.jdevelops.renewpwd.actuator.SQLExceptionHandlingHealthIndicator
+cn.tannn.jdevelops.renewpwd.actuator.SQLExceptionHandlingInfoContributor
