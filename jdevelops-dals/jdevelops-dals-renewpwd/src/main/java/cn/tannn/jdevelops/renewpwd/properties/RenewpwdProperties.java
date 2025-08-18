@@ -81,9 +81,8 @@ public class RenewpwdProperties {
         this.masterPassword = masterPassword;
     }
 
-
     public Boolean getEnabled() {
-        return enabled != null && enabled;
+        return enabled == null || enabled;
     }
 
     public void setEnabled(Boolean enabled) {

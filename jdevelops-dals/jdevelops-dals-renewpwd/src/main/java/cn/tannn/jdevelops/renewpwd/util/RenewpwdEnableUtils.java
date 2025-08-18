@@ -20,8 +20,8 @@ public class RenewpwdEnableUtils {
         if (configValue != null) {
             return Boolean.parseBoolean(configValue);
         }
-        // 默认不启用
-        return false;
+        // 默认启用
+        return true;
     }
 
     /**
@@ -35,7 +35,7 @@ public class RenewpwdEnableUtils {
                 return Boolean.parseBoolean(configValue);
             }
         }
-        // 默认不启用
-        return false;
+        // 默认启用
+        return true;
     }
 }
