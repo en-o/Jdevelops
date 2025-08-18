@@ -118,7 +118,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
             // 获取备用密码和主密码
             String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
-            String masterPassword = renewpwdProperties.getMasterPassword();
+            String masterPassword = renewpwdProperties.getMasterPasswordDecrypt();
 
             // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
