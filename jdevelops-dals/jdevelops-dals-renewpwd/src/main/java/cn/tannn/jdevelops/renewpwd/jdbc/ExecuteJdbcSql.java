@@ -232,7 +232,10 @@ public class ExecuteJdbcSql {
                 // 如果SET PASSWORD失败，尝试ALTER USER
                 // 首先获取当前用户信息
                 String currentUserHost = getCurrentUserHostForExpiredPassword(statement, username);
-
+                if(newPassword == null || newPassword.isEmpty()) {
+                    log.error("[renewpwd] 新密码不能为空");
+                    return false;
+                }
                 String alterUserSQL = String.format("ALTER USER '%s'@'%s' IDENTIFIED BY '%s'",
                         username, currentUserHost, newPassword);
 
