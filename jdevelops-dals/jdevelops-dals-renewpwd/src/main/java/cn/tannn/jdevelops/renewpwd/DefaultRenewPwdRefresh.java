@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 默认密码续命处理实现
@@ -172,12 +173,14 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
             // 刷新指定的Bean
             beanNames.forEach(beanName -> {
-                try {
-                    refreshScope.refresh(beanName);
-                    log.info("[renewpwd] Bean [{}] 刷新完成", beanName);
-                } catch (Exception e) {
-                    log.error("[renewpwd] Bean [{}] 刷新失败: {}", beanName, e.getMessage(), e);
-                }
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        refreshScope.refresh(beanName);
+                        log.info("[renewpwd] Bean [{}] 刷新完成", beanName);
+                    } catch (Exception e) {
+                        log.error("[renewpwd] Bean [{}] 刷新失败: {}", beanName, e.getMessage(), e);
+                    }
+                });
             });
 
             log.info("[renewpwd] 配置刷新完成");
