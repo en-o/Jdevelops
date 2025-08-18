@@ -1,6 +1,8 @@
 package cn.tannn.jdevelops.renewpwd.exception;
 
+import cn.tannn.jdevelops.renewpwd.RenewPwdRefresh;
 import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
+import cn.tannn.jdevelops.renewpwd.util.RenewPwdApplicationContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +27,7 @@ final class SQLExceptionHandlingHelper {
                                           SQLException e, String operation) {
         // 确保是最深层的SQLException
         SQLException exception = DatabaseUtils.findDeepestSQLException(e);
-        logException(proxy, "DATASOURCE",exception, operation, null, 0);
+        logException(proxy, "DATASOURCE", exception, operation, null, 0);
         // 分类处理
         classifyAndHandle(proxy, exception, operation);
         if (proxy.getConfig().getException().isAlertEnabled()) {
@@ -37,12 +39,13 @@ final class SQLExceptionHandlingHelper {
 
     /**
      * 记录异常日志
-     * @param proxy 数据源代理实例
-     * @param level 日志级别
-     * @param e 异常对象
-     * @param operation   操作名称
-     * @param params 操作参数
-     * @param duration 执行时长（毫秒）
+     *
+     * @param proxy     数据源代理实例
+     * @param level     日志级别
+     * @param e         异常对象
+     * @param operation 操作名称
+     * @param params    操作参数
+     * @param duration  执行时长（毫秒）
      */
     private static void logException(SQLExceptionHandlingDataSourceProxy proxy,
                                      String level, SQLException e, String operation,
@@ -73,23 +76,21 @@ final class SQLExceptionHandlingHelper {
 
     /**
      * 根据SQL异常状态码分类处理异常
-     * @param proxy 数据源代理实例
-     * @param e 异常对象
+     *
+     * @param proxy     数据源代理实例
+     * @param e         异常对象
      * @param operation 操作名称
      */
     private static void classifyAndHandle(SQLExceptionHandlingDataSourceProxy proxy,
                                           SQLException e, String operation) {
         String sqlState = e.getSQLState();
         if (sqlState == null) return;
-        // 原始错误码
-        int databaseErrorCode = e.getErrorCode();
-
         switch (sqlState) {
             case "S1000":
-                handleConnectionIssue(proxy, e, operation, databaseErrorCode);
+                handleConnectionIssue(proxy, e, operation);
                 break;
             default:
-                handleGenericSQLException(proxy, e, operation, databaseErrorCode);
+                handleGenericSQLException(proxy, e, operation);
         }
     }
 
@@ -97,33 +98,37 @@ final class SQLExceptionHandlingHelper {
 
 
     private static void handleConnectionIssue(SQLExceptionHandlingDataSourceProxy proxy,
-                                              SQLException e, String operation, int databaseErrorCode) {
-        log.warn("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
+                                              SQLException e, String operation) {
+        log.warn("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getSQLState(), e.getErrorCode());
         // 开始重新连接逻辑
+        if (DatabaseUtils.isPasswordExpiredError(e.getErrorCode(), proxy.getDriverClassName())) {
+            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).fixPassword();
+        }
 
     }
 
     private static void handleAuthorizationError(SQLExceptionHandlingDataSourceProxy proxy,
-                                                 SQLException e, String operation, int databaseErrorCode) {
-        log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
+                                                 SQLException e, String operation) {
+        log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getSQLState(), e.getErrorCode());
     }
 
 
     private static void handleGenericSQLException(SQLExceptionHandlingDataSourceProxy proxy,
-                                                  SQLException e, String operation, int databaseErrorCode) {
-        log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
+                                                  SQLException e, String operation) {
+        log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), e.getErrorCode());
     }
 
     /* ================= 告警 ================= */
 
     /**
      * 发送告警
-     * @param proxy 数据源代理实例
-     * @param level 告警级别
-     * @param e 异常对象
-     * @param operation 操作名称
-     * @param params 操作参数
-     * @param duration 执行时长（毫秒）
+     *
+     * @param proxy       数据源代理实例
+     * @param level       告警级别
+     * @param e           异常对象
+     * @param operation   操作名称
+     * @param params      操作参数
+     * @param duration    执行时长（毫秒）
      * @param description 告警描述
      */
     private static void sendAlert(SQLExceptionHandlingDataSourceProxy proxy,
