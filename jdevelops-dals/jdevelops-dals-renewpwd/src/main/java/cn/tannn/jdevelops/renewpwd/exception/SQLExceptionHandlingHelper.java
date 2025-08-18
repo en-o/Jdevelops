@@ -16,51 +16,33 @@ final class SQLExceptionHandlingHelper {
 
     private static final Logger log = LoggerFactory.getLogger(SQLExceptionHandlingHelper.class);
 
+    private SQLExceptionHandlingHelper() {
+    }
+
     /* ================= 异常处理入口 ================= */
 
     static void handleDataSourceException(SQLExceptionHandlingDataSourceProxy proxy,
                                           SQLException e, String operation) {
+
         logException(proxy, "DATASOURCE", e, operation, null, 0);
+        // 分类处理
+        classifyAndHandle(proxy, e, operation);
         if (proxy.getConfig().getException().isAlertEnabled()) {
             sendAlert(proxy, "DATASOURCE", e, operation, null, 0, "数据源连接异常");
         }
     }
 
-    static void handleConnectionException(SQLExceptionHandlingDataSourceProxy proxy,
-                                          SQLException e, String operation, Object[] params, long duration) {
-        logException(proxy, "CONNECTION", e, operation, params, duration);
-        classifyAndHandle(proxy, e, operation);
-        if (proxy.getConfig().getException().isAlertEnabled()) {
-            sendAlert(proxy, "CONNECTION", e, operation, params, duration, "连接操作异常");
-        }
-    }
-
-    static void handleStatementException(SQLExceptionHandlingDataSourceProxy proxy,
-                                         SQLException e, String operation, Object[] params, long duration) {
-        logException(proxy, "SQL_EXECUTION", e, operation, params, duration);
-        classifyAndHandle(proxy, e, operation);
-        if (proxy.getConfig().getException().isAlertEnabled()) {
-            sendAlert(proxy, "SQL_EXECUTION", e, operation, params, duration, "SQL执行异常");
-        }
-    }
-
-    /* ================= 慢查询 ================= */
-
-    static void handleSlowQuery(SQLExceptionHandlingDataSourceProxy proxy,
-                                String operation, Object[] params, long duration) {
-        String paramStr = buildParamString(proxy, params);
-        log.warn("慢查询检测 - 操作: {}, 耗时: {}ms, 阈值: {}ms, 参数: {}",
-                operation, duration, proxy.getConfig().getException().getSlowQueryThreshold(), paramStr);
-
-        if (proxy.getConfig().getException().isAlertEnabled()) {
-            sendAlert(proxy, "SLOW_QUERY", null, operation, params, duration,
-                    "慢查询检测: 耗时" + duration + "ms，超过阈值"
-                            + proxy.getConfig().getException().getSlowQueryThreshold() + "ms");
-        }
-    }
-
     /* ================= 日志 ================= */
 
+    /**
+     * 记录异常日志
+     * @param proxy 数据源代理实例
+     * @param level 日志级别
+     * @param e 异常对象
+     * @param operation   操作名称
+     * @param params 操作参数
+     * @param duration 执行时长（毫秒）
+     */
     private static void logException(SQLExceptionHandlingDataSourceProxy proxy,
                                      String level, SQLException e, String operation,
                                      Object[] params, long duration) {
@@ -86,106 +68,61 @@ final class SQLExceptionHandlingHelper {
         }
     }
 
-    /* ================= 成功执行日志 ================= */
-
-    static void logSuccessfulExecution(SQLExceptionHandlingDataSourceProxy proxy,
-                                       String operation, Object[] params, long duration) {
-        if (!proxy.getConfig().getException().isLogSuccessfulOperations()) return;
-
-        String paramStr = proxy.getConfig().getException().isLogParameters() && params != null
-                ? Arrays.toString(params) : "参数已隐藏";
-
-        switch (proxy.getConfig().getException().getLogLevel().toUpperCase()) {
-            case "DEBUG":
-                log.debug("SQL执行成功 - 操作: {}, 耗时: {}ms, 参数: {}", operation, duration, paramStr);
-                break;
-            case "INFO":
-                log.info("SQL执行成功 - 操作: {}, 耗时: {}ms", operation, duration);
-                break;
-            default:
-                log.trace("SQL执行成功 - 操作: {}, 耗时: {}ms, 参数: {}", operation, duration, paramStr);
-        }
-    }
-
     /* ================= 异常分类 ================= */
 
+    /**
+     * 根据SQL异常状态码分类处理异常
+     * @param proxy 数据源代理实例
+     * @param e 异常对象
+     * @param operation 操作名称
+     */
     private static void classifyAndHandle(SQLExceptionHandlingDataSourceProxy proxy,
                                           SQLException e, String operation) {
         String sqlState = e.getSQLState();
         if (sqlState == null) return;
-
-        boolean isCritical = Arrays.asList(proxy.getConfig().getException().getCriticalSqlStates())
-                .contains(sqlState);
+        // 原始错误码
+        int databaseErrorCode = e.getErrorCode();
 
         switch (sqlState) {
-            case "40001":
-            case "40P01":
-                handleDeadlock(proxy, e, operation, isCritical);
-                break;
-            case "08001":
-            case "08006":
-            case "08S01":
-                handleConnectionIssue(proxy, e, operation, isCritical);
-                break;
-            case "23000":
-            case "23505":
-            case "23001":
-                handleConstraintViolation(proxy, e, operation, isCritical);
-                break;
-            case "42000":
-            case "42601":
-                handleSyntaxError(proxy, e, operation, isCritical);
-                break;
-            case "28000":
-                handleAuthorizationError(proxy, e, operation, isCritical);
-                break;
-            case "HY000":
-                handleMySQLGenericError(proxy, e, operation, isCritical);
+            case "S1000":
+                handleConnectionIssue(proxy, e, operation, databaseErrorCode);
                 break;
             default:
-                handleGenericSQLException(proxy, e, operation, isCritical);
+                handleGenericSQLException(proxy, e, operation, databaseErrorCode);
         }
     }
 
     /* ========= 分类处理器（保持原始日志语句） ======== */
 
-    private static void handleDeadlock(SQLExceptionHandlingDataSourceProxy proxy,
-                                       SQLException e, String operation, boolean isCritical) {
-        log.warn("死锁检测 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
-    }
 
     private static void handleConnectionIssue(SQLExceptionHandlingDataSourceProxy proxy,
-                                              SQLException e, String operation, boolean isCritical) {
-        log.warn("连接问题 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
-    }
-
-    private static void handleConstraintViolation(SQLExceptionHandlingDataSourceProxy proxy,
-                                                  SQLException e, String operation, boolean isCritical) {
-        log.warn("约束违反 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
-    }
-
-    private static void handleSyntaxError(SQLExceptionHandlingDataSourceProxy proxy,
-                                          SQLException e, String operation, boolean isCritical) {
-        log.error("SQL语法错误 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
+                                              SQLException e, String operation, int databaseErrorCode) {
+        log.warn("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
     }
 
     private static void handleAuthorizationError(SQLExceptionHandlingDataSourceProxy proxy,
-                                                 SQLException e, String operation, boolean isCritical) {
-        log.error("权限错误 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
+                                                 SQLException e, String operation, int databaseErrorCode) {
+        log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
     }
 
-    private static void handleMySQLGenericError(SQLExceptionHandlingDataSourceProxy proxy,
-                                                SQLException e, String operation, boolean isCritical) {
-        log.error("MySQL通用错误 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
-    }
 
     private static void handleGenericSQLException(SQLExceptionHandlingDataSourceProxy proxy,
-                                                  SQLException e, String operation, boolean isCritical) {
-        log.error("未分类SQL异常 - 操作: {}, 错误码: {}, 关键级别: {}", operation, e.getErrorCode(), isCritical);
+                                                  SQLException e, String operation, int databaseErrorCode) {
+        log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
     }
 
     /* ================= 告警 ================= */
 
+    /**
+     * 发送告警
+     * @param proxy 数据源代理实例
+     * @param level 告警级别
+     * @param e 异常对象
+     * @param operation 操作名称
+     * @param params 操作参数
+     * @param duration 执行时长（毫秒）
+     * @param description 告警描述
+     */
     private static void sendAlert(SQLExceptionHandlingDataSourceProxy proxy,
                                   String level, SQLException e, String operation,
                                   Object[] params, long duration, String description) {
@@ -193,7 +130,7 @@ final class SQLExceptionHandlingHelper {
         long currentTime = System.currentTimeMillis();
         Long lastTime = proxy.lastAlertTime.get(alertKey);
         if (lastTime != null &&
-                (currentTime - lastTime) < (proxy.getConfig().getException().getAlertIntervalSeconds() * 1000)) {
+                (currentTime - lastTime) < (proxy.getConfig().getException().getAlertIntervalSeconds() * 1000L)) {
             log.debug("告警被频率控制限制: {}", alertKey);
             return;
         }
@@ -221,40 +158,5 @@ final class SQLExceptionHandlingHelper {
                 ? Arrays.toString(params) : "参数已隐藏";
     }
 
-    /* ================= 统计 ================= */
 
-    static String buildStatistics(SQLExceptionHandlingDataSourceProxy proxy) {
-        return String.format(
-                "SQL执行统计 - 总操作数: %d, 异常数: %d, 慢查询数: %d, 异常率: %.2f%%, 慢查询率: %.2f%%",
-                proxy.totalOperations.get(),
-                proxy.totalExceptions.get(),
-                proxy.totalSlowQueries.get(),
-                proxy.totalOperations.get() > 0 ? (proxy.totalExceptions.get() * 100.0 / proxy.totalOperations.get()) : 0,
-                proxy.totalOperations.get() > 0 ? (proxy.totalSlowQueries.get() * 100.0 / proxy.totalOperations.get()) : 0
-        );
-    }
-
-    static void resetStatistics(SQLExceptionHandlingDataSourceProxy proxy) {
-        proxy.totalOperations.set(0);
-        proxy.totalExceptions.set(0);
-        proxy.totalSlowQueries.set(0);
-        proxy.lastAlertTime.clear();
-        log.info("SQL执行统计信息已重置");
-    }
-
-
-    /**
-     * 判断是否为SQL执行方法
-     */
-    static boolean isExecuteMethod(String methodName) {
-        return methodName.startsWith("execute") ||
-                methodName.equals("executeQuery") ||
-                methodName.equals("executeUpdate") ||
-                methodName.equals("executeBatch") ||
-                methodName.equals("executeLargeBatch");
-    }
-
-
-    private SQLExceptionHandlingHelper() {
-    }
 }
