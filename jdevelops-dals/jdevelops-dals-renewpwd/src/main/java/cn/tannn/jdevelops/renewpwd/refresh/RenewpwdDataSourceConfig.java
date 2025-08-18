@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.renewpwd.exception.SQLExceptionHandlingDataSourceProxy
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.DataSourceConfigStrategy;
 import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.HikariConfigStrategy;
+import cn.tannn.jdevelops.renewpwd.util.RenewpwdEnableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -55,18 +56,20 @@ public class RenewpwdDataSourceConfig {
 
         // 使用策略模式处理不同数据源的配置绑定
         applyDataSourceConfiguration(dataSource);
-
-
-        log.info("Creating SQL Exception Handling DataSource Proxy...");
-        log.info("Exception Handling Config: enabled={}, alertEnabled={}, logLevel={}",
-                renewpwdProperties.getEnabled(), renewpwdProperties.getException().isAlertEnabled(), renewpwdProperties.getException().getLogLevel());
-
-        // 创建代理数据源，实现全局SQL异常拦截
-        SQLExceptionHandlingDataSourceProxy proxyDataSource =
-                new SQLExceptionHandlingDataSourceProxy(dataSource, renewpwdProperties, properties.getDriverClassName());
-
         log.info("SQL Exception Handling DataSource Proxy created successfully");
-        return proxyDataSource;
+        if(RenewpwdEnableUtils.isRenewpwdEnabled(environment)){
+
+            log.info("Creating SQL Exception Handling DataSource Proxy...");
+            log.info("Exception Handling Config: enabled={}, alertEnabled={}, logLevel={}",
+                    renewpwdProperties.getEnabled(), renewpwdProperties.getException().isAlertEnabled(), renewpwdProperties.getException().getLogLevel());
+
+            // 创建代理数据源，实现全局SQL异常拦截
+            SQLExceptionHandlingDataSourceProxy proxyDataSource =
+                    new SQLExceptionHandlingDataSourceProxy(dataSource, renewpwdProperties, properties.getDriverClassName());
+
+            return proxyDataSource;
+        }
+        return dataSource;
     }
 
     /**

@@ -17,10 +17,5 @@ import java.lang.annotation.*;
 @Inherited
 @Import({RenewpwdRegister.class})
 public @interface EnableRenewpwd {
-    /**
-     * 是否启用配置中心
-     * @return 默认启用
-     */
-    boolean enable() default true;
 
 }

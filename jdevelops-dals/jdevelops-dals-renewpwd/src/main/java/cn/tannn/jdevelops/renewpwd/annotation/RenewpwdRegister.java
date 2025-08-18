@@ -42,7 +42,7 @@ public class RenewpwdRegister implements ImportBeanDefinitionRegistrar, Environm
             , BeanDefinitionRegistry registry) {
 
         // 只有在启用refresh时才注册 tconfig 相关的处理器
-        if (RenewpwdEnableUtils.isRenewpwdEnabled(environment, importingClassMetadata)) {
+        if (RenewpwdEnableUtils.isRenewpwdEnabled(environment)) {
             registerClass(registry, DatabasePwdEnvironmentPostProcessor.class);
             registerClass(registry, DefaultRenewPwdRefresh.class);
             registerClass(registry, BuiltInDataSourceStrategiesConfig.class);

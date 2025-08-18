@@ -19,56 +19,27 @@ public class RenewpwdEnableUtils {
      * 优先全局配置，再查 RenewpwdProperties bean
      */
     public static boolean isRenewpwdEnabled(ApplicationContext context) {
-        // 1. 优先全局配置
+        // 全局配置
         String configValue = context.getEnvironment().getProperty(CONFIG_KEY);
         if (configValue != null) {
             return Boolean.parseBoolean(configValue);
         }
-        // 3. 注解配置 从配置类上获取注解信息
-        return getAnnotationEnabledFromConfigClasses(context);
+        // 默认不启用
+        return false;
     }
 
     /**
      * 通过 Environment 和注解元数据判断是否启用 renewpwd
      * 优先全局配置，再查注解
      */
-    public static boolean isRenewpwdEnabled(Environment environment, AnnotationMetadata metadata) {
+    public static boolean isRenewpwdEnabled(Environment environment) {
         if (environment != null) {
             String configValue = environment.getProperty(CONFIG_KEY);
             if (configValue != null) {
                 return Boolean.parseBoolean(configValue);
             }
         }
-        // 从注解获取配置
-        Map<String, Object> attributes = metadata.getAnnotationAttributes(EnableRenewpwd.class.getName());
-        if (attributes != null) {
-            return (Boolean) attributes.get("enable");
-        }
-        // 默认启用
-        return false;
-    }
-
-
-    private static boolean getAnnotationEnabledFromConfigClasses(ApplicationContext context) {
-        // 获取所有配置类
-        String[] configBeanNames = context.getBeanNamesForAnnotation(org.springframework.context.annotation.Configuration.class);
-
-        for (String beanName : configBeanNames) {
-            try {
-                Object configBean = context.getBean(beanName);
-                Class<?> configClass = configBean.getClass();
-
-                // 检查是否有 @EnableRenewpwd 注解
-                EnableRenewpwd annotation = configClass.getAnnotation(EnableRenewpwd.class);
-                if (annotation != null) {
-                    log.info("Found @EnableRenewpwd on configuration class: {}", configClass.getName());
-                    return annotation.enable(); // 假设注解有 enable 属性
-                }
-            } catch (Exception e) {
-                log.debug("Error checking configuration class {}: {}", beanName, e.getMessage());
-            }
-        }
-
+        // 默认不启用
         return false;
     }
 }
