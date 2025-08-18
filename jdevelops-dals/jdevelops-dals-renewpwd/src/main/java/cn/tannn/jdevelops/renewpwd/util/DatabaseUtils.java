@@ -38,6 +38,11 @@ public class DatabaseUtils {
     }
 
 
+    /**
+     * 查找最深层的 SQLException
+     * @param e Throwable
+     * @return SQLException
+     */
     public static SQLException findDeepestSQLException(Throwable e) {
         SQLException deepest = null;
         while (e != null) {
@@ -48,7 +53,6 @@ public class DatabaseUtils {
         }
         return deepest;
     }
-
 
     /**
      * 检查指定的类是否存在

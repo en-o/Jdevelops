@@ -27,10 +27,6 @@ public class SQLExceptionHandlingDataSourceProxy extends DelegatingDataSource {
     // 告警频率控制
     final Map<String, Long> lastAlertTime = new ConcurrentHashMap<>();
 
-    // 统计信息
-    final AtomicLong totalOperations = new AtomicLong(0);
-    final AtomicLong totalExceptions = new AtomicLong(0);
-
     public SQLExceptionHandlingDataSourceProxy(DataSource targetDataSource,
                                                RenewpwdProperties config) {
         super(targetDataSource);

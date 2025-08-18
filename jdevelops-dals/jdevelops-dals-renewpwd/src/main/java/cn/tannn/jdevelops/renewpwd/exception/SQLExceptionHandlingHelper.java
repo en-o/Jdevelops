@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.exception;
 
-import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
+import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +23,13 @@ final class SQLExceptionHandlingHelper {
 
     static void handleDataSourceException(SQLExceptionHandlingDataSourceProxy proxy,
                                           SQLException e, String operation) {
-
-        logException(proxy, "DATASOURCE", e, operation, null, 0);
+        // 确保是最深层的SQLException
+        SQLException exception = DatabaseUtils.findDeepestSQLException(e);
+        logException(proxy, "DATASOURCE",exception, operation, null, 0);
         // 分类处理
-        classifyAndHandle(proxy, e, operation);
+        classifyAndHandle(proxy, exception, operation);
         if (proxy.getConfig().getException().isAlertEnabled()) {
-            sendAlert(proxy, "DATASOURCE", e, operation, null, 0, "数据源连接异常");
+            sendAlert(proxy, "DATASOURCE", exception, operation, null, 0, "数据源连接异常");
         }
     }
 
@@ -98,6 +99,8 @@ final class SQLExceptionHandlingHelper {
     private static void handleConnectionIssue(SQLExceptionHandlingDataSourceProxy proxy,
                                               SQLException e, String operation, int databaseErrorCode) {
         log.warn("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), databaseErrorCode);
+        // 开始重新连接逻辑
+
     }
 
     private static void handleAuthorizationError(SQLExceptionHandlingDataSourceProxy proxy,
