@@ -48,7 +48,7 @@ public class RenewpwdDataSourceConfig {
     @Bean
     @Primary
     @RefreshScope
-    @ConditionalOnProperty(name = "jdevelops.renewpwd.enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "jdevelops.renewpwd.enabled", havingValue = "true", matchIfMissing = true)
     public DataSource dataSource(DataSourceProperties properties,
                                  RenewpwdProperties renewpwdProperties) {
 
@@ -59,7 +59,7 @@ public class RenewpwdDataSourceConfig {
         // 使用策略模式处理不同数据源的配置绑定
         applyDataSourceConfiguration(dataSource);
         log.info("SQL Exception Handling DataSource Proxy created successfully");
-        if(RenewpwdEnableUtils.isRenewpwdEnabled(environment)){
+        if (RenewpwdEnableUtils.isRenewpwdEnabled(environment)) {
 
             log.info("Creating SQL Exception Handling DataSource Proxy...");
             log.info("Exception Handling Config: enabled={}, alertEnabled={}, logLevel={}",
