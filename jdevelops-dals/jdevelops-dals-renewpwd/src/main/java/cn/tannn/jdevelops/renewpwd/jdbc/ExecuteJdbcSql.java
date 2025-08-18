@@ -1,5 +1,7 @@
-package cn.tannn.jdevelops.renewpwd.util;
+package cn.tannn.jdevelops.renewpwd.jdbc;
 
+import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
+import cn.tannn.jdevelops.renewpwd.util.PasswordUpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -7,18 +9,16 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import java.text.MessageFormat;
 
 /**
- * 配置刷新工具类
- * 提供Bean刷新相关的工具方法，包括Bean类型判断、配置匹配、刷新策略决策等
- *
+ * sql 操作
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2025/8/10 01:33
  */
-public class PwdRefreshUtil {
+public class ExecuteJdbcSql {
 
     private static PasswordUpdateListener passwordUpdateListener;
 
-    private static final Logger log = LoggerFactory.getLogger(PwdRefreshUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(ExecuteJdbcSql.class);
 
 
     public static void setPasswordUpdateListener(PasswordUpdateListener listener) {

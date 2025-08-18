@@ -2,8 +2,8 @@ package cn.tannn.jdevelops.renewpwd.proerty;
 
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
+import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.util.PasswordUpdateListener;
-import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -62,12 +62,12 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
      * 注册密码更新监听器
      * <p> 注册监听器(先注册防止PwdRefreshUtil#passwordUpdateListener为空)
      * <p> 将当前的 DatabasePwdEnvironmentPostProcessor 实例（实现了 PasswordUpdateListener 接口）注册为密码更新事件的监听器
-     * <p> 这样当 PwdRefreshUtil 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
+     * <p> 这样当 ExecuteJdbcSql 成功更新数据库密码时，会回调 onPasswordUpdated(newPassword) 方法，通知 DatabasePwdEnvironmentPostProcessor，从而可以用新密码重新初始化 RenewPasswordService，保证应用始终使用最新的数据库密码。
      *
      */
     private void registerPasswordUpdateListener() {
         // 先注册防止PwdRefreshUtil#passwordUpdateListener为空
-        PwdRefreshUtil.setPasswordUpdateListener(this);
+        ExecuteJdbcSql.setPasswordUpdateListener(this);
         log.debug("[renewpwd] 密码更新监听器注册完成");
     }
 
@@ -147,13 +147,13 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
      */
     private String selectValidPassword(ConfigurableEnvironment env, PasswordConfig config) {
         // 首先尝试主密码
-        if (PwdRefreshUtil.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword)) {
+        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword)) {
             log.info("[renewpwd] 使用主密码连接数据库成功");
             return config.primaryPassword;
         }
 
         // 主密码失效，尝试备用密码
-        if (PwdRefreshUtil.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword)) {
+        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword)) {
             log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
             return config.backupPassword;
         }

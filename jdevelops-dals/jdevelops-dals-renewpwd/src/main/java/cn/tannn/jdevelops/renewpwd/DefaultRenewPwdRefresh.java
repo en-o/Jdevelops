@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
-import cn.tannn.jdevelops.renewpwd.util.PwdRefreshUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +124,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
 
             // 验证当前密码和备用密码的有效性
-            if (!PwdRefreshUtil.updateUserPassword(env, currentPassword, newPassword)) {
+            if (!ExecuteJdbcSql.updateUserPassword(env, currentPassword, newPassword)) {
                 log.error("[renewpwd] 用户密码更新验证失败");
                 return null;
             }
@@ -143,7 +143,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
         try {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             // 既然是重置，当前密码是过期的也要用当前给定的密码进行重置，所以两个写一样
-            boolean isValid = PwdRefreshUtil.validateDatasourceConfig(env, newPassword, newPassword);
+            boolean isValid = ExecuteJdbcSql.validateDatasourceConfig(env, newPassword, newPassword);
 
             if (isValid) {
                 log.info("[renewpwd] 数据源配置验证成功");
