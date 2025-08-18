@@ -1,13 +1,9 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
-import cn.tannn.jdevelops.renewpwd.annotation.EnableRenewpwd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.core.type.AnnotationMetadata;
-
-import java.util.Map;
 
 import static cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant.CONFIG_KEY;
 

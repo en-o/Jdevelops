@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.properties;
 
 
-import java.util.Arrays;
-
 /**
  * SQL异常处理配置属性类
  *

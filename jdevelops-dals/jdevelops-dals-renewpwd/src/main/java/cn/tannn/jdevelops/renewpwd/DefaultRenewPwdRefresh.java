@@ -1,8 +1,8 @@
 package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
-import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
+import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
