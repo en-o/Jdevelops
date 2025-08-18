@@ -42,7 +42,7 @@ public class SQLExceptionHandlingDataSourceProxy extends DelegatingDataSource {
         this.targetDataSource = targetDataSource;
         this.config = config;
 
-        log.info("SQL异常处理代理初始化完成 - 配置: {}", config);
+        log.info("SQL异常处理代理初始化完成 - enable: {}, 配置: {}",config.getEnabled(), config.getException());
     }
 
     @Override
