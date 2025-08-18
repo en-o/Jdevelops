@@ -89,6 +89,9 @@ final class SQLExceptionHandlingHelper {
             case "S1000":
                 handleConnectionIssue(proxy, e, operation);
                 break;
+            case "28000":
+                handleAuthorizationError(proxy, e, operation);
+                break;
             default:
                 handleGenericSQLException(proxy, e, operation);
         }
@@ -110,12 +113,15 @@ final class SQLExceptionHandlingHelper {
     private static void handleAuthorizationError(SQLExceptionHandlingDataSourceProxy proxy,
                                                  SQLException e, String operation) {
         log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getSQLState(), e.getErrorCode());
+        if (DatabaseUtils.isPasswordError(e.getErrorCode(), proxy.getDriverClassName())) {
+            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).fixPassword();
+        }
     }
 
 
     private static void handleGenericSQLException(SQLExceptionHandlingDataSourceProxy proxy,
                                                   SQLException e, String operation) {
-        log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getErrorCode(), e.getErrorCode());
+        log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}", operation, e.getSQLState(), e.getErrorCode());
     }
 
     /* ================= 告警 ================= */

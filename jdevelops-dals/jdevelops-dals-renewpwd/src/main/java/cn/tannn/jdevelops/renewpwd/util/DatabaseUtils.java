@@ -37,6 +37,28 @@ public class DatabaseUtils {
         return false;
     }
 
+    /**
+     * 判断错误码是否为密码错误
+     * @param vendorCode 数据库返回的错误码
+     * @param driverClassName 数据库驱动类名，用于区分数据库类型
+     * @return true 如果是密码过期错误，false 否则
+     */
+    public static boolean isPasswordError(int vendorCode, String driverClassName) {
+        if (driverClassName == null) {
+            return false;
+        }
+
+        String driver = driverClassName.toLowerCase();
+
+        // MySQL
+        if (driver.toLowerCase().contains("mysql")) {
+            return vendorCode == 1045;
+        }else {
+            log.warn("其他数据库暂未支持，当前驱动：{}", driverClassName);
+        }
+        return false;
+    }
+
 
     /**
      * 查找最深层的 SQLException
