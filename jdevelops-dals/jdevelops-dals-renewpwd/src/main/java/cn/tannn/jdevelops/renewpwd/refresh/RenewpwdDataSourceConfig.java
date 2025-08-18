@@ -7,6 +7,7 @@ import cn.tannn.jdevelops.renewpwd.refresh.dataconfig.HikariConfigStrategy;
 import cn.tannn.jdevelops.renewpwd.util.RenewpwdEnableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,7 @@ public class RenewpwdDataSourceConfig {
     @Bean
     @Primary
     @RefreshScope
+    @ConditionalOnProperty(name = "jdevelops.renewpwd.enabled", havingValue = "true")
     public DataSource dataSource(DataSourceProperties properties,
                                  RenewpwdProperties renewpwdProperties) {
 
