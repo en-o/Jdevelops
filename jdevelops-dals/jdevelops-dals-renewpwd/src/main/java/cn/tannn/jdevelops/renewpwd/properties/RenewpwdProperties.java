@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.properties;
 
+import cn.tannn.jdevelops.renewpwd.annotation.RenewpwdRegister;
 import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,8 +37,7 @@ public class RenewpwdProperties {
     private String masterPassword;
 
     /**
-     * 是否启用密码虚续命，以配置文件为准-这里只是为空编写配置的时候有提示，具体在RenewpwdRegister#isRefreshEnabled
-     * <p>这个可以控制注解中的enabled，这不代表不写注解，注解必须写</p>
+     * 是否启用密码虚续命，以配置文件为准-这里只是为空编写配置的时候有提示，具体在{@link RenewpwdRegister#registerBeanDefinitions}
      * <p>{@link RenewpwdConstant#CONFIG_KEY}</p>
      */
     private Boolean enabled;
