@@ -2,7 +2,8 @@ package cn.tannn.jdevelops.renewpwd.exception;
 
 
 /**
- *
+ * 密码续命检测异常
+ * <p>用于在密码续命检测过程中抛出异常
  * @author tan
  */
 public final class StopDetectorException extends RuntimeException {
