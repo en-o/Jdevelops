@@ -16,7 +16,7 @@ import java.util.Arrays;
  * 提供静态工具方法，用于日志记录、异常分类处理、慢查询检测和告警发送。
  * 为代理类及处理器提供统一的辅助功能。
  */
-public final class SQLExceptionHandlingHelper {
+public  class SQLExceptionHandlingHelper {
 
     private static final Logger log = LoggerFactory.getLogger(SQLExceptionHandlingHelper.class);
 
