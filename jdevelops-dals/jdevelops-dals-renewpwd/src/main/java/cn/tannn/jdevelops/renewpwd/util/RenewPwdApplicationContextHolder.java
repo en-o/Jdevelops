@@ -1,7 +1,9 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component("renewPwdApplicationContextHolder")
 public class RenewPwdApplicationContextHolder {
 
     private static ApplicationContext context;

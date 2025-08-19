@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
@@ -48,6 +49,7 @@ public class RenewpwdDataSourceConfig {
     @Bean
     @Primary
     @RefreshScope
+    @DependsOn("renewPwdApplicationContextHolder") // 确保依赖
     @ConditionalOnProperty(name = "jdevelops.renewpwd.enabled", havingValue = "true", matchIfMissing = true)
     public DataSource dataSource(DataSourceProperties properties,
                                  RenewpwdProperties renewpwdProperties) {
