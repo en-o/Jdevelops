@@ -146,14 +146,14 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
      * 选择有效的密码
      */
     private String selectValidPassword(ConfigurableEnvironment env, PasswordConfig config) {
-        // 首先尝试主密码
-        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword)) {
+        // 首先尝试主密码 - 错误的情况下会更新备份密码所以下面的第二次判断就会正确并且使用备份密码
+        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword, config.renewpwdProperties)) {
             log.info("[renewpwd] 使用主密码连接数据库成功");
             return config.primaryPassword;
         }
 
         // 主密码失效，尝试备用密码
-        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword)) {
+        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword, config.renewpwdProperties)) {
             log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
             return config.backupPassword;
         }
@@ -199,7 +199,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     /**
      * 密码配置内部类
      */
-    private static class PasswordConfig {
+    public static class PasswordConfig {
         final String primaryPassword;
         final String backupPassword;
         final RenewpwdProperties renewpwdProperties;
@@ -208,6 +208,18 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             this.primaryPassword = primaryPassword;
             this.backupPassword = backupPassword;
             this.renewpwdProperties = renewpwdProperties;
+        }
+
+        public String getPrimaryPassword() {
+            return primaryPassword;
+        }
+
+        public String getBackupPassword() {
+            return backupPassword;
+        }
+
+        public RenewpwdProperties getRenewpwdProperties() {
+            return renewpwdProperties;
         }
     }
 }

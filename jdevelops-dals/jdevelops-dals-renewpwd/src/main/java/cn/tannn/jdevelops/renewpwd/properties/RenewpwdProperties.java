@@ -67,7 +67,7 @@ public class RenewpwdProperties {
     /**
      * 重置密码过期天数
      * <p>如果不配置，默认使用 30 天</p>
-     * <p>mysql修改密码会重置天数,但是pgsql和kingbase8需要自己手动重新设置</p>
+     * <p>mysql修改密码会重置天数（所以这里设置了我也不用）,但是pgsql和kingbase8需要自己手动重新设置（必须设置）</p>
      */
     private Integer resetExpiryDay = 30;
 

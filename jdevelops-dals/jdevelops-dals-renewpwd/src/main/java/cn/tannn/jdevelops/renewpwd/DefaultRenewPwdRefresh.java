@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
+import cn.tannn.jdevelops.renewpwd.jdbc.MySqlJdbc;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
@@ -91,7 +92,22 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             return;
         }
         // 更新密码
-        String newPassword = forceFixPassword();
+        String newPassword = forceFixPassword(DbType.MYSQL);
+        if (newPassword == null) {
+            log.warn("[renewpwd] 无法确定新密码，跳过刷新");
+            return;
+        }
+        // 刷新spring上下文
+        executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
+    }
+
+    @Override
+    public void updatePassword(DbType dbType) {
+        if (validateService()) {
+            return;
+        }
+        // 更新密码
+        String newPassword = forceFixPassword(dbType);
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
             return;
@@ -141,7 +157,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
      *
      * @return 当前连接用的密码
      */
-    private String forceFixPassword() {
+    private String forceFixPassword(DbType dbType) {
         try {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             RenewpwdProperties renewpwdProperties = applicationContext.getBean(RenewpwdProperties.class);
@@ -153,19 +169,24 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             // 获取备用密码和主密码
             String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
             String masterPassword = renewpwdProperties.getMasterPasswordDecrypt();
-
-            // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
-            String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
-
-            if (currentPassword.equals(newPassword)) {
-                log.error("[renewpwd] 当前密码与备用密码一致，且连接已断开，无法更新密码，交由业务方自行处理。");
+            String newPassword;
+            if(dbType.equals(DbType.MYSQL)){
+                // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
+                newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
+                if (currentPassword.equals(newPassword)) {
+                    log.error("[renewpwd] 当前密码与备用密码一致，且连接已断开，无法更新密码，交由业务方自行处理。");
+                    return null;
+                }
+                // 验证当前密码和备用密码的有效性
+                if (!ExecuteJdbcSql.updateUserPasswordForce(env, newPassword)) {
+                    log.error("[renewpwd] 用户密码更新验证失败");
+                    return null;
+                }
+            } else {
+                log.error("[renewpwd] 不支持过期密码更新的数据库类型: {}", dbType);
                 return null;
             }
-            // 验证当前密码和备用密码的有效性
-            if (!ExecuteJdbcSql.updateUserPasswordForce(env, newPassword)) {
-                log.error("[renewpwd] 用户密码更新验证失败");
-                return null;
-            }
+
 
             return newPassword;
         } catch (Exception e) {
