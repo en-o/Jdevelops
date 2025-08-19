@@ -44,6 +44,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
         String originalPassword = env.getProperty(DATASOURCE_PASSWORD_KEY);
+        //todo 这里或者真确的密码不应该刷新的
 
         // 处理密码配置并确保全局有效
         PasswordConfig passwordConfig = processPasswordConfiguration(originalPassword, beanFactory);
