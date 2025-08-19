@@ -22,17 +22,17 @@ public class PasswordUpdateExecutor {
     /**
      * 执行密码更新操作
      *
-     * @param connection 数据库连接
-     * @param username 用户名
-     * @param newPassword 新密码
-     * @param dbType 数据库类型
+     * @param connection     数据库连接
+     * @param username       用户名
+     * @param newPassword    新密码
+     * @param dbType         数据库类型
      * @param resetExpiryDay 重置过期天数（仅对PostgreSQL和KingBase8有效）
      * @return true 如果更新成功
      * @throws SQLException 如果更新过程中发生SQL异常
      */
     public static boolean executePasswordUpdate(Connection connection, String username,
-                                              String newPassword, DbType dbType,
-                                              Integer resetExpiryDay) throws SQLException {
+                                                String newPassword, DbType dbType,
+                                                Integer resetExpiryDay) throws SQLException {
         if (connection == null || username == null || newPassword == null || newPassword.isEmpty()) {
             log.error("[renewpwd] 密码更新参数无效: connection={}, username={}, newPassword={}",
                     connection != null, username, newPassword != null ? "***" : "null");
@@ -56,18 +56,18 @@ public class PasswordUpdateExecutor {
     /**
      * 验证新密码是否生效
      *
-     * @param url 数据库连接URL
-     * @param username 用户名
-     * @param newPassword 新密码
+     * @param url             数据库连接URL
+     * @param username        用户名
+     * @param newPassword     新密码
      * @param driverClassName 驱动类名
      * @return true 如果新密码验证成功
      */
     public static boolean validateNewPassword(String url, String username,
-                                            String newPassword, String driverClassName) {
+                                              String newPassword, String driverClassName, DbType dbType) {
         Connection connection = null;
         try {
             connection = DatabaseConnectionManager.createConnection(url, username, newPassword,
-                                                                   driverClassName, 3000, 3000, null);
+                    driverClassName, 3000, 3000, dbType);
             boolean isValid = DatabaseConnectionManager.isConnectionValid(connection, 2);
             log.info("[renewpwd] 新密码验证结果: {}", isValid ? "成功" : "失败");
             return isValid;
@@ -83,20 +83,20 @@ public class PasswordUpdateExecutor {
      * 完整的密码更新流程
      * 包括更新密码和验证新密码
      *
-     * @param url 数据库连接URL
-     * @param username 连接用户名
+     * @param url             数据库连接URL
+     * @param username        连接用户名
      * @param connectPassword 连接密码
-     * @param targetUsername 要更新密码的用户名
-     * @param newPassword 新密码
+     * @param targetUsername  要更新密码的用户名
+     * @param newPassword     新密码
      * @param driverClassName 驱动类名
-     * @param resetExpiryDay 重置过期天数
-     * @param dbType 数据库类型
+     * @param resetExpiryDay  重置过期天数
+     * @param dbType          数据库类型
      * @return true 如果密码更新并验证成功
      */
     public static boolean updateAndValidatePassword(String url, String username, String connectPassword,
-                                                  String targetUsername, String newPassword,
-                                                  String driverClassName, Integer resetExpiryDay,
-                                                  DbType dbType) {
+                                                    String targetUsername, String newPassword,
+                                                    String driverClassName, Integer resetExpiryDay,
+                                                    DbType dbType) {
         Connection connection = null;
 
         try {
@@ -104,13 +104,13 @@ public class PasswordUpdateExecutor {
 
             // 创建连接
             connection = DatabaseConnectionManager.createConnection(url, username, connectPassword,
-                                                                   driverClassName, 5000, 5000, dbType);
+                    driverClassName, 5000, 5000, dbType);
 
             log.info("[renewpwd] 连接成功，开始密码更新流程");
 
             // 执行密码更新
             boolean updateResult = executePasswordUpdate(connection, targetUsername, newPassword,
-                                                       dbType, resetExpiryDay);
+                    dbType, resetExpiryDay);
             if (updateResult) {
                 log.error("[renewpwd] 密码更新失败");
                 return false;
@@ -122,7 +122,7 @@ public class PasswordUpdateExecutor {
 
             // 验证新密码是否生效
             log.info("[renewpwd] 开始验证新密码");
-            if (validateNewPassword(url, targetUsername, newPassword, driverClassName)) {
+            if (validateNewPassword(url, targetUsername, newPassword, driverClassName, dbType)) {
                 log.info("[renewpwd] 新密码验证成功，过期密码已更新");
                 return true;
             } else {

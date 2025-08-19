@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.renewpwd.jdbc;
 
 import cn.tannn.jdevelops.renewpwd.exception.SQLExceptionHandlingHelper;
+import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +71,7 @@ public class DatasourceConfigValidator {
     /**
      * 验证数据源配置的完整性
      *
-     * @param config 数据源配置
+     * @param config          数据源配置
      * @param currentPassword 当前密码
      * @return true 如果配置完整
      */
@@ -87,7 +88,7 @@ public class DatasourceConfigValidator {
     /**
      * 测试数据库连接
      *
-     * @param config 数据源配置
+     * @param config   数据源配置
      * @param password 连接密码
      * @return true 如果连接成功
      * @throws SQLException 如果连接过程中发生SQL异常
@@ -101,7 +102,8 @@ public class DatasourceConfigValidator {
                     config.getUrl(),
                     config.getUsername(),
                     password,
-                    config.getDriverClassName()
+                    config.getDriverClassName(),
+                    DbType.getDbType(config.getDriverClassName())
             );
 
             // 测试连接有效性
@@ -128,16 +130,16 @@ public class DatasourceConfigValidator {
      * 完整的数据源配置验证流程
      * 包括配置完整性检查和连接测试
      *
-     * @param environment Spring环境配置
+     * @param environment     Spring环境配置
      * @param currentPassword 当前密码
-     * @param backupPassword 备份密码
-     * @param config 配置属性
+     * @param backupPassword  备份密码
+     * @param config          配置属性
      * @return true 如果验证成功或密码已成功更新
      */
     public static boolean validateDatasourceConfiguration(ConfigurableEnvironment environment,
-                                                         String currentPassword,
-                                                         String backupPassword,
-                                                         RenewpwdProperties config) {
+                                                          String currentPassword,
+                                                          String backupPassword,
+                                                          RenewpwdProperties config) {
         try {
             // 如果备份密码为空，则使用当前密码
             backupPassword = backupPassword.isEmpty() ? currentPassword : backupPassword;

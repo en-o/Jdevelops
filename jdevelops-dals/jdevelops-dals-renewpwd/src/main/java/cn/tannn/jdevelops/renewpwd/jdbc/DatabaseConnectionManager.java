@@ -71,8 +71,8 @@ public class DatabaseConnectionManager {
      * @throws ClassNotFoundException 如果驱动类找不到
      */
     public static Connection createConnection(String url, String username, String password,
-                                            String driverClassName) throws SQLException, ClassNotFoundException {
-        return createConnection(url, username, password, driverClassName, 5000, 5000, null);
+                                            String driverClassName, DbType dbType) throws SQLException, ClassNotFoundException {
+        return createConnection(url, username, password, driverClassName, 5000, 5000, dbType);
     }
 
     /**

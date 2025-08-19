@@ -43,30 +43,13 @@ public class ExecuteJdbcSql {
     }
 
     /**
-     * 测试数据库连接是否有效
-     *
-     * @param url             数据库连接URL
-     * @param username        数据库用户名
-     * @param driverClassName 数据库驱动类名
-     * @param currentPassword 当前密码
-     * @return true 如果连接有效或密码已成功更新，false 如果连接无效或更新失败
-     */
-    public static boolean testDatabaseConnection(String url, String username,
-                                                 String driverClassName, String currentPassword)
-            throws java.sql.SQLException {
-        DatasourceConfigValidator.DatasourceConfig config =
-                new DatasourceConfigValidator.DatasourceConfig(url, username, driverClassName);
-        return DatasourceConfigValidator.testConnection(config, currentPassword);
-    }
-
-    /**
      * 更新用户密码
      *
-     * @param environment        ConfigurableEnvironment
-     * @param renewpwdProperties 配置文件
-     * @param dbType             {@link DbType}
-     * @param connectionPassword 连接用的密码 [明文]（只针对mysql有效，pgsql是通过配置中的root拿到）
-     * @param newPassword        需要更新的密码 [明文]
+     * @param environment           ConfigurableEnvironment
+     * @param renewpwdProperties    配置文件
+     * @param dbType                {@link DbType}
+     * @param connectionPassword    连接用的密码 [明文]（只针对mysql有效，pgsql是通过配置中的root拿到）
+     * @param newPassword           需要更新的密码 [明文]
      * @param consistencyComparison true判断当前密码跟修改的密码是否一致，一致则不更新，false不判断
      * @return 新密码 ，null=更新失败
      */
@@ -130,33 +113,6 @@ public class ExecuteJdbcSql {
         }
     }
 
-    /**
-     * 更新用户密码
-     * 当检测到1862错误码时，执行ALTER USER命令更改密码
-     *
-     * @param url             数据库连接URL
-     * @param username        创建连接的用户名
-     * @param connectPassword 创建连接的密码
-     * @param newPassword     新密码 用于更新
-     * @param driverClassName 数据库驱动类名
-     * @param resetExpiryDay  {@link RenewpwdProperties#resetExpiryDay} 重置密码过期天数
-     * @param dbType          {@link DbType} 数据库类型
-     * @return true 如果密码更新成功并且新密码验证通过，false 如果更新失败或验证失败
-     */
-    public static boolean updateUserPassword(String url, String username, String connectPassword,
-                                             String newPassword, String driverClassName,
-                                             Integer resetExpiryDay, DbType dbType) {
-        String targetUsername = username;
-        return PasswordUpdateExecutor.updateAndValidatePassword(url, username, connectPassword,
-                targetUsername, newPassword, driverClassName, resetExpiryDay, dbType);
-    }
-
-    /**
-     * 测试新密码是否有效
-     */
-    public static boolean testNewPassword(String url, String username, String newPassword, String driverClassName) {
-        return PasswordUpdateExecutor.validateNewPassword(url, username, newPassword, driverClassName);
-    }
 
     // ================= 私有辅助方法 =================
 
