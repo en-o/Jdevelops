@@ -137,8 +137,9 @@ public class DatabaseConnectionManager {
      * @param timeout 验证超时时间（秒）
      * @param dbType 数据库类型
      * @return true 如果连接有效且账号可用
+     * @throws SQLException 如果查询执行失败 - 给上面自动错误处理
      */
-    public static boolean isConnectionValid(Connection connection, int timeout, DbType dbType) {
+    public static boolean isConnectionValid(Connection connection, int timeout, DbType dbType) throws SQLException {
         if (connection == null) {
             return false;
         }
@@ -158,6 +159,8 @@ public class DatabaseConnectionManager {
             return true;
 
         } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
             log.debug("[renewpwd] 连接有效性验证失败", e);
             return false;
         }
@@ -170,8 +173,9 @@ public class DatabaseConnectionManager {
      * @param connection 数据库连接
      * @param dbType 数据库类型
      * @return true 如果账号状态正常
+     * @throws SQLException 如果查询执行失败 - 给上面自动错误处理
      */
-    private static boolean validateAccountStatus(Connection connection, DbType dbType) {
+    private static boolean validateAccountStatus(Connection connection, DbType dbType) throws SQLException {
         Statement statement = null;
         ResultSet resultSet = null;
 
@@ -193,12 +197,12 @@ public class DatabaseConnectionManager {
             // 检查是否是账号过期相关的错误
             if (isAccountExpiredError(e, dbType)) {
                 log.warn("[renewpwd] 检测到账号过期: {}", e.getMessage());
-                return false;
+
             }
 
             // 其他SQL异常也视为验证失败
             log.debug("[renewpwd] 账号状态验证SQL异常: {}", e.getMessage());
-            return false;
+            throw e;
 
         } catch (Exception e) {
             log.debug("[renewpwd] 账号状态验证异常", e);
