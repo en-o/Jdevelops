@@ -16,7 +16,7 @@ import java.util.Arrays;
  * 提供静态工具方法，用于日志记录、异常分类处理、慢查询检测和告警发送。
  * 为代理类及处理器提供统一的辅助功能。
  */
-public  class SQLExceptionHandlingHelper {
+public class SQLExceptionHandlingHelper {
 
     private static final Logger log = LoggerFactory.getLogger(SQLExceptionHandlingHelper.class);
 
@@ -31,30 +31,9 @@ public  class SQLExceptionHandlingHelper {
         SQLException exception = DatabaseUtils.findDeepestSQLException(e);
         logException(proxy, "DATASOURCE", exception, operation, null, 0);
         // 分类处理
-        classifyAndHandle(proxy.getDriverClassName(), exception, operation);
+        classifyAndHandle( proxy.getDriverClassName(), exception, operation);
         if (proxy.getConfig().getException().isAlertEnabled()) {
             sendAlert(proxy, "DATASOURCE", exception, operation, null, 0, "数据源连接异常");
-        }
-    }
-
-
-    /**
-     *
-     * @param config RenewpwdProperties
-     * @param driverClassName 驱动
-     * @param e  SQLException
-     * @param operation 操作名称
-     */
-    public static void handleDataSourceException(RenewpwdProperties config
-            , String driverClassName
-            , SQLException e, String operation) {
-        // 确保是最深层的SQLException
-        SQLException exception = DatabaseUtils.findDeepestSQLException(e);
-        logException(config, "DATASOURCE", exception, operation, null, 0);
-        // 分类处理
-        classifyAndHandle(driverClassName, exception, operation);
-        if (config.getException().isAlertEnabled()) {
-            sendAlert("DATASOURCE", exception, operation, null, 0, "数据源连接异常");
         }
     }
 
@@ -116,9 +95,9 @@ public  class SQLExceptionHandlingHelper {
     /**
      * 根据SQL异常状态码分类处理异常
      *
-     * @param driverClassName 驱动名
-     * @param e               异常对象
-     * @param operation       操作名称
+     * @param driverClassName     驱动名
+     * @param e                   异常对象
+     * @param operation           操作名称
      */
     private static void classifyAndHandle(String driverClassName,
                                           SQLException e, String operation) {
@@ -158,7 +137,7 @@ public  class SQLExceptionHandlingHelper {
         if (DatabaseUtils.isPasswordError(e.getErrorCode(), driverClassName)) {
             // 当前密码过期使用备用密码进行更新
             RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.MYSQL);
-        }else if (e.getErrorCode() == 0) {
+        } else if (e.getErrorCode() == 0) {
             // 0表示密码错误
             RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.POSTGRE_SQL);
         }
