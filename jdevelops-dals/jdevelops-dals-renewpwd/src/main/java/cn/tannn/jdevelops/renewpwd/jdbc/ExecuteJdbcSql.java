@@ -67,8 +67,8 @@ public class ExecuteJdbcSql {
             return testDatabaseConnection(url, username, driverClassName, currentPassword);
         } catch (SQLException sqlException) {
             return SQLExceptionHandlingHelper.handleDataSourceException(environment, config
-                    , driverClassName, currentPassword
-                    , backupPassword
+                    , currentPassword, backupPassword
+                    , driverClassName
                     , sqlException, "项目启动时验证数据源配置");
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
