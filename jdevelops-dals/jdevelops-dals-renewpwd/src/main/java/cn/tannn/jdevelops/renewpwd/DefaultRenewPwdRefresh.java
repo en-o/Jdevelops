@@ -3,8 +3,10 @@ package cn.tannn.jdevelops.renewpwd;
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.jdbc.MySqlJdbc;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
+import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
+import cn.tannn.jdevelops.renewpwd.properties.RootAccess;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,6 +164,13 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             RenewpwdProperties renewpwdProperties = applicationContext.getBean(RenewpwdProperties.class);
 
+            String url = environment.getProperty("spring.datasource.url");
+            String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
+
+            // 获取当前密码
+            String springDatasourcePassword = environment.getProperty(RenewpwdConstant.DATASOURCE_PASSWORD_KEY
+                    , RenewpwdConstant.DEFAULT_PASSWORD);
+
             // 获取当前密码并尝试解密
             String currentPassword = env.getProperty(DATASOURCE_PASSWORD_KEY, DEFAULT_PASSWORD);
             currentPassword = AESUtil.decryptPassword(currentPassword, renewpwdProperties.getPwdEncryptKey());
@@ -169,17 +178,32 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             // 获取备用密码和主密码
             String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
             String masterPassword = renewpwdProperties.getMasterPasswordDecrypt();
-            String newPassword;
-            if(dbType.equals(DbType.MYSQL)){
-                // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
-                newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
+
+            String username;
+            String connectionPassword;
+            // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
+            String  newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
+
+
+            // 处理不同数据库
+            if (dbType.equals(DbType.MYSQL)) {
+                username = environment.getProperty("spring.datasource.username");
+                connectionPassword = springDatasourcePassword;
                 if (currentPassword.equals(newPassword)) {
                     log.error("[renewpwd] 当前密码与备用密码一致，且连接已断开，无法更新密码，交由业务方自行处理。");
                     return null;
                 }
-                // 验证当前密码和备用密码的有效性
-                if (!ExecuteJdbcSql.updateUserPasswordForce(env, newPassword)) {
-                    log.error("[renewpwd] 用户密码更新验证失败");
+            } else if (dbType.equals(DbType.POSTGRE_SQL) || dbType.equals(DbType.KINGBASE8)) {
+                // 对于pgsql和kingbase8，使用root账户来更新密码
+                RootAccess root = renewpwdProperties.getRoot();
+                if (root == null) {
+                    log.error("[renewpwd] pgsql/KINGBASE8 必须配置root超级账户");
+                    return null;
+                }
+                username = root.getUsername();
+                connectionPassword = root.getPassword();
+                if (username == null || username.isEmpty() || connectionPassword == null || connectionPassword.isEmpty()) {
+                    log.error("[renewpwd] pgsql/KINGBASE8 root账户密码不能为空");
                     return null;
                 }
             } else {
@@ -187,7 +211,28 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
                 return null;
             }
 
+            log.debug("[renewpwd] 强制更新密码 - 数据源配置: url={}, username={}, password={}",
+                    url, username, newPassword);
 
+            if (url == null || username == null || newPassword == null) {
+                log.warn("[renewpwd]  强制更新密码 - 数据源配置不完整: url={}, username={}, password={}",
+                        url, username, newPassword != null ? "***" : "null");
+                return null;
+            }
+
+            log.info("[renewpwd] 开始更新强制更新密码: username/root={}", username);
+            // 验证当前密码和备用密码的有效性
+            if (!ExecuteJdbcSql.updateUserPassword(url
+                    , username
+                    , connectionPassword
+                    , newPassword
+                    , driverClassName
+                    , renewpwdProperties.getResetExpiryDay()
+                    , dbType
+            )) {
+                log.error("[renewpwd] 用户密码更新验证失败");
+                return null;
+            }
             return newPassword;
         } catch (Exception e) {
             log.error("[renewpwd] 确定新密码时发生异常: {}", e.getMessage(), e);

@@ -192,7 +192,7 @@ public class ExecuteJdbcSql {
                 return null;
             }
 
-            log.debug("[renewpwd] 更新密码 - 连接数据源: url={}, username={}, password={}",
+            log.debug("[renewpwd] 更新密码 - 连接数据源: url={}, username/root={}, password={}",
                     url, username, connectionPassword);
 
             if (url == null || username == null || newPassword == null) {
@@ -237,8 +237,8 @@ public class ExecuteJdbcSql {
      * 当检测到1862错误码时，执行ALTER USER命令更改密码
      *
      * @param url             数据库连接URL
-     * @param username        数据库用户名
-     * @param currentPassword 旧密码 用于连接验证
+     * @param username        创建连接的用户名
+     * @param connectPassword 创建连接的密码
      * @param newPassword     新密码 用于更新
      * @param driverClassName 数据库驱动类名
      * @param resetExpiryDay  {@link RenewpwdProperties#resetExpiryDay} 重置密码过期天数
@@ -247,7 +247,7 @@ public class ExecuteJdbcSql {
      */
     public static boolean updateUserPassword(String url
             , String username
-            , String currentPassword
+            , String connectPassword
             , String newPassword
             , String driverClassName
             , Integer resetExpiryDay
@@ -264,7 +264,7 @@ public class ExecuteJdbcSql {
             // 配置连接属性以支持过期密码
             Properties props = new Properties();
             props.setProperty("user", username);
-            props.setProperty("password", currentPassword);
+            props.setProperty("password", connectPassword);
             props.setProperty("connectTimeout", "5000");
             props.setProperty("socketTimeout", "5000");
             props.setProperty("characterEncoding", "UTF-8");
@@ -332,79 +332,6 @@ public class ExecuteJdbcSql {
             } catch (SQLException e) {
                 log.debug("[renewpwd] 关闭连接失败", e);
             }
-        }
-    }
-
-
-    /**
-     * 更新用户密码 - 强制更新
-     *
-     * @param environment ConfigurableEnvironment
-     * @param newPassword 新密码
-     */
-    public static boolean updateUserPasswordForce(ConfigurableEnvironment environment
-            , String newPassword) {
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            String url = environment.getProperty("spring.datasource.url");
-            String username = environment.getProperty("spring.datasource.username");
-            String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
-
-            log.debug("[renewpwd] 强制更新密码 - 数据源配置: url={}, username={}, password={}",
-                    url, username, newPassword);
-
-            if (url == null || username == null || newPassword == null) {
-                log.warn("[renewpwd]  强制更新密码 - 数据源配置不完整: url={}, username={}, password={}",
-                        url, username, newPassword != null ? "***" : "null");
-                return false;
-            }
-
-            log.info("[renewpwd] 开始更新强制更新密码: username={}", username);
-
-            // 配置连接属性以支持过期密码
-            Properties props = new Properties();
-            props.setProperty("user", username);
-            props.setProperty("password", newPassword);
-            props.setProperty("connectTimeout", "5000");
-            props.setProperty("socketTimeout", "5000");
-
-            // 关键配置：允许使用过期密码连接
-            props.setProperty("disconnectOnExpiredPasswords", "false");
-            // 或者在URL中添加参数也可以
-            String connectionUrl = url;
-            if (!url.contains("disconnectOnExpiredPasswords")) {
-                connectionUrl = url + (url.contains("?") ? "&" : "?") +
-                        "disconnectOnExpiredPasswords=false";
-            }
-
-            log.info("[renewpwd] 尝试使用新密码连接数据库");
-            connection = DriverManager.getConnection(connectionUrl, props);
-
-            // 检查连接是否处于受限模式（只能执行密码更改）
-            log.info("[renewpwd] 连接成功，开始强制更新密码流程");
-
-            statement = connection.createStatement();
-
-            // 如果SET PASSWORD失败，尝试ALTER USER
-            // 首先获取当前用户信息
-            String currentUserHost = MySqlJdbc.getCurrentUserHostForExpiredPassword(statement, username);
-            if (newPassword.isEmpty()) {
-                log.error("[renewpwd] 新密码不能为空");
-                return false;
-            }
-            String alterUserSQL = String.format("ALTER USER '%s'@'%s' IDENTIFIED BY '%s'",
-                    username, currentUserHost, newPassword);
-
-            log.debug("[renewpwd] 执行SQL: ALTER USER '{}' @'{}' IDENTIFIED BY '***'", username, currentUserHost);
-            statement.executeUpdate(alterUserSQL);
-            log.info("[renewpwd] 使用ALTER USER强制更新密码成功: username={}@{}", username, currentUserHost);
-
-            return true;
-
-        } catch (Exception e) {
-            log.error("[renewpwd]  强制更新密码 - 验证数据源配置时发生异常", e);
-            return false;
         }
     }
 
