@@ -1,0 +1,60 @@
+@startuml
+actor "Spring Boot" as SB
+actor "业务代码" as User
+participant "DatabasePwdEnvironmentPostProcessor" as DP
+participant "ExecuteJdbcSql" as EJ
+participant "SQLExceptionHandlingDataSourceProxy" as Proxy
+participant "SQLExceptionHandlingHelper" as Helper
+participant "SQLExceptionClassifier" as Classifier
+participant "RenewPasswordService" as RS
+participant "数据库" as DB
+
+' 启动阶段
+SB -> DP: postProcessBeanFactory()
+DP -> EJ: setPasswordUpdateListener(this)
+DP -> DP: processPasswordConfiguration()
+DP -> EJ: validateDatasourceConfig(主密码)
+EJ -> Proxy: getConnection(主密码)
+Proxy -> DB: 获取连接(主密码)
+alt 主密码有效
+    DP -> RS: initialize(主密码)
+else 主密码无效
+    DP -> EJ: validateDatasourceConfig(备用密码)
+    EJ -> Proxy: getConnection(备用密码)
+    Proxy -> DB: 获取连接(备用密码)
+    alt 备用密码有效
+        DP -> RS: initialize(备用密码)
+    else
+        ' 启动阶段异常处理
+        Proxy -> Helper: 捕获异常并处理
+        Helper -> Classifier: classifyAndHandle()
+        Classifier -> Helper: 分类处理结果
+        Helper -> Proxy: 处理完成
+        Proxy -> DP: 抛出异常
+        DP -> SB: 抛出异常
+    end
+end
+DP -> SB: 注册 RenewPasswordService Bean
+DP -> SB: 设置属性源
+EJ -> DP: onPasswordUpdated(newPassword)
+DP -> RS: initialize(newPassword)
+
+== 运行时 SQL 查询与异常处理 ==
+
+User -> EJ: 执行SQL查询/更新
+EJ -> Proxy: getConnection()
+Proxy -> DB: 获取连接
+EJ -> Proxy: executeQuery()/executeUpdate()
+Proxy -> DB: 执行SQL
+alt SQL执行成功
+    Proxy -> EJ: 返回结果
+    EJ -> User: 返回结果
+else SQL异常
+    Proxy -> Helper: 捕获异常并处理
+    Helper -> Classifier: classifyAndHandle()
+    Classifier -> Helper: 分类处理结果
+    Helper -> Proxy: 处理完成
+    Proxy -> EJ: 抛出异常
+    EJ -> User: 抛出异常
+end
+@enduml
