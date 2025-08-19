@@ -42,7 +42,7 @@ public class PgJdbc {
         );
 
         try {
-            log.debug("[renewpwd] 尝试执行: ALTER USER name WITH PASSWORD '***' VALID UNTIL 'time'");
+            log.debug("[renewpwd] 尝试执行: ALTER USER name WITH PASSWORD '***' VALID UNTIL '{}'", time);
             statement.executeUpdate(setPasswordSQL);
             log.info("[renewpwd] 更新密码成功");
         } catch (SQLException e) {
