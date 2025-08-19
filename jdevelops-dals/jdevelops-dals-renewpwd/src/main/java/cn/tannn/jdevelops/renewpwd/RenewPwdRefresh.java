@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.renewpwd;
 
+import cn.tannn.jdevelops.renewpwd.pojo.DbType;
+
 import java.util.List;
 
 /**
@@ -12,9 +14,17 @@ import java.util.List;
 public interface RenewPwdRefresh {
     /**
      * 修复过期密码并生效 - 上下文取密码
+     * <p> 默认mysql</p>
      * <p> 用当前过期密码修改备用密码，备用密码没有则重置过期密码</p>
      */
     void fixPassword();
+
+    /**
+     * 修复过期密码并生效 - 上下文取密码
+     * <p> 用当前过期密码修改备用密码，备用密码没有则重置过期密码</p>
+     * @param dbType {@link DbType}
+     */
+    void fixPassword(DbType dbType);
 
     /**
      * 修复错误密码并生效 - 上下文取密码
