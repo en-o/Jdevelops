@@ -164,9 +164,10 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
      * 初始化配置服务
      */
     private void initializeConfigService(String password) {
-        // 强行替换
-        configService = new RenewPasswordService();
-        configService.initialize(password);
+        if (configService == null) {
+            configService = new RenewPasswordService();
+            configService.initialize(password);
+        }
         log.info("[renewpwd] RenewPasswordService初始化完成");
     }
 
