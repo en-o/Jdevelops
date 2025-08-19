@@ -157,6 +157,7 @@ public class DatasourceConfigValidator {
 
         } catch (SQLException sqlException) {
             // 如果是SQL异常，交由异常处理器处理
+            log.warn("[renewpwd] 数据库连接测试失败，等待错误处理: {}", sqlException.getMessage());
             return SQLExceptionHandlingHelper
                     .handleDataSourceException(environment, config, currentPassword, backupPassword,
                             extractDatasourceConfig(environment).getDriverClassName(),
