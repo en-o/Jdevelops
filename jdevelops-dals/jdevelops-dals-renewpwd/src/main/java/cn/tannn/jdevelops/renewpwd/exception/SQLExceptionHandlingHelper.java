@@ -157,7 +157,7 @@ public final class SQLExceptionHandlingHelper {
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
         if (DatabaseUtils.isPasswordError(e.getErrorCode(), driverClassName)) {
             // 当前密码过期使用备用密码进行更新
-            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword();
+            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.MYSQL);
         }else if (e.getErrorCode() == 0) {
             // 0表示密码错误
             RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.POSTGRE_SQL);

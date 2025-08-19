@@ -137,28 +137,30 @@ public class ExecuteJdbcSql {
         }
     }
 
-
     /**
      * 更新用户密码
      *
      * @param environment        ConfigurableEnvironment
      * @param renewpwdProperties 配置文件
+     * @param dbType {@link DbType}
+     * @param isForceUpdate ture 强制更新密码，false 不强制更新
+     *     <p>isForceUpdate 如果当前连接的密码错误，则尝试备用密码休息修复</p>
+     *     <p>isForceUpdate 如果备用密码为空或者更当前密码一直则表示没有设置备份密码则不管了</p>
      * @return 新密码 ，null=更新失败
      */
-    public static String updateUserPassword(ConfigurableEnvironment environment
-            , RenewpwdProperties renewpwdProperties
-            , DbType dbType) {
+    public static String handlePasswordUpdate(ConfigurableEnvironment environment,
+                                        RenewpwdProperties renewpwdProperties,
+                                        DbType dbType,
+                                        boolean isForceUpdate) {
         try {
-
             String url = environment.getProperty("spring.datasource.url");
             String driverClassName = environment.getProperty("spring.datasource.driver-class-name");
 
-            // 获取当前密码
+            // 获取当前上下文中的密码
             String springDatasourcePassword = environment.getProperty(RenewpwdConstant.DATASOURCE_PASSWORD_KEY
                     , RenewpwdConstant.DEFAULT_PASSWORD);
 
             log.error("[renewpwd] 密码已过期必须更改密码才能登录, 尝试更新密码");
-
 
             // 获取备用密码和主密码
             String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
@@ -173,7 +175,10 @@ public class ExecuteJdbcSql {
             if (dbType.equals(DbType.MYSQL)) {
                 username = environment.getProperty("spring.datasource.username");
                 connectionPassword = springDatasourcePassword;
-
+                if (isForceUpdate && springDatasourcePassword.equals(newPassword)) {
+                    log.error("[renewpwd] 当前密码与备用密码一致，且连接已断开，无法更新密码，交由业务方自行处理。");
+                    return null;
+                }
             } else if (dbType.equals(DbType.POSTGRE_SQL) || dbType.equals(DbType.KINGBASE8)) {
                 // 对于pgsql和kingbase8，使用root账户来更新密码
                 RootAccess root = renewpwdProperties.getRoot();
@@ -192,29 +197,29 @@ public class ExecuteJdbcSql {
                 return null;
             }
 
-            log.debug("[renewpwd] 更新密码 - 连接数据源: url={}, username/root={}, password={}",
-                    url, username, connectionPassword);
+            log.debug("[renewpwd] 更新密码 - 连接数据源配置: url={}, username/root={}, password={}"
+                    , url, username, connectionPassword);
 
             if (url == null || username == null || newPassword == null) {
-                log.warn("[renewpwd]  更新密码 - 数据源配置不完整: url={}, username={}, password={}",
-                        url, username, "***");
+                log.warn("[renewpwd] 更新密码 - 数据源配置不完整: url={}, username={}, password={}", url, username, "***");
                 return null;
             }
+
             // 尝试解密密码
             connectionPassword = AESUtil.decryptPassword(connectionPassword, renewpwdProperties.getPwdEncryptKey());
 
             // 如果备份密码为空，则使用master密码
             newPassword = newPassword.isEmpty() ? masterPassword : newPassword;
 
-            // 更新
+
+            // 更新密码
             if (!updateUserPassword(url
                     , username
                     , connectionPassword
                     , newPassword
-                    , driverClassName
-                    , renewpwdProperties.getResetExpiryDay()
-                    , dbType
-            )) {
+                    , driverClassName,
+                    renewpwdProperties.getResetExpiryDay()
+                    , dbType)) {
                 log.error("[renewpwd] 用户密码更新验证失败");
                 return null;
             }
@@ -227,8 +232,6 @@ public class ExecuteJdbcSql {
             log.error("[renewpwd]  更新密码 - 验证数据源配置时发生异常", e);
             return null;
         }
-
-
     }
 
 
