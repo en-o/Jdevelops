@@ -50,51 +50,54 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
     }
 
     @Override
-    public void fixPassword() {
+    public boolean fixPassword() {
         if (validateService()) {
-            return;
+            return false;
         }
         // 更新密码
         String newPassword = determineNewPasswordForExpiredCurrent(DbType.MYSQL, false);
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
-            return;
+            return false;
         }
 
         // 刷新spring上下文
         executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
+        return true;
     }
 
     @Override
-    public void fixPassword(DbType dbType) {
+    public boolean fixPassword(DbType dbType) {
         if (validateService()) {
-            return;
+            return false;
         }
         // 更新密码
         String newPassword = determineNewPasswordForExpiredCurrent(dbType, false);
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
-            return;
+            return false;
         }
 
         // 刷新spring上下文
         executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
+        return true;
     }
 
 
     @Override
-    public void updatePassword(DbType dbType) {
+    public boolean updatePassword(DbType dbType) {
         if (validateService()) {
-            return;
+            return false;
         }
         // 更新密码
         String newPassword = determineNewPasswordForExpiredCurrent(dbType, true);
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
-            return;
+            return false;
         }
         // 刷新spring上下文
         executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
+        return true;
     }
 
 

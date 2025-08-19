@@ -150,8 +150,7 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             log.info("[renewpwd] 使用主密码连接数据库成功");
             return config.primaryPassword;
         }
-
-        // 主密码失效，尝试备用密码
+        log.debug("[renewpwd] 主密码失效，尝试使用备用密码连接数据库");
         if (ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword, config.renewpwdProperties)) {
             log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
             return config.backupPassword;

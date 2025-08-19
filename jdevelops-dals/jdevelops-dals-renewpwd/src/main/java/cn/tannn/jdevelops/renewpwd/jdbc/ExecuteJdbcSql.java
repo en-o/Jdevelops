@@ -66,8 +66,7 @@ public class ExecuteJdbcSql {
             // 密码已过期 (1862) 错误时，将数据库密码修改为备份密码 , backupPassword
             return testDatabaseConnection(url, username, driverClassName, currentPassword);
         } catch (SQLException sqlException) {
-            SQLExceptionHandlingHelper.classifyAndHandle(driverClassName, sqlException, "项目启动时验证数据源配置");
-            return true;
+            return SQLExceptionHandlingHelper.classifyAndHandle(false, driverClassName, sqlException, "项目启动时验证数据源配置");
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
             return false;
