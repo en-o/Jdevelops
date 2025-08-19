@@ -56,6 +56,21 @@ public class RenewpwdProperties {
     @NestedConfigurationProperty
     private SQLExceptionHandlingProperties exception;
 
+    /**
+     * 用户修改密码超级账户
+     * <p> 用于在密码续命时，提供一个超级账户来执行，注意这个账户不允许修改和过期
+     * <p> pgsql 或者基于pgsql的数据库才需要这个 </p>
+     */
+    @NestedConfigurationProperty
+    private RootAccess root;
+
+    /**
+     * 重置密码过期天数
+     * <p>如果不配置，默认使用 30 天</p>
+     * <p>mysql修改密码会重置天数,但是pgsql和kingbase8需要自己手动重新设置</p>
+     */
+    private Integer resetExpiryDay = 30;
+
 
     public String getBackupPassword() {
         return backupPassword;
@@ -106,6 +121,14 @@ public class RenewpwdProperties {
         this.exception = exception;
     }
 
+    public Integer getResetExpiryDay() {
+        return resetExpiryDay;
+    }
+
+    public void setResetExpiryDay(Integer resetExpiryDay) {
+        this.resetExpiryDay = resetExpiryDay;
+    }
+
     @Override
     public String toString() {
         return "RenewpwdProperties{" +
@@ -114,6 +137,7 @@ public class RenewpwdProperties {
                 ", enabled=" + enabled +
                 ", pwdEncryptKey='" + pwdEncryptKey + '\'' +
                 ", exception=" + exception +
+                ", resetExpiryDay=" + resetExpiryDay +
                 '}';
     }
 }
