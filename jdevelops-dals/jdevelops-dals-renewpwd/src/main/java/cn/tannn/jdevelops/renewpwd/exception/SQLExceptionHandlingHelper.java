@@ -99,7 +99,7 @@ public class SQLExceptionHandlingHelper {
      * @param e                   异常对象
      * @param operation           操作名称
      */
-    private static void classifyAndHandle(String driverClassName,
+    public static void classifyAndHandle(String driverClassName,
                                           SQLException e, String operation) {
         String sqlState = e.getSQLState();
         if (sqlState == null) return;
@@ -167,12 +167,12 @@ public class SQLExceptionHandlingHelper {
                                   Object[] params, long duration, String description) {
         String alertMsg;
         if (e != null) {
-            alertMsg = String.format(
+            alertMsg = java.lang.String.format(
                     "[%s] %s - 操作: %s, 状态码: %s, 错误码: %d, 耗时: %dms, 错误: %s",
                     level, description, operation, e.getSQLState(), e.getErrorCode(), duration, e.getMessage()
             );
         } else {
-            alertMsg = String.format(
+            alertMsg = java.lang.String.format(
                     "[%s] %s - 操作: %s, 耗时: %dms",
                     level, description, operation, duration
             );

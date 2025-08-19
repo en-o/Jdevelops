@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.renewpwd.jdbc;
 
 import cn.tannn.jdevelops.renewpwd.exception.PasswordAuthException;
+import cn.tannn.jdevelops.renewpwd.exception.SQLExceptionHandlingHelper;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
@@ -35,15 +36,19 @@ public class ExecuteJdbcSql {
 
     /**
      * 验证数据源配置是否有效
-     * <p>如果数据源配置不完整或连接失败，将抛出 PasswordAuthException</p>
-     * <p>如果连接存在异常，将抛出 SQLException, SQLExceptionHandlingHelper会自行处理这个错误 </p>
+     *
      * @param environment     ConfigurableEnvironment
+     * @param currentPassword 当前密码
+     * @param backupPassword  密码已过期 (1862) 错误时，将数据库密码修改为备份密码
+     * @return true 当前密码有效或密码已成功更新，false 如果配置无效或验证失败
      */
-    public static void validateDatasourceConfig(ConfigurableEnvironment environment
-            , String currentPassword) throws SQLException {
+    public static boolean validateDatasourceConfig(ConfigurableEnvironment environment
+            , String currentPassword, String backupPassword, RenewpwdProperties config) {
         String driverClassName = null;
         try {
 
+            // 如果备份密码为空，则使用当前密码
+            backupPassword = backupPassword.isEmpty() ? currentPassword : backupPassword;
 
             String url = environment.getProperty("spring.datasource.url");
             String username = environment.getProperty("spring.datasource.username");
@@ -55,20 +60,19 @@ public class ExecuteJdbcSql {
             if (url == null || username == null || currentPassword == null) {
                 log.warn("[renewpwd] 数据源配置不完整: url={}, username={}, password={}",
                         url, username, currentPassword != null ? "***" : "null");
-                throw new PasswordAuthException();
+                return false;
             }
             // 创建临时连接测试  只会抛出 SQLException
             // 密码已过期 (1862) 错误时，将数据库密码修改为备份密码 , backupPassword
-            testDatabaseConnection(url, username, driverClassName, currentPassword);
+            return testDatabaseConnection(url, username, driverClassName, currentPassword);
         } catch (SQLException sqlException) {
-            log.error("[renewpwd] 连接存在异常，直接抛出等待SQLExceptionHandlingHelper处理: {}", sqlException.getMessage());
-            throw sqlException;
+            SQLExceptionHandlingHelper.classifyAndHandle(driverClassName, sqlException, "项目启动时验证数据源配置");
+            return true;
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);
-            throw  e;
+            return false;
         }
     }
-
 
     /**
      * 测试数据库连接是否有效
