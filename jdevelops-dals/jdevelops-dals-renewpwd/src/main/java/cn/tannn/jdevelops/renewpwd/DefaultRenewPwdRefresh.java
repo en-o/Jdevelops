@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
+import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
@@ -16,6 +17,9 @@ import org.springframework.core.env.Environment;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant.DATASOURCE_PASSWORD_KEY;
+import static cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant.DEFAULT_PASSWORD;
+
 /**
  * 默认密码续命处理实现
  *
@@ -26,11 +30,10 @@ import java.util.concurrent.CompletableFuture;
 public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     private static final Logger log = LoggerFactory.getLogger(DefaultRenewPwdRefresh.class);
-    private static final String DEFAULT_PASSWORD = "123456";
+
     // 默认刷新的bean name
     private static final String DATASOURCE_BEAN_NAME = "dataSource";
-    // 当前使用的密码
-    private static final String DATASOURCE_PASSWORD_KEY = "spring.datasource.password";
+
 
     private final Environment environment;
     private final ApplicationContext applicationContext;
@@ -56,7 +59,23 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             return;
         }
         // 更新密码
-        String newPassword = determineNewPasswordForExpiredCurrent();
+        String newPassword = determineNewPasswordForExpiredCurrent(DbType.MYSQL);
+        if (newPassword == null) {
+            log.warn("[renewpwd] 无法确定新密码，跳过刷新");
+            return;
+        }
+
+        // 刷新spring上下文
+        executePasswordRefresh(newPassword, List.of(DATASOURCE_BEAN_NAME));
+    }
+
+    @Override
+    public void fixPassword(DbType dbType) {
+        if (validateService()) {
+            return;
+        }
+        // 更新密码
+        String newPassword = determineNewPasswordForExpiredCurrent(dbType);
         if (newPassword == null) {
             log.warn("[renewpwd] 无法确定新密码，跳过刷新");
             return;
@@ -84,6 +103,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
 
     /**
      * 验证服务是否可用
+     *
      * @return true 如果服务不可用，false 如果服务可用
      */
     private boolean validateService() {
@@ -99,31 +119,14 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
      * <p>当前密码过期时的密码切换逻辑</p>
      * <p>1. 当前密码过期则切换成备用密码</p>
      * <p>2. 备用密码为空则使用当前密码重置</p>
+     *
      * @return 当前连接用的密码
      */
-    private String determineNewPasswordForExpiredCurrent() {
+    private String determineNewPasswordForExpiredCurrent(DbType dbType) {
         try {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             RenewpwdProperties renewpwdProperties = applicationContext.getBean(RenewpwdProperties.class);
-
-            // 获取当前密码并尝试解密
-            String currentPassword = env.getProperty(DATASOURCE_PASSWORD_KEY, DEFAULT_PASSWORD);
-            currentPassword = AESUtil.decryptPassword(currentPassword, renewpwdProperties.getPwdEncryptKey());
-
-            // 获取备用密码和主密码
-            String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
-            String masterPassword = renewpwdProperties.getMasterPasswordDecrypt();
-
-            // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
-            String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
-
-            // 验证当前密码和备用密码的有效性
-            if (!ExecuteJdbcSql.updateUserPassword(env, currentPassword, newPassword)) {
-                log.error("[renewpwd] 用户密码更新验证失败");
-                return null;
-            }
-
-            return newPassword;
+            return ExecuteJdbcSql.updateUserPassword(env, renewpwdProperties, dbType);
         } catch (Exception e) {
             log.error("[renewpwd] 确定新密码时发生异常: {}", e.getMessage(), e);
             return null;
@@ -135,6 +138,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
      * 暴力修改。
      * <p>如果当前连接的密码错误，则尝试备用密码休息修复</p>
      * <p>如果备用密码为空或者更当前密码一直则表示没有设置备份密码则不管了</p>
+     *
      * @return 当前连接用的密码
      */
     private String forceFixPassword() {
@@ -153,7 +157,7 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
             // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
             String newPassword = currentPassword.equals(masterPassword) ? backPassword : masterPassword;
 
-            if(currentPassword.equals(newPassword)) {
+            if (currentPassword.equals(newPassword)) {
                 log.error("[renewpwd] 当前密码与备用密码一致，且连接已断开，无法更新密码，交由业务方自行处理。");
                 return null;
             }

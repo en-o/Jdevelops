@@ -129,6 +129,14 @@ public class RenewpwdProperties {
         this.resetExpiryDay = resetExpiryDay;
     }
 
+    public RootAccess getRoot() {
+        return root;
+    }
+
+    public void setRoot(RootAccess root) {
+        this.root = root;
+    }
+
     @Override
     public String toString() {
         return "RenewpwdProperties{" +
@@ -137,6 +145,7 @@ public class RenewpwdProperties {
                 ", enabled=" + enabled +
                 ", pwdEncryptKey='" + pwdEncryptKey + '\'' +
                 ", exception=" + exception +
+                ", root=" + root +
                 ", resetExpiryDay=" + resetExpiryDay +
                 '}';
     }
