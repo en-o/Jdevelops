@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 
 /**
  * sql 操作
+ *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2025/8/10 01:33
@@ -150,7 +151,7 @@ public class ExecuteJdbcSql {
      * @return 新密码 ，null=更新失败
      */
     public static String updateUserPassword(ConfigurableEnvironment environment
-                                             ,  RenewpwdProperties renewpwdProperties
+            , RenewpwdProperties renewpwdProperties
             , DbType dbType) {
         try {
 
@@ -174,24 +175,24 @@ public class ExecuteJdbcSql {
             String newPassword = springDatasourcePassword.equals(masterPassword) ? backPassword : masterPassword;
 
             // 处理不同数据库
-            if(dbType.equals(DbType.MYSQL)) {
+            if (dbType.equals(DbType.MYSQL)) {
                 username = environment.getProperty("spring.datasource.username");
                 connectionPassword = springDatasourcePassword;
 
-            }else if(dbType.equals(DbType.POSTGRE_SQL)|| dbType.equals(DbType.KINGBASE8)) {
+            } else if (dbType.equals(DbType.POSTGRE_SQL) || dbType.equals(DbType.KINGBASE8)) {
                 // 对于pgsql和kingbase8，使用root账户来更新密码
                 RootAccess root = renewpwdProperties.getRoot();
-                if(root == null){
+                if (root == null) {
                     log.error("[renewpwd] pgsql/KINGBASE8 必须配置root超级账户");
                     return null;
                 }
-                username =root.getUsername();
+                username = root.getUsername();
                 connectionPassword = root.getPassword();
-                if(username == null || username.isEmpty() || connectionPassword == null || connectionPassword.isEmpty()){
+                if (username == null || username.isEmpty() || connectionPassword == null || connectionPassword.isEmpty()) {
                     log.error("[renewpwd] pgsql/KINGBASE8 root账户密码不能为空");
                     return null;
                 }
-            }else {
+            } else {
                 log.error("[renewpwd] 不支持过期密码更新的数据库类型: {}", dbType);
                 return null;
             }
@@ -228,11 +229,11 @@ public class ExecuteJdbcSql {
     /**
      * 更新用户密码 - 强制更新
      *
-     * @param environment        ConfigurableEnvironment
-     * @param newPassword        新密码
+     * @param environment ConfigurableEnvironment
+     * @param newPassword 新密码
      */
     public static boolean updateUserPasswordForce(ConfigurableEnvironment environment
-            ,  String newPassword) {
+            , String newPassword) {
         java.sql.Connection connection = null;
         java.sql.Statement statement = null;
         try {
@@ -278,7 +279,7 @@ public class ExecuteJdbcSql {
             // 如果SET PASSWORD失败，尝试ALTER USER
             // 首先获取当前用户信息
             String currentUserHost = getCurrentUserHostForExpiredPassword(statement, username);
-            if(newPassword.isEmpty()) {
+            if (newPassword.isEmpty()) {
                 log.error("[renewpwd] 新密码不能为空");
                 return false;
             }
@@ -359,7 +360,7 @@ public class ExecuteJdbcSql {
                 // 如果SET PASSWORD失败，尝试ALTER USER
                 // 首先获取当前用户信息
                 String currentUserHost = getCurrentUserHostForExpiredPassword(statement, username);
-                if(newPassword == null || newPassword.isEmpty()) {
+                if (newPassword == null || newPassword.isEmpty()) {
                     log.error("[renewpwd] 新密码不能为空");
                     return false;
                 }
