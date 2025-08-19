@@ -21,7 +21,7 @@ public class DatabaseUtils {
      * @param driverClassName 数据库驱动类名，用于区分数据库类型
      * @return true 如果是密码过期错误，false 否则
      */
-    public static boolean isPasswordExpiredError(int vendorCode, String driverClassName) {
+    public static boolean isPasswordExpiredError_MYSQL(int vendorCode, String driverClassName) {
         if (driverClassName == null) {
             return false;
         }
