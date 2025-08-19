@@ -22,6 +22,7 @@ public class SQLExceptionHandlingHelper {
 
     private static final Logger log = LoggerFactory.getLogger(SQLExceptionHandlingHelper.class);
 
+
     private SQLExceptionHandlingHelper() {
     }
 
@@ -43,13 +44,15 @@ public class SQLExceptionHandlingHelper {
     public static boolean handleDataSourceException(
             ConfigurableEnvironment environment,
             RenewpwdProperties config,
+            String connectionPassword,
+            String newPassword,
             String driverClassName,
             SQLException e, String operation) {
         // 确保是最深层的SQLException
         SQLException exception = DatabaseUtils.findDeepestSQLException(e);
         logException(config, "DATASOURCE", exception, operation, null, 0);
         // 分类处理
-        boolean handle = classifyAndHandle(environment, config, driverClassName, exception, operation);
+        boolean handle = classifyAndHandle(environment, config,  connectionPassword, newPassword, driverClassName, exception, operation);
         if (config.getException().isAlertEnabled()) {
             sendAlert("DATASOURCE", exception, operation, null, 0, "数据源连接异常");
         }
@@ -114,26 +117,33 @@ public class SQLExceptionHandlingHelper {
     /**
      * 根据SQL异常状态码分类处理异常
      *
-     * @param environment e
-     * @param config c
+     * @param environment     e
+     * @param config          c
      * @param driverClassName 驱动名
      * @param e               异常对象
      * @param operation       操作名称
      * @return false 操作失败
      */
     public static boolean classifyAndHandle(ConfigurableEnvironment environment,
-                                            RenewpwdProperties config, String driverClassName,
+                                            RenewpwdProperties config,
+                                            String connectionPassword,
+                                            String newPassword,
+                                            String driverClassName,
                                             SQLException e, String operation) {
         String sqlState = e.getSQLState();
         if (sqlState == null) return false;
         switch (sqlState) {
             case "S1000":
-                return handleConnectionIssue(environment, config, driverClassName, e, operation);
-            case "28000": // SQLSTATE 28000 通常表示认证失败
+                return handleConnectionIssue(environment, config, connectionPassword, newPassword, driverClassName, e, operation);
+            case "28000":
+                // 目前对接的三个库只有mysql的认证失败是28000，mysql需要操作的只有S1000
+                log.error("mysql 认证失败禁止操作 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
+                        , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
+                return false;
             case "28P01": // PostgreSQL的认证失败 https://www.postgresql.org/docs/current/errcodes-appendix.html
-                return handleAuthorizationError(environment, config, driverClassName, e, operation);
+                return handleAuthorizationError(environment, config, connectionPassword, newPassword, driverClassName, e, operation);
             default:
-                return handleGenericSQLException(environment, config, driverClassName, e, operation);
+                return handleGenericSQLException(environment, config, connectionPassword, newPassword, driverClassName, e, operation);
         }
     }
 
@@ -148,7 +158,7 @@ public class SQLExceptionHandlingHelper {
      */
     public static boolean classifyAndHandle(String driverClassName,
                                             SQLException e, String operation) {
-        return classifyAndHandle(null, null, driverClassName, e, operation);
+        return classifyAndHandle(null, null, null, null, driverClassName, e, operation);
     }
 
     /* ========= 分类处理器（保持原始日志语句） ======== */
@@ -156,16 +166,18 @@ public class SQLExceptionHandlingHelper {
 
     //  @return false 操作失败
     private static boolean handleConnectionIssue(ConfigurableEnvironment environment,
-                                                 RenewpwdProperties config, String driverClassName,
+                                                 RenewpwdProperties config,
+                                                 String connectionPassword,
+                                                 String newPassword, String driverClassName,
                                                  SQLException e, String operation) {
         log.error("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
         // 开始重新连接逻辑
 
         if (DatabaseUtils.isPasswordExpiredError_MYSQL(e.getErrorCode(), driverClassName)) {
-            if(environment != null && config != null) {
+            if (environment != null && config != null) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
-                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.MYSQL, false)!=null;
+                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.MYSQL, connectionPassword, newPassword, false) != null;
             }
             return getRenewPwdRefresh().fixPassword();
         }
@@ -175,22 +187,24 @@ public class SQLExceptionHandlingHelper {
 
     //  @return false 操作失败
     private static boolean handleAuthorizationError(ConfigurableEnvironment environment,
-                                                    RenewpwdProperties config, String driverClassName,
+                                                    RenewpwdProperties config,
+                                                    String connectionPassword,
+                                                    String newPassword, String driverClassName,
                                                     SQLException e, String operation) {
         log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
         if (DatabaseUtils.isPasswordError(e.getErrorCode(), driverClassName)) {
             // 当前密码过期使用备用密码进行更新
-            if(environment != null && config != null) {
+            if (environment != null && config != null) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
-                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.MYSQL, true)!=null;
+                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.MYSQL, connectionPassword, newPassword, true) != null;
             }
             return getRenewPwdRefresh().updatePassword(DbType.MYSQL);
         } else if (e.getErrorCode() == 0) {
             // 0表示密码错误
-            if(environment != null && config != null) {
+            if (environment != null && config != null) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
-                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.POSTGRE_SQL, true)!=null;
+                return ExecuteJdbcSql.handlePasswordUpdate(environment, config, DbType.POSTGRE_SQL, connectionPassword, newPassword, true) != null;
             }
             return getRenewPwdRefresh().updatePassword(DbType.POSTGRE_SQL);
         }
@@ -199,7 +213,9 @@ public class SQLExceptionHandlingHelper {
 
 
     private static boolean handleGenericSQLException(ConfigurableEnvironment environment,
-                                                     RenewpwdProperties config, String driverClassName,
+                                                     RenewpwdProperties config,
+                                                     String connectionPassword,
+                                                     String newPassword, String driverClassName,
                                                      SQLException e, String operation) {
         log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);

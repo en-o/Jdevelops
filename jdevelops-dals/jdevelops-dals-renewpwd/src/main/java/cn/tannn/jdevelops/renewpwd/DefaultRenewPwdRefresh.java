@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
+import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import org.slf4j.Logger;
@@ -121,17 +122,29 @@ public class DefaultRenewPwdRefresh implements RenewPwdRefresh {
      * <p>2. 备用密码为空则使用当前密码重置</p>
      *
      * @param dbType        dbType {@link DbType}
-     * @param isForceUpdate ture 强制更新密码，false 不强制更新
-     *                      <p>isForceUpdate 如果当前连接的密码错误，则尝试备用密码休息修复</p>
-     *                      <p>isForceUpdate 如果备用密码为空或者更当前密码一直则表示没有设置备份密码则不管了</p>
+     * @param consistencyComparison true判断当前密码跟修改的密码是否一致，一致则不更新，false不判断
      * @return 当前连接用的密码
      */
     private String determineNewPasswordForExpiredCurrent(DbType dbType,
-                                                         boolean isForceUpdate) {
+                                                         boolean consistencyComparison) {
         try {
             ConfigurableEnvironment env = getConfigurableEnvironment();
             RenewpwdProperties renewpwdProperties = applicationContext.getBean(RenewpwdProperties.class);
-            return ExecuteJdbcSql.handlePasswordUpdate(env, renewpwdProperties, dbType, isForceUpdate);
+            // 获取当前上下文中的密码
+            String springDatasourcePassword = environment.getProperty(RenewpwdConstant.DATASOURCE_PASSWORD_KEY
+                    , RenewpwdConstant.DEFAULT_PASSWORD);
+
+            // 获取备用密码和主密码
+            String backPassword = renewpwdProperties.getBackupPasswordDecrypt();
+            String masterPassword = renewpwdProperties.getMasterPasswordDecrypt();
+
+            // 当前密码如果等于主密码，则使用备用密码作为新密码，否则使用主密码
+            String newPassword = springDatasourcePassword.equals(masterPassword) ? backPassword : masterPassword;
+
+            return ExecuteJdbcSql.handlePasswordUpdate(env, renewpwdProperties, dbType
+                    , springDatasourcePassword
+                    , newPassword
+                    , consistencyComparison);
         } catch (Exception e) {
             log.error("[renewpwd] 确定新密码时发生异常: {}", e.getMessage(), e);
             return null;
