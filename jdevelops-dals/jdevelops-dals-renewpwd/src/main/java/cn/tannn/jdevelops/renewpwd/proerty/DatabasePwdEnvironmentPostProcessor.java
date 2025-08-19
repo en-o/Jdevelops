@@ -170,6 +170,9 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
             configService.initialize(password);
             log.info("[renewpwd] RenewPasswordService初始化完成");
         }else {
+            // 如果出现错误第一次处理错误的时候就初始化了最新的密码，
+            // 第二次进来是因为验证新的密码会导致，重复提交一次（且第二次体提交的是错误的密码
+            // 具体在 selectValidPassword 方法中体现的
             log.warn("[renewpwd] RenewPasswordService> 已经初始化，跳过重复初始化");
         }
 
