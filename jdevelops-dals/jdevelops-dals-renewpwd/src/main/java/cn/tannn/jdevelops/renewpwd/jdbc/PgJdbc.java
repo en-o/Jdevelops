@@ -35,7 +35,7 @@ public class PgJdbc {
         resetExpiryDay = resetExpiryDay == null ? 30 : resetExpiryDay;
         LocalDateTime expiryDate = LocalDateTime.now().plusDays(resetExpiryDay);
         String time = expiryDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String setPasswordSQL = String.format("ALTER ROLE %s WITH PASSWORD '%s' VALID UNTIL '%s'"
+        String setPasswordSQL = String.format("ALTER USER %s WITH PASSWORD '%s' VALID UNTIL '%s'"
                 , username
                 , newPassword
                 , time
