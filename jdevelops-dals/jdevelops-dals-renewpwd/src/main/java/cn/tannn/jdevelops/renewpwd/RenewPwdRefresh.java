@@ -2,8 +2,6 @@ package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 
-import java.util.List;
-
 /**
  * 密码续命处理
  *

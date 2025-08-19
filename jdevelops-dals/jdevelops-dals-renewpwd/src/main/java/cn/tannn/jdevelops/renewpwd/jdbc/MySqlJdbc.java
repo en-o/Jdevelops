@@ -2,7 +2,6 @@ package cn.tannn.jdevelops.renewpwd.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.sql.SQLException;
 import java.sql.Statement;

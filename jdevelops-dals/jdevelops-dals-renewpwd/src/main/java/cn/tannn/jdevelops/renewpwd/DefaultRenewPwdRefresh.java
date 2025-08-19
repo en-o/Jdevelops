@@ -1,13 +1,9 @@
 package cn.tannn.jdevelops.renewpwd;
 
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
-import cn.tannn.jdevelops.renewpwd.jdbc.MySqlJdbc;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
-import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.proerty.RenewPasswordService;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
-import cn.tannn.jdevelops.renewpwd.properties.RootAccess;
-import cn.tannn.jdevelops.renewpwd.util.AESUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +15,6 @@ import org.springframework.core.env.Environment;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
-import static cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant.DATASOURCE_PASSWORD_KEY;
-import static cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant.DEFAULT_PASSWORD;
 
 /**
  * 默认密码续命处理实现

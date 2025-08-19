@@ -6,14 +6,12 @@ import cn.tannn.jdevelops.renewpwd.pojo.RenewpwdConstant;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.properties.RootAccess;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
-import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
 import cn.tannn.jdevelops.renewpwd.util.PasswordUpdateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.sql.*;
-import java.text.MessageFormat;
 import java.util.Properties;
 
 /**
