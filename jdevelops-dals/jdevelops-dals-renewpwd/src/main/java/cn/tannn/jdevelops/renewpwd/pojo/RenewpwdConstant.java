@@ -15,4 +15,8 @@ public interface RenewpwdConstant {
      * mysql密码过期查询语句
      */
     String MYSQL_PASSWORD_EXPIRED_SQL = "SELECT password_expired FROM mysql.user WHERE user = ?";
+
+    // 当前使用的密码
+    String DATASOURCE_PASSWORD_KEY = "spring.datasource.password";
+    String DEFAULT_PASSWORD = "123456";
 }
