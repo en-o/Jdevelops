@@ -145,21 +145,24 @@ public class DatabasePwdEnvironmentPostProcessor implements BeanFactoryPostProce
     /**
      * 选择有效的密码
      */
-    private String selectValidPassword(ConfigurableEnvironment env, PasswordConfig config) {
+    private String selectValidPassword(ConfigurableEnvironment env, PasswordConfig config){
         // 首先尝试主密码 - 错误的情况下会更新备份密码所以下面的第二次判断就会正确并且使用备份密码
-        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.primaryPassword, config.backupPassword, config.renewpwdProperties)) {
+        try {
+            ExecuteJdbcSql.validateDatasourceConfig(env, config.primaryPassword);
             log.info("[renewpwd] 使用主密码连接数据库成功");
             return config.primaryPassword;
+        }catch (Exception e){
+            log.error("[renewpwd] 主密码失效，使用备用密码连接数据库进行连接验证");
+            try {
+                ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword);
+                log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
+                return config.backupPassword;
+            }catch (Exception e2){
+                log.error("[renewpwd] 主密码和备用密码都无法连接数据库，请检查配置文件或环境变量", e2);
+            }
+            throw new RuntimeException("数据库密码配置错误，主密码和备用密码都无法连接数据库，请检查配置文件或环境变量");
         }
 
-        // 主密码失效，尝试备用密码
-        if (ExecuteJdbcSql.validateDatasourceConfig(env, config.backupPassword, config.primaryPassword, config.renewpwdProperties)) {
-            log.info("[renewpwd] 主密码失效，使用备用密码连接数据库成功");
-            return config.backupPassword;
-        }
-
-        // 两个密码都无效
-        throw new RuntimeException("数据库密码配置错误，主密码和备用密码都无法连接数据库，请检查配置文件或环境变量");
     }
 
     /**
