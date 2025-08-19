@@ -31,7 +31,7 @@ public class SQLExceptionHandlingHelper {
         SQLException exception = DatabaseUtils.findDeepestSQLException(e);
         logException(proxy, "DATASOURCE", exception, operation, null, 0);
         // 分类处理
-        classifyAndHandle( proxy.getDriverClassName(), exception, operation);
+        classifyAndHandle(true, proxy.getDriverClassName(), exception, operation);
         if (proxy.getConfig().getException().isAlertEnabled()) {
             sendAlert(proxy, "DATASOURCE", exception, operation, null, 0, "数据源连接异常");
         }
@@ -95,56 +95,69 @@ public class SQLExceptionHandlingHelper {
     /**
      * 根据SQL异常状态码分类处理异常
      *
+     * @param loadRenewPwdRefresh true 加载了，false 没有加载
      * @param driverClassName     驱动名
      * @param e                   异常对象
      * @param operation           操作名称
      */
-    public static void classifyAndHandle(String driverClassName,
-                                          SQLException e, String operation) {
+    public static void classifyAndHandle(boolean loadRenewPwdRefresh, String driverClassName,
+                                         SQLException e, String operation) {
         String sqlState = e.getSQLState();
         if (sqlState == null) return;
         switch (sqlState) {
             case "S1000":
-                handleConnectionIssue(driverClassName, e, operation);
+                handleConnectionIssue(loadRenewPwdRefresh, driverClassName, e, operation);
                 break;
             case "28000": // SQLSTATE 28000 通常表示认证失败
             case "28P01": // PostgreSQL的认证失败 https://www.postgresql.org/docs/current/errcodes-appendix.html
-                handleAuthorizationError(driverClassName, e, operation);
+                handleAuthorizationError(loadRenewPwdRefresh, driverClassName, e, operation);
                 break;
             default:
-                handleGenericSQLException(driverClassName, e, operation);
+                handleGenericSQLException(loadRenewPwdRefresh, driverClassName, e, operation);
         }
     }
 
     /* ========= 分类处理器（保持原始日志语句） ======== */
 
 
-    private static void handleConnectionIssue(String driverClassName,
+    private static void handleConnectionIssue(boolean loadRenewPwdRefresh, String driverClassName,
                                               SQLException e, String operation) {
         log.error("连接问题 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
         // 开始重新连接逻辑
         if (DatabaseUtils.isPasswordExpiredError(e.getErrorCode(), driverClassName)) {
-            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).fixPassword();
+            if(loadRenewPwdRefresh){
+                RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).fixPassword();
+            }else {
+                log.warn("连接问题 - 未加载RenewPwdRefresh，无法处理密码问题，请检查配置");
+            }
         }
 
     }
 
-    private static void handleAuthorizationError(String driverClassName,
+    private static void handleAuthorizationError(boolean loadRenewPwdRefresh, String driverClassName,
                                                  SQLException e, String operation) {
         log.error("权限错误 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
         if (DatabaseUtils.isPasswordError(e.getErrorCode(), driverClassName)) {
             // 当前密码过期使用备用密码进行更新
-            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.MYSQL);
+            if(loadRenewPwdRefresh){
+                RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.MYSQL);
+            }else {
+                log.warn("权限错误 - 未加载RenewPwdRefresh，无法处理密码问题，请检查配置");
+            }
         } else if (e.getErrorCode() == 0) {
-            // 0表示密码错误
-            RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.POSTGRE_SQL);
+            if(loadRenewPwdRefresh){
+                // 0表示密码错误
+                RenewPwdApplicationContextHolder.getContext().getBean(RenewPwdRefresh.class).updatePassword(DbType.POSTGRE_SQL);
+            }else {
+                log.warn("权限错误 - 未加载RenewPwdRefresh，无法处理密码问题，请检查配置");
+            }
         }
     }
 
 
-    private static void handleGenericSQLException(String driverClassName,
+    private static void handleGenericSQLException(boolean loadRenewPwdRefresh, String driverClassName,
                                                   SQLException e, String operation) {
         log.error("未分类SQL异常 - 操作: {}, SQL标准错误码: {}, 数据库原始错误码: {}, driver: {}"
                 , operation, e.getSQLState(), e.getErrorCode(), driverClassName);
