@@ -97,17 +97,17 @@ public class DatasourceConfigValidator {
         Connection connection = null;
         try {
             log.info("[renewpwd] 正在验证数据库连接: url={}, username={}", config.getUrl(), config.getUsername());
-
+            DbType dbType = DbType.getDbType(config.getDriverClassName());
             connection = DatabaseConnectionManager.createConnection(
                     config.getUrl(),
                     config.getUsername(),
                     password,
                     config.getDriverClassName(),
-                    DbType.getDbType(config.getDriverClassName())
-            );
+                    dbType
+                    );
 
             // 测试连接有效性
-            if (DatabaseConnectionManager.isConnectionValid(connection, 3)) {
+            if (DatabaseConnectionManager.isConnectionValid(connection, 3, dbType)) {
                 log.info("[renewpwd] 数据库连接验证成功");
                 return true;
             } else {

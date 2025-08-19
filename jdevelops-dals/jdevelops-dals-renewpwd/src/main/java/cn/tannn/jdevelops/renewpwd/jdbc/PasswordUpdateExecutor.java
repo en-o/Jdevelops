@@ -68,7 +68,7 @@ public class PasswordUpdateExecutor {
         try {
             connection = DatabaseConnectionManager.createConnection(url, username, newPassword,
                     driverClassName, 3000, 3000, dbType);
-            boolean isValid = DatabaseConnectionManager.isConnectionValid(connection, 2);
+            boolean isValid = DatabaseConnectionManager.isConnectionValid(connection, 2, dbType);
             log.info("[renewpwd] 新密码验证结果: {}", isValid ? "成功" : "失败");
             return isValid;
         } catch (Exception e) {
