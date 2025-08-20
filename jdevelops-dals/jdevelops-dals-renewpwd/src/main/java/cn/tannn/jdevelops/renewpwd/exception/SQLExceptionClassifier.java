@@ -158,15 +158,7 @@ public class SQLExceptionClassifier {
                 context.getOperation(), context.getException().getSQLState(),
                 context.getException().getErrorCode(), context.getDriverClassName());
 
-        if (DatabaseUtils.isPasswordError(context.getException().getErrorCode(), context.getDriverClassName())) {
-            // 当前密码过期使用备用密码进行更新
-            if (context.hasEnvironmentAndConfig()) {
-                // 这个是第一次启动的时候处理的方法所以不需要刷新
-                return ExecuteJdbcSql.handlePasswordUpdate(context.getEnvironment(), context.getConfig(),
-                        DbType.MYSQL, context.getConnectionPassword(), context.getNewPassword(), true) != null;
-            }
-            return getRenewPwdRefresh().updatePassword(DbType.MYSQL);
-        } else if (context.getException().getErrorCode() == 0) {
+        if (context.getException().getErrorCode() == 0) {
             // 0表示密码错误
             if (context.hasEnvironmentAndConfig()) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
@@ -174,6 +166,14 @@ public class SQLExceptionClassifier {
                         DbType.POSTGRE_SQL, context.getConnectionPassword(), context.getNewPassword(), true) != null;
             }
             return getRenewPwdRefresh().updatePassword(DbType.POSTGRE_SQL);
+        } else if (DatabaseUtils.isPasswordError(context.getException().getErrorCode(), context.getDriverClassName())) {
+            // 这个是兜底判断，按理说应该删掉
+            if (context.hasEnvironmentAndConfig()) {
+                // 这个是第一次启动的时候处理的方法所以不需要刷新
+                return ExecuteJdbcSql.handlePasswordUpdate(context.getEnvironment(), context.getConfig(),
+                        DbType.MYSQL, context.getConnectionPassword(), context.getNewPassword(), true) != null;
+            }
+            return getRenewPwdRefresh().updatePassword(DbType.MYSQL);
         }
         return false;
     }
