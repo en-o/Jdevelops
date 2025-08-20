@@ -97,7 +97,7 @@ public class DatasourceConfigValidator {
         Connection connection = null;
         try {
             log.info("[renewpwd] 正在验证数据库连接: url={}, username={}", config.getUrl(), config.getUsername());
-            DbType dbType = DbType.getDbType(config.getDriverClassName());
+            DbType dbType = DbType.getDbType(config.getUrl());
             connection = DatabaseConnectionManager.createConnection(
                     config.getUrl(),
                     config.getUsername(),
@@ -158,9 +158,11 @@ public class DatasourceConfigValidator {
         } catch (SQLException sqlException) {
             // 如果是SQL异常，交由异常处理器处理
             log.warn("[renewpwd] 数据库连接测试失败，等待错误处理: {}", sqlException.getMessage());
+            DatasourceConfig datasourceConfig = extractDatasourceConfig(environment);
             return SQLExceptionHandlingHelper
                     .handleDataSourceException(environment, config, currentPassword, backupPassword,
-                            extractDatasourceConfig(environment).getDriverClassName(),
+                            datasourceConfig.getDriverClassName(),
+                            datasourceConfig.getUrl(),
                             sqlException, "项目启动时验证数据源配置");
         } catch (Exception e) {
             log.error("[renewpwd] 验证数据源配置时发生异常", e);

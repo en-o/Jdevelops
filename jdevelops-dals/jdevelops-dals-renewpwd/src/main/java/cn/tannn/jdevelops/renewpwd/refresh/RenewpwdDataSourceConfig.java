@@ -69,7 +69,8 @@ public class RenewpwdDataSourceConfig {
 
             // 创建代理数据源，实现全局SQL异常拦截
             SQLExceptionHandlingDataSourceProxy proxyDataSource =
-                    new SQLExceptionHandlingDataSourceProxy(dataSource, renewpwdProperties, properties.getDriverClassName());
+                    new SQLExceptionHandlingDataSourceProxy(dataSource, renewpwdProperties
+                            , properties.getDriverClassName(), properties.getUrl());
 
             return proxyDataSource;
         }

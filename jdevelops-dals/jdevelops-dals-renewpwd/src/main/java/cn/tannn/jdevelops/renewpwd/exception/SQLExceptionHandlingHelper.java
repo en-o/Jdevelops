@@ -36,7 +36,7 @@ public class SQLExceptionHandlingHelper {
         SQLExceptionLogger.logException(proxy, "DATASOURCE", exception, operation, null, 0);
 
         // 分类处理异常
-        SQLExceptionClassifier.classifyAndHandle(proxy.getDriverClassName(), exception, operation);
+        SQLExceptionClassifier.classifyAndHandle(proxy, exception, operation);
 
         // 发送告警
         if (proxy.getConfig().getException().isAlertEnabled()) {
@@ -61,6 +61,7 @@ public class SQLExceptionHandlingHelper {
                                                     String connectionPassword,
                                                     String newPassword,
                                                     String driverClassName,
+                                                    String connectionUrl,
                                                     SQLException e, String operation) {
         // 确保是最深层的SQLException
         SQLException exception = DatabaseUtils.findDeepestSQLException(e);
@@ -70,7 +71,7 @@ public class SQLExceptionHandlingHelper {
 
         // 分类处理异常
         boolean handle = SQLExceptionClassifier.classifyAndHandle(environment, config,
-                connectionPassword, newPassword, driverClassName, exception, operation);
+                connectionPassword, newPassword, driverClassName,connectionUrl, exception, operation);
 
         // 发送告警
         if (config.getException().isAlertEnabled()) {

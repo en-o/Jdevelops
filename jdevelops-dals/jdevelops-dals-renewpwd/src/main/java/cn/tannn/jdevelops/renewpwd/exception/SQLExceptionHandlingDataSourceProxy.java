@@ -23,17 +23,22 @@ public class SQLExceptionHandlingDataSourceProxy extends DelegatingDataSource {
     private final DataSource targetDataSource;
     private final RenewpwdProperties config;
     private final String driverClassName;
+    private final String connectionUrl;
 
     // 告警频率控制
     final Map<String, Long> lastAlertTime = new ConcurrentHashMap<>();
 
-    public SQLExceptionHandlingDataSourceProxy(DataSource targetDataSource,
-                                               RenewpwdProperties config, String driverClassName) {
+    public SQLExceptionHandlingDataSourceProxy(
+            DataSource targetDataSource
+            , RenewpwdProperties config
+            , String driverClassName
+            , String connectionUrl) {
         super(targetDataSource);
         this.targetDataSource = targetDataSource;
         this.config = config;
         this.driverClassName = driverClassName;
-        log.info("SQL异常处理代理初始化完成 - enable: {}, 配置: {}",config.getEnabled(), config.getException());
+        this.connectionUrl = connectionUrl;
+        log.info("SQL异常处理代理初始化完成 - enable: {}, 配置: {}", config.getEnabled(), config.getException());
     }
 
     /**
@@ -80,7 +85,12 @@ public class SQLExceptionHandlingDataSourceProxy extends DelegatingDataSource {
     RenewpwdProperties getConfig() {
         return config;
     }
+
     public String getDriverClassName() {
         return driverClassName;
+    }
+
+    public String getConnectionUrl() {
+        return connectionUrl;
     }
 }

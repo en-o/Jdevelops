@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.renewpwd.util;
 
+import cn.tannn.jdevelops.renewpwd.pojo.DbType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,21 +19,14 @@ public class DatabaseUtils {
      * 判断错误码是否为密码过期错误
      * <p>  mysql ：SELECT * FROM performance_schema.events_errors_summary_global_by_error  where error_number = 'vendorCode' </p>
      * @param vendorCode 数据库返回的错误码
-     * @param driverClassName 数据库驱动类名，用于区分数据库类型
+     * @param connectionUrl 数据库连接URL，用于区分数据库类型
      * @return true 如果是密码过期错误，false 否则
      */
-    public static boolean isPasswordExpiredError_MYSQL(int vendorCode, String driverClassName) {
-        if (driverClassName == null) {
-            return false;
-        }
-
-        String driver = driverClassName.toLowerCase();
-
-        // MySQL
-        if (driver.toLowerCase().contains("mysql")) {
+    public static boolean isPasswordExpiredError_MYSQL(int vendorCode, String connectionUrl) {
+        if(DbType.isMysql(connectionUrl)){
             return vendorCode == 1820 || vendorCode == 1862;
         }else {
-            log.warn("其他数据库暂未支持，当前驱动：{}", driverClassName);
+            log.warn("其他数据库暂未支持，当前驱动：{}", connectionUrl);
         }
         return false;
     }
@@ -40,21 +34,14 @@ public class DatabaseUtils {
     /**
      * 判断错误码是否为密码错误
      * @param vendorCode 数据库返回的错误码
-     * @param driverClassName 数据库驱动类名，用于区分数据库类型
+     * @param connectionUrl 数据库连接URL，用于区分数据库类型
      * @return true 如果是密码过期错误，false 否则
      */
-    public static boolean isPasswordError(int vendorCode, String driverClassName) {
-        if (driverClassName == null) {
-            return false;
-        }
-
-        String driver = driverClassName.toLowerCase();
-
-        // MySQL
-        if (driver.toLowerCase().contains("mysql")) {
+    public static boolean isPasswordError(int vendorCode, String connectionUrl) {
+        if(DbType.isMysql(connectionUrl)){
             return vendorCode == 1045;
         }else {
-            log.warn("其他数据库暂未支持，当前驱动：{}", driverClassName);
+            log.warn("其他数据库暂未支持，当前驱动：{}", connectionUrl);
         }
         return false;
     }

@@ -3,6 +3,7 @@ package cn.tannn.jdevelops.renewpwd.exception;
 import cn.tannn.jdevelops.renewpwd.RenewPwdRefresh;
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.pojo.DbType;
+import cn.tannn.jdevelops.renewpwd.pojo.ExceptionHandleContext;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.DatabaseUtils;
 import cn.tannn.jdevelops.renewpwd.util.RenewPwdApplicationContextHolder;
@@ -20,43 +21,6 @@ public class SQLExceptionClassifier {
 
     private static final Logger log = LoggerFactory.getLogger(SQLExceptionClassifier.class);
 
-    /**
-     * 异常处理上下文
-     */
-    public static class ExceptionHandleContext {
-        private final ConfigurableEnvironment environment;
-        private final RenewpwdProperties config;
-        private final String connectionPassword;
-        private final String newPassword;
-        private final String driverClassName;
-        private final SQLException exception;
-        private final String operation;
-
-        public ExceptionHandleContext(ConfigurableEnvironment environment, RenewpwdProperties config,
-                                    String connectionPassword, String newPassword, String driverClassName,
-                                    SQLException exception, String operation) {
-            this.environment = environment;
-            this.config = config;
-            this.connectionPassword = connectionPassword;
-            this.newPassword = newPassword;
-            this.driverClassName = driverClassName;
-            this.exception = exception;
-            this.operation = operation;
-        }
-
-        // Getters
-        public ConfigurableEnvironment getEnvironment() { return environment; }
-        public RenewpwdProperties getConfig() { return config; }
-        public String getConnectionPassword() { return connectionPassword; }
-        public String getNewPassword() { return newPassword; }
-        public String getDriverClassName() { return driverClassName; }
-        public SQLException getException() { return exception; }
-        public String getOperation() { return operation; }
-
-        public boolean hasEnvironmentAndConfig() {
-            return environment != null && config != null;
-        }
-    }
 
     private SQLExceptionClassifier() {
     }
@@ -85,35 +49,44 @@ public class SQLExceptionClassifier {
     /**
      * 根据SQL异常状态码分类处理异常 - 简化版本
      *
-     * @param environment 环境配置
-     * @param config 配置属性
+     * @param environment        环境配置
+     * @param config             配置属性
      * @param connectionPassword 连接密码
-     * @param newPassword 新密码
-     * @param driverClassName 驱动类名
-     * @param e 异常对象
-     * @param operation 操作名称
+     * @param newPassword        新密码
+     * @param driverClassName    驱动类名
+     * @param e                  异常对象
+     * @param operation          操作名称
      * @return false 操作失败，true 操作成功
      */
-    public static boolean classifyAndHandle(ConfigurableEnvironment environment, RenewpwdProperties config,
-                                          String connectionPassword, String newPassword, String driverClassName,
-                                          SQLException e, String operation) {
+    public static boolean classifyAndHandle(ConfigurableEnvironment environment
+            , RenewpwdProperties config
+            , String connectionPassword
+            , String newPassword
+            , String driverClassName
+            , String connectionUrl
+            , SQLException e
+            , String operation) {
         ExceptionHandleContext context = new ExceptionHandleContext(
-                environment, config, connectionPassword, newPassword, driverClassName, e, operation);
+                environment, config, connectionPassword, newPassword, driverClassName, connectionUrl, e, operation);
         return classifyAndHandle(context);
     }
 
     /**
      * 根据SQL异常状态码分类处理异常 - 最简版本
      *
-     * @param driverClassName 驱动名
-     * @param e 异常对象
-     * @param operation 操作名称
-     *                  不需要返回值
+     * @param proxy SQLExceptionHandlingDataSourceProxy
+     * @param e               异常对象
+     * @param operation       操作名称
+     *                        不需要返回值
      */
-    public static void classifyAndHandle(String driverClassName, SQLException e, String operation) {
+    public static void classifyAndHandle(SQLExceptionHandlingDataSourceProxy proxy, SQLException e, String operation) {
         ExceptionHandleContext context = new ExceptionHandleContext(
-                null, null, null, null, driverClassName, e, operation);
-         classifyAndHandle(context);
+                null, null, null, null
+                , proxy.getDriverClassName()
+                , proxy.getConnectionUrl()
+                , e
+                , operation);
+        classifyAndHandle(context);
     }
 
     // ================= 分类处理器 =================
@@ -128,7 +101,7 @@ public class SQLExceptionClassifier {
 
         // 检查是否为MySQL密码过期错误
         if (DatabaseUtils.isPasswordExpiredError_MYSQL(context.getException().getErrorCode(),
-                                                      context.getDriverClassName())) {
+                context.getConnectionUrl())) {
             if (context.hasEnvironmentAndConfig()) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
                 return ExecuteJdbcSql.handlePasswordUpdate(context.getEnvironment(), context.getConfig(),
@@ -166,7 +139,7 @@ public class SQLExceptionClassifier {
                         DbType.POSTGRE_SQL, context.getConnectionPassword(), context.getNewPassword(), true) != null;
             }
             return getRenewPwdRefresh().updatePassword(DbType.POSTGRE_SQL);
-        } else if (DatabaseUtils.isPasswordError(context.getException().getErrorCode(), context.getDriverClassName())) {
+        } else if (DatabaseUtils.isPasswordError(context.getException().getErrorCode(), context.getConnectionUrl())) {
             // 这个是兜底判断，按理说应该删掉
             if (context.hasEnvironmentAndConfig()) {
                 // 这个是第一次启动的时候处理的方法所以不需要刷新
