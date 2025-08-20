@@ -1,0 +1,12 @@
+#!/bin/sh
+# .githooks/commit-msg
+# install ： git config core.hooksPath githooks
+# uninstall ： git config --unset core.hooksPath
+commit_regex='^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ Invalid commit message format. Use: type(scope): subject"
+    echo "Example: feat(core): add new API"
+    echo "Type: feat|fix|docs|style|refactor|test|chore"
+    exit 1
+fi
