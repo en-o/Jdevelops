@@ -47,7 +47,7 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
 
         if(interceptorConfig.isContentType()){
             // 强制设置 Content-Type
-            servletResponse.setContentType(interceptorConfig.getMediaType().getType());
+            servletResponse.setContentType(interceptorConfig.getMediaType().toString());
 
         }
         // 判断是否是multipart/form-data请求
