@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.webs.interceptor.core;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,17 @@ public class InterceptorConfig {
      * <p> 如果为 false，则 getFinalExcludePaths() 返回 默认路径 + 用户配置的路径。
      */
     private boolean overrideDefaultExcludePaths = false;
+
+    /**
+     * 响应内容类型
+     * <p> 默认 application/json;charset=UTF-8
+     */
+    private MediaType mediaType = MediaType.APPLICATION_JSON_UTF8;
+    /**
+     * 是否设置响应内容类型
+     * <p> 默认 true ,设置 mediaType
+     */
+    private boolean contentType = true;
 
     public List<String> getExcludePaths() {
         return excludePaths;
@@ -78,11 +90,29 @@ public class InterceptorConfig {
         this.overrideDefaultExcludePaths = overrideDefaultExcludePaths;
     }
 
+    public MediaType getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public boolean isContentType() {
+        return contentType;
+    }
+
+    public void setContentType(boolean contentType) {
+        this.contentType = contentType;
+    }
+
     @Override
     public String toString() {
         return "InterceptorConfig{" +
                 "excludePaths=" + excludePaths +
                 ", overrideDefaultExcludePaths=" + overrideDefaultExcludePaths +
+                ", mediaType=" + mediaType +
+                ", contentType=" + contentType +
                 '}';
     }
 }

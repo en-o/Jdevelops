@@ -33,25 +33,27 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
 
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String requestURI = httpRequest.getRequestURI();
 
-        // 检查是否是 放行请求
+        // 检查是否是放行请求
         if (isGreenRequest(requestURI)) {
-            // 如果是，直接放行，不进行任何处理
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        ServletRequest requestWrapper = null;
-        // 强制设置 Content-Type
-        servletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        if(interceptorConfig.isContentType()){
+            // 强制设置 Content-Type
+            servletResponse.setContentType(interceptorConfig.getMediaType().getType());
+
+        }
         // 判断是否是multipart/form-data请求
-        if (!RequestUtil.isMultipartContent((HttpServletRequest)servletRequest)){
-            if(servletRequest instanceof HttpServletRequest) {
-                requestWrapper = new JdevelopsHttpServletRequestWrapper((HttpServletRequest) servletRequest);
-            }
+        if (!RequestUtil.isMultipartContent(httpRequest)) {
+            // 创建可重复读的请求包装器
+            ServletRequest requestWrapper = new JdevelopsHttpServletRequestWrapper(httpRequest);
             // 获取请求中的流如何，将取出来的字符串，再次转换成流，然后把它放入到新request对象中
             // 在chain.doFiler方法中传递新的request对象
             if(null == requestWrapper) {
@@ -59,10 +61,9 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
             }else {
                 filterChain.doFilter(requestWrapper, servletResponse);
             }
-        }else {
+        } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
-
     }
 
     /**
