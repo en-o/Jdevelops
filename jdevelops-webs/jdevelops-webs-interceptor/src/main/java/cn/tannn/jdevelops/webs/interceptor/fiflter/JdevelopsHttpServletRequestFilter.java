@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.webs.interceptor.fiflter;
 
+import cn.tannn.jdevelops.webs.interceptor.core.InterceptorConfig;
 import cn.tannn.jdevelops.webs.interceptor.util.RequestUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -9,10 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /***
  * HttpServletRequest 过滤器
  * 解决: request.getInputStream()只能读取一次的问题
+ * <p>  urlPatterns = "/" 拦截所有请求</p>
  * @author link
  * <a href="https://blog.csdn.net/itdragons/article/details/106632260">参考</a>
  * 目标: 流可重复读
@@ -21,9 +24,28 @@ import java.io.IOException;
 @WebFilter(filterName = "JdevelopsHttpServletRequestFilter", urlPatterns = "/")
 @Order(10000)
 public class JdevelopsHttpServletRequestFilter implements Filter {
+
+    private  final InterceptorConfig interceptorConfig;
+
+    public JdevelopsHttpServletRequestFilter(InterceptorConfig interceptorConfig) {
+        this.interceptorConfig = Objects.requireNonNullElseGet(interceptorConfig, InterceptorConfig::new);
+    }
+
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        String requestURI = httpRequest.getRequestURI();
+
+        // 检查是否是 放行请求
+        if (isGreenRequest(requestURI)) {
+            // 如果是，直接放行，不进行任何处理
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         ServletRequest requestWrapper = null;
+        // 强制设置 Content-Type
         servletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         // 判断是否是multipart/form-data请求
         if (!RequestUtil.isMultipartContent((HttpServletRequest)servletRequest)){
@@ -41,6 +63,18 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         }
 
+    }
+
+    // 检查是否是 需要放行请求
+    private boolean isGreenRequest(String requestURI) {
+        for (String excludePath : interceptorConfig.gainFinalExcludePaths()) {
+            if (excludePath.endsWith("/*") && requestURI.startsWith(excludePath.substring(0, excludePath.length() - 2))) {
+                return true;
+            } else if (requestURI.equals(excludePath)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

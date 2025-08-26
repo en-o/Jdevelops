@@ -62,9 +62,22 @@ public class ApiIdempotentInterceptor implements ApiBeforeInterceptor {
 # 依赖
 > 2.0.7
 
-```java
+```xml
 <dependency>
     <groupId>cn.tannn.jdevelops</groupId>
     <artifactId>jdevelops-webs-interceptor</artifactId>
 </dependency>
+```
+
+
+# 基础配置
+> 出错了在配置，当前配置是由于使用h2数据库的时候控制台加载不出来
+```yaml
+jdevelops:
+  interceptor:
+    core:
+      # override-default-exclude-paths: true # 覆盖默认 exclude-paths， false是追加
+      # 只是示例，我默认放行了H2
+      exclude-paths:
+        - /h3/*
 ```
