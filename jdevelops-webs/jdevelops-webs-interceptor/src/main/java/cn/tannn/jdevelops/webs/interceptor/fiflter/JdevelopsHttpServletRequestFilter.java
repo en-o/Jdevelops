@@ -65,7 +65,12 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
 
     }
 
-    // 检查是否是 需要放行请求
+    /**
+     * 检查是否是 需要放行请求
+     * <p> 少量判断当前方法可以满足，数据量后期如果变大可以考虑使用 Trie 树等数据结构优化（DFA）
+     * @param requestURI 当前请求
+     * @return true 是放行请求  false 不是放行请求
+     */
     private boolean isGreenRequest(String requestURI) {
         for (String excludePath : interceptorConfig.gainFinalExcludePaths()) {
             if (excludePath.endsWith("/*") && requestURI.startsWith(excludePath.substring(0, excludePath.length() - 2))) {
