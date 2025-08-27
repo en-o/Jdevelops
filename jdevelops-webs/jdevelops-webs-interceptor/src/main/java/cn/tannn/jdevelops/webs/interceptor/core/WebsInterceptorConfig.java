@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2020/6/19 9:56
  */
 @ConfigurationProperties(prefix = "jdevelops.interceptor.core")
-public class InterceptorConfig {
+public class WebsInterceptorConfig {
     // H2 控制台路径排除列表 - 默认的排除路径
     private static final List<String> DEF_EXCLUDE_PATHS = Arrays.asList(
             "/h2-console",

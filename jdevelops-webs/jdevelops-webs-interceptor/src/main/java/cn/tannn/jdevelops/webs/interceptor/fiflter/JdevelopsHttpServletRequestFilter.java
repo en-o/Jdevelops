@@ -1,12 +1,11 @@
 package cn.tannn.jdevelops.webs.interceptor.fiflter;
 
-import cn.tannn.jdevelops.webs.interceptor.core.InterceptorConfig;
+import cn.tannn.jdevelops.webs.interceptor.core.WebsInterceptorConfig;
 import cn.tannn.jdevelops.webs.interceptor.util.RequestUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,10 +24,10 @@ import java.util.Objects;
 @Order(10000)
 public class JdevelopsHttpServletRequestFilter implements Filter {
 
-    private  final InterceptorConfig interceptorConfig;
+    private  final WebsInterceptorConfig websInterceptorConfig;
 
-    public JdevelopsHttpServletRequestFilter(InterceptorConfig interceptorConfig) {
-        this.interceptorConfig = Objects.requireNonNullElseGet(interceptorConfig, InterceptorConfig::new);
+    public JdevelopsHttpServletRequestFilter(WebsInterceptorConfig websInterceptorConfig) {
+        this.websInterceptorConfig = Objects.requireNonNullElseGet(websInterceptorConfig, WebsInterceptorConfig::new);
     }
 
 
@@ -45,9 +44,9 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
             return;
         }
 
-        if(interceptorConfig.isContentType()){
+        if(websInterceptorConfig.isContentType()){
             // 强制设置 Content-Type
-            servletResponse.setContentType(interceptorConfig.getMediaType().toString());
+            servletResponse.setContentType(websInterceptorConfig.getMediaType().toString());
 
         }
         // 判断是否是multipart/form-data请求
@@ -73,7 +72,7 @@ public class JdevelopsHttpServletRequestFilter implements Filter {
      * @return true 是放行请求  false 不是放行请求
      */
     private boolean isGreenRequest(String requestURI) {
-        for (String excludePath : interceptorConfig.gainFinalExcludePaths()) {
+        for (String excludePath : websInterceptorConfig.gainFinalExcludePaths()) {
             if (excludePath.endsWith("/*") && requestURI.startsWith(excludePath.substring(0, excludePath.length() - 2))) {
                 return true;
             } else if (requestURI.equals(excludePath)) {

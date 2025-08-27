@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.webs.interceptor;
 
 import cn.tannn.jdevelops.webs.interceptor.core.JdevelopsWebMvcConfig;
-import cn.tannn.jdevelops.webs.interceptor.core.InterceptorConfig;
+import cn.tannn.jdevelops.webs.interceptor.core.WebsInterceptorConfig;
 import cn.tannn.jdevelops.webs.interceptor.fiflter.JdevelopsHttpServletRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,16 +18,16 @@ import java.util.List;
 public class InterceptorAutoconfigure {
 
     @Bean
-    @ConditionalOnMissingBean(InterceptorConfig.class)
-    public InterceptorConfig interceptorConfig(){
-        return new InterceptorConfig();
+    @ConditionalOnMissingBean(WebsInterceptorConfig.class)
+    public WebsInterceptorConfig interceptorConfig(){
+        return new WebsInterceptorConfig();
     }
 
 
     @Bean
     @ConditionalOnMissingBean(JdevelopsHttpServletRequestFilter.class)
-    public JdevelopsHttpServletRequestFilter jdevelopsHttpServletRequestFilter(InterceptorConfig interceptorConfig){
-        return new JdevelopsHttpServletRequestFilter(interceptorConfig);
+    public JdevelopsHttpServletRequestFilter jdevelopsHttpServletRequestFilter(WebsInterceptorConfig websInterceptorConfig){
+        return new JdevelopsHttpServletRequestFilter(websInterceptorConfig);
     }
 
 
