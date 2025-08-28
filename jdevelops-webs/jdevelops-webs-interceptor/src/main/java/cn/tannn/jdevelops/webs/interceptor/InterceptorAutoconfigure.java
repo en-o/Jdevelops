@@ -19,7 +19,7 @@ public class InterceptorAutoconfigure {
 
     @Bean
     @ConditionalOnMissingBean(WebsInterceptorConfig.class)
-    public WebsInterceptorConfig interceptorConfig(){
+    public WebsInterceptorConfig websInterceptorConfig(){
         return new WebsInterceptorConfig();
     }
 
