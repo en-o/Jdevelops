@@ -29,11 +29,11 @@ public class DslParser {
             JsonNode dslJson = objectMapper.readTree(extract.getJsonBody());
             parseSelect(dslJson.get("_source"));
             parseFrom(extract.getTableName());
-            parseWhere(dslJson.get("query"));
+            JsonNode query = dslJson.get("query");
+            parseWhere(query);
             parseSort(dslJson.get("sort"));
             parseLimit(dslJson.get("size"), dslJson.get("from"));
-
-            return new ParseResult(sqlBuilder.toString(), parameters);
+            return new ParseResult(sqlBuilder.toString(), parameters,query.toString());
         } catch (Exception e) {
             throw new RuntimeException("DSL解析失败: " + e.getMessage(), e);
         }
@@ -52,11 +52,12 @@ public class DslParser {
             JsonNode dslJson = objectMapper.readTree(dslQuery);
             parseSelect(dslJson.get("_source"));
             parseFrom(tableName);
-            parseWhere(dslJson.get("query"));
+            JsonNode query = dslJson.get("query");
+            parseWhere(query);
             parseSort(dslJson.get("sort"));
             parseLimit(dslJson.get("size"), dslJson.get("from"));
 
-            return new ParseResult(sqlBuilder.toString(), parameters);
+            return new ParseResult(sqlBuilder.toString(), parameters,query.toString());
         } catch (Exception e) {
             throw new RuntimeException("DSL解析失败: " + e.getMessage(), e);
         }
@@ -415,11 +416,13 @@ public class DslParser {
         private final String sql;
         private final String whereSql;
         private final List<String> parameters;
+        private final String queryStr;
 
-        public ParseResult(String sql, List<String> parameters) {
+        public ParseResult(String sql, List<String> parameters, String queryStr) {
             this.sql = sql;
             this.whereSql = extractWhereClause(sql);
             this.parameters = parameters;
+            this.queryStr = queryStr;
         }
 
         public String getSql() {
@@ -432,6 +435,10 @@ public class DslParser {
 
         public List<String> getParameters() {
             return parameters;
+        }
+
+        public String getQueryStr() {
+            return queryStr;
         }
     }
 
@@ -569,5 +576,4 @@ public class DslParser {
             sqlBuilder.append(" = ").append(formatValueForSql(value));
         }
     }
-
 }
