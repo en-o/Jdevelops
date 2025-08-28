@@ -18,6 +18,8 @@ public class DslParser {
 
 
     /**
+     * 将 SearchRequest.toString() 解析为 SQL
+     * <p> 注意 tostring的格式 [SearchRequest: POST /citation_comment xx] 所有需要 SearchRequest.toString().indexOf(":") + 1 </p>
      * @param dslQueryReqStr POST /citation_paper/_search?typed_keys=true {}
      * @return ParseResult
      */
@@ -38,6 +40,9 @@ public class DslParser {
     }
 
     /**
+     * 将 SearchRequest.toString() 解析为 SQL
+     * <p> 注意 tostring的格式 [SearchRequest: POST /citation_comment xx] 所有需要 SearchRequest.toString().indexOf(":") + 1 </p>
+     *
      * @param dslQuery  {}
      * @param tableName tableName
      * @return ParseResult
