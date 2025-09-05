@@ -274,4 +274,71 @@ public class ComplexBuildCountSqlTest {
 
         assertThrows(IllegalStateException.class, builder::buildCountSql);
     }
+
+    @Test
+    public void testBuildCountSqlWithComplexQuery() {
+        // 构建复杂的查询SQL（包含GROUP BY、ORDER BY、LIMIT）
+        String originalSql = """
+            SELECT
+              '加工人员' AS user_classify,
+              ANY_VALUE (b.NAME) AS username,
+              user_id,
+              role_code AS user_groups,
+              SUM(aa.task_count) AS task_count,
+              SUM(aa.finish_task_count) AS finish_task_count,
+              SUM(aa.finish_page_count) AS finish_pages,
+              SUM(aa.inspect_pass_page_count) AS quality,
+              ROUND(AVG(aa.pass_rate) * 100, 2) AS finish_pass_ratex
+             FROM 
+              user_task_statistic aa
+              LEFT JOIN user_manage b ON aa.user_id COLLATE utf8mb4_general_ci = b.id COLLATE utf8mb4_general_ci
+            """;
+
+        DynamicSqlBuilder builder = new DynamicSqlBuilder(originalSql, ParameterMode.NAMED);
+
+        // 添加WHERE条件
+        builder.in("aa.role_code", java.util.Arrays.asList("pic_processing", "enter_processing"))
+                .addGroupBy("user_id, role_code")
+                .orderBy("aa.user_id DESC")
+                .limit(0, 20);
+
+        // 验证原始SQL包含所有子句
+        String fullSql = builder.getSql();
+        assertTrue(fullSql.contains("WHERE"));
+        assertTrue(fullSql.contains("GROUP BY"));
+        assertTrue(fullSql.contains("ORDER BY"));
+        assertTrue(fullSql.contains("LIMIT"));
+
+        // 构建COUNT查询
+        DynamicSqlBuilder countBuilder = builder.buildCountSql();
+        String countSql = countBuilder.getSql();
+
+        // 验证COUNT SQL的正确性
+        System.out.println("Original SQL:");
+        System.out.println(fullSql);
+        System.out.println("\nCount SQL:");
+        System.out.println(countSql);
+
+        // 断言COUNT SQL的结构
+        assertTrue(countSql.startsWith("SELECT COUNT(*)"));
+        assertTrue(countSql.contains("user_task_statistic aa"));
+        assertTrue(countSql.contains("LEFT JOIN user_manage b"));
+        assertTrue(countSql.contains("WHERE aa.role_code IN"));
+
+        // 确保移除了GROUP BY、ORDER BY和LIMIT
+        assertFalse(countSql.contains("GROUP BY"));
+        assertFalse(countSql.contains("ORDER BY"));
+        assertFalse(countSql.contains("LIMIT"));
+
+        // 验证参数正确复制（排除了LIMIT相关参数）
+        MapSqlParameterSource originalParams = builder.getNamedParams();
+        MapSqlParameterSource countParams = countBuilder.getNamedParams();
+
+        // 不应该包含LIMIT相关参数
+        assertFalse(countParams.hasValue("limit"));
+        assertFalse(countParams.hasValue("offset"));
+
+        System.out.println("\nOriginal parameters: " + java.util.Arrays.toString(originalParams.getParameterNames()));
+        System.out.println("Count parameters: " + java.util.Arrays.toString(countParams.getParameterNames()));
+    }
 }
