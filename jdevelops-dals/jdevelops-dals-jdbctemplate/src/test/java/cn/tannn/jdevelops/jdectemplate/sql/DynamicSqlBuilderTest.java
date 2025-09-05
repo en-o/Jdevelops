@@ -369,6 +369,7 @@ class DynamicSqlBuilderTest {
         @DisplayName("Should create GROUP BY with HAVING")
         void shouldCreateGroupByWithHaving() {
             builder.eq("status", "active")
+                    // 多个自己 比如 field1, field2
                     .addGroupBy("department")
                     .having("COUNT(*) > 5")
                     .orderBy("department");
