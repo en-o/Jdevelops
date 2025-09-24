@@ -24,7 +24,7 @@ public class DynamicSqlBuilderFactoryTest {
         query.setPageSize(10);
 
         // 构建SQL
-        DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query);
+        DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query,"*");
         // SELECT a.login_name, a.name, a.gender, a.status, a.create_time, a.create_time, b.masked_phone
         // FROM tb_account a LEFT JOIN tb_account_sensitive b ON b.user_id = a.id WHERE login_name = :login_name1 AND name LIKE :nameLike2
         // AND status IN (:statusList3) AND b.masked_phone LIKE :bmasked_phoneLike4 ORDER BY a.id DESC LIMIT :offset, :limit
@@ -62,7 +62,7 @@ public class DynamicSqlBuilderFactoryTest {
         AccountQueryExample query = new AccountQueryExample();
         query.setTimes("2024-01-01 00:00:00,2024-12-31 23:59:59");
         // 构建SQL
-        DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query);
+        DynamicSqlBuilder builder = DynamicSqlBuilderFactory.buildJdbc(query,"*");
         System.out.println("sql: "+builder.getSql());
         // SELECT a.login_name, a.name, a.gender, a.status, a.create_time, a.create_time, b.masked_phone, b.times
         // FROM tb_account a LEFT JOIN tb_account_sensitive b ON b.user_id = a.id
@@ -74,7 +74,7 @@ public class DynamicSqlBuilderFactoryTest {
         query = new AccountQueryExample();
         query.setTimes("2024-01-01 00:00:00");
         // 构建SQL
-        builder = DynamicSqlBuilderFactory.buildJdbc(query);
+        builder = DynamicSqlBuilderFactory.buildJdbc(query,"*");
         System.out.println("sql: "+builder.getSql());
         // SELECT a.login_name, a.name, a.gender, a.status, a.create_time, a.create_time, b.masked_phone, b.times
         // FROM tb_account a LEFT JOIN tb_account_sensitive b ON b.user_id = a.id

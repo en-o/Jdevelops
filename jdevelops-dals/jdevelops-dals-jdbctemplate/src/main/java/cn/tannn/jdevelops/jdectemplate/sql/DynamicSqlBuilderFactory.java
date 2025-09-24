@@ -16,8 +16,15 @@ public class DynamicSqlBuilderFactory {
     /**
      * 使用默认命名参数模式构建
      */
-    public static DynamicSqlBuilder buildJdbc(Object queryObj) {
-        return buildJdbc(queryObj, ParameterMode.NAMED);
+    public static DynamicSqlBuilder buildJdbc(Object queryObj, String customSelect) {
+        return buildJdbc(queryObj,null,customSelect, ParameterMode.NAMED);
+    }
+
+    /**
+     * 使用默认命名参数模式构建
+     */
+    public static DynamicSqlBuilder buildJdbc(Object queryObj, Class<?> returnClazz) {
+        return buildJdbc(queryObj,returnClazz,null, ParameterMode.NAMED);
     }
 
     /**
@@ -25,8 +32,20 @@ public class DynamicSqlBuilderFactory {
      * @param queryObj 查询对象
      * @param extraWhere @param extraWhere 扩展查询参数， 若为 null 则忽略；否则接收 (builder, extraMap) 由调用方自行处理
      */
-    public static DynamicSqlBuilder buildJdbc(Object queryObj, Consumer<DynamicSqlBuilder> extraWhere) {
-        return buildJdbc(queryObj, ParameterMode.NAMED, extraWhere);
+    public static DynamicSqlBuilder buildJdbc(Object queryObj,
+                                              String customSelect,
+                                              Consumer<DynamicSqlBuilder> extraWhere) {
+        return buildJdbc(queryObj,null,customSelect, ParameterMode.NAMED, extraWhere);
+    }
+    /**
+     * 使用默认命名参数模式构建
+     * @param queryObj 查询对象
+     * @param extraWhere @param extraWhere 扩展查询参数， 若为 null 则忽略；否则接收 (builder, extraMap) 由调用方自行处理
+     */
+    public static DynamicSqlBuilder buildJdbc(Object queryObj,
+                                              Class<?> returnClazz,
+                                              Consumer<DynamicSqlBuilder> extraWhere) {
+        return buildJdbc(queryObj,returnClazz,null, ParameterMode.NAMED, extraWhere);
     }
 
     /**
@@ -37,6 +56,7 @@ public class DynamicSqlBuilderFactory {
      * @param extraWhere 扩展参数， 若为 null 则忽略；否则接收 (builder, extraMap) 由调用方自行处理
      */
     public static DynamicSqlBuilder buildJdbc(Object queryObj,
+                                              Class<?> returnClazz, String customSelect,
                                               ParameterMode mode,
                                               Consumer<DynamicSqlBuilder> extraWhere) {
         if (queryObj == null) {
@@ -44,7 +64,7 @@ public class DynamicSqlBuilderFactory {
         }
 
         Class<?> clazz = queryObj.getClass();
-        String baseSql = buildBaseSql(clazz);
+        String baseSql = buildBaseSql(clazz,returnClazz,customSelect);
         DynamicSqlBuilder builder = new DynamicSqlBuilder(baseSql, mode);
 
 
@@ -70,7 +90,9 @@ public class DynamicSqlBuilderFactory {
      * @param mode     参数模式
      * @return DynamicSqlBuilder实例
      */
-    public static DynamicSqlBuilder buildJdbc(Object queryObj, ParameterMode mode) {
+    public static DynamicSqlBuilder buildJdbc(Object queryObj,
+                                              Class<?> returnClazz, String customSelect,
+                                              ParameterMode mode) {
         if (queryObj == null) {
             throw new IllegalArgumentException("Query object cannot be null");
         }
@@ -78,7 +100,7 @@ public class DynamicSqlBuilderFactory {
         Class<?> clazz = queryObj.getClass();
 
         // 1. 构建基础SQL
-        String baseSql = buildBaseSql(clazz);
+        String baseSql = buildBaseSql(clazz,returnClazz,customSelect);
         DynamicSqlBuilder builder = new DynamicSqlBuilder(baseSql, mode);
 
         // 2. 处理查询条件
@@ -97,17 +119,17 @@ public class DynamicSqlBuilderFactory {
     /**
      * 构建基础SQL
      */
-    private static String buildBaseSql(Class<?> clazz) {
-        SqlTable tableAnnotation = clazz.getAnnotation(SqlTable.class);
+    private static String buildBaseSql(Class<?> queryClazz, Class<?> returnClazz, String customSelect) {
+        SqlTable tableAnnotation = queryClazz.getAnnotation(SqlTable.class);
         if (tableAnnotation == null) {
-            throw new IllegalArgumentException("Class must be annotated with @SqlTable");
+            throw new IllegalArgumentException("queryClazz must be annotated with @SqlTable");
         }
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ");
+        StringBuilder sql = new StringBuilder("SELECT ");
+
 
         // 构建SELECT字段
-        sql.append(buildSelectFields(clazz, tableAnnotation));
+        sql.append(buildSelectFields(returnClazz, customSelect));
 
         // 构建FROM子句
         sql.append(" FROM ").append(tableAnnotation.name());
@@ -129,34 +151,31 @@ public class DynamicSqlBuilderFactory {
     /**
      * 构建SELECT字段
      */
-    private static String buildSelectFields(Class<?> clazz, SqlTable tableAnnotation) {
-        Field[] allFields = clazz.getDeclaredFields();
+    private static String buildSelectFields(Class<?> returnClazz, String customSelect) {
+
+        if (StringUtils.hasText(customSelect)) {
+            return customSelect;
+        }
+        if (returnClazz == null) {
+            return "*"; // 默认 fallback
+        }
+
+        Field[] fields = returnClazz.getDeclaredFields();
         List<String> fieldsList = new ArrayList<>();
 
-        for (Field field : allFields) {
-            // 跳过分页相关字段
-            if (field.isAnnotationPresent(SqlPage.class)) {
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SqlIgnore.class)) {
                 continue;
             }
 
-            SqlColumn columnAnnotation = field.getAnnotation(SqlColumn.class);
-            String tableAlias = StringUtils.hasText(tableAnnotation.alias()) ?
-                    tableAnnotation.alias() : "";
+            SqlReColumn reColumn = field.getAnnotation(SqlReColumn.class);
 
-            if (columnAnnotation != null) {
-                String columnName = StringUtils.hasText(columnAnnotation.name()) ?
-                        columnAnnotation.name() : camelToSnake(field.getName());
-                String fullColumnName = StringUtils.hasText(columnAnnotation.tableAlias()) ?
-                        columnAnnotation.tableAlias() + "." + columnName :
-                        (StringUtils.hasText(tableAlias) ? tableAlias + "." + columnName : columnName);
-
-                fieldsList.add(fullColumnName);
+            if (reColumn != null) {
+                fieldsList.add(reColumn.alias());
             } else {
                 // 默认使用驼峰转下划线
                 String columnName = camelToSnake(field.getName());
-                String fullColumnName = StringUtils.hasText(tableAlias) ?
-                        tableAlias + "." + columnName : columnName;
-                fieldsList.add(fullColumnName);
+                fieldsList.add(columnName);
             }
         }
 
