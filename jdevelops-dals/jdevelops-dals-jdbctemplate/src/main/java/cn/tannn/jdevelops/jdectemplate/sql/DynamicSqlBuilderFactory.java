@@ -6,18 +6,68 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 动态SQL构建器工厂 - 基于注解自动构建查询条件
- *
  */
 public class DynamicSqlBuilderFactory {
+
+    /**
+     * 使用默认命名参数模式构建
+     */
+    public static DynamicSqlBuilder buildJdbc(Object queryObj) {
+        return buildJdbc(queryObj, ParameterMode.NAMED);
+    }
+
+    /**
+     * 使用默认命名参数模式构建
+     * @param queryObj 查询对象
+     * @param extraWhere @param extraWhere 扩展查询参数， 若为 null 则忽略；否则接收 (builder, extraMap) 由调用方自行处理
+     */
+    public static DynamicSqlBuilder buildJdbc(Object queryObj, Consumer<DynamicSqlBuilder> extraWhere) {
+        return buildJdbc(queryObj, ParameterMode.NAMED, extraWhere);
+    }
+
+    /**
+     * 允许调用方完全自定义 “额外参数” 如何注入 builder。
+     *
+     * @param queryObj   原查询对象
+     * @param mode       参数模式
+     * @param extraWhere 扩展参数， 若为 null 则忽略；否则接收 (builder, extraMap) 由调用方自行处理
+     */
+    public static DynamicSqlBuilder buildJdbc(Object queryObj,
+                                              ParameterMode mode,
+                                              Consumer<DynamicSqlBuilder> extraWhere) {
+        if (queryObj == null) {
+            throw new IllegalArgumentException("Query object cannot be null");
+        }
+
+        Class<?> clazz = queryObj.getClass();
+        String baseSql = buildBaseSql(clazz);
+        DynamicSqlBuilder builder = new DynamicSqlBuilder(baseSql, mode);
+
+
+        // 查询条件
+        processQueryConditions(builder, queryObj);
+        // 扩展参数查询条件
+        if (extraWhere != null) {
+            extraWhere.accept(builder);
+        }
+
+        //  排序 & 分页
+        processOrderBy(builder, clazz);
+        processPage(builder, queryObj);
+
+        return builder;
+    }
+
 
     /**
      * 根据查询对象构建DynamicSqlBuilder
      *
      * @param queryObj 查询对象
-     * @param mode 参数模式
+     * @param mode     参数模式
      * @return DynamicSqlBuilder实例
      */
     public static DynamicSqlBuilder buildJdbc(Object queryObj, ParameterMode mode) {
@@ -43,12 +93,6 @@ public class DynamicSqlBuilderFactory {
         return builder;
     }
 
-    /**
-     * 使用默认命名参数模式构建
-     */
-    public static DynamicSqlBuilder buildJdbc(Object queryObj) {
-        return buildJdbc(queryObj, ParameterMode.NAMED);
-    }
 
     /**
      * 构建基础SQL
@@ -74,9 +118,9 @@ public class DynamicSqlBuilderFactory {
         // 构建JOIN子句
         for (SqlJoin join : tableAnnotation.joins()) {
             sql.append(" ").append(join.type().getSql())
-               .append(" ").append(join.table())
-               .append(" ").append(join.alias())
-               .append(" ON ").append(join.condition());
+                    .append(" ").append(join.table())
+                    .append(" ").append(join.alias())
+                    .append(" ON ").append(join.condition());
         }
 
         return sql.toString();
@@ -97,21 +141,21 @@ public class DynamicSqlBuilderFactory {
 
             SqlColumn columnAnnotation = field.getAnnotation(SqlColumn.class);
             String tableAlias = StringUtils.hasText(tableAnnotation.alias()) ?
-                              tableAnnotation.alias() : "";
+                    tableAnnotation.alias() : "";
 
             if (columnAnnotation != null) {
                 String columnName = StringUtils.hasText(columnAnnotation.name()) ?
-                                  columnAnnotation.name() : camelToSnake(field.getName());
+                        columnAnnotation.name() : camelToSnake(field.getName());
                 String fullColumnName = StringUtils.hasText(columnAnnotation.tableAlias()) ?
-                                      columnAnnotation.tableAlias() + "." + columnName :
-                                      (StringUtils.hasText(tableAlias) ? tableAlias + "." + columnName : columnName);
+                        columnAnnotation.tableAlias() + "." + columnName :
+                        (StringUtils.hasText(tableAlias) ? tableAlias + "." + columnName : columnName);
 
                 fieldsList.add(fullColumnName);
             } else {
                 // 默认使用驼峰转下划线
                 String columnName = camelToSnake(field.getName());
                 String fullColumnName = StringUtils.hasText(tableAlias) ?
-                                      tableAlias + "." + columnName : columnName;
+                        tableAlias + "." + columnName : columnName;
                 fieldsList.add(fullColumnName);
             }
         }
@@ -162,7 +206,7 @@ public class DynamicSqlBuilderFactory {
         QueryType queryType = columnAnnotation != null ? columnAnnotation.queryType() : QueryType.EQ;
         NullHandleStrategy nullStrategy = columnAnnotation != null ? columnAnnotation.nullStrategy() : NullHandleStrategy.IGNORE;
         String paramName = columnAnnotation != null && StringUtils.hasText(columnAnnotation.paramName()) ?
-                          columnAnnotation.paramName() : null;
+                columnAnnotation.paramName() : null;
 
         switch (queryType) {
             case EQ:
@@ -250,9 +294,9 @@ public class DynamicSqlBuilderFactory {
                 String valueStr = value.toString();
                 String[] split = valueStr.split(",");
                 if (paramName != null && !paramName.isEmpty()) {
-                    builder.between(columnName, paramName,split[0], paramName, split[split.length-1]);
+                    builder.between(columnName, paramName, split[0], paramName, split[split.length - 1]);
                 } else {
-                    builder.between(columnName, split[0],split[split.length-1]);
+                    builder.between(columnName, split[0], split[split.length - 1]);
                 }
                 break;
         }
@@ -264,7 +308,7 @@ public class DynamicSqlBuilderFactory {
     private static String getColumnName(Field field, SqlColumn columnAnnotation) {
         if (columnAnnotation != null) {
             String columnName = StringUtils.hasText(columnAnnotation.name()) ?
-                              columnAnnotation.name() : camelToSnake(field.getName());
+                    columnAnnotation.name() : camelToSnake(field.getName());
 
             if (StringUtils.hasText(columnAnnotation.tableAlias())) {
                 return columnAnnotation.tableAlias() + "." + columnName;
