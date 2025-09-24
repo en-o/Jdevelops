@@ -86,7 +86,6 @@ public class DynamicSqlBuilderFactory {
      * 构建SELECT字段
      */
     private static String buildSelectFields(Class<?> clazz, SqlTable tableAnnotation) {
-        StringBuilder fields = new StringBuilder();
         Field[] allFields = clazz.getDeclaredFields();
         List<String> fieldsList = new ArrayList<>();
 
