@@ -10,7 +10,7 @@ package cn.tannn.jdevelops.jdectemplate.sql;
 public class PageInfo {
 
     /**
-     * 页码
+     * 页码 从1开始
      */
     private Integer pageIndex;
 
@@ -20,6 +20,16 @@ public class PageInfo {
     private Integer pageSize;
 
     public Integer getPageIndex() {
+        if(pageIndex == null){
+            return 1;
+        } else if (pageIndex<1) {
+            return 0;
+        } else {
+            return pageIndex-1;
+        }
+    }
+
+    public Integer getRealPageIndex() {
         return pageIndex;
     }
 
