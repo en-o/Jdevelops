@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Specification 包装类
@@ -568,6 +569,227 @@ public class SpecificationWrapper<B> {
                                                                              Y start, Y end) {
         predicates.add(builder.between(path, start, end));
         return this;
+    }
+
+
+    // ================================== 子查询 EXISTS ==================================
+
+    /**
+     * EXISTS 子查询
+     *
+     * @param subEntityClass 子查询实体类
+     * @param subQueryBuilder 子查询构建器
+     * @param <S> 子查询实体类型
+     * @return SpecificationWrapper
+     */
+    public <S> SpecificationWrapper<B> exists(Class<S> subEntityClass,
+                                              Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        Subquery<S> subquery = query.subquery(subEntityClass);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot);
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        predicates.add(this.builder.exists(subquery));
+        return this;
+    }
+
+    /**
+     * NOT EXISTS 子查询
+     *
+     * @param subEntityClass 子查询实体类
+     * @param subQueryBuilder 子查询构建器
+     * @param <S> 子查询实体类型
+     * @return SpecificationWrapper
+     */
+    public <S> SpecificationWrapper<B> notExists(Class<S> subEntityClass,
+                                                 Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        Subquery<S> subquery = query.subquery(subEntityClass);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot);
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        predicates.add(this.builder.exists(subquery).not());
+        return this;
+    }
+
+    // ================================== 子查询 IN ==================================
+
+    /**
+     * IN 子查询 - 返回单个字段
+     *
+     * @param fieldName 主查询字段名
+     * @param subEntityClass 子查询实体类
+     * @param subSelectField 子查询选择字段
+     * @param subQueryBuilder 子查询构建器
+     * @param <S> 子查询实体类型
+     * @return SpecificationWrapper
+     */
+    public <S> SpecificationWrapper<B> inSubQuery(String fieldName,
+                                                  Class<S> subEntityClass,
+                                                  String subSelectField,
+                                                  Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        // 不指定具体类型，让 JPA 自动推断
+        Subquery<?> subquery = query.subquery(Object.class);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot.get(subSelectField));
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        Expression<?> mainFieldPath = getFieldPath(fieldName);
+        predicates.add(mainFieldPath.in(subquery));
+        return this;
+    }
+
+    /**
+     * NOT IN 子查询 - 返回单个字段
+     *
+     * @param fieldName 主查询字段名
+     * @param subEntityClass 子查询实体类
+     * @param subSelectField 子查询选择字段
+     * @param subQueryBuilder 子查询构建器
+     * @param <S> 子查询实体类型
+     * @return SpecificationWrapper
+     */
+    public <S> SpecificationWrapper<B> notInSubQuery(String fieldName,
+                                                     Class<S> subEntityClass,
+                                                     String subSelectField,
+                                                     Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        // 不指定具体类型，让 JPA 自动推断
+        Subquery<?> subquery = query.subquery(Object.class);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot.get(subSelectField));
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        Expression<?> mainFieldPath = getFieldPath(fieldName);
+        predicates.add(mainFieldPath.in(subquery).not());
+        return this;
+    }
+
+    // ================================== 子查询 IN - 类型安全版本 ==================================
+
+    /**
+     * IN 子查询 - 返回单个字段 (类型安全版本)
+     *
+     * @param fieldName 主查询字段名
+     * @param subEntityClass 子查询实体类
+     * @param subSelectField 子查询选择字段
+     * @param subQueryBuilder 子查询构建器
+     * @param resultType 结果类型
+     * @param <S> 子查询实体类型
+     * @param <T> 字段类型
+     * @return SpecificationWrapper
+     */
+    public <S, T> SpecificationWrapper<B> inSubQuery(String fieldName,
+                                                     Class<S> subEntityClass,
+                                                     String subSelectField,
+                                                     Class<T> resultType,
+                                                     Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        Subquery<T> subquery = query.subquery(resultType);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot.get(subSelectField));
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        Expression<?> mainFieldPath = getFieldPath(fieldName);
+        predicates.add(mainFieldPath.in(subquery));
+        return this;
+    }
+
+    /**
+     * NOT IN 子查询 - 返回单个字段 (类型安全版本)
+     *
+     * @param fieldName 主查询字段名
+     * @param subEntityClass 子查询实体类
+     * @param subSelectField 子查询选择字段
+     * @param subQueryBuilder 子查询构建器
+     * @param resultType 结果类型
+     * @param <S> 子查询实体类型
+     * @param <T> 字段类型
+     * @return SpecificationWrapper
+     */
+    public <S, T> SpecificationWrapper<B> notInSubQuery(String fieldName,
+                                                        Class<S> subEntityClass,
+                                                        String subSelectField,
+                                                        Class<T> resultType,
+                                                        Function<SubQueryBuilder<S>, SubQueryBuilder<S>> subQueryBuilder) {
+        if (subQueryBuilder == null) {
+            throw new IllegalArgumentException("SubQuery builder cannot be null");
+        }
+
+        Subquery<T> subquery = query.subquery(resultType);
+        Root<S> subRoot = subquery.from(subEntityClass);
+        SubQueryBuilder<S> builder = new SubQueryBuilder<>(subRoot, this.builder);
+
+        SubQueryBuilder<S> result = subQueryBuilder.apply(builder);
+        subquery.select(subRoot.get(subSelectField));
+
+        if (result.getPredicates() != null && !result.getPredicates().isEmpty()) {
+            subquery.where(result.getPredicates().toArray(new Predicate[0]));
+        }
+
+        Expression<?> mainFieldPath = getFieldPath(fieldName);
+        predicates.add(mainFieldPath.in(subquery).not());
+        return this;
+    }
+
+    /**
+     * 获取字段路径，支持关联查询
+     */
+    private Expression<?> getFieldPath(String fieldName) {
+        if (fieldName.contains(SEPARATOR)) {
+            String[] arr = fieldName.split("\\" + SEPARATOR);
+            return this.leftJoin(arr[0]).get(arr[1]);
+        } else {
+            return this.root.get(fieldName);
+        }
     }
 
     // ================================== join ==================================
