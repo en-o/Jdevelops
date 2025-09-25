@@ -1,14 +1,10 @@
 package cn.tannn.jdevelops.jdectemplate.sql;
 
 import cn.tannn.jdevelops.jdectemplate.annotations.*;
-import cn.tannn.jdevelops.jdectemplate.enums.QueryType;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Field;
-import java.util.*;
 import java.util.function.Consumer;
 
-import static cn.tannn.jdevelops.jdectemplate.sql.SqlUtil.camelToSnake;
 import static cn.tannn.jdevelops.jdectemplate.sql.v2.SqlConditionProcessor.processQueryConditions;
 import static cn.tannn.jdevelops.jdectemplate.sql.v2.SqlFieldBuilder.buildSelectFields;
 import static cn.tannn.jdevelops.jdectemplate.sql.v2.SqlOrderProcessor.processOrderBy;
