@@ -9,6 +9,14 @@ import java.util.Collection;
  * @date 2025/7/3 13:13
  */
 public class SqlUtil {
+
+    /**
+     * 驼峰转下划线
+     */
+    public static String camelToSnake(String camelCase) {
+        return camelCase.replaceAll("([A-Z])", "_$1").toLowerCase();
+    }
+
     /**
      * 查找主查询FROM关键字的位置，避免子查询中的FROM干扰
      */
