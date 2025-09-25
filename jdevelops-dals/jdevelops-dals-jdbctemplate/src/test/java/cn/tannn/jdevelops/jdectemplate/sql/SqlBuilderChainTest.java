@@ -24,8 +24,6 @@ public class SqlBuilderChainTest {
                 .select(UserResultVO.class)
                 .from()
                 .where()
-                .groupBy((String) null)
-                .having((String) null)
                 .orderBy("u.name ASC")
                 .limit(0, 20)
                 .build();

@@ -252,7 +252,8 @@ public class SqlBuilderChain {
      * 构建ORDER BY部分 - 基于注解自动构建
      */
     public SqlBuilderChain orderBy() {
-        ensureBuilt(havingBuilt, "HAVING");
+//        ensureBuilt(havingBuilt, "HAVING");
+        ensureBuilt(groupByBuilt || !havingBuilt, "GROUP BY or skip HAVING");
         ensureNotBuilt(orderByBuilt, "ORDER BY");
 
         SqlOrderProcessor.processOrderBy(builder, queryObj.getClass());
@@ -264,7 +265,8 @@ public class SqlBuilderChain {
      * 构建ORDER BY部分 - 自定义排序
      */
     public SqlBuilderChain orderBy(String orderByClause) {
-        ensureBuilt(havingBuilt, "HAVING");
+//        ensureBuilt(havingBuilt, "HAVING");
+        ensureBuilt(groupByBuilt || !havingBuilt, "GROUP BY or skip HAVING");
         ensureNotBuilt(orderByBuilt, "ORDER BY");
 
         // 先处理注解
@@ -281,7 +283,8 @@ public class SqlBuilderChain {
      * 构建ORDER BY部分 - 扩展方式
      */
     public SqlBuilderChain orderBy(Consumer<StringBuilder> orderByExtender) {
-        ensureBuilt(havingBuilt, "HAVING");
+//        ensureBuilt(havingBuilt, "HAVING");
+        ensureBuilt(groupByBuilt || !havingBuilt, "GROUP BY or skip HAVING");
         ensureNotBuilt(orderByBuilt, "ORDER BY");
 
         // 首先处理注解
