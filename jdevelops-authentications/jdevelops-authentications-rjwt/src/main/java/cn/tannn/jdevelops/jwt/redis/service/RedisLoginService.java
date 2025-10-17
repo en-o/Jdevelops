@@ -62,8 +62,12 @@ public class RedisLoginService implements LoginService {
                 List<String> input = loginMeta.getPlatform();
                 if (input != null && jwtConfig.getVerifyPlatform()) {
                     List<String> local = JwtService.getPlatformConstantExpires(token);
-                    if (!CollectionUtils.subtract(input, local).isEmpty()) {
+                    if(local == null){
+                        logger.warn("login user not setting platform ");
+                    }else if (!CollectionUtils.subtract(input, local).isEmpty()) {
                         throw new LoginException("存储的 platform 跟新登录的platform不一致");
+                    }else {
+                        logger.debug("毁灭吧！你们什么都不设置我也不管了");
                     }
                 }
                 // 继续使用当前token
