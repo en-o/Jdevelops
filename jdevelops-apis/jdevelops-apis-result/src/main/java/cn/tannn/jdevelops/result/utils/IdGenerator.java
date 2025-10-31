@@ -16,6 +16,11 @@ import java.util.zip.CRC32;
  *   4. 支持Base64URL短链接格式
  *   5. 线程安全的雪花算法
  * </p>
+ * <p>
+ *     1. 如果你的集群超过32台机器，可能会出现ID冲突（5位只能表示32个值）
+ *     2. 对于大规模集群，建议使用配置中心统一分配workerId和datacenterId
+ *     3.虚拟机/容器环境下MAC地址可能不稳定，建议用环境变量显式指定
+ * </p>
  */
 public final class IdGenerator {
 
@@ -87,6 +92,83 @@ public final class IdGenerator {
      */
     public static IdGenerator createDefault() {
         return new IdGenerator(1, 1);
+    }
+
+    /**
+     * 自动创建实例（根据机器信息生成workerId和datacenterId）
+     * 基于机器MAC地址、主机名、IP等信息生成稳定的ID
+     * 适合分布式环境且无法手动分配ID的场景
+     */
+    public static IdGenerator createAuto() {
+        long workerId = generateWorkerId();
+        long datacenterId = generateDatacenterId();
+        return new IdGenerator(workerId, datacenterId);
+    }
+
+    /**
+     * 根据机器信息生成workerId (0-31)
+     * 策略：使用MAC地址 + 主机名的哈希值
+     */
+    private static long generateWorkerId() {
+        try {
+            StringBuilder sb = new StringBuilder();
+
+            // 1. 获取MAC地址
+            java.net.NetworkInterface network = java.net.NetworkInterface.getByInetAddress(
+                    java.net.InetAddress.getLocalHost()
+            );
+            if (network != null) {
+                byte[] mac = network.getHardwareAddress();
+                if (mac != null) {
+                    for (byte b : mac) {
+                        sb.append(String.format("%02X", b));
+                    }
+                }
+            }
+
+            // 2. 添加主机名
+            sb.append(java.net.InetAddress.getLocalHost().getHostName());
+
+            // 3. 计算哈希并映射到 0-31
+            int hash = sb.toString().hashCode();
+            return Math.abs(hash) % (MAX_WORKER_ID + 1);
+
+        } catch (Exception e) {
+            // 如果获取失败，使用进程ID作为后备方案
+            return getProcessId() % (MAX_WORKER_ID + 1);
+        }
+    }
+
+    /**
+     * 根据机器信息生成datacenterId (0-31)
+     * 策略：使用IP地址的哈希值
+     */
+    private static long generateDatacenterId() {
+        try {
+            // 获取本机IP地址
+            String ip = java.net.InetAddress.getLocalHost().getHostAddress();
+            int hash = ip.hashCode();
+            return Math.abs(hash) % (MAX_DATACENTER_ID + 1);
+
+        } catch (Exception e) {
+            // 如果获取失败，使用系统属性作为后备方案
+            String fallback = System.getProperty("user.name") + System.getProperty("os.name");
+            int hash = fallback.hashCode();
+            return Math.abs(hash) % (MAX_DATACENTER_ID + 1);
+        }
+    }
+
+    /**
+     * 获取当前进程ID
+     */
+    private static long getProcessId() {
+        try {
+            // Java 9+ 可以直接使用 ProcessHandle.current().pid()
+            String processName = java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+            return Long.parseLong(processName.split("@")[0]);
+        } catch (Exception e) {
+            return ThreadLocalRandom.current().nextInt(1000);
+        }
     }
 
     /**

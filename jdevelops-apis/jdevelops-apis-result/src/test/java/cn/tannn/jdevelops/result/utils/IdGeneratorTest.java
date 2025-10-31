@@ -10,16 +10,25 @@ class IdGeneratorTest {
     // ========== 使用示例 ==========
     @Test
     void testAll() {
+// ========== 使用示例 ==========
 
         // 方式1：使用默认配置（推荐）
-        IdGenerator g = IdGenerator.createDefault();
+//        IdGenerator g = IdGenerator.createDefault();
+// ✅ 推荐：自动获取（适合生产环境，同一台机器生成的ID稳定）
+        IdGenerator g = IdGenerator.createAuto();
+
+// 开发环境：简单默认值
+//        IdGenerator g = IdGenerator.createDefault();
+
+            // 手动指定（如果你有自己的机器ID分配策略）
+//        IdGenerator g = new IdGenerator(1, 2);
 
         // 方式2：自定义workerId和datacenterId
         // IdGenerator g = new IdGenerator(1, 2);
 
         // 方式3：完全自定义（包括epoch）
-//         long customEpoch = Instant.parse("2025-01-01T00:00:00Z").toEpochMilli();
-//         IdGenerator g = new IdGenerator(1, 2, customEpoch);
+        // long customEpoch = Instant.parse("2025-01-01T00:00:00Z").toEpochMilli();
+        // IdGenerator g = new IdGenerator(1, 2, customEpoch);
 
         System.out.println("=== 生成器信息 ===");
         System.out.println("Epoch: " + Instant.ofEpochMilli(g.getEpoch()));
