@@ -15,14 +15,14 @@ import java.util.regex.Pattern;
  * 父级: A1290WBHYAAAAAAACCG6ZA-P1
  * 解析: [A1290WBHYAAAAAAACCG6ZA, P1, SEC2]
  */
-public class LayeredShortIdGenerator {
+public class LayeredIdGenerator {
 
     private static final Pattern PATH_PATTERN = Pattern.compile("^([a-zA-Z0-9\\-]+?)(?:-(P\\d+|SEC\\d+)(?:-(SEC\\d+))*)?$");
 
 
     private final IdGenerator idGenerator;
 
-    public LayeredShortIdGenerator(IdGenerator idGenerator) {
+    public LayeredIdGenerator(IdGenerator idGenerator) {
         this.idGenerator = idGenerator;
     }
 
