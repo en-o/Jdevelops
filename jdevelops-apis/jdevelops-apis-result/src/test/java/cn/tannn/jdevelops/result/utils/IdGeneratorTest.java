@@ -5,17 +5,27 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class IdGeneratorTest {
-
+    // ========== 使用示例 ==========
     @Test
     void testAll() {
 
-        long exampleEpoch = Instant.parse("2024-01-01T00:00:00Z").toEpochMilli();
-        IdGenerator g = new IdGenerator(1, 1, exampleEpoch);
+        // 方式1：使用默认配置（推荐）
+        IdGenerator g = IdGenerator.createDefault();
 
-        System.out.println("=== 创建文章 ===");
+        // 方式2：自定义workerId和datacenterId
+        // IdGenerator g = new IdGenerator(1, 2);
+
+        // 方式3：完全自定义（包括epoch）
+//         long customEpoch = Instant.parse("2025-01-01T00:00:00Z").toEpochMilli();
+//         IdGenerator g = new IdGenerator(1, 2, customEpoch);
+
+        System.out.println("=== 生成器信息 ===");
+        System.out.println("Epoch: " + Instant.ofEpochMilli(g.getEpoch()));
+        System.out.println("可用到: " + g.getMaxTimestamp() + " (约69年后)");
+
+        System.out.println("\n=== 创建文章 ===");
         UUID articleId = g.nextId(null, IdGenerator.Type.ARTICLE);
         System.out.println("文章UUID: " + articleId);
         System.out.println("短链接: " + IdGenerator.toBase64Url(articleId));

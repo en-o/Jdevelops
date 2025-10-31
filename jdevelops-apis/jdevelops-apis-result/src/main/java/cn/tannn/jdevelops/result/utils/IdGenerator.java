@@ -2,8 +2,7 @@ package cn.tannn.jdevelops.result.utils;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.CRC32;
 
@@ -19,6 +18,9 @@ import java.util.zip.CRC32;
  * </p>
  */
 public final class IdGenerator {
+
+    // 默认epoch：2024-01-01 00:00:00 UTC (可用到2093年)
+    public static final long DEFAULT_EPOCH = 1704067200000L;
 
     // --- Snowflake params ---
     private final long epoch;
@@ -52,16 +54,39 @@ public final class IdGenerator {
         }
     }
 
-    public IdGenerator(long datacenterId, long workerId, long epochMillis) {
+    /**
+     * 构造函数（使用默认epoch）
+     * @param workerId 工作机器ID (0-31)
+     * @param datacenterId 数据中心ID (0-31)
+     */
+    public IdGenerator(long workerId, long datacenterId) {
+        this(workerId, datacenterId, DEFAULT_EPOCH);
+    }
+
+    /**
+     * 构造函数（自定义epoch）
+     * @param workerId 工作机器ID (0-31)
+     * @param datacenterId 数据中心ID (0-31)
+     * @param epochMillis 自定义epoch时间戳（毫秒）
+     */
+    public IdGenerator(long workerId, long datacenterId, long epochMillis) {
         if (workerId < 0 || workerId > MAX_WORKER_ID) {
             throw new IllegalArgumentException("workerId out of range [0-31]: " + workerId);
         }
         if (datacenterId < 0 || datacenterId > MAX_DATACENTER_ID) {
             throw new IllegalArgumentException("datacenterId out of range [0-31]: " + datacenterId);
         }
-        this.datacenterId = datacenterId;
         this.workerId = workerId;
+        this.datacenterId = datacenterId;
         this.epoch = epochMillis;
+    }
+
+    /**
+     * 快速创建实例（使用默认配置）
+     * 适合单机或开发环境使用
+     */
+    public static IdGenerator createDefault() {
+        return new IdGenerator(1, 1);
     }
 
     /**
@@ -91,9 +116,9 @@ public final class IdGenerator {
 
             long timestampPart = (ts - epoch) & ((1L << 41) - 1);
             high = (timestampPart << TIMESTAMP_SHIFT)
-                    | (datacenterId << DATACENTER_ID_SHIFT)
-                    | (workerId << WORKER_ID_SHIFT)
-                    | sequence;
+                   | (datacenterId << DATACENTER_ID_SHIFT)
+                   | (workerId << WORKER_ID_SHIFT)
+                   | sequence;
         }
 
         return new UUID(high, low);
@@ -119,7 +144,7 @@ public final class IdGenerator {
         return (int) crc.getValue();
     }
 
-    // ========== 新增：父子关系验证 ==========
+    // ========== 父子关系验证 ==========
 
     /**
      * 验证child是否是parent的直接子节点
@@ -175,6 +200,18 @@ public final class IdGenerator {
         return Type.fromCode(typeBits);
     }
 
+    /**
+     * 计算UUID的可用时间范围（到哪一年）
+     */
+    public Instant getMaxTimestamp() {
+        long maxOffset = (1L << 41) - 1; // 41位最大值
+        return Instant.ofEpochMilli(epoch + maxOffset);
+    }
+
+    public long getEpoch() {
+        return epoch;
+    }
+
     // ========== 解析工具 ==========
 
     public static class ParseResult {
@@ -199,8 +236,8 @@ public final class IdGenerator {
         @Override
         public String toString() {
             return String.format(
-                "ParseResult{timestamp=%s, dc=%d, worker=%d, seq=%d, parentHash=0x%08X, type=%s, random=%d}",
-                timestamp, datacenterId, workerId, sequence, parentHash32, type, random28
+                    "ParseResult{timestamp=%s, dc=%d, worker=%d, seq=%d, parentHash=0x%08X, type=%s, random=%d}",
+                    timestamp, datacenterId, workerId, sequence, parentHash32, type, random28
             );
         }
     }
@@ -220,13 +257,13 @@ public final class IdGenerator {
         int random28 = (int) (low & 0x0FFFFFFFL);
 
         return new ParseResult(
-            Instant.ofEpochMilli(ts),
-            datacenter,
-            worker,
-            sequence,
-            parentHash,
-            Type.fromCode(typeBits),
-            random28
+                Instant.ofEpochMilli(ts),
+                datacenter,
+                worker,
+                sequence,
+                parentHash,
+                Type.fromCode(typeBits),
+                random28
         );
     }
 
@@ -274,4 +311,5 @@ public final class IdGenerator {
     private static long currentTime() {
         return Instant.now().toEpochMilli();
     }
+
 }
