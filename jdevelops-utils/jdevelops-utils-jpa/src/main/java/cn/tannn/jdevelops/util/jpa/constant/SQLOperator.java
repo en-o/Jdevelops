@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.constant;
+package cn.tannn.jdevelops.util.jpa.constant;
 
 /**
  * 关系运算符

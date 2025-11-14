@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.utils;
+package cn.tannn.jdevelops.util.jpa;
 
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;

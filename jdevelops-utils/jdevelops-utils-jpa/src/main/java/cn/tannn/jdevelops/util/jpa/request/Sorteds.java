@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.request;
+package cn.tannn.jdevelops.util.jpa.request;
 
 import cn.tannn.jdevelops.result.request.Sorted;
 import org.springframework.data.domain.Sort;

@@ -1,11 +1,12 @@
-package cn.tannn.jdevelops.jpa.utils;
+package cn.tannn.jdevelops.util.jpa;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
-import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import cn.tannn.jdevelops.util.jpa.constant.SQLOperator;
+import cn.tannn.jdevelops.util.jpa.select.EnhanceSpecification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
 import jakarta.persistence.TypedQuery;
@@ -133,7 +134,7 @@ public class JpaUtils {
      * @param builder   {@link CriteriaBuilder}}
      * @param function  {@link SpecBuilderDateFun}}
      * @param fieldName 字段名,可以处理 `address.name` 这种key
-     * @see cn.tannn.jdevelops.jpa.select.EnhanceSpecification#beanWhere(Object)
+     * @see EnhanceSpecification#beanWhere(Object)
      * @return Expression
      */
     public static Expression str2Path(Root<?> root, CriteriaBuilder builder, SpecBuilderDateFun function, String fieldName) {
@@ -315,7 +316,7 @@ public class JpaUtils {
      * @param criteriaBuilder {@link CriteriaBuilder}
      * @param predicates List
      * @return Predicate
-     * @see cn.tannn.jdevelops.jpa.select.EnhanceSpecification#where
+     * @see EnhanceSpecification#where
      */
     public static Predicate combinePredicates(CriteriaBuilder criteriaBuilder, List<Predicate> predicates) {
         if (predicates == null || predicates.isEmpty()) {

@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.request;
+package cn.tannn.jdevelops.util.jpa.request;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Sort;

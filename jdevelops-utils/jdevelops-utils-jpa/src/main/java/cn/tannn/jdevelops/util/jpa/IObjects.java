@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.utils;
+package cn.tannn.jdevelops.util.jpa;
 
 
 import java.util.Objects;

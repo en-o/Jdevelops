@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.select;
+package cn.tannn.jdevelops.util.jpa.select;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
@@ -9,9 +9,9 @@ import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.enums.SpecBuilderDateFun;
 import cn.tannn.jdevelops.annotations.jpa.specification.OperatorWrapper;
 import cn.tannn.jdevelops.annotations.jpa.specification.SpecificationWrapper;
-import cn.tannn.jdevelops.jpa.exception.JpaException;
-import cn.tannn.jdevelops.jpa.utils.IObjects;
-import cn.tannn.jdevelops.jpa.utils.JpaUtils;
+import cn.tannn.jdevelops.util.jpa.IObjects;
+import cn.tannn.jdevelops.util.jpa.JpaUtils;
+import cn.tannn.jdevelops.util.jpa.exception.JpaException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

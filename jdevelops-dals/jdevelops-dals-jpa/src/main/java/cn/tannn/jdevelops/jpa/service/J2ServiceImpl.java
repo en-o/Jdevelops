@@ -1,14 +1,14 @@
 package cn.tannn.jdevelops.jpa.service;
 
-import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.exception.JpaException;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
-import cn.tannn.jdevelops.jpa.request.PagingSorteds;
-import cn.tannn.jdevelops.jpa.request.Pagings;
-import cn.tannn.jdevelops.jpa.request.Sorteds;
-import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
-import cn.tannn.jdevelops.jpa.utils.JpaUtils;
 import cn.tannn.jdevelops.result.bean.SerializableBean;
+import cn.tannn.jdevelops.util.jpa.JpaUtils;
+import cn.tannn.jdevelops.util.jpa.constant.SQLOperator;
+import cn.tannn.jdevelops.util.jpa.request.PagingSorteds;
+import cn.tannn.jdevelops.util.jpa.request.Pagings;
+import cn.tannn.jdevelops.util.jpa.request.Sorteds;
+import cn.tannn.jdevelops.util.jpa.select.EnhanceSpecification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;

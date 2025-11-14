@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jpa.request;
+package cn.tannn.jdevelops.util.jpa.request;
 
 import cn.tannn.jdevelops.result.request.Paging;
 import io.swagger.v3.oas.annotations.media.Schema;
