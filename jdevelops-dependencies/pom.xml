@@ -309,7 +309,11 @@
                 <artifactId>jdevelops-utils-validation</artifactId>
                 <version>${jdevelops.util.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-utils-jpa</artifactId>
+                <version>${jdevelops.util.version}</version>
+            </dependency>
 
             <!--web-->
             <dependency>

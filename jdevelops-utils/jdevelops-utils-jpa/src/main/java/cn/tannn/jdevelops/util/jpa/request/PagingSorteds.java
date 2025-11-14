@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.util.jpa.request;
 
 import cn.tannn.jdevelops.result.request.PagingSorted;
 import cn.tannn.jdevelops.result.request.Sorted;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
