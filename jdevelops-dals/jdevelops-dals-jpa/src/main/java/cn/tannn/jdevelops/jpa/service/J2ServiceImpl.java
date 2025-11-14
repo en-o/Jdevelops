@@ -1,10 +1,10 @@
 package cn.tannn.jdevelops.jpa.service;
 
-import cn.tannn.jdevelops.jpa.exception.JpaException;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
 import cn.tannn.jdevelops.result.bean.SerializableBean;
 import cn.tannn.jdevelops.util.jpa.JpaUtils;
 import cn.tannn.jdevelops.util.jpa.constant.SQLOperator;
+import cn.tannn.jdevelops.util.jpa.exception.JpaException;
 import cn.tannn.jdevelops.util.jpa.request.PagingSorteds;
 import cn.tannn.jdevelops.util.jpa.request.Pagings;
 import cn.tannn.jdevelops.util.jpa.request.Sorteds;
