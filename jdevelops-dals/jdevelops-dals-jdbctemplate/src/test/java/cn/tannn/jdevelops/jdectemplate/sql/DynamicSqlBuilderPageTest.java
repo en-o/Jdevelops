@@ -1,18 +1,5 @@
 package cn.tannn.jdevelops.jdectemplate.sql;
 
-import cn.tannn.jdevelops.result.response.ResultPageVO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.DataClassRowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class DynamicSqlBuilderPageDemo {
 
 //

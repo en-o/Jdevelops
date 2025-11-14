@@ -1,8 +1,6 @@
 package cn.tannn.jdevelops.util.excel.listener;
 
 import cn.idev.excel.EasyExcel;
-import cn.idev.excel.FastExcel;
-import cn.tannn.jdevelops.util.excel.listener.ExcelDataFunListener;
 import cn.tannn.jdevelops.util.excel.model.CommonExcel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,15 +2,9 @@ package cn.tannn.jdevelops.utils.core.file;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ImageBase64CompressedTest {
 

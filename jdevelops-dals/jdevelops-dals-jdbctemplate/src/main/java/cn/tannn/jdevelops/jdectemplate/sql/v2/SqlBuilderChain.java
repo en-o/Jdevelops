@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.jdectemplate.sql.v2;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.*;
 import cn.tannn.jdevelops.jdectemplate.sql.DynamicSqlBuilder;
 import cn.tannn.jdevelops.jdectemplate.sql.ParameterMode;
 import org.springframework.util.StringUtils;

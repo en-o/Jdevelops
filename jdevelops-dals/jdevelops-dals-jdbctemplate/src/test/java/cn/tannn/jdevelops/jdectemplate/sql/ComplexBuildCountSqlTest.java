@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.jdectemplate.sql;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

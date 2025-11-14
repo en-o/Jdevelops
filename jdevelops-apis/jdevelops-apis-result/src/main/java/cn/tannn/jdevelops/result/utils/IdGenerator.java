@@ -2,7 +2,8 @@ package cn.tannn.jdevelops.result.utils;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.*;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.CRC32;
 

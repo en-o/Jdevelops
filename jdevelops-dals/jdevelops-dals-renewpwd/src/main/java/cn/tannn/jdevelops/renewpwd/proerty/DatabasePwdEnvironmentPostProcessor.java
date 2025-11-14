@@ -1,6 +1,5 @@
 package cn.tannn.jdevelops.renewpwd.proerty;
 
-import cn.tannn.jdevelops.renewpwd.exception.SQLExceptionHandlingHelper;
 import cn.tannn.jdevelops.renewpwd.jdbc.ExecuteJdbcSql;
 import cn.tannn.jdevelops.renewpwd.properties.RenewpwdProperties;
 import cn.tannn.jdevelops.renewpwd.util.AESUtil;
@@ -16,8 +15,6 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
-
-import java.sql.SQLException;
 
 /**
  * 数据库密码处理器 - 启动时对密码进行处理

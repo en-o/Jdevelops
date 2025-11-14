@@ -1,14 +1,13 @@
 package cn.tannn.jdevelops.utils.core.file;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 
 /**
  * ImageBase64压缩工具类

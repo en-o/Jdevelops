@@ -2,8 +2,6 @@ package cn.tannn.jdevelops.utils.time;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DateSequenceGeneratorTest {
 
     @Test
