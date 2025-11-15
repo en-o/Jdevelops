@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
     <artifactId>jdevelops-dals</artifactId>
     <version>${revision}</version>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.2-SNAPSHOT</revision>
+        <revision>1.0.3</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>
