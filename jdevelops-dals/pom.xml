@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.3</revision>
+        <revision>1.0.4-SNAPSHOT</revision>
         <!-- spring  -->
         <mysql.version>8.0.33</mysql.version>
         <elasticsearch.version>8.6.2</elasticsearch.version>
