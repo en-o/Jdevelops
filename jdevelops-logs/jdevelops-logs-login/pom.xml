@@ -31,7 +31,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-aop</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
