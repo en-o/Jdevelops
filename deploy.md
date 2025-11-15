@@ -1,5 +1,6 @@
 # 发布版本
-> 只发布非SNAPSHOT版本
+> - 只发布非SNAPSHOT版本
+> - maven配置记得同时勾选 ossrh 和 release
 1. 请用 maven 3.9+
 2. 将 SNAPSHOT 版本修改成发布版（只改发布的版本号）
 3. 执行发版 `mvn clean deploy -P release`
