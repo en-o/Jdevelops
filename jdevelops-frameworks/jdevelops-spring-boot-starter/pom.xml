@@ -18,19 +18,8 @@
 
     <properties>
         <commons-codec.version>1.16.1</commons-codec.version>
+        <jdevelops.f.version>1.0.3</jdevelops.f.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.tannn.jdevelops</groupId>
-                <artifactId>jdevelops-dependencies</artifactId>
-                <version>1.0.3.1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -47,52 +36,63 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-jpa</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
 
         <!--api-->
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-knife4j</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-log</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
 
         <!--log-->
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-logs-logback</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-logs-p6spy</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
 
         <!--util-->
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-validation</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-spring</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-core</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-http</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-utils-time</artifactId>
+            <version>${jdevelops.f.version}</version>
         </dependency>
 
         <!-- Test dependencies -->
