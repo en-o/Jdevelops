@@ -4,8 +4,8 @@ import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.annotations.jpa.enums.SQLConnect;
 import cn.tannn.jdevelops.annotations.jpa.enums.SQLOperatorWrapper;
-import cn.tannn.jdevelops.jpa.request.PagingSorteds;
 import cn.tannn.jdevelops.result.bean.SerializableBean;
+import cn.tannn.jdevelops.util.jpa.request.PagingSorteds;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 

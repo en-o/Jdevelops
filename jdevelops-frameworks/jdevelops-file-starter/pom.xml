@@ -27,24 +27,24 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-dals-jpa</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-knife4j</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-files-sdk</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

@@ -1,12 +1,12 @@
 package cn.tannn.jdevelops.quick.quratz.controller;
 
 
-import cn.tannn.jdevelops.jpa.request.Pagings;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
 import cn.tannn.jdevelops.quartz.dao.bo.JobAndTriggerBO;
 import cn.tannn.jdevelops.quartz.service.ScheduleService;
 import cn.tannn.jdevelops.result.response.ResultPageVO;
 import cn.tannn.jdevelops.result.response.ResultVO;
+import cn.tannn.jdevelops.util.jpa.request.Pagings;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
