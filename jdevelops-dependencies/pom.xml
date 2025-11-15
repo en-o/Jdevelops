@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>jdevelops :: dependencies</name>
     <description>
         jdevelops 所有组件的清单，统一的版本(物料清单)
@@ -55,21 +55,21 @@
     </developers>
 
     <properties>
-        <jdevelops.api.version>1.0.2-SNAPSHOT</jdevelops.api.version>
-        <jdevelops.annotation.version>1.0.2-SNAPSHOT</jdevelops.annotation.version>
-        <jdevelops.authentication.version>1.0.2-SNAPSHOT</jdevelops.authentication.version>
+        <jdevelops.api.version>1.0.3</jdevelops.api.version>
+        <jdevelops.annotation.version>1.0.3</jdevelops.annotation.version>
+        <jdevelops.authentication.version>1.0.3</jdevelops.authentication.version>
 
-        <jdevelops.dal.version>1.0.2-SNAPSHOT</jdevelops.dal.version>
-        <jdevelops.delay.version>1.0.2-SNAPSHOT</jdevelops.delay.version>
-        <jdevelops.event.version>1.0.2-SNAPSHOT</jdevelops.event.version>
-        <jdevelops.file.version>1.0.2-SNAPSHOT</jdevelops.file.version>
+        <jdevelops.dal.version>1.0.3</jdevelops.dal.version>
+        <jdevelops.delay.version>1.0.3</jdevelops.delay.version>
+        <jdevelops.event.version>1.0.3</jdevelops.event.version>
+        <jdevelops.file.version>1.0.3</jdevelops.file.version>
 
-        <jdevelops.log.version>1.0.2-SNAPSHOT</jdevelops.log.version>
-        <jdevelops.monitor.version>1.0.2-SNAPSHOT</jdevelops.monitor.version>
+        <jdevelops.log.version>1.0.3</jdevelops.log.version>
+        <jdevelops.monitor.version>1.0.3</jdevelops.monitor.version>
 
-        <jdevelops.spi.version>1.0.2-SNAPSHOT</jdevelops.spi.version>
-        <jdevelops.util.version>1.0.2-SNAPSHOT</jdevelops.util.version>
-        <jdevelops.web.version>1.0.2-SNAPSHOT</jdevelops.web.version>
+        <jdevelops.spi.version>1.0.3</jdevelops.spi.version>
+        <jdevelops.util.version>1.0.3</jdevelops.util.version>
+        <jdevelops.web.version>1.0.3</jdevelops.web.version>
 
     </properties>
 
@@ -217,6 +217,11 @@
             <dependency>
                 <groupId>cn.tannn.jdevelops</groupId>
                 <artifactId>jdevelops-events-redis</artifactId>
+                <version>${jdevelops.event.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.tannn.jdevelops</groupId>
+                <artifactId>jdevelops-events-redismq</artifactId>
                 <version>${jdevelops.event.version}</version>
             </dependency>
             <dependency>
