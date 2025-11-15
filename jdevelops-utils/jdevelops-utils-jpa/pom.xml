@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-utils</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>jdevelops-utils-jpa</artifactId>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-annotations-jpa</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
