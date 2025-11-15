@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>jdevelops :: dependencies</name>
     <description>
         jdevelops 所有组件的清单，统一的版本(物料清单)
@@ -67,7 +67,7 @@
         <jdevelops.log.version>1.0.3</jdevelops.log.version>
         <jdevelops.monitor.version>1.0.3</jdevelops.monitor.version>
 
-        <jdevelops.spi.version>1.0.3</jdevelops.spi.version>
+        <jdevelops.spi.version>1.0.2</jdevelops.spi.version>
         <jdevelops.util.version>1.0.3</jdevelops.util.version>
         <jdevelops.web.version>1.0.3</jdevelops.web.version>
 
