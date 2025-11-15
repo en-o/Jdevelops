@@ -22,7 +22,7 @@ public class MqUtil {
      * Consumer Group初始化方法
      */
     public static void initConsumerGroup(RedisTemplate<String, Object> redisTemplate
-            , cn.tannn.jdevelops.events.redis.mq.ResMqProperties resMqProperties
+            , ResMqProperties resMqProperties
             , String streamKey
             , String groupName
             , ReadOffset readOffset
@@ -44,7 +44,7 @@ public class MqUtil {
      * 确保Stream存在的辅助方法
      */
     public static void ensureStreamExists(RedisTemplate<String, Object> redisTemplate
-            , cn.tannn.jdevelops.events.redis.mq.ResMqProperties resMqProperties, String streamKey) {
+            , ResMqProperties resMqProperties, String streamKey) {
         streamKey = resMqProperties.getPrefix()+streamKey;
         if (!redisTemplate.hasKey(streamKey)) {
             logger.warn("📝 Stream不存在，创建初始消息");

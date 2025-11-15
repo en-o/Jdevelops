@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.mq.redis;
 
 /**
  * mq 队列名 常量
- * <p>  统一前缀  {@link cn.tannn.jdevelops.events.redis.mq.ResMqProperties#getPrefix()}
+ * <p>  统一前缀  {@link ResMqProperties#getPrefix()}
  * @author tan
  */
 public class MqConstants {
