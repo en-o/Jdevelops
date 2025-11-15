@@ -2,7 +2,7 @@
 # .githooks/commit-msg
 # install ： git config core.hooksPath githooks
 # uninstall ： git config --unset core.hooksPath
-commit_regex='^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .{1,50}'
+commit_regex='^(feat|fix|docs|style|upgrade|snapshot|refactor|test|chore)(\(.+\))?: .{1,50}'
 
 if ! grep -qE "$commit_regex" "$1"; then
     echo "❌ Invalid commit message format. Use: type(scope): subject"
