@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
     <artifactId>jdevelops-apis</artifactId>
     <version>${revision}</version>
@@ -51,7 +51,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.2-SNAPSHOT</revision>
+        <revision>1.0.3</revision>
     </properties>
 
     <modules>
