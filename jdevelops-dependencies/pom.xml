@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <artifactId>jdevelops-dependencies</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     <name>jdevelops :: dependencies</name>
     <description>
         jdevelops 所有组件的清单，统一的版本(物料清单)
