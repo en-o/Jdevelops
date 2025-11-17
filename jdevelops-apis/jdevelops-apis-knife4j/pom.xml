@@ -6,11 +6,12 @@
     <parent>
         <groupId>cn.tannn.jdevelops</groupId>
         <artifactId>jdevelops-apis</artifactId>
-        <version>${revision}</version>
+        <version>1.0.3</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>jdevelops-apis-knife4j</artifactId>
     <name>jdevelops :: apis :: knife4j</name>
+    <version>1.0.3.1</version>
     <description>
         参数配置文档地址：
         https://doc.xiaominfo.com/docs/features/enhance
