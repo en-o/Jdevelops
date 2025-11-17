@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 /**
  * 使其(Knife4j)支持spring 3.4
+ * <p> 启用的同时需要手动的处理 exclusion org.springdoc:springdoc-openapi-starter-webmvc-ui
+ * <p> 同时 导入 org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4
  */
 public class SupportSpring34 extends Knife4jOpenApiCustomizer {
     final Knife4jProperties knife4jProperties;
