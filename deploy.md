@@ -46,29 +46,42 @@
             </roles>
         </developer>
     </developers>
-    <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
+        <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
+    <snapshotRepository>
+        <id>ali-snapshots</id>
+        <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
+    </snapshotRepository>
+    <repository>
+        <id>ossrh</id>
+        <url>https://repo1.maven.org/maven2</url>
+    </repository>
     </distributionManagement>
-
-    <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
+    
+            <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
     <repositories>
-        <repository>
-            <id>snapshot</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
+    <!-- 快照仓库：阿里云私有仓库 -->
+    <repository>
+        <id>ali-snapshots</id>
+        <url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+    
+    <!-- 发布仓库：Maven Central -->
+    <repository>
+        <id>central</id>
+        <url>https://repo1.maven.org/maven2</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
     </repositories>
 ```
