@@ -40,11 +40,9 @@ import static cn.tannn.jdevelops.knife4j.core.util.SwaggerUtil.buildSecuritySche
 public class SwaggerConfig {
 
     /**
-     * 默认不加载
-     * <p> jdevelops.swagger.sb34.enabled=true 才加载</p>
+     * fix: spring 3.4 swagger异常
      */
     @Bean
-    @ConditionalOnProperty(name = "jdevelops.swagger.sb34.enabled", havingValue = "true")
     public Knife4jOpenApiCustomizer knife4jOpenApiCustomizer(com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties properties, SpringDocConfigProperties docProperties) {
         return new SupportSpring34(properties, docProperties);
     }
