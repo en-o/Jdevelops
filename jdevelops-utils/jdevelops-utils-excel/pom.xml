@@ -11,7 +11,6 @@
     <artifactId>jdevelops-utils-excel</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: utils :: excel</name>
-    <version>${revision}</version>
     <description>
         easyexcel 自己常用的一些方法抽取快速复用
     </description>

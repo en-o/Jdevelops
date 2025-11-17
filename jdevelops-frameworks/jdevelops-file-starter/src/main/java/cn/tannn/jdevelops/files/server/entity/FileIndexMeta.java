@@ -35,7 +35,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuidCustomGenerator")
     @GenericGenerator(name = "uuidCustomGenerator", strategy = "cn.tannn.jdevelops.jpa.generator.UuidCustomGenerator")
-    @Column(columnDefinition="bigint")
+    @Column(columnDefinition = "bigint")
     @Comment("主键，自动生成")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
@@ -45,7 +45,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
      * 对真实文件进行操作是需要拿到其存储的配置
      */
     @Comment("存储器配置id[FileConfig.id]")
-    @Column(columnDefinition = "bigint not null")
+    @Column(columnDefinition = "bigint", nullable = false)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long storageId;
 
@@ -53,7 +53,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
      * 字典值[Dict.value] configId的冗余字段
      */
     @Comment("字典值[Dict.value] configId的冗余字段")
-    @Column(columnDefinition = "varchar(100) not null")
+    @Column(columnDefinition = "varchar(100)", nullable = false)
     private String storage;
 
 
@@ -61,35 +61,35 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
      * 原文件名
      */
     @Comment("原文件名")
-    @Column(columnDefinition = "varchar(512)")
+    @Column(columnDefinition = "varchar(1024)")
     private String originalName;
 
     /**
      * 新文件名
      */
     @Comment("新文件名")
-    @Column(columnDefinition = "varchar(512) not null")
+    @Column(columnDefinition = "varchar(512)", nullable = false)
     private String freshName;
 
     /**
      * 文件路径(存储在设备里的真实路径) [本地磁盘是全路径，oss是不带bucket的全路径
      */
     @Comment("文件路径(存储在设备里的真实路径)")
-    @Column(columnDefinition = "varchar(512) not null")
+    @Column(columnDefinition = "text", nullable = false)
     private String path;
 
     /**
      * 完整的文件URL
      */
     @Comment("文件URL")
-    @Column(columnDefinition = "varchar(1024) not null")
+    @Column(columnDefinition = "text", nullable = false)
     private String url;
 
     /**
      * 文件URL后缀[去除了url中的域名或者ip,那个在一些场合可以由前端自定义]
      */
     @Comment("文件URL后缀[去除了url中的域名或者ip,那个在一些场合可以由前端自定义]")
-    @Column(columnDefinition = "varchar(1024) not null")
+    @Column(columnDefinition = "text", nullable = false)
     private String urlSuffix;
 
 
@@ -105,7 +105,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
      * 存储的桶
      */
     @Comment("文件在桶中的路径[桶加子路径和本身]")
-    @Column(columnDefinition = "varchar(100)")
+    @Column(columnDefinition = "text")
     private String bucketPath;
 
 
@@ -133,9 +133,9 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
 
 
     /**
-     *  FileStorage -> FileStorageVO
+     * FileStorage -> FileStorageVO
      */
-    public FileIndexVO toFileStorageVO(){
+    public FileIndexVO toFileStorageVO() {
         FileIndexVO vo = new FileIndexVO();
         vo.setId(id);
         vo.setStorageId(storageId);
@@ -150,9 +150,9 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         vo.setType(type);
         vo.setSize(size);
         vo.setSizeUnit(sizeUnit);
-        if(null != getCreateTime()){
+        if (null != getCreateTime()) {
             vo.setCreateTime(getCreateTime().format(DateTimeFormatter.ofPattern(DEFAULT_FORMAT_DATETIME)));
-        }else {
+        } else {
             vo.setCreateTime(DateTime.now().toString());
         }
         vo.setCreateUserName(getCreateUserName());
@@ -160,9 +160,9 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
     }
 
     /**
-     *  FileIndexMeta -> FileIndex
+     * FileIndexMeta -> FileIndex
      */
-    public FileIndex toFileIndex(){
+    public FileIndex toFileIndex() {
         FileIndex fileIndex = new FileIndex();
         fileIndex.setId(id);
         fileIndex.setStorageId(storageId);
@@ -175,16 +175,16 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         fileIndex.setBucketPath(bucketPath);
         fileIndex.setUrlSuffix(urlSuffix);
         fileIndex.setType(type);
-        fileIndex.setSize(size);
+        fileIndex.setSize(Long.valueOf(null == size ? "0" : size));
         fileIndex.setSizeUnit(sizeUnit);
         return fileIndex;
     }
 
 
     /**
-     *  FileIndex -> FileIndexMeta
+     * FileIndex -> FileIndexMeta
      */
-    public static FileIndexMeta toFileIndexMeta(FileIndex fileIndex){
+    public static FileIndexMeta toFileIndexMeta(FileIndex fileIndex) {
         FileIndexMeta indexMeta = new FileIndexMeta();
         indexMeta.setStorageId(fileIndex.getStorageId());
         indexMeta.setStorage(fileIndex.getStorage());
@@ -196,7 +196,7 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
         indexMeta.setBucketPath(fileIndex.getBucketPath());
         indexMeta.setUrlSuffix(fileIndex.getUrlSuffix());
         indexMeta.setType(fileIndex.getType());
-        indexMeta.setSize(fileIndex.getSize());
+        indexMeta.setSize(fileIndex.getSize() == null ? "0" : fileIndex.getSize() + "");
         indexMeta.setSizeUnit(fileIndex.getSizeUnit());
         return indexMeta;
     }
@@ -309,19 +309,19 @@ public class FileIndexMeta extends JpaAuditFnFields<FileIndexMeta> {
     @Override
     public String toString() {
         return "FileIndexMeta{" +
-                "id=" + id +
-                ", storageId=" + storageId +
-                ", storage='" + storage + '\'' +
-                ", originalName='" + originalName + '\'' +
-                ", freshName='" + freshName + '\'' +
-                ", path='" + path + '\'' +
-                ", url='" + url + '\'' +
-                ", urlSuffix='" + urlSuffix + '\'' +
-                ", bucket='" + bucket + '\'' +
-                ", bucketPath='" + bucketPath + '\'' +
-                ", type='" + type + '\'' +
-                ", size='" + size + '\'' +
-                ", sizeUnit='" + sizeUnit + '\'' +
-                '}';
+               "id=" + id +
+               ", storageId=" + storageId +
+               ", storage='" + storage + '\'' +
+               ", originalName='" + originalName + '\'' +
+               ", freshName='" + freshName + '\'' +
+               ", path='" + path + '\'' +
+               ", url='" + url + '\'' +
+               ", urlSuffix='" + urlSuffix + '\'' +
+               ", bucket='" + bucket + '\'' +
+               ", bucketPath='" + bucketPath + '\'' +
+               ", type='" + type + '\'' +
+               ", size='" + size + '\'' +
+               ", sizeUnit='" + sizeUnit + '\'' +
+               '}';
     }
 }

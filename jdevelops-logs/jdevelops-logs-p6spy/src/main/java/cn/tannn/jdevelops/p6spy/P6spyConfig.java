@@ -31,6 +31,7 @@ public class P6spyConfig {
             return Arrays.asList("com.mysql.cj.jdbc.Driver"
                     , "com.microsoft.sqlserver.jdbc.SQLServerDriver"
                     , "com.kingbase8.Driver"
+                    , "org.h2.Driver"
                     , "org.postgresql.Driver");
         }
         return drivers;

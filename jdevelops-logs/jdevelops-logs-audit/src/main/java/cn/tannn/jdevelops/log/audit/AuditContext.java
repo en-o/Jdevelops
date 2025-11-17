@@ -7,7 +7,6 @@ import cn.tannn.jdevelops.log.audit.constant.OperationalType;
 import cn.tannn.jdevelops.log.audit.constant.UniqueIndexType;
 import cn.tannn.jdevelops.log.audit.util.JsonUtil;
 import com.alibaba.fastjson2.JSONObject;
-
 /**
  * 数据审计日志记录
  *
@@ -102,7 +101,14 @@ public class AuditContext {
     /**
      * 是否批量
      */
-    boolean batch;
+    private boolean batch;
+
+
+    /**
+     * 访问IP
+     */
+    private String accessIp;
+
 
     public AuditContext() {
         this.status = true; // 默认操作成功
@@ -402,6 +408,14 @@ public class AuditContext {
         this.batch = batch;
     }
 
+    public String getAccessIp() {
+        return accessIp;
+    }
+
+    public void setAccessIp(String accessIp) {
+        this.accessIp = accessIp;
+    }
+
     @Override
     public String toString() {
         return "AuditContext{" +
@@ -421,6 +435,7 @@ public class AuditContext {
                 ", status=" + status +
                 ", failMessage='" + failMessage + '\'' +
                 ", batch=" + batch +
+                ", accessIp='" + accessIp + '\'' +
                 '}';
     }
 }

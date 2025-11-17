@@ -32,6 +32,11 @@ public class OssConfig {
     private StorageDict master;
 
     /**
+     * 默认桶 - 业务项目自己选择用不用，我这里没有用
+     */
+    private String defaultBucket;
+
+    /**
      * 指定上传文件类型 - 全局有效
      */
     private List<String> filter;
@@ -110,6 +115,14 @@ public class OssConfig {
 
     public void setFilter(List<String> filter) {
         this.filter = filter;
+    }
+
+    public String getDefaultBucket() {
+        return defaultBucket;
+    }
+
+    public void setDefaultBucket(String defaultBucket) {
+        this.defaultBucket = defaultBucket;
     }
 
     /**

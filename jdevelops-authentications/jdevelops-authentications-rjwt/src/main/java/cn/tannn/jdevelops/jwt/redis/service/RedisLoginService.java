@@ -7,6 +7,7 @@ import cn.tannn.jdevelops.jwt.standalone.exception.ExpiredRedisException;
 import cn.tannn.jdevelops.jwt.standalone.pojo.TokenSign;
 import cn.tannn.jdevelops.jwt.standalone.service.LoginService;
 import cn.tannn.jdevelops.jwt.standalone.util.JwtWebUtil;
+import cn.tannn.jdevelops.utils.jwt.config.JwtConfig;
 import cn.tannn.jdevelops.utils.jwt.constant.SignState;
 import cn.tannn.jdevelops.utils.jwt.core.JwtService;
 import cn.tannn.jdevelops.utils.jwt.exception.LoginException;
@@ -39,10 +40,14 @@ public class RedisLoginService implements LoginService {
     @Resource
     private RedisUserRole redisUserRole;
 
+    @Resource
+    private JwtConfig jwtConfig;
+
 
     /**
      * 登录
-     * @param  loginMeta 登录需要的元数据
+     *
+     * @param loginMeta 登录需要的元数据
      * @return 签名
      */
     public <T> TokenSign login(RedisSignEntity<T> loginMeta) {
@@ -55,22 +60,26 @@ public class RedisLoginService implements LoginService {
                 StorageToken loginUser = redisToken.verify(loginMeta.getSubject());
                 String token = loginUser.getToken();
                 List<String> input = loginMeta.getPlatform();
-                if(input != null){
+                if (input != null && jwtConfig.getVerifyPlatform()) {
                     List<String> local = JwtService.getPlatformConstantExpires(token);
-                    if (!CollectionUtils.subtract(input, local).isEmpty()) {
+                    if(local == null){
+                        logger.warn("login user not setting platform ");
+                    }else if (!CollectionUtils.subtract(input, local).isEmpty()) {
                         throw new LoginException("存储的 platform 跟新登录的platform不一致");
+                    }else {
+                        logger.debug("毁灭吧！你们什么都不设置我也不管了");
                     }
                 }
                 // 继续使用当前token
                 logger.warn("开始登录 - 登录判断 - 当前用户在线 - 继续使用当前token");
-                return  new TokenSign(token, SignState.renewal);
+                return new TokenSign(token, SignState.renewal);
             }
             // 重新登录
         } catch (ExpiredRedisException | TokenException e) {
             logger.warn("开始登录 - 登录判断 - 当前用户不在线 - 执行登录流程");
-        }catch (LoginException e) {
+        } catch (LoginException e) {
             logger.warn("存储的 platform 跟新登录的platform不一致，");
-        }catch (Exception e) {
+        } catch (Exception e) {
             logger.warn("开始登录 - 登录判断 - 用户在线情况判断失败 - 执行登录流程");
         }
 

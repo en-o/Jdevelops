@@ -60,6 +60,21 @@ public class FileFilter {
         MAGIC_NUMBERS.put("7B5C727466", "rtf");
         MAGIC_NUMBERS.put("7F454C46", "elf");
         MAGIC_NUMBERS.put("CAFEBABE", "class");
+
+        // 文本文件类型
+        // JSON文件通常以 { 或 [ 开头
+        MAGIC_NUMBERS.put("7B", "json");  // {
+        MAGIC_NUMBERS.put("5B", "json");  // [
+
+        // XML文件
+        MAGIC_NUMBERS.put("3C3F786D6C", "xml");  // <?xml
+        MAGIC_NUMBERS.put("3C", "xml");  // < (可能是HTML/XML)
+
+        // 脚本文件 (通常以 shebang 开头)
+        MAGIC_NUMBERS.put("23212F", "sh");  // #!/
+
+        // CSV文件 (通常以字母或引号开头，较难准确识别)
+        MAGIC_NUMBERS.put("2322", "csv");  // #" (某些CSV格式)
     }
 
     /**
@@ -88,7 +103,7 @@ public class FileFilter {
     }
 
     /**
-     * 验证文件格式是否在白名单里
+     * 验证文件格式是否在白名单里 （会用后缀兜底）
      *
      * @param file        MultipartFile
      * @param whiteSuffix 文件后缀白名单(没有. )
@@ -96,10 +111,13 @@ public class FileFilter {
      * @throws IOException IOException
      */
     public static boolean isValidFileType(MultipartFile file, List<String> whiteSuffix) throws IOException {
-        String fileType = getType(file.getInputStream());
         if (whiteSuffix == null || whiteSuffix.isEmpty()) {
             return true;
         }
+        String filename = file.getOriginalFilename();
+        filename = filename == null ? file.getName() : filename;
+        String fileType = getType(file.getInputStream(), filename);
+
         for (String type : whiteSuffix) {
             if (type.equalsIgnoreCase(fileType)) {
                 return true;
@@ -143,6 +161,7 @@ public class FileFilter {
         String typeName = getType(in);
         if (null == typeName) {
             // 未成功识别类型，扩展名辅助识别
+            LOG.warn("typeName is null, use file ext ");
             typeName = FileUtils.getExt(fileName).replace(".", "");
         }
         return typeName;

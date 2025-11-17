@@ -1,0 +1,80 @@
+package cn.tannn.jdevelops.renewpwd.util;
+
+import cn.tannn.jdevelops.renewpwd.pojo.DbType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+
+/**
+ * @author <a href="https://t.tannn.cn/">tan</a>
+ * @version V1.0
+ * @date 2025/8/15 14:12
+ */
+public class DatabaseUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(DatabaseUtils.class);
+
+    /**
+     * 判断错误码是否为密码过期错误
+     * <p>  mysql ：SELECT * FROM performance_schema.events_errors_summary_global_by_error  where error_number = 'vendorCode' </p>
+     * @param vendorCode 数据库返回的错误码
+     * @param connectionUrl 数据库连接URL，用于区分数据库类型
+     * @return true 如果是密码过期错误，false 否则
+     */
+    public static boolean isPasswordExpiredError_MYSQL(int vendorCode, String connectionUrl) {
+        if(DbType.isMysql(connectionUrl)){
+            return vendorCode == 1820 || vendorCode == 1862;
+        }else {
+            log.warn("其他数据库暂未支持，当前驱动：{}", connectionUrl);
+        }
+        return false;
+    }
+
+    /**
+     * 判断错误码是否为密码错误
+     * @param vendorCode 数据库返回的错误码
+     * @param connectionUrl 数据库连接URL，用于区分数据库类型
+     * @return true 如果是密码过期错误，false 否则
+     */
+    public static boolean isPasswordError(int vendorCode, String connectionUrl) {
+        if(DbType.isMysql(connectionUrl)){
+            return vendorCode == 1045;
+        }else {
+            log.warn("其他数据库暂未支持，当前驱动：{}", connectionUrl);
+        }
+        return false;
+    }
+
+
+    /**
+     * 查找最深层的 SQLException
+     * @param e Throwable
+     * @return SQLException
+     */
+    public static SQLException findDeepestSQLException(Throwable e) {
+        SQLException deepest = null;
+        while (e != null) {
+            if (e instanceof SQLException sqlEx) {
+                deepest = sqlEx;      // 每次都覆盖，循环结束后就是最深层的
+            }
+            e = e.getCause();
+        }
+        return deepest;
+    }
+
+    /**
+     * 检查指定的类是否存在
+     * <p>用于判断某些数据库驱动是否存在</p>
+     * @param className 类名
+     * @return true 如果类存在，false 如果类不存在
+     */
+    public static boolean isClassPresent(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+}

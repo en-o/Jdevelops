@@ -9,6 +9,14 @@ import java.util.Collection;
  * @date 2025/7/3 13:13
  */
 public class SqlUtil {
+
+    /**
+     * 驼峰转下划线
+     */
+    public static String camelToSnake(String camelCase) {
+        return camelCase.replaceAll("([A-Z])", "_$1").toLowerCase();
+    }
+
     /**
      * 查找主查询FROM关键字的位置，避免子查询中的FROM干扰
      */
@@ -251,6 +259,33 @@ public class SqlUtil {
         // 从后往前查找
         for (int i = sourceLen - targetLen; i >= 0; i--) {
             if (source.regionMatches(true, i, target, 0, targetLen)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * 查找主查询GROUP BY的位置，避免子查询中的GROUP BY干扰
+     */
+    public static int findGroupByIndex(String sql) {
+        String lowerSql = sql.toLowerCase();
+        int parenthesesCount = 0;
+
+        // 从后往前查找，确保找到的是主查询的GROUP BY
+        for (int i = lowerSql.length() - 10; i >= 0; i--) {
+            char c = lowerSql.charAt(i);
+
+            if (c == ')') {
+                parenthesesCount++;
+            } else if (c == '(') {
+                parenthesesCount--;
+            }
+
+            // 只在主查询级别查找GROUP BY
+            if (parenthesesCount == 0 && i + 10 <= lowerSql.length() &&
+                    lowerSql.substring(i, i + 10).equals(" group by ")) {
                 return i;
             }
         }

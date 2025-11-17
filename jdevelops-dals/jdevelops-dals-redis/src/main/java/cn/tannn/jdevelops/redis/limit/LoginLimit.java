@@ -1,7 +1,5 @@
 package cn.tannn.jdevelops.redis.limit;
 
-import org.springframework.data.spel.spi.Function;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

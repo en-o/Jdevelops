@@ -11,7 +11,7 @@ import java.util.Objects;
  * SQL构建器基础类
  */
 public abstract class BaseSqlBuilder {
-    protected final StringBuilder sql;
+    public final StringBuilder sql;
     protected List<Object> positionalParams;
     protected MapSqlParameterSource namedParams;
     protected ParameterMode mode;

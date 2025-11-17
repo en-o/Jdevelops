@@ -12,7 +12,6 @@
     <artifactId>jdevelops-authentications-jwt</artifactId>
     <packaging>jar</packaging>
     <name>jdevelops :: authentications :: jwt</name>
-    <version>1.0.2</version>
     <description>
         jwt认证
     </description>
@@ -27,7 +26,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-jwt</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
@@ -37,7 +36,7 @@
         <dependency>
             <groupId>cn.tannn.jdevelops</groupId>
             <artifactId>jdevelops-apis-exception</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+		  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<localRepository>C:\work\tool\maven\repo</localRepository>
+
+	<!-- 服务器认证配置-->
+	<servers>
+		<server>
+			<id>ali-snapshots</id>
+			<username>找我加入组织后使用</username>
+			<password>找我加入组织后使用</password>
+		</server>
+		<server>
+			<id>ali-release</id>
+			<username>找我加入组织后使用</username>
+			<password>找我加入组织后使用</password>
+		</server>
+	</servers>
+
+	<!-- 禁用阿里云镜像，避免覆盖 Central -->
+	<mirrors>
+		<!-- 可以保留一个 fallback 阿里云镜像，但不覆盖 central -->
+		<mirror>
+			<id>aliyun-fallback</id>
+			<mirrorOf>*,!central,!ali-snapshots,!ali-release</mirrorOf>
+			<name>Aliyun Fallback Mirror</name>
+			<url>https://maven.aliyun.com/nexus/content/groups/public</url>
+		</mirror>
+	</mirrors>
+
+
+	<profiles>
+		<!-- 阿里云私库 -->
+		<profile>
+			<id>aliyun</id>
+			<activation><activeByDefault>true</activeByDefault></activation>
+			<repositories>
+				<repository>
+					<id>ali-snapshots</id>
+					<url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l</url>
+					<releases><enabled>false</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+				</repository>
+				<repository>
+					<id>ali-release</id>
+					<url>https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-release-blpvn0</url>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>false</enabled></snapshots>
+				</repository>
+			</repositories>
+			<!-- 部署地址 -->
+			<properties>
+				<altSnapshotDeploymentRepository>
+					ali-snapshots::default::https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-snapshot-hps61l
+				</altSnapshotDeploymentRepository>
+				<altReleaseDeploymentRepository>
+					ali-release::default::https://packages.aliyun.com/619f9ba2cb55679b040c4b21/maven/2159763-release-blpvn0
+				</altReleaseDeploymentRepository>
+			</properties>
+		</profile>
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>aliyun</activeProfile>
+	</activeProfiles>
+</settings>

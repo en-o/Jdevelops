@@ -1080,7 +1080,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
 
     /**
      * 基于当前SQL构建COUNT查询语句
-     * <p>自动处理ORDER BY、LIMIT等子句</p>
+     * <p>自动处理ORDER BY、LIMIT、GROUP BY等子句</p>
      * <p>用于构建COUNT查询语句,用来统计总记录数</p>
      * <p>SELECT COUNT(*) FROM </p>
      *
@@ -1098,6 +1098,12 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         // 提取FROM及其后面的部分
         String fromClause = currentSql.substring(fromIndex);
 
+        // 移除GROUP BY子句(如果存在)
+        int groupByIndex = SqlUtil.findGroupByIndex(fromClause);
+        if (groupByIndex != -1) {
+            fromClause = fromClause.substring(0, groupByIndex);
+        }
+
         // 移除ORDER BY子句(如果存在)
         int orderByIndex = SqlUtil.findOrderByIndex(fromClause);
         if (orderByIndex != -1) {
@@ -1113,7 +1119,7 @@ public class DynamicSqlBuilder extends OrGroupSqlBuilder {
         // 构建新的COUNT查询，去除多余空格
         String finalCountSql = "SELECT COUNT(*)" + fromClause;
 
-        // 创建新的构建器并复制参数(排除ORDER BY和LIMIT相关的参数)
+        // 创建新的构建器并复制参数(排除ORDER BY、LIMIT和GROUP BY相关的参数)
         DynamicSqlBuilder countBuilder = new DynamicSqlBuilder(finalCountSql, this.mode);
 
         // 计算需要排除的参数个数

@@ -40,7 +40,7 @@ public class JpaAuditFnFields<T> extends BaseAuditFields<T> {
      * 表示该字段为创建时间字段，在这个实体被insert的时候，会自动为其赋值
      */
     @CreatedDate
-    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "timestamp NULL DEFAULT CURRENT_TIMESTAMP", updatable = false)
     @Access(AccessType.PROPERTY)
     @Comment("创建日期")
     @Override
@@ -52,7 +52,7 @@ public class JpaAuditFnFields<T> extends BaseAuditFields<T> {
      * 表示该字段为创建人， @CreatedBy 在这个实体被created的时候，会自动为其赋值
      */
     @CreatedBy
-    @Column(columnDefinition = "varchar(100)")
+    @Column(columnDefinition = "varchar(100)", updatable = false)
     @Access(AccessType.PROPERTY)
     @Comment("创建人")
     @Override

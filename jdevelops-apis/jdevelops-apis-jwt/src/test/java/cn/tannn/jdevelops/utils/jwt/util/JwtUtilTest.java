@@ -3,7 +3,7 @@ package cn.tannn.jdevelops.utils.jwt.util;
 import cn.tannn.jdevelops.utils.jwt.module.SignEntity;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JwtUtilTest {
 

@@ -5,15 +5,16 @@ import cn.tannn.jdevelops.annotations.jpa.JpaSelectIgnoreField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectNullField;
 import cn.tannn.jdevelops.annotations.jpa.JpaSelectOperator;
 import cn.tannn.jdevelops.annotations.jpa.JpaUpdate;
-import cn.tannn.jdevelops.jpa.constant.SQLOperator;
 import cn.tannn.jdevelops.jpa.repository.JpaBasicsRepository;
-import cn.tannn.jdevelops.jpa.request.PagingSorteds;
-import cn.tannn.jdevelops.jpa.request.Pagings;
-import cn.tannn.jdevelops.jpa.request.Sorteds;
 import cn.tannn.jdevelops.jpa.result.JpaPageResult;
-import cn.tannn.jdevelops.jpa.select.EnhanceSpecification;
 import cn.tannn.jdevelops.result.bean.ColumnSFunction;
 import cn.tannn.jdevelops.result.bean.ColumnUtil;
+import cn.tannn.jdevelops.util.jpa.SpecificationUtil;
+import cn.tannn.jdevelops.util.jpa.constant.SQLOperator;
+import cn.tannn.jdevelops.util.jpa.request.PagingSorteds;
+import cn.tannn.jdevelops.util.jpa.request.Pagings;
+import cn.tannn.jdevelops.util.jpa.request.Sorteds;
+import cn.tannn.jdevelops.util.jpa.select.EnhanceSpecification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Id;
 import org.springframework.data.domain.Page;
@@ -87,7 +88,7 @@ public interface J2Service<B> {
     /**
      * 自定义条件删除
      *
-     * @param spec 自定义条件{@link  cn.tannn.jdevelops.jpa.utils.SpecificationUtil}
+     * @param spec 自定义条件{@link  SpecificationUtil}
      * @return int (>0删除成功且为删除了多少条)
      */
     int delete(Specification<B> spec);
@@ -163,7 +164,7 @@ public interface J2Service<B> {
     /**
      * 查询
      *
-     * @param spec 自定义条件{@link  cn.tannn.jdevelops.jpa.utils.SpecificationUtil}
+     * @param spec 自定义条件{@link  SpecificationUtil}
      * @return B
      */
     Optional<B> findOnly(Specification<B> spec);
@@ -211,7 +212,7 @@ public interface J2Service<B> {
     /**
      * {@link EnhanceSpecification#beanWhere(Object)} 排序查询
      *
-     * @param spec 自定义条件{@link  cn.tannn.jdevelops.jpa.utils.SpecificationUtil}
+     * @param spec 自定义条件{@link  SpecificationUtil}
      * @param sort 排序 {@link Sorteds}
      * @return list of B （如果想将Bean转换成VO，请使用{@link cn.tannn.jdevelops.result.utils.ListTo#to(Class, Collection)}）
      */

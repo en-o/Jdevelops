@@ -86,6 +86,12 @@ public class JwtConfig {
 
 
     /**
+     * 对token进行压缩，默认false不压缩
+     */
+    private Boolean compressToken = false;
+
+
+    /**
      * 登录相关的jwt存储前缀，区分不同项目 prefix:RedisJwtKey.class:xx:xx
      */
     private String prefix;
@@ -223,6 +229,14 @@ public class JwtConfig {
         this.prefix = prefix;
     }
 
+    public Boolean getCompressToken() {
+        return compressToken;
+    }
+
+    public void setCompressToken(Boolean compressToken) {
+        this.compressToken = compressToken;
+    }
+
     @Override
     public String toString() {
         return "JwtConfig{" +
@@ -237,6 +251,7 @@ public class JwtConfig {
                 ", verifyPermission=" + verifyPermission +
                 ", verifyPlatform=" + verifyPlatform +
                 ", oss=" + oss +
+                ", compressToken=" + compressToken +
                 ", prefix='" + prefix + '\'' +
                 '}';
     }
