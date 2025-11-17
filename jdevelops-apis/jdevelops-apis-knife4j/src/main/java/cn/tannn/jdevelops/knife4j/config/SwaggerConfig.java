@@ -1,9 +1,11 @@
 package cn.tannn.jdevelops.knife4j.config;
 
+import cn.tannn.jdevelops.knife4j.SupportSpring34;
 import cn.tannn.jdevelops.knife4j.core.entity.BuildSecuritySchemes;
 import cn.tannn.jdevelops.knife4j.core.entity.SwaggerSecurityScheme;
 import cn.tannn.jdevelops.knife4j.core.util.RandomUtil;
 import cn.tannn.jdevelops.knife4j.domain.SwaggerProperties;
+import com.github.xiaoymin.knife4j.spring.extension.Knife4jOpenApiCustomizer;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -11,7 +13,9 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -119,4 +123,10 @@ public class SwaggerConfig {
     }
 
 
+
+    @Bean
+    @ConditionalOnProperty(name = "jdevelops.swagger.sb34.enabled", havingValue = "false", matchIfMissing = true)
+    public Knife4jOpenApiCustomizer knife4jOpenApiCustomizer(com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties properties, SpringDocConfigProperties docProperties) {
+        return new SupportSpring34(properties, docProperties);
+    }
 }

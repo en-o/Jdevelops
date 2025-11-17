@@ -23,14 +23,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 使其支持spring 3.4
+ * 使其(Knife4j)支持spring 3.4
  */
-public class MyKnife4jOpenApiCustomizer extends Knife4jOpenApiCustomizer {
+public class SupportSpring34 extends Knife4jOpenApiCustomizer {
     final Knife4jProperties knife4jProperties;
     final SpringDocConfigProperties properties;
-    private static final Logger LOG = LoggerFactory.getLogger(MyKnife4jOpenApiCustomizer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SupportSpring34.class);
 
-    public MyKnife4jOpenApiCustomizer(Knife4jProperties knife4jProperties, SpringDocConfigProperties properties) {
+    public SupportSpring34(Knife4jProperties knife4jProperties, SpringDocConfigProperties properties) {
         super(knife4jProperties, properties);
         this.knife4jProperties = knife4jProperties;
         this.properties = properties;
