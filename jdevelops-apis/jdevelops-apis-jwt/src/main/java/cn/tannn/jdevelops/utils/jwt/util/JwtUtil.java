@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.utils.jwt.util;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * jwt
  *
@@ -27,4 +29,22 @@ public class JwtUtil {
         }
     }
 
+    /**
+     * 将配置的过期时间转换为分钟
+     *
+     * @param time 时间值
+     * @param unit 时间单位
+     * @return 转换后的分钟数
+     */
+    public static float convertToMinutes(long time, TimeUnit unit) {
+        return switch (unit) {
+            case SECONDS -> time / 60.0f;
+            case MINUTES -> time;
+            case HOURS -> time * 60;
+            case DAYS -> time * 60 * 24;
+            default ->
+                // 默认按小时处理
+                    time * 60;
+        };
+    }
 }
