@@ -88,6 +88,7 @@ public class JwtConfig {
 
     /**
      * 对token进行压缩，默认false不压缩
+     * 还没启用
      */
     private Boolean compressToken = false;
 
