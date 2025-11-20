@@ -8,6 +8,7 @@ import cn.tannn.jdevelops.files.sdk.config.properties.FtpProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.LocalProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.MinioProperties;
 import cn.tannn.jdevelops.files.sdk.config.properties.QiNiuProperties;
+import cn.tannn.jdevelops.files.sdk.enums.FileFilterModel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -40,6 +41,11 @@ public class OssConfig {
      * 指定上传文件类型 - 全局有效
      */
     private List<String> filter;
+
+    /**
+     * 文件类型拦截模式(默认魔数)
+     */
+    private FileFilterModel filterModel;
 
     /**
      * 配置
@@ -117,6 +123,14 @@ public class OssConfig {
         this.filter = filter;
     }
 
+    public FileFilterModel getFilterModel() {
+        return filterModel==null?FileFilterModel.MAGIC:filterModel;
+    }
+
+    public void setFilterModel(FileFilterModel filterModel) {
+        this.filterModel = filterModel;
+    }
+
     public String getDefaultBucket() {
         return defaultBucket;
     }
@@ -124,6 +138,8 @@ public class OssConfig {
     public void setDefaultBucket(String defaultBucket) {
         this.defaultBucket = defaultBucket;
     }
+
+
 
     /**
      * 获取 master 的  FileStorage
@@ -175,4 +191,18 @@ public class OssConfig {
 
     }
 
+
+    @Override
+    public String toString() {
+        return "OssConfig{" +
+               "master=" + master +
+               ", defaultBucket='" + defaultBucket + '\'' +
+               ", filter=" + filter +
+               ", filterModel=" + filterModel +
+               ", ftp=" + ftp +
+               ", local=" + local +
+               ", minio=" + minio +
+               ", qiniu=" + qiniu +
+               '}';
+    }
 }

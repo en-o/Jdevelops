@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.files.sdk.util;
 
 import cn.tannn.cat.file.sdk.exception.FileException;
 import cn.tannn.cat.file.sdk.utils.FileUtils;
+import cn.tannn.jdevelops.files.sdk.enums.FileFilterModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,6 +117,26 @@ public class FileFilter {
     }
 
 
+    /**
+     * 验证文件格式是否在白名单里
+     *
+     * @param file        MultipartFile
+     * @param whiteSuffix 文件后缀白名单(没有. )
+     * @throws IOException FileException
+     */
+    public static void isValidFileTypeThrow(MultipartFile file, List<String> whiteSuffix, FileFilterModel filterModel) throws IOException {
+        if(filterModel.equals(FileFilterModel.MAGIC)){
+            if (!isValidFileType(file, whiteSuffix)) {
+                throw FileException.specialMessage("文件格式不合法");
+            }
+        }else {
+            if (!isValidFileType_suffix(file, whiteSuffix)) {
+                throw FileException.specialMessage("文件格式不合法");
+            }
+        }
+
+    }
+
 
     /**
      * 验证文件格式是否在白名单里
@@ -146,6 +167,30 @@ public class FileFilter {
         filename = filename == null ? file.getName() : filename;
         String fileType = getType(file.getInputStream(), filename);
 
+        for (String type : whiteSuffix) {
+            if (type.equalsIgnoreCase(fileType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 验证文件格式是否在白名单里 - 用后缀验证
+     *
+     * @param file        MultipartFile
+     * @param whiteSuffix 文件后缀白名单(没有. )
+     * @return true 在
+     * @throws IOException IOException
+     */
+    public static boolean isValidFileType_suffix(MultipartFile file, List<String> whiteSuffix) throws IOException {
+        if (whiteSuffix == null || whiteSuffix.isEmpty()) {
+            return true;
+        }
+        String filename = file.getOriginalFilename();
+        filename = filename == null ? file.getName() : filename;
+        String fileType = FileUtils.getExt(filename).replace(".", "");
         for (String type : whiteSuffix) {
             if (type.equalsIgnoreCase(fileType)) {
                 return true;
