@@ -1,7 +1,10 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.example;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate;
-import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlDelete;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlInsert;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlMapper;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlSelect;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlUpdate;
 
 import java.util.List;
 
@@ -16,7 +19,7 @@ import java.util.List;
  *
  * @author tnnn
  */
-@JdbcTemplate
+@XmlMapper(namespace = "cn.tannn.jdevelops.jdectemplate.xmlmapper.example.UserMapper")
 public interface UserMapper {
 
     /**
@@ -27,7 +30,7 @@ public interface UserMapper {
      * @param query 查询参数（包含 id 字段）
      * @return 用户对象，如果不存在返回 null
      */
-    @Query("findById")
+    @XmlSelect("findById")
     User findById(UserQuery query);
 
     /**
@@ -47,7 +50,7 @@ public interface UserMapper {
      * @param query 查询参数对象
      * @return 用户列表
      */
-    @Query("findUsers")
+    @XmlSelect("findUsers")
     List<User> findUsers(UserQuery query);
 
     /**
@@ -58,7 +61,7 @@ public interface UserMapper {
      * @param query 查询参数（包含 ids 列表）
      * @return 用户列表
      */
-    @Query("findByIds")
+    @XmlSelect("findByIds")
     List<User> findByIds(UserQuery query);
 
     /**
@@ -69,7 +72,7 @@ public interface UserMapper {
      * @param user 用户对象
      * @return 影响的行数
      */
-    @Query("insertUser")
+    @XmlInsert("insertUser")
     int insertUser(User user);
 
     /**
@@ -80,7 +83,7 @@ public interface UserMapper {
      * @param query 查询参数（包含 users 列表）
      * @return 影响的行数
      */
-    @Query("batchInsert")
+    @XmlInsert("batchInsert")
     int batchInsert(UserQuery query);
 
     /**
@@ -93,7 +96,7 @@ public interface UserMapper {
      * @param user 用户对象（id 必须，其他字段可选）
      * @return 影响的行数
      */
-    @Query("updateUser")
+    @XmlUpdate("updateUser")
     int updateUser(User user);
 
     /**
@@ -104,7 +107,7 @@ public interface UserMapper {
      * @param user 用户对象（只需要 id）
      * @return 影响的行数
      */
-    @Query("deleteById")
+    @XmlDelete("deleteById")
     int deleteById(User user);
 
     /**
@@ -115,7 +118,7 @@ public interface UserMapper {
      * @param query 查询参数（包含 ids 列表）
      * @return 影响的行数
      */
-    @Query("deleteByIds")
+    @XmlDelete("deleteByIds")
     int deleteByIds(UserQuery query);
 
     /**
@@ -126,7 +129,7 @@ public interface UserMapper {
      * @param query 查询参数（支持 status 条件）
      * @return 用户数量
      */
-    @Query("countUsers")
+    @XmlSelect("countUsers")
     Integer countUsers(UserQuery query);
 
     /**
@@ -137,7 +140,7 @@ public interface UserMapper {
      * @param query 查询参数（包含 pageSize 和 offset）
      * @return 用户列表
      */
-    @Query("findUsersPage")
+    @XmlSelect("findUsersPage")
     List<User> findUsersPage(UserQuery query);
 
     /**
@@ -148,6 +151,6 @@ public interface UserMapper {
      * @param query 查询参数
      * @return 用户列表
      */
-    @Query("findUsersAdvanced")
+    @XmlSelect("findUsersAdvanced")
     List<User> findUsersAdvanced(UserQuery query);
 }

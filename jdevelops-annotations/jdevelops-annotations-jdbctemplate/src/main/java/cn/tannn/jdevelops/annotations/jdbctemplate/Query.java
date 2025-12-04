@@ -4,7 +4,7 @@ package cn.tannn.jdevelops.annotations.jdbctemplate;
 import java.lang.annotation.*;
 
 /**
- * 查询注解
+ * 查询注解 配合 {@link JdbcTemplate} 进行在接口方法上直接写sql用的
  * @author tnnn
  * @date 2022-08-01 11:50:342
  */
