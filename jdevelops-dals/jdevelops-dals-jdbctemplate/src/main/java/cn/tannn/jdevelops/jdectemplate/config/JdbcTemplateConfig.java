@@ -21,7 +21,7 @@ public class JdbcTemplateConfig {
     String basePackage;
 
     @NestedConfigurationProperty
-    XmlMapperProperties xmlmapper;
+    XmlMapperProperties xmlmapper = new XmlMapperProperties();
 
     public String getBasePackage() {
         if(basePackage == null || basePackage.trim().isEmpty()){
