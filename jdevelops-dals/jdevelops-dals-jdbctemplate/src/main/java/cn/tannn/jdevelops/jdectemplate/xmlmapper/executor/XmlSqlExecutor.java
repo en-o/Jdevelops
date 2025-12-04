@@ -7,7 +7,7 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -112,7 +112,7 @@ public class XmlSqlExecutor {
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 } else {
                     // 返回实体对象
-                    RowMapper<T> rowMapper = new BeanPropertyRowMapper<>(resultType);
+                    RowMapper<T> rowMapper = new DataClassRowMapper<>(resultType);
                     List<T> results = namedParameterJdbcTemplate.query(sql, params, rowMapper);
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 }
@@ -127,8 +127,8 @@ public class XmlSqlExecutor {
                     List<T> results = jdbcTemplate.queryForList(sql, resultType, params);
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 } else {
-                    // DataClassRowMapper
-                    RowMapper<T> rowMapper = new BeanPropertyRowMapper<>(resultType);
+                    // 返回实体对象
+                    RowMapper<T> rowMapper = new DataClassRowMapper<>(resultType);
                     List<T> results = jdbcTemplate.query(sql, rowMapper, params);
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 }

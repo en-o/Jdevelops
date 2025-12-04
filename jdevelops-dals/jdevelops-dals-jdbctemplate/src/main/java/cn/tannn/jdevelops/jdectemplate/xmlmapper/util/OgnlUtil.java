@@ -6,6 +6,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -255,8 +256,7 @@ public class OgnlUtil {
             return null;
         }
 
-        if (obj instanceof List) {
-            List<?> list = (List<?>) obj;
+        if (obj instanceof List<?> list) {
             return index >= 0 && index < list.size() ? list.get(index) : null;
         }
 

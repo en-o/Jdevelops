@@ -161,7 +161,7 @@
         </where>
         ORDER BY
         <if test="orderBy != null and orderBy != ''">
-            ${orderBy}
+            #{orderBy}
         </if>
         <if test="orderBy == null or orderBy == ''">
             created_at DESC
