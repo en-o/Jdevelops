@@ -1,6 +1,7 @@
 # JdbcTemplate XML Mapper
 
 基于 JdbcTemplate 实现的类似 MyBatis XML Mapper 功能，让 SQL 编写更加清晰，审查更加方便。
+> 测试放到Jdevelops-Example/dal-jdbctemplate
 
 ## 特性
 

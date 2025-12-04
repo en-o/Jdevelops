@@ -13,10 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * XML Mapper 自动配置
  * <p> 默认读取 资源文件下 resources/jmapper/下的文件 </p>
+ * <p> 默认启用 </p>
  * @author tnnn
  */
 @Configuration
-@ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class XmlMapperAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlMapperAutoConfiguration.class);
