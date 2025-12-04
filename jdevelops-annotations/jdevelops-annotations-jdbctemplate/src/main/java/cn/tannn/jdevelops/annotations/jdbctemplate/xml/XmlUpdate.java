@@ -37,4 +37,13 @@ public @interface XmlUpdate {
      * @return SQL 语句 ID
      */
     String value();
+
+    /**
+     * 是否吞掉异常
+     * <p>当设置为 true 时，失败不抛出异常，返回 null 或空集合</p>
+     * <p>默认为 false，失败时抛出异常</p>
+     *
+     * @return 是否吞掉异常，默认 false
+     */
+    boolean tryc() default false;
 }

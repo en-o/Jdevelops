@@ -1,10 +1,10 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.config;
 
 import cn.tannn.jdevelops.jdectemplate.config.JdbcTemplateConfig;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.proxy.XmlMapperScanner;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class XmlMapperAutoConfiguration {
         LOG.info("Initializing XML Mapper Registry");
         XmlMapperRegistry registry = new XmlMapperRegistry(jdbcTemplate);
 
-        // 扫描并注册 XML Mapper
+        // 扫描并注册 XML Mapper 文件
         LOG.info("Scanning XML mappers from: {}", config.getXmlmapper().getLocations());
         registry.scanAndRegisterMappers(config.getXmlmapper().getLocations());
 
@@ -35,5 +35,15 @@ public class XmlMapperAutoConfiguration {
                 registry.getRegisteredMappers());
 
         return registry;
+    }
+
+    /**
+     * XML Mapper 接口扫描器
+     * <p>扫描 @XmlMapper 注解的接口并创建代理</p>
+     */
+    @Bean
+    public XmlMapperScanner xmlMapperScanner(JdbcTemplateConfig config, XmlMapperRegistry registry) {
+        LOG.info("Initializing XML Mapper Scanner for package: {}", config.getBasePackage());
+        return new XmlMapperScanner(config.getBasePackage(), registry);
     }
 }
