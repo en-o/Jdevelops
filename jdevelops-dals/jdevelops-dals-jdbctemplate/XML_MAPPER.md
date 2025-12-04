@@ -30,7 +30,7 @@
 
 ```yaml
 jdevelops:
-  jdbctemplate:
+  jdbc:
     xmlmapper:
       # 启用 XML Mapper 功能（必须设置为 true）
       enabled: true

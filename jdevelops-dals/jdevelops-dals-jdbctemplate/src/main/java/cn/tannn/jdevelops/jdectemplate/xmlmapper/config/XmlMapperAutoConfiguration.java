@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.config;
 
+import cn.tannn.jdevelops.jdectemplate.config.JdbcTemplateConfig;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,22 +16,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author tnnn
  */
 @Configuration
-@ConditionalOnProperty(prefix = "jdevelops.jdbctemplate.xmlmapper", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true")
 public class XmlMapperAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlMapperAutoConfiguration.class);
 
-    @Value("${jdevelops.jdbctemplate.xmlmapper.locations:classpath*:jmapper/**/*.xml}")
-    private String mapperLocations;
-
     @Bean
-    public XmlMapperRegistry xmlMapperRegistry(JdbcTemplate jdbcTemplate) throws Exception {
+    public XmlMapperRegistry xmlMapperRegistry(JdbcTemplate jdbcTemplate, JdbcTemplateConfig config) throws Exception {
         LOG.info("Initializing XML Mapper Registry");
         XmlMapperRegistry registry = new XmlMapperRegistry(jdbcTemplate);
 
         // 扫描并注册 XML Mapper
-        LOG.info("Scanning XML mappers from: {}", mapperLocations);
-        registry.scanAndRegisterMappers(mapperLocations);
+        LOG.info("Scanning XML mappers from: {}", config.getXmlmapper().getLocations());
+        registry.scanAndRegisterMappers(config.getXmlmapper().getLocations());
 
         LOG.info("XML Mapper Registry initialized, registered mappers: {}",
                 registry.getRegisteredMappers());

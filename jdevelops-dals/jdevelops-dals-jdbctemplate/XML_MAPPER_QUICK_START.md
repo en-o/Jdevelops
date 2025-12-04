@@ -20,7 +20,7 @@
 
 ```yaml
 jdevelops:
-  jdbctemplate:
+  jdbc:
     xmlmapper:
       enabled: true  # 启用 XML Mapper
       # locations: classpath*:jmapper/**/*.xml  # 可选，默认扫描 jmapper 目录

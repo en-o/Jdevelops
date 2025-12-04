@@ -1,6 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * 一些元信息配置
@@ -19,6 +20,9 @@ public class JdbcTemplateConfig {
      */
     String basePackage;
 
+    @NestedConfigurationProperty
+    XmlMapperProperties xmlmapper;
+
     public String getBasePackage() {
         if(basePackage == null || basePackage.trim().isEmpty()){
             return "cn.tannn";
@@ -30,10 +34,19 @@ public class JdbcTemplateConfig {
         this.basePackage = basePackage;
     }
 
+    public XmlMapperProperties getXmlmapper() {
+        return xmlmapper;
+    }
+
+    public void setXmlmapper(XmlMapperProperties xmlmapper) {
+        this.xmlmapper = xmlmapper;
+    }
+
     @Override
     public String toString() {
         return "JdbcTemplateConfig{" +
                 "basePackage='" + basePackage + '\'' +
+                ", xmlmapper=" + xmlmapper +
                 '}';
     }
 }
