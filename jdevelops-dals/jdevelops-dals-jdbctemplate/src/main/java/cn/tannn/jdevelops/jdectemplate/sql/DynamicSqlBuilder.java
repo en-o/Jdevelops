@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
      [LIMIT/OFFSET 分页限制]
  * </pre>
  * <pre>
- * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new BeanPropertyRowMapper<>(User.class));
+ * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new DataClassRowMapper<>(User.class));
  * </pre>
  * <pre>
- * List<DynamicSqlBuilderSpringTest.User> result = jdbcTemplate.query(builder.getSql(),builder.getPositionalParams(),new BeanPropertyRowMapper<>(DynamicSqlBuilderSpringTest.User.class));
+ * List<DynamicSqlBuilderSpringTest.User> result = jdbcTemplate.query(builder.getSql(),builder.getPositionalParams(),new DataClassRowMapper<>(DynamicSqlBuilderSpringTest.User.class));
  * </pre>
  */
 public class DynamicSqlBuilder extends OrGroupSqlBuilder {
