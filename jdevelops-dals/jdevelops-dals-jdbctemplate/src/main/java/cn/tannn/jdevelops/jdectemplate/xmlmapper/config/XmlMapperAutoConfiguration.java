@@ -13,8 +13,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
@@ -38,35 +40,13 @@ import javax.sql.DataSource;
 )
 public class XmlMapperAutoConfiguration {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(XmlMapperAutoConfiguration.class);
-
-
-    @Bean
-    @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "base-packages")
-    public ApplicationRunner xmlMapperScannerRunner(XmlMapperRegistry xmlMapperRegistry,
-                                                    JdbcTemplateConfig jdbcTemplateConfig) {
-        return args -> {
-            if (jdbcTemplateConfig == null) {
-                throw new IllegalStateException("JdbcTemplateConfig is not available");
-            }
-
-            String basePackages = jdbcTemplateConfig.getXmlmapper().getBasePackages();
-            if (!StringUtils.hasText(basePackages)) {
-                basePackages = jdbcTemplateConfig.getBasePackage();
-            }
-
-            LOG.info("Initializing XML Mapper Scanner for package: {}", basePackages);
-             new XmlMapperScanner(basePackages, xmlMapperRegistry);
-        };
-
-    }
 
     @Bean
     @ConditionalOnMissingBean
     @DependsOn({"dataSource"})
-    public XmlMapperRegistry xmlMapperRegistry(JdbcTemplateConfig jdbcTemplateConfig
-            , JdbcTemplate jdbcTemplate) throws Exception {
+    public XmlMapperRegistry xmlMapperRegistry(JdbcTemplateConfig jdbcTemplateConfig,
+                                                JdbcTemplate jdbcTemplate) throws Exception {
 
         LOG.info("Initializing XML Mapper Registry");
 
@@ -92,5 +72,27 @@ public class XmlMapperAutoConfiguration {
                 registry.getRegisteredMappers());
 
         return registry;
+    }
+
+    /**
+     * XML Mapper 接口扫描和代理创建
+     * <p>使用 ApplicationRunner 确保在应用启动后执行</p>
+     */
+    @Bean
+    @Order(Integer.MIN_VALUE + 1)
+    @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "base-packages")
+    public ApplicationRunner xmlMapperRunner(ApplicationContext context,
+                                              XmlMapperRegistry registry,
+                                              JdbcTemplateConfig config) {
+        return args -> {
+            // 优先使用 xmlmapper.base-packages，如果没有配置则使用 jdbc.base-package
+            String basePackages = config.getXmlmapper().getBasePackages();
+            if (!StringUtils.hasText(basePackages)) {
+                basePackages = config.getBasePackage();
+            }
+
+            LOG.info("Creating XML Mapper proxies for package: {}", basePackages);
+            XmlMapperScanner.createXmlMapperProxies(context, registry, basePackages);
+        };
     }
 }
