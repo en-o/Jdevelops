@@ -63,6 +63,10 @@ public class ParameterSqlNode implements SqlNode {
                 value = itemValue;
             } else if (expression.equals(indexName)) {
                 value = indexValue;
+            } else if (expression.startsWith(itemName + ".")) {
+                // 处理 user.username 形式
+                String propertyPath = expression.substring(itemName.length() + 1);
+                value = OgnlUtil.getValue(propertyPath, itemValue);
             } else {
                 value = OgnlUtil.getValue(expression, parameter);
             }
@@ -71,10 +75,17 @@ public class ParameterSqlNode implements SqlNode {
             // #{} 形式
             Object value;
             if (expression.equals(itemName)) {
+                // 直接引用 item
                 value = itemValue;
             } else if (expression.equals(indexName)) {
+                // 直接引用 index
                 value = indexValue;
+            } else if (expression.startsWith(itemName + ".")) {
+                // 处理 user.username 形式，从 itemValue 中获取属性
+                String propertyPath = expression.substring(itemName.length() + 1);
+                value = OgnlUtil.getValue(propertyPath, itemValue);
             } else {
+                // 其他情况，从原始 parameter 获取
                 value = OgnlUtil.getValue(expression, parameter);
             }
 
