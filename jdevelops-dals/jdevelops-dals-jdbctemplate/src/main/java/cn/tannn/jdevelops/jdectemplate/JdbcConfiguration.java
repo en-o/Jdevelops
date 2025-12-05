@@ -21,8 +21,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Import(XmlMapperAutoConfiguration.class)
 public class JdbcConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JdbcConfiguration.class);
-
     @Bean
     public JdbcTemplateConfig jdbcTemplateConfig() {
         return new JdbcTemplateConfig();
