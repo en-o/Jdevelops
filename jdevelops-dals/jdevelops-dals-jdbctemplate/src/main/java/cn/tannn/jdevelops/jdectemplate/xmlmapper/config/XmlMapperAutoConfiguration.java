@@ -5,10 +5,19 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.proxy.XmlMapperScanner;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
 
 /**
  * XML Mapper 自动配置
@@ -17,14 +26,47 @@ import org.springframework.util.StringUtils;
  *
  * @author tnnn
  */
-@ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true", matchIfMissing = true)
+@AutoConfiguration
+@ConditionalOnClass({JdbcTemplate.class, DataSource.class})
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class})
+@ConditionalOnProperty(
+        prefix = "jdevelops.jdbc.xmlmapper",
+        name = "enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 public class XmlMapperAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(XmlMapperAutoConfiguration.class);
 
+    /**
+     * 使用 ObjectProvider 实现延迟加载，避免过早触发 Bean 创建
+     */
     @Bean
-    public XmlMapperRegistry xmlMapperRegistry(JdbcTemplate jdbcTemplate, JdbcTemplateConfig config) throws Exception {
+    @ConditionalOnMissingBean
+    public XmlMapperRegistry xmlMapperRegistry(
+            ObjectProvider<JdbcTemplate> jdbcTemplateProvider,
+            ObjectProvider<JdbcTemplateConfig> configProvider) throws Exception {
+
         LOG.info("Initializing XML Mapper Registry");
+
+        // 延迟获取 Bean，此时配置已经完全加载
+        JdbcTemplate jdbcTemplate = jdbcTemplateProvider.getIfAvailable();
+        JdbcTemplateConfig config = configProvider.getIfAvailable();
+
+        if (jdbcTemplate == null) {
+            throw new IllegalStateException(
+                    "JdbcTemplate is not available. Please configure a DataSource or disable xmlmapper with jdevelops.jdbc.xmlmapper.enabled=false");
+        }
+
+        if (config == null || config.getXmlmapper() == null) {
+            throw new IllegalStateException(
+                    "JdbcTemplateConfig is not properly configured.");
+        }
+
+        LOG.debug("JdbcTemplate DataSource: {}", jdbcTemplate.getDataSource());
+        LOG.debug("Config locations: {}", config.getXmlmapper().getLocations());
+
         XmlMapperRegistry registry = new XmlMapperRegistry(jdbcTemplate);
 
         // 扫描并注册 XML Mapper 文件
@@ -44,7 +86,15 @@ public class XmlMapperAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "base-packages")
-    public XmlMapperScanner xmlMapperScanner(JdbcTemplateConfig config, XmlMapperRegistry registry) {
+    public XmlMapperScanner xmlMapperScanner(
+            ObjectProvider<JdbcTemplateConfig> configProvider,
+            XmlMapperRegistry registry) {
+
+        JdbcTemplateConfig config = configProvider.getIfAvailable();
+        if (config == null) {
+            throw new IllegalStateException("JdbcTemplateConfig is not available");
+        }
+
         // 优先使用 xmlmapper.base-packages，如果没有配置则使用 jdbc.base-package
         String basePackages = config.getXmlmapper().getBasePackages();
         if (!StringUtils.hasText(basePackages)) {
