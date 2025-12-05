@@ -107,7 +107,10 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
             }
 
             // 执行查询
-            return registry.executeQuery(namespace, statementId, parameter, resultType);
+            Object result = registry.executeQuery(namespace, statementId, parameter, resultType);
+
+            // 根据方法返回类型处理结果
+            return adaptResult(result, method);
         } catch (Exception e) {
             if (tryc) {
                 LOG.error("XML Mapper query error (tryc=true): {}.{}", namespace, statementId, e);
@@ -116,6 +119,42 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
                 throw new RuntimeException("Failed to execute XML Mapper query: " + namespace + "." + statementId, e);
             }
         }
+    }
+
+    /**
+     * 根据方法返回类型适配查询结果
+     */
+    @SuppressWarnings("unchecked")
+    private Object adaptResult(Object result, Method method) {
+        if (result == null) {
+            return null;
+        }
+
+        Type returnType = method.getGenericReturnType();
+
+        // 如果返回类型是 List，确保返回 List
+        if (returnType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) returnType;
+            Class<?> rawType = (Class<?>) parameterizedType.getRawType();
+
+            if (java.util.List.class.isAssignableFrom(rawType)) {
+                // 期望返回 List
+                if (result instanceof java.util.List) {
+                    return result;
+                } else {
+                    // 单个对象，包装成 List
+                    return java.util.Collections.singletonList(result);
+                }
+            }
+        }
+
+        // 如果返回类型不是 List，确保返回单个对象
+        if (result instanceof java.util.List) {
+            java.util.List<?> list = (java.util.List<?>) result;
+            return list.isEmpty() ? null : list.get(0);
+        }
+
+        return result;
     }
 
     /**
