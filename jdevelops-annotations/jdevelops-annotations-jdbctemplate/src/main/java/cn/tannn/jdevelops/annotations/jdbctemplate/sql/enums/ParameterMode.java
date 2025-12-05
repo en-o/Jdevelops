@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jdectemplate.sql;
+package cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums;
 
 /**
  * SQL模式枚举

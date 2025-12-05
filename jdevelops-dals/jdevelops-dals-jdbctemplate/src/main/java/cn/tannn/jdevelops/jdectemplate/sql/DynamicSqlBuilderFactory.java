@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.jdectemplate.sql;
 
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlJoin;
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlTable;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.ParameterMode;
 import cn.tannn.jdevelops.jdectemplate.sql.v2.SqlBuilderChain;
 import org.springframework.util.StringUtils;
 
