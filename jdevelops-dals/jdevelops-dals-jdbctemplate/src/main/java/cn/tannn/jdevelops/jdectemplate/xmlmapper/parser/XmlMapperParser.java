@@ -55,8 +55,8 @@ public class XmlMapperParser {
      */
     private XmlMapper parseInputStream(InputStream inputStream, String xmlPath) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        // 禁用外部实体解析以防止 XXE 攻击
-        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        // 禁用外部实体解析以防止 XXE 攻击，但允许 DOCTYPE 声明
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
         factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
         factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
