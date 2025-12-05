@@ -68,13 +68,14 @@ public class XmlMapperScanner implements BeanDefinitionRegistryPostProcessor {
             // 延迟获取 XmlMapperRegistry，在真正创建代理时才获取
             beanDefinition.setInstanceSupplier(() -> {
                 XmlMapperRegistry xmlMapperRegistry = beanFactory.getBean(XmlMapperRegistry.class);
+
+                LOG.debug("Creating proxy for {} with registry containing {} mappers",
+                        mapperInterface.getSimpleName(),
+                        xmlMapperRegistry.getRegisteredMappers().size());
+
                 return XmlMapperProxyFactory.createProxy(mapperInterface, xmlMapperRegistry);
             });
-
             beanDefinition.setAutowireCandidate(true);
-            // 设置为延迟加载
-            beanDefinition.setLazyInit(true);
-
             registry.registerBeanDefinition(beanName, beanDefinition);
 
             LOG.info("Registered XML Mapper: {} -> {}", mapperInterface.getSimpleName(), beanName);
@@ -90,7 +91,15 @@ public class XmlMapperScanner implements BeanDefinitionRegistryPostProcessor {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        // 保存 BeanFactory 引用，用于后续延迟获取 XmlMapperRegistry
         this.beanFactory = beanFactory;
+
+        // 在这里确保 XmlMapperRegistry 已经初始化
+        try {
+            XmlMapperRegistry registry = beanFactory.getBean(XmlMapperRegistry.class);
+            LOG.info("XmlMapperRegistry is ready with {} registered mappers",
+                    registry.getRegisteredMappers().size());
+        } catch (Exception e) {
+            LOG.warn("XmlMapperRegistry not yet available: {}", e.getMessage());
+        }
     }
 }
