@@ -1,10 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.example;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlDelete;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlInsert;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlMapper;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlSelect;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlUpdate;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.*;
 
 import java.util.List;
 

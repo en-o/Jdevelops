@@ -1,7 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.example;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户查询参数（示例）

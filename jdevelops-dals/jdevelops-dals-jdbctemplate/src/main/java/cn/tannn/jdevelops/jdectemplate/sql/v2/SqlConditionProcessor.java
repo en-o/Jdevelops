@@ -2,9 +2,9 @@ package cn.tannn.jdevelops.jdectemplate.sql.v2;
 
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlColumn;
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlPage;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.NullHandleStrategy;
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.QueryType;
 import cn.tannn.jdevelops.jdectemplate.sql.DynamicSqlBuilder;
-import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.NullHandleStrategy;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;

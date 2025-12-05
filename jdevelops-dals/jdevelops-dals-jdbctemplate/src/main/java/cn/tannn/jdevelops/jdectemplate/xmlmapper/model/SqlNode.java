@@ -1,7 +1,5 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.model;
 
-import java.util.Map;
-
 /**
  * SQL 节点接口
  * 所有 SQL 片段都实现此接口
