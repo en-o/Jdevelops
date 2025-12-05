@@ -1,6 +1,7 @@
-package cn.tannn.jdevelops.jdectemplate.annotations;
+package cn.tannn.jdevelops.annotations.jdbctemplate.sql;
 
-import cn.tannn.jdevelops.jdectemplate.enums.JoinType;
+
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.JoinType;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

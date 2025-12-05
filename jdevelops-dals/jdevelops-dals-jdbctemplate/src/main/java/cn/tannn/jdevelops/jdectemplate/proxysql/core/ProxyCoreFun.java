@@ -1,6 +1,6 @@
-package cn.tannn.jdevelops.jdectemplate.core;
+package cn.tannn.jdevelops.jdectemplate.proxysql.core;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
+import cn.tannn.jdevelops.annotations.jdbctemplate.proxysql.Query;
 import cn.tannn.jdevelops.jdectemplate.util.AnnotationParse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

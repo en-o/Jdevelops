@@ -18,6 +18,11 @@ public class XmlMapperProperties {
      */
     String locations = "classpath*:jmapper/**/*.xml";
 
+    /**
+     * 扫描 @XmlMapper 接口的包路径
+     * <p>如果不配置，则使用 jdevelops.jdbc.base-package</p>
+     */
+    String basePackages;
 
     public Boolean getEnabled() {
         return enabled;
@@ -35,11 +40,20 @@ public class XmlMapperProperties {
         this.locations = locations;
     }
 
+    public String getBasePackages() {
+        return basePackages;
+    }
+
+    public void setBasePackages(String basePackages) {
+        this.basePackages = basePackages;
+    }
+
     @Override
     public String toString() {
         return "XmlMapperProperties{" +
                 "enabled=" + enabled +
                 ", locations='" + locations + '\'' +
+                ", basePackages='" + basePackages + '\'' +
                 '}';
     }
 }

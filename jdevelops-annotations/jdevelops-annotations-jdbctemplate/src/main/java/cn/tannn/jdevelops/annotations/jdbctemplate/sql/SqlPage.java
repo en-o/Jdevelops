@@ -1,6 +1,7 @@
-package cn.tannn.jdevelops.jdectemplate.annotations;
+package cn.tannn.jdevelops.annotations.jdbctemplate.sql;
 
-import cn.tannn.jdevelops.jdectemplate.enums.PageType;
+
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.PageType;
 
 import java.lang.annotation.*;
 

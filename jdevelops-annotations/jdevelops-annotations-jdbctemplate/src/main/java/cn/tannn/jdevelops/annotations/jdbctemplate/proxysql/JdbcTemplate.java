@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.annotations.jdbctemplate;
+package cn.tannn.jdevelops.annotations.jdbctemplate.proxysql;
 
 
 import java.lang.annotation.ElementType;

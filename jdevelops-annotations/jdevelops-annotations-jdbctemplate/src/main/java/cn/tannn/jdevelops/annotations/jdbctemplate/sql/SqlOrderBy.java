@@ -1,4 +1,4 @@
-package cn.tannn.jdevelops.jdectemplate.annotations;
+package cn.tannn.jdevelops.annotations.jdbctemplate.sql;
 
 import java.lang.annotation.*;
 

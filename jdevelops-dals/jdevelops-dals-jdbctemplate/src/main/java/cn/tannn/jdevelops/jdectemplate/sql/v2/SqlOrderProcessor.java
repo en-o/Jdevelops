@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.sql.v2;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.SqlOrderBy;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlOrderBy;
 import cn.tannn.jdevelops.jdectemplate.sql.DynamicSqlBuilder;
 import org.springframework.util.StringUtils;
 

@@ -1,6 +1,6 @@
-package cn.tannn.jdevelops.jdectemplate.core;
+package cn.tannn.jdevelops.jdectemplate.proxysql.core;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.Query;
+import cn.tannn.jdevelops.annotations.jdbctemplate.proxysql.Query;
 import org.reflections.Reflections;
 import org.springframework.cglib.proxy.Enhancer;
 

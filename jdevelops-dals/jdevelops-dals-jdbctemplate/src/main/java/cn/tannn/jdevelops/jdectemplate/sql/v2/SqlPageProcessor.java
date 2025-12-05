@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.sql.v2;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.SqlPage;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlPage;
 import cn.tannn.jdevelops.jdectemplate.sql.DynamicSqlBuilder;
 
 import java.lang.reflect.Field;

@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.sql.pojo;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.SqlReColumn;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlReColumn;
 
 /**
  * 用户返回结果实体

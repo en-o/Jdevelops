@@ -1,6 +1,6 @@
-package cn.tannn.jdevelops.jdectemplate.core;
+package cn.tannn.jdevelops.jdectemplate.proxysql.core;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate;
+import cn.tannn.jdevelops.annotations.jdbctemplate.proxysql.JdbcTemplate;
 import cn.tannn.jdevelops.jdectemplate.exception.JdbcTemplateException;
 import cn.tannn.jdevelops.jdectemplate.util.AnnotationScanner;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static cn.tannn.jdevelops.jdectemplate.core.CreateProxy.createQueryProxy;
+import static cn.tannn.jdevelops.jdectemplate.proxysql.core.CreateProxy.createQueryProxy;
 
 
 /**

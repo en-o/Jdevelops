@@ -5,10 +5,14 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.proxy.XmlMapperScanner;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.StringUtils;
 
 /**
  * XML Mapper 自动配置
@@ -17,6 +21,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author tnnn
  */
 @Configuration
+@ConditionalOnClass(JdbcTemplate.class)
+@AutoConfigureAfter(JdbcTemplateAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class XmlMapperAutoConfiguration {
 
@@ -40,10 +46,18 @@ public class XmlMapperAutoConfiguration {
     /**
      * XML Mapper 接口扫描器
      * <p>扫描 @XmlMapper 注解的接口并创建代理</p>
+     * <p>只有配置了 basePackages 时才启用</p>
      */
     @Bean
+    @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "base-packages")
     public XmlMapperScanner xmlMapperScanner(JdbcTemplateConfig config, XmlMapperRegistry registry) {
-        LOG.info("Initializing XML Mapper Scanner for package: {}", config.getBasePackage());
-        return new XmlMapperScanner(config.getBasePackage(), registry);
+        // 优先使用 xmlmapper.base-packages，如果没有配置则使用 jdbc.base-package
+        String basePackages = config.getXmlmapper().getBasePackages();
+        if (!StringUtils.hasText(basePackages)) {
+            basePackages = config.getBasePackage();
+        }
+
+        LOG.info("Initializing XML Mapper Scanner for package: {}", basePackages);
+        return new XmlMapperScanner(basePackages, registry);
     }
 }
