@@ -161,7 +161,14 @@ public class XmlSqlExecutor {
      * 判断是否是单结果查询
      */
     private boolean isSingleResult(String sql) {
-        String upperSql = sql.toUpperCase();
+        String upperSql = sql.toUpperCase().trim();
+
+        // 检查聚合函数查询（COUNT、SUM、AVG、MAX、MIN）
+        if (upperSql.matches("^SELECT\\s+(COUNT|SUM|AVG|MAX|MIN)\\s*\\(.*")) {
+            return true;
+        }
+
+        // 检查 LIMIT 1 或 TOP 1
         return upperSql.contains("LIMIT 1") || upperSql.contains("TOP 1");
     }
 
