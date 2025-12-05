@@ -35,6 +35,6 @@ public class XmlMapperFactoryBean<T> implements FactoryBean<T> {
 
     @Override
     public boolean isSingleton() {
-        return true;
+        return FactoryBean.super.isSingleton();
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 
@@ -22,6 +21,7 @@ import javax.sql.DataSource;
  * XML Mapper 自动配置
  * <p> 默认读取 资源文件下 resources/jmapper/下的文件 </p>
  * <p> 默认启用 </p>
+ * <p> 使用 @XmlMapperScan 注解来扫描 Mapper 接口 </p>
  *
  * @author tnnn
  */
@@ -68,22 +68,5 @@ public class XmlMapperAutoConfiguration {
                 registry.getRegisteredMappers());
 
         return registry;
-    }
-
-    /**
-     * XML Mapper 接口扫描注册器
-     * <p>使用 BeanDefinitionRegistryPostProcessor 在配置阶段注册 Bean</p>
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "base-packages")
-    public static XmlMapperScannerRegistrar xmlMapperScannerRegistrar(JdbcTemplateConfig config) {
-        // 优先使用 xmlmapper.base-packages，如果没有配置则使用 jdbc.base-package
-        String basePackages = config.getXmlmapper().getBasePackages();
-        if (!StringUtils.hasText(basePackages)) {
-            basePackages = config.getBasePackage();
-        }
-
-        LOG.info("Creating XML Mapper scanner registrar for package: {}", basePackages);
-        return new XmlMapperScannerRegistrar(basePackages);
     }
 }

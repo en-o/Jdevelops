@@ -1,7 +1,9 @@
 package cn.tannn.jdevelops.jdectemplate.config;
 
 /**
- * xml mapper 配置
+ * XML Mapper 配置
+ * <p>注意：Mapper 接口扫描请使用 @XmlMapperScan 注解</p>
+ *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @version V1.0
  * @date 2025/12/4 23:13
@@ -17,12 +19,6 @@ public class XmlMapperProperties {
      * XML Mapper 文件位置，支持通配符
      */
     String locations = "classpath*:jmapper/**/*.xml";
-
-    /**
-     * 扫描 @XmlMapper 接口的包路径
-     * <p>如果不配置，则使用 jdevelops.jdbc.base-package</p>
-     */
-    String basePackages;
 
     public Boolean getEnabled() {
         return enabled;
@@ -40,20 +36,11 @@ public class XmlMapperProperties {
         this.locations = locations;
     }
 
-    public String getBasePackages() {
-        return basePackages;
-    }
-
-    public void setBasePackages(String basePackages) {
-        this.basePackages = basePackages;
-    }
-
     @Override
     public String toString() {
         return "XmlMapperProperties{" +
                 "enabled=" + enabled +
                 ", locations='" + locations + '\'' +
-                ", basePackages='" + basePackages + '\'' +
                 '}';
     }
 }
