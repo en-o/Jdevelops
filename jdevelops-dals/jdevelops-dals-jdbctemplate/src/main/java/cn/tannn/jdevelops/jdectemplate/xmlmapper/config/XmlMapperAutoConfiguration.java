@@ -5,12 +5,8 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.proxy.XmlMapperScanner;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
@@ -18,11 +14,9 @@ import org.springframework.util.StringUtils;
  * XML Mapper 自动配置
  * <p> 默认读取 资源文件下 resources/jmapper/下的文件 </p>
  * <p> 默认启用 </p>
+ *
  * @author tnnn
  */
-@Configuration
-@ConditionalOnClass(JdbcTemplate.class)
-@AutoConfigureAfter(JdbcTemplateAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "jdevelops.jdbc.xmlmapper", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class XmlMapperAutoConfiguration {
 
