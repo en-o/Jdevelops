@@ -2,10 +2,10 @@ package cn.tannn.jdevelops.jdectemplate.sql.pojo;
 
 
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.*;
-import cn.tannn.jdevelops.jdectemplate.sql.enums.JoinType;
-import cn.tannn.jdevelops.jdectemplate.sql.enums.PageType;
-import cn.tannn.jdevelops.jdectemplate.sql.enums.QueryType;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.JoinType;
 import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.NullHandleStrategy;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.PageType;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.QueryType;
 
 import java.util.List;
 
