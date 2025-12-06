@@ -333,7 +333,8 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
 
     /**
      * 获取参数对象
-     * <p>如果只有一个参数，直接返回；如果有多个参数，包装成 Map</p>
+     * <p>如果只有一个参数，直接返回；如果有多个参数，包装成 List</p>
+     * <p>多参数时包装成 List，支持在 XML 中使用 arg0、arg1 等方式访问</p>
      */
     private Object getParameter(Object[] args) {
         if (args == null || args.length == 0) {
@@ -342,9 +343,8 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         if (args.length == 1) {
             return args[0];
         }
-        // 多个参数时，可以考虑包装成 Map，键为 param1, param2...
-        // 这里简化处理，只取第一个参数
-        return args[0];
+        // 多个参数时，包装成 List，支持在 XML 中使用 arg0、arg1 访问
+        return java.util.Arrays.asList(args);
     }
 
     /**
