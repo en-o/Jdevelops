@@ -24,7 +24,7 @@ public class OgnlUtil {
     /**
      * 获取对象属性值
      *
-     * @param expression 表达式（如 "user.name" 或 "list[0]"）
+     * @param expression 表达式(如 "user.name" 或 "list[0]")
      * @param root       根对象
      * @return 属性值
      */
@@ -41,6 +41,22 @@ public class OgnlUtil {
         }
 
         try {
+            // 处理特殊集合名称：当参数直接是 List 时，使用 "list" 作为别名
+            if ("list".equals(expression) && root instanceof List) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("getValue: special 'list' alias for List parameter, value={}", root);
+                }
+                return root;
+            }
+
+            // 处理特殊集合名称：当参数直接是数组时，使用 "array" 作为别名
+            if ("array".equals(expression) && root.getClass().isArray()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("getValue: special 'array' alias for array parameter, value={}", root);
+                }
+                return root;
+            }
+
             // 处理简单属性
             if (!expression.contains(".") && !expression.contains("[")) {
                 Object value = getSimpleProperty(root, expression);
