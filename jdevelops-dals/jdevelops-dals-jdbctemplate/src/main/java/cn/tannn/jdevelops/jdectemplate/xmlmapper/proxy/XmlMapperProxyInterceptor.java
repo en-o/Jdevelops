@@ -1,9 +1,8 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.proxy;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlDelete;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlInsert;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlSelect;
-import cn.tannn.jdevelops.annotations.jdbctemplate.xml.XmlUpdate;
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.*;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageRequest;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageResult;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.registry.XmlMapperRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +59,7 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
      */
     private Object executeXmlMapperMethod(Method method, Object[] args) {
         // 获取方法上的 XML 注解
+        XmlPageSelect pageSelect = method.getAnnotation(XmlPageSelect.class);
         XmlSelect select = method.getAnnotation(XmlSelect.class);
         XmlInsert insert = method.getAnnotation(XmlInsert.class);
         XmlUpdate update = method.getAnnotation(XmlUpdate.class);
@@ -68,7 +68,10 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         String statementId;
         boolean tryc;
 
-        if (select != null) {
+        if (pageSelect != null) {
+            // 分页查询
+            return executePageQuery(pageSelect, method, args);
+        } else if (select != null) {
             statementId = select.value();
             tryc = select.tryc();
             return executeQuery(statementId, method, args, tryc);
@@ -86,7 +89,75 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
             return executeUpdate(statementId, method, args, tryc);
         } else {
             throw new IllegalStateException(
-                    "Method " + method.getName() + " must be annotated with @XmlSelect, @XmlInsert, @XmlUpdate or @XmlDelete");
+                    "Method " + method.getName() + " must be annotated with @XmlPageSelect, @XmlSelect, @XmlInsert, @XmlUpdate or @XmlDelete");
+        }
+    }
+
+    /**
+     * 执行分页查询
+     */
+    private Object executePageQuery(XmlPageSelect pageSelect, Method method, Object[] args) {
+        try {
+            // 1. 提取参数：查询参数 和 PageRequest
+            Object queryParameter = null;
+            PageRequest pageRequest = null;
+
+            if (args != null) {
+                for (Object arg : args) {
+                    if (arg instanceof PageRequest) {
+                        pageRequest = (PageRequest) arg;
+                    } else {
+                        queryParameter = arg;
+                    }
+                }
+            }
+
+            // 验证参数
+            if (pageRequest == null) {
+                throw new IllegalArgumentException(
+                        "Method " + method.getName() + " requires a PageRequest parameter for @XmlPageSelect annotation");
+            }
+
+            // 验证返回类型
+            if (!PageResult.class.isAssignableFrom(method.getReturnType())) {
+                throw new IllegalStateException(
+                        "Method " + method.getName() + " with @XmlPageSelect must return PageResult type");
+            }
+
+            // 2. 获取结果类型（PageResult的泛型类型）
+            Class<?> resultType = getResultType(method);
+
+            // 3. 获取 SQL 语句 ID
+            String dataStatementId = pageSelect.dataStatement();
+            String countStatementId = pageSelect.countStatement();
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Executing XML Mapper page query: {}.{}, countStatement: {}",
+                        namespace, dataStatementId, countStatementId.isEmpty() ? "auto" : countStatementId);
+            }
+
+            // 4. 执行分页查询
+            return registry.executePageQuery(
+                    namespace,
+                    dataStatementId,
+                    countStatementId.isEmpty() ? null : countStatementId,
+                    queryParameter,
+                    pageRequest,
+                    resultType,
+                    pageSelect.tryc()
+            );
+
+        } catch (Exception e) {
+            if (pageSelect.tryc()) {
+                LOG.error("XML Mapper page query error (tryc=true): {}.{}",
+                        namespace, pageSelect.dataStatement(), e);
+                // 返回空的分页结果
+                PageRequest defaultPage = new PageRequest(1, 10);
+                return new PageResult<>(1, 10, 0L, java.util.Collections.emptyList());
+            } else {
+                throw new RuntimeException(
+                        "Failed to execute XML Mapper page query: " + namespace + "." + pageSelect.dataStatement(), e);
+            }
         }
     }
 

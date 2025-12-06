@@ -3,12 +3,16 @@ package cn.tannn.jdevelops.jdectemplate.xmlmapper.registry;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.executor.XmlSqlExecutor;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlStatement;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.XmlMapper;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageRequest;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageResult;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.parser.XmlMapperParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -119,6 +123,102 @@ public class XmlMapperRegistry {
     public Object executeUpdate(String namespace, String statementId, Object parameter) {
         SqlStatement statement = getSqlStatement(namespace, statementId);
         return sqlExecutor.execute(statement, parameter, null);
+    }
+
+    /**
+     * 执行分页查询
+     * <p>自动执行数据查询和统计查询，返回分页结果</p>
+     *
+     * @param namespace 命名空间
+     * @param dataStatementId 数据查询 SQL 语句 ID
+     * @param countStatementId 统计查询 SQL 语句 ID（如果为空，则不执行统计查询）
+     * @param queryParameter 查询参数对象
+     * @param pageRequest 分页参数
+     * @param resultType 结果类型
+     * @param <T> 结果类型泛型
+     * @return 分页结果
+     */
+    @SuppressWarnings("unchecked")
+    public <T> PageResult<T> executePageQuery(
+            String namespace,
+            String dataStatementId,
+            String countStatementId,
+            Object queryParameter,
+            PageRequest pageRequest,
+            Class<T> resultType) {
+
+        // 1. 执行数据查询
+        SqlStatement dataStatement = getSqlStatement(namespace, dataStatementId);
+        Object dataResult = sqlExecutor.execute(
+                dataStatement,
+                Arrays.asList(queryParameter, pageRequest),
+                resultType
+        );
+
+        List<T> list;
+        if (dataResult instanceof List) {
+            list = (List<T>) dataResult;
+        } else {
+            list = Arrays.asList((T) dataResult);
+        }
+
+        // 2. 执行统计查询（如果指定了统计SQL）
+        Long total = 0L;
+        if (StringUtils.hasText(countStatementId)) {
+            SqlStatement countStatement = getSqlStatement(namespace, countStatementId);
+            Object countResult = sqlExecutor.execute(countStatement, queryParameter, Long.class);
+            if (countResult instanceof Number) {
+                total = ((Number) countResult).longValue();
+            }
+        }
+
+        // 3. 构建分页结果
+        return new PageResult<>(
+                pageRequest.getPageNum(),
+                pageRequest.getPageSize(),
+                total,
+                list
+        );
+    }
+
+    /**
+     * 执行分页查询（带异常处理）
+     * <p>如果查询失败且 tryc=true，返回空的分页结果</p>
+     *
+     * @param namespace 命名空间
+     * @param dataStatementId 数据查询 SQL 语句 ID
+     * @param countStatementId 统计查询 SQL 语句 ID
+     * @param queryParameter 查询参数对象
+     * @param pageRequest 分页参数
+     * @param resultType 结果类型
+     * @param tryc 是否吞掉异常
+     * @param <T> 结果类型泛型
+     * @return 分页结果
+     */
+    public <T> PageResult<T> executePageQuery(
+            String namespace,
+            String dataStatementId,
+            String countStatementId,
+            Object queryParameter,
+            PageRequest pageRequest,
+            Class<T> resultType,
+            boolean tryc) {
+
+        try {
+            return executePageQuery(namespace, dataStatementId, countStatementId,
+                    queryParameter, pageRequest, resultType);
+        } catch (Exception e) {
+            if (tryc) {
+                LOG.warn("Page query execution failed (tryc=true): {}", e.getMessage());
+                return new PageResult<>(
+                        pageRequest.getPageNum(),
+                        pageRequest.getPageSize(),
+                        0L,
+                        Arrays.asList()
+                );
+            }
+            throw e;
+        }
     }
 
     /**
