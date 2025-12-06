@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.jdectemplate.xmlmapper.node;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlContext;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlNode;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.util.OgnlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
@@ -15,6 +17,8 @@ import java.util.List;
  * @author tnnn
  */
 public class ForeachSqlNode implements SqlNode {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ForeachSqlNode.class);
 
     /**
      * 集合表达式
@@ -84,6 +88,10 @@ public class ForeachSqlNode implements SqlNode {
         // 遍历集合
         int idx = 0;
         for (Object itemValue : items) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Foreach iteration {}: itemValue={}", idx, itemValue);
+            }
+
             if (idx > 0 && StringUtils.hasText(separator)) {
                 context.appendSql(separator);
             }

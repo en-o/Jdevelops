@@ -91,7 +91,8 @@ public class ParameterSqlNode implements SqlNode {
 
                 // 调试日志
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Foreach parameter: {} -> {} = {}", expression, propertyPath, value);
+                    LOG.debug("Foreach parameter: expression={}, itemName={}, propertyPath={}, itemValue={}, value={}",
+                              expression, itemName, propertyPath, itemValue, value);
                 }
             } else {
                 // 其他情况，从原始 parameter 获取
