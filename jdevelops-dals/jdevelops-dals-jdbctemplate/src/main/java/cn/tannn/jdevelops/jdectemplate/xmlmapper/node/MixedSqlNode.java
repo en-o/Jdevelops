@@ -84,6 +84,13 @@ public class MixedSqlNode implements SqlNode {
         return nodes;
     }
 
+    /**
+     * 获取子节点列表（用于 foreach 递归处理）
+     */
+    public List<SqlNode> getContents() {
+        return contents;
+    }
+
     @Override
     public String toString() {
         return "MixedSqlNode{contents=" + contents + '}';

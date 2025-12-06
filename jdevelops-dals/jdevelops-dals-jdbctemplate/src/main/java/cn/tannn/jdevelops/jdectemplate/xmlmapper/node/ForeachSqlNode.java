@@ -110,15 +110,8 @@ public class ForeachSqlNode implements SqlNode {
             }
 
             // 应用子节点（将 item 和 index 变量传递给子节点）
-            // 注意：直接在主上下文上操作，不创建临时上下文，以保持参数索引连续
             for (SqlNode sqlNode : contents) {
-                if (sqlNode instanceof ParameterSqlNode) {
-                    // 处理参数节点
-                    ((ParameterSqlNode) sqlNode).applyWithItem(context, parameter, item, itemValue, index, idx);
-                } else {
-                    // 其他节点类型，传递 item 值作为参数
-                    sqlNode.apply(context, itemValue);
-                }
+                applyNodeWithItem(sqlNode, context, parameter, item, itemValue, index, idx);
             }
 
             idx++;
@@ -143,6 +136,28 @@ public class ForeachSqlNode implements SqlNode {
             return List.of((Object[]) value);
         }
         return null;
+    }
+
+    /**
+     * 对节点应用 foreach item 上下文
+     * <p>递归处理嵌套的节点类型（如 MixedSqlNode）</p>
+     */
+    private void applyNodeWithItem(SqlNode sqlNode, SqlContext context, Object parameter,
+                                   String itemName, Object itemValue, String indexName, int indexValue) {
+        if (sqlNode instanceof ParameterSqlNode) {
+            // 参数节点 - 使用 applyWithItem 方法
+            ((ParameterSqlNode) sqlNode).applyWithItem(context, parameter, itemName, itemValue, indexName, indexValue);
+        } else if (sqlNode instanceof MixedSqlNode) {
+            // 混合节点 - 递归处理其子节点
+            MixedSqlNode mixedNode = (MixedSqlNode) sqlNode;
+            List<SqlNode> subNodes = mixedNode.getContents();
+            for (SqlNode subNode : subNodes) {
+                applyNodeWithItem(subNode, context, parameter, itemName, itemValue, indexName, indexValue);
+            }
+        } else {
+            // 其他节点类型 - 传递 itemValue 作为参数
+            sqlNode.apply(context, itemValue);
+        }
     }
 
     @Override
