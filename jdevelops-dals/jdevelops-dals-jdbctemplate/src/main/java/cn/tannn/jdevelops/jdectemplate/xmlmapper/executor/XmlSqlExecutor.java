@@ -110,8 +110,22 @@ public class XmlSqlExecutor {
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 } else if (isSimpleType(resultType)) {
                     // 返回简单类型
-                    List<T> results = namedParameterJdbcTemplate.queryForList(sql, params, resultType);
-                    return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
+                    if (isSingleResult(sql)) {
+                        // 对于聚合查询(COUNT/SUM等)和LIMIT 1,使用queryForObject更可靠
+                        try {
+                            T result = namedParameterJdbcTemplate.queryForObject(sql, params, resultType);
+                            LOG.debug("Simple type single result (queryForObject): value={}", result);
+                            return result;
+                        } catch (EmptyResultDataAccessException e) {
+                            LOG.debug("Simple type single result: no data found");
+                            return null;
+                        }
+                    } else {
+                        // 返回列表
+                        List<T> results = namedParameterJdbcTemplate.queryForList(sql, params, resultType);
+                        LOG.debug("Simple type list result: size={}", results.size());
+                        return results;
+                    }
                 } else {
                     // 返回实体对象
                     RowMapper<T> rowMapper = new DataClassRowMapper<>(resultType);

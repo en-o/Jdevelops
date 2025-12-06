@@ -167,6 +167,10 @@ public class XmlMapperRegistry {
         if (StringUtils.hasText(countStatementId)) {
             SqlStatement countStatement = getSqlStatement(namespace, countStatementId);
             Object countResult = sqlExecutor.execute(countStatement, queryParameter, Long.class);
+            LOG.debug("Count query result: type={}, value={}, isNumber={}",
+                    countResult == null ? "null" : countResult.getClass().getName(),
+                    countResult,
+                    countResult instanceof Number);
             if (countResult instanceof Number) {
                 total = ((Number) countResult).longValue();
             }
