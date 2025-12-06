@@ -265,10 +265,11 @@ public class XmlSqlExecutor {
      * 判断是否是单结果查询
      */
     private boolean isSingleResult(String sql) {
-        String upperSql = sql.toUpperCase().trim();
+        // 移除多余的空白字符(包括换行符),方便匹配
+        String upperSql = sql.toUpperCase().trim().replaceAll("\\s+", " ");
 
         // 检查聚合函数查询（COUNT、SUM、AVG、MAX、MIN）
-        if (upperSql.matches("^SELECT\\s+(COUNT|SUM|AVG|MAX|MIN)\\s*\\(.*")) {
+        if (upperSql.matches("^SELECT (COUNT|SUM|AVG|MAX|MIN)\\s*\\(.*")) {
             return true;
         }
 
