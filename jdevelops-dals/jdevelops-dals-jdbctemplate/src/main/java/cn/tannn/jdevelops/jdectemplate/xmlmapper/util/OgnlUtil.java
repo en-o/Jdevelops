@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.xmlmapper.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Array;
@@ -17,6 +19,8 @@ import java.util.Map;
  */
 public class OgnlUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(OgnlUtil.class);
+
     /**
      * 获取对象属性值
      *
@@ -30,18 +34,34 @@ public class OgnlUtil {
         }
 
         if (root == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getValue: expression={}, root=null -> null", expression);
+            }
             return null;
         }
 
         try {
             // 处理简单属性
             if (!expression.contains(".") && !expression.contains("[")) {
-                return getSimpleProperty(root, expression);
+                Object value = getSimpleProperty(root, expression);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("getValue: simple property, expression={}, root type={}, value={}",
+                              expression, root.getClass().getSimpleName(), value);
+                }
+                return value;
             }
 
             // 处理复杂表达式
-            return evaluateExpression(expression, root);
+            Object value = evaluateExpression(expression, root);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getValue: complex expression, expression={}, root type={}, value={}",
+                          expression, root.getClass().getSimpleName(), value);
+            }
+            return value;
         } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getValue: exception for expression={}, error={}", expression, e.getMessage());
+            }
             return null;
         }
     }
@@ -216,32 +236,54 @@ public class OgnlUtil {
      */
     private static Object getSimpleProperty(Object obj, String propertyName) throws Exception {
         if (obj == null || !StringUtils.hasText(propertyName)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getSimpleProperty: obj={}, propertyName={} -> null (empty input)", obj, propertyName);
+            }
             return null;
         }
 
         // 如果是 Map
         if (obj instanceof Map) {
-            return ((Map<?, ?>) obj).get(propertyName);
+            Object value = ((Map<?, ?>) obj).get(propertyName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getSimpleProperty: Map access, propertyName={}, value={}", propertyName, value);
+            }
+            return value;
         }
 
         // 尝试 getter 方法
         try {
             String getterName = "get" + capitalize(propertyName);
             Method getter = obj.getClass().getMethod(getterName);
-            return getter.invoke(obj);
+            Object value = getter.invoke(obj);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("getSimpleProperty: getter method '{}' on {}, value={}", getterName, obj.getClass().getSimpleName(), value);
+            }
+            return value;
         } catch (NoSuchMethodException e) {
             // 尝试 is 方法（for boolean）
             try {
                 String isGetterName = "is" + capitalize(propertyName);
                 Method getter = obj.getClass().getMethod(isGetterName);
-                return getter.invoke(obj);
+                Object value = getter.invoke(obj);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("getSimpleProperty: is-getter method '{}' on {}, value={}", isGetterName, obj.getClass().getSimpleName(), value);
+                }
+                return value;
             } catch (NoSuchMethodException ex) {
                 // 尝试直接访问字段
                 try {
                     Field field = obj.getClass().getDeclaredField(propertyName);
                     field.setAccessible(true);
-                    return field.get(obj);
+                    Object value = field.get(obj);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("getSimpleProperty: field access '{}' on {}, value={}", propertyName, obj.getClass().getSimpleName(), value);
+                    }
+                    return value;
                 } catch (NoSuchFieldException exc) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("getSimpleProperty: property '{}' not found on {}", propertyName, obj.getClass().getSimpleName());
+                    }
                     return null;
                 }
             }
