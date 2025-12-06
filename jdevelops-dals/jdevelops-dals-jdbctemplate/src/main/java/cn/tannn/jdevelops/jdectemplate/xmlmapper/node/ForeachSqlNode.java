@@ -70,13 +70,26 @@ public class ForeachSqlNode implements SqlNode {
     @Override
     public boolean apply(SqlContext context, Object parameter) {
         // 获取集合对象
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Foreach: collection='{}', parameter type={}", collection,
+                     parameter != null ? parameter.getClass().getSimpleName() : "null");
+        }
+
         Object collectionValue = OgnlUtil.getValue(collection, parameter);
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Foreach: collectionValue={}, type={}", collectionValue,
+                     collectionValue != null ? collectionValue.getClass().getSimpleName() : "null");
+        }
+
         if (collectionValue == null) {
+            LOG.warn("Foreach: collection '{}' evaluated to null", collection);
             return false;
         }
 
         Collection<?> items = convertToCollection(collectionValue);
         if (items == null || items.isEmpty()) {
+            LOG.warn("Foreach: collection '{}' is empty or not convertible to Collection", collection);
             return false;
         }
 

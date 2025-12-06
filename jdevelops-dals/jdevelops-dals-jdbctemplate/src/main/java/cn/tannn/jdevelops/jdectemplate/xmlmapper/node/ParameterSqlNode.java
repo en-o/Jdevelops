@@ -60,6 +60,12 @@ public class ParameterSqlNode implements SqlNode {
     public void applyWithItem(SqlContext context, Object parameter,
                               String itemName, Object itemValue,
                               String indexName, int indexValue) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("applyWithItem: expression='{}', itemName='{}', itemValue={}, parameter type={}",
+                     expression, itemName, itemValue,
+                     parameter != null ? parameter.getClass().getSimpleName() : "null");
+        }
+
         if (isDynamic) {
             // ${} 形式
             Object value;
@@ -81,6 +87,9 @@ public class ParameterSqlNode implements SqlNode {
             if (expression.equals(itemName)) {
                 // 直接引用 item
                 value = itemValue;
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("applyWithItem: matched itemName, using itemValue={}", value);
+                }
             } else if (expression.equals(indexName)) {
                 // 直接引用 index
                 value = indexValue;
@@ -101,6 +110,9 @@ public class ParameterSqlNode implements SqlNode {
 
             if (context.isUseNamedParameters()) {
                 String paramName = generateParamName(context);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("applyWithItem: adding named parameter '{}' = {}", paramName, value);
+                }
                 context.appendSql(":" + paramName);
                 context.addNamedParameter(paramName, value);
             } else {
