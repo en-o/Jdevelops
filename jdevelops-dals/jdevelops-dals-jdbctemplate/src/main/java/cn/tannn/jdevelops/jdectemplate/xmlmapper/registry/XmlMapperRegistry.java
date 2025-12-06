@@ -114,12 +114,11 @@ public class XmlMapperRegistry {
      * @param namespace 命名空间
      * @param statementId SQL 语句 ID
      * @param parameter 参数对象
-     * @return 影响行数
+     * @return 影响行数或自增ID (如果配置了 useGeneratedKeys=true)
      */
-    public int executeUpdate(String namespace, String statementId, Object parameter) {
+    public Object executeUpdate(String namespace, String statementId, Object parameter) {
         SqlStatement statement = getSqlStatement(namespace, statementId);
-        Object result = sqlExecutor.execute(statement, parameter, null);
-        return result instanceof Integer ? (Integer) result : 0;
+        return sqlExecutor.execute(statement, parameter, null);
     }
 
     /**

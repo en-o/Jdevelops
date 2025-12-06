@@ -156,6 +156,27 @@ public class XmlMapperParser {
             statement.setTimeout(Integer.parseInt(timeoutAttr));
         }
 
+        // 解析 insert 标签的 useGeneratedKeys 和 keyProperty 属性
+        if (commandType == SqlCommandType.INSERT) {
+            String useGeneratedKeysAttr = element.getAttribute("useGeneratedKeys");
+            if (StringUtils.hasText(useGeneratedKeysAttr)) {
+                statement.setUseGeneratedKeys(Boolean.parseBoolean(useGeneratedKeysAttr));
+            }
+
+            String keyPropertyAttr = element.getAttribute("keyProperty");
+            if (StringUtils.hasText(keyPropertyAttr)) {
+                statement.setKeyProperty(keyPropertyAttr);
+            }
+
+            String keyColumnAttr = element.getAttribute("keyColumn");
+            if (StringUtils.hasText(keyColumnAttr)) {
+                statement.setKeyColumn(keyColumnAttr);
+            } else {
+                // 默认自增列名为 id
+                statement.setKeyColumn("id");
+            }
+        }
+
         // 解析子节点
         List<SqlNode> sqlNodes = parseChildren(element, xmlMapper);
         statement.setSqlNodes(sqlNodes);

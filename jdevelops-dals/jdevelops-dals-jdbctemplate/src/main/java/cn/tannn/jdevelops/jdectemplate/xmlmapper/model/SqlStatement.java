@@ -45,6 +45,21 @@ public class SqlStatement {
      */
     private Integer timeout;
 
+    /**
+     * 是否使用生成的键(自增ID)
+     */
+    private boolean useGeneratedKeys;
+
+    /**
+     * 键属性名称(用于接收自增ID的属性)
+     */
+    private String keyProperty;
+
+    /**
+     * 键列名称(数据库中的自增列名,默认为 id)
+     */
+    private String keyColumn;
+
     public SqlStatement() {
     }
 
@@ -110,6 +125,30 @@ public class SqlStatement {
 
     public void setTimeout(Integer timeout) {
         this.timeout = timeout;
+    }
+
+    public boolean isUseGeneratedKeys() {
+        return useGeneratedKeys;
+    }
+
+    public void setUseGeneratedKeys(boolean useGeneratedKeys) {
+        this.useGeneratedKeys = useGeneratedKeys;
+    }
+
+    public String getKeyProperty() {
+        return keyProperty;
+    }
+
+    public void setKeyProperty(String keyProperty) {
+        this.keyProperty = keyProperty;
+    }
+
+    public String getKeyColumn() {
+        return keyColumn;
+    }
+
+    public void setKeyColumn(String keyColumn) {
+        this.keyColumn = keyColumn;
     }
 
     @Override

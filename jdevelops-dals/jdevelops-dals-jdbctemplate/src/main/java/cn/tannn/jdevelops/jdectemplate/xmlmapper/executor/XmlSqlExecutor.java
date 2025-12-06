@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -61,7 +63,7 @@ public class XmlSqlExecutor {
             // 根据命令类型执行不同的操作
             return switch (statement.getCommandType()) {
                 case SELECT -> executeSelect(context, resultType, statement.isTryc());
-                case INSERT -> executeUpdate(context);
+                case INSERT -> executeInsert(context, statement, parameter);
                 case UPDATE -> executeUpdate(context);
                 case DELETE -> executeUpdate(context);
             };
@@ -154,6 +156,81 @@ public class XmlSqlExecutor {
         } else {
             Object[] params = context.getParameters().toArray();
             return jdbcTemplate.update(sql, params);
+        }
+    }
+
+    /**
+     * 执行插入操作（INSERT）
+     * 如果配置了 useGeneratedKeys=true，则返回自增ID；否则返回影响行数
+     */
+    private Object executeInsert(SqlContext context, SqlStatement statement, Object parameter) {
+        String sql = context.getSql();
+
+        // 如果未配置 useGeneratedKeys，按普通更新处理
+        if (!statement.isUseGeneratedKeys()) {
+            return executeUpdate(context);
+        }
+
+        // 使用 KeyHolder 获取自增ID
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        if (context.isUseNamedParameters()) {
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValues(context.getNamedParameters());
+
+            namedParameterJdbcTemplate.update(sql, params, keyHolder,
+                    statement.getKeyColumn() != null ? new String[]{statement.getKeyColumn()} : null);
+        } else {
+            Object[] params = context.getParameters().toArray();
+            jdbcTemplate.update(connection -> {
+                var ps = connection.prepareStatement(sql,
+                        statement.getKeyColumn() != null ? new String[]{statement.getKeyColumn()} :
+                        java.sql.Statement.RETURN_GENERATED_KEYS);
+                for (int i = 0; i < params.length; i++) {
+                    ps.setObject(i + 1, params[i]);
+                }
+                return ps;
+            }, keyHolder);
+        }
+
+        // 返回生成的主键
+        if (keyHolder.getKey() != null) {
+            Long generatedId = keyHolder.getKey().longValue();
+
+            // 如果配置了 keyProperty 且参数是对象，则将ID设置回参数对象
+            if (StringUtils.hasText(statement.getKeyProperty()) && parameter != null) {
+                setKeyToParameter(parameter, statement.getKeyProperty(), generatedId);
+            }
+
+            return generatedId;
+        }
+
+        // 如果没有生成键，返回影响行数 1
+        return 1;
+    }
+
+    /**
+     * 将生成的主键设置到参数对象中
+     */
+    private void setKeyToParameter(Object parameter, String keyProperty, Long keyValue) {
+        try {
+            // 使用反射设置属性值
+            java.lang.reflect.Field field = parameter.getClass().getDeclaredField(keyProperty);
+            field.setAccessible(true);
+
+            // 根据字段类型设置值
+            Class<?> fieldType = field.getType();
+            if (fieldType == Long.class || fieldType == long.class) {
+                field.set(parameter, keyValue);
+            } else if (fieldType == Integer.class || fieldType == int.class) {
+                field.set(parameter, keyValue.intValue());
+            } else if (fieldType == String.class) {
+                field.set(parameter, String.valueOf(keyValue));
+            } else {
+                field.set(parameter, keyValue);
+            }
+        } catch (Exception e) {
+            LOG.warn("Failed to set key property '{}' to parameter: {}", keyProperty, e.getMessage());
         }
     }
 
