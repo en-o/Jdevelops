@@ -57,6 +57,56 @@ public class OgnlUtil {
                 return root;
             }
 
+            // 处理 MyBatis 风格的参数索引：当 root 是 List 时，支持 arg0、arg1、param1、param2 等方式访问
+            if (root instanceof List) {
+                List<?> paramList = (List<?>) root;
+                // 处理 arg0.property、arg1.property 形式
+                if (expression.startsWith("arg") && (expression.contains(".") || expression.contains("["))) {
+                    int dotIndex = expression.indexOf('.');
+                    int bracketIndex = expression.indexOf('[');
+                    int separatorIndex = dotIndex > 0 ? (bracketIndex > 0 ? Math.min(dotIndex, bracketIndex) : dotIndex)
+                                                      : bracketIndex;
+
+                    if (separatorIndex > 0) {
+                        String indexPart = expression.substring(0, separatorIndex);
+                        String restPart = expression.substring(separatorIndex);
+
+                        try {
+                            int index = Integer.parseInt(indexPart.substring(3)); // "arg0" -> 0
+                            if (index >= 0 && index < paramList.size()) {
+                                Object paramValue = paramList.get(index);
+                                // 递归处理剩余部分
+                                Object value = getValue(restPart.substring(1), paramValue); // 去掉开头的 '.' 或 '['
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug("getValue: arg{} parameter access, restPart={}, paramValue type={}, value={}",
+                                              index, restPart, paramValue.getClass().getSimpleName(), value);
+                                }
+                                return value;
+                            }
+                        } catch (NumberFormatException e) {
+                            // 不是合法的 argN 格式，继续正常处理
+                        }
+                    }
+                }
+
+                // 处理单独的 arg0、arg1（不带属性访问）
+                if (expression.matches("arg\\d+")) {
+                    try {
+                        int index = Integer.parseInt(expression.substring(3));
+                        if (index >= 0 && index < paramList.size()) {
+                            Object value = paramList.get(index);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("getValue: arg{} parameter direct access, value type={}",
+                                          index, value.getClass().getSimpleName());
+                            }
+                            return value;
+                        }
+                    } catch (NumberFormatException e) {
+                        // 不是合法的 argN 格式，继续正常处理
+                    }
+                }
+            }
+
             // 处理简单属性
             if (!expression.contains(".") && !expression.contains("[")) {
                 Object value = getSimpleProperty(root, expression);

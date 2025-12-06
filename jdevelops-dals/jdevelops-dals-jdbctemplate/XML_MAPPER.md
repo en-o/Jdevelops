@@ -464,8 +464,6 @@ spring:
         locations: classpath*:jmapper/**/*.xml
         # 是否启用 XML Mapper 功能
         enabled: true
-        # 是否在启动时验证 XML 文件
-        validate: true
 ```
 
 ---
