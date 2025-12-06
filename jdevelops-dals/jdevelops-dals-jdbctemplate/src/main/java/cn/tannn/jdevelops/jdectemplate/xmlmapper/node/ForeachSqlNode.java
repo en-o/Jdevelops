@@ -88,24 +88,17 @@ public class ForeachSqlNode implements SqlNode {
                 context.appendSql(separator);
             }
 
-            // 创建临时上下文
-            SqlContext tempContext = new SqlContext();
-            tempContext.setUseNamedParameters(context.isUseNamedParameters());
-
             // 应用子节点（将 item 和 index 变量传递给子节点）
+            // 注意：直接在主上下文上操作，不创建临时上下文，以保持参数索引连续
             for (SqlNode sqlNode : contents) {
                 if (sqlNode instanceof ParameterSqlNode) {
                     // 处理参数节点
-                    ((ParameterSqlNode) sqlNode).applyWithItem(tempContext, parameter, item, itemValue, index, idx);
+                    ((ParameterSqlNode) sqlNode).applyWithItem(context, parameter, item, itemValue, index, idx);
                 } else {
-                    sqlNode.apply(tempContext, itemValue);
+                    // 其他节点类型，传递 item 值作为参数
+                    sqlNode.apply(context, itemValue);
                 }
             }
-
-            // 将临时上下文的内容追加到主上下文
-            context.appendSql(tempContext.getSql());
-            context.getParameters().addAll(tempContext.getParameters());
-            context.getNamedParameters().putAll(tempContext.getNamedParameters());
 
             idx++;
         }

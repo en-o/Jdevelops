@@ -3,6 +3,8 @@ package cn.tannn.jdevelops.jdectemplate.xmlmapper.node;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlContext;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlNode;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.util.OgnlUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 参数节点
@@ -11,6 +13,8 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.util.OgnlUtil;
  * @author tnnn
  */
 public class ParameterSqlNode implements SqlNode {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ParameterSqlNode.class);
 
     /**
      * 参数表达式
@@ -84,6 +88,11 @@ public class ParameterSqlNode implements SqlNode {
                 // 处理 user.username 形式，从 itemValue 中获取属性
                 String propertyPath = expression.substring(itemName.length() + 1);
                 value = OgnlUtil.getValue(propertyPath, itemValue);
+
+                // 调试日志
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Foreach parameter: {} -> {} = {}", expression, propertyPath, value);
+                }
             } else {
                 // 其他情况，从原始 parameter 获取
                 value = OgnlUtil.getValue(expression, parameter);
