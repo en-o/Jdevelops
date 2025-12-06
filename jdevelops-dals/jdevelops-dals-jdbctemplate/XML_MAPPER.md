@@ -291,10 +291,95 @@ public class UserService {
 - 支持对象属性访问: `#{user.username}`
 - 支持集合元素访问: `#{user.username}` (在 foreach 中)
 
-#### 特殊参数名
+#### 单参数访问
+
+**单参数对象:**
+```xml
+<!-- 接口方法: User findById(UserQuery query) -->
+<select id="findById" resultType="User">
+    SELECT * FROM users
+    WHERE id = #{id}              <!-- 直接访问对象属性 -->
+    AND status = #{status}
+</select>
+```
+
+**单参数 List:**
+```xml
+<!-- 接口方法: int batchInsert(List<User> users) -->
+<insert id="batchInsert">
+    INSERT INTO users (username, email, age)
+    VALUES
+    <foreach collection="list" item="user" separator=",">
+        (#{user.username}, #{user.email}, #{user.age})
+    </foreach>
+</insert>
+```
+
+**单参数基本类型:**
+```xml
+<!-- 接口方法: User findById(Long id) -->
+<select id="findById" resultType="User">
+    SELECT * FROM users WHERE id = #{id}
+</select>
+```
+
+#### 多参数访问
+
+**多参数方法需要使用 `arg0`, `arg1`, `arg2` 访问参数:**
 
 ```xml
-<!-- 方法参数为 List 时 -->
+<!-- 接口方法: List<User> findUsersPage(UserQuery query, PageRequest pageRequest) -->
+<select id="findUsersPage" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 第一个参数: arg0 -->
+        <if test="arg0.status != null">
+            AND status = #{arg0.status}
+        </if>
+        <if test="arg0.username != null">
+            AND username = #{arg0.username}
+        </if>
+    </where>
+    <!-- 第二个参数: arg1 -->
+    ORDER BY ${arg1.orderBySql}
+    LIMIT #{arg1.pageSize} OFFSET #{arg1.offset}
+</select>
+```
+
+**多参数示例 - 三个参数:**
+```xml
+<!-- 接口方法: List<User> search(String keyword, Integer status, Integer minAge) -->
+<select id="search" resultType="User">
+    SELECT * FROM users
+    <where>
+        <if test="arg0 != null and arg0 != ''">
+            AND username LIKE CONCAT('%', #{arg0}, '%')
+        </if>
+        <if test="arg1 != null">
+            AND status = #{arg1}
+        </if>
+        <if test="arg2 != null">
+            AND age >= #{arg2}
+        </if>
+    </where>
+</select>
+```
+
+#### 参数访问 Map 对照表
+
+| 接口方法参数数量 | XML 中访问方式 | 示例 |
+|------------|------------|------|
+| 单个对象 | 直接访问属性 | `#{username}`, `#{status}` |
+| 单个 List | `collection="list"` | `<foreach collection="list" item="user">` |
+| 单个 Map | 直接访问 key | `#{status}`, `#{minAge}` |
+| 2个参数 | `arg0`, `arg1` | `#{arg0.status}`, `#{arg1.pageSize}` |
+| 3个参数 | `arg0`, `arg1`, `arg2` | `#{arg0}`, `#{arg1}`, `#{arg2}` |
+| N个参数 | `arg0` ... `argN-1` | 以此类推 |
+
+#### 特殊参数名 - List 和 Map
+
+```xml
+<!-- 方法参数为 List 时，使用 collection="list" -->
 <insert id="batchInsert">
     INSERT INTO users (username) VALUES
     <foreach collection="list" item="user" separator=",">
@@ -302,7 +387,7 @@ public class UserService {
     </foreach>
 </insert>
 
-<!-- 方法参数为 Map 时 -->
+<!-- 方法参数为 Map 时，直接使用 key 名 -->
 <select id="findByCondition">
     SELECT * FROM users
     WHERE status = #{status}
@@ -402,6 +487,8 @@ String insertUser(User user);   // String
 
 ### 1. Registry 直接调用(无需接口)
 
+#### 基本用法
+
 ```java
 @Autowired
 private XmlMapperRegistry registry;
@@ -409,21 +496,76 @@ private XmlMapperRegistry registry;
 public void example() {
     String namespace = "com.example.mapper.UserMapper";
 
-    // 执行查询
+    // 执行查询 - 单参数
+    UserQuery query = new UserQuery();
+    query.setId(1L);
     Object result = registry.executeQuery(
         namespace,
         "findById",
-        query,
+        query,          // 单个参数
         User.class
     );
 
-    // 执行更新
+    // 执行查询 - 多参数（使用 List 传递）
+    PageRequest pageRequest = new PageRequest(1, 10);
+    Object listResult = registry.executeQuery(
+        namespace,
+        "findUsersPage",
+        Arrays.asList(query, pageRequest),  // 多参数用 List 包装
+        User.class
+    );
+
+    // 执行更新 - 插入
+    User user = new User();
+    user.setUsername("test");
     Object rows = registry.executeUpdate(
         namespace,
         "insertUser",
         user
     );
+
+    // 执行更新 - 批量插入
+    List<User> users = Arrays.asList(user1, user2, user3);
+    Object batchRows = registry.executeUpdate(
+        namespace,
+        "batchInsert",
+        users
+    );
 }
+```
+
+#### Registry 返回值处理
+
+**查询操作返回值:**
+```java
+// SELECT 返回单个对象时，结果是 List
+Object result = registry.executeQuery(namespace, "findById", query, User.class);
+if (result instanceof List) {
+    List<User> list = (List<User>) result;
+    User user = list.isEmpty() ? null : list.get(0);  // 取第一个
+}
+
+// SELECT 返回列表
+Object result = registry.executeQuery(namespace, "findUsers", query, User.class);
+List<User> users = (List<User>) result;
+
+// SELECT 返回统计数据
+Object result = registry.executeQuery(namespace, "countUsers", query, Integer.class);
+Integer count = (Integer) result;
+```
+
+**更新操作返回值:**
+```java
+// INSERT/UPDATE/DELETE 返回影响行数或自增ID
+Object result = registry.executeUpdate(namespace, "insertUser", user);
+
+// 如果配置了 useGeneratedKeys=true，返回自增ID
+if (result instanceof Number) {
+    Long id = ((Number) result).longValue();
+}
+
+// 如果没有配置 useGeneratedKeys，返回影响行数
+Integer rows = (Integer) result;
 ```
 
 ### 2. Mapper 管理
@@ -510,12 +652,134 @@ spring:
   - 默认不要使用 `tryc=true`
   - 让异常向上传播,由统一异常处理器处理
 
+5. **参数传递规范**
+  - **单参数**: 直接访问属性 `#{username}`, `#{status}`
+  - **多参数**: 必须使用 `arg0`, `arg1`, `arg2` 访问 `#{arg0.status}`, `#{arg1.pageSize}`
+  - **List参数**: 使用 `collection="list"` 在 foreach 中遍历
+  - **Map参数**: 直接使用 key 名访问 `#{keyName}`
+
+6. **动态排序安全**
+  - 排序字段使用 `${}` 时，必须进行白名单验证
+  - 避免直接将用户输入拼接到排序语句
+
+7. **分页查询规范**
+  - 分页查询和统计查询的 WHERE 条件必须保持一致
+  - 使用 `<sql>` 片段复用查询条件
+  - 推荐使用框架内置的 `@XmlPageSelect` 注解
+
+8. **批量操作优化**
+  - 批量插入使用 `<foreach>` 而不是循环调用单条插入
+  - 批量操作时注意数据库的最大参数限制
+  - 大量数据建议分批处理（每批500-1000条）
+
+---
+
+## 🚨 常见问题
+
+### 1. 多参数方法参数访问错误
+
+**❌ 错误写法:**
+```xml
+<!-- 接口: List<User> findUsersPage(UserQuery query, PageRequest pageRequest) -->
+<select id="findUsersPage">
+    WHERE status = #{status}  <!-- 错误：多参数方法不能直接访问 -->
+    LIMIT #{pageSize}         <!-- 错误 -->
+</select>
+```
+
+**✅ 正确写法:**
+```xml
+<select id="findUsersPage">
+    WHERE status = #{arg0.status}      <!-- 正确：使用 arg0 访问第一个参数 -->
+    LIMIT #{arg1.pageSize}             <!-- 正确：使用 arg1 访问第二个参数 -->
+</select>
+```
+
+### 2. Registry 查询单个对象时返回值处理
+
+**❌ 错误写法:**
+```java
+Object result = registry.executeQuery(namespace, "findById", query, User.class);
+User user = (User) result;  // ClassCastException: 返回的是 List 不是 User
+```
+
+**✅ 正确写法:**
+```java
+Object result = registry.executeQuery(namespace, "findById", query, User.class);
+List<User> list = (List<User>) result;
+User user = list.isEmpty() ? null : list.get(0);
+```
+
+### 3. foreach 中的 collection 名称
+
+**List 参数:**
+```xml
+<!-- 接口: int batchInsert(List<User> users) -->
+<insert id="batchInsert">
+    <foreach collection="list" item="user" separator=",">  <!-- 必须使用 "list" -->
+        (#{user.username}, #{user.email})
+    </foreach>
+</insert>
+```
+
+**多参数中的 List:**
+```xml
+<!-- 接口: int batchInsert(String type, List<User> users) -->
+<insert id="batchInsert">
+    INSERT INTO ${arg0}_table (username, email)  <!-- arg0 是 type -->
+    VALUES
+    <foreach collection="arg1" item="user" separator=",">  <!-- arg1 是 List -->
+        (#{user.username}, #{user.email})
+    </foreach>
+</insert>
+```
+
+### 4. 动态排序 SQL 注入风险
+
+**❌ 危险写法:**
+```xml
+<!-- 直接使用用户输入的排序字段，存在 SQL 注入风险 -->
+ORDER BY ${orderBy}
+```
+
+**✅ 安全写法:**
+```java
+// Java 代码中进行白名单验证
+List<String> allowedFields = Arrays.asList("id", "username", "age", "created_at");
+if (!allowedFields.contains(orderBy)) {
+    orderBy = "created_at";  // 默认值
+}
+```
+
+```xml
+<!-- 使用验证后的字段 -->
+ORDER BY ${orderBy}
+```
+
+### 5. 批量操作的参数数量限制
+
+MySQL 等数据库对预编译参数数量有限制（如 MySQL 默认 65535），批量插入大量数据时需要分批：
+
+```java
+// 分批插入，每批 500 条
+int batchSize = 500;
+for (int i = 0; i < users.size(); i += batchSize) {
+    List<User> batch = users.subList(i, Math.min(i + batchSize, users.size()));
+    userMapper.batchInsert(batch);
+}
+```
+
 ---
 
 ## 📝 参考示例
 
-完整示例请查看:
-- [XML_MAPPER_QUICK_START.md](./XML_MAPPER_QUICK_START.md) - 快速开始完整示例
-- [XmlMapper_annotation_Test.java](./src/test/java/cn/tannn/demo/jdevelops/daljdbctemplate/XmlMapper_annotation_Test.java) - 接口方式测试
-- [XmlMapper_registry_Test.java](./src/test/java/cn/tannn/demo/jdevelops/daljdbctemplate/XmlMapper_registry_Test.java) - Registry 方式测试
-- [UserMapper.xml](./src/main/resources/jmapper/UserMapper.xml) - XML 配置示例
+完整示例请查看测试项目:
+- **测试用例路径:** `Jdevelops-Example/dal-jdbctemplate/src/test/java/cn/tannn/demo/jdevelops/daljdbctemplate/`
+  - [XmlMapper_annotation_Test.java](https://github.com/en-o/Jdevelops-Example/blob/master/dal-jdbctemplate/src/test/java/cn/tannn/demo/jdevelops/daljdbctemplate/XmlMapper_annotation_Test.java) - 接口注解方式完整测试
+  - [XmlMapper_registry_Test.java](https://github.com/en-o/Jdevelops-Example/blob/master/dal-jdbctemplate/src/test/java/cn/tannn/demo/jdevelops/daljdbctemplate/XmlMapper_registry_Test.java) - Registry 方式完整测试
+
+- **XML 配置路径:** `Jdevelops-Example/dal-jdbctemplate/src/main/resources/jmapper/`
+  - [UserMapper.xml](https://github.com/en-o/Jdevelops-Example/blob/master/dal-jdbctemplate/src/main/resources/jmapper/UserMapper.xml) - 完整的 SQL 配置示例
+
+- **分页功能文档:**
+  - [XML_MAPPER_PAGE.md](./XML_MAPPER_PAGE.md) - 分页查询完整指南
