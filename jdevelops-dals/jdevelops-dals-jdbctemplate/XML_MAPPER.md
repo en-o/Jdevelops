@@ -568,7 +568,165 @@ if (result instanceof Number) {
 Integer rows = (Integer) result;
 ```
 
-### 2. Mapper 管理
+### 2. 分页查询快速示例
+
+框架提供了内置的分页支持，只需一个注解即可实现完整的分页功能。
+
+#### 简单分页示例
+
+**步骤 1: 定义 Mapper 接口**
+
+```java
+import cn.tannn.jdevelops.annotations.jdbctemplate.xml.*;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageRequest;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.page.PageResult;
+
+@XmlMapper(namespace = "com.example.mapper.UserMapper")
+public interface UserMapper {
+
+    /**
+     * 分页查询用户（框架自动处理）
+     */
+    @XmlPageSelect(
+        dataStatement = "findUsersPage",     // 数据查询 SQL ID
+        countStatement = "countUsersTotal"   // 统计查询 SQL ID
+    )
+    PageResult<User> findUsersPage(UserQuery query, PageRequest pageRequest);
+}
+```
+
+**步骤 2: 配置 XML SQL**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <!-- 数据查询 SQL (注意：双参数使用 arg0, arg1 访问) -->
+    <select id="findUsersPage" resultType="com.example.entity.User">
+        SELECT id, username, email, age, status, created_at
+        FROM users
+        <where>
+            <if test="arg0.status != null">
+                AND status = #{arg0.status}
+            </if>
+            <if test="arg0.username != null and arg0.username != ''">
+                AND username LIKE CONCAT('%', #{arg0.username}, '%')
+            </if>
+        </where>
+        ORDER BY
+        <if test="arg1.orderBySql != null and arg1.orderBySql != ''">
+            ${arg1.orderBySql}
+        </if>
+        <if test="arg1.orderBySql == null or arg1.orderBySql == ''">
+            created_at DESC
+        </if>
+        LIMIT #{arg1.pageSize} OFFSET #{arg1.offset}
+    </select>
+
+    <!-- 统计查询 SQL (单参数直接访问属性) -->
+    <select id="countUsersTotal" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM users
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>
+```
+
+**步骤 3: 使用分页查询**
+
+```java
+@Service
+public class UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    /**
+     * 分页查询用户（一行代码完成）
+     */
+    public PageResult<User> getUsersPage(int pageNum, int pageSize, String username, Integer status) {
+        // 1. 创建分页参数
+        PageRequest pageRequest = new PageRequest(pageNum, pageSize);
+        pageRequest.setOrderBy("created_at");
+        pageRequest.setOrderDir("DESC");
+
+        // 2. 创建查询条件
+        UserQuery query = new UserQuery();
+        query.setUsername(username);
+        query.setStatus(status);
+
+        // 3. 框架自动完成：数据查询 + 统计查询 + 结果组装
+        return userMapper.findUsersPage(query, pageRequest);
+    }
+}
+```
+
+**Controller 使用**
+
+```java
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/page")
+    public PageResult<User> getUsersPage(
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) Integer status) {
+
+        return userService.getUsersPage(pageNum, pageSize, username, status);
+    }
+}
+```
+
+**响应示例:**
+```json
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "total": 100,
+  "pages": 10,
+  "hasNext": true,
+  "hasPrevious": false,
+  "list": [
+    {
+      "id": 1,
+      "username": "user1",
+      "email": "user1@example.com",
+      "age": 25,
+      "status": 1,
+      "createdAt": "2024-01-01T10:00:00"
+    }
+  ]
+}
+```
+
+**关键要点:**
+- ✅ 使用 `@XmlPageSelect` 注解，框架自动处理分页
+- ✅ 双参数方法：数据查询 SQL 中使用 `arg0` (query)、`arg1` (pageRequest)
+- ✅ 单参数方法：统计查询 SQL 中直接访问属性
+- ✅ 返回 `PageResult<T>` 包含完整分页信息（总数、总页数、是否有上一页/下一页等）
+- ✅ 一行代码完成分页，无需手动组装结果
+
+> 📘 **详细分页文档**: [XML_MAPPER_PAGE.md](./XML_MAPPER_PAGE.md) - 包含三种分页方式（手动组合、注解方式、Registry 编程式）的完整说明
+
+---
+
+### 3. Mapper 管理
 
 ```java
 @Autowired
