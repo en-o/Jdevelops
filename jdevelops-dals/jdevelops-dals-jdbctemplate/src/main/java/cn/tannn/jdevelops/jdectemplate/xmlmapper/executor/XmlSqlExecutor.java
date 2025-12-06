@@ -182,10 +182,17 @@ public class XmlSqlExecutor {
                     statement.getKeyColumn() != null ? new String[]{statement.getKeyColumn()} : null);
         } else {
             Object[] params = context.getParameters().toArray();
+            String keyColumn = statement.getKeyColumn();
+
             jdbcTemplate.update(connection -> {
-                var ps = connection.prepareStatement(sql,
-                        statement.getKeyColumn() != null ? new String[]{statement.getKeyColumn()} :
-                        java.sql.Statement.RETURN_GENERATED_KEYS);
+                java.sql.PreparedStatement ps;
+                if (keyColumn != null) {
+                    // 指定了键列名
+                    ps = connection.prepareStatement(sql, new String[]{keyColumn});
+                } else {
+                    // 使用默认的自增键返回
+                    ps = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+                }
                 for (int i = 0; i < params.length; i++) {
                     ps.setObject(i + 1, params[i]);
                 }
@@ -195,14 +202,15 @@ public class XmlSqlExecutor {
 
         // 返回生成的主键
         if (keyHolder.getKey() != null) {
-            Long generatedId = keyHolder.getKey().longValue();
+            Number generatedKey = keyHolder.getKey();
 
             // 如果配置了 keyProperty 且参数是对象，则将ID设置回参数对象
             if (StringUtils.hasText(statement.getKeyProperty()) && parameter != null) {
-                setKeyToParameter(parameter, statement.getKeyProperty(), generatedId);
+                setKeyToParameter(parameter, statement.getKeyProperty(), generatedKey);
             }
 
-            return generatedId;
+            // 返回 Number 类型的 ID，由代理层根据方法返回类型转换
+            return generatedKey;
         }
 
         // 如果没有生成键，返回影响行数 1
@@ -212,7 +220,7 @@ public class XmlSqlExecutor {
     /**
      * 将生成的主键设置到参数对象中
      */
-    private void setKeyToParameter(Object parameter, String keyProperty, Long keyValue) {
+    private void setKeyToParameter(Object parameter, String keyProperty, Number keyValue) {
         try {
             // 使用反射设置属性值
             java.lang.reflect.Field field = parameter.getClass().getDeclaredField(keyProperty);
@@ -221,12 +229,17 @@ public class XmlSqlExecutor {
             // 根据字段类型设置值
             Class<?> fieldType = field.getType();
             if (fieldType == Long.class || fieldType == long.class) {
-                field.set(parameter, keyValue);
+                field.set(parameter, keyValue.longValue());
             } else if (fieldType == Integer.class || fieldType == int.class) {
                 field.set(parameter, keyValue.intValue());
+            } else if (fieldType == Short.class || fieldType == short.class) {
+                field.set(parameter, keyValue.shortValue());
+            } else if (fieldType == Byte.class || fieldType == byte.class) {
+                field.set(parameter, keyValue.byteValue());
             } else if (fieldType == String.class) {
                 field.set(parameter, String.valueOf(keyValue));
             } else {
+                // 其他类型直接设置
                 field.set(parameter, keyValue);
             }
         } catch (Exception e) {

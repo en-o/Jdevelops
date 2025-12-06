@@ -65,8 +65,8 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         XmlUpdate update = method.getAnnotation(XmlUpdate.class);
         XmlDelete delete = method.getAnnotation(XmlDelete.class);
 
-        String statementId = null;
-        boolean tryc = false;
+        String statementId;
+        boolean tryc;
 
         if (select != null) {
             statementId = select.value();
@@ -75,15 +75,15 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         } else if (insert != null) {
             statementId = insert.value();
             tryc = insert.tryc();
-            return executeUpdate(statementId, args, tryc);
+            return executeUpdate(statementId, method, args, tryc);
         } else if (update != null) {
             statementId = update.value();
             tryc = update.tryc();
-            return executeUpdate(statementId, args, tryc);
+            return executeUpdate(statementId, method, args, tryc);
         } else if (delete != null) {
             statementId = delete.value();
             tryc = delete.tryc();
-            return executeUpdate(statementId, args, tryc);
+            return executeUpdate(statementId, method, args, tryc);
         } else {
             throw new IllegalStateException(
                     "Method " + method.getName() + " must be annotated with @XmlSelect, @XmlInsert, @XmlUpdate or @XmlDelete");
@@ -160,7 +160,7 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
     /**
      * 执行更新操作（insert/update/delete）
      */
-    private Object executeUpdate(String statementId, Object[] args, boolean tryc) {
+    private Object executeUpdate(String statementId, Method method, Object[] args, boolean tryc) {
         try {
             // 获取参数
             Object parameter = getParameter(args);
@@ -169,16 +169,76 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
                 LOG.debug("Executing XML Mapper update: {}.{}", namespace, statementId);
             }
 
+            // 获取方法返回类型
+            Class<?> returnType = method.getReturnType();
+
             // 执行更新
-            return registry.executeUpdate(namespace, statementId, parameter);
+            Object result = registry.executeUpdate(namespace, statementId, parameter);
+
+            // 根据返回类型适配结果
+            return adaptUpdateResult(result, returnType);
         } catch (Exception e) {
             if (tryc) {
                 LOG.error("XML Mapper update error (tryc=true): {}.{}", namespace, statementId, e);
-                return 0;
+                return getDefaultReturnValue(method.getReturnType());
             } else {
                 throw new RuntimeException("Failed to execute XML Mapper update: " + namespace + "." + statementId, e);
             }
         }
+    }
+
+    /**
+     * 适配更新操作的返回结果
+     */
+    private Object adaptUpdateResult(Object result, Class<?> returnType) {
+        if (result == null) {
+            return getDefaultReturnValue(returnType);
+        }
+
+        // 如果返回类型是 void，直接返回 null
+        if (returnType == void.class || returnType == Void.class) {
+            return null;
+        }
+
+        // 如果结果是 Number 类型
+        if (result instanceof Number) {
+            Number number = (Number) result;
+
+            // 根据返回类型转换
+            if (returnType == int.class || returnType == Integer.class) {
+                return number.intValue();
+            } else if (returnType == long.class || returnType == Long.class) {
+                return number.longValue();
+            } else if (returnType == short.class || returnType == Short.class) {
+                return number.shortValue();
+            } else if (returnType == byte.class || returnType == Byte.class) {
+                return number.byteValue();
+            } else if (returnType == double.class || returnType == Double.class) {
+                return number.doubleValue();
+            } else if (returnType == float.class || returnType == Float.class) {
+                return number.floatValue();
+            } else if (returnType == String.class) {
+                return String.valueOf(number);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 获取默认返回值
+     */
+    private Object getDefaultReturnValue(Class<?> returnType) {
+        if (returnType == void.class || returnType == Void.class) {
+            return null;
+        }
+        if (returnType == boolean.class) {
+            return false;
+        }
+        if (returnType.isPrimitive()) {
+            return 0;
+        }
+        return null;
     }
 
     /**
