@@ -273,8 +273,13 @@ public class OgnlUtil {
                 return null;
             }
 
+            // 处理方法调用（如 name()）
+            if (part.endsWith("()")) {
+                String methodName = part.substring(0, part.length() - 2);
+                current = invokeMethod(current, methodName);
+            }
             // 处理数组/列表访问
-            if (part.contains("[")) {
+            else if (part.contains("[")) {
                 int bracketIndex = part.indexOf('[');
                 String propertyName = part.substring(0, bracketIndex);
                 String indexStr = part.substring(bracketIndex + 1, part.indexOf(']'));
@@ -383,5 +388,40 @@ public class OgnlUtil {
             return str;
         }
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    /**
+     * 调用无参方法
+     * 支持枚举的 name()、ordinal() 等方法，以及 record 类的访问器方法
+     *
+     * @param obj 对象
+     * @param methodName 方法名（不含括号）
+     * @return 方法返回值
+     * @throws Exception 调用失败时抛出异常
+     */
+    private static Object invokeMethod(Object obj, String methodName) throws Exception {
+        if (obj == null || !StringUtils.hasText(methodName)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("invokeMethod: obj={}, methodName={} -> null (empty input)", obj, methodName);
+            }
+            return null;
+        }
+
+        try {
+            // 直接调用无参方法
+            Method method = obj.getClass().getMethod(methodName);
+            Object value = method.invoke(obj);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("invokeMethod: method '{}()' on {}, value={}",
+                         methodName, obj.getClass().getSimpleName(), value);
+            }
+            return value;
+        } catch (NoSuchMethodException e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("invokeMethod: method '{}()' not found on {}",
+                         methodName, obj.getClass().getSimpleName());
+            }
+            throw new Exception("Method '" + methodName + "()' not found on " + obj.getClass().getName(), e);
+        }
     }
 }
