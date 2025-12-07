@@ -290,7 +290,173 @@ public class UserService {
 </select>
 ```
 
-### 3. 参数引用
+### 3. 特殊符号处理
+
+在 XML 文件中，某些字符具有特殊含义（如 `<`、`>`、`&` 等），直接在 SQL 语句中使用这些字符会导致 XML 解析错误。框架支持两种处理方式。
+
+#### 方法一：XML 实体转义
+
+使用 XML 标准的实体转义符号替换特殊字符：
+
+| 特殊字符 | 实体转义 | 说明 |
+|---------|---------|------|
+| `<`     | `&lt;`  | 小于号 |
+| `>`     | `&gt;`  | 大于号 |
+| `&`     | `&amp;` | 和号 |
+| `"`     | `&quot;` | 双引号 |
+| `'`     | `&apos;` | 单引号 |
+
+**示例:**
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 小于：age < 30 -->
+        <if test="maxAge != null">
+            AND age &lt; #{maxAge}
+        </if>
+
+        <!-- 大于：age > 18 -->
+        <if test="minAge != null">
+            AND age &gt; #{minAge}
+        </if>
+
+        <!-- 小于等于：age <= 30 -->
+        <if test="maxAgeEqual != null">
+            AND age &lt;= #{maxAgeEqual}
+        </if>
+
+        <!-- 不等于：status <> 0 -->
+        <if test="status != null">
+            AND status &lt;&gt; #{status}
+        </if>
+    </where>
+</select>
+```
+
+**优点:** 标准 XML 处理方式，所有解析器都支持
+**缺点:** 可读性稍差，复杂 SQL 中维护困难
+
+#### 方法二：CDATA 区块
+
+CDATA (Character Data) 区块告诉 XML 解析器：这段内容是纯文本，不要解析其中的特殊字符。
+
+**语法格式:**
+```xml
+<![CDATA[
+    这里可以直接使用 <、>、& 等特殊符号
+]]>
+```
+
+**示例:**
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <if test="maxAge != null">
+            <![CDATA[
+            AND age < #{maxAge}
+            ]]>
+        </if>
+
+        <if test="minAge != null and maxAge != null">
+            <![CDATA[
+            AND (age >= #{minAge} AND age <= #{maxAge})
+            ]]>
+        </if>
+    </where>
+</select>
+```
+
+**优点:** SQL 语句可读性强，可以直接复制 SQL 到 CDATA 中
+**缺点:** 稍微增加代码行数
+
+#### 方法三：混合使用
+
+在同一个查询中可以混合使用两种方式：
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 简单比较：使用实体转义 -->
+        <if test="status != null">
+            AND status &lt;&gt; #{status}
+        </if>
+
+        <!-- 复杂条件：使用 CDATA -->
+        <if test="minAge != null and maxAge != null">
+            <![CDATA[
+            AND (age > #{minAge} AND age < #{maxAge})
+            ]]>
+        </if>
+    </where>
+</select>
+```
+
+#### 常用操作示例
+
+**BETWEEN 范围查询:**
+```xml
+<!-- 方式1: BETWEEN 不需要特殊处理 -->
+<if test="minAge != null and maxAge != null">
+    AND age BETWEEN #{minAge} AND #{maxAge}
+</if>
+
+<!-- 方式2: 使用 CDATA -->
+<if test="startDate != null and endDate != null">
+    <![CDATA[
+    AND created_at BETWEEN #{startDate} AND #{endDate}
+    ]]>
+</if>
+```
+
+**复杂条件组合:**
+```xml
+<where>
+    <!-- 年龄范围 -->
+    <if test="minAge != null and maxAge != null">
+        <![CDATA[
+        AND (age >= #{minAge} AND age <= #{maxAge})
+        ]]>
+    </if>
+
+    <!-- OR 条件 -->
+    <if test="status1 != null and status2 != null">
+        AND (status = #{status1} OR status = #{status2})
+    </if>
+
+    <!-- NOT IN 条件 -->
+    <if test="excludeIds != null and excludeIds.size() > 0">
+        AND id NOT IN
+        <foreach collection="excludeIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </if>
+</where>
+```
+
+**最佳实践建议:**
+
+| 场景 | 推荐方式 | 示例 |
+|------|---------|------|
+| 简单比较（单个符号） | 实体转义 | `age &lt; 30` |
+| 复杂条件（多个符号） | CDATA | `<![CDATA[ age > 18 AND age < 60 ]]>` |
+| BETWEEN 操作 | 直接使用 | `age BETWEEN #{min} AND #{max}` |
+| 混合场景 | 灵活选择 | 根据可读性决定 |
+
+**注意事项:**
+1. ❌ CDATA 不能嵌套使用
+2. ❌ CDATA 中不能使用动态 SQL 标签（如 `<if>`、`<foreach>`）
+3. ✅ 参数占位符 `#{}` 在 CDATA 中正常工作
+4. ✅ 选择方式时优先考虑代码可读性
+
+**测试用例参考:**
+- 测试文件: `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../XmlMapper_annotation_Test.java`
+- 测试方法: 测试 70-79（特殊符号处理）
+- XML 配置: `UserMapper.xml` 第 285-544 行
+
+### 4. 参数引用
 
 #### 命名参数 `#{}`
 
