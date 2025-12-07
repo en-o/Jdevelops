@@ -3,6 +3,7 @@
 ## 📖 简介
 
 XML Mapper 是 JdbcTemplate 的 XML 配置增强功能,类似 MyBatis 的 XML Mapper 机制,但更加轻量、简洁。
+> 主要是因为我们使用的大部分是jpa，原来构建的一个链式sql又不好审查所有有了这个
 
 ### 特性
 
@@ -30,22 +31,35 @@ XML Mapper 是 JdbcTemplate 的 XML 配置增强功能,类似 MyBatis 的 XML Ma
 
 ```xml
 <dependency>
-    <groupId>cn.tannn.jdevelops</groupId>
-    <artifactId>jdevelops-dals-jdbctemplate</artifactId>
-    <version>${latest.version}</version>
+  <groupId>cn.tannn.jdevelops</groupId>
+  <artifactId>jdevelops-dals-jdbctemplate</artifactId>
+  <!-- 1.0.4开始  -->
+  <version>${latest.version}</version>
 </dependency>
 ```
 
 ### 2. 配置 XML 扫描路径
+
+在 `application.yml` 中配置全局扫描路径，框架启动时自动加载所有匹配的 XML 文件：
 
 ```yaml
 spring:
   jdevelops:
     jdbctemplate:
       xml-mapper:
-        # XML Mapper 文件扫描路径(支持通配符)
+        # 是否启用 XML Mapper 功能（默认 true）
+        enabled: true
+        # XML Mapper 文件扫描路径（支持通配符和多路径）
         locations: classpath*:jmapper/**/*.xml
 ```
+
+**配置说明：**
+- `enabled`: 是否启用 XML Mapper 功能，默认 `true`
+- `locations`: XML 文件扫描路径，支持：
+  - `classpath:` - 扫描当前项目类路径
+  - `classpath*:` - 扫描所有 jar 包和类路径（推荐，支持依赖包中的 XML）
+  - `**/*.xml` - 通配符，递归扫描所有子目录的 XML 文件
+  - 多路径配置：`classpath*:jmapper/**/*.xml,classpath*:mapper/**/*.xml`
 
 ### 3. 创建 XML Mapper 文件
 
@@ -399,6 +413,8 @@ public class UserService {
 
 #### `@XmlMapper` - 标记 Mapper 接口
 
+用于标记一个接口是 XML Mapper 接口，框架会自动为其创建代理对象并注册到 Spring 容器。
+
 ```java
 @XmlMapper(namespace = "com.example.mapper.UserMapper")
 public interface UserMapper {
@@ -406,8 +422,92 @@ public interface UserMapper {
 }
 ```
 
-**属性:**
-- `namespace` **(必填)** - XML Mapper 的命名空间(对应 XML 的 namespace 属性)
+**核心属性:**
+
+| 属性 | 类型 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `value` | String | 否 | 接口名首字母小写 | Spring Bean 名称 |
+| `namespace` | String | 否 | 接口全限定类名 | XML Mapper 命名空间 |
+
+**属性详解:**
+
+**1. `value` - Spring Bean 名称（可选）**
+
+- **作用**: 自定义注册到 Spring 容器的 Bean 名称
+- **默认值**: 接口简单名称首字母小写（UserMapper → userMapper）
+- **实现位置**: `XmlMapperScannerRegistrar#generateBeanName`
+- **使用场景**:
+  - 避免 Bean 名称冲突（多个模块有同名接口）
+  - 统一命名规范（如添加前缀/后缀）
+  - 明确 Bean 用途（如 userQueryMapper、userCommandMapper）
+
+**示例:**
+```java
+// 示例1: 自定义 Bean 名称
+@XmlMapper(value = "customUserMapper", namespace = "...")
+public interface UserMapper {
+    // Bean 名称: customUserMapper
+}
+
+// 示例2: 默认 Bean 名称
+@XmlMapper(namespace = "...")
+public interface UserMapper {
+    // Bean 名称: userMapper（接口名首字母小写）
+}
+
+// 示例3: 避免名称冲突
+@XmlMapper(value = "moduleAUserMapper", namespace = "...")
+public interface UserMapper {  // 模块A
+    // Bean 名称: moduleAUserMapper
+}
+
+@XmlMapper(value = "moduleBUserMapper", namespace = "...")
+public interface UserMapper {  // 模块B
+    // Bean 名称: moduleBUserMapper
+}
+```
+
+**2. `namespace` - XML Mapper 命名空间（推荐填写）**
+
+- **作用**: 关联 Mapper 接口与 XML 配置文件
+- **默认值**: 接口全限定类名（com.example.mapper.UserMapper）
+- **实现位置**: `XmlMapperProxyFactory#getNamespace`
+- **要求**: 必须与 XML 文件中的 `<mapper namespace="...">` 属性保持一致
+- **推荐做法**:
+  - 显式指定 namespace，避免因类名重构导致 XML 配置失效
+  - 使用接口的全限定类名，保持与 MyBatis 一致
+  - 确保 XML 文件中的 namespace 与此属性完全一致（区分大小写）
+
+**示例:**
+```java
+// 示例1: 显式指定 namespace（推荐）
+@XmlMapper(namespace = "cn.tannn.jdevelops.mapper.UserMapper")
+public interface UserMapper {
+    // namespace: cn.tannn.jdevelops.mapper.UserMapper
+}
+
+// 对应的 XML 文件
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="cn.tannn.jdevelops.mapper.UserMapper">
+    <select id="findById" resultType="User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+</mapper>
+
+// 示例2: 不指定 namespace（使用默认值）
+package com.example.mapper;
+
+@XmlMapper  // namespace 默认为: com.example.mapper.UserMapper
+public interface UserMapper {
+    // namespace: com.example.mapper.UserMapper（接口全限定类名）
+}
+```
+
+**注意事项:**
+- namespace 必须与 XML 文件中的 namespace 完全一致
+- namespace 区分大小写
+- 如果重构类名或包名，记得同步更新 XML 文件的 namespace
+- 推荐显式指定，避免默认行为导致的配置失效
 
 #### `@XmlSelect` - 标记查询方法
 
@@ -755,15 +855,166 @@ registry.clearCache();
 
 ## ⚙️ 配置选项
 
+### 全局配置
+
 ```yaml
 spring:
   jdevelops:
     jdbctemplate:
       xml-mapper:
-        # XML Mapper 文件扫描路径(支持通配符)
-        locations: classpath*:jmapper/**/*.xml
-        # 是否启用 XML Mapper 功能
+        # 是否启用 XML Mapper 功能（默认 true）
         enabled: true
+
+        # XML Mapper 文件扫描路径（支持通配符和多路径）
+        locations: classpath*:jmapper/**/*.xml
+```
+
+### 配置项详细说明
+
+#### `enabled`
+- **类型**: `Boolean`
+- **默认值**: `true`
+- **说明**: 是否启用 XML Mapper 功能
+- **使用场景**:
+  - 开发环境禁用: `enabled: false`
+  - 测试环境启用: `enabled: true`
+
+#### `locations`
+- **类型**: `String`
+- **默认值**: `classpath*:jmapper/**/*.xml`
+- **说明**: XML Mapper 文件扫描路径，支持通配符和多路径配置
+- **路径前缀**:
+  - `classpath:` - 扫描当前项目类路径下的文件
+  - `classpath*:` - 扫描所有 jar 包和类路径（**推荐**，支持加载依赖包中的 XML）
+  - `file:` - 扫描文件系统绝对路径
+- **通配符**:
+  - `**` - 匹配任意层级目录
+  - `*` - 匹配单层目录或文件名
+  - `*.xml` - 匹配所有 XML 文件
+- **示例**:
+
+```yaml
+# 示例1: 扫描单个目录
+locations: classpath:jmapper/*.xml
+
+# 示例2: 递归扫描子目录（推荐）
+locations: classpath*:jmapper/**/*.xml
+
+# 示例3: 多路径配置（逗号分隔）
+locations: classpath*:jmapper/**/*.xml,classpath*:mapper/**/*.xml
+
+# 示例4: 混合路径
+locations: classpath*:jmapper/**/*.xml,file:/opt/config/mappers/*.xml
+```
+
+### 注解配置（@XmlMapper）
+
+`@XmlMapper` 注解用于标记 Mapper 接口，框架会自动为其创建代理对象并注册到 Spring 容器。
+
+```java
+@XmlMapper(
+    value = "userMapper",                              // Bean 名称（可选）
+    namespace = "com.example.mapper.UserMapper"        // 命名空间（推荐填写）
+)
+public interface UserMapper {
+    // ...
+}
+```
+
+**核心属性:**
+
+| 属性 | 类型 | 必填 | 默认值 | 实现位置 |
+|------|------|------|--------|----------|
+| `value` | String | 否 | 接口名首字母小写 | XmlMapperScannerRegistrar#generateBeanName |
+| `namespace` | String | 否 | 接口全限定类名 | XmlMapperProxyFactory#getNamespace |
+
+#### `value` - Bean 名称
+- **类型**: `String`
+- **默认值**: 接口名（首字母小写），如 `UserMapper` → `userMapper`
+- **说明**: 自定义 Spring Bean 名称，通过 `@AliasFor` 映射到 `@Component` 的 `value` 属性
+- **实现位置**: `XmlMapperScannerRegistrar#generateBeanName`
+- **使用场景**:
+  - 避免 Bean 名称冲突（多个模块有同名接口）
+  - 统一命名规范（如添加前缀/后缀）
+  - 明确 Bean 用途（如 userQueryMapper、userCommandMapper）
+
+**示例:**
+```java
+// 示例1: 自定义 Bean 名称
+@XmlMapper(value = "customUserMapper", namespace = "...")
+public interface UserMapper {
+    // Bean 名称: customUserMapper
+}
+
+// 示例2: 避免名称冲突
+@XmlMapper(value = "moduleAUserMapper", namespace = "...")
+public interface UserMapper {  // 模块A
+    // Bean 名称: moduleAUserMapper
+}
+```
+
+#### `namespace` - 命名空间
+- **类型**: `String`
+- **默认值**: 接口全限定类名，如 `com.example.mapper.UserMapper`
+- **说明**: 对应 XML 文件中的 `<mapper namespace="...">` 属性，用于关联接口和 XML 配置
+- **实现位置**: `XmlMapperProxyFactory#getNamespace`
+- **推荐做法**:
+  - 显式指定 namespace，避免因类名重构导致 XML 配置失效
+  - 使用接口的全限定类名，保持与 MyBatis 一致
+  - 确保 XML 文件中的 namespace 与此属性完全一致（区分大小写）
+- **注意事项**:
+  - 必须与 XML 文件中的 `namespace` 保持一致
+  - namespace 区分大小写
+  - 如果重构类名或包名，记得同步更新 XML 文件的 namespace
+
+**示例:**
+```java
+// 显式指定 namespace（推荐）
+@XmlMapper(namespace = "cn.tannn.jdevelops.mapper.UserMapper")
+public interface UserMapper {
+    // namespace: cn.tannn.jdevelops.mapper.UserMapper
+}
+
+// 对应的 XML 文件
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="cn.tannn.jdevelops.mapper.UserMapper">
+    <select id="findById" resultType="User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+</mapper>
+```
+
+### 配置示例
+
+#### 标准项目配置
+
+```yaml
+# application.yml
+spring:
+  jdevelops:
+    jdbctemplate:
+      xml-mapper:
+        enabled: true
+        locations: classpath*:jmapper/**/*.xml
+```
+
+```
+项目结构:
+src/main/resources/
+  └── jmapper/
+      ├── UserMapper.xml
+      ├── OrderMapper.xml
+      └── module/
+          └── ProductMapper.xml
+```
+
+```java
+// 所有 Mapper 都使用全局 locations 扫描
+@XmlMapper(namespace = "com.example.mapper.UserMapper")
+public interface UserMapper { }
+
+@XmlMapper(namespace = "com.example.mapper.OrderMapper")
+public interface OrderMapper { }
 ```
 
 ---
