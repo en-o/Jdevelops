@@ -305,6 +305,47 @@ public class UserService {
 - 支持对象属性访问: `#{user.username}`
 - 支持集合元素访问: `#{user.username}` (在 foreach 中)
 
+#### 入参实体示例
+
+在开始参数访问说明之前，先了解一个典型的查询参数实体结构：
+
+```java
+/**
+ * 用户查询参数实体
+ */
+public class UserQuery {
+    // 基础查询条件
+    private String username;
+    private String email;
+    private Integer status;
+    private Integer minAge;
+    private Integer maxAge;
+
+    // 高级查询参数
+    private String keyword;
+    private List<Integer> statusList;  // List 类型属性
+    private String startDate;
+    private String endDate;
+
+    // 分页参数
+    private Integer pageSize;
+    private Integer offset;
+
+    // ID 列表（用于批量操作）
+    private List<Long> ids;  // List 类型属性
+
+    // 单个 ID
+    private Long id;
+
+    // Getters and Setters...
+}
+```
+
+**说明:**
+- 单参数对象时，XML 中可以直接访问对象的属性（如 `#{username}`, `#{status}`）
+- 对象中的 List 属性可以在 `<foreach>` 中使用 `collection="属性名"` 访问（如 `collection="ids"`）
+- 多参数方法时，需要使用 `arg0`, `arg1` 等方式访问（详见下文）
+
 #### 单参数访问
 
 **单参数对象:**
@@ -392,21 +433,156 @@ public class UserService {
 
 #### 特殊参数名 - List 和 Map
 
+**1. 单参数 List（直接传入 List）**
+
+当方法参数直接是 List 类型时，使用 `collection="list"` 访问：
+
+```java
+// 接口方法
+int batchInsert(List<User> users);
+```
+
 ```xml
-<!-- 方法参数为 List 时，使用 collection="list" -->
+<!-- XML 配置 -->
 <insert id="batchInsert">
-    INSERT INTO users (username) VALUES
+    INSERT INTO users (username, email) VALUES
     <foreach collection="list" item="user" separator=",">
-        (#{user.username})
+        (#{user.username}, #{user.email})
     </foreach>
 </insert>
+```
 
-<!-- 方法参数为 Map 时，直接使用 key 名 -->
+**2. 对象属性是 List（嵌套访问）**
+
+当方法参数是对象，对象中包含 List 属性时，使用 `collection="属性名"` 访问：
+
+```java
+// 接口方法
+int deleteByIds(UserQuery query);
+```
+
+```java
+// UserQuery 类
+public class UserQuery {
+    private List<Long> ids;  // List 类型属性
+    // Getters and Setters...
+}
+```
+
+```xml
+<!-- XML 配置 - 访问对象的 ids 属性 -->
+<delete id="deleteByIds">
+    DELETE FROM users
+    WHERE id IN
+    <foreach collection="ids" item="itemId" open="(" separator="," close=")">
+        #{itemId}
+    </foreach>
+</delete>
+```
+
+**关键点:**
+- ✅ `collection="ids"` - `ids` 是 UserQuery 对象的属性名
+- ✅ 单参数对象时，直接使用属性名访问 List 属性
+- ✅ `item="itemId"` - 定义当前遍历元素的变量名，在 `#{}` 中使用
+
+**3. 多参数中的 List（使用 arg0/arg1 访问）**
+
+当方法有多个参数，其中某个参数包含 List 属性时，使用 `arg0.属性名` 或 `arg1.属性名` 访问：
+
+```java
+// 接口方法
+int deleteByIdsWithCondition(UserQuery query, Integer status);
+```
+
+```xml
+<!-- XML 配置 - 第一个参数的 ids 属性 -->
+<delete id="deleteByIdsWithCondition">
+    DELETE FROM users
+    WHERE status = #{arg1}
+    AND id IN
+    <foreach collection="arg0.ids" item="itemId" open="(" separator="," close=")">
+        #{itemId}
+    </foreach>
+</delete>
+```
+
+**4. 对象属性是 List of Objects（嵌套对象 List）**
+
+当对象中的 List 属性包含复杂对象时：
+
+```java
+// UserQuery 类
+public class UserQuery {
+    private List<UserMapperEntity> users;  // 复杂对象的 List
+    // Getters and Setters...
+}
+```
+
+```xml
+<!-- XML 配置 - 批量插入复杂对象 -->
+<insert id="batchInsertUsers">
+    INSERT INTO users (username, email, age) VALUES
+    <foreach collection="users" item="user" separator=",">
+        (#{user.username}, #{user.email}, #{user.age})
+    </foreach>
+</insert>
+```
+
+**5. 单参数 Map**
+
+当方法参数是 Map 时，直接使用 key 名访问：
+
+```java
+// 接口方法
+List<User> findByCondition(Map<String, Object> params);
+```
+
+```xml
+<!-- XML 配置 - 直接使用 Map 的 key -->
 <select id="findByCondition">
     SELECT * FROM users
     WHERE status = #{status}
     AND age > #{minAge}
 </select>
+```
+
+**参数访问对照表（扩展版）:**
+
+| 场景 | 接口方法 | XML 中访问方式 | 示例 |
+|------|---------|---------------|------|
+| 单参数对象 | `findById(UserQuery query)` | 直接访问属性 | `#{username}`, `#{status}` |
+| 单参数 List | `batchInsert(List<User> users)` | `collection="list"` | `<foreach collection="list" item="user">` |
+| 单参数 Map | `findByCondition(Map params)` | 直接访问 key | `#{status}`, `#{minAge}` |
+| 对象的 List 属性 | `deleteByIds(UserQuery query)` | `collection="属性名"` | `<foreach collection="ids" item="id">` |
+| 多参数 | `find(UserQuery q, PageRequest p)` | `arg0`, `arg1` | `#{arg0.status}`, `#{arg1.pageSize}` |
+| 多参数的 List 属性 | `delete(UserQuery q, Integer s)` | `arg0.属性名` | `<foreach collection="arg0.ids" item="id">` |
+
+**常见错误示例:**
+
+❌ **错误1: 混淆单参数 List 和对象属性 List**
+```xml
+<!-- 错误：方法参数是 UserQuery，不能用 "list" -->
+<foreach collection="list" item="id">  <!-- 错误！ -->
+    #{id}
+</foreach>
+
+<!-- 正确：使用对象的属性名 -->
+<foreach collection="ids" item="id">  <!-- 正确 -->
+    #{id}
+</foreach>
+```
+
+❌ **错误2: 多参数时忘记使用 arg0/arg1**
+```xml
+<!-- 错误：多参数方法不能直接访问属性 -->
+<foreach collection="ids" item="id">  <!-- 错误！ -->
+    #{id}
+</foreach>
+
+<!-- 正确：使用 arg0 访问第一个参数的属性 -->
+<foreach collection="arg0.ids" item="id">  <!-- 正确 -->
+    #{id}
+</foreach>
 ```
 
 ### 4. 接口注解
