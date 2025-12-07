@@ -3,7 +3,9 @@
 ## 📖 简介
 
 XML Mapper 是 JdbcTemplate 的 XML 配置增强功能,类似 MyBatis 的 XML Mapper 机制,但更加轻量、简洁。
-> 主要是因为我们使用的大部分是jpa，原来构建的一个链式sql又不好审查所有有了这个
+> 由于我们长期以 JPA 为主，近期业务突变、复杂手写 SQL 激增，JPA 对此支持有限且需高度设计约束，而现有模型零散难以快速落地。
+> 此前为缓解这一问题，曾用 JdbcTemplate 构建链式 SQL，但链式代码可读性与审计成本仍高。
+> 为此，我们在 JdbcTemplate 之上引入 XML 映射方案，既延续 JdbcTemplate 的轻量执行能力，又通过集中化 XML 管理复杂 SQL，实现与原有 JPA 主流程的互补
 
 ### 特性
 
