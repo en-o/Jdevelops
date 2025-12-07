@@ -132,8 +132,17 @@ public class XmlMapperScannerRegistrar implements ImportBeanDefinitionRegistrar 
 
     /**
      * 生成 Bean 名称
+     * <p>优先使用 @XmlMapper 注解的 value 属性</p>
+     * <p>如果未指定，则使用接口简单名称（首字母小写）</p>
      */
     private String generateBeanName(Class<?> mapperInterface) {
+        // 读取注解的 value 属性
+        XmlMapper annotation = mapperInterface.getAnnotation(XmlMapper.class);
+        if (annotation != null && !annotation.value().isEmpty()) {
+            return annotation.value();
+        }
+
+        // 默认：接口简单名称首字母小写
         String simpleName = mapperInterface.getSimpleName();
         return Character.toLowerCase(simpleName.charAt(0)) + simpleName.substring(1);
     }
