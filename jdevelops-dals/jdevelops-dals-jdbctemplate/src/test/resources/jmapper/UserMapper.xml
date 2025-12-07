@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    示例 XML Mapper 文件
+    演示如何使用 XML 定义 SQL 语句
+
+    namespace: 对应接口的全限定名
+-->
+<mapper namespace="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.UserMapper">
+
+    <!-- SQL 片段，可以被 include 引用 -->
+    <sql id="baseColumns">
+        id, username, email, age, status, created_at
+    </sql>
+
+    <!-- 简单查询 -->
+    <select id="findById" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <!-- 动态 SQL - 使用 if 标签 -->
+    <select id="findUsers" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE #{username}
+            </if>
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="minAge != null">
+                AND age >= #{minAge}
+            </if>
+            <if test="maxAge != null">
+                AND age &lt;= #{maxAge}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 使用 foreach 标签 -->
+    <select id="findByIds" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM users
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 插入操作 -->
+    <insert id="insertUser">
+        INSERT INTO users (username, email, age, status, created_at)
+        VALUES (#{username}, #{email}, #{age}, #{status}, NOW())
+    </insert>
+
+    <!-- 批量插入 -->
+    <insert id="batchInsert">
+        INSERT INTO users (username, email, age, status, created_at)
+        VALUES
+        <foreach collection="users" item="user" separator=",">
+            (#{user.username}, #{user.email}, #{user.age}, #{user.status}, NOW())
+        </foreach>
+    </insert>
+
+    <!-- 更新操作 - 使用 set 标签 -->
+    <update id="updateUser">
+        UPDATE users
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除操作 -->
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteByIds">
+        DELETE FROM users
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 统计查询 -->
+    <select id="countUsers" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM users
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="findUsersPage" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <!-- 复杂查询 - 多条件组合 -->
+    <select id="findUsersAdvanced" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM users
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (username LIKE CONCAT('%', #{keyword}, '%')
+                OR email LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="statusList != null and statusList.size() > 0">
+                AND status IN
+                <foreach collection="statusList" item="status" open="(" separator="," close=")">
+                    #{status}
+                </foreach>
+            </if>
+            <if test="startDate != null">
+                AND created_at >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND created_at &lt;= #{endDate}
+            </if>
+        </where>
+        ORDER BY
+        <if test="orderBy != null and orderBy != ''">
+            ${orderBy}
+        </if>
+        <if test="orderBy == null or orderBy == ''">
+            created_at DESC
+        </if>
+    </select>
+
+</mapper>

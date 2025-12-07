@@ -1,7 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.sql.v2;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.SqlIgnore;
-import cn.tannn.jdevelops.jdectemplate.annotations.SqlReColumn;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlIgnore;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.SqlReColumn;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
