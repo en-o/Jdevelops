@@ -456,7 +456,581 @@ CDATA (Character Data) 区块告诉 XML 解析器：这段内容是纯文本，�
 - 测试方法: 测试 70-79（特殊符号处理）
 - XML 配置: `UserMapper.xml` 第 285-544 行
 
-### 4. 参数引用
+### 4. 枚举和 Record 方法调用
+
+在 XML Mapper 的 `<if>` 条件判断中，框架支持调用枚举和 Record 类的方法，使得动态 SQL 更加灵活和强大。
+
+#### 功能概述
+
+框架支持在 `test` 表达式中调用以下方法：
+
+**Java 枚举（Enum）方法:**
+- ✅ `name()` - 返回枚举常量名称（如 `ACTIVE`）
+- ✅ `ordinal()` - 返回枚举常量序号（从0开始）
+- ✅ `toString()` - 返回枚举的字符串表示
+- ✅ **自定义 getter 方法** - 多值枚举的自定义字段方法（如 `getCode()`, `getName()`, `getDescription()`）
+
+**Java 17 Record 类:**
+- ✅ **访问器方法** - Record 的字段访问器（如 `id()`, `name()`, `email()`）
+
+**支持场景:**
+- ✅ 单参数对象: `test="platform.name() != 'NONE'"`
+- ✅ 多参数方法: `test="arg0.platform.name() != 'NONE'"`
+- ✅ 嵌套调用: `test="userInfo.platform().name() != 'NONE'"`
+- ✅ 复杂表达式: `test="status.getCode() > 0 and status.name() != 'DELETED'"`
+
+#### 简单枚举方法调用
+
+**定义枚举:**
+
+```java
+public enum UserPlatform {
+    NONE,      // ordinal = 0
+    WEB,       // ordinal = 1
+    MOBILE,    // ordinal = 2
+    DESKTOP    // ordinal = 3
+}
+```
+
+**查询参数:**
+
+```java
+public class UserQuery {
+    private UserPlatform platform;
+
+    public UserPlatform getPlatform() {
+        return platform;
+    }
+}
+```
+
+**示例 1: 使用 name() 方法**
+
+```xml
+<select id="findUsersByPlatform" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 测试枚举的 name() 方法 -->
+        <if test="platform != null and platform.name() != 'NONE'">
+            AND username LIKE '%test%'
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+    </where>
+    ORDER BY created_at DESC
+</select>
+```
+
+**说明:**
+- `platform.name()` 返回枚举常量名称（字符串）
+- `platform.name() != 'NONE'` 判断平台是否不是 NONE
+- 当 platform 为 WEB/MOBILE/DESKTOP 时，条件为 true，会添加 `username LIKE '%test%'` 条件
+
+**示例 2: 使用 ordinal() 方法**
+
+```xml
+<select id="findUsersByPlatformOrdinal" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 测试枚举的 ordinal() 方法 -->
+        <if test="platform != null and platform.ordinal() > 0">
+            AND username LIKE '%test%'
+        </if>
+    </where>
+    ORDER BY created_at DESC
+</select>
+```
+
+**说明:**
+- `platform.ordinal()` 返回枚举的序号（整数）
+- `platform.ordinal() > 0` 判断平台是否不是第一个枚举值（NONE）
+- 当 platform 为 WEB/MOBILE/DESKTOP 时，ordinal() > 0 为 true
+
+#### 多值枚举方法调用
+
+多值枚举是带有自定义字段和 getter 方法的枚举，可以存储更丰富的业务信息。
+
+**定义多值枚举:**
+
+```java
+public enum UserStatus {
+    INACTIVE(0, "未激活", "用户账号未激活"),
+    ACTIVE(1, "已激活", "用户账号正常"),
+    LOCKED(2, "已锁定", "用户账号被锁定"),
+    DELETED(9, "已删除", "用户账号已删除");
+
+    private final int code;
+    private final String name;
+    private final String description;
+
+    UserStatus(int code, String name, String description) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+    }
+
+    // Getter 方法
+    public int getCode() { return code; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+}
+```
+
+**查询参数:**
+
+```java
+public class UserQuery {
+    private UserStatus userStatus;
+
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+}
+```
+
+**示例 3: 使用 getCode() 方法**
+
+```xml
+<select id="findUsersByUserStatusCode" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 测试多值枚举的 getCode() 方法 -->
+        <if test="userStatus != null and userStatus.getCode() == 1">
+            AND status = #{userStatus.getCode()}
+        </if>
+
+        <!-- 也可以测试不等于 -->
+        <if test="userStatus != null and userStatus.getCode() != 0">
+            AND username LIKE '%test%'
+        </if>
+    </where>
+    ORDER BY created_at DESC
+</select>
+```
+
+**说明:**
+- `userStatus.getCode()` 调用枚举的自定义 getCode() 方法
+- 可以在 test 表达式中进行数值比较（`== 1`, `!= 0`, `> 0` 等）
+- 也可以在 SQL 参数中使用 `#{userStatus.getCode()}`
+
+**示例 4: 使用 getName() 方法**
+
+```xml
+<select id="findUsersByUserStatusName" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 测试多值枚举的 getName() 方法 -->
+        <if test="userStatus != null and userStatus.getName() == '已激活'">
+            AND status = 1
+        </if>
+
+        <if test="userStatus != null and userStatus.getName() != '未激活'">
+            AND username LIKE '%test%'
+        </if>
+    </where>
+    ORDER BY created_at DESC
+</select>
+```
+
+**说明:**
+- `userStatus.getName()` 返回自定义的中文名称
+- 可以进行字符串比较（`==`, `!=` 等）
+
+**示例 5: 组合使用多个方法**
+
+```xml
+<select id="findUsersByUserStatusComplex" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 组合使用多值枚举的多个方法 -->
+        <if test="userStatus != null">
+            <!-- 使用 getCode() 方法 -->
+            <if test="userStatus.getCode() > 0">
+                <![CDATA[
+                AND status >= #{userStatus.getCode()}
+                ]]>
+            </if>
+
+            <!-- 使用 name() 方法（枚举名称） -->
+            <if test="userStatus.name() != 'DELETED'">
+                AND username LIKE '%test%'
+            </if>
+
+            <!-- 使用 getName() 方法（自定义名称字段） -->
+            <if test="userStatus.getName() != null and userStatus.getName() != ''">
+                AND status != 9
+            </if>
+        </if>
+    </where>
+    ORDER BY created_at DESC
+</select>
+```
+
+**说明:**
+- 可以在同一个查询中组合使用多个枚举方法
+- `name()` 返回枚举常量名（如 "ACTIVE"）
+- `getName()` 返回自定义字段值（如 "已激活"）
+- 注意区分：`name()` 是枚举内置方法，`getName()` 是自定义 getter 方法
+
+#### 多参数方法中的枚举方法调用
+
+当接口方法有多个参数时，需要使用 `arg0`, `arg1` 访问参数，枚举方法调用同样适用。
+
+**接口方法:**
+
+```java
+@XmlMapper(namespace = "com.example.mapper.UserMapper")
+public interface UserMapper {
+
+    @XmlSelect("findUsersByPlatformWithArg0")
+    List<User> findUsersByPlatformWithArg0(UserQuery query, Integer limit);
+}
+```
+
+**XML 配置:**
+
+```xml
+<select id="findUsersByPlatformWithArg0" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 使用 arg0 访问第一个参数的枚举方法 -->
+        <if test="arg0.platform != null and arg0.platform.name() != 'NONE'">
+            AND username LIKE '%test%'
+        </if>
+
+        <if test="arg0.status != null">
+            AND status = #{arg0.status}
+        </if>
+    </where>
+    ORDER BY created_at DESC
+    LIMIT #{arg1}  <!-- 第二个参数：limit -->
+</select>
+```
+
+**多值枚举的多参数示例:**
+
+```xml
+<select id="findUsersByUserStatusWithArg0" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- arg0.userStatus.getCode() -->
+        <if test="arg0.userStatus != null and arg0.userStatus.getCode() == 1">
+            AND status = #{arg0.userStatus.getCode()}
+        </if>
+
+        <!-- arg0.userStatus.getName() -->
+        <if test="arg0.userStatus != null and arg0.userStatus.getName() == '已激活'">
+            AND username LIKE '%test%'
+        </if>
+    </where>
+    ORDER BY created_at DESC
+    LIMIT #{arg1}  <!-- limit -->
+</select>
+```
+
+#### Record 类访问器方法调用
+
+Java 17 的 Record 类自动生成访问器方法，框架支持在 XML 中调用这些方法。
+
+**定义 Record:**
+
+```java
+public record UserInfo(Long id, String loginName, String name, UserPlatform platform) {
+    // Record 自动生成 id(), loginName(), name(), platform() 访问器方法
+}
+```
+
+**查询参数:**
+
+```java
+public class UserQuery {
+    private UserInfo userInfo;
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+}
+```
+
+**示例 6: 调用 Record 访问器方法**
+
+```xml
+<select id="findUsersByUserInfo" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 调用 Record 的访问器方法 -->
+        <if test="userInfo != null and userInfo.id() != null">
+            AND id = #{userInfo.id()}
+        </if>
+
+        <if test="userInfo != null and userInfo.loginName() != null">
+            AND login_name = #{userInfo.loginName()}
+        </if>
+
+        <!-- 嵌套调用：Record 的 platform() 返回枚举，再调用枚举的 name() -->
+        <if test="userInfo != null and userInfo.platform() != null and userInfo.platform().name() != 'NONE'">
+            AND platform != 0
+        </if>
+    </where>
+</select>
+```
+
+**说明:**
+- `userInfo.id()` - 调用 Record 的 id() 访问器方法
+- `userInfo.loginName()` - 调用 Record 的 loginName() 访问器方法
+- `userInfo.platform().name()` - 链式调用：先调用 platform() 获取枚举，再调用 name() 获取枚举名称
+
+#### 链式方法调用
+
+框架支持链式方法调用，可以组合多个方法调用。
+
+**示例 7: 链式方法调用**
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- Record 的方法调用链 -->
+        <if test="userInfo != null and userInfo.loginName() != null">
+            AND login_name = #{userInfo.loginName().toUpperCase()}
+        </if>
+
+        <!-- 枚举的方法调用链 -->
+        <if test="platform != null">
+            AND platform_name = #{platform.name().toLowerCase()}
+        </if>
+
+        <!-- 嵌套对象的方法调用链 -->
+        <if test="userInfo != null and userInfo.platform().ordinal() > 0">
+            AND status = 1
+        </if>
+    </where>
+</select>
+```
+
+**说明:**
+- `userInfo.loginName().toUpperCase()` - 先获取 loginName，再转大写
+- `platform.name().toLowerCase()` - 先获取枚举名称，再转小写
+- `userInfo.platform().ordinal()` - 先获取 platform 枚举，再获取序号
+
+#### 使用场景和最佳实践
+
+**1. 动态条件判断**
+
+使用枚举方法可以根据枚举状态动态添加 SQL 条件：
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 根据平台类型添加不同条件 -->
+        <if test="platform != null and platform.name() == 'WEB'">
+            AND web_specific_column IS NOT NULL
+        </if>
+
+        <if test="platform != null and platform.name() == 'MOBILE'">
+            AND mobile_specific_column IS NOT NULL
+        </if>
+
+        <!-- 根据状态码添加条件 -->
+        <if test="userStatus != null and userStatus.getCode() > 0">
+            AND deleted_at IS NULL
+        </if>
+    </where>
+</select>
+```
+
+**2. 业务规则判断**
+
+多值枚举可以封装复杂的业务规则：
+
+```xml
+<select id="findActiveUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 只查询激活状态的用户 -->
+        <if test="userStatus != null and userStatus.getCode() == 1">
+            AND status = #{userStatus.getCode()}
+        </if>
+
+        <!-- 排除已删除的用户 -->
+        <if test="userStatus != null and userStatus.name() != 'DELETED'">
+            AND deleted_at IS NULL
+        </if>
+    </where>
+</select>
+```
+
+**3. 参数验证**
+
+在 SQL 执行前验证枚举参数的有效性：
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 验证平台参数不是 NONE -->
+        <if test="platform == null or platform.name() == 'NONE'">
+            AND 1=0  <!-- 返回空结果 -->
+        </if>
+
+        <if test="platform != null and platform.ordinal() > 0">
+            AND platform_type = #{platform.ordinal()}
+        </if>
+    </where>
+</select>
+```
+
+#### 注意事项
+
+**1. Null 安全检查**
+
+始终在调用方法前检查对象是否为 null：
+
+```xml
+<!-- ✅ 正确 -->
+<if test="platform != null and platform.name() != 'NONE'">
+    AND username LIKE '%test%'
+</if>
+
+<!-- ❌ 错误：可能抛出 NullPointerException -->
+<if test="platform.name() != 'NONE'">
+    AND username LIKE '%test%'
+</if>
+```
+
+**2. 方法返回值类型**
+
+了解方法返回值类型，使用正确的比较方式：
+
+```xml
+<!-- name() 返回 String，使用字符串比较 -->
+<if test="platform.name() == 'WEB'">...</if>
+
+<!-- ordinal() 返回 int，使用数值比较 -->
+<if test="platform.ordinal() > 0">...</if>
+
+<!-- getCode() 返回 int，使用数值比较 -->
+<if test="userStatus.getCode() == 1">...</if>
+
+<!-- getName() 返回 String，使用字符串比较 -->
+<if test="userStatus.getName() == '已激活'">...</if>
+```
+
+**3. 枚举名称 vs 自定义字段**
+
+区分枚举的 `name()` 方法和自定义的 `getName()` getter：
+
+```java
+// 枚举定义
+public enum UserStatus {
+    ACTIVE(1, "已激活");  // 枚举名称是 "ACTIVE"，getName() 返回 "已激活"
+
+    private final String name;
+    public String getName() { return name; }
+}
+```
+
+```xml
+<!-- name() - 返回枚举常量名称 "ACTIVE" -->
+<if test="userStatus.name() == 'ACTIVE'">...</if>
+
+<!-- getName() - 返回自定义字段值 "已激活" -->
+<if test="userStatus.getName() == '已激活'">...</if>
+```
+
+**4. 参数访问规范**
+
+- **单参数**: 直接访问枚举方法 `test="platform.name() != 'NONE'"`
+- **多参数**: 使用 arg0/arg1 访问 `test="arg0.platform.name() != 'NONE'"`
+- **嵌套对象**: 支持链式调用 `test="userInfo.platform().name() != 'NONE'"`
+
+#### 实现原理
+
+框架通过 OGNL 表达式解析器识别方法调用模式（以 `()` 结尾），使用 Java 反射 API 动态调用方法：
+
+```java
+// 核心实现（简化版）
+private static Object invokeMethod(Object obj, String methodName) {
+    Method method = obj.getClass().getMethod(methodName);
+    return method.invoke(obj);
+}
+```
+
+**支持的方法类型:**
+- ✅ 无参数的 public 方法（如 `name()`, `ordinal()`, `getCode()`）
+- ✅ 返回值为基本类型或对象的方法
+- ✅ 链式方法调用（返回对象的方法可以继续调用）
+- ❌ 带参数的方法（暂不支持）
+- ❌ 私有方法或受保护方法（暂不支持）
+
+#### 测试用例参考
+
+**完整测试示例:**
+
+- **测试文件**:
+  - `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../XmlMapper_annotation_Test.java`
+  - `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../XmlMapper_registry_Test.java`
+
+- **测试方法**:
+  - 测试 80-82（简单枚举方法：name(), ordinal()）
+  - 测试 83-87（多值枚举方法：getCode(), getName(), getDescription()）
+
+- **XML 配置**: `UserMapper.xml`
+  - 第 550-598 行（简单枚举测试）
+  - 第 604-697 行（多值枚举测试）
+
+- **单元测试**: `OgnlUtilTest.java`
+  - 测试枚举和 Record 方法调用的底层实现
+
+**Java 调用示例:**
+
+```java
+@Service
+public class UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    public List<User> findUsersByPlatform() {
+        UserQuery query = new UserQuery();
+        query.setPlatform(UserPlatform.WEB);  // 设置枚举
+        query.setStatus(1);
+
+        // XML 中会判断 platform.name() != 'NONE'
+        return userMapper.findUsersByPlatform(query);
+    }
+
+    public List<User> findUsersByStatus() {
+        UserQuery query = new UserQuery();
+        query.setUserStatus(UserStatus.ACTIVE);  // 设置多值枚举
+
+        // XML 中会判断 userStatus.getCode() == 1
+        return userMapper.findUsersByUserStatusCode(query);
+    }
+}
+```
+
+#### 错误处理
+
+**常见错误和解决方案:**
+
+| 错误现象 | 原因 | 解决方案 |
+|---------|------|---------|
+| 方法调用返回 null | 对象为 null | 添加 null 检查：`platform != null and platform.name() != 'NONE'` |
+| 方法不存在异常 | 方法名拼写错误 | 检查方法名是否正确（区分大小写） |
+| 类型转换错误 | 返回值类型不匹配 | 使用正确的比较方式（字符串 vs 数值） |
+| 链式调用失败 | 中间对象为 null | 每个链式节点都要检查 null |
+
+**调试建议:**
+
+1. 开启 DEBUG 日志查看 OGNL 表达式解析过程
+2. 在测试中先验证枚举方法是否返回预期值
+3. 使用简单的条件进行测试，确认方法调用正常
+4. 检查枚举定义是否正确，getter 方法是否为 public
+
+### 5. 参数引用
 
 #### 命名参数 `#{}`
 
@@ -1425,20 +1999,6 @@ public interface OrderMapper { }
 1. **SQL 缓存** - XML 解析后会缓存,避免重复解析
 2. **连接池** - 使用 Spring JdbcTemplate 的连接池
 3. **批量操作** - 使用 `<foreach>` 实现批量插入/更新
-
----
-
-## 🆚 对比
-
-| 特性 | XML Mapper | MyBatis | Spring Data JPA |
-|---|---|---|---|
-| 学习成本 | 低 | 中 | 高 |
-| 配置复杂度 | 低 | 中 | 低 |
-| 动态 SQL | ✅ | ✅ | ❌ |
-| SQL 可见性 | ✅ | ✅ | ❌ |
-| 类型安全 | ✅ | ⚠️ | ✅ |
-| 自增ID返回 | ✅ | ✅ | ✅ |
-| 轻量级 | ✅ | ❌ | ❌ |
 
 ---
 

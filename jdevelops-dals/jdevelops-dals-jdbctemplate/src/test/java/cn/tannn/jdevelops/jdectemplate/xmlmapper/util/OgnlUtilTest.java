@@ -28,6 +28,38 @@ class OgnlUtilTest {
     }
 
     /**
+     * 用户状态枚举（多值枚举 - 带有code和description字段）
+     */
+    public enum UserStatus {
+        INACTIVE(0, "未激活", "用户账号未激活"),
+        ACTIVE(1, "已激活", "用户账号正常"),
+        LOCKED(2, "已锁定", "用户账号被锁定"),
+        DELETED(9, "已删除", "用户账号已删除");
+
+        private final int code;
+        private final String name;
+        private final String description;
+
+        UserStatus(int code, String name, String description) {
+            this.code = code;
+            this.name = name;
+            this.description = description;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    /**
      * 测试用 record - 用户信息
      */
     record UserInfo(Long id, String loginName, String name, LoginPlatform platform) {
@@ -40,6 +72,7 @@ class OgnlUtilTest {
         private String loginName;
         private LoginPlatform loginPlatform;
         private UserInfo userInfo;
+        private UserStatus userStatus;
 
         public QueryParam(String loginName, LoginPlatform loginPlatform) {
             this.loginName = loginName;
@@ -60,6 +93,14 @@ class OgnlUtilTest {
 
         public void setUserInfo(UserInfo userInfo) {
             this.userInfo = userInfo;
+        }
+
+        public UserStatus getUserStatus() {
+            return userStatus;
+        }
+
+        public void setUserStatus(UserStatus userStatus) {
+            this.userStatus = userStatus;
         }
     }
 
