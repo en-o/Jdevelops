@@ -16,4 +16,12 @@
         jdbctemplate 相关的注解 [考虑参数实体跟主体项目分离时轻量导包]
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>6.1.10</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
