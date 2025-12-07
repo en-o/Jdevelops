@@ -166,7 +166,9 @@ public class XmlMapperRegistry {
         Long total = 0L;
         if (StringUtils.hasText(countStatementId)) {
             SqlStatement countStatement = getSqlStatement(namespace, countStatementId);
-            Object countResult = sqlExecutor.execute(countStatement, queryParameter, Long.class);
+            // 注意：count查询也使用相同的参数格式（包装成List），确保与data查询的条件判断一致
+            Object countResult = sqlExecutor.execute(countStatement,
+                    Arrays.asList(queryParameter, pageRequest), Long.class);
             LOG.debug("Count query result: type={}, value={}, isNumber={}",
                     countResult == null ? "null" : countResult.getClass().getName(),
                     countResult,
