@@ -508,25 +508,81 @@ int deleteByIdsWithCondition(UserQuery query, Integer status);
 
 **4. 对象属性是 List of Objects（嵌套对象 List）**
 
-当对象中的 List 属性包含复杂对象时：
+当对象中的 List 属性包含复杂对象时，这是最常见的业务场景之一：
+
+```java
+// 接口方法
+int batchInsertFromQuery(UserQuery query);
+```
 
 ```java
 // UserQuery 类
 public class UserQuery {
     private List<UserMapperEntity> users;  // 复杂对象的 List
+
+    // Getters and Setters...
+    public List<UserMapperEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserMapperEntity> users) {
+        this.users = users;
+    }
+}
+```
+
+```java
+// UserMapperEntity 类
+public class UserMapperEntity {
+    private Long id;
+    private String username;
+    private String email;
+    private Integer age;
+    private Integer status;
     // Getters and Setters...
 }
 ```
 
 ```xml
 <!-- XML 配置 - 批量插入复杂对象 -->
-<insert id="batchInsertUsers">
-    INSERT INTO users (username, email, age) VALUES
+<insert id="batchInsertFromQuery">
+    INSERT INTO users (username, email, age, status, created_at)
+    VALUES
     <foreach collection="users" item="user" separator=",">
-        (#{user.username}, #{user.email}, #{user.age})
+        (#{user.username}, #{user.email}, #{user.age}, #{user.status}, NOW())
     </foreach>
 </insert>
 ```
+
+**关键点:**
+- ✅ `collection="users"` - `users` 是 UserQuery 对象的属性名
+- ✅ `item="user"` - 定义当前遍历的 UserMapperEntity 对象变量名
+- ✅ `#{user.username}` - 访问 UserMapperEntity 对象的属性
+- ✅ 可以访问复杂对象的所有属性：`#{user.username}`, `#{user.email}`, `#{user.age}`
+
+**Java 调用示例:**
+```java
+// 创建用户列表
+List<UserMapperEntity> users = Arrays.asList(
+    new UserMapperEntity(null, "user1", "user1@example.com", 25, 1),
+    new UserMapperEntity(null, "user2", "user2@example.com", 26, 1),
+    new UserMapperEntity(null, "user3", "user3@example.com", 27, 1)
+);
+
+// 创建 UserQuery 对象，设置 users 属性
+UserQuery query = new UserQuery();
+query.setUsers(users);
+
+// 执行批量插入
+int rows = userMapper.batchInsertFromQuery(query);
+// 返回: 3（插入3条记录）
+```
+
+**实际测试用例参考:**
+- 测试文件: `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../XmlMapper_annotation_Test.java`
+- 测试方法: `testBatchInsertFromQueryWithListOfBeans()` (测试用例 32)
+- 接口方法: `UserMapper#batchInsertFromQuery(UserQuery query)`
+- XML 配置: `UserMapper.xml#batchInsertFromQuery`
 
 **5. 单参数 Map**
 
@@ -553,9 +609,12 @@ List<User> findByCondition(Map<String, Object> params);
 | 单参数对象 | `findById(UserQuery query)` | 直接访问属性 | `#{username}`, `#{status}` |
 | 单参数 List | `batchInsert(List<User> users)` | `collection="list"` | `<foreach collection="list" item="user">` |
 | 单参数 Map | `findByCondition(Map params)` | 直接访问 key | `#{status}`, `#{minAge}` |
-| 对象的 List 属性 | `deleteByIds(UserQuery query)` | `collection="属性名"` | `<foreach collection="ids" item="id">` |
+| 对象的 List 属性（基本类型） | `deleteByIds(UserQuery query)` | `collection="属性名"` | `<foreach collection="ids" item="id">` |
+| 对象的 List 属性（复杂对象）⭐ | `batchInsert(UserQuery query)` | `collection="属性名"` | `<foreach collection="users" item="user">` + `#{user.username}` |
 | 多参数 | `find(UserQuery q, PageRequest p)` | `arg0`, `arg1` | `#{arg0.status}`, `#{arg1.pageSize}` |
 | 多参数的 List 属性 | `delete(UserQuery q, Integer s)` | `arg0.属性名` | `<foreach collection="arg0.ids" item="id">` |
+
+**注意:** ⭐ 标记的是最常见的业务场景 - 对象属性是 `List<Bean>`，详见上文"4. 对象属性是 List of Objects"。
 
 **常见错误示例:**
 
