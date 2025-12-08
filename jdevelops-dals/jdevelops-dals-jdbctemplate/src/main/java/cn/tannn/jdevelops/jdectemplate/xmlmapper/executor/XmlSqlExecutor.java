@@ -133,9 +133,9 @@ public class XmlSqlExecutor {
                     List<T> results = namedParameterJdbcTemplate.query(sql, params, rowMapper);
 
                     // 【调试日志】输出结果集大小
-                    LOG.info("🔍 [DEBUG] SQL执行完成 - 结果类型: {}, 结果数量: {}", resultType.getSimpleName(), results.size());
-                    LOG.info("🔍 [DEBUG] SQL: {}", sql);
-                    LOG.info("🔍 [DEBUG] Params: {}", params.getValues());
+                    LOG.debug("🔍 [DEBUG] SQL执行完成 - 结果类型: {}, 结果数量: {}", resultType.getSimpleName(), results.size());
+                    LOG.debug("🔍 [DEBUG] SQL: {}", sql);
+                    LOG.debug("🔍 [DEBUG] Params: {}", params.getValues());
 
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 }
@@ -155,9 +155,9 @@ public class XmlSqlExecutor {
                     List<T> results = jdbcTemplate.query(sql, rowMapper, params);
 
                     // 【调试日志】输出结果集大小
-                    LOG.info("🔍 [DEBUG] SQL执行完成(位置参数) - 结果类型: {}, 结果数量: {}", resultType.getSimpleName(), results.size());
-                    LOG.info("🔍 [DEBUG] SQL: {}", sql);
-                    LOG.info("🔍 [DEBUG] Params: {}", java.util.Arrays.toString(params));
+                    LOG.debug("🔍 [DEBUG] SQL执行完成(位置参数) - 结果类型: {}, 结果数量: {}", resultType.getSimpleName(), results.size());
+                    LOG.debug("🔍 [DEBUG] SQL: {}", sql);
+                    LOG.debug("🔍 [DEBUG] Params: {}", java.util.Arrays.toString(params));
 
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 }
@@ -169,7 +169,7 @@ public class XmlSqlExecutor {
             }
             throw e;
         } catch (Exception e) {
-            // 【新增】捕获所有���常并记录详细信息
+            // 【新增】捕获所有异常并记录详细信息
             LOG.error("🔍 [DEBUG] SQL执行异常 - 类型: {}, 消息: {}", e.getClass().getSimpleName(), e.getMessage(), e);
             throw e;
         }

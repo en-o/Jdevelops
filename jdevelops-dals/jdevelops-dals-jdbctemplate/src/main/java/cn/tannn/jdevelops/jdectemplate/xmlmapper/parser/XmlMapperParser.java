@@ -298,9 +298,64 @@ public class XmlMapperParser {
      * 解析 &lt;choose&gt; 标签
      */
     private SqlNode parseChooseNode(Element element, XmlMapper xmlMapper) {
-        // TODO: 实现 choose 节点解析
-        LOG.warn("choose element is not yet implemented");
-        return null;
+        List<SqlNode> whenSqlNodes = new ArrayList<>();
+        SqlNode otherwiseSqlNode = null;
+
+        NodeList children = element.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node node = children.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            Element child = (Element) node;
+            String tagName = child.getTagName();
+
+            switch (tagName) {
+                case "when" -> {
+                    SqlNode whenNode = parseWhenNode(child, xmlMapper);
+                    if (whenNode != null) {
+                        whenSqlNodes.add(whenNode);
+                    }
+                }
+                case "otherwise" -> {
+                    if (otherwiseSqlNode != null) {
+                        LOG.warn("Multiple otherwise elements in choose, only the last one will be used");
+                    }
+                    otherwiseSqlNode = parseOtherwiseNode(child, xmlMapper);
+                }
+                default -> LOG.warn("Unknown element in choose: {}", tagName);
+            }
+        }
+
+        if (whenSqlNodes.isEmpty()) {
+            LOG.warn("choose element must have at least one when element");
+            return null;
+        }
+
+        return new ChooseSqlNode(whenSqlNodes, otherwiseSqlNode);
+    }
+
+    /**
+     * 解析 &lt;when&gt; 标签
+     */
+    private SqlNode parseWhenNode(Element element, XmlMapper xmlMapper) {
+        String test = element.getAttribute("test");
+        if (!StringUtils.hasText(test)) {
+            LOG.warn("when element test attribute is required");
+            return null;
+        }
+
+        List<SqlNode> contents = parseChildren(element, xmlMapper);
+        return new WhenSqlNode(test, contents);
+    }
+
+    /**
+     * 解析 &lt;otherwise&gt; 标签
+     */
+    private SqlNode parseOtherwiseNode(Element element, XmlMapper xmlMapper) {
+        List<SqlNode> contents = parseChildren(element, xmlMapper);
+        return new OtherwiseSqlNode(contents);
     }
 
     /**
