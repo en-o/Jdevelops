@@ -458,11 +458,65 @@ CDATA (Character Data) 区块告诉 XML 解析器：这段内容是纯文本，�
 - 测试方法: 测试 70-79（特殊符号处理）
 - XML 配置: `UserMapper.xml` 第 285-544 行
 
-### 4. 枚举和 Record 方法调用
+### 4. OGNL 表达式支持
 
-在 XML Mapper 的 `<if>` 条件判断中，框架支持调用枚举和 Record 类的方法，使得动态 SQL 更加灵活和强大。
+在 XML Mapper 的 `<if>` 条件判断中，框架支持丰富的 OGNL 表达式，包括比较运算符、逻辑运算符和方法调用。
 
-#### 功能概述
+#### 4.1 比较运算符
+
+框架支持以下比较运算符：
+
+| 运算符 | 说明 | 示例 | 支持类型 |
+|--------|------|------|----------|
+| `==` | 等于 | `status == 1` | 所有类型 |
+| `!=` | 不等于 | `status != null` | 所有类型 |
+| `>` | 大于 | `age > 18` | 数值类型 |
+| `<` | 小于 | `age < 60` | 数值类型 |
+| `>=` | 大于等于 | `score >= 60` | 数值类型 |
+| `<=` | 小于等于 | `price <= 100` | 数值类型 |
+
+**逻辑运算符:**
+- `and` / `&&` - 逻辑与
+- `or` / `||` - 逻辑或
+
+**示例：**
+
+```xml
+<!-- 空值判断 -->
+<if test="username != null and username != ''">
+    AND username LIKE #{username}
+</if>
+
+<!-- 数值比较 -->
+<if test="age > 18">
+    AND age > 18
+</if>
+
+<!-- 集合大小判断 -->
+<if test="statusList != null and statusList.size() > 0">
+    AND status IN
+    <foreach collection="statusList" item="status" open="(" separator="," close=")">
+        #{status}
+    </foreach>
+</if>
+
+<!-- 复杂条件 -->
+<if test="minAge != null and minAge >= 0 and maxAge != null and maxAge <= 150">
+    AND age BETWEEN #{minAge} AND #{maxAge}
+</if>
+
+<!-- 多条件组合 -->
+<if test="(status == 1 or status == 2) and age > 18">
+    AND (status IN (1, 2)) AND age > 18
+</if>
+```
+
+**注意事项:**
+- ⚠️ 比较运算符会按顺序处理，先处理 `>=`、`<=`、`!=`、`==`，最后处理 `>`、`<`
+- ⚠️ 数值比较支持 `Integer`、`Long`、`Double` 等数值类型
+- ⚠️ 方法调用结果也可以参与比较（如 `list.size() > 0`、`status.getCode() == 1`）
+
+#### 4.2 枚举和 Record 方法调用
 
 框架支持在 `test` 表达式中调用以下方法：
 
@@ -474,6 +528,11 @@ CDATA (Character Data) 区块告诉 XML 解析器：这段内容是纯文本，�
 
 **Java 17 Record 类:**
 - ✅ **访问器方法** - Record 的字段访问器（如 `id()`, `name()`, `email()`）
+
+**集合/数组方法:**
+- ✅ `size()` - List/Set 的大小
+- ✅ `length` - 数组长度
+- ✅ `isEmpty()` - 判断集合是否为空
 
 **支持场景:**
 - ✅ 单参数对象: `test="platform.name() != 'NONE'"`
