@@ -2072,6 +2072,577 @@ int insertUser(User user);      // int
 String insertUser(User user);   // String
 ```
 
+### 7. JSON 字段自动转换
+
+框架支持将数据库 JSON 字段自动转换为 Java 复杂对象，无需手动解析 JSON 字符串。
+
+#### 7.1 功能特性
+
+- ✅ **自动 JSON 解析** - 数据库 JSON 字段自动转换为 `List`、`Map`、自定义对象
+- ✅ **支持 Record 类型** - 完美支持 Java 17 Record 作为返回类型
+- ✅ **支持 JavaBean** - 支持传统 JavaBean 类型
+- ✅ **泛型类型推断** - 自动识别 `List<String>`、`List<Integer>`、`Map<String, Object>` 等泛型类型
+- ✅ **嵌套对象支持** - 支持嵌套的复杂对象结构
+- ✅ **String 类型保留** - 如果字段类型是 String，返回原始 JSON 字符串（不解析）
+- ✅ **枚举类型支持** - 自动转换枚举类型
+- ✅ **时间类型支持** - 支持 `LocalDateTime`、`LocalDate` 等 Java 8 时间类型
+- ✅ **多种列名匹配** - 自动支持驼峰命名、下划线命名等多种匹配策略
+
+#### 7.2 支持的数据类型
+
+| 数据库字段类型 | Java 字段类型 | 转换方式 | 示例 |
+|--------------|--------------|---------|------|
+| JSON | `List<String>` | 自动解析 | `["tag1", "tag2"]` → `List.of("tag1", "tag2")` |
+| JSON | `List<Integer>` | 自动解析 | `[1, 2, 3]` → `List.of(1, 2, 3)` |
+| JSON | `Map<String, Object>` | 自动解析 | `{"key": "value"}` → `Map.of("key", "value")` |
+| JSON | 自定义对象 | 自动解析 | `{"address": "xxx"}` → `UserDetail` 对象 |
+| JSON | `String` | 不解析 | `[1, 2, 3]` → `"[1, 2, 3]"` (原始字符串) |
+| VARCHAR/TEXT | `String` | 直接映射 | 普通字符串字段 |
+| INT/BIGINT | `Integer`/`Long` | 直接映射 | 数值类型 |
+| ENUM/VARCHAR | 枚举类型 | 自动转换 | `"ACTIVE"` → `UserStatus.ACTIVE` |
+| DATETIME/TIMESTAMP | `LocalDateTime` | 自动转换 | 时间类型 |
+
+#### 7.3 使用示例
+
+**数据库表结构:**
+
+```sql
+CREATE TABLE complex_user (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100),
+    age INT,
+    status INT COMMENT '状态: 0=未激活, 1=已激活, 2=已锁定, 9=已删除',
+    platform INT COMMENT '平台: 0=NONE, 1=WEB, 2=MOBILE, 3=DESKTOP',
+
+    -- JSON 字段
+    tags JSON COMMENT '标签列表: ["tag1", "tag2"]',
+    role_ids JSON COMMENT '角色ID列表: [1, 2, 3]',
+    extras JSON COMMENT '扩展属性: {"key1": "value1", "key2": 123}',
+    detail JSON COMMENT '用户详情: {"address": "xxx", "phone": "xxx", "hobbies": ["hobby1"]}',
+
+    created_at DATETIME,
+    updated_at DATETIME
+);
+```
+
+**Java Record 定义:**
+
+```java
+/**
+ * 复杂用户 Record DTO
+ * 测试场景：包含 JSON 字段自动转换为复杂类型
+ */
+public record ComplexUserRecord(
+    // 基本类型
+    Long id,
+    String username,
+    String email,
+    Integer age,
+    Integer status,
+
+    // 枚举类型
+    UserPlatform platform,
+    UserStatus userStatus,
+
+    // JSON 字段 → List<String>（自动解析）
+    List<String> tags,
+
+    // JSON 字段 → List<Integer>（自动解析）
+    @JsonProperty("role_ids")
+    List<Integer> roleIds,
+
+    // JSON 字段 → Map<String, Object>（自动解析）
+    Map<String, Object> extras,
+
+    // JSON 字段 → 嵌套对象（自动解析）
+    UserDetail detail,
+
+    // JSON 字段 → String（不解析，返回原始 JSON 字符串）
+    @JsonProperty("tags_json")
+    String tagsJson,
+
+    @JsonProperty("role_ids_json")
+    String roleIdsJson,
+
+    // 时间类型
+    @JsonProperty("created_at")
+    LocalDateTime createdAt,
+
+    @JsonProperty("updated_at")
+    LocalDateTime updatedAt
+) {
+    /**
+     * 用户详情嵌套 Record
+     */
+    public record UserDetail(
+        String address,
+        String phone,
+        String avatar,
+        List<String> hobbies
+    ) {}
+}
+```
+
+**枚举类型定义:**
+
+```java
+// 简单枚举
+public enum UserPlatform {
+    NONE,      // ordinal = 0
+    WEB,       // ordinal = 1
+    MOBILE,    // ordinal = 2
+    DESKTOP    // ordinal = 3
+}
+
+// 多值枚举
+public enum UserStatus {
+    INACTIVE(0, "未激活", "用户账号未激活"),
+    ACTIVE(1, "已激活", "用户账号正常"),
+    LOCKED(2, "已锁定", "用户账号被锁定"),
+    DELETED(9, "已删除", "用户账号已删除");
+
+    private final int code;
+    private final String name;
+    private final String description;
+
+    UserStatus(int code, String name, String description) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+    }
+
+    public int getCode() { return code; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+}
+```
+
+**Mapper 接口:**
+
+```java
+@XmlMapper(namespace = "com.example.mapper.ComplexUserMapper")
+public interface ComplexUserMapper {
+
+    /**
+     * 查询用户（返回 Record，包含 JSON 字段自动转换）
+     */
+    @XmlSelect("findByIdRecord")
+    ComplexUserRecord findByIdRecord(Long id);
+}
+```
+
+**XML 配置:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ComplexUserMapper">
+
+    <select id="findByIdRecord" resultType="com.example.entity.ComplexUserRecord">
+        SELECT
+            id,
+            username,
+            email,
+            age,
+            status,
+            platform,
+            -- 枚举字段：框架自动根据 status 值转换为 UserStatus 枚举
+            CASE status
+                WHEN 0 THEN 'INACTIVE'
+                WHEN 1 THEN 'ACTIVE'
+                WHEN 2 THEN 'LOCKED'
+                WHEN 9 THEN 'DELETED'
+            END as user_status,
+            -- JSON 字段：框架自动转换为 List/Map/自定义对象
+            tags,              -- → List<String>
+            role_ids,          -- → List<Integer>
+            extras,            -- → Map<String, Object>
+            detail,            -- → UserDetail 对象
+            -- JSON 字段作为字符串返回（不解析）
+            tags as tags_json,         -- → String (原始 JSON)
+            role_ids as role_ids_json, -- → String (原始 JSON)
+            -- 时间字段
+            created_at,
+            updated_at
+        FROM complex_user
+        WHERE id = #{value}
+    </select>
+
+</mapper>
+```
+
+**Java 调用:**
+
+```java
+@Service
+public class UserService {
+
+    @Autowired
+    private ComplexUserMapper complexUserMapper;
+
+    public void example() {
+        // 查询用户，JSON 字段自动转换
+        ComplexUserRecord user = complexUserMapper.findByIdRecord(100L);
+
+        // 使用转换后的数据
+        System.out.println("用户名: " + user.username());
+        System.out.println("枚举平台: " + user.platform());        // 枚举: WEB
+        System.out.println("枚举状态: " + user.userStatus());      // 枚举: ACTIVE
+
+        // JSON 字段已自动转换为 List<String>
+        System.out.println("标签列表: " + user.tags());            // List<String>
+        System.out.println("第一个标签: " + user.tags().get(0));  // "tag1"
+
+        // JSON 字段已自动转换为 List<Integer>
+        System.out.println("角色IDs: " + user.roleIds());          // List<Integer>
+        System.out.println("第一个角色ID: " + user.roleIds().get(0)); // 1
+
+        // JSON 字段已自动转换为 Map<String, Object>
+        System.out.println("扩展属性: " + user.extras());          // Map<String, Object>
+        System.out.println("key1: " + user.extras().get("key1")); // "value1"
+
+        // JSON 字段已自动转换为嵌套对象
+        System.out.println("用户详情: " + user.detail());          // UserDetail 对象
+        System.out.println("地址: " + user.detail().address());   // "北京市朝阳区"
+        System.out.println("爱好: " + user.detail().hobbies());   // List<String>
+
+        // String 类型保留原始 JSON 字符串（不解析）
+        System.out.println("标签JSON: " + user.tagsJson());       // "[\"tag1\", \"tag2\"]"
+        System.out.println("角色JSON: " + user.roleIdsJson());    // "[1, 2, 3]"
+    }
+}
+```
+
+**输出示例:**
+
+```
+用户名: test_user_100
+枚举平台: WEB
+枚举状态: ACTIVE
+标签列表: [tag1, tag2, tag3]
+第一个标签: tag1
+角色IDs: [1, 2, 3]
+第一个角色ID: 1
+扩展属性: {key1=value1, key2=123, key3=true}
+key1: value1
+用户详情: UserDetail[address=北京市朝阳区, phone=13800138000, avatar=http://example.com/avatar.jpg, hobbies=[阅读, 旅游, 摄影]]
+地址: 北京市朝阳区
+爱好: [阅读, 旅游, 摄影]
+标签JSON: ["tag1", "tag2", "tag3"]
+角色JSON: [1, 2, 3]
+```
+
+#### 7.4 列名匹配策略
+
+框架支持多种列名匹配策略，自动适配不同的命名风格：
+
+| 字段命名 | 数据库列名 | 是否匹配 | 说明 |
+|---------|-----------|---------|------|
+| `roleIds` | `role_ids` | ✅ | 驼峰 → 下划线自动转换 |
+| `roleIds` | `roleIds` | ✅ | 精确匹配 |
+| `roleIds` | `ROLE_IDS` | ✅ | 大小写不敏感 |
+| `roleIds` | `roleids` | ✅ | 大小写不敏感 |
+
+**匹配优先级:**
+1. 精确匹配（字段名 = 列名）
+2. 驼峰转下划线（`roleIds` → `role_ids`）
+3. 全小写匹配
+4. 全大写匹配
+
+#### 7.5 @JsonProperty 注解支持
+
+框架支持 Jackson 的 `@JsonProperty` 注解，用于自定义字段与列名的映射关系：
+
+```java
+public record ComplexUserRecord(
+    // 使用 @JsonProperty 指定列名映射
+    @JsonProperty("role_ids")
+    List<Integer> roleIds,           // 映射 role_ids 列
+
+    @JsonProperty("tags_json")
+    String tagsJson,                 // 映射 tags_json 列
+
+    @JsonProperty("created_at")
+    LocalDateTime createdAt,         // 映射 created_at 列
+
+    @JsonProperty("updated_at")
+    LocalDateTime updatedAt          // 映射 updated_at 列
+) {}
+```
+
+**说明:**
+- `@JsonProperty` 优先级高于默认列名匹配
+- 适用于列名与字段名差异较大的场景
+- 适用于数据库列名包含特殊字符或保留字的场景
+
+#### 7.6 实现原理
+
+框架通过自定义的 `JsonAwareRowMapper` 替代 Spring 默认的 `DataClassRowMapper`，实现 JSON 字段的自动转换。
+
+**核心组件:**
+- **实现类**: `cn.tannn.jdevelops.jdectemplate.xmlmapper.rowmapper.JsonAwareRowMapper`
+- **调用位置**: `XmlSqlExecutor#createRowMapper()`
+- **JSON 解析**: 使用 Jackson `ObjectMapper` 进行 JSON 反序列化
+- **泛型推断**: 通过反射获取字段的 `ParameterizedType`，支持 `List<T>`、`Map<K,V>` 等泛型类型
+
+**核心逻辑:**
+
+```java
+// 简化版实现
+public class JsonAwareRowMapper<T> implements RowMapper<T> {
+
+    @Override
+    public T mapRow(ResultSet rs, int rowNum) throws SQLException {
+        // 1. 检查是否是 Record 类型
+        if (mappedClass.isRecord()) {
+            return mapRecord(rs);  // Record 类型处理
+        } else {
+            return mapBean(rs);    // JavaBean 类型处理
+        }
+    }
+
+    private Object getColumnValue(ResultSet rs, int columnIndex, Class<?> targetType, AnnotatedElement element) {
+        Object value = JdbcUtils.getResultSetValue(rs, columnIndex, targetType);
+
+        // 如果是 String 类型，直接返回（不解析 JSON）
+        if (targetType == String.class) {
+            return value;
+        }
+
+        // 如果值是 JSON 格式字符串，进行解析
+        if (value instanceof String && isJsonFormat((String) value)) {
+            // 获取泛型类型（如 List<Integer>、Map<String, Object>）
+            Type genericType = getGenericType(element);
+
+            // 使用 Jackson 解析 JSON
+            return objectMapper.readValue((String) value,
+                objectMapper.getTypeFactory().constructType(genericType));
+        }
+
+        return value;
+    }
+}
+```
+
+#### 7.7 注意事项
+
+**1. String 类型不会自动解析**
+
+```java
+// ✅ 正确：String 类型返回原始 JSON 字符串
+@JsonProperty("tags_json")
+String tagsJson;  // 返回: "[\"tag1\", \"tag2\"]"
+
+// ⚠️ 注意：如果需要解析，请使用 List<String>
+List<String> tags;  // 返回: List.of("tag1", "tag2")
+```
+
+**2. JSON 格式检查**
+
+框架通过以下规则判断字符串是否是 JSON：
+- 以 `{` 开头且以 `}` 结尾（JSON 对象）
+- 以 `[` 开头且以 `]` 结尾（JSON 数组）
+
+非 JSON 格式的字符串不会被解析，直接返回原值。
+
+**3. 泛型类型必须明确**
+
+```java
+// ✅ 正确：明确指定泛型类型
+List<String> tags;
+List<Integer> roleIds;
+Map<String, Object> extras;
+
+// ❌ 错误：使用原始类型（无法推断泛型）
+List tags;  // 无法推断元素类型，可能导致类型转换错误
+Map extras; // 无法推断 key-value 类型
+```
+
+**4. 嵌套对象必须有无参构造函数**
+
+```java
+// ✅ 正确：Record 自动生成构造函数
+public record UserDetail(
+    String address,
+    String phone
+) {}
+
+// ✅ 正确：JavaBean 有无参构造函数
+public class UserDetail {
+    private String address;
+    private String phone;
+
+    public UserDetail() {}  // 必须有无参构造函数
+    // Getters and Setters...
+}
+```
+
+**5. 数据库 JSON 字段格式要求**
+
+数据库存储的 JSON 必须是有效的 JSON 格式：
+
+```sql
+-- ✅ 正确：有效的 JSON
+INSERT INTO complex_user (tags) VALUES ('["tag1", "tag2"]');
+INSERT INTO complex_user (extras) VALUES ('{"key1": "value1"}');
+
+-- ❌ 错误：无效的 JSON（单引号）
+INSERT INTO complex_user (tags) VALUES ('[''tag1'', ''tag2'']');
+
+-- ❌ 错误：无效的 JSON（没有引号）
+INSERT INTO complex_user (tags) VALUES ('[tag1, tag2]');
+```
+
+#### 7.8 最佳实践
+
+**1. 合理使用 String 和复杂类型**
+
+```java
+public record User(
+    // 场景1：需要操作 JSON 数据 → 使用复杂类型
+    List<String> tags,           // ✅ 可以直接操作：tags.get(0), tags.size()
+    List<Integer> roleIds,       // ✅ 可以直接操作：roleIds.contains(1)
+
+    // 场景2：只需要存储/传递 JSON → 使用 String
+    @JsonProperty("tags_json")
+    String tagsJson,             // ✅ 返回原始 JSON，适合直接传递给前端
+
+    @JsonProperty("role_ids_json")
+    String roleIdsJson           // ✅ 返回原始 JSON，适合日志记录
+) {}
+```
+
+**2. 嵌套对象使用 Record**
+
+```java
+// ✅ 推荐：使用 Record 定义嵌套对象（简洁、不可变）
+public record User(
+    String username,
+    UserDetail detail
+) {
+    public record UserDetail(
+        String address,
+        String phone,
+        List<String> hobbies
+    ) {}
+}
+```
+
+**3. 复用 SQL 片段**
+
+```xml
+<!-- 定义可复用的 JSON 字段选择 -->
+<sql id="jsonColumns">
+    tags,
+    role_ids,
+    extras,
+    detail,
+    tags as tags_json,
+    role_ids as role_ids_json
+</sql>
+
+<!-- 在多个查询中复用 -->
+<select id="findById">
+    SELECT id, username, <include refid="jsonColumns"/>
+    FROM complex_user WHERE id = #{value}
+</select>
+
+<select id="findAll">
+    SELECT id, username, <include refid="jsonColumns"/>
+    FROM complex_user
+</select>
+```
+
+**4. 性能优化建议**
+
+- **按需查询**: 不需要 JSON 字段时不要查询（避免不必要的解析开销）
+- **索引优化**: 对 JSON 字段中的常用属性创建虚拟列索引
+- **分离存储**: 复杂 JSON 数据考虑拆分到单独的表
+
+#### 7.9 测试用例参考
+
+**完整测试示例:**
+
+- **测试文件**:
+  - `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../ComplexReturnType_Test.java`
+  - 测试方法: `testRecordFullData()` - 测试 JSON 字段自动转换为复杂类型
+
+- **Mapper 接口**:
+  - `Jdevelops-Example/dal-jdbctemplate/src/main/java/.../ComplexUserMapper.java`
+
+- **XML 配置**:
+  - `Jdevelops-Example/dal-jdbctemplate/src/main/resources/jmapper/ComplexUserMapper.xml`
+
+- **实体类**:
+  - `ComplexUserRecord.java` - Record 类型示例
+  - `UserQuery.java` - 枚举类型示例
+
+**单元测试示例:**
+
+```java
+@Test
+public void testRecordFullData() {
+    // 查询用户，包含 JSON 字段自动转换
+    ComplexUserRecord user = complexUserMapper.findByIdRecord(100L);
+
+    // 验证基本字段
+    Assertions.assertNotNull(user);
+    Assertions.assertEquals(100L, user.id());
+    Assertions.assertEquals("test_user_100", user.username());
+
+    // 验证枚举字段
+    Assertions.assertEquals(UserPlatform.WEB, user.platform());
+    Assertions.assertEquals(UserStatus.ACTIVE, user.userStatus());
+
+    // 验证 JSON → List<String> 自动转换
+    Assertions.assertNotNull(user.tags());
+    Assertions.assertEquals(3, user.tags().size());
+    Assertions.assertEquals("tag1", user.tags().get(0));
+
+    // 验证 JSON → List<Integer> 自动转换
+    Assertions.assertNotNull(user.roleIds());
+    Assertions.assertEquals(3, user.roleIds().size());
+    Assertions.assertEquals(1, user.roleIds().get(0));
+
+    // 验证 JSON → Map<String, Object> 自动转换
+    Assertions.assertNotNull(user.extras());
+    Assertions.assertEquals("value1", user.extras().get("key1"));
+
+    // 验证 JSON → 嵌套对象自动转换
+    Assertions.assertNotNull(user.detail());
+    Assertions.assertEquals("北京市朝阳区", user.detail().address());
+    Assertions.assertNotNull(user.detail().hobbies());
+    Assertions.assertEquals(3, user.detail().hobbies().size());
+
+    // 验证 String 类型返回原始 JSON（不解析）
+    Assertions.assertNotNull(user.tagsJson());
+    Assertions.assertTrue(user.tagsJson().startsWith("["));
+    Assertions.assertTrue(user.tagsJson().contains("tag1"));
+}
+```
+
+#### 7.10 错误处理
+
+**常见错误和解决方案:**
+
+| 错误现象 | 原因 | 解决方案 |
+|---------|------|---------|
+| `TypeMismatchException: Failed to convert String to List` | 使用了 Spring 默认的 `DataClassRowMapper` | 框架已自动处理，如遇此错误请检查版本（需 1.0.4+） |
+| `JsonParseException: Unexpected character` | 数据库 JSON 格式不正确 | 检查数据库数据，确保是有效的 JSON 格式 |
+| `Cannot construct instance of UserDetail` | 嵌套对象没有无参构造函数 | 使用 Record 或为 JavaBean 添加无参构造函数 |
+| JSON 字段返回 null | 列名匹配失败 | 使用 `@JsonProperty` 注解显式指定列名映射 |
+| 泛型类型转换失败 | 使用了原始类型（如 `List` 而不是 `List<String>`） | 明确指定泛型类型 |
+
+**调试建议:**
+
+1. 开启 DEBUG 日志查看 SQL 执行和列映射过程
+2. 检查数据库返回的 JSON 字段格式是否正确
+3. 验证 Java 字段类型与数据库 JSON 内容是否匹配
+4. 使用 `@JsonProperty` 注解明确列名映射关系
+
 ---
 
 ## 🔧 高级功能
