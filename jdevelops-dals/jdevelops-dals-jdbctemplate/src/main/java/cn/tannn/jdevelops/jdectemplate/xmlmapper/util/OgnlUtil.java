@@ -145,32 +145,19 @@ public class OgnlUtil {
         }
 
         try {
-            // 处理 null 检查
-            if (expression.contains("!=")) {
-                String[] parts = expression.split("!=");
-                if (parts.length == 2) {
-                    Object left = getValue(parts[0].trim(), root);
-                    String right = parts[1].trim();
-                    return evaluateNotEquals(left, right);
-                }
-            }
-
-            if (expression.contains("==")) {
-                String[] parts = expression.split("==");
-                if (parts.length == 2) {
-                    Object left = getValue(parts[0].trim(), root);
-                    String right = parts[1].trim();
-                    return evaluateEquals(left, right);
-                }
-            }
-
-            // 处理逻辑运算
+            // 处理逻辑运算（优先处理，因为可能包含其他运算符）
             if (expression.contains(" and ") || expression.contains(" && ")) {
                 String[] parts = expression.split("(\\s+and\\s+|\\s*&&\\s*)");
                 for (String part : parts) {
                     if (!evaluateBoolean(part.trim(), root)) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("evaluateBoolean: AND expression failed at part: {}", part);
+                        }
                         return false;
                     }
+                }
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("evaluateBoolean: AND expression passed: {}", expression);
                 }
                 return true;
             }
@@ -179,16 +166,114 @@ public class OgnlUtil {
                 String[] parts = expression.split("(\\s+or\\s+|\\s*\\|\\|\\s*)");
                 for (String part : parts) {
                     if (evaluateBoolean(part.trim(), root)) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("evaluateBoolean: OR expression passed at part: {}", part);
+                        }
                         return true;
                     }
+                }
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("evaluateBoolean: OR expression failed: {}", expression);
                 }
                 return false;
             }
 
+            // 处理比较运算符（按优先级：先处理两个字符的运算符，再处理单字符的）
+            // 处理 >=
+            if (expression.contains(">=")) {
+                String[] parts = expression.split(">=");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateGreaterThanOrEquals(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: >= comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
+            // 处理 <=
+            if (expression.contains("<=")) {
+                String[] parts = expression.split("<=");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateLessThanOrEquals(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: <= comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
+            // 处理 !=
+            if (expression.contains("!=")) {
+                String[] parts = expression.split("!=");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateNotEquals(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: != comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
+            // 处理 ==
+            if (expression.contains("==")) {
+                String[] parts = expression.split("==");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateEquals(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: == comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
+            // 处理 > (必须在 >= 之后检查)
+            if (expression.contains(">") && !expression.contains(">=")) {
+                String[] parts = expression.split(">");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateGreaterThan(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: > comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
+            // 处理 < (必须在 <= 之后检查)
+            if (expression.contains("<") && !expression.contains("<=")) {
+                String[] parts = expression.split("<");
+                if (parts.length == 2) {
+                    Object left = getValue(parts[0].trim(), root);
+                    String right = parts[1].trim();
+                    boolean result = evaluateLessThan(left, right);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("evaluateBoolean: < comparison, left={}, right={}, result={}", left, right, result);
+                    }
+                    return result;
+                }
+            }
+
             // 处理非空判断
             Object value = getValue(expression, root);
-            return isNotEmpty(value);
+            boolean result = isNotEmpty(value);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateBoolean: isEmpty check for expression={}, value={}, result={}", expression, value, result);
+            }
+            return result;
         } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateBoolean: exception for expression={}, error={}", expression, e.getMessage());
+            }
             return false;
         }
     }
@@ -243,6 +328,92 @@ public class OgnlUtil {
         // 移除引号
         String rightValue = removeQuotes(right);
         return left != null && left.toString().equals(rightValue);
+    }
+
+    /**
+     * 评估大于
+     */
+    private static boolean evaluateGreaterThan(Object left, String right) {
+        if (left == null) {
+            return false;
+        }
+        try {
+            double leftNum = convertToNumber(left);
+            double rightNum = Double.parseDouble(removeQuotes(right));
+            return leftNum > rightNum;
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateGreaterThan: failed to convert to number, left={}, right={}", left, right);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 评估小于
+     */
+    private static boolean evaluateLessThan(Object left, String right) {
+        if (left == null) {
+            return false;
+        }
+        try {
+            double leftNum = convertToNumber(left);
+            double rightNum = Double.parseDouble(removeQuotes(right));
+            return leftNum < rightNum;
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateLessThan: failed to convert to number, left={}, right={}", left, right);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 评估大于等于
+     */
+    private static boolean evaluateGreaterThanOrEquals(Object left, String right) {
+        if (left == null) {
+            return false;
+        }
+        try {
+            double leftNum = convertToNumber(left);
+            double rightNum = Double.parseDouble(removeQuotes(right));
+            return leftNum >= rightNum;
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateGreaterThanOrEquals: failed to convert to number, left={}, right={}", left, right);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 评估小于等于
+     */
+    private static boolean evaluateLessThanOrEquals(Object left, String right) {
+        if (left == null) {
+            return false;
+        }
+        try {
+            double leftNum = convertToNumber(left);
+            double rightNum = Double.parseDouble(removeQuotes(right));
+            return leftNum <= rightNum;
+        } catch (Exception e) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("evaluateLessThanOrEquals: failed to convert to number, left={}, right={}", left, right);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * 将对象转换为数值
+     */
+    private static double convertToNumber(Object obj) throws NumberFormatException {
+        if (obj instanceof Number) {
+            return ((Number) obj).doubleValue();
+        }
+        return Double.parseDouble(obj.toString());
     }
 
     /**
