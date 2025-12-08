@@ -1583,7 +1583,462 @@ int updateUser(User user);
 int deleteById(User user);
 ```
 
-### 5. 返回类型自动适配
+### 5. 参数处理机制
+
+框架对方法参数进行智能处理,根据参数类型自动包装,使得 XML 中可以用多种方式访问参数。
+
+#### 5.1 单参数处理
+
+**单参数 - 简单类型（自动包装）**
+
+当方法参数是简单类型（基本类型、包装类型、String、Date等）时,框架会自动将其包装成 Map,提供多种访问方式:
+
+```java
+// 接口方法
+@XmlSelect("findById")
+User findById(Long id);
+
+@XmlSelect("findByStatus")
+List<User> findByStatus(Integer status);
+```
+
+```xml
+<!-- XML 中可以使用以下任意方式访问参数 -->
+<select id="findById" resultType="User">
+    <!-- 推荐方式: 使用 #{value} -->
+    SELECT * FROM users WHERE id = #{value}
+
+    <!-- 其他方式（都支持） -->
+    <!-- WHERE id = #{param} -->
+    <!-- WHERE id = #{arg0} -->
+    <!-- WHERE id = #{param1} -->
+</select>
+
+<select id="findByStatus" resultType="User">
+    <!-- 推荐使用 #{value} -->
+    SELECT * FROM users WHERE status = #{value}
+</select>
+```
+
+**支持的简单类型:**
+- 基本类型及包装类: `int`, `Integer`, `long`, `Long`, `double`, `Double`, `float`, `Float`, `boolean`, `Boolean`, `byte`, `Byte`, `short`, `Short`, `char`, `Character`
+- 字符串: `String`, `CharSequence` 及其子类
+- 数值类: `Number` 及其子类
+- 日期类: `java.util.Date`, `java.time.LocalDate`, `java.time.LocalDateTime` 等
+
+**参数访问别名:**
+
+| 访问方式 | 说明 | 推荐度 |
+|---------|------|--------|
+| `#{value}` | 语义化,表示"值" | ⭐⭐⭐ 推荐 |
+| `#{param}` | 语义化,表示"参数" | ⭐⭐ 可用 |
+| `#{arg0}` | 索引方式,表示第1个参数 | ⭐ 可用（兼容性） |
+| `#{param1}` | MyBatis风格,从1开始 | ⭐ 可用（兼容性） |
+
+**单参数 - 对象类型（直接访问）**
+
+当方法参数是对象类型时,框架不进行包装,XML 中直接访问对象的属性:
+
+```java
+// 接口方法
+@XmlSelect("findUsers")
+List<User> findUsers(UserQuery query);
+```
+
+```xml
+<select id="findUsers" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 直接访问对象属性 -->
+        <if test="username != null and username != ''">
+            AND username LIKE #{username}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="minAge != null">
+            <![CDATA[
+            AND age >= #{minAge}
+            ]]>
+        </if>
+    </where>
+</select>
+```
+
+**单参数 - List/Map 类型**
+
+```java
+// List 参数
+@XmlInsert("batchInsert")
+int batchInsert(List<User> users);
+```
+
+```xml
+<!-- 使用 collection="list" 访问 List 参数 -->
+<insert id="batchInsert">
+    INSERT INTO users (username, email) VALUES
+    <foreach collection="list" item="user" separator=",">
+        (#{user.username}, #{user.email})
+    </foreach>
+</insert>
+```
+
+```java
+// Map 参数
+@XmlSelect("findByCondition")
+List<User> findByCondition(Map<String, Object> params);
+```
+
+```xml
+<!-- 直接使用 Map 的 key -->
+<select id="findByCondition" resultType="User">
+    SELECT * FROM users
+    WHERE status = #{status}
+    AND age > #{minAge}
+</select>
+```
+
+#### 5.2 多参数处理
+
+当方法有多个参数时,框架将所有参数包装成 Map,使用索引方式访问:
+
+```java
+// 接口方法
+@XmlSelect("findUsersPage")
+List<User> findUsersPage(UserQuery query, PageRequest pageRequest);
+
+@XmlSelect("search")
+List<User> search(String keyword, Integer status, Integer minAge);
+```
+
+```xml
+<!-- 两个参数：使用 arg0, arg1 -->
+<select id="findUsersPage" resultType="User">
+    SELECT * FROM users
+    <where>
+        <!-- 第一个参数: arg0 -->
+        <if test="arg0.status != null">
+            AND status = #{arg0.status}
+        </if>
+        <if test="arg0.username != null">
+            AND username = #{arg0.username}
+        </if>
+    </where>
+    <!-- 第二个参数: arg1 -->
+    ORDER BY ${arg1.orderBySql}
+    LIMIT #{arg1.pageSize} OFFSET #{arg1.offset}
+</select>
+
+<!-- 三个参数：使用 arg0, arg1, arg2 -->
+<select id="search" resultType="User">
+    SELECT * FROM users
+    <where>
+        <if test="arg0 != null and arg0 != ''">
+            AND username LIKE CONCAT('%', #{arg0}, '%')
+        </if>
+        <if test="arg1 != null">
+            AND status = #{arg1}
+        </if>
+        <if test="arg2 != null">
+            <![CDATA[
+            AND age >= #{arg2}
+            ]]>
+        </if>
+    </where>
+</select>
+```
+
+**多参数访问别名:**
+
+| 访问方式 | 说明 | 推荐度 |
+|---------|------|--------|
+| `#{arg0}`, `#{arg1}`, `#{arg2}` | 索引方式,从0开始 | ⭐⭐⭐ 推荐 |
+| `#{param1}`, `#{param2}`, `#{param3}` | MyBatis风格,从1开始 | ⭐⭐ 可用 |
+
+**注意:** 多参数时,`arg0` 和 `param1` 指向同一个参数,`arg1` 和 `param2` 指向同一个参数,以此类推。
+
+#### 5.3 参数访问对照表
+
+| 场景 | 接口方法 | XML 中访问方式 | 示例 |
+|------|---------|---------------|------|
+| 单参数 - 简单类型 | `findById(Long id)` | `#{value}` (推荐)<br/>`#{param}`, `#{arg0}`, `#{param1}` | `WHERE id = #{value}` |
+| 单参数 - 对象 | `findUsers(UserQuery query)` | 直接访问属性 | `#{username}`, `#{status}` |
+| 单参数 - List | `batchInsert(List<User> users)` | `collection="list"` | `<foreach collection="list" item="user">` |
+| 单参数 - Map | `find(Map<String,Object> params)` | 直接访问 key | `#{status}`, `#{minAge}` |
+| 两个参数 | `find(UserQuery q, PageRequest p)` | `#{arg0.xxx}`, `#{arg1.xxx}` | `#{arg0.status}`, `#{arg1.pageSize}` |
+| 三个参数 | `search(String k, Integer s, Integer a)` | `#{arg0}`, `#{arg1}`, `#{arg2}` | `#{arg0}`, `#{arg1}`, `#{arg2}` |
+| N个参数 | `method(T1 a, T2 b, ..., TN n)` | `#{arg0}` ... `#{argN-1}` | 以此类推 |
+
+#### 5.4 最佳实践
+
+**1. 单参数简单类型：优先使用 `#{value}`**
+
+```xml
+<!-- ✅ 推荐：语义清晰 -->
+<select id="findById">
+    WHERE id = #{value}
+</select>
+
+<!-- ⭐ 可用：但不如 value 语义化 -->
+<select id="findById">
+    WHERE id = #{param}
+</select>
+
+<!-- ⚠️ 不推荐：索引方式可读性差 -->
+<select id="findById">
+    WHERE id = #{arg0}
+</select>
+```
+
+**2. 单参数对象：直接访问属性**
+
+```xml
+<!-- ✅ 推荐：简洁直观 -->
+<select id="findUsers">
+    WHERE username = #{username}
+    AND status = #{status}
+</select>
+
+<!-- ❌ 错误：单参数对象不需要 arg0 -->
+<select id="findUsers">
+    WHERE username = #{arg0.username}  <!-- 错误！ -->
+</select>
+```
+
+**3. 多参数：使用 `arg0`, `arg1` 索引方式**
+
+```xml
+<!-- ✅ 推荐：清晰表明参数顺序 -->
+<select id="findUsersPage">
+    WHERE status = #{arg0.status}
+    LIMIT #{arg1.pageSize} OFFSET #{arg1.offset}
+</select>
+
+<!-- ⭐ 可用：MyBatis风格，从1开始 -->
+<select id="findUsersPage">
+    WHERE status = #{param1.status}
+    LIMIT #{param2.pageSize} OFFSET #{param2.offset}
+</select>
+```
+
+**4. 避免参数混淆**
+
+```java
+// 接口方法
+List<User> findUsers(UserQuery query);      // 单参数
+List<User> findUsersPage(UserQuery query, PageRequest page);  // 多参数
+```
+
+```xml
+<!-- 单参数方法 -->
+<select id="findUsers">
+    WHERE status = #{status}  <!-- ✅ 直接访问属性 -->
+</select>
+
+<!-- 多参数方法 -->
+<select id="findUsersPage">
+    WHERE status = #{arg0.status}  <!-- ✅ 使用 arg0 访问 -->
+    LIMIT #{arg1.pageSize}         <!-- ✅ 使用 arg1 访问 -->
+</select>
+```
+
+#### 5.5 实现原理
+
+框架通过 `XmlMapperProxyInterceptor` 类的 `getParameter()` 方法对参数进行智能包装:
+
+**实现位置:**
+- 源码路径: `jdevelops-dals-jdbctemplate/src/main/java/cn/tannn/jdevelops/jdectemplate/xmlmapper/proxy/XmlMapperProxyInterceptor.java`
+- 关键方法: `getParameter(Object[] args)` (第351-380行)
+- 辅助方法: `isSimpleType(Object obj)` (第388-409行)
+
+**核心逻辑:**
+
+```java
+private Object getParameter(Object[] args) {
+    if (args == null || args.length == 0) {
+        return null;  // 无参数
+    }
+
+    if (args.length == 1) {
+        Object arg = args[0];
+
+        // 简单类型包装成 Map
+        if (isSimpleType(arg)) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("value", arg);   // 支持 #{value}
+            paramMap.put("param", arg);   // 支持 #{param}
+            paramMap.put("arg0", arg);    // 支持 #{arg0}
+            paramMap.put("param1", arg);  // 支持 #{param1}
+            return paramMap;
+        }
+
+        // 对象类型直接返回
+        return arg;
+    }
+
+    // 多参数包装成 Map
+    Map<String, Object> paramMap = new HashMap<>();
+    for (int i = 0; i < args.length; i++) {
+        paramMap.put("arg" + i, args[i]);         // arg0, arg1, ...
+        paramMap.put("param" + (i + 1), args[i]); // param1, param2, ...
+    }
+    return paramMap;
+}
+```
+
+**判断简单类型:**
+
+```java
+private boolean isSimpleType(Object obj) {
+    if (obj == null) return false;
+    Class<?> clazz = obj.getClass();
+
+    return clazz.isPrimitive() ||
+           clazz == String.class ||
+           clazz == Integer.class ||
+           clazz == Long.class ||
+           // ... 其他基本类型和包装类
+           Number.class.isAssignableFrom(clazz) ||
+           CharSequence.class.isAssignableFrom(clazz) ||
+           java.util.Date.class.isAssignableFrom(clazz) ||
+           java.time.temporal.Temporal.class.isAssignableFrom(clazz);
+}
+```
+
+#### 5.6 常见错误
+
+**错误1: 单参数简单类型未包装**
+
+```xml
+<!-- ❌ 错误：Long 类型没有 id 属性 -->
+<select id="findById">
+    WHERE id = #{id}  <!-- 错误！Long 没有 id 属性 -->
+</select>
+
+<!-- ✅ 正确：使用 value 访问 -->
+<select id="findById">
+    WHERE id = #{value}  <!-- 正确 -->
+</select>
+```
+
+**错误2: 单参数对象使用 arg0**
+
+```xml
+<!-- ❌ 错误：单参数对象不需要 arg0 -->
+<select id="findUsers">
+    WHERE status = #{arg0.status}  <!-- 错误！ -->
+</select>
+
+<!-- ✅ 正确：直接访问属性 -->
+<select id="findUsers">
+    WHERE status = #{status}  <!-- 正确 -->
+</select>
+```
+
+**错误3: 多参数忘记使用 arg0/arg1**
+
+```xml
+<!-- ❌ 错误：多参数方法不能直接访问属性 -->
+<select id="findUsersPage">
+    WHERE status = #{status}  <!-- 错误！ -->
+</select>
+
+<!-- ✅ 正确：使用 arg0 访问第一个参数 -->
+<select id="findUsersPage">
+    WHERE status = #{arg0.status}  <!-- 正确 -->
+</select>
+```
+
+#### 5.7 参数处理示例总结
+
+**完整示例:**
+
+```java
+// Mapper 接口
+@XmlMapper(namespace = "com.example.mapper.UserMapper")
+public interface UserMapper {
+
+    // 示例1: 单参数 - Long 类型
+    @XmlSelect("findById")
+    User findById(Long id);
+
+    // 示例2: 单参数 - 对象类型
+    @XmlSelect("findUsers")
+    List<User> findUsers(UserQuery query);
+
+    // 示例3: 两个参数
+    @XmlSelect("findUsersPage")
+    List<User> findUsersPage(UserQuery query, PageRequest page);
+
+    // 示例4: 三个参数
+    @XmlSelect("search")
+    List<User> search(String keyword, Integer status, Integer minAge);
+}
+```
+
+```xml
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <!-- 示例1: 单参数 Long - 使用 #{value} -->
+    <select id="findById" resultType="User">
+        SELECT * FROM users WHERE id = #{value}
+    </select>
+
+    <!-- 示例2: 单参数对象 - 直接访问属性 -->
+    <select id="findUsers" resultType="User">
+        SELECT * FROM users
+        <where>
+            <if test="username != null">
+                AND username = #{username}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!-- 示例3: 两个参数 - 使用 arg0, arg1 -->
+    <select id="findUsersPage" resultType="User">
+        SELECT * FROM users
+        <where>
+            <if test="arg0.status != null">
+                AND status = #{arg0.status}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        LIMIT #{arg1.pageSize} OFFSET #{arg1.offset}
+    </select>
+
+    <!-- 示例4: 三个参数 - 使用 arg0, arg1, arg2 -->
+    <select id="search" resultType="User">
+        SELECT * FROM users
+        <where>
+            <if test="arg0 != null and arg0 != ''">
+                AND username LIKE CONCAT('%', #{arg0}, '%')
+            </if>
+            <if test="arg1 != null">
+                AND status = #{arg1}
+            </if>
+            <if test="arg2 != null">
+                <![CDATA[
+                AND age >= #{arg2}
+                ]]>
+            </if>
+        </where>
+    </select>
+
+</mapper>
+```
+
+**测试用例参考:**
+- 测试文件: `Jdevelops-Example/dal-jdbctemplate/src/test/java/.../ComplexReturnType_Test.java`
+- XML 配置: `Jdevelops-Example/dal-jdbctemplate/src/main/resources/jmapper/ComplexUserMapper.xml`
+- 单参数简单类型示例: `findByIdRecord(Long id)` - 使用 `#{value}` 访问
+- 单参数对象示例: `findByStatusRecord(Integer status)` - 使用 `#{value}` 访问
+
+---
+
+### 6. 返回类型自动适配
 
 方法返回类型会自动转换:
 
