@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * XML Mapper 动态代理拦截器
@@ -152,7 +153,6 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
                 LOG.error("XML Mapper page query error (tryc=true): {}.{}",
                         namespace, pageSelect.dataStatement(), e);
                 // 返回空的分页结果
-                PageRequest defaultPage = new PageRequest(1, 10);
                 return new PageResult<>(1, 10, 0L, java.util.Collections.emptyList());
             } else {
                 throw new RuntimeException(
@@ -204,8 +204,7 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         Type returnType = method.getGenericReturnType();
 
         // 如果返回类型是 List，确保返回 List
-        if (returnType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) returnType;
+        if (returnType instanceof ParameterizedType parameterizedType) {
             Class<?> rawType = (Class<?>) parameterizedType.getRawType();
 
             if (java.util.List.class.isAssignableFrom(rawType)) {
@@ -220,8 +219,7 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         }
 
         // 如果返回类型不是 List，确保返回单个对象
-        if (result instanceof java.util.List) {
-            java.util.List<?> list = (java.util.List<?>) result;
+        if (result instanceof List<?> list) {
             return list.isEmpty() ? null : list.get(0);
         }
 
@@ -272,8 +270,7 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
         }
 
         // 如果结果是 Number 类型
-        if (result instanceof Number) {
-            Number number = (Number) result;
+        if (result instanceof Number number) {
 
             // 根据返回类型转换
             if (returnType == int.class || returnType == Integer.class) {
@@ -318,9 +315,8 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
     private Class<?> getResultType(Method method) {
         Type returnType = method.getGenericReturnType();
 
-        if (returnType instanceof ParameterizedType) {
+        if (returnType instanceof ParameterizedType parameterizedType) {
             // 泛型类型，如 List<User>、PageResult<User>
-            ParameterizedType parameterizedType = (ParameterizedType) returnType;
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             if (actualTypeArguments.length > 0) {
                 return (Class<?>) actualTypeArguments[0];
@@ -333,18 +329,79 @@ public class XmlMapperProxyInterceptor implements InvocationHandler {
 
     /**
      * 获取参数对象
-     * <p>如果只有一个参数，直接返回；如果有多个参数，包装成 List</p>
-     * <p>多参数时包装成 List，支持在 XML 中使用 arg0、arg1 等方式访问</p>
+     * <p>参数包装策略：</p>
+     * <ul>
+     *     <li>无参数：返回 null</li>
+     *     <li>单个参数：
+     *         <ul>
+     *             <li>对象类型（Map、Bean等）：直接返回，支持 #{property} 访问</li>
+     *             <li>基本类型/包装类型/String：包装成 Map，支持 #{value}、#{param}、#{arg0} 访问</li>
+     *         </ul>
+     *     </li>
+     *     <li>多个参数：包装成 Map，支持 #{arg0}、#{arg1}、#{param1}、#{param2} 访问</li>
+     * </ul>
+     *
+     * @param args 方法参数数组
+     * @return 参数对象或包装后的 Map
      */
     private Object getParameter(Object[] args) {
         if (args == null || args.length == 0) {
             return null;
         }
+
         if (args.length == 1) {
-            return args[0];
+            Object arg = args[0];
+
+            // 对于基本类型、包装类型、String，包装成 Map
+            if (isSimpleType(arg)) {
+                java.util.Map<String, Object> paramMap = new java.util.HashMap<>();
+                paramMap.put("value", arg);   // 支持 #{value}
+                paramMap.put("param", arg);   // 支持 #{param}
+                paramMap.put("arg0", arg);    // 支持 #{arg0}
+                paramMap.put("param1", arg);  // 支持 #{param1} (MyBatis风格)
+                return paramMap;
+            }
+
+            // 对象类型直接返回
+            return arg;
         }
-        // 多个参数时，包装成 List，支持在 XML 中使用 arg0、arg1 访问
-        return java.util.Arrays.asList(args);
+
+        // 多个参数时，包装成 Map，同时支持 argX 和 paramX 方式访问
+        java.util.Map<String, Object> paramMap = new java.util.HashMap<>();
+        for (int i = 0; i < args.length; i++) {
+            paramMap.put("arg" + i, args[i]);         // 支持 #{arg0}, #{arg1}
+            paramMap.put("param" + (i + 1), args[i]); // 支持 #{param1}, #{param2} (MyBatis风格)
+        }
+        return paramMap;
+    }
+
+    /**
+     * 判断是否是简单类型（基本类型、包装类型、String等）
+     *
+     * @param obj 对象
+     * @return 是否是简单类型
+     */
+    private boolean isSimpleType(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        Class<?> clazz = obj.getClass();
+
+        return clazz.isPrimitive() ||
+                clazz == String.class ||
+                clazz == Integer.class ||
+                clazz == Long.class ||
+                clazz == Double.class ||
+                clazz == Float.class ||
+                clazz == Boolean.class ||
+                clazz == Byte.class ||
+                clazz == Short.class ||
+                clazz == Character.class ||
+                Number.class.isAssignableFrom(clazz) ||
+                CharSequence.class.isAssignableFrom(clazz) ||
+                java.util.Date.class.isAssignableFrom(clazz) ||
+                java.time.temporal.Temporal.class.isAssignableFrom(clazz);
     }
 
     /**

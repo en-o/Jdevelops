@@ -57,9 +57,54 @@ public class OgnlUtil {
                 return root;
             }
 
+            // 处理 MyBatis 风格的参数索引：当 root 是 Map 时，支持 arg0、arg1、param1、param2 等方式访问
+            // 这是多参数方法的场景，XmlMapperProxyInterceptor 会将多个参数包装成 Map
+            if (root instanceof Map) {
+                Map<?, ?> paramMap = (Map<?, ?>) root;
+
+                // 处理 arg0.property、arg1.property、param1.property 形式
+                if ((expression.startsWith("arg") || expression.startsWith("param"))
+                    && (expression.contains(".") || expression.contains("["))) {
+                    int dotIndex = expression.indexOf('.');
+                    int bracketIndex = expression.indexOf('[');
+                    int separatorIndex = dotIndex > 0 ? (bracketIndex > 0 ? Math.min(dotIndex, bracketIndex) : dotIndex)
+                                                      : bracketIndex;
+
+                    if (separatorIndex > 0) {
+                        String keyPart = expression.substring(0, separatorIndex);  // "arg0" or "param1"
+                        String restPart = expression.substring(separatorIndex);    // ".property" or "[0]"
+
+                        if (paramMap.containsKey(keyPart)) {
+                            Object paramValue = paramMap.get(keyPart);
+                            // 递归处理剩余部分
+                            Object value = getValue(restPart.substring(1), paramValue); // 去掉开头的 '.' 或 '['
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("getValue: Map key '{}' parameter access, restPart={}, paramValue type={}, value={}",
+                                          keyPart, restPart,
+                                          paramValue != null ? paramValue.getClass().getSimpleName() : "null",
+                                          value);
+                            }
+                            return value;
+                        }
+                    }
+                }
+
+                // 处理单独的 arg0、arg1、param1、param2（不带属性访问）
+                if (expression.matches("(arg\\d+|param\\d+)")) {
+                    if (paramMap.containsKey(expression)) {
+                        Object value = paramMap.get(expression);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("getValue: Map key '{}' parameter direct access, value type={}",
+                                      expression, value != null ? value.getClass().getSimpleName() : "null");
+                        }
+                        return value;
+                    }
+                }
+            }
+
             // 处理 MyBatis 风格的参数索引：当 root 是 List 时，支持 arg0、arg1、param1、param2 等方式访问
-            if (root instanceof List) {
-                List<?> paramList = (List<?>) root;
+            // 保留对旧版本 List 方式的兼容性支持
+            if (root instanceof List<?> paramList) {
                 // 处理 arg0.property、arg1.property 形式
                 if (expression.startsWith("arg") && (expression.contains(".") || expression.contains("["))) {
                     int dotIndex = expression.indexOf('.');
@@ -109,25 +154,14 @@ public class OgnlUtil {
 
             // 处理简单属性
             if (!expression.contains(".") && !expression.contains("[")) {
-                Object value = getSimpleProperty(root, expression);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("getValue: simple property, expression={}, root type={}, value={}",
-                              expression, root.getClass().getSimpleName(), value);
-                }
-                return value;
+                return getSimpleProperty(root, expression);
             }
 
             // 处理复杂表达式
-            Object value = evaluateExpression(expression, root);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("getValue: complex expression, expression={}, root type={}, value={}",
-                          expression, root.getClass().getSimpleName(), value);
-            }
-            return value;
+            return evaluateExpression(expression, root);
         } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("getValue: exception for expression={}, error={}", expression, e.getMessage());
-            }
+            LOG.error("🔍 [OGNL DEBUG] Exception in getValue - expression: {}, root type: {}, error: {}",
+                      expression, root != null ? root.getClass().getSimpleName() : "null", e.getMessage(), e);
             return null;
         }
     }
@@ -142,6 +176,11 @@ public class OgnlUtil {
     public static boolean evaluateBoolean(String expression, Object root) {
         if (!StringUtils.hasText(expression)) {
             return false;
+        }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("evaluateBoolean called - expression: {}, root type: {}",
+                     expression, root != null ? root.getClass().getSimpleName() : "null");
         }
 
         try {
@@ -267,13 +306,11 @@ public class OgnlUtil {
             Object value = getValue(expression, root);
             boolean result = isNotEmpty(value);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("evaluateBoolean: isEmpty check for expression={}, value={}, result={}", expression, value, result);
+                LOG.debug("evaluateBoolean result - expression: {}, value: {}, result: {}", expression, value, result);
             }
             return result;
         } catch (Exception e) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("evaluateBoolean: exception for expression={}, error={}", expression, e.getMessage());
-            }
+            LOG.error("🔍 [OGNL DEBUG] Exception in evaluateBoolean - expression: {}, error: {}", expression, e.getMessage(), e);
             return false;
         }
     }
@@ -578,9 +615,71 @@ public class OgnlUtil {
             return null;
         }
 
+        // 优先处理常用集合方法，直接通过接口调用（避免 Java 9+ 模块访问限制）
+        // java.base 模块不 opens java.util 给未命名模块，setAccessible(true) 会抛出 InaccessibleObjectException
+        if (obj instanceof Collection) {
+            Collection<?> collection = (Collection<?>) obj;
+            switch (methodName) {
+                case "size":
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("invokeMethod: Collection.size() on {}, value={}",
+                                 obj.getClass().getSimpleName(), collection.size());
+                    }
+                    return collection.size();
+                case "isEmpty":
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("invokeMethod: Collection.isEmpty() on {}, value={}",
+                                 obj.getClass().getSimpleName(), collection.isEmpty());
+                    }
+                    return collection.isEmpty();
+            }
+        }
+
+        // 处理 Map 的常用方法
+        if (obj instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) obj;
+            switch (methodName) {
+                case "size":
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("invokeMethod: Map.size() on {}, value={}",
+                                 obj.getClass().getSimpleName(), map.size());
+                    }
+                    return map.size();
+                case "isEmpty":
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("invokeMethod: Map.isEmpty() on {}, value={}",
+                                 obj.getClass().getSimpleName(), map.isEmpty());
+                    }
+                    return map.isEmpty();
+            }
+        }
+
+        // 处理数组的 length 属性（虽然不是方法调用，但为了一致性支持）
+        if (obj.getClass().isArray() && "length".equals(methodName)) {
+            int length = Array.getLength(obj);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("invokeMethod: array.length on {}, value={}",
+                         obj.getClass().getSimpleName(), length);
+            }
+            return length;
+        }
+
         try {
-            // 直接调用无参方法
+            // 对于其他方法，使用反射调用（如枚举的 name()、ordinal()，record 的访问器等）
             Method method = obj.getClass().getMethod(methodName);
+
+            // 尝试设置可访问性，但捕获 InaccessibleObjectException
+            // 对于 java.base 模块的受保护类，setAccessible 会失败
+            try {
+                method.setAccessible(true);
+            } catch (Exception ignored) {
+                // 如果 setAccessible 失败，继续尝试直接调用（public 方法可以直接调用）
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("invokeMethod: setAccessible failed for '{}()' on {}, trying direct invoke",
+                             methodName, obj.getClass().getSimpleName());
+                }
+            }
+
             Object value = method.invoke(obj);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("invokeMethod: method '{}()' on {}, value={}",
