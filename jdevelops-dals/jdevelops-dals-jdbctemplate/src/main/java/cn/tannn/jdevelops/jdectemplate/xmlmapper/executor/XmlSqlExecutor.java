@@ -4,6 +4,7 @@ import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlCommandType;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlContext;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlNode;
 import cn.tannn.jdevelops.jdectemplate.xmlmapper.model.SqlStatement;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.rowmapper.JsonAwareRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -127,8 +128,8 @@ public class XmlSqlExecutor {
                         return results;
                     }
                 } else {
-                    // 返回实体对象
-                    RowMapper<T> rowMapper = new DataClassRowMapper<>(resultType);
+                    // 返回实体对象 - 使用支持JSON转换的RowMapper
+                    RowMapper<T> rowMapper = createRowMapper(resultType);
                     List<T> results = namedParameterJdbcTemplate.query(sql, params, rowMapper);
 
                     // 【调试日志】输出结果集大小
@@ -149,8 +150,8 @@ public class XmlSqlExecutor {
                     List<T> results = jdbcTemplate.queryForList(sql, resultType, params);
                     return isSingleResult(sql) ? (results.isEmpty() ? null : results.get(0)) : results;
                 } else {
-                    // 返回实体对象
-                    RowMapper<T> rowMapper = new DataClassRowMapper<>(resultType);
+                    // 返回实体对象 - 使用支持JSON转换的RowMapper
+                    RowMapper<T> rowMapper = createRowMapper(resultType);
                     List<T> results = jdbcTemplate.query(sql, rowMapper, params);
 
                     // 【调试日志】输出结果集大小
@@ -275,6 +276,20 @@ public class XmlSqlExecutor {
             }
         } catch (Exception e) {
             LOG.warn("Failed to set key property '{}' to parameter: {}", keyProperty, e.getMessage());
+        }
+    }
+
+    /**
+     * 创建 RowMapper - 优先使用JsonAwareRowMapper支持JSON字段自动转换
+     */
+    private <T> RowMapper<T> createRowMapper(Class<T> resultType) {
+        try {
+            // 尝试使用 JsonAwareRowMapper (支持JSON字段自动转换)
+            return new JsonAwareRowMapper<>(resultType);
+        } catch (Exception e) {
+            // 降级使用 DataClassRowMapper
+            LOG.debug("JsonAwareRowMapper creation failed, falling back to DataClassRowMapper: {}", e.getMessage());
+            return new DataClassRowMapper<>(resultType);
         }
     }
 
