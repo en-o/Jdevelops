@@ -42,17 +42,38 @@ XML Mapper 是 JdbcTemplate 的 XML 配置增强功能,类似 MyBatis 的 XML Ma
 
 ### 2. 配置 XML 扫描路径
 
-在 `application.yml` 中配置全局扫描路径，框架启动时自动加载所有匹配的 XML 文件：
+在启动类中加入 `@XmlMapperScan` （必选）
+
+```java
+
+import com.sunway.jdectemplate.xmlmapper.XmlMapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * 模板启动类
+ *
+ * @author tn
+ */
+@SpringBootApplication
+@XmlMapperScan
+public class Application  {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+在 `application.yml` 中配置全局扫描路径，框架启动时自动加载所有匹配的 XML 文件：(可选)
 
 ```yaml
-spring:
-  jdevelops:
-    jdbctemplate:
-      xml-mapper:
-        # 是否启用 XML Mapper 功能（默认 true）
-        enabled: true
-        # XML Mapper 文件扫描路径（支持通配符和多路径）
-        locations: classpath*:jmapper/**/*.xml
+jdevelops:
+  jdbc:
+    xml-mapper:
+      # 是否启用 XML Mapper 功能（默认 true）
+      enabled: true
+      # XML Mapper 文件扫描路径（支持通配符和多路径）
+      locations: classpath*:jmapper/**/*.xml
 ```
 
 **配置说明：**
