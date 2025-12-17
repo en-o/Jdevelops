@@ -132,7 +132,7 @@ OfflineEntityResolver 拦截请求
 
 ### 内置本地 DTD
 
-组件内置了 MyBatis 3.0 Mapper DTD 文件，位置：
+组件内置了官方 MyBatis 3.0 Mapper DTD 文件（完整版），位置：
 
 ```
 jar包根目录/dtd/mybatis-3-mapper.dtd
@@ -142,6 +142,10 @@ jar包根目录/dtd/mybatis-3-mapper.dtd
 ```
 src/main/resources/dtd/mybatis-3-mapper.dtd
 ```
+
+**DTD 来源：** http://mybatis.org/dtd/mybatis-3-mapper.dtd
+**版本：** MyBatis 3.0 Mapper
+**文件大小：** 7.4 KB
 
 ### OfflineEntityResolver
 
@@ -245,7 +249,7 @@ DEBUG Detected online MyBatis Mapper DTD, using local DTD file: /dtd/mybatis-3-m
 
 ## 支持的 XML 标签
 
-本地 DTD 支持以下 MyBatis Mapper 标签：
+本地 DTD 使用官方 MyBatis 3.0 Mapper DTD，支持完整的 MyBatis 标签：
 
 **根标签：**
 - `<mapper>` - 映射器根标签
@@ -256,9 +260,24 @@ DEBUG Detected online MyBatis Mapper DTD, using local DTD file: /dtd/mybatis-3-m
 - `<update>` - 更新语句
 - `<delete>` - 删除语句
 
+**结果映射：**
+- `<resultMap>` - 结果映射
+- `<constructor>` - 构造方法映射
+- `<id>` - 主键映射
+- `<result>` - 字段映射
+- `<association>` - 关联对象
+- `<collection>` - 集合映射
+- `<discriminator>` - 鉴别器
+
+**参数映射：**
+- `<parameterMap>` - 参数映射（已过时，推荐使用 #{} 语法）
+- `<parameter>` - 参数定义
+
 **辅助标签：**
 - `<sql>` - SQL 片段定义
 - `<include>` - 引用 SQL 片段
+- `<selectKey>` - 获取自增主键
+- `<bind>` - 变量绑定
 
 **动态 SQL 标签：**
 - `<if>` - 条件判断
@@ -269,6 +288,10 @@ DEBUG Detected online MyBatis Mapper DTD, using local DTD file: /dtd/mybatis-3-m
 - `<when>` - 条件分支
 - `<otherwise>` - 默认分支
 - `<trim>` - 前缀后缀处理
+
+**缓存配置：**
+- `<cache>` - 缓存配置
+- `<cache-ref>` - 缓存引用
 
 ---
 
