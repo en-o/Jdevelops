@@ -208,7 +208,33 @@ DEBUG Detected online MyBatis Mapper DTD, using local DTD file: /dtd/mybatis-3-m
 
 **可以！** 当其他项目依赖 `jdevelops-dals-jdbctemplate` jar 包时，内置的 DTD 文件会被打包到 jar 中，可以正常读取。
 
-### Q6: 本地 DTD 文件丢失会怎样？
+### Q6: 哪些 DTD 引用会被拦截？
+
+**会被拦截的（自动替换为本地 DTD）：**
+```xml
+<!-- HTTP 协议 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- HTTPS 协议 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+```
+
+**不会被拦截的（保持原样）：**
+```xml
+<!-- classpath 路径 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "classpath:dtd/mybatis-3-mapper.dtd">
+
+<!-- 相对路径 -->
+<!DOCTYPE mapper SYSTEM "../../dtd/mybatis-3-mapper.dtd">
+
+<!-- file 协议 -->
+<!DOCTYPE mapper SYSTEM "file:///opt/dtd/mybatis-3-mapper.dtd">
+```
+
+### Q7: 本地 DTD 文件丢失会怎样？
 
 组件有容错机制：
 1. 尝试加载本地 DTD
