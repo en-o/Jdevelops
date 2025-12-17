@@ -154,10 +154,19 @@ src/main/resources/dtd/mybatis-3-mapper.dtd
 4. 保留本地 DTD 引用的原有行为
 
 **识别规则：**
-- 公共标识符：`-//mybatis.org//DTD Mapper 3.0//EN`
-- HTTP URL：`http://mybatis.org/dtd/mybatis-3-mapper.dtd`
-- HTTPS URL：`https://mybatis.org/dtd/mybatis-3-mapper.dtd`
-- 其他包含 `mybatis` 和 `mapper.dtd` 的在线 URL
+
+组件仅拦截在线 URL 引用，本地路径保持不变：
+
+✅ **会被拦截并替换为本地 DTD：**
+- `http://mybatis.org/dtd/mybatis-3-mapper.dtd`
+- `https://mybatis.org/dtd/mybatis-3-mapper.dtd`
+- 其他以 `http://` 或 `https://` 开头且包含 `mybatis` 和 `mapper.dtd` 的 URL
+
+❌ **不会被拦截（保持原样）：**
+- `classpath:dtd/mybatis-3-mapper.dtd`
+- `../../dtd/mybatis-3-mapper.dtd`
+- `file:///path/to/mybatis-3-mapper.dtd`
+- 任何其他非 `http://` 或 `https://` 开头的路径
 
 ---
 
