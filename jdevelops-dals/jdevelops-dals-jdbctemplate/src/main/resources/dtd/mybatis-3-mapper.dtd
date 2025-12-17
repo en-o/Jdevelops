@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+       Copyright 2009-2023 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          https://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!ELEMENT mapper (sql* | select* | insert* | update* | delete*)+>
+<!ATTLIST mapper
+namespace CDATA #IMPLIED
+>
+
+<!ELEMENT sql (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST sql
+id CDATA #REQUIRED
+>
+
+<!ELEMENT select (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST select
+id CDATA #REQUIRED
+resultType CDATA #IMPLIED
+parameterType CDATA #IMPLIED
+timeout CDATA #IMPLIED
+tryc CDATA #IMPLIED
+>
+
+<!ELEMENT insert (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST insert
+id CDATA #REQUIRED
+parameterType CDATA #IMPLIED
+timeout CDATA #IMPLIED
+tryc CDATA #IMPLIED
+useGeneratedKeys CDATA #IMPLIED
+keyProperty CDATA #IMPLIED
+keyColumn CDATA #IMPLIED
+>
+
+<!ELEMENT update (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST update
+id CDATA #REQUIRED
+parameterType CDATA #IMPLIED
+timeout CDATA #IMPLIED
+tryc CDATA #IMPLIED
+>
+
+<!ELEMENT delete (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST delete
+id CDATA #REQUIRED
+parameterType CDATA #IMPLIED
+timeout CDATA #IMPLIED
+tryc CDATA #IMPLIED
+>
+
+<!ELEMENT include EMPTY>
+<!ATTLIST include
+refid CDATA #REQUIRED
+>
+
+<!ELEMENT if (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST if
+test CDATA #REQUIRED
+>
+
+<!ELEMENT foreach (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST foreach
+collection CDATA #REQUIRED
+item CDATA #IMPLIED
+index CDATA #IMPLIED
+open CDATA #IMPLIED
+separator CDATA #IMPLIED
+close CDATA #IMPLIED
+>
+
+<!ELEMENT where (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+
+<!ELEMENT set (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+
+<!ELEMENT trim (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST trim
+prefix CDATA #IMPLIED
+prefixOverrides CDATA #IMPLIED
+suffix CDATA #IMPLIED
+suffixOverrides CDATA #IMPLIED
+>
+
+<!ELEMENT choose (when+ , otherwise?)>
+
+<!ELEMENT when (#PCDATA | include | if | foreach | where | set | trim | choose)*>
+<!ATTLIST when
+test CDATA #REQUIRED
+>
+
+<!ELEMENT otherwise (#PCDATA | include | if | foreach | where | set | trim | choose)*>

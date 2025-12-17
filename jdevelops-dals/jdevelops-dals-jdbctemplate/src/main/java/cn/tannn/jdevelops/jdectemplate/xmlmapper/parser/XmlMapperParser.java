@@ -61,6 +61,8 @@ public class XmlMapperParser {
         factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
         DocumentBuilder builder = factory.newDocumentBuilder();
+        // 设置离线 EntityResolver，避免在无网环境下尝试加载外部 DTD
+        builder.setEntityResolver(new OfflineEntityResolver());
         Document document = builder.parse(inputStream);
 
         // 获取根元素
