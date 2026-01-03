@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2024/3/15 14:04
  */
 @Service
-public  class DefFileOperateService implements FileOperateService {
+public class DefFileOperateService implements FileOperateService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefFileOperateService.class);
 
@@ -73,7 +73,6 @@ public  class DefFileOperateService implements FileOperateService {
         FileStorage fileStorage = ossConfig.genMasterStorage(storageId);
         return upload(upload, fileStorage);
     }
-
 
 
     @Override
@@ -133,14 +132,15 @@ public  class DefFileOperateService implements FileOperateService {
 
     /**
      * 上传
+     *
      * @param upload 文件信息
      * @return 文件索引
      * @throws IOException IOException
      */
-    private FileIndex upload(UploadFile upload,FileStorage storage) throws IOException {
+    private FileIndex upload(UploadFile upload, FileStorage storage) throws IOException {
         List<String> filter = ossConfig.getFilter();
-        if(!filter.isEmpty()){
-            FileFilter.isValidFileTypeThrow(upload.getFile(), filter);
+        if (!filter.isEmpty()) {
+            FileFilter.isValidFileTypeThrow(upload.getFile(), filter, ossConfig.getFilterModel());
         }
         FileIndex fileIndex;
         if (storage.localConfig()) {

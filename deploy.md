@@ -5,12 +5,25 @@
 2. 将 SNAPSHOT 版本修改成发布版（只改发布的版本号）
 3. 执行发版 `mvn clean deploy -P release`
 
-# 单独发版 （特殊发版）
-> 1. 有时候需要单独发版的时候就把下面的代码复制到自己的pom.xml里去
-> 2. 弄完记得删除
+# 单独发版 （fix发版）
+> 1. 有模块需要单独发版的时候就根据下面的步骤操作
+> 2. 自己模块的pom.xml 修改 parent的`<version>使用正式版本的版本号</version>`
+> 3. 自己模块的pom.xml 新增 `<version>单独的版本号</version>`
+> 4. 然后定位到自己模块目录下执行 `mvn clean deploy -P release` / idea maven 插件选择 自己模块 然后点击 deploy
+> 5. 弄完记得删除
 > ps: 因为 parent 被发过之后不允许发了，所以不能用父 pom.xml 发版 
+
+自己模块的pom.xml
 ```xml
-<url>https://github.com/en-o/Jdevelops</url>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-xxx</artifactId>
+        <version>使用正式版本的版本号</version>
+    </parent>
+
+    <version>你的fix版本号</version>
+
+    <url>https://github.com/en-o/Jdevelops</url>
 
     <organization>
         <name>tan</name>
@@ -72,3 +85,4 @@
         </repository>
     </repositories>
 ```
+

@@ -2,7 +2,7 @@ package cn.tannn.jdevelops.jdectemplate.sql;
 
 import org.junit.jupiter.api.Test;
 
-import static cn.tannn.jdevelops.jdectemplate.sql.ParameterMode.NAMED;
+import static cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.ParameterMode.NAMED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**

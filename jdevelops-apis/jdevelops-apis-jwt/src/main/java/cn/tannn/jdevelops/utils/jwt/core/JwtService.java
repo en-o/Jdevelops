@@ -28,6 +28,7 @@ import java.security.Key;
 import java.util.*;
 
 import static cn.tannn.jdevelops.utils.jwt.constant.JwtMessageConstant.TOKEN_ERROR;
+import static cn.tannn.jdevelops.utils.jwt.util.JwtUtil.convertToMinutes;
 
 
 /**
@@ -78,7 +79,14 @@ public class JwtService {
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer()); //创建令牌并签名的人
         claims.setAudience(AUDIENCE); //令牌要发送给谁
-        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());  //   小时*60=分钟
+
+        //  根据配置的时间单位动态计算过期时间(分钟)
+        float expirationMinutes = convertToMinutes(
+                jwtConfig.getExpireTime(),
+                jwtConfig.getLoginExpireTimeUnit()
+        );
+        claims.setExpirationTimeMinutesInTheFuture(expirationMinutes);
+//        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());//   小时*60=分钟
         claims.setGeneratedJwtId(); // 令牌的唯一标识符
         claims.setIssuedAtToNow();  // 何时发行/创建令牌 (now)
 //        claims.setNotBeforeMinutesInThePast(1); //令牌尚未生效的时间 (2 minutes ago)
@@ -123,8 +131,14 @@ public class JwtService {
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(jwtConfig.getIssuer());
         claims.setAudience(AUDIENCE);
-        //   分钟
-        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());
+
+        //  根据配置的时间单位动态计算过期时间(分钟)
+        float expirationMinutes = convertToMinutes(
+                jwtConfig.getExpireTime(),
+                jwtConfig.getLoginExpireTimeUnit()
+        );
+        claims.setExpirationTimeMinutesInTheFuture(expirationMinutes);
+//        claims.setExpirationTimeMinutesInTheFuture(60 * jwtConfig.getExpireTime());
         claims.setSubject(subject);
         // 签名 JWT
         JsonWebSignature jws = getJsonWebSignature();
@@ -192,7 +206,13 @@ public class JwtService {
         newClaims.setIssuer(jwtConfig.getIssuer());
         newClaims.setAudience(AUDIENCE);
         newClaims.setSubject(jwtClaims.getSubject());
-        newClaims.setExpirationTimeMinutesInTheFuture(60);
+
+        //  根据配置的时间单位动态计算过期时间(分钟)
+        float expirationMinutes = convertToMinutes(
+                jwtConfig.getExpireTime(),
+                jwtConfig.getLoginExpireTimeUnit()
+        );
+        newClaims.setExpirationTimeMinutesInTheFuture(expirationMinutes);
 
         // 从原 JWT 复制声明到新的 JwtClaims 对象中
         for (Map.Entry<String, Object> entry : jwtClaims.getClaimsMap().entrySet()) {

@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.sql;
 
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.ParameterMode;
+
 /**
  * OR条件组SQL构建器
  */

@@ -1,5 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.sql;
 
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.ParameterMode;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 

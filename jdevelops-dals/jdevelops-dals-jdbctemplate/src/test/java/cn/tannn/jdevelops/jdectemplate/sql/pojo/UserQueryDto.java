@@ -1,9 +1,9 @@
 package cn.tannn.jdevelops.jdectemplate.sql.pojo;
 
-import cn.tannn.jdevelops.jdectemplate.annotations.*;
-import cn.tannn.jdevelops.jdectemplate.enums.JoinType;
-import cn.tannn.jdevelops.jdectemplate.enums.PageType;
-import cn.tannn.jdevelops.jdectemplate.enums.QueryType;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.*;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.JoinType;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.PageType;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.QueryType;
 
 import java.util.List;
 

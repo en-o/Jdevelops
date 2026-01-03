@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.ChooseExampleMapper">
+
+    <!-- 示例 1: 基本的 choose/when/otherwise 用法 -->
+    <select id="findByOrgNo" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        WHERE 1=1
+        <choose>
+            <when test="orgNo == '-'">
+                AND a.org_no IS NULL
+            </when>
+            <otherwise>
+                AND a.org_no = #{orgNo}
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 示例 2: 多个 when 条件 -->
+    <select id="findByStatus" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        WHERE 1=1
+        <choose>
+            <when test="status == 1">
+                AND a.status = 1
+                AND a.enabled = true
+            </when>
+            <when test="status == 2">
+                AND a.status = 2
+                AND a.enabled = false
+            </when>
+            <when test="status == 0">
+                AND a.status = 0
+            </when>
+            <otherwise>
+                AND a.status IN (1, 2, 0)
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 示例 3: 复杂的嵌套场景（choose 嵌套 if） -->
+    <select id="complexQuery" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        WHERE 1=1
+        <choose>
+            <when test="queryType == 'ORG'">
+                <if test="orgNo != null and orgNo != ''">
+                    AND a.org_no = #{orgNo}
+                </if>
+                <if test="deptNo != null and deptNo != ''">
+                    AND a.dept_no = #{deptNo}
+                </if>
+            </when>
+            <when test="queryType == 'USER'">
+                <if test="userId != null">
+                    AND a.id = #{userId}
+                </if>
+                <if test="username != null and username != ''">
+                    AND a.username LIKE CONCAT('%', #{username}, '%')
+                </if>
+            </when>
+            <otherwise>
+                AND a.enabled = true
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 示例 4: choose 与 where 标签结合使用 -->
+    <select id="dynamicWhere" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        <where>
+            <if test="username != null and username != ''">
+                AND a.username = #{username}
+            </if>
+            <choose>
+                <when test="orgLevel == 1">
+                    AND a.org_no IN (SELECT org_no FROM t_org WHERE level = 1)
+                </when>
+                <when test="orgLevel == 2">
+                    AND a.org_no IN (SELECT org_no FROM t_org WHERE level = 2)
+                </when>
+                <otherwise>
+                    AND a.org_no IS NOT NULL
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 示例 5: 实际业务场景 - 根据不同权限查询数据 -->
+    <select id="findByPermission" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        WHERE 1=1
+        <choose>
+            <when test="role == 'ADMIN'">
+                -- 管理员可以查看所有数据
+            </when>
+            <when test="role == 'MANAGER'">
+                -- 管理者只能查看本部门数据
+                AND a.dept_no = #{currentUserDeptNo}
+            </when>
+            <when test="role == 'USER'">
+                -- 普通用户只能查看自己的数据
+                AND a.id = #{currentUserId}
+            </when>
+            <otherwise>
+                -- 其他角色无权限
+                AND 1=0
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 示例 6: choose 与 foreach 结合 -->
+    <select id="findByDynamicCondition" resultType="cn.tannn.jdevelops.jdectemplate.xmlmapper.example.User">
+        SELECT *
+        FROM t_user a
+        WHERE 1=1
+        <choose>
+            <when test="ids != null and ids.size() > 0">
+                AND a.id IN
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </when>
+            <when test="orgNos != null and orgNos.size() > 0">
+                AND a.org_no IN
+                <foreach collection="orgNos" item="orgNo" open="(" separator="," close=")">
+                    #{orgNo}
+                </foreach>
+            </when>
+            <otherwise>
+                AND a.enabled = true
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

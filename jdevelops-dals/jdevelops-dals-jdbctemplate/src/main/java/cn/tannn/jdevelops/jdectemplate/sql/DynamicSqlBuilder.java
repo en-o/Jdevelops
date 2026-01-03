@@ -1,5 +1,7 @@
 package cn.tannn.jdevelops.jdectemplate.sql;
 
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.NullHandleStrategy;
+import cn.tannn.jdevelops.annotations.jdbctemplate.sql.enums.ParameterMode;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.util.StringUtils;
 
@@ -24,10 +26,10 @@ import java.util.stream.Collectors;
      [LIMIT/OFFSET 分页限制]
  * </pre>
  * <pre>
- * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new BeanPropertyRowMapper<>(User.class));
+ * List<User> result = namedParameterJdbcTemplate.query(builder.getSql(),builder.getNamedParams(), new DataClassRowMapper<>(User.class));
  * </pre>
  * <pre>
- * List<DynamicSqlBuilderSpringTest.User> result = jdbcTemplate.query(builder.getSql(),builder.getPositionalParams(),new BeanPropertyRowMapper<>(DynamicSqlBuilderSpringTest.User.class));
+ * List<DynamicSqlBuilderSpringTest.User> result = jdbcTemplate.query(builder.getSql(),builder.getPositionalParams(),new DataClassRowMapper<>(DynamicSqlBuilderSpringTest.User.class));
  * </pre>
  */
 public class DynamicSqlBuilder extends OrGroupSqlBuilder {

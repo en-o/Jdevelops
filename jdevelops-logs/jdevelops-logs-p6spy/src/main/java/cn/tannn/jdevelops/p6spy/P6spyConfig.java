@@ -25,6 +25,27 @@ public class P6spyConfig {
      */
     String logMessageFormatter;
 
+    /**
+     * 多少时间算慢查询 /s
+     */
+    Integer outagedetectioninterval;
+
+    /**
+     * 是否自动刷新 默认 TRUE
+     */
+    Boolean autoflush;
+
+    /**
+     * 是否开启慢SQL记录  默认 TRUE
+     */
+    Boolean outagedetection;
+
+    /**
+     * https://p6spy.readthedocs.io/en/latest/configandusage.html?highlight=autoflush#modulelist
+     * <p> 默认 "com.p6spy.engine.spy.P6SpyFactory,com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory"</p>
+     */
+    String modulelist;
+
 
     public List<String> getDrivers() {
         if (drivers == null || drivers.isEmpty()) {
@@ -47,5 +68,41 @@ public class P6spyConfig {
 
     public void setLogMessageFormatter(String logMessageFormatter) {
         this.logMessageFormatter = logMessageFormatter;
+    }
+
+    public Integer getOutagedetectioninterval() {
+        return outagedetectioninterval==null?20:outagedetectioninterval;
+    }
+
+    public void setOutagedetectioninterval(Integer outagedetectioninterval) {
+        this.outagedetectioninterval = outagedetectioninterval;
+    }
+
+    public String outagedetectionintervalStr() {
+        return getOutagedetectioninterval().toString();
+    }
+
+    public Boolean getAutoflush() {
+        return autoflush == null || autoflush;
+    }
+
+    public void setAutoflush(Boolean autoflush) {
+        this.autoflush = autoflush;
+    }
+
+    public String getModulelist() {
+        return modulelist==null?"com.p6spy.engine.spy.P6SpyFactory,com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory":modulelist;
+    }
+
+    public void setModulelist(String modulelist) {
+        this.modulelist = modulelist;
+    }
+
+    public Boolean getOutagedetection() {
+        return outagedetection == null || outagedetection;
+    }
+
+    public void setOutagedetection(Boolean outagedetection) {
+        this.outagedetection = outagedetection;
     }
 }

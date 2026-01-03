@@ -41,6 +41,7 @@ public class JwtConfig {
 
     /**
      * token redis过期时间单位（默认小时）
+     *  @since 1.0.4 开始 同时作用于：expireTime和loginExpireTime
      */
     private TimeUnit loginExpireTimeUnit;
 
@@ -87,6 +88,7 @@ public class JwtConfig {
 
     /**
      * 对token进行压缩，默认false不压缩
+     * 还没启用
      */
     private Boolean compressToken = false;
 

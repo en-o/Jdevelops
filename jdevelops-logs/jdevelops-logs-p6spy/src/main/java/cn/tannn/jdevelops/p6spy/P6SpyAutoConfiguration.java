@@ -66,12 +66,12 @@ public class P6SpyAutoConfiguration {
 
             // 指定 Log 的文件名 默认 spy.log
             properties.put("logfile","p6spy.log");
-            // 定是否每次是增加 Log，设置为 false 则每次都会先进行清空 默认true
+            // 是否每次是增加 Log，设置为 false 则每次都会先进行清空 默认true
             properties.put("append","true");
             // 使用日志系统记录sql
             properties.put("appender","com.p6spy.engine.spy.appender.Slf4JLogger");
             // 是否自动刷新 默认 flase
-            properties.put("autoflush","true");
+            properties.put("autoflush",p6spyConfig.getAutoflush()+"");
             // 自定义日志打印
             properties.put("logMessageFormat",p6spyConfig.getLogMessageFormatter());
             // 驱动
@@ -79,12 +79,12 @@ public class P6SpyAutoConfiguration {
             // 日期格式
             properties.put("dateformat","yyyy-MM-dd HH:mm:ss.SSS");
             // https://p6spy.readthedocs.io/en/latest/configandusage.html?highlight=autoflush#modulelist
-            properties.put("modulelist","com.p6spy.engine.spy.P6SpyFactory,com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory");
+            properties.put("modulelist",p6spyConfig.modulelist);
 
             // 是否开启慢SQL记录
-            properties.put("outagedetection","true");
+            properties.put("outagedetection",p6spyConfig.getOutagedetection()+"");
             // 慢SQL记录标准 秒 ,只有当超过这个时间才进行记录 Log。 默认30s
-            properties.put("outagedetectioninterval","5");
+            properties.put("outagedetectioninterval",p6spyConfig.outagedetectionintervalStr());
             // 日志输出级别
             properties.put("log4j.logger.p6spy","warn,STDOUT");
             // 设置使用p6spy driver来做代理

@@ -2,6 +2,7 @@ package cn.tannn.jdevelops.files.sdk.util;
 
 import cn.tannn.cat.file.sdk.exception.FileException;
 import cn.tannn.cat.file.sdk.utils.FileUtils;
+import cn.tannn.jdevelops.files.sdk.enums.FileFilterModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,8 +87,56 @@ public class FileFilter {
      * @return 之前已经存在的文件扩展名
      */
     public static String putFileType(String fileStreamHexHead, String extName) {
-        return MAGIC_NUMBERS.put(fileStreamHexHead, extName);
+        return putFileType(fileStreamHexHead, extName, true);
     }
+
+    /**
+     * 增加文件类型映射<br>
+     * 如果已经存在将覆盖之前的映射
+     *
+     * @param fileStreamHexHead 文件流头部Hex信息 [bytesToHex(getMagicNumber())]
+     * @param extName           文件扩展名
+     * @param order             true 队尾（默认）, false 开头
+     * @return 之前已经存在的文件扩展名
+     */
+    public static String putFileType(String fileStreamHexHead, String extName, boolean order) {
+        if (order) {
+            return MAGIC_NUMBERS.put(fileStreamHexHead, extName);
+        } else {
+            // 1. 新建一个临时的 LinkedHashMap
+            LinkedHashMap<String, String> tmp = new LinkedHashMap<>();
+            // 2. 先放“新”条目
+            tmp.put(fileStreamHexHead, extName);
+            // 3. 再放“旧”条目（会保持原来的相对顺序）
+            tmp.putAll(MAGIC_NUMBERS);
+            // 4. 清空原 map，再整体写回去
+            MAGIC_NUMBERS.clear();
+            MAGIC_NUMBERS.putAll(tmp);
+            return extName;
+        }
+    }
+
+
+    /**
+     * 验证文件格式是否在白名单里
+     *
+     * @param file        MultipartFile
+     * @param whiteSuffix 文件后缀白名单(没有. )
+     * @throws IOException FileException
+     */
+    public static void isValidFileTypeThrow(MultipartFile file, List<String> whiteSuffix, FileFilterModel filterModel) throws IOException {
+        if(filterModel.equals(FileFilterModel.MAGIC)){
+            if (!isValidFileType(file, whiteSuffix)) {
+                throw FileException.specialMessage("文件格式不合法");
+            }
+        }else {
+            if (!isValidFileType_suffix(file, whiteSuffix)) {
+                throw FileException.specialMessage("文件格式不合法");
+            }
+        }
+
+    }
+
 
     /**
      * 验证文件格式是否在白名单里
@@ -118,6 +167,30 @@ public class FileFilter {
         filename = filename == null ? file.getName() : filename;
         String fileType = getType(file.getInputStream(), filename);
 
+        for (String type : whiteSuffix) {
+            if (type.equalsIgnoreCase(fileType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 验证文件格式是否在白名单里 - 用后缀验证
+     *
+     * @param file        MultipartFile
+     * @param whiteSuffix 文件后缀白名单(没有. )
+     * @return true 在
+     * @throws IOException IOException
+     */
+    public static boolean isValidFileType_suffix(MultipartFile file, List<String> whiteSuffix) throws IOException {
+        if (whiteSuffix == null || whiteSuffix.isEmpty()) {
+            return true;
+        }
+        String filename = file.getOriginalFilename();
+        filename = filename == null ? file.getName() : filename;
+        String fileType = FileUtils.getExt(filename).replace(".", "");
         for (String type : whiteSuffix) {
             if (type.equalsIgnoreCase(fileType)) {
                 return true;

@@ -1,17 +1,24 @@
 package cn.tannn.jdevelops.jdectemplate;
 
 import cn.tannn.jdevelops.jdectemplate.config.JdbcTemplateConfig;
-import cn.tannn.jdevelops.jdectemplate.core.JdbcProxyCreator;
+import cn.tannn.jdevelops.jdectemplate.proxysql.core.JdbcProxyCreator;
+import cn.tannn.jdevelops.jdectemplate.xmlmapper.config.XmlMapperAutoConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
+ * JdbcTemplate 配置
+ *
  * @author <a href="https://t.tannn.cn/">tan</a>
  * @date 2024/6/21 下午3:07
  */
+@Import(XmlMapperAutoConfiguration.class)
 public class JdbcConfiguration {
 
     @Bean

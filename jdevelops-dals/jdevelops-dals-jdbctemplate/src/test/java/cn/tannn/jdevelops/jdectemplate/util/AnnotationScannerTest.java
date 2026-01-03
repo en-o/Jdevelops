@@ -1,6 +1,6 @@
 package cn.tannn.jdevelops.jdectemplate.util;
 
-import cn.tannn.jdevelops.annotations.jdbctemplate.JdbcTemplate;
+import cn.tannn.jdevelops.annotations.jdbctemplate.proxysql.JdbcTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Controller;
 
