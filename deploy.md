@@ -9,7 +9,7 @@
 > 1. 有模块需要单独发版的时候就根据下面的步骤操作
 > 2. 自己模块的pom.xml 修改 parent的`<version>使用正式版本的版本号</version>`
 > 3. 自己模块的pom.xml 新增 `<version>单独的版本号</version>`
-> 4. 发布的时候注意 加/勾 上 `-P deploy-jwt-only`
+> 4. 然后定位到自己模块目录下执行 `mvn clean deploy -P release` / idea maven 插件选择 自己模块 然后点击 deploy
 > 5. 弄完记得删除
 > ps: 因为 parent 被发过之后不允许发了，所以不能用父 pom.xml 发版 
 
