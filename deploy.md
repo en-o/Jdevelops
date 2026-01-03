@@ -7,53 +7,82 @@
 
 # 单独发版 （fix发版）
 > 1. 有模块需要单独发版的时候就根据下面的步骤操作
-> 2. 自己模块的pom.xml新增 `<version>单独的版本号</version>`
-> 3. parent的pom.xml 新增 profile 配置，参考下面的配置
+> 2. 自己模块的pom.xml 修改 parent的`<version>使用正式版本的版本号</version>`
+> 3. 自己模块的pom.xml 新增 `<version>单独的版本号</version>`
 > 4. 发布的时候注意 加/勾 上 `-P deploy-jwt-only`
 > 5. 弄完记得删除
 > ps: 因为 parent 被发过之后不允许发了，所以不能用父 pom.xml 发版 
 
 自己模块的pom.xml
 ```xml
- <version>1.0.3.1</version>
+    <parent>
+        <groupId>cn.tannn.jdevelops</groupId>
+        <artifactId>jdevelops-xxx</artifactId>
+        <version>使用正式版本的版本号</version>
+    </parent>
+
+    <version>你的fix版本号</version>
+
+    <url>https://github.com/en-o/Jdevelops</url>
+
+    <organization>
+        <name>tan</name>
+        <url>https://t.tannn.cn/</url>
+    </organization>
+
+    <!-- 开源许可证 -->
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <!-- 开源地址 -->
+    <scm>
+        <!-- 发布分支 -->
+        <tag>master</tag>
+        <url>https://github.com/en-o/Jdevelops.git</url>
+        <connection>https://github.com/en-o/Jdevelops.git</connection>
+        <developerConnection>https://github.com/en-o/Jdevelops.git</developerConnection>
+    </scm>
+
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <id>tanning</id>
+            <name>tanning</name>
+            <email>1445763190@qq.com</email>
+            <organization>cn.tannn.jdevelops</organization>
+            <url>https://t.tannn.cn/</url>
+            <roles>
+                <role>author</role>
+            </roles>
+        </developer>
+    </developers>
+    <!--定义项目的分发管理，会在执行 deploy 命令时使用-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <!--Maven 会按照 pom.xml 中定义的顺序来查找依赖项-->
+    <repositories>
+        <repository>
+            <id>snapshot</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
 ```
-parent的pom.xml (参考下面的配置)    
-```xml
-<profiles>
-    <!-- 单独发布 jdevelops-apis-jwt 的 Profile -->
-    <profile>
-        <id>deploy-jwt-only</id>
-        <build>
-            <plugins>
-                <!-- 覆盖父 POM 的 central-publishing-maven-plugin 配置 -->
-                <plugin>
-                    <groupId>org.sonatype.central</groupId>
-                    <artifactId>central-publishing-maven-plugin</artifactId>
-                    <version>0.4.0</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <publishingServerId>central</publishingServerId>
-                        <tokenAuth>true</tokenAuth>
-                        <autoPublish>true</autoPublish>
-                        <!--此次发布的线程名-->
-                        <deploymentName>jdevelops-apis-jwt-fix</deploymentName>
-                        <!-- 排除其他模块，只发布 jdevelops-apis-jwt -->
-                        <excludeArtifacts>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-result</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-exception</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-knife4j</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-version</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-log</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-idempotent</excludeArtifact>
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis-sign</excludeArtifact>
-                            <!--包括自己-->
-                            <excludeArtifact>cn.tannn.jdevelops:jdevelops-apis</excludeArtifact>
-                            <!-- 不排除 jdevelops-apis-jwt，因此它会被发布 -->
-                        </excludeArtifacts>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-```
+
