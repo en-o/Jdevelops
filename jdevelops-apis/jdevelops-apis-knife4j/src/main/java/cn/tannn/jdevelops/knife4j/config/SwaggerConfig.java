@@ -43,6 +43,7 @@ public class SwaggerConfig {
      * fix: spring 3.4 swagger异常
      */
     @Bean
+    @ConditionalOnProperty(name = "knife4j.enable", havingValue = "true", matchIfMissing = true)
     public Knife4jOpenApiCustomizer knife4jOpenApiCustomizer(com.github.xiaoymin.knife4j.spring.configuration.Knife4jProperties properties, SpringDocConfigProperties docProperties) {
         return new SupportSpring34(properties, docProperties);
     }
